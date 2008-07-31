@@ -1,0 +1,45 @@
+{% load crimson_filters %}
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
+
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>The Harvard Crimson | {% block title %}{% endblock %}</title>
+	<link type="text/css" rel="stylesheet" href="/site_media/css/base.css" />
+	{% block inhead %}{% endblock %}
+</head>
+<body>
+	<div class="wrapper">
+		<div class="header">
+			<div class="banner">
+				<img src="/site_media/images/banner.jpg" alt=""></img>
+			</div>
+			<div class="menu">
+				<ul>
+					<li {{ nav|is_nav_cur:"index" }}><a href="/">HOME</a/></li>
+					<li {{ nav|is_nav_cur:"news" }}><a href="/news">NEWS</a></li>
+					<li {{ nav|is_nav_cur:"ed" }}><a href="/ed">OPINION</a></li>
+					<li {{ nav|is_nav_cur:"fm" }}><a href="/fm">MAGAZINE</a></li>
+					<li {{ nav|is_nav_cur:"arts" }}><a href="/arts">ARTS</a></li>
+					<li {{ nav|is_nav_cur:"photo" }}><a href="/photo">PHOTOS</a></li>
+					<li {{ nav|is_nav_cur:"sports" }}><a href="/sports">SPORTS</a></li>
+					<li {{ nav|is_nav_cur:"about" }}><a href="/about">ABOUT US</a></li>
+				</ul>
+			</div>
+			<div class="submenu">
+				<ul>{% block submenu %}{% endblock %}</ul>
+			</div>
+		</div>
+		<div class="contentWrapper">
+			{% block pre_body %}{% endblock %}
+			{% block body %}{% endblock %}
+			{% block post_body %}{% endblock %}
+		</div>
+		<div class="footer">
+		 copyright 2008
+		</div>
+	</div>
+</body>
+</html>
