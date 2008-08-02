@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}
+	Writer Profile | {{ writer }}
+{% endblock %}
+
+{% block inhead %}
+	<link type="text/css" rel="stylesheet" href="/site_media/css/article.css" />
+{% endblock %}
+
+{% block body %}
+	<div class="content">
+		<div class="article">
+			<h1>{{ writer }}'s Profile</h1>
+			<br/>
+			<ul>
+				{% for article in articles %}
+					<h3><a href="{{ article.get_absolute_url }}">{{ article.headline }}</a></h3>
+					<p>{{ article.issue.issue_date }} | {{ article.section }}<br/>
+						{{ article.teaser }}
+					</p>
+				{% endfor %}
+			</ul>
+		</div>
+	</div>
+	<div class="columnRight">
+		<p>here is a bunch of test text<br/>type type type type type type</p>
+	</div>
+{% endblock %}

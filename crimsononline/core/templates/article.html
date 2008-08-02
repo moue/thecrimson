@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% load crimson_filters %}
+
+{% block title %}
+	{{ article.headline }}
+{% endblock %}
+
+{% block inhead %}
+	<link type="text/css" rel="stylesheet" href="/site_media/css/article.css" />
+{% endblock %}
+
+{% block body %}
+	<div class="content">
+		<div class="article">
+			<h1>{{ article.headline }}</h1>
+			<h2>{{ article.subheadline }}</h2>
+			<div class="byline">By {{ article.contributors.all|linkify|human_list }}
+			</div>
+			<div>
+				{{ article.text|escape|linebreaks }}
+			</div>
+		</div>
+	</div>
+	<div class="columnRight">
+		<p>here is a bunch of test text<br/>type type type type type type</p>
+	</div>
+{% endblock %}
