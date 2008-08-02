@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% load crimson_filters %}
+
+{% block title %}
+	{{ "Since 1873, motherfuckers" }}
+{% endblock %}
+
+{% block inhead %}
+	<link type="text/css" rel="stylesheet" href="/site_media/css/index.css" />
+{% endblock %}
+
+{% block body %}
+	<div class="columnCenter">
+		<div class="contentTop">
+			<div class="topStories">
+				<h1>Top Stories</h1>
+				<ul>
+					{% for story in top_stories %}
+					<li>
+						<h3>{{ story|linkify }}</a></h3>
+						<span class="byline">By {{ story.contributors.all|linkify|human_list}}
+						</span>
+						<p class="teaser">{{ story.teaser }}</p>
+					</li>	
+					{% endfor %}
+				</ul>
+			</div>
+			<div class="topCenter">
+				<div class="storyRotater">
+					<img src="/site_media/images/rotater.jpg" />
+				</div>
+				<div class="moreNews">
+					<h1>More News</h1>
+					<ul>
+						{% for story in more_stories %}
+						<li><a href="{{ story.get_absolute_url }}">{{ story.headline }}</a></li>
+						{% endfor %}
+					</ul>
+				</div>
+			</div>
+			<div class="topRight">
+				<div class="topOpinions">
+					<h1>Opinion</h1>
+					<ul>
+						{% for oped in opeds %}
+							<li>
+								<a href="{{ oped.get_absolute_url }}">{{ oped.headline }}</a>
+							</li>
+						{% endfor %}
+					</ul>
+				</div>
+				<div class="featured">
+					<h1>Featured</h1>
+				</div>
+			</div>
+		</div>
+		<div class="contentBottom">
+			text
+		</div>
+	</div>
+	<div class="columnRight">
+		<p>here is a bunch of test text<br/>type type type type type type</p>
+		<p><img src="/site_media/images/ver_ad.gif" /></p>
+	</div>
+{% endblock %}
