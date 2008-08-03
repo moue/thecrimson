@@ -23,7 +23,7 @@ class Contributor(models.Model):
         if self.middle_initial == None:
             m = ''
         else:
-            m = ' ' + self.middle_initia
+            m = ' ' + self.middle_initial
         return '%s%s %s' % (self.first_name, m, self.last_name)
         
     def __setattr__(self, name, value):
