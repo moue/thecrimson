@@ -13,7 +13,8 @@ class Contributor(models.Model):
     profile_text = models.TextField(blank=True, null=True)
     email = models.EmailField(blank=True, null=True)
     phone = models.PhoneNumberField(blank=True, null=True)
-    board = models.IntegerField(blank=False, null=False)
+    board = models.IntegerField(blank=True, null=True, 
+                                            help_text='Eg: 136')
     class_of = models.IntegerField(blank=True, null=True)
     huid_hash = models.CharField(blank=True, null=True, max_length=255)
     is_active = models.BooleanField(default=True)

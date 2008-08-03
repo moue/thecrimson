@@ -23,4 +23,3 @@ urlpatterns += patterns('',
         'django.views.static.serve', 
         {'document_root': settings.MEDIA_LOC}),
 )
-
