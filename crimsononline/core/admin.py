@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django import forms
 from crimsononline.core.models import *
 
 class ContributorAdmin(admin.ModelAdmin):
@@ -30,7 +31,19 @@ admin.site.register(Image)
 admin.site.register(ImageGallery)
     
 class ArticleAdmin(admin.ModelAdmin):
-    list_display = ('headline', 'section', 'issue')
-    search_fields = ('headline', 'contributors', 'text', 'tags')
-    filter_horizontal = ('contributors', 'tags')
+    list_display = ('headline', 'section', 'issue',)
+    search_fields = ('headline', 'text',)
+    filter_horizontal = ('contributors', 'tags',)
+    
+    # customize individual fields (mostly widget changes)
+    def formfield_for_dbfield(self, db_field, **kwargs):
+        if db_field.name == 'headline' or \
+                db_field.name == 'subheadline' or \
+                db_field.name == 'teaser':
+            kwargs['widget'] = forms.TextInput(attrs={'size':'70'})
+        elif db_field.name == 'text':
+            kwargs['widget'] = forms.Textarea(attrs={'rows':'50',
+                                                    'cols':'67'})
+        return super(ArticleAdmin, self).formfield_for_dbfield(db_field,
+                                                                **kwargs)
 admin.site.register(Article, ArticleAdmin)
