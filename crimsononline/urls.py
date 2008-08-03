@@ -1,5 +1,7 @@
+from os import path
 from django.conf.urls.defaults import *
 from django.contrib import admin
+from django.conf import settings
 from crimsononline.core.views import *
 
 admin.autodiscover()
@@ -19,5 +21,6 @@ urlpatterns += patterns('',
 urlpatterns += patterns('',
     (r'^site_media/(?P<path>.*)$', 
         'django.views.static.serve', 
-        {'document_root': '/Users/andylei/Sites/django/crimson-online/crimsononline/static'}),
+        {'document_root': settings.MEDIA_LOC}),
 )
+

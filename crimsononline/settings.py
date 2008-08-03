@@ -1,6 +1,6 @@
 # Django settings for crimsononline project.
 
-import os.path
+from os import path
 from local_settings import *
 
 DEBUG = True
@@ -71,3 +71,5 @@ INSTALLED_APPS = (
     'crimsononline.admin',
     'crimsononline.temp',
 )
+
+MEDIA_LOC = path.join(path.split(path.abspath(__file__))[0], 'static')
