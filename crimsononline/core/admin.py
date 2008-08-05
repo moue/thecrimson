@@ -3,27 +3,36 @@ from django import forms
 from crimsononline.core.models import *
 
 class ContributorAdmin(admin.ModelAdmin):
-    list_display = ('last_name', 'first_name',)
+    list_display = ('last_name', 'first_name', 'middle_initial',)
     search_fields = ('first_name', 'last_name',)
-    fields = ('first_name', 
-                'middle_initial', 
-                'last_name',
+    fieldsets = (
+        (None, {
+            'fields': (
+                ('first_name', 'middle_initial', 'last_name'),
+                'boards',
                 'type',
-                'email',
-                'phone',
-                'board',
-                'class_of',
-                'is_active',)
+                ('email', 'phone',),
+                ('board_number', 'class_of',),
+                'is_active',
+            )
+        }),
+        ('Allow web access: give contributor right to', {
+            'classes': ('collapse',),
+            'fields': ('user',)
+        }),
+    )
 admin.site.register(Contributor, ContributorAdmin)
 
 class IssueAdmin(admin.ModelAdmin):
     list_display = ('issue_date',)
     search_fields = ('issue_date',)
+    fields = ('issue_date', 'web_publish_date', 'comments', 'web_only',)
 admin.site.register(Issue, IssueAdmin)
     
 class TagAdmin(admin.ModelAdmin):
     list_display = ('text',)
     search_fields = ('text',)
+    fields = ('text',)
 admin.site.register(Tag, TagAdmin)
     
 admin.site.register(Image)

@@ -1,23 +1,22 @@
 from django.shortcuts import render_to_response, get_object_or_404
 from crimsononline.core.models import *
-from crimsononline.core.issue_helper import current_issue
+from crimsononline.core.issue_helper import get_current_issue
 
 def index(request):
-    nav = 'index'
-    
-    #TODO: change this to assign to current issue (app wide setting)
-    issue = Issue.objects.filter(id__exact=1)[0]
-    
+    issue = get_current_issue()
     stories = get_top_articles(issue.id, 'News')
-    top_stories = stories[:3]
-    more_stories = stories[3:9]
-    opeds = get_top_articles(issue.id, 'Ed')[:6]
     
-    return render_to_response('index.html', {'nav': nav,
-                                            'top_stories': top_stories, 
-                                            'more_stories': more_stories,
-                                            'opeds': opeds, 
-                                            'issue': issue})
+    dict = {}
+    dict['nav'] = 'index'
+    dict['top_stories'] = stories[:3]
+    dict['more_stories'] = stories[3:9]
+    dict['opeds'] = get_top_articles(issue.id, 'Ed', 6)
+    dict['arts'] = get_top_articles(issue.id, 'Arts', 6)
+    dict['sports'] = get_top_articles(issue.id, 'Sports', 6)
+    dict['fms'] = get_top_articles(issue.id, 'FM', 6)
+    dict['issue'] = issue
+    
+    return render_to_response('index.html', dict)
     
 def article(request, article_id):
     a = get_object_or_404(Article, pk=article_id)
@@ -29,13 +28,13 @@ def writer(request, contributor_id):
     articles = w.article_set.all()
     return render_to_response('writer.html', {'writer': w, 'articles': articles})
     
-def daily_news(request, issue_id=current_issue()):
+def daily_news(request, issue_id=get_current_issue()):
     return render_to_response('news.html', {})
     
 # =========== view helpers ============== #
-def get_top_articles(issue_id, section):
+def get_top_articles(issue_id, section, limit=10):
     """returns the top limit articles from section for the issue"""
     
     return Article.objects.filter(issue__id__exact=issue_id,
                                     section__name__exact=section) \
-                            .order_by('-priority')
+                            .order_by('-priority')[:limit]

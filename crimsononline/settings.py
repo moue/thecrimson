@@ -13,6 +13,10 @@ TEMPLATE_DEBUG = DEBUG
 # system time zone.
 TIME_ZONE = 'America/Chicago'
 
+# Auth Profile (Contributor)
+# *********** THIS IS BROKEN RIGHT NOW *************
+AUTH_PROFILE_MODULE = 'core.Contributor'
+
 # Language code for this installation. All choices can be found here:
 # http://www.w3.org/TR/REC-html40/struct/dirlang.html#langcodes
 # http://blogs.law.harvard.edu/tech/stories/storyReader$15

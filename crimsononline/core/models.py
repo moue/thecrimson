@@ -1,26 +1,58 @@
 from hashlib import md5
 from django.db import models
 from django.db.models import permalink
+from django.contrib.auth.models import User
+
+class Board(models.Model):
+    """Organizational grouping (of people)"""
+    name = models.CharField(blank=True, null=True, max_length=20)
+    
+    def __unicode__(self):
+        return self.name
 
 class Contributor(models.Model):
-    """Someone who contributes to the Crimson, like a staff writer or a photogarpher."""
-    
-    first_name = models.CharField(blank=False, max_length=70)
-    last_name = models.CharField(blank=False, max_length=100)
+    """
+    Someone who contributes to the Crimson, 
+    like a staff writer, a photographer, or a guest writer.
+    """
+    user = models.ForeignKey(
+        User, 
+        verbose_name='web user',
+        unique=True, 
+        blank=True, 
+        null=True,
+        limit_choices_to={'is_active': True},
+        help_text="""
+        Only specify a web user if you want this contributor to have web access.<br/>
+        To create a new web user, click the green plus sign.<br/>
+        To link this contributor to an existing web user, select from the drop-down list.
+        """
+    )
+    first_name = models.CharField(blank=False, null=True, max_length=70)
+    last_name = models.CharField(blank=False, null=True, max_length=100)
     middle_initial = models.CharField(blank=True, null=True, max_length=1)
     created_on = models.DateField(auto_now_add=True)
     type = models.CharField(blank=True, null=True, max_length=100)
     profile_text = models.TextField(blank=True, null=True)
     email = models.EmailField(blank=True, null=True)
     phone = models.PhoneNumberField(blank=True, null=True)
-    board = models.IntegerField(blank=True, null=True, 
-                                            help_text='Eg: 136')
+    board_number = models.IntegerField(
+        blank=True, 
+        null=True, 
+        help_text='Eg: 136'
+    )
+    boards = models.ManyToManyField(Board, blank=True, null=True)
     class_of = models.IntegerField(blank=True, null=True)
-    huid_hash = models.CharField(blank=True, null=True, max_length=255)
+    huid_hash = models.CharField(
+        blank=True, 
+        null=True, 
+        max_length=255,
+        help_text='8 digit HUID. This will be encrypted before it is stored.'
+    )
     is_active = models.BooleanField(default=True)
 
     def __unicode__(self):
-        if self.middle_initial == None:
+        if self.middle_initial == None or self.middle_initial == '':
             m = ''
         else:
             m = ' ' + self.middle_initial
@@ -51,10 +83,15 @@ class Section(models.Model):
 class Issue(models.Model):
     """A set of content (articles, photos) for a particular date"""
     
-    web_only = models.BooleanField(default=False)
-    web_publish_date = models.DateTimeField(blank=False)
-    issue_date = models.DateField(blank=False)
-
+    web_only = models.BooleanField(default=False,
+                                    help_text='Check if this issue has no corresponding print edition.')
+    web_publish_date = models.DateTimeField(blank=False,
+                                            help_text='When this issue goes live (on the web).')
+    issue_date = models.DateField(blank=False,  
+                                    help_text='Corresponds with date of print edition.')
+    comments = models.TextField(blank=True, 
+                                null=True,
+                                help_text='Notes about this issue.')
     def __unicode__(self):
         return self.issue_date.strftime('%c')
         
@@ -104,7 +141,6 @@ class Article(models.Model):
     """Non serial text content"""
 
     BYLINE_TYPE_CHOICES = (
-        ('blank', ''),
         ('cstaff', 'Crimson Staff Writer'),
     )
 
@@ -112,15 +148,19 @@ class Article(models.Model):
                                 max_length=70, 
                                 unique_for_date='uploaded_on')
     subheadline = models.CharField(blank=True, null=True, max_length=70)
-    byline_type = models.CharField(blank=False, 
+    byline_type = models.CharField(blank=True,
+                                    null=True,
                                     max_length=70, 
                                     choices=BYLINE_TYPE_CHOICES)
     text = models.TextField(blank=False)
-    teaser = models.CharField(blank=True, max_length=1000)
+    teaser = models.CharField(blank=True, 
+                                max_length=1000,
+                                help_text='If left blank, this will be the first sentence of the article text.')
     contributors = models.ManyToManyField(Contributor)
     uploaded_on = models.DateField(auto_now_add=True)
     modified_on = models.DateField(auto_now=True)
-    priority = models.IntegerField(default=0)
+    priority = models.IntegerField(default=0,
+                                    help_text='Higher priority articles show up at the top of the home page.')
     page = models.CharField(blank=True, null=True, max_length=10)
     proofer = models.ForeignKey(Contributor, related_name='proofed_article_set')
     sne = models.ForeignKey(Contributor, related_name='sned_article_set')
