@@ -1,11 +1,14 @@
 from hashlib import md5
 from django.db import models
 from django.db.models import permalink
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 
 class Board(models.Model):
-    """Organizational grouping (of people)"""
-    name = models.CharField(blank=True, null=True, max_length=20)
+    """
+    Organizational unit of the Crimson
+    """
+    name = models.CharField(blank=False, null=False, max_length=20)
+    group = models.ForeignKey(Group, null=True, blank=True)
     
     def __unicode__(self):
         return self.name
@@ -62,7 +65,28 @@ class Contributor(models.Model):
         # hash the huid before storing it
         if name == 'huid_hash' and value != None:
             value = md5(value).digest()
-        super(Contributor, self).__setattr__(name, value)
+        elif name == 'boards':
+            # INCORRECT BEHAVIOR: this stuff should only happen on save, not on a setattr
+            # also, this is a hack; this only works because boards happens to get set last
+            groups = [board.group for board in value]
+            if self.user == None and groups != []:
+                u = User()
+                if not self.class_of:
+                    self.class_of = 0
+                u.username = ('%s_%s_%s_%d' % (
+                    self.first_name,
+                    self.middle_initial,
+                    self.last_name,
+                    self.class_of
+                ))[:30]
+                u.set_unusable_password() #auth is done with Harvard PIN
+                u.is_staff = True
+                u.save()
+                self.user = u
+            if self.user != None:
+                self.user.groups = groups
+                self.user.save()
+        return super(Contributor, self).__setattr__(name, value)
     
     @permalink
     def get_absolute_url(self):
@@ -137,6 +161,11 @@ class ImageGallery(models.Model):
     def __unicode__(self):
         return "ImageGallery"
 
+class PublishedArticlesManager(models.Manager):
+    """Articles Manager that only returns published articles"""
+    def get_query_set(self):
+        return super(PublishedArticlesManager, self).get_query_set().filter(is_published=True)
+
 class Article(models.Model):
     """Non serial text content"""
 
@@ -157,8 +186,8 @@ class Article(models.Model):
                                 max_length=1000,
                                 help_text='If left blank, this will be the first sentence of the article text.')
     contributors = models.ManyToManyField(Contributor)
-    uploaded_on = models.DateField(auto_now_add=True)
-    modified_on = models.DateField(auto_now=True)
+    uploaded_on = models.DateTimeField(auto_now_add=True)
+    modified_on = models.DateTimeField(auto_now=True)
     priority = models.IntegerField(default=0,
                                     help_text='Higher priority articles show up at the top of the home page.')
     page = models.CharField(blank=True, null=True, max_length=10)
@@ -168,6 +197,19 @@ class Article(models.Model):
     section = models.ForeignKey(Section)
     tags = models.ManyToManyField(Tag)
     image_gallery = models.ForeignKey(ImageGallery, null=True, blank=True)
+    is_published = models.BooleanField(default=True, null=False, blank=False)
+
+    objects = PublishedArticlesManager()
+    all_objects = models.Manager()
+
+    class Meta:
+        permissions = (
+            ('article.can_change_after_timeout', 'Can change articles at any time',),
+        )
+
+    def delete(self):
+        self.is_published = False
+        self.save()
 
     def save(self):
         """if theres no teaser, set teaser to the first sentence of text"""

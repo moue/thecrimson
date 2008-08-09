@@ -8,8 +8,8 @@ def index(request):
     
     dict = {}
     dict['nav'] = 'index'
-    dict['top_stories'] = stories[:3]
-    dict['more_stories'] = stories[3:9]
+    dict['top_stories'] = stories[:4]
+    dict['more_stories'] = stories[4:9]
     dict['opeds'] = get_top_articles(issue.id, 'Ed', 6)
     dict['arts'] = get_top_articles(issue.id, 'Arts', 6)
     dict['sports'] = get_top_articles(issue.id, 'Sports', 6)
