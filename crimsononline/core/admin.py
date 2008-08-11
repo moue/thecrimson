@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 from django import forms
+from django.conf import settings
 from django.contrib import admin
 from django.forms import ModelForm
 from django.contrib.auth.models import User
@@ -65,9 +66,16 @@ class TagAdmin(admin.ModelAdmin):
     search_fields = ('text',)
     fields = ('text',)
 admin.site.register(Tag, TagAdmin)
-    
+
+class ImageForm(ModelForm):
+    file = forms.fields.ImageField()
+    class Meta:
+        model = Image
+
 admin.site.register(Image)
 
+class ImageGalleryAdmin(admin.ModelAdmin):
+    fields = ('tags', 'images', 'cover_image',)
 admin.site.register(ImageGallery)
 
 class ArticleForm(ModelForm):
