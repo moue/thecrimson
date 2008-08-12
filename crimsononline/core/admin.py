@@ -39,7 +39,7 @@ class ContributorAdmin(admin.ModelAdmin):
             'fields': (
                 ('first_name', 'middle_initial', 'last_name'),
                 'type',
-                'is_acti`ve',
+                'is_active',
             )
         }),
         ('Crimson Staff Settings', {
