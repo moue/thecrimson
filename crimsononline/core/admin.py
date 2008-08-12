@@ -39,7 +39,7 @@ class ContributorAdmin(admin.ModelAdmin):
             'fields': (
                 ('first_name', 'middle_initial', 'last_name'),
                 'type',
-                'is_active',
+                'is_acti`ve',
             )
         }),
         ('Crimson Staff Settings', {
@@ -52,7 +52,33 @@ class ContributorAdmin(admin.ModelAdmin):
             )
         }),
     )
-    #form = ContributorForm
+    def save_model(self, request, obj, form, change):
+        # create a user if one does not exist
+        # then set the groups of the user
+        boards = form.cleaned_data['boards']
+        print obj
+        print obj.user
+        print boards
+        if obj.user is None and boards != []:
+            u = User()
+            class_of = form.cleaned_data['class_of']
+            if class_of is None:
+                class_of = 0
+            u.username = ('%s_%s_%s_%d' % (
+                form.cleaned_data['first_name'],
+                form.cleaned_data['middle_initial'],
+                form.cleaned_data['last_name'],
+                class_of
+            ))[:30]
+            u.set_unusable_password() # auth is done with Harv PIN
+            u.is_staff = True
+            u.save()
+            obj.user = u
+        if obj.user != None:
+            groups = [board.group for board in boards]
+            obj.user.groups = groups
+            obj.user.save()
+        return super(ContributorAdmin, self).save_model(request, obj, form, change)
 admin.site.register(Contributor, ContributorAdmin)
 
 class IssueAdmin(admin.ModelAdmin):
@@ -67,16 +93,14 @@ class TagAdmin(admin.ModelAdmin):
     fields = ('text',)
 admin.site.register(Tag, TagAdmin)
 
-class ImageForm(ModelForm):
-    file = forms.fields.ImageField()
-    class Meta:
-        model = Image
-
 admin.site.register(Image)
 
+class ImageInline(admin.TabularInline):
+    model = Image
+
 class ImageGalleryAdmin(admin.ModelAdmin):
-    fields = ('tags', 'images', 'cover_image',)
-admin.site.register(ImageGallery)
+    pass
+admin.site.register(ImageGallery, ImageGalleryAdmin)
 
 class ArticleForm(ModelForm):
     teaser = forms.fields.CharField(

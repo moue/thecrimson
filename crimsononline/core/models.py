@@ -78,27 +78,6 @@ class Contributor(models.Model):
         # hash the huid before storing it
         if name == 'huid_hash' and value != None:
             value = md5(value).digest()
-        elif name == 'boards':
-            # INCORRECT BEHAVIOR: this stuff should only happen on save, not on a setattr
-            # also, this is a hack; this only works because boards happens to get set last
-            groups = [board.group for board in value]
-            if self.user == None and groups != []:
-                u = User()
-                if not self.class_of:
-                    self.class_of = 0
-                u.username = ('%s_%s_%s_%d' % (
-                    self.first_name,
-                    self.middle_initial,
-                    self.last_name,
-                    self.class_of
-                ))[:30]
-                u.set_unusable_password() #auth is done with Harvard PIN
-                u.is_staff = True
-                u.save()
-                self.user = u
-            if self.user != None:
-                self.user.groups = groups
-                self.user.save()
         return super(Contributor, self).__setattr__(name, value)
     
     @permalink
@@ -156,11 +135,14 @@ class Tag(models.Model):
 class Image(models.Model):
     """An image"""
     
-    pic = models.ImageField(upload_to=get_save_path)
+    pic = models.ImageField('File', upload_to=get_save_path)
     caption = models.CharField(blank=False, max_length=1000)
     kicker = models.CharField(blank=False, max_length=500)
     uploaded_on = models.DateTimeField(auto_now_add=True)
-    contributor = models.ForeignKey(Contributor)
+    contributor = models.ForeignKey(
+        Contributor,
+        limit_choices_to={'is_active': True}
+    )
     tags = models.ManyToManyField(Tag)
         
     def get_pic_sized_url(self, width=None, height=None):
@@ -212,20 +194,22 @@ class ImageGallery(models.Model):
     tags = models.ManyToManyField(Tag)
 
     def __unicode__(self):
-        return self.cover_image.caption
+        #return self.cover_image.caption
+        return "Image Gallery"
 
 class PublishedArticlesManager(models.Manager):
     """Articles Manager that only returns published articles"""
     def get_query_set(self):
         return super(PublishedArticlesManager, self).get_query_set().filter(is_published=True)
 
+
 class Article(models.Model):
     """Non serial text content"""
-
+    
     BYLINE_TYPE_CHOICES = (
         ('cstaff', 'Crimson Staff Writer'),
     )
-
+    
     headline = models.CharField(
         blank=False, 
         max_length=70, 
@@ -252,36 +236,38 @@ class Article(models.Model):
         help_text='Higher priority articles show up at the top of the home page.'
     )
     page = models.CharField(blank=True, null=True, max_length=10)
-    proofer = models.ForeignKey(Contributor, related_name='proofed_article_set')
+    proofer = models.ForeignKey(
+        Contributor, 
+        related_name='proofed_article_set'
+    )
     sne = models.ForeignKey(Contributor, related_name='sned_article_set')
     issue = models.ForeignKey(Issue)
     section = models.ForeignKey(Section)
     tags = models.ManyToManyField(Tag)
     image_gallery = models.ForeignKey(ImageGallery, null=True, blank=True)
     is_published = models.BooleanField(default=True, null=False, blank=False)
-
+    
     objects = PublishedArticlesManager()
     all_objects = models.Manager()
-
+    
     class Meta:
         permissions = (
             ('article.can_change_after_timeout', 'Can change articles at any time',),
         )
-
+    
     def delete(self):
         self.is_published = False
         self.save()
-
+    
     def save(self):
         """if theres no teaser, set teaser to the first sentence of text"""
         if self.teaser == None or self.teaser == '':
             self.teaser = self.text.split('.')[0] + '.'
         super(Article, self).save()
-
+    
     def __unicode__(self):
         return self.headline
         
     @permalink
     def get_absolute_url(self):
         return ('core_get_single_article', [str(self.id)])
-    
