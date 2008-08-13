@@ -32,12 +32,8 @@ class Contributor(models.Model):
     like a staff writer, a photographer, or a guest writer.
     """
     user = models.ForeignKey(
-        User, 
-        verbose_name='web user',
-        unique=True, 
-        blank=True, 
-        null=True,
-        limit_choices_to={'is_active': True},
+        User, verbose_name='web user', unique=True, blank=True, 
+        null=True, limit_choices_to={'is_active': True},
         help_text="""
         Only specify a web user if you want this contributor to have web access.<br/>
         To create a new web user, click the green plus sign.<br/>
@@ -53,18 +49,12 @@ class Contributor(models.Model):
     email = models.EmailField(blank=True, null=True)
     phone = models.PhoneNumberField(blank=True, null=True)
     board_number = models.IntegerField(
-        blank=True, 
-        null=True, 
-        help_text='Eg: 136'
-    )
+        blank=True, null=True, help_text='Eg: 136')
     boards = models.ManyToManyField(Board, blank=True, null=True)
     class_of = models.IntegerField(blank=True, null=True)
     huid_hash = models.CharField(
-        blank=True, 
-        null=True, 
-        max_length=255,
-        help_text='8 digit HUID. This will be encrypted before it is stored.'
-    )
+        blank=True, null=True, max_length=255,
+        help_text='8 digit HUID. This will be encrypted before it is stored.')
     is_active = models.BooleanField(default=True)
     
     def __unicode__(self):
@@ -102,22 +92,14 @@ class Issue(models.Model):
     """A set of content (articles, photos) for a particular date"""
     
     web_only = models.BooleanField(
-        default=False,
-        help_text='Check if this issue has no corresponding print edition.'
-    )
+        default=False, 
+        help_text='Check if this issue has no corresponding print edition.')
     web_publish_date = models.DateTimeField(
-        blank=False,
-        help_text='When this issue goes live (on the web).'
-    )
+        blank=False, help_text='When this issue goes live (on the web).')
     issue_date = models.DateField(
-        blank=False,  
-        help_text='Corresponds with date of print edition.'
-    )
+        blank=False, help_text='Corresponds with date of print edition.')
     comments = models.TextField(
-        blank=True, 
-        null=True,
-        help_text='Notes about this issue.'
-    )
+        blank=True, null=True, help_text='Notes about this issue.')
     
     def __unicode__(self):
         return self.issue_date.strftime('%c')
@@ -140,9 +122,7 @@ class Image(models.Model):
     kicker = models.CharField(blank=False, max_length=500)
     uploaded_on = models.DateTimeField(auto_now_add=True)
     contributor = models.ForeignKey(
-        Contributor,
-        limit_choices_to={'is_active': True}
-    )
+        Contributor, limit_choices_to={'is_active': True})
     tags = models.ManyToManyField(Tag)
         
     def get_pic_sized_url(self, width=None, height=None):
@@ -185,6 +165,7 @@ class Image(models.Model):
     def __unicode__(self):
         return self.caption
 
+
 class ImageGallery(models.Model):
     """A collection of Images"""
     
@@ -192,10 +173,11 @@ class ImageGallery(models.Model):
     cover_image = models.ForeignKey(Image, related_name='cover_images')
     created_on = models.DateTimeField(auto_now_add=True)
     tags = models.ManyToManyField(Tag)
-
+    
     def __unicode__(self):
         #return self.cover_image.caption
         return "Image Gallery"
+
 
 class PublishedArticlesManager(models.Manager):
     """Articles Manager that only returns published articles"""
@@ -211,35 +193,25 @@ class Article(models.Model):
     )
     
     headline = models.CharField(
-        blank=False, 
-        max_length=70, 
-        unique_for_date='uploaded_on'
-    )    
+        blank=False, max_length=70, unique_for_date='uploaded_on')    
     subheadline = models.CharField(blank=True, null=True, max_length=70)
     byline_type = models.CharField(
-        blank=True,
-        null=True,
-        max_length=70, 
-        choices=BYLINE_TYPE_CHOICES
-    )
+        blank=True, null=True, max_length=70, choices=BYLINE_TYPE_CHOICES)
     text = models.TextField(blank=False)
     teaser = models.CharField(
-        blank=True, 
-        max_length=1000,
+        blank=True, max_length=1000,
         help_text='If left blank, this will be the first sentence of the article text.'
     )
-    contributors = models.ManyToManyField(Contributor)
+    contributors = models.ManyToManyField(
+        Contributor, limit_choices_to={'is_active': True})
     uploaded_on = models.DateTimeField(auto_now_add=True)
     modified_on = models.DateTimeField(auto_now=True)
     priority = models.IntegerField(
         default=0,
-        help_text='Higher priority articles show up at the top of the home page.'
-    )
+        help_text='Higher priority articles show up at the top of the home page.')
     page = models.CharField(blank=True, null=True, max_length=10)
     proofer = models.ForeignKey(
-        Contributor, 
-        related_name='proofed_article_set'
-    )
+        Contributor, related_name='proofed_article_set')
     sne = models.ForeignKey(Contributor, related_name='sned_article_set')
     issue = models.ForeignKey(Issue)
     section = models.ForeignKey(Section)

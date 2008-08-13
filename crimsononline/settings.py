@@ -67,7 +67,6 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     #'django.contrib.sites',
     'crimsononline.core',
-    'crimsononline.admin',
     'crimsononline.temp',
 )
 

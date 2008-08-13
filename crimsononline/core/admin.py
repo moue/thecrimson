@@ -3,33 +3,11 @@ from django import forms
 from django.conf import settings
 from django.contrib import admin
 from django.forms import ModelForm
+from django.forms.util import ErrorList
+from django.forms.models import ModelChoiceIterator
 from django.contrib.auth.models import User
+from django.utils.safestring import mark_safe
 from crimsononline.core.models import *
-
-"""
-class ContributorForm(ModelForm):
-    boards = forms.fields.MultipleChoiceField(
-        required=False, 
-        choices=(
-            ('Arts Board', 'Arts',),
-            ('Biz Board', 'Biz',),
-            ('Design Board','Design',),
-            ('Ed Board','Ed',),
-            ('FM Board','FM',),
-            ('IT Board','IT',),
-            ('News Board','News',),
-            ('Photo Board', 'Photo',),
-            ('Sports Board','Sports'),
-        )
-    )
-    class Meta:
-        model = Contributor
-        
-    def save(self, commit=True):
-        if boards != []
-            
-        return super(ContributorForm, self).save(commit)
-"""
 
 class ContributorAdmin(admin.ModelAdmin):
     list_display = ('last_name', 'first_name', 'middle_initial',)
@@ -52,6 +30,7 @@ class ContributorAdmin(admin.ModelAdmin):
             )
         }),
     )
+    
     def save_model(self, request, obj, form, change):
         # create a user if one does not exist
         # then set the groups of the user
@@ -79,27 +58,79 @@ class ContributorAdmin(admin.ModelAdmin):
             obj.user.groups = groups
             obj.user.save()
         return super(ContributorAdmin, self).save_model(request, obj, form, change)
+    
+
 admin.site.register(Contributor, ContributorAdmin)
 
 class IssueAdmin(admin.ModelAdmin):
     list_display = ('issue_date',)
     search_fields = ('issue_date',)
     fields = ('issue_date', 'web_publish_date', 'comments', 'web_only',)
+
 admin.site.register(Issue, IssueAdmin)
-    
+
+
 class TagAdmin(admin.ModelAdmin):
     list_display = ('text',)
     search_fields = ('text',)
     fields = ('text',)
+
 admin.site.register(Tag, TagAdmin)
+
 
 admin.site.register(Image)
 
-class ImageInline(admin.TabularInline):
-    model = Image
+class ImageSelectMultipleWidget(forms.widgets.SelectMultiple):
+    def render(self, name, value, attrs=None, choices=()):
+        output = '<div id="form-image-chooser"></div>\n'
+        output += super(ImageSelectMultipleWidget, self). \
+            render(name, value, attrs, choices)
+        return mark_safe(output)
+
+class ImageGalleryForm(ModelForm):
+    # we use a special widget here so that we can inject an extra div
+    #    above the select multiple field.  the extra div is where
+    #    the javascript inserts img previews for img selection.
+    images = forms.ModelMultipleChoiceField(
+        Image.objects.none(),
+        widget=ImageSelectMultipleWidget()
+    )
+    
+    class Meta:
+        model = ImageGallery
+    
+    class Media:
+        css = {
+            'all': ('css/ImageGalleryAjax.css',)
+        }
+        js = ('js/ImageGalleryAjax.js',)
 
 class ImageGalleryAdmin(admin.ModelAdmin):
-    pass
+    fields = ('images', 'cover_image', 'tags')
+    filter_horizontal = ('tags',)
+    form = ImageGalleryForm
+    
+    # we need to set the list of images (that show up) on a per instance basis
+    # unbound forms => no images
+    # bound forms => images belonging to the ImageGallery instance
+    def get_form(self, request, obj=None):
+        f = super(ImageGalleryAdmin,self).get_form(request, obj)
+        
+        # no bound => no images
+        qs = Image.objects.none()
+        
+        # yes bound => images that belong to the current ImageGallery
+        if obj is not None:
+            for img in obj.images.all()[:]:
+                qs = qs | Image.objects.filter(pk=img.pk)
+        
+        # querysets are set for bound and unbound forms because if
+        #    we don't set the queryset on unbound forms, loading a bound
+        #    form and then loading an unbound form leads to the wrong
+        #    images showing up.  (maybe querysets are cached improperly?)
+        f.images.queryset = qs
+        return f
+
 admin.site.register(ImageGallery, ImageGalleryAdmin)
 
 class ArticleForm(ModelForm):
