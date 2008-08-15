@@ -1,9 +1,0 @@
-INSERT INTO core_board (group_id, name) VALUES(1,'Arts');
-INSERT INTO core_board (group_id, name) VALUES(2,'Biz');
-INSERT INTO core_board (group_id, name) VALUES(3,'Design');
-INSERT INTO core_board (group_id, name) VALUES(4,'Ed');
-INSERT INTO core_board (group_id, name) VALUES(5,'FM');
-INSERT INTO core_board (group_id, name) VALUES(6,'IT');
-INSERT INTO core_board (group_id, name) VALUES(7,'News');
-INSERT INTO core_board (group_id, name) VALUES(8,'Photo');
-INSERT INTO core_board (group_id, name) VALUES(9,'Sports');
