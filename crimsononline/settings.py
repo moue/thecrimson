@@ -65,8 +65,8 @@ INSTALLED_APPS = (
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.admin',
-    #'django.contrib.sites',
     'crimsononline.core',
+    'crimsononline.admin_cust',
     'crimsononline.temp',
 )
 

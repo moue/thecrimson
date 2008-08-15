@@ -124,7 +124,11 @@ class Image(models.Model):
     contributor = models.ForeignKey(
         Contributor, limit_choices_to={'is_active': True})
     tags = models.ManyToManyField(Tag)
-        
+    
+    class Meta:
+        get_latest_by = 'uploaded_on'
+        ordering = ['-uploaded_on']
+    
     def get_pic_sized_url(self, width=None, height=None):
         """
         Creates pic smaller than width x height (if pic doesn't exist yet) 

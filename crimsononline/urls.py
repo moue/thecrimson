@@ -1,7 +1,7 @@
 from os import path
+from django.conf import settings
 from django.conf.urls.defaults import *
 from django.contrib import admin
-from django.conf import settings
 from crimsononline.core.views import *
 
 admin.autodiscover()
@@ -15,7 +15,7 @@ urlpatterns = patterns('crimsononline.core.views',
 )
 
 urlpatterns += patterns('',
-    (r'^admin/(.*)', admin.site.root),
+    (r'^admin/', include('admin_cust.urls')),
 )
 
 urlpatterns += patterns('',

@@ -1,7 +1,24 @@
 from django import template
 from django.utils.safestring import mark_safe
+from crimsononline.core.models import Image
 
 register = template.Library()
+
+@register.filter
+def to_img_tag(img, width, height):
+    tag = ''
+    if isinstance(img, Image):
+        # set zero dimensions to None
+        width = width or None
+        height = height or None
+        tag = '<img src="%s" title="%s" />' % \
+            (img.get_pic_sized_url(width, height), img.caption)
+    return mark_safe(tag)
+
+@register.filter
+def to_thumb_tag(img):
+    THUMB_SIZE = 96
+    return to_img_tag(img, THUMB_SIZE, THUMB_SIZE)
 
 @register.filter
 def is_nav_cur(current, check):
