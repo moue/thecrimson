@@ -1,0 +1,9 @@
+{% load crimson_filters %}
+
+{% for img in images %}
+	<li>
+		<div id="image_{{ img.pk }}">{{ img|to_thumb_tag }}</div>
+		<div id="image_{{ img.pk }}_capt">{{ img.caption }}</div>
+		<div id="image_{{ img.pk }}_contrib">{{ img.contributor }}</div>
+	</li>
+{% endfor %}
