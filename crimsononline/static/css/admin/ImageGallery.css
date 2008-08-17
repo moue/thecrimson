@@ -1,0 +1,8 @@
+
+ul#image-list {
+    list-style: none;
+}
+
+#image-list li {
+    width: 100px;
+}

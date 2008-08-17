@@ -12,8 +12,9 @@ from django.contrib.auth.models import User, Group
 SAFE_CHARS = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
 def get_save_path(instance, filename):
     ext = splitext(filename)[1]
+    filtered_capt = ''.join([c for c in instance.caption if c in SAFE_CHARS])
     return datetime.now().strftime("photos/%Y/%m/%d/%H%M%S_") + \
-        ''.join([c for c in instance.caption if c in SAFE_CHARS]) + ext
+        filtered_capt + ext
 
 class Board(models.Model):
     """
@@ -117,13 +118,15 @@ class Tag(models.Model):
 class Image(models.Model):
     """An image"""
     
-    pic = models.ImageField('File', upload_to=get_save_path)
     caption = models.CharField(blank=False, max_length=1000)
     kicker = models.CharField(blank=False, max_length=500)
     uploaded_on = models.DateTimeField(auto_now_add=True)
     contributor = models.ForeignKey(
         Contributor, limit_choices_to={'is_active': True})
     tags = models.ManyToManyField(Tag)
+    # make sure pic is last: get_save_path needs an instance, and if this
+    #  attribute is processed first, all the instance attributes will be blank
+    pic = models.ImageField('File', upload_to=get_save_path)
     
     class Meta:
         get_latest_by = 'uploaded_on'

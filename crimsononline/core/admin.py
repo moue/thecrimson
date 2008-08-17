@@ -4,7 +4,6 @@ from django.conf import settings
 from django.contrib import admin
 from django.forms import ModelForm
 from django.forms.util import ErrorList
-from django.forms.models import ModelChoiceIterator
 from django.contrib.auth.models import User
 from django.utils.safestring import mark_safe
 from crimsononline.core.models import *
@@ -35,9 +34,6 @@ class ContributorAdmin(admin.ModelAdmin):
         # create a user if one does not exist
         # then set the groups of the user
         boards = form.cleaned_data['boards']
-        print obj
-        print obj.user
-        print boards
         if obj.user is None and boards != []:
             u = User()
             class_of = form.cleaned_data['class_of']
@@ -77,23 +73,39 @@ class TagAdmin(admin.ModelAdmin):
 
 admin.site.register(Tag, TagAdmin)
 
+class ImageAdmin(admin.ModelAdmin):
+    fields = ('pic', 'caption', 'kicker', 'contributor', 'tags',)
 
-admin.site.register(Image)
+admin.site.register(Image, ImageAdmin)
 
 class ImageSelectMultipleWidget(forms.widgets.SelectMultiple):
     def render(self, name, value, attrs=None, choices=()):
-        output = '<div id="form-image-chooser"></div>\n'
+        output = '<div id="images-bank"><ul id="image-list"></ul></div>\n'
         output += super(ImageSelectMultipleWidget, self). \
             render(name, value, attrs, choices)
+        output += '<div id="image-current"><ul id="current-image-list"></ul></div>'
         return mark_safe(output)
+
+
+class ImageSelectModelMultipleChoiceField(forms.ModelMultipleChoiceField):
+    # super's clean thinks that valid Images are images in the initial queryset
+    #    but that is not the case; all images are valid.  we temporarily change
+    #    the queryset, do a clean, and then change the queryset back (to
+    #    mitigate side effects).
+    def clean(self, value):
+        qs = self.queryset
+        self.queryset = Image.objects
+        return super(ImageSelectModelMultipleChoiceField, self).clean(value)
+        self.queryset = qs
+
 
 class ImageGalleryForm(ModelForm):
     # we use a special widget here so that we can inject an extra div
     #    above the select multiple field.  the extra div is where
     #    the javascript inserts img previews for img selection.
-    images = forms.ModelMultipleChoiceField(
+    images = ImageSelectModelMultipleChoiceField(
         Image.objects.none(),
-        widget=ImageSelectMultipleWidget()
+        widget=ImageSelectMultipleWidget(),
     )
     
     class Meta:
@@ -101,9 +113,14 @@ class ImageGalleryForm(ModelForm):
     
     class Media:
         css = {
-            'all': ('css/ImageGalleryAjax.css',)
+            'all': ('css/admin/ImageGallery.css',)
         }
-        js = ('js/ImageGalleryAjax.js',)
+        js = (
+            'scripts/jquery.js',
+            'scripts/admin/ImageGallery.js', 
+        )
+    
+
 
 class ImageGalleryAdmin(admin.ModelAdmin):
     fields = ('images', 'cover_image', 'tags')
@@ -152,6 +169,7 @@ class ArticleForm(ModelForm):
     class Meta:
         model = Article
 
+
 class ArticleAdmin(admin.ModelAdmin):
     list_display = ('headline', 'section', 'issue',)
     search_fields = ('headline', 'text',)
@@ -179,5 +197,5 @@ class ArticleAdmin(admin.ModelAdmin):
             qs = qs.filter(uploaded_on__gt=t)
             u.message_set.create(message='Note: you can only change articles uploaded in the last hour.')
         return qs
-    
+
 admin.site.register(Article, ArticleAdmin)
