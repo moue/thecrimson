@@ -1,8 +1,24 @@
+.image-list li{
+    width: 100px;
+    list-style: none;
+    float: left;
+}
 
-ul#image-list {
+.image-list {
     list-style: none;
 }
 
-#image-list li {
-    width: 100px;
+#images-bank, #images-current{
+    border-width: 1px 1px 0px 1px;
+    border-color: grey;
+    border-style: solid;
+    margin: 20px 10px 10px 10px;
+}
+#images-bank{
+    padding: 5px 0px 0px 0px;
+}
+
+.links{
+    clear:both;
+    padding: 8px 0px 0px 110px;
 }
