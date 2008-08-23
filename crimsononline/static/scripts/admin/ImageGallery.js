@@ -1,6 +1,6 @@
 $(document).ready(function(){
     //hide the SelectMultiple field
-    $("#id_images").hide();
+    //$("#id_images").hide();
     
     // prefix of the url from which to grab images
     var image_req_url = "/admin/core/imagegallery/get_images/";
@@ -24,20 +24,25 @@ $(document).ready(function(){
             // convert each html fragment into an element
             images[pk] = $(img);
             img_cache.by_pk[pk] = images[pk];
+
         });
         page.images = images;
         img_cache[page_num] = page;
-        //testing
-        $.each(img_cache.by_pk, function(i, item){
-            console.log(i + "\n" + item.html());
-        })
     }
     
-    //adds image with in element ele to images-current
+    // makes ele (in images-current) into the cover images
+    var makeCover = function(ele){
+        $(ele).addClass("cover-image");
+        var pk = $(ele).attr("img_pk");
+        $("#id_cover_image")
+            .empty()
+            .append("<option value='" + pk + "' selected='selected'></option>");
+    }
+    
+    //adds image within element ele to images-current
     //   and removes it from the images-bank
     var addImgToCurrent = function(ele){
         ele = $(ele);
-        console.log(ele.html());
         //if the image isn't in the select field, add it
         var pk = ele.attr("img_pk");
         if(choices.indexOf(pk) == -1){
@@ -55,13 +60,29 @@ $(document).ready(function(){
         //fade ele and unbind its event; mark it as selected
         ele.unbind().fadeTo("slow", 0.3);
         img_cache.by_pk[pk].addClass("selected");
-        //clone ele and add it to images-current
-        ele.clone()
+        //clone ele, creates its remove / cover links, add it to images-current
+        var ele = ele.clone()
+        ele 
+            .children(".ui-overlay")
+                .append($("<a href='#'>Remove This</a><br/><a href='#'>Set as Cover</a>"))
+                .children(":contains('Remove')")
+                    .click(function(){
+                        removeImgFromCurrent(ele);
+                    })
+                .end()
+                .children(":contains('Cover')")
+                    .click(function(){
+                        makeCover(ele);
+                    })
+                .end()
+            .end()
             .appendTo("#images-current .image-list")
-            .hide()
-            .click(function(){
-                removeImgFromCurrent(this);
+            .hover(function(){
+                $(this).children(".ui-overlay").show();
+            }, function(){
+                $(this).children(".ui-overlay").hide();                
             })
+            .hide() // so that it can fade in slowly
             .fadeIn("slow");
     }
     
@@ -76,6 +97,12 @@ $(document).ready(function(){
         ele.fadeOut("slow", function(){
             $(this).remove();
         });
+        // if its the cover image, remove the cover image
+        if(ele.hasClass("cover-image")){
+            ele.removeClass("cover-image");
+            $("#id_cover_image")
+                .append("<option value='' selected='selected'>-</option>");
+        }
         // if its in the cache, unfade it and rebind its event handler
         img = img_cache.by_pk[pk];
         if(img != null){
@@ -140,20 +167,42 @@ $(document).ready(function(){
     
     // makes ajax request for images for images-current
     var getImagesCur = function(){
+        // check cover image
+        cover_pk = $("#id_cover_image").val();
         $.each(choices, function(i){
             // grab the image, wire its click handler
             $.get(image_req_url + "pk/" + this, function(html){
                 var ele = $(html);
                 var pk = ele.attr("img_pk");
+                if(pk == cover_pk){
+                    ele.addClass("cover-image");
+                }
                 ele
+                    .children(".ui-overlay")
+                        .append($("<a href='#'>Remove This</a><br/><a href='#'>Set as Cover</a>"))
+                        .children(":contains('Remove')")
+                            .click(function(){
+                                removeImgFromCurrent(ele);
+                            })
+                        .end()
+                        .children(":contains('Cover')")
+                            .click(function(){
+                                makeCover(ele);
+                            })
+                        .end()
+                    .end()
                     .appendTo("#images-current .image-list")
-                    .click(function(){
-                        removeImgFromCurrent(this);
-                    });
+                    .hover(function(){
+                        $(this).children(".ui-overlay").show();
+                    }, function(){
+                        $(this).children(".ui-overlay").hide();                
+                    })
+                    .hide() // so that it can fade in slowly
+                    .fadeIn("slow");
                 // if its in the cache, fade it from images-bank
-                ele = img_cache.by_pk[pk];
-                if(ele != null){
-                    $(ele).fadeTo("fast", 0.3).unbind();
+                cache = img_cache.by_pk[pk];
+                if(cache != null){
+                    $(cache).fadeTo("fast", 0.3).unbind();
                 }
             });
         });

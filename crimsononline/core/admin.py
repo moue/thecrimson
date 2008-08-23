@@ -100,6 +100,16 @@ class ImageSelectModelMultipleChoiceField(forms.ModelMultipleChoiceField):
         c = super(ImageSelectModelMultipleChoiceField, self).clean(value)
         self.queryset = qs
         return c
+    
+
+class ImageSelectModelChoiceField(forms.ModelChoiceField):
+    # see above
+    def clean(self, value):
+        qs = self.queryset
+        self.queryset = Image.objects
+        c = super(ImageSelectModelChoiceField, self).clean(value)
+        self.queryset = qs
+        return c
 
 
 class ImageGalleryForm(ModelForm):
@@ -109,6 +119,9 @@ class ImageGalleryForm(ModelForm):
     images = ImageSelectModelMultipleChoiceField(
         Image.objects.none(),
         widget=ImageSelectMultipleWidget(),
+    )
+    cover_image = ImageSelectModelChoiceField(
+        Image.objects.none(),
     )
     
     class Meta:
@@ -138,17 +151,20 @@ class ImageGalleryAdmin(admin.ModelAdmin):
         
         # no bound => no images
         qs = Image.objects.none()
+        cover_qs = Image.objects.none()
         
         # yes bound => images that belong to the current ImageGallery
         if obj is not None:
             for img in obj.images.all()[:]:
                 qs = qs | Image.objects.filter(pk=img.pk)
+            cover_qs = Image.objects.filter(pk=obj.cover_image.pk)
         
         # querysets are set for bound and unbound forms because if
         #    we don't set the queryset on unbound forms, loading a bound
         #    form and then loading an unbound form leads to the wrong
         #    images showing up.  (maybe querysets are cached improperly?)
         f.images.queryset = qs
+        f.cover_image.queryset = cover_qs
         return f
 
 admin.site.register(ImageGallery, ImageGalleryAdmin)
