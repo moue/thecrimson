@@ -80,18 +80,13 @@
 }
 .topStories .byline a{
 	font-size: inherit;
-	color: inherit;
 	display: inline;
-	text-decoration: underline;
-}
-.topStories .byline a:hover{
-	color: #606060;
 }
 .topStories .teaser {
 	font-size: 12px;
 }
 .topOpinions ul, .moreNews ul{
-	list-style-image: url('http://www.w3schools.com/Css/arrow.gif');
+	/*list-style-image: url('http://www.w3schools.com/Css/arrow.gif');*/
 	padding: 0px 0px 0px 16px;
 }
 .topOpinions a{

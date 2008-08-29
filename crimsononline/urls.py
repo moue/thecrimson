@@ -9,10 +9,23 @@ admin.autodiscover()
 urlpatterns = patterns('crimsononline.core.views',
     url(r'^article/(\d+)', 'article', name='core_get_single_article'),
     url(r'^writer/(\d+)', 'writer', name='core_writer_profile'),
-    url(r'^news/(\d+)', 'daily_news', name='core_daily_news'),
-    url(r'^news/$', 'daily_news', name='core_daily_news_default'),
+    #url(r'^news/(\d+)', 'daily_news', name='core_daily_news'),
+    #url(r'^news/$', 'daily_news', name='core_daily_news_default'),
+    url(r'^section/(?P<section>[A-Za-z]*)$', 'section', name='core_section'),
     url(r'^$', 'index', name='core_index'),
 )
+
+"""
+urlpatterns += patterns('django.views.generic.list_detail',
+    url(r'^section/(?P<section>)[A-Za-z]*$', 'object_list', {
+        'queryset': Article.objects.filter(section__name='Ed'),
+        'template_name': 'article_list.html',
+        'extra_context': {
+            'title': 'Opinion',
+        }
+    }),
+)
+"""
 
 urlpatterns += patterns('',
     (r'^admin/', include('admin_cust.urls')),

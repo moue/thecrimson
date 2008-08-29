@@ -59,7 +59,7 @@
 	letter-spacing: 0px;
 	float: left;
 }
-.menu a, a:hover, a:visited{
+.menu a, .menu a:hover, .menu a:visited{
 	text-decoration: none;
 	font-weight:bolder;
 	color:#600000;
@@ -108,4 +108,16 @@ a {
 }
 a:hover {
 	color: #e02222;
+}
+.byline{
+    color: #666666;
+}
+.byline a{
+    text-transform: uppercase;
+    text-decoration: underline;
+    font-weight: bold;
+    color: inherit;
+}
+.byline a:hover{
+    color: black;
 }

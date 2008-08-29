@@ -8,6 +8,7 @@ from django.conf import settings
 from django.db import models
 from django.db.models import permalink
 from django.contrib.auth.models import User, Group
+from django.core.cache import cache
 
 SAFE_CHARS = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
 def get_save_path(instance, filename):
@@ -15,6 +16,7 @@ def get_save_path(instance, filename):
     filtered_capt = ''.join([c for c in instance.caption if c in SAFE_CHARS])
     return datetime.now().strftime("photos/%Y/%m/%d/%H%M%S_") + \
         filtered_capt + ext
+
 
 class Board(models.Model):
     """
@@ -82,9 +84,14 @@ class Section(models.Model):
     name = models.CharField(blank=False, max_length=50)
     audiodizer_id = models.IntegerField(blank=True, null=True)
     
-    class Admin:
-        pass
-        
+    @staticmethod
+    def all():
+        a = cache.get('sections_all')
+        if a is None:
+            a = Section.objects.all()[:]
+            cache.set('sections_all', a, 1000000)
+        return a
+    
     def __unicode__(self):
         return self.name
 
@@ -102,17 +109,31 @@ class Issue(models.Model):
     comments = models.TextField(
         blank=True, null=True, help_text='Notes about this issue.')
     
+    @staticmethod
+    def get_current():
+        """gets current issue from cache"""
+        i = cache.get('current_issue')
+        if not i:
+            i = Issue.objects.latest('issue_date')
+            i.set_as_current()
+        return i
+    
+    def set_as_current(self, timeout=3600):
+        return cache.set('current_issue', self, timeout)    
+    
     def __unicode__(self):
         return self.issue_date.strftime('%c')
-    
+
+
 class Tag(models.Model):
     """A word or phrase used to classify or describe some content"""
     
     text = models.CharField(blank=False, max_length=25, unique=True)
     is_nav = models.BooleanField(default=False)
-
+    
     def __unicode__(self):
         return self.text
+    
 
 
 class Image(models.Model):
@@ -189,8 +210,14 @@ class ImageGallery(models.Model):
 class PublishedArticlesManager(models.Manager):
     """Articles Manager that only returns published articles"""
     def get_query_set(self):
-        return super(PublishedArticlesManager, self).get_query_set().filter(is_published=True)
+        return super(PublishedArticlesManager, self).get_query_set() \
+            .filter(is_published=True)
 
+class WebOnlyManager(PublishedArticlesManager):
+    """Articles Manager that only returns web only articles"""
+    def get_query_set(self):
+        return super(PublishedArticlesManager, self).get_query_set() \
+            .filter(web_only=True)
 
 class Article(models.Model):
     """Non serial text content"""
@@ -207,7 +234,8 @@ class Article(models.Model):
     text = models.TextField(blank=False)
     teaser = models.CharField(
         blank=True, max_length=1000,
-        help_text='If left blank, this will be the first sentence of the article text.'
+        help_text='If left blank, this will be the first sentence ' \
+                    'of the article text.'
     )
     contributors = models.ManyToManyField(
         Contributor, limit_choices_to={'is_active': True})
@@ -215,24 +243,28 @@ class Article(models.Model):
     modified_on = models.DateTimeField(auto_now=True)
     priority = models.IntegerField(
         default=0,
-        help_text='Higher priority articles show up at the top of the home page.')
+        help_text='Higher priority articles are displayed first')
     page = models.CharField(blank=True, null=True, max_length=10)
     proofer = models.ForeignKey(
         Contributor, related_name='proofed_article_set')
     sne = models.ForeignKey(Contributor, related_name='sned_article_set')
-    issue = models.ForeignKey(Issue)
+    issue = models.ForeignKey(Issue, null=True, blank=True)
     section = models.ForeignKey(Section)
     tags = models.ManyToManyField(Tag)
     image_gallery = models.ForeignKey(ImageGallery, null=True, blank=True)
     is_published = models.BooleanField(default=True, null=False, blank=False)
+    web_only = models.BooleanField(default=False, null=False, blank=False)
     
     objects = PublishedArticlesManager()
+    web_objects = WebOnlyManager()
     all_objects = models.Manager()
     
     class Meta:
         permissions = (
-            ('article.can_change_after_timeout', 'Can change articles at any time',),
+            ('article.can_change_after_timeout', 
+                'Can change articles at any time',),
         )
+        ordering = ['-priority',]
     
     def delete(self):
         self.is_published = False
@@ -242,7 +274,12 @@ class Article(models.Model):
         """if theres no teaser, set teaser to the first sentence of text"""
         if self.teaser == None or self.teaser == '':
             self.teaser = self.text.split('.')[0] + '.'
-        super(Article, self).save()
+        return super(Article, self).save()
+        
+    def delete(self):
+        """don't delete articles, just unpublish them"""
+        self.is_published = False
+        self.save()
     
     def __unicode__(self):
         return self.headline
