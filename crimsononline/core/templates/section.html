@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% load crimson_filters %}
+
+{% block title %}
+	{{ title }}
+{% endblock %}
+
+{% block inhead %}
+	<link type="text/css" rel="stylesheet" href="/site_media/css/article_list.css" />
+{% endblock %}
+
+{% block body %}
+    <div class="columnLeft">
+        <h1>{{ title }}</h1>
+        {% block left %}
+            
+        {% endblock %}
+    </div>
+    <div class="article-list">
+        {% block article_list %}
+        <ul>
+        {% for article in articles %}
+            <li>
+                <h3><a href="{{ article.get_absolute_url }}">{{ article.headline }}</a></h3>
+                <span class="byline">By {{ article.contributors.all|linkify|human_list}}</span>
+                <p class="teaser">{{ article.teaser }}</p>
+            </li>
+        {% endfor %}
+        </ul>
+        {% endblock %}
+    </div>
+    <div class="columnRight">
+        {% block right %}
+            Special content
+        {% endblock %}
+    </div>
+{% endblock %}

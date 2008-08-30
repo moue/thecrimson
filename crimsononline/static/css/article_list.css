@@ -1,0 +1,30 @@
+.columnLeft {
+    width: 160px;
+    margin: 0px 5px 0px 0px;
+    float: left;
+}
+.article-list{
+    width: 430px;
+    margin: 0px 5px 0px 0px;
+    float: left;
+}
+.columnRight {
+    width: 350px;
+    float: left;
+}
+
+/*            */
+
+.article-list ul{
+    list-style: none;
+}
+.article-list li{
+    margin: 0px 0px 10px 0px;
+}
+
+.byline {
+    font-size: 0.75em;
+}
+.teaser {
+    font-size: 0.8em;
+}
