@@ -96,18 +96,24 @@ class Section(models.Model):
         return self.name
 
 
+class OnlineIssueManager(models.Manager):
+    """Only returns Issues which are published"""
+    def get_query_set(self):
+        return super(OnlineIssueManager, self).get_query_set() \
+            .filter(web_publish_date__lte=datetime.now())
+
 class Issue(models.Model):
     """A set of content (articles, photos) for a particular date"""
     
-    web_only = models.BooleanField(
-        default=False, 
-        help_text='Check if this issue has no corresponding print edition.')
     web_publish_date = models.DateTimeField(
         blank=False, help_text='When this issue goes live (on the web).')
     issue_date = models.DateField(
         blank=False, help_text='Corresponds with date of print edition.')
     comments = models.TextField(
         blank=True, null=True, help_text='Notes about this issue.')
+    
+    objects = models.Manager()
+    live_objects = OnlineIssueManager()
     
     @staticmethod
     def get_current():

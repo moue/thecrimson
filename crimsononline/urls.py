@@ -9,9 +9,9 @@ admin.autodiscover()
 urlpatterns = patterns('crimsononline.core.views',
     url(r'^article/(\d+)', 'article', name='core_get_single_article'),
     url(r'^writer/(\d+)', 'writer', name='core_writer_profile'),
-    #url(r'^news/(\d+)', 'daily_news', name='core_daily_news'),
-    #url(r'^news/$', 'daily_news', name='core_daily_news_default'),
-    url(r'^section/(?P<section>[A-Za-z]*)$', 'section', name='core_section'),
+    url(r'^section/(?P<section>[A-Za-z]+)/$', 'section', name='core_section'),
+    url(r'^section/(?P<section>[A-Za-z]+)/issue/(?P<issue_id>\d+)$', 'section', 
+        name='core_section_by_issue'),
     url(r'^$', 'index', name='core_index'),
 )
 

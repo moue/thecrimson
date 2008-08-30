@@ -61,7 +61,7 @@ admin.site.register(Contributor, ContributorAdmin)
 class IssueAdmin(admin.ModelAdmin):
     list_display = ('issue_date',)
     search_fields = ('issue_date',)
-    fields = ('issue_date', 'web_publish_date', 'comments', 'web_only',)
+    fields = ('issue_date', 'web_publish_date', 'comments',)
 
 admin.site.register(Issue, IssueAdmin)
 
