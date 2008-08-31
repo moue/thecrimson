@@ -35,8 +35,11 @@ def writer(request, contributor_id):
                             {'writer': w, 'articles': articles})
 
 def tag(request, tag_name):
-    articles = TaggedItem.objects.get_by_model(Article, tag_name)
-    return render_to_response('tag.html', {'articles': articles})
+    dict = {}
+    dict['articles'] = TaggedItem.objects.get_by_model(Article, tag_name)
+    dict['title'] = "Articles Tagged '" + tag_name + "'"
+    dict['tag_name'] = tag_name
+    return render_to_response('tag.html', dict)
 
 def section(request, section, issue_id=None):    
     # validate the section (we don't want /section/balls/ to be a valid url)
@@ -61,8 +64,9 @@ def section(request, section, issue_id=None):
         .filter(issue=issue.id) \
         .filter(section__pk=section.pk)
     dict['title'] = section.name.capitalize()
-    t = loader.select_template([dict['nav']+'.html', 'section.html'])
-    return HttpResponse(t.render(Context(dict)))
+    return render_to_response(
+        [dict['nav']+'.html', 'section.html', 'article-list.html'], dict
+    )
 
     
 # =========== view helpers ============== #

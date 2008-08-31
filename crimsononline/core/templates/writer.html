@@ -16,7 +16,7 @@
 			<ul>
 				{% for article in articles %}
 					<h3><a href="{{ article.get_absolute_url }}">{{ article.headline }}</a></h3>
-					<p>{{ article.issue.issue_date }} | {{ article.section }}<br/>
+					<p><span class="timestamp">{{ article.issue.issue_date|date:"F d, Y" }}</span> | {{ article.section }}<br/>
 						{{ article.teaser }}
 					</p>
 				{% endfor %}

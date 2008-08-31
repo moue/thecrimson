@@ -1,3 +1,19 @@
-{% extends "section.html" %}
+{% extends "article-list.html" %}
 
 {% load crimson_filters %}
+
+{% block left_before_ad %}
+    <h1>{{ title }}</h1>
+    <ul class="vert_menu">
+        <li><a href="/section/news/">News Home</a></li>
+        <li><a href="/tag/harvard+iraq/">Harvard and Iraq</a></li>
+        <li><a href="/tag/camgridge/">Cambridge Edition</a></li>
+        <li>
+            <a href="/tag/college/" class="has_submenu">College</a>
+            <ul>
+                <li><a href="/tag/college+drinking/">Drinking</a></li>
+                <li><a href="/tag/college+hygiene">Hygiene</a></li>
+            </ul>
+        </li>
+    </ul>
+{% endblock %}

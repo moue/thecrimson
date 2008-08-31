@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% load crimson_filters %}
+
+{% block inhead %}
+	<link type="text/css" rel="stylesheet" href="/site_media/css/article_list.css">
+{% endblock %}
+
+{% block body %}
+    <div class="columnLeft">
+        {% block left %}
+            {% block left_before_ad %}
+                <h1>{{ title }}</h1>
+            {% endblock %}
+            {% block left_ad %}
+                <div class="ad">
+                    <span>advertisement</span>
+                    <img src="/site_media/images/ver_ad.gif" />
+                </div>
+            {% endblock %}
+            {% block left_after_ad %}
+                
+            {% endblock %}
+        {% endblock %}
+    </div>
+    <div class="article-list">
+        {% block before_articles %}
+        {% endblock %}
+        {% block article_list %}
+        <ul>
+        {% for article in articles %}
+            <li>
+                <h3><a href="{{ article.get_absolute_url }}">{{ article.headline }}</a></h3>
+                <span class="byline">By {{ article.contributors.all|linkify|human_list}}</span>
+                {% if article.webonly %}    
+                <span class="webonly">Web Only</span>
+                {% endif %}
+                <p class="teaser">{{ article.teaser }}</p>
+            </li>
+        {% endfor %}
+        </ul>
+        {% endblock %}
+        {% block after_articles %}
+        {% endblock %}
+    </div>
+    <div class="columnRight">
+        {% block right %}
+            {% block right_before_ad %}
+                
+            {% endblock %}
+            {% block right_ad %}
+            <div class="ad">
+                <span>advertisement</span>
+                <img src="/site_media/images/medium_rectangle.gif" />
+            </div>
+            {% endblock %}
+            {% block right_after_ad %}
+                
+            {% endblock %}
+        {% endblock %}
+    </div>
+{% endblock %}

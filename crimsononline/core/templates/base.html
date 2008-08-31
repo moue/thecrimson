@@ -6,19 +6,19 @@
 <html lang="en">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<title>The Harvard Crimson | {% block title %}{% endblock %}</title>
-	<link type="text/css" rel="stylesheet" href="/site_media/css/base.css" />
+	<title>The Harvard Crimson | {% block title %}{{ title }}{% endblock %}</title>
+	<link type="text/css" rel="stylesheet" href="/site_media/css/base.css">
 	{% block inhead %}{% endblock %}
 </head>
 <body>
 	<div class="wrapper">
 		<div class="header">
 			<div class="banner">
-				<img src="/site_media/images/banner.jpg" alt=""></img>
+				<img src="/site_media/images/banner.jpg" alt="">
 			</div>
 			<div class="menu">
 				<ul>
-					<li {{ nav|is_nav_cur:"index" }}><a href="/">HOME</a/></li>
+					<li {{ nav|is_nav_cur:"index" }}><a href="/">HOME</a></li>
 					<li {{ nav|is_nav_cur:"news" }}><a href="/section/news">NEWS</a></li>
 					<li {{ nav|is_nav_cur:"opinion" }}><a href="/section/opinion">OPINION</a></li>
 					<li {{ nav|is_nav_cur:"fm" }}><a href="/section/fm">MAGAZINE</a></li>
@@ -29,7 +29,7 @@
 				</ul>
 			</div>
 			<div class="submenu">
-				<ul>{% block submenu %}{% endblock %}</ul>
+				{% block submenu %}{% endblock %}
 			</div>
 		</div>
 		<div class="contentWrapper">
