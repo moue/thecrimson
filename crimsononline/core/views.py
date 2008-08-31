@@ -4,6 +4,7 @@ from django.shortcuts import \
 from django.http import Http404, HttpResponse
 from django.template import Context, loader
 from django.contrib.flatpages.models import FlatPage
+from tagging.models import Tag, TaggedItem
 from crimsononline.core.models import *
 
 def index(request):
@@ -32,6 +33,10 @@ def writer(request, contributor_id):
     articles = w.article_set.all()
     return render_to_response('writer.html', 
                             {'writer': w, 'articles': articles})
+
+def tag(request, tag_name):
+    articles = TaggedItem.objects.get_by_model(Article, tag_name)
+    return render_to_response('tag.html', {'articles': articles})
 
 def section(request, section, issue_id=None):    
     # validate the section (we don't want /section/balls/ to be a valid url)

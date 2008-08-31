@@ -1,9 +1,7 @@
 from datetime import datetime, timedelta
 from django import forms
-from django.conf import settings
 from django.contrib import admin
 from django.forms import ModelForm
-from django.forms.util import ErrorList
 from django.contrib.auth.models import User
 from django.utils.safestring import mark_safe
 from crimsononline.core.models import *
@@ -65,14 +63,6 @@ class IssueAdmin(admin.ModelAdmin):
 
 admin.site.register(Issue, IssueAdmin)
 
-
-class TagAdmin(admin.ModelAdmin):
-    list_display = ('text',)
-    search_fields = ('text',)
-    fields = ('text',)
-
-admin.site.register(Tag, TagAdmin)
-
 class ImageAdmin(admin.ModelAdmin):
     fields = ('pic', 'caption', 'kicker', 'contributor', 'tags',)
 
@@ -87,7 +77,6 @@ class ImageSelectMultipleWidget(forms.widgets.SelectMultiple):
         output += '<div id="images-current"><h3>Images in this ' \
                     'Image Gallery</h3><ul class="image-list"></ul></div>'
         return mark_safe(output)
-
 
 class ImageSelectModelMultipleChoiceField(forms.ModelMultipleChoiceField):
     # super's clean thinks that valid Images are images in the initial queryset
@@ -110,7 +99,6 @@ class ImageSelectModelChoiceField(forms.ModelChoiceField):
         c = super(ImageSelectModelChoiceField, self).clean(value)
         self.queryset = qs
         return c
-
 
 class ImageGalleryForm(ModelForm):
     # we use a special widget here so that we can inject an extra div
@@ -137,10 +125,8 @@ class ImageGalleryForm(ModelForm):
         )
     
 
-
 class ImageGalleryAdmin(admin.ModelAdmin):
     fields = ('images', 'cover_image', 'tags')
-    filter_horizontal = ('tags',)
     form = ImageGalleryForm
     
     # we need to set the list of images (that show up) on a per instance basis
@@ -188,11 +174,10 @@ class ArticleForm(ModelForm):
     class Meta:
         model = Article
 
-
 class ArticleAdmin(admin.ModelAdmin):
     list_display = ('headline', 'section', 'issue',)
     search_fields = ('headline', 'text',)
-    filter_horizontal = ('contributors', 'tags',)
+    filter_horizontal = ('contributors',)
     form = ArticleForm
     
     def has_change_permission(self, request, obj=None):

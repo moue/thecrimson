@@ -4,6 +4,7 @@ from os.path import splitext, exists, split
 from datetime import datetime
 from re import compile, match
 from PIL import Image as pilImage
+from tagging.fields import TagField
 from django.conf import settings
 from django.db import models
 from django.db.models import permalink
@@ -129,16 +130,6 @@ class Issue(models.Model):
     
     def __unicode__(self):
         return self.issue_date.strftime('%c')
-
-
-class Tag(models.Model):
-    """A word or phrase used to classify or describe some content"""
-    
-    text = models.CharField(blank=False, max_length=25, unique=True)
-    is_nav = models.BooleanField(default=False)
-    
-    def __unicode__(self):
-        return self.text
     
 
 
@@ -150,7 +141,7 @@ class Image(models.Model):
     uploaded_on = models.DateTimeField(auto_now_add=True)
     contributor = models.ForeignKey(
         Contributor, limit_choices_to={'is_active': True})
-    tags = models.ManyToManyField(Tag)
+    tags = TagField()
     # make sure pic is last: get_save_path needs an instance, and if this
     #  attribute is processed first, all the instance attributes will be blank
     pic = models.ImageField('File', upload_to=get_save_path)
@@ -206,7 +197,7 @@ class ImageGallery(models.Model):
     images = models.ManyToManyField(Image)
     cover_image = models.ForeignKey(Image, related_name='cover_images')
     created_on = models.DateTimeField(auto_now_add=True)
-    tags = models.ManyToManyField(Tag)
+    tags = TagField()
     
     def __unicode__(self):
         #return self.cover_image.caption
@@ -256,10 +247,10 @@ class Article(models.Model):
     sne = models.ForeignKey(Contributor, related_name='sned_article_set')
     issue = models.ForeignKey(Issue, null=True, blank=True)
     section = models.ForeignKey(Section)
-    tags = models.ManyToManyField(Tag)
     image_gallery = models.ForeignKey(ImageGallery, null=True, blank=True)
     is_published = models.BooleanField(default=True, null=False, blank=False)
     web_only = models.BooleanField(default=False, null=False, blank=False)
+    tags = TagField()
     
     objects = PublishedArticlesManager()
     web_objects = WebOnlyManager()
