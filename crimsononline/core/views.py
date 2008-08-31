@@ -35,11 +35,11 @@ def writer(request, contributor_id):
                             {'writer': w, 'articles': articles})
 
 def tag(request, tag_name):
-    dict = {}
-    dict['articles'] = TaggedItem.objects.get_by_model(Article, tag_name)
-    dict['title'] = "Articles Tagged '" + tag_name + "'"
-    dict['tag_name'] = tag_name
-    return render_to_response('tag.html', dict)
+    tags = tag_name.lower().replace('_', ' ').split(',')
+    print tags
+    articles = TaggedItem.objects.get_union_by_model(Article, tags)
+    return render_to_response('tag.html', 
+        {'tags': tags, 'articles': articles})
 
 def section(request, section, issue_id=None):    
     # validate the section (we don't want /section/balls/ to be a valid url)

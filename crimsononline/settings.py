@@ -75,3 +75,9 @@ INSTALLED_APPS = (
 )
 
 MEDIA_LOC = MEDIA_ROOT
+
+try:
+    import tagging
+    FORCE_LOWERCASE_TAGS = True
+except:
+    pass

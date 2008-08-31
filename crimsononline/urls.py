@@ -12,7 +12,8 @@ urlpatterns = patterns('crimsononline.core.views',
     url(r'^section/(?P<section>[A-Za-z]+)/$', 'section', name='core_section'),
     url(r'^section/(?P<section>[A-Za-z]+)/issue/(?P<issue_id>\d+)$', 'section', 
         name='core_section_by_issue'),
-    url(r'^tag/(?P<tag_name>[A-Za-z0-9]+)/$', 'tag', name='core_tag'),
+    #url(r'^tag/(?P<tag_name>[A-Za-z0-9+]+)/$', 'tag', name='core_tag'),
+    url(r'^tag/(?P<tag_name>.*)/$', 'tag', name='core_tag'),
     url(r'^$', 'index', name='core_index'),
 )
 

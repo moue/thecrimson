@@ -44,7 +44,7 @@ def linkify(obj, link_text=''):
 		return ''
 		
 @register.filter
-def human_list(list):
+def human_list(list, connector='and'):
 	"""turns list into an comma separated list (with an and)"""
 	# we don't want to listify non iterables
 	if not getattr(list, '__iter__', False):
@@ -56,9 +56,9 @@ def human_list(list):
 			if i == 0:
 				t = '%s'
 			elif i == l and l > 1:
-				t = ', and %s'
+				t = ', ' + connector + ' %s'
 			elif i == l and l == 1:
-				t = ' and %s'
+				t = ' ' + connector + ' %s'
 			else:
 				t = ', %s'
 			s += t % item
