@@ -61,6 +61,10 @@ ul.vert_menu a.has_submenu {
 }
 
 /*              */
+h1 {
+    font-size: 24px;
+    padding: 0 0 10px;
+}
 .columnLeft > .ad {
     margin-left: -3px;
 }

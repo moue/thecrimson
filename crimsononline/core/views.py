@@ -34,10 +34,9 @@ def writer(request, contributor_id):
     return render_to_response('writer.html', 
                             {'writer': w, 'articles': articles})
 
-def tag(request, tag_name):
-    tags = tag_name.lower().replace('_', ' ').split(',')
-    print tags
-    articles = TaggedItem.objects.get_union_by_model(Article, tags)
+def tag(request, tags):
+    tags = tags.lower().replace('_', ' ').split(',')
+    articles = TaggedItem.objects.get_intersection_by_model(Article, tags)
     return render_to_response('tag.html', 
         {'tags': tags, 'articles': articles})
 
