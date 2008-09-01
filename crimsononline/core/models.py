@@ -225,7 +225,7 @@ class Article(models.Model):
     
     headline = models.CharField(
         blank=False, max_length=70, unique_for_date='uploaded_on')    
-    subheadline = models.CharField(blank=True, null=True, max_length=70)
+    subheadline = models.CharField(blank=True, null=True, max_length=150)
     byline_type = models.CharField(
         blank=True, null=True, max_length=70, choices=BYLINE_TYPE_CHOICES)
     text = models.TextField(blank=False)
@@ -243,8 +243,11 @@ class Article(models.Model):
         help_text='Higher priority articles are displayed first')
     page = models.CharField(blank=True, null=True, max_length=10)
     proofer = models.ForeignKey(
-        Contributor, related_name='proofed_article_set')
-    sne = models.ForeignKey(Contributor, related_name='sned_article_set')
+        Contributor, related_name='proofed_article_set', 
+        limit_choices_to={'is_active': True})
+    sne = models.ForeignKey(
+        Contributor, related_name='sned_article_set', 
+        limit_choices_to={'is_active': True})
     issue = models.ForeignKey(Issue, null=True, blank=True)
     section = models.ForeignKey(Section)
     image_gallery = models.ForeignKey(ImageGallery, null=True, blank=True)

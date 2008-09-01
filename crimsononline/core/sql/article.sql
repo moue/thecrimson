@@ -1,4 +1,4 @@
-INSERT INTO "core_article" VALUES(1,'Drew Faust Responds To Criticism','','cstaff','This week’s readings focus on the variety of political and cultural options available to different groups of Chinese (defined by social status, access to political power, and region) after the fall of the Qing Dynasty. In addition to the history textbook, there is a scholarly article on China’s “developmental state” under the Nationalist Party, two pieces by early Chinese Communists, and five short stories, one about Shanghai in the 1920s and four about Taiwan during and immediately after the period of Japanese colonization. 
+INSERT INTO core_article VALUES(1,"Drew Faust Responds To Criticism",'','cstaff','This week’s readings focus on the variety of political and cultural options available to different groups of Chinese (defined by social status, access to political power, and region) after the fall of the Qing Dynasty. In addition to the history textbook, there is a scholarly article on China’s “developmental state” under the Nationalist Party, two pieces by early Chinese Communists, and five short stories, one about Shanghai in the 1920s and four about Taiwan during and immediately after the period of Japanese colonization. 
 
 How did China’s leaders (or potential leaders) envision China’s problems and possible solutions? What alternative ideologies were available at the time? How did these ideologies evolve between 1911 and 1949 in response to the collapse of the first republic, the establishment of the Nationalist government, the seizure of Manchuria by Japan, and the invasion and occupation of 1937? Why did some ideologies (such as liberalism) die out so quickly while others (namely nationalism and socialism) remain popular for such a long time? In what ways were the policies, goals and methods of the Nationalists and the Communists similar and how did they differ? 
 
@@ -23,7 +23,7 @@ Financial compensation with the Communist party would also be greater than it wo
 This situation would be different if we owned large silk factories.  Since the Communists have nationalized many of the industries, including silk factories, which would reduce much of the family''s wealth.  Without this source of wealth, it would probably be better to work either in the United States, or in Taiwan.  
 
 ','Historical Study A-74, Contemporary China: The People’s Republic and Taiwan in the Modern World ','2008-07-19 20:37:37.707035','2008-07-19 20:37:37.707035',10,'',2,2,1,4,NULL, 1, 0,'');
-INSERT INTO "core_article" VALUES(2,'The Harvard Lampoon Announces its Closure','','cstaff','On July 17th, citing "lack of reader interest", and "being really lame and unfunny", the president of the Harvard Lampoon announced that the Lampoon would be disbanded.  Dan Caroll ''09 summarized the consensus reaction of Harvard''s student body, asking "the Harvard what?"
+INSERT INTO core_article VALUES(2,'The Harvard Lampoon Announces its Closure','','cstaff','On July 17th, citing "lack of reader interest", and "being really lame and unfunny", the president of the Harvard Lampoon announced that the Lampoon would be disbanded.  Dan Caroll ''09 summarized the consensus reaction of Harvard''s student body, asking "the Harvard what?"
 
 Identify one of the important long-term patterns, problems or themes which Fairbank perceives in the great span of Chinese history. How does this pattern, problem or theme shape events in the 19th and 20th centuries? In regard to your chosen theme, what remains constant and what changes as China enters into “modern” history? When does this transition take place? If possible, include reference to the articles on Taiwan (for frontier concerns, imperialist competition, etc.).
 
@@ -39,14 +39,14 @@ This weakness very suddenly took a one hundred and eighty degree turn in the 19t
 
  Because this weakness was very apparent to many Chinese of the 19th and 20th centuries, and it was probably against the background of China''s historical military weaknesses that the warlords, nationalists, and communists organized themselves.  Because of China''s historic lack of military power, the easiest way to take power in China was by force, and both the nationalists and communists used just these methods to ascend to power.  These factors directly contributed to China''s current governmental models centered around the military.  Not wanting to repeat China''s past mistakes, her current governors overcompensate, devoting extra resources to areas that used to cause China''s weakness.
 ','On July 17th, citing "lack of reader interest", and "being really lame and unfunny", the president of the Harvard Lampoon announced that the Lampoon would be disbanded.','2008-07-19 20:37:37.707035','2008-07-19 20:37:37.707035',80,'',1,1,1,4,NULL,1, 0,'');
-INSERT INTO "core_article" VALUES(3,'IT is the greatest board','','cstaff','For serious.','For serious.','2008-07-19 20:37:37.707035','2008-07-19 20:37:37.707035',99,'',1,1,1,2,NULL,1, 0, '');
-INSERT INTO "core_article" VALUES(4,'Wedding announcement: Monica Geller to marry Chandler Bing','OH MYYYY GAAAAD - Janice','cstaff','This just in - Chandler Bing, son of Mrs. Bing and Mrs. Bing, and Monica Geller, formerly-obese daughter of Mr. and Mrs. Geller, will be married in like, a season. 
+INSERT INTO core_article VALUES(3,'IT is the greatest board','','cstaff','For serious.','For serious.','2008-07-19 20:37:37.707035','2008-07-19 20:37:37.707035',99,'',1,1,1,2,NULL,1, 0, '');
+INSERT INTO core_article VALUES(4,'Wedding announcement: Monica Geller to marry Chandler Bing','OH MYYYY GAAAAD - Janice','cstaff','This just in - Chandler Bing, son of Mrs. Bing and Mrs. Bing, and Monica Geller, formerly-obese daughter of Mr. and Mrs. Geller, will be married in like, a season. 
 
 ','I''ll Tease you','2008-07-21  20:37:37.707035','2008-08-02 20:37:37.707035',1,'',3,3,1,4,NULL, 1, 0, '');
-INSERT INTO "core_article_contributors" VALUES(9,2,1);
-INSERT INTO "core_article_contributors" VALUES(10,2,3);
-INSERT INTO "core_article_contributors" VALUES(11,1,3);
-INSERT INTO "core_article_contributors" VALUES(12,1,2);
-INSERT INTO "core_article_contributors" VALUES(13,3,2);
-INSERT INTO "core_article_contributors" VALUES(14,4,3);
-INSERT INTO "core_article_contributors" VALUES(15,4,4);
+INSERT INTO core_article_contributors VALUES(9,2,1);
+INSERT INTO core_article_contributors VALUES(10,2,3);
+INSERT INTO core_article_contributors VALUES(11,1,3);
+INSERT INTO core_article_contributors VALUES(12,1,2);
+INSERT INTO core_article_contributors VALUES(13,3,2);
+INSERT INTO core_article_contributors VALUES(14,4,3);
+INSERT INTO core_article_contributors VALUES(15,4,4);
