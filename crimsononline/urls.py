@@ -18,7 +18,7 @@ urlpatterns = patterns('crimsononline.core.views',
 )
 
 urlpatterns += patterns('',
-    (r'^admin/', include('admin_cust.urls')),
+    (r'^admin/', include('crimsononline.admin_cust.urls')),
 )
 
 urlpatterns += patterns('',
