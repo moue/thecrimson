@@ -9,15 +9,33 @@ from django.conf import settings
 from django.db import models
 from django.db.models import permalink
 from django.contrib.auth.models import User, Group
+from django.contrib.localflavor.us.models import PhoneNumberField
 from django.core.cache import cache
+from django.template.defaultfilters import slugify
 
 SAFE_CHARS = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+def filter_string(allowed_chars, str):
+    return ''.join([c for c in str if c in allowed_chars])
 def get_save_path(instance, filename):
     ext = splitext(filename)[1]
-    filtered_capt = ''.join([c for c in instance.caption if c in SAFE_CHARS])
+    filtered_capt = filter_string(str, instance.caption)
     return datetime.now().strftime("photos/%Y/%m/%d/%H%M%S_") + \
         filtered_capt + ext
 
+
+class Tag(models.Model):
+    """A word or phrase used to classify or describe some content"""
+    
+    text = models.CharField(blank=False, max_length=25, unique=True,
+        help_text='Tags can contain letters and spaces')
+    
+    def __unicode__(self):
+        return self.text
+    
+    @permalink
+    def get_absolute_url(self):
+        return ('core_tag', [self.text])
+    
 
 class Board(models.Model):
     """
@@ -51,7 +69,7 @@ class Contributor(models.Model):
     type = models.CharField(blank=True, null=True, max_length=100)
     profile_text = models.TextField(blank=True, null=True)
     email = models.EmailField(blank=True, null=True)
-    phone = models.PhoneNumberField(blank=True, null=True)
+    phone = PhoneNumberField(blank=True, null=True)
     board_number = models.IntegerField(
         blank=True, null=True, help_text='Eg: 136')
     boards = models.ManyToManyField(Board, blank=True, null=True)
@@ -76,7 +94,8 @@ class Contributor(models.Model):
     
     @permalink
     def get_absolute_url(self):
-        return ('core_writer_profile', [str(self.id)])
+        return ('core_writer_profile', 
+            [str(self.id), self.first_name, self.middle_initial, self.last_name])
 
 
 class Section(models.Model):
@@ -141,7 +160,7 @@ class Image(models.Model):
     uploaded_on = models.DateTimeField(auto_now_add=True)
     contributor = models.ForeignKey(
         Contributor, limit_choices_to={'is_active': True})
-    tags = TagField()
+    tags = models.ManyToManyField(Tag, blank=False)
     # make sure pic is last: get_save_path needs an instance, and if this
     #  attribute is processed first, all the instance attributes will be blank
     pic = models.ImageField('File', upload_to=get_save_path)
@@ -197,7 +216,7 @@ class ImageGallery(models.Model):
     images = models.ManyToManyField(Image)
     cover_image = models.ForeignKey(Image, related_name='cover_images')
     created_on = models.DateTimeField(auto_now_add=True)
-    tags = TagField()
+    tags = models.ManyToManyField(Tag, blank=False)
     
     def __unicode__(self):
         #return self.cover_image.caption
@@ -216,6 +235,10 @@ class WebOnlyManager(PublishedArticlesManager):
         return super(PublishedArticlesManager, self).get_query_set() \
             .filter(web_only=True)
 
+def to_slug(text):
+    text = filter_string(SAFE_CHARS+' ', text)
+    return text.replace(' ','-')
+    
 class Article(models.Model):
     """Non serial text content"""
     
@@ -223,8 +246,7 @@ class Article(models.Model):
         ('cstaff', 'Crimson Staff Writer'),
     )
     
-    headline = models.CharField(
-        blank=False, max_length=70, unique_for_date='uploaded_on')    
+    headline = models.CharField(blank=False, max_length=70)
     subheadline = models.CharField(blank=True, null=True, max_length=150)
     byline_type = models.CharField(
         blank=True, null=True, max_length=70, choices=BYLINE_TYPE_CHOICES)
@@ -234,26 +256,37 @@ class Article(models.Model):
         help_text='If left blank, this will be the first sentence ' \
                     'of the article text.'
     )
+    slug = models.SlugField(blank=True, max_length=70, 
+        help_text="""
+        The text that will be displayed in the URL of this article.
+        Can only contain letters, numbers, and dashes (-).
+        """)
     contributors = models.ManyToManyField(
-        Contributor, limit_choices_to={'is_active': True})
+        Contributor, limit_choices_to={'is_active': True},
+        help_text='Who wrote this article')
     uploaded_on = models.DateTimeField(auto_now_add=True)
     modified_on = models.DateTimeField(auto_now=True)
     priority = models.IntegerField(
-        default=0,
-        help_text='Higher priority articles are displayed first')
-    page = models.CharField(blank=True, null=True, max_length=10)
+        default=0, help_text="This can be positive or negative.")
+    page = models.CharField(blank=True, null=True, max_length=10,
+        help_text='Page in the print edition.')
     proofer = models.ForeignKey(
         Contributor, related_name='proofed_article_set', 
         limit_choices_to={'is_active': True})
     sne = models.ForeignKey(
         Contributor, related_name='sned_article_set', 
         limit_choices_to={'is_active': True})
-    issue = models.ForeignKey(Issue, null=True, blank=True)
+    issue = models.ForeignKey(Issue, null=False, blank=False, 
+        help_text='If this is a web only article, then Issue is the print' \
+                    ' issue this article should be displayed with.')
     section = models.ForeignKey(Section)
     image_gallery = models.ForeignKey(ImageGallery, null=True, blank=True)
     is_published = models.BooleanField(default=True, null=False, blank=False)
     web_only = models.BooleanField(default=False, null=False, blank=False)
-    tags = TagField()
+    tags = models.ManyToManyField(Tag, blank=False, help_text="""
+        Short descriptors for this article.
+        Try to use tags that already exist, if at all possible.
+        """)
     
     objects = PublishedArticlesManager()
     web_objects = WebOnlyManager()
@@ -265,15 +298,15 @@ class Article(models.Model):
                 'Can change articles at any time',),
         )
         ordering = ['-priority',]
+        unique_together = ('slug', 'issue',)
     
-    def delete(self):
-        self.is_published = False
-        self.save()
+    #TODO: add teaser generating functionality (use __getattr__)
+    # if the teaser doesn't exist, generate one from the article text
     
     def save(self):
-        """if theres no teaser, set teaser to the first sentence of text"""
-        if self.teaser == None or self.teaser == '':
-            self.teaser = self.text.split('.')[0] + '.'
+        # autopopulate the slug
+        if self.slug == None or self.slug == '':
+            self.slug = slugify(self.headline)
         return super(Article, self).save()
         
     def delete(self):
@@ -286,4 +319,5 @@ class Article(models.Model):
         
     @permalink
     def get_absolute_url(self):
-        return ('core_get_single_article', [str(self.id)])
+        d = self.issue.issue_date
+        return ('core_get_article', [d.year, d.month, d.day, self.slug])

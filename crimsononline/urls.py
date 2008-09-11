@@ -7,12 +7,15 @@ from crimsononline.core.views import *
 admin.autodiscover()
 
 urlpatterns = patterns('crimsononline.core.views',
-    url(r'^article/(\d+)', 'article', name='core_get_single_article'),
-    url(r'^writer/(\d+)', 'writer', name='core_writer_profile'),
+    url(r'^article/(\d{4})/(\d{1,2})/(\d{1,2})/([-\w]+)/$',
+        'article', name='core_get_article'),
+    url(r'^writer/(\d+)/([A-Za-z]+)_([A-Za-z]{0,1})_([A-Za-z]+)/$',
+        'writer', name='core_writer_profile'),
     url(r'^section/(?P<section>[A-Za-z]+)/$', 'section', name='core_section'),
-    url(r'^section/(?P<section>[A-Za-z]+)/issue/(?P<issue_id>\d+)$', 'section', 
-        name='core_section_by_issue'),
-    #url(r'^tag/(?P<tag_name>[A-Za-z0-9+]+)/$', 'tag', name='core_tag'),
+    url(r'^section/(?P<section>[A-Za-z]+)/issue/(?P<issue_id>\d+)$', 
+        'section', name='core_section_by_issue'),
+    url(r'^section/(?P<section>[A-Za-z]+)/tag/(?P<tags>[A-Za-z\s,]+)/$', 
+        'section', name='core_section_by_tag'),
     url(r'^tag[s]{0,1}/(?P<tags>[A-Za-z\s,]+)/$', 'tag', name='core_tag'),
     url(r'^$', 'index', name='core_index'),
 )

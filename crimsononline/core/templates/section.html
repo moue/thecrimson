@@ -1,0 +1,23 @@
+{% extends "article-list.html" %}
+
+{% load crimson_filters %}
+
+{% block title %}
+    {{ section }}
+{% endblock %}
+
+{% block left_before_ad %}
+    <h1>{{ section }}</h1>
+    {% block section_menu %}
+    {% endblock %}
+{% endblock %}
+
+{% block before_articles %}
+    {% if tags %}
+        {% if articles %}
+            <h2>Articles tagged: {{ tags|human_list }}</h2>
+        {% else %}
+            <p>No {{ section.lower }} articles tagged {{ tags|human_list }} were found.</p>
+        {% endif %}
+    {% endif %}
+{% endblock %}

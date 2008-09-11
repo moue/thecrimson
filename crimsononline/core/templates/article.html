@@ -22,6 +22,16 @@
 			<div>
 				{{ article.text|escape|linebreaks }}
 			</div>
+			<div id="tags">
+			    {% with article.tags.all as a_tags %}
+			        {% if a_tags %}
+			            Tags: 
+			        {% endif %}
+    			    {% for tag in a_tags %}
+    			        <a class="tag" href="{{ tag.get_absolute_url }}">{{ tag.text }}</a>{% ifnotequal forloop.last 1 %}, {% endifnotequal %}
+    			    {% endfor %}
+			    {% endwith %}
+			</div>
 		</div>
 	</div>
 	<div class="columnRight">

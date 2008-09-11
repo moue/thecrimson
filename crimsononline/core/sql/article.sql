@@ -22,7 +22,7 @@ Financial compensation with the Communist party would also be greater than it wo
 
 This situation would be different if we owned large silk factories.  Since the Communists have nationalized many of the industries, including silk factories, which would reduce much of the family''s wealth.  Without this source of wealth, it would probably be better to work either in the United States, or in Taiwan.  
 
-','Historical Study A-74, Contemporary China: The People’s Republic and Taiwan in the Modern World ','2008-07-19 20:37:37.707035','2008-07-19 20:37:37.707035',10,'',2,2,1,4,NULL, 1, 0,'');
+','Historical Study A-74, Contemporary China: The People’s Republic and Taiwan in the Modern World ','Drew-Faust-Responds-To-Criticism','2008-07-19 20:37:37.707035','2008-07-19 20:37:37.707035',10,'',2,2,1,4,NULL, 1, 0);
 INSERT INTO core_article VALUES(2,'The Harvard Lampoon Announces its Closure','','cstaff','On July 17th, citing "lack of reader interest", and "being really lame and unfunny", the president of the Harvard Lampoon announced that the Lampoon would be disbanded.  Dan Caroll ''09 summarized the consensus reaction of Harvard''s student body, asking "the Harvard what?"
 
 Identify one of the important long-term patterns, problems or themes which Fairbank perceives in the great span of Chinese history. How does this pattern, problem or theme shape events in the 19th and 20th centuries? In regard to your chosen theme, what remains constant and what changes as China enters into “modern” history? When does this transition take place? If possible, include reference to the articles on Taiwan (for frontier concerns, imperialist competition, etc.).
@@ -38,11 +38,11 @@ As a result of downplaying the importance of the military and losing wars to for
 This weakness very suddenly took a one hundred and eighty degree turn in the 19th century, where a period of warlordism was followed by periods of military fascism, militarist nationalism, and a a militarist communism.  Suddenly, governments abandoned their Neo-Confucian ideals and devoted more and more energy to cultivating the wu of their governments. 
 
  Because this weakness was very apparent to many Chinese of the 19th and 20th centuries, and it was probably against the background of China''s historical military weaknesses that the warlords, nationalists, and communists organized themselves.  Because of China''s historic lack of military power, the easiest way to take power in China was by force, and both the nationalists and communists used just these methods to ascend to power.  These factors directly contributed to China''s current governmental models centered around the military.  Not wanting to repeat China''s past mistakes, her current governors overcompensate, devoting extra resources to areas that used to cause China''s weakness.
-','On July 17th, citing "lack of reader interest", and "being really lame and unfunny", the president of the Harvard Lampoon announced that the Lampoon would be disbanded.','2008-07-19 20:37:37.707035','2008-07-19 20:37:37.707035',80,'',1,1,1,4,NULL,1, 0,'');
-INSERT INTO core_article VALUES(3,'IT is the greatest board','','cstaff','For serious.','For serious.','2008-07-19 20:37:37.707035','2008-07-19 20:37:37.707035',99,'',1,1,1,2,NULL,1, 0, '');
-INSERT INTO core_article VALUES(4,'Wedding announcement: Monica Geller to marry Chandler Bing','OH MYYYY GAAAAD - Janice','cstaff','This just in - Chandler Bing, son of Mrs. Bing and Mrs. Bing, and Monica Geller, formerly-obese daughter of Mr. and Mrs. Geller, will be married in like, a season. 
+','On July 17th, citing "lack of reader interest", and "being really lame and unfunny", the president of the Harvard Lampoon announced that the Lampoon would be disbanded.','The-Harvard-Lampoon-Announces-its-Closure','2008-07-19 20:37:37.707035','2008-07-19 20:37:37.707035',80,'',1,1,1,4,NULL,1, 0);
+INSERT INTO core_article VALUES(3,'IT is the greatest board','','cstaff','For serious.','For serious.','IT-is-the-greatest-board','2008-07-19 20:37:37.707035','2008-07-19 20:37:37.707035',99,'',1,1,1,2,NULL,1, 0);
+INSERT INTO core_article VALUES(4,'Monica Geller to marry Chandler Bing','OH MYYYY GAAAAD - Janice','cstaff','This just in - Chandler Bing, son of Mrs. Bing and Mrs. Bing, and Monica Geller, formerly-obese daughter of Mr. and Mrs. Geller, will be married in like, a season. 
 
-','I''ll Tease you','2008-07-21  20:37:37.707035','2008-08-02 20:37:37.707035',1,'',3,3,1,4,NULL, 1, 0, '');
+','I''ll Tease you','Monica-Geller-to-marry-Chandler-Bing','2008-07-21  20:37:37.707035','2008-08-02 20:37:37.707035',1,'',3,3,1,4,NULL, 1, 0);
 INSERT INTO core_article_contributors VALUES(9,2,1);
 INSERT INTO core_article_contributors VALUES(10,2,3);
 INSERT INTO core_article_contributors VALUES(11,1,3);
@@ -50,3 +50,14 @@ INSERT INTO core_article_contributors VALUES(12,1,2);
 INSERT INTO core_article_contributors VALUES(13,3,2);
 INSERT INTO core_article_contributors VALUES(14,4,3);
 INSERT INTO core_article_contributors VALUES(15,4,4);
+INSERT INTO core_article_tags VALUES(1,3,1);
+INSERT INTO core_article_tags VALUES(2,3,2);
+INSERT INTO core_article_tags VALUES(3,3,3);
+INSERT INTO core_article_tags VALUES(4,2,2);
+INSERT INTO core_article_tags VALUES(5,2,4);
+INSERT INTO core_article_tags VALUES(6,1,2);
+INSERT INTO core_article_tags VALUES(7,1,5);
+INSERT INTO core_article_tags VALUES(8,1,6);
+INSERT INTO core_article_tags VALUES(9,1,7);
+INSERT INTO core_article_tags VALUES(10,4,4);
+INSERT INTO core_article_tags VALUES(11,4,6);

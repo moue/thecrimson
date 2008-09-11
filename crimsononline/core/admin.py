@@ -1,10 +1,27 @@
 from datetime import datetime, timedelta
+from re import compile
 from django import forms
 from django.contrib import admin
 from django.forms import ModelForm
 from django.contrib.auth.models import User
 from django.utils.safestring import mark_safe
 from crimsononline.core.models import *
+
+class TagForm(forms.ModelForm):
+    ALLOWED_REGEXP = compile(r'[A-Za-z\s]+$')
+    class Meta:
+        mode = Tag
+    def clean_text(self):
+        text = self.cleaned_data['text']
+        print text
+        if not TagForm.ALLOWED_REGEXP.match(text):
+            raise forms.ValidationError('Tags can only contain letters and spaces')
+        return text.lower()
+
+class TagAdmin(admin.ModelAdmin):
+    form = TagForm
+
+admin.site.register(Tag, TagAdmin)
 
 class ContributorAdmin(admin.ModelAdmin):
     list_display = ('last_name', 'first_name', 'middle_initial',)
@@ -65,8 +82,9 @@ admin.site.register(Issue, IssueAdmin)
 
 class ImageAdmin(admin.ModelAdmin):
     fields = ('pic', 'caption', 'kicker', 'contributor', 'tags',)
-
+    filter_horizontal = ('tags',)
 admin.site.register(Image, ImageAdmin)
+
 
 class ImageSelectMultipleWidget(forms.widgets.SelectMultiple):
     def render(self, name, value, attrs=None, choices=()):
@@ -127,6 +145,7 @@ class ImageGalleryForm(ModelForm):
 
 class ImageGalleryAdmin(admin.ModelAdmin):
     fields = ('images', 'cover_image', 'tags')
+    filter_horizontal = ('tags',)
     form = ImageGalleryForm
     
     # we need to set the list of images (that show up) on a per instance basis
@@ -177,7 +196,8 @@ class ArticleForm(ModelForm):
 class ArticleAdmin(admin.ModelAdmin):
     list_display = ('headline', 'section', 'issue',)
     search_fields = ('headline', 'text',)
-    filter_horizontal = ('contributors',)
+    filter_horizontal = ('contributors', 'tags',)
+    exclude = ['is_published']
     form = ArticleForm
     
     def has_change_permission(self, request, obj=None):
