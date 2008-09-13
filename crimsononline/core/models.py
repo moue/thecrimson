@@ -16,11 +16,6 @@ from django.template.defaultfilters import slugify
 SAFE_CHARS = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
 def filter_string(allowed_chars, str):
     return ''.join([c for c in str if c in allowed_chars])
-def get_save_path(instance, filename):
-    ext = splitext(filename)[1]
-    filtered_capt = filter_string(str, instance.caption)
-    return datetime.now().strftime("photos/%Y/%m/%d/%H%M%S_") + \
-        filtered_capt + ext
 
 
 class Tag(models.Model):
@@ -152,6 +147,12 @@ class Issue(models.Model):
     
 
 
+def get_save_path(instance, filename):
+    ext = splitext(filename)[1]
+    filtered_capt = filter_string(SAFE_CHARS, instance.caption)
+    return datetime.now().strftime("photos/%Y/%m/%d/%H%M%S_") + \
+        filtered_capt + ext
+
 class Image(models.Model):
     """An image"""
     
@@ -171,7 +172,7 @@ class Image(models.Model):
     
     def get_pic_sized_url(self, width=None, height=None):
         """
-        Creates pic smaller than width x height (if pic doesn't exist yet) 
+        Creates pic smaller than width x height y (if pic doesn't exist yet) 
         and returns the url of the image.
         """
         url = self.pic.url
@@ -183,7 +184,7 @@ class Image(models.Model):
     
     def get_pic_sized_path(self, width=None, height=None):
         """
-        Creates pic smaller than width x height (if pic doesn't exist yet) 
+        Creates pic smaller than width x height y (if pic doesn't exist yet) 
         and returns the filename of the image.
         """
         orig_path = self.pic.path
@@ -266,8 +267,9 @@ class Article(models.Model):
         help_text='Who wrote this article')
     uploaded_on = models.DateTimeField(auto_now_add=True)
     modified_on = models.DateTimeField(auto_now=True)
-    priority = models.IntegerField(
-        default=0, help_text="This can be positive or negative.")
+    priority = models.IntegerField(default=0, 
+        help_text='Higher priority articles are displayed first.' \
+        'Priority be positive or negative.')
     page = models.CharField(blank=True, null=True, max_length=10,
         help_text='Page in the print edition.')
     proofer = models.ForeignKey(
@@ -285,7 +287,7 @@ class Article(models.Model):
     web_only = models.BooleanField(default=False, null=False, blank=False)
     tags = models.ManyToManyField(Tag, blank=False, help_text="""
         Short descriptors for this article.
-        Try to use tags that already exist, if at all possible.
+        Try to use tags that already exist, if  possible.
         """)
     
     objects = PublishedArticlesManager()
@@ -308,7 +310,7 @@ class Article(models.Model):
         if self.slug == None or self.slug == '':
             self.slug = slugify(self.headline)
         return super(Article, self).save()
-        
+    
     def delete(self):
         """don't delete articles, just unpublish them"""
         self.is_published = False
@@ -316,7 +318,7 @@ class Article(models.Model):
     
     def __unicode__(self):
         return self.headline
-        
+    
     @permalink
     def get_absolute_url(self):
         d = self.issue.issue_date
