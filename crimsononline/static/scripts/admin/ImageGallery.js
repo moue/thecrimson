@@ -34,9 +34,11 @@ $(document).ready(function(){
     var makeCover = function(ele){
         $(ele).addClass("cover-image");
         var pk = $(ele).attr("img_pk");
+        var capt = $(ele).children(".caption").html();
         $("#id_cover_image")
             .empty()
-            .append("<option value='" + pk + "' selected='selected'></option>");
+            .append("<option value='" + pk + "' selected='selected'>" + 
+                    capt + "</option>");
     }
     
     //adds image within element ele to images-current
@@ -181,12 +183,14 @@ $(document).ready(function(){
                     .children(".ui-overlay")
                         .append($("<a href='#'>Remove This</a><br/><a href='#'>Set as Cover</a>"))
                         .children(":contains('Remove')")
-                            .click(function(){
+                            .click(function(event){
+                                event.preventDefault();
                                 removeImgFromCurrent(ele);
                             })
                         .end()
                         .children(":contains('Cover')")
-                            .click(function(){
+                            .click(function(event){
+                                event.preventDefault();
                                 makeCover(ele);
                             })
                         .end()

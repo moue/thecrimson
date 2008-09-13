@@ -144,7 +144,7 @@ class ImageGalleryForm(ModelForm):
     
 
 class ImageGalleryAdmin(admin.ModelAdmin):
-    fields = ('images', 'cover_image', 'tags')
+    fields = ('title', 'description', 'images', 'cover_image', 'tags')
     filter_horizontal = ('tags',)
     form = ImageGalleryForm
     
@@ -168,8 +168,8 @@ class ImageGalleryAdmin(admin.ModelAdmin):
         #    we don't set the queryset on unbound forms, loading a bound
         #    form and then loading an unbound form leads to the wrong
         #    images showing up.  (maybe querysets are cached improperly?)
-        f.images.queryset = qs
-        f.cover_image.queryset = cover_qs
+        f.base_fields['images'].queryset = qs
+        f.base_fields['cover_image'].queryset = cover_qs
         return f
 
 admin.site.register(ImageGallery, ImageGalleryAdmin)

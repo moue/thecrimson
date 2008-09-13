@@ -3,6 +3,7 @@ from random import randint
 from os.path import splitext, exists, split
 from datetime import datetime
 from re import compile, match
+from string import letters, digits
 from PIL import Image as pilImage
 from tagging.fields import TagField
 from django.conf import settings
@@ -13,7 +14,7 @@ from django.contrib.localflavor.us.models import PhoneNumberField
 from django.core.cache import cache
 from django.template.defaultfilters import slugify
 
-SAFE_CHARS = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+SAFE_CHARS = letters + digits
 def filter_string(allowed_chars, str):
     return ''.join([c for c in str if c in allowed_chars])
 
@@ -214,14 +215,15 @@ class Image(models.Model):
 class ImageGallery(models.Model):
     """A collection of Images"""
     
+    title = models.CharField(blank=False, null=False, max_length=200)
+    description = models.TextField(blank=False, null=False)
     images = models.ManyToManyField(Image)
     cover_image = models.ForeignKey(Image, related_name='cover_images')
     created_on = models.DateTimeField(auto_now_add=True)
     tags = models.ManyToManyField(Tag, blank=False)
     
     def __unicode__(self):
-        #return self.cover_image.caption
-        return "Image Gallery"
+        return self.title
 
 
 class PublishedArticlesManager(models.Manager):

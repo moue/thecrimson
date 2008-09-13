@@ -5,14 +5,13 @@ from crimsononline.core.models import Image
 register = template.Library()
 
 @register.filter
-def to_img_tag(img, width, height):
+def to_img_tag(img, dimensions):
     tag = ''
     if isinstance(img, Image):
         # set zero dimensions to None
-        width = width or None
-        height = height or None
-        tag = '<img src="%s" title="%s" />' % \
-            (img.get_pic_sized_url(width, height), img.caption)
+        width, height = tuple((dimensions.split(',') + [None])[:2])
+        tag = '<img src="%s" title="%s" alt="%s" />' % \
+            (img.get_pic_sized_url(width, height), img.caption, img.caption)
     return mark_safe(tag)
 
 @register.filter

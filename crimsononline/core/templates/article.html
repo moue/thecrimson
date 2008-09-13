@@ -13,6 +13,11 @@
 {% block body %}
 	<div class="content">
 		<div class="article">
+		    {% if article.image_gallery %}
+    		    <div class="photo">
+                    {{ article.image_gallery.cover_image|to_img_tag:"600,400" }}
+    		    </div>
+		    {% endif %}
 			<h1>{{ article.headline }}</h1>
 			<h2>{{ article.subheadline }}</h2>
 			<div class="byline">By {{ article.contributors.all|linkify|human_list }}
