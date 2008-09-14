@@ -5,11 +5,38 @@ from crimsononline.core.models import Image
 register = template.Library()
 
 @register.filter
-def to_img_tag(img, dimensions):
+def to_img_layout(img, dimensions):
     tag = ''
     if isinstance(img, Image):
-        # set zero dimensions to None
-        width, height = tuple((dimensions.split(',') + [None])[:2])
+        width, height = img.pic.width, img.pic.height
+        w_constr, h_constr = tuple(dimensions.split(',')[:2])
+        if width / height > 1.0:
+            type = 'wide'
+            img_tag = to_img_tag(img, dimensions)
+        else:
+            type = 'tall'
+            w_constr = str(int(int(w_constr) * 0.4) if w_constr else w_constr)
+            img_tag = to_img_tag(img, 
+                w_constr + ',' + h_constr)
+        tag = """<div class="%s_photo" style="width:%s">%s
+            <p class="byline">%s</p>
+            <p class="caption">%s</p>
+            </div>
+        """ % (type, w_constr or str(width), img_tag, 
+                img.contributor, img.caption)
+    return mark_safe(tag)
+
+@register.filter
+def to_img_tag(img, dimensions):
+    """
+    Turns an Image into an img tag (html).
+    dimensions is the dimension constraint.  It should be a string formattted
+     "WIDTH,HEIGHT".  Empty width or height is interpreted as a non-constraint.
+    """
+    tag = ''
+    if isinstance(img, Image) and dimensions.find(',') != -1:
+        width, height = tuple(dimensions.split(',')[:2])
+        width, height = width or None, height or None
         tag = '<img src="%s" title="%s" alt="%s" />' % \
             (img.get_pic_sized_url(width, height), img.caption, img.caption)
     return mark_safe(tag)

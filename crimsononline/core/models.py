@@ -189,18 +189,17 @@ class Image(models.Model):
         and returns the filename of the image.
         """
         orig_path = self.pic.path
-        if width is None and height is None:
+        width = min(self.pic.width, width) if width else None
+        height = min(self.pic.height, height) if height else None
+        if (width is None and height is None):
             return orig_path
-        elif width is None:
-            size = int(height), int(height)
-        elif height is None:
-            size = int(width), int(width)
         else:
-            size = int(width), int(height)
+            size = [width or self.pic.width, height or self.pic.height]
+            size = tuple([int(i) for i in size])
         path, ext = splitext(orig_path)
         path = path + '%dx%d_' % size + ext
         
-        #TODO: take into account modify time
+        #TODO: take into account modify time #
         # if the pic doesn't exist, create a new one
         if not exists(path):
             img = pilImage.open(orig_path)

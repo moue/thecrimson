@@ -71,7 +71,7 @@ INSTALLED_APPS = (
     'tagging',
     'crimsononline.core',
     'crimsononline.admin_cust',
-    'crimsononline.temp',
+    'crimsononline.templ',
 )
 
 MEDIA_LOC = MEDIA_ROOT

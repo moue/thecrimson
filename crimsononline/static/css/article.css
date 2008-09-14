@@ -41,9 +41,33 @@ p {
 	font-size: 15px;
 	line-height: 22px;
 }
+
+/* photo stuff */
 .tall_photo{
-    
+    float: right;
 }
 .wide_photo{
-    
+}
+.tall_photo, .wide_photo {
+    padding: 0 3px 3px 5px;
+    /*border: 1px solid #c4c5c7;*/
+    border-style: solid;
+    border-color: #c4c5c7;
+    border-width: 0 0 1px 1px;
+    margin: 4px;
+}
+.tall_photo > .byline, .wide_photo > .byline {
+    width: inherit;
+    text-align: right;
+    text-transform: uppercase;
+    margin-top: -5px;
+    font-size: 0.7em;
+}
+.tall_photo > .caption, .wide_photo > .caption {
+    margin-left: 4px;
+    color: #333333;
+}
+.tall_photo > p, .wide_photo > p {
+    padding: 0;
+    margin: 0;
 }
