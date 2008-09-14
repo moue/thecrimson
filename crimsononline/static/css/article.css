@@ -21,7 +21,7 @@ h1 {
 	color: #780001;
 }
 h2 {
-	font-size: 22px;
+	font-size: 18px;
 	margin: 0px 0px 10px 0px;
 	color: #505050;
 }
@@ -50,7 +50,6 @@ p {
 }
 .tall_photo, .wide_photo {
     padding: 0 3px 3px 5px;
-    /*border: 1px solid #c4c5c7;*/
     border-style: solid;
     border-color: #c4c5c7;
     border-width: 0 0 1px 1px;
