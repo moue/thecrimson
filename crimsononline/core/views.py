@@ -21,7 +21,7 @@ def index(request):
     dict['issue'] = issue
     
     return render_to_response('index.html', dict)
-    
+
 def article(request, year, month, day, slug):
     year, month, day = int(year), int(month), int(day)
     a = get_object_or_404(Article,

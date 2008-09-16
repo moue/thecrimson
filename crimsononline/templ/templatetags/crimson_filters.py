@@ -43,8 +43,8 @@ def to_img_tag(img, dimensions):
 
 @register.filter
 def to_thumb_tag(img):
-    THUMB_SIZE = 96
-    return to_img_tag(img, THUMB_SIZE, THUMB_SIZE)
+    THUMB_SIZE = '96'
+    return to_img_tag(img, THUMB_SIZE + ',' + THUMB_SIZE)
 
 @register.filter
 def is_nav_cur(current, check):

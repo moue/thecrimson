@@ -71,6 +71,7 @@ INSTALLED_APPS = (
     'tagging',
     'crimsononline.core',
     'crimsononline.admin_cust',
+    'crimsononline.content_module',
     'crimsononline.templ',
 )
 
