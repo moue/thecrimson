@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% load crimson_filters %}
+{% load content_module %}
 
 {% block title %}
 	{{ "Since 1873, motherfuckers" }}
@@ -14,6 +15,7 @@
 	<div class="columnCenter">
 		<div class="contentTop">
 			<div class="topStories">
+			    {% contentmodule cms.1 %}
 				<h1>Top Stories</h1>
 				<ul>
 					{% for story in top_stories %}
@@ -25,6 +27,7 @@
 					</li>	
 					{% endfor %}
 				</ul>
+			    {% endcontentmodule %}
 			</div>
 			<div class="topCenter">
 				<div class="storyRotater">

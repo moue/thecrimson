@@ -11,16 +11,12 @@ class ContentModule(models.Model):
     default_content = models.TextField(blank=True, null=True,
         help_text='This content will show up after the current ' \
                     'content expires.')
-    default_dict = models.TextField(blank=True, null=True, 
-        help_text='Don\'t touch this unless you know what this is.')
-    default_template = models.TextField(blank=True, null=True,
-        help_text='Don\'t touch this unless you know what this is.')
     # default is a lambda because it needs to be a callable
     expiration = models.DateTimeField(blank=True, null=True, 
         default=lambda: datetime.now() + timedelta(days=2),
         help_text='If no one has updated this content module by this ' \
                     'time, it will revert to the default content.')
-    comment = models.CharField(blank=True, null=True, max_length=200,
+    comment = models.TextField(blank=True, null=True,
         help_text='No one outside the Crimson will see this.')
     
     class Meta:
@@ -29,7 +25,10 @@ class ContentModule(models.Model):
     def __unicode__(self):
         return self.url + '|' + str(self.zone)
     
-    def render(self):
+    def is_empty(self):
+        return self.content or self.default_content
+    
+    def html(self):
         #TODO: move the expiration code to something like cron
         if datetime.now() > self.expiration:
             self.content = None
@@ -38,9 +37,6 @@ class ContentModule(models.Model):
             return mark_safe(self.content)
         elif self.default_content:
             return mark_safe(self.default_content)
-        elif self.default_dict and self.default_template:
-            #TODO: unpickle, and render template
-            pass
         else:
             return ''
 

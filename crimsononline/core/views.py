@@ -5,13 +5,21 @@ from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.template import Context, loader
 from django.contrib.flatpages.models import FlatPage
 from crimsononline.core.models import *
+from crimsononline.content_module.models import ContentModule
 
 def index(request):
     issue = Issue.get_current()
     stories = get_top_articles(issue.id, 'News')
     
+    #load content modules
+    cms = {}
+    content_modules = ContentModule.objects.filter(url=request.get_full_path())
+    for cm in content_modules:
+        cms[str(cm.zone)] = cm
+    
     dict = {}
     dict['nav'] = 'index'
+    dict['cms'] = cms
     dict['top_stories'] = stories[:4]
     dict['more_stories'] = stories[4:9]
     dict['opeds'] = get_top_articles(issue.id, 'Opinion', 6)
