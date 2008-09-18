@@ -2,6 +2,7 @@
 
 from os import path
 from local_settings import *
+import django.conf.global_settings as defaults
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -42,6 +43,11 @@ TEMPLATE_LOADERS = (
     'django.template.loaders.app_directories.load_template_source',
 #    'django.template.loaders.eggs.load_template_source',
 )
+
+# A tuple of callables that are used to populate the context in RequestContext
+#defaults.TEMPLATE_CONTEXT_PROCESSORS += (
+#    'crimsononline.content_module.context_processors.cm_processor',
+#)
 
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',

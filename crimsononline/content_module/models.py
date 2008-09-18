@@ -4,8 +4,8 @@ from django.utils.safestring import mark_safe
 
 class ContentModule(models.Model):
     """A container for custom content"""
-    url = models.CharField(blank=False, null=False, max_length=100)
-    zone = models.IntegerField(blank=False, null=False)
+    name = models.CharField(
+        blank=False, null=False, unique=True, max_length=50)
     content = models.TextField(blank=True, null=True, 
         help_text='Type your content here. Use HTML.')
     default_content = models.TextField(blank=True, null=True,
@@ -19,11 +19,8 @@ class ContentModule(models.Model):
     comment = models.TextField(blank=True, null=True,
         help_text='No one outside the Crimson will see this.')
     
-    class Meta:
-        unique_together = ('url', 'zone',)
-    
     def __unicode__(self):
-        return self.url + '|' + str(self.zone)
+        return self.name
     
     def is_empty(self):
         return self.content or self.default_content

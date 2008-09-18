@@ -1,18 +1,29 @@
 from django import template
+from django.core.exceptions import ObjectDoesNotExist
+from crimsononline.content_module.models import ContentModule
 
 register = template.Library()
 
+
 class ContentModuleNode(template.Node):
+    """
+    Loads and renders a content module.  If the content module is empty,
+    then everything between contentmodule and endcontentmodule is rendered.
+    """
     def __init__(self, content_module, node_list):
         self.cm = content_module
         self.nodes = node_list
     
     def render(self, context):
+        html = None
         try:
-            self.cm = template.resolve_variable(self.cm, context)
+            self.cm = ContentModule.objects.get(name=self.cm)
             html = self.cm.html()
-        except template.VariableDoesNotExist:
-            html = ''
+        except ObjectDoesNotExist:
+            self.cm = ContentModule(name=self.cm)
+            self.cm.save()
+        except:
+            pass
         return html or self.nodes.render(context)
     
 @register.tag(name='contentmodule')

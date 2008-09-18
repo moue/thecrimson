@@ -15,7 +15,7 @@
 	<div class="columnCenter">
 		<div class="contentTop">
 			<div class="topStories">
-			    {% contentmodule cms.1 %}
+			    {% contentmodule index.topstories %}
 				<h1>Top Stories</h1>
 				<ul>
 					{% for story in top_stories %}
@@ -31,19 +31,24 @@
 			</div>
 			<div class="topCenter">
 				<div class="storyRotater">
+				    {% contentmodule index.rotater %}
 					<img src="/site_media/images/rotater.jpg" />
+					{% endcontentmodule %}
 				</div>
 				<div class="moreNews">
+				    {% contentmodule index.morenews %}
 					<h1>More News</h1>
 					<ul>
 						{% for story in more_stories %}
 						<li><a href="{{ story.get_absolute_url }}">{{ story.headline }}</a></li>
 						{% endfor %}
 					</ul>
+					{% endcontentmodule %}
 				</div>
 			</div>
 			<div class="topRight">
 				<div class="topOpinions">
+				    {% contentmodule index.opinion %}
 					<h1>Opinion</h1>
 					<ul>
 						{% for oped in opeds %}
@@ -52,9 +57,13 @@
 							</li>
 						{% endfor %}
 					</ul>
+					{% endcontentmodule %}
 				</div>
 				<div class="featured">
 					<h1>Featured</h1>
+					{% contentmodule index.featured %}
+					
+					{% endcontentmodule %}
 				</div>
 			</div>
 		</div>
