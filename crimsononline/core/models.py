@@ -188,10 +188,9 @@ class Image(models.Model):
         Creates pic smaller than width x height y (if pic doesn't exist yet) 
         and returns the filename of the image.
         """
-        width, height = int(width), int(height)
         orig_path = self.pic.path
-        width = min(self.pic.width, width) if width else None
-        height = min(self.pic.height, height) if height else None
+        width = int(min(self.pic.width, width)) if width else None
+        height = int(min(self.pic.height, height)) if height else None
         if (width is None and height is None):
             return orig_path
         else:
