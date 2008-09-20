@@ -10,12 +10,13 @@ class ContentModuleNode(template.Node):
     Loads and renders a content module.  If the content module is empty,
     then everything between contentmodule and endcontentmodule is rendered.
     """
-    def __init__(self, content_module, node_list):
+    def __init__(self, content_module, node_list, edit_mode=False):
         self.cm = content_module
         self.nodes = node_list
+        self.is_editing = edit_mode
     
     def render(self, context):
-        html = None
+        html, edit_link = None, ''
         try:
             self.cm = ContentModule.objects.get(name=self.cm)
             html = self.cm.html()
@@ -24,7 +25,11 @@ class ContentModuleNode(template.Node):
             self.cm.save()
         except:
             pass
-        return html or self.nodes.render(context)
+        #TODO: fix this for authorization in context
+        if self.is_editing:
+            edit_link = '<span class="edit"><a href="admin/content_module/' \
+                        'contentmodule/' + self.cm.pk + '/">Edit</a></span>'
+        return (html or self.nodes.render(context)) + edit_link
     
 @register.tag(name='contentmodule')
 def do_content_module(parser, token):
@@ -32,7 +37,7 @@ def do_content_module(parser, token):
         tag_name, content_module = token.split_contents()
     except ValueError:
         raise template.TemplateSyntaxError, \
-            "%r tag requires a single argument" % token.contents.split()[0]
+            "%r tag requires exactly one argument" % token.contents.split()[0]
     if content_module[0] in ('"', "'") or content_module[-1] in ('"', "'"):
         raise template.TemplateSyntaxError, \
             "%r tag's argument should not be in quotes" % tag_name
