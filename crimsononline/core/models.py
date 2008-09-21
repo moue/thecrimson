@@ -20,7 +20,33 @@ def filter_string(allowed_chars, str):
 
 
 class Tag(models.Model):
-    """A word or phrase used to classify or describe some content"""
+    """
+    A word or phrase used to classify or describe some content.
+    
+    # A bit of setup
+    >>> from django.db import IntegrityError:
+    
+    # Create some tags
+    >>> tag1 = Tag.objects.create(text='potato')
+    >>> tag2 = Tag.objects.create(text='not potato')
+    
+    # No duplicate tags
+    >>> try:
+    ...     tag3 = Tag.objects.create(text='potato')
+    ... except IntegrityError:
+    ...     print "caught"
+    ... 
+    caught
+    
+    # __unicode__
+    >>> str(tag1)
+    'potato'
+    
+    # url
+    >>> tag1.get_absolute_url()
+    '/tag/potato/'
+    
+    """
     
     text = models.CharField(blank=False, max_length=25, unique=True,
         help_text='Tags can contain letters and spaces')
