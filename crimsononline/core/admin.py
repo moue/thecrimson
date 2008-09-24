@@ -10,18 +10,27 @@ from crimsononline.core.models import *
 class TagForm(forms.ModelForm):
     ALLOWED_REGEXP = compile(r'[A-Za-z\s]+$')
     class Meta:
-        mode = Tag
+        model = Tag
     def clean_text(self):
         text = self.cleaned_data['text']
         print text
         if not TagForm.ALLOWED_REGEXP.match(text):
-            raise forms.ValidationError('Tags can only contain letters and spaces')
+            raise forms.ValidationError(
+                'Tags can only contain letters and spaces')
         return text.lower()
 
 class TagAdmin(admin.ModelAdmin):
     form = TagForm
 
 admin.site.register(Tag, TagAdmin)
+
+class ContributorForm(forms.ModelForm):
+    class Meta:
+        model = Contributor
+    def clean_huid_hash(self):
+        if len(self.cleaned_data['huid_hash']) != 8:
+            raise forms.ValidationError('HUID must be 8 digits long')
+        return self.cleaned_data['huid_hash']
 
 class ContributorAdmin(admin.ModelAdmin):
     list_display = ('last_name', 'first_name', 'middle_initial',)
@@ -35,15 +44,18 @@ class ContributorAdmin(admin.ModelAdmin):
             )
         }),
         ('Crimson Staff Settings', {
-            'description': '<b>Leave this section blank if this contributor is not on the staff of the Crimson!</b>',
+            'description': '<h3><b>Leave this section blank if this contributor ' \
+                            'is not on the staff of The Crimson!</b></h3>',
             'classes': ('collapse',),
             'fields': (
                 'boards',
                 ('email', 'phone',), 
                 ('board_number', 'class_of',),
+                'huid_hash',
             )
         }),
     )
+    form = ContributorForm
     
     def save_model(self, request, obj, form, change):
         # create a user if one does not exist
@@ -68,7 +80,8 @@ class ContributorAdmin(admin.ModelAdmin):
             groups = [board.group for board in boards]
             obj.user.groups = groups
             obj.user.save()
-        return super(ContributorAdmin, self).save_model(request, obj, form, change)
+        return super(ContributorAdmin, self).save_model(
+            request, obj, form, change)
     
 
 admin.site.register(Contributor, ContributorAdmin)
@@ -189,6 +202,7 @@ class ArticleForm(ModelForm):
     text = forms.fields.CharField(
         widget=forms.Textarea(attrs={'rows':'50', 'cols':'67'})
     )
+    single_image = forms.ModelChoiceField(Image.objects.all(), required=False)
     
     class Meta:
         model = Article
@@ -198,6 +212,30 @@ class ArticleAdmin(admin.ModelAdmin):
     search_fields = ('headline', 'text',)
     filter_horizontal = ('contributors', 'tags',)
     exclude = ['is_published']
+    fieldsets = (
+        ('Headline', {
+            'fields': ('headline', 'subheadline', 'slug',),
+        }),
+        ('Text', {
+            'fields': ('text',)
+        }),
+        ('Byline', {
+            'fields': ('contributors', 'byline_type',)
+        }),
+        ('Print', {
+            'fields': ('issue', 'section', 'page',)
+        }),
+        ('Web', {
+            'fields': ('priority', 'web_only', 'tags',)
+        }),
+        ('Editing', {
+            'fields': ('proofer', 'sne',)
+        }),
+        ('Image(s)', {
+            'classes': ('collapse',),
+            'fields': ('single_image',)
+        })
+    )
     form = ArticleForm
     
     def has_change_permission(self, request, obj=None):
@@ -219,7 +257,19 @@ class ArticleAdmin(admin.ModelAdmin):
         if not u.has_perm('core.article.can_change_after_timeout'):
             t = datetime.now() - timedelta(seconds=(60*60))
             qs = qs.filter(uploaded_on__gt=t)
-            u.message_set.create(message='Note: you can only change articles uploaded in the last hour.')
+            u.message_set.create(message='Note: you can only change articles' \
+                                            ' uploaded in the last hour.')
         return qs
+        
+    def save_model(self, request, obj, form, change):
+        img = form.cleaned_data['single_image']
+        # turn the image into a gallery, attach the gallery to the article
+        if img:
+            gal = ImageGallery.objects.create(
+                title=img.caption, description=img.kicker, cover_image=img)
+            gal.images = [img]
+            gal.save()
+            obj.image_gallery = gal
+        return super(ArticleAdmin, self).save_model(request, obj, form, change)
 
 admin.site.register(Article, ArticleAdmin)

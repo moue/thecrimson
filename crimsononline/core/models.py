@@ -78,11 +78,6 @@ class Contributor(models.Model):
     user = models.ForeignKey(
         User, verbose_name='web user', unique=True, blank=True, 
         null=True, limit_choices_to={'is_active': True},
-        help_text="""
-        Only specify a web user if you want this contributor to have web access.<br/>
-        To create a new web user, click the green plus sign.<br/>
-        To link this contributor to an existing web user, select from the drop-down list.
-        """
     )
     first_name = models.CharField(blank=False, null=True, max_length=70)
     last_name = models.CharField(blank=False, null=True, max_length=100)
@@ -96,10 +91,14 @@ class Contributor(models.Model):
         blank=True, null=True, help_text='Eg: 136')
     boards = models.ManyToManyField(Board, blank=True, null=True)
     class_of = models.IntegerField(blank=True, null=True)
-    huid_hash = models.CharField(
+    huid_hash = models.CharField('Harvard ID',
         blank=True, null=True, max_length=255,
-        help_text='8 digit HUID. This will be encrypted before it is stored.')
-    is_active = models.BooleanField(default=True)
+        help_text='8 digit HUID. Warning: Without an HUID, this ' \
+                'contributor won\'t be able to log on to the website. <br> ' \
+                'This number will be encrypted before it is stored.')
+    is_active = models.BooleanField(default=True,
+        help_text='This should be true for anyone who could possibly still ' \
+                    'write for The Crimson, including guest writers.')
     
     def __unicode__(self):
         if self.middle_initial == None or self.middle_initial == '':
