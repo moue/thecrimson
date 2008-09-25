@@ -77,7 +77,6 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.sites',
     'django.contrib.flatpages',
-    'tagging',
     'crimsononline.core',
     'crimsononline.admin_cust',
     'crimsononline.content_module',
