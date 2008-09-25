@@ -10,7 +10,7 @@ def to_img_layout(img, dimensions):
     if isinstance(img, Image):
         width, height = img.pic.width, img.pic.height
         w_constr, h_constr = tuple(dimensions.split(',')[:2])
-        if width / height > 1.0:
+        if width > height:
             type = 'wide'
             img_tag = to_img_tag(img, dimensions)
         else:
@@ -18,12 +18,12 @@ def to_img_layout(img, dimensions):
             w_constr = str(int(int(w_constr) * 0.4) if w_constr else w_constr)
             img_tag = to_img_tag(img, 
                 w_constr + ',' + h_constr)
+        print type
         tag = """<div class="%s_photo" style="width:%s">%s
             <p class="byline">%s</p>
             <p class="caption">%s</p>
-            </div>
-        """ % (type, w_constr or str(width), img_tag, 
-                img.contributor, img.caption)
+            </div>""" % (type, w_constr or str(width), img_tag, 
+                        img.contributor, img.caption)
     return mark_safe(tag)
 
 @register.filter
@@ -36,7 +36,8 @@ def to_img_tag(img, dimensions):
     tag = ''
     if isinstance(img, Image) and dimensions.find(',') != -1:
         width, height = tuple(dimensions.split(',')[:2])
-        width, height = width or None, height or None
+        width = int(width) if width else None
+        height = int(height) if height else None
         tag = '<img src="%s" title="%s" alt="%s" />' % \
             (img.get_pic_sized_url(width, height), img.caption, img.caption)
     return mark_safe(tag)

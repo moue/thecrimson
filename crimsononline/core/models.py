@@ -222,13 +222,13 @@ class Image(models.Model):
             size = [width or self.pic.width, height or self.pic.height]
             size = tuple([int(i) for i in size])
         path, ext = splitext(orig_path)
-        path = path + '%dx%d_' % size + ext
         
         #TODO: take into account modify time #
         # if the pic doesn't exist, create a new one
         if not exists(path):
             img = pilImage.open(orig_path)
             img.thumbnail(size, pilImage.ANTIALIAS)
+            path = path + '%dx%d_' % img.size + ext
             img.save(path)
         return path
     

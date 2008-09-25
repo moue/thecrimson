@@ -187,7 +187,18 @@ class ImageGalleryAdmin(admin.ModelAdmin):
 
 admin.site.register(ImageGallery, ImageGalleryAdmin)
 
+
+class SingleImageChoiceField(forms.ModelChoiceField):
+    def __init__(self, *args, **kwargs):
+        super(SingleImageChoiceField, self).__init__(*args, **kwargs)
+        self.widget = admin.widgets.RelatedFieldWidgetWrapper(
+            self.widget, 
+            ImageGallery._meta.get_field('images').rel, 
+            admin.site
+        )
+        
 class ArticleForm(ModelForm):
+    #TODO: insert logic to display current image gallery in the image section
     teaser = forms.fields.CharField(
         widget=forms.TextInput(attrs={'size':'70'}),
         required=False
@@ -202,7 +213,7 @@ class ArticleForm(ModelForm):
     text = forms.fields.CharField(
         widget=forms.Textarea(attrs={'rows':'50', 'cols':'67'})
     )
-    single_image = forms.ModelChoiceField(Image.objects.all(), required=False)
+    single_image = SingleImageChoiceField(Image.objects.all(), required=False)
     
     class Meta:
         model = Article
