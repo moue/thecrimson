@@ -188,6 +188,22 @@ class ImageGalleryAdmin(admin.ModelAdmin):
 admin.site.register(ImageGallery, ImageGalleryAdmin)
 
 
+class ImageGallerySelectWidget(forms.widgets.Select):
+    def render(self, name, value, attrs=None, choices=()):
+        # show thumbnails of all the galleries
+        thumbs_html = ''
+        if value:
+            # HACK: we shouldn't have to re-get the image gallery
+            ig = ImageGallery.objects.get(pk=value)
+            thumbs_html = '<div class="image_gallery_thumbs"><ul>'
+            
+            from crimsononline.templ.templatetags.crimson_filters import to_thumb_tag
+            thumbs_html += ''.join(['<li>%s</li>' % to_thumb_tag(img) for img in ig.images.all()])
+            thumbs_html += '<ul></div>'
+        return mark_safe(super(ImageGallerySelectWidget, self).render(
+            name, value, attrs, choices) + thumbs_html)
+        
+
 class SingleImageChoiceField(forms.ModelChoiceField):
     def __init__(self, *args, **kwargs):
         super(SingleImageChoiceField, self).__init__(*args, **kwargs)
@@ -196,7 +212,7 @@ class SingleImageChoiceField(forms.ModelChoiceField):
             ImageGallery._meta.get_field('images').rel, 
             admin.site
         )
-        
+
 class ArticleForm(ModelForm):
     #TODO: insert logic to display current image gallery in the image section
     teaser = forms.fields.CharField(
@@ -213,6 +229,8 @@ class ArticleForm(ModelForm):
     text = forms.fields.CharField(
         widget=forms.Textarea(attrs={'rows':'50', 'cols':'67'})
     )
+    image_gallery = forms.ModelChoiceField(ImageGallery.objects.all(), 
+        widget=ImageGallerySelectWidget())
     single_image = SingleImageChoiceField(Image.objects.all(), required=False)
     
     class Meta:
@@ -244,10 +262,32 @@ class ArticleAdmin(admin.ModelAdmin):
         }),
         ('Image(s)', {
             'classes': ('collapse',),
-            'fields': ('single_image',)
+            'fields': ('image_gallery', 'single_image',)
         })
     )
     form = ArticleForm
+    """
+    # we need to set the list of images (that show up) on a per instance basis
+    # unbound forms => no images
+    # bound forms => images belonging to the ImageGallery instance
+    def get_form(self, request, obj=None):
+        f = super(ArticleAdmin,self).get_form(request, obj)
+        
+        # no bound => no images
+        qs = ImageGallery.objects.none()
+        
+        # yes bound => images that belong to the current ImageGallery
+        if obj is not None:
+            if obj.image_gallery is not None:
+                qs = ImageGallery.objects.filter(pk=obj.image_gallery.pk)
+        
+        # querysets are set for bound and unbound forms because if
+        #    we don't set the queryset on unbound forms, loading a bound
+        #    form and then loading an unbound form leads to the wrong
+        #    images showing up.  (maybe querysets are cached improperly?)
+        f.base_fields['image_gallery'].queryset = qs
+        return f
+    """
     
     def has_change_permission(self, request, obj=None):
         u = request.user

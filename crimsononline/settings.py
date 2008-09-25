@@ -1,5 +1,8 @@
 # Django settings for crimsononline project.
 
+# FOR THE SITE TO WORK, YOU NEED TO CREATE A LOCAL SETTINGS FILE FIRST
+#  you can use the 'sample_local_settings.py' to help you out
+
 from os import path
 from local_settings import *
 import django.conf.global_settings as defaults
