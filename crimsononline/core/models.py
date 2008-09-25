@@ -5,7 +5,6 @@ from datetime import datetime
 from re import compile, match
 from string import letters, digits
 from PIL import Image as pilImage
-from tagging.fields import TagField
 from django.conf import settings
 from django.db import models
 from django.db.models import permalink
