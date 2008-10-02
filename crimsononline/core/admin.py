@@ -191,15 +191,32 @@ admin.site.register(ImageGallery, ImageGalleryAdmin)
 class ImageGallerySelectWidget(forms.widgets.Select):
     def render(self, name, value, attrs=None, choices=()):
         # show thumbnails of all the galleries
-        thumbs_html = ''
+        thumbs_html = """<div class="image_gallery_select">
+        <div class="image_gallery_search">
+            Tag: <input id="search_by_tag"></input> | 
+            Start Month: <select id="search_by_start_year">%s</select>
+            <select id="search_by_start_month">%s</select> |
+            End Month: <select id="search_by_end_year">%s</select>
+            <select id="search_by_end_month">%s</select>
+            <a href="#" class="button">Find</a>
+        </div>""" % \
+            (''.join(['<option value="%d">%d</option>' % (i, i) for i in range(1996, datetime.now().year + 1)]), 
+            ''.join(['<option value="%d">%d</option>' % (i, i) for i in range(1, 13)]),
+            ''.join(['<option value="%d">%d</option>' % (i, i) for i in range(1996, datetime.now().year + 1)]),
+            ''.join(['<option value="%d">%d</option>' % (i, i) for i in range(1, 13)]),
+            )
+        thumbs_html += "%s</div>"
         if value:
             # HACK: we shouldn't have to re-get the image gallery
             ig = ImageGallery.objects.get(pk=value)
-            thumbs_html = '<div class="image_gallery_thumbs"><ul>'
+            _html = '<ul class="current_gallery">'
             
             from crimsononline.templ.templatetags.crimson_filters import to_thumb_tag
-            thumbs_html += ''.join(['<li>%s</li>' % to_thumb_tag(img) for img in ig.images.all()])
-            thumbs_html += '<ul></div>'
+            _html += ''.join(['<li>%s</li>' % to_thumb_tag(img) for img in ig.images.all()])
+            _html += '<ul>'
+            thumbs_html = thumbs_html % _html
+        else:
+            thumbs_html = thumbs_html % ''
         return mark_safe(super(ImageGallerySelectWidget, self).render(
             name, value, attrs, choices) + thumbs_html)
         
@@ -230,7 +247,7 @@ class ArticleForm(ModelForm):
         widget=forms.Textarea(attrs={'rows':'50', 'cols':'67'})
     )
     image_gallery = forms.ModelChoiceField(ImageGallery.objects.all(), 
-        widget=ImageGallerySelectWidget())
+        widget=ImageGallerySelectWidget(), required=False)
     single_image = SingleImageChoiceField(Image.objects.all(), required=False)
     
     class Meta:

@@ -4,7 +4,11 @@
 #  you can use the 'sample_local_settings.py' to help you out
 
 from os import path
-from local_settings import *
+try:
+    from local_settings import *
+except:
+    print "You need a local_settings.py file. Check settings.py for more info.\n"
+    raise ImportError
 import django.conf.global_settings as defaults
 
 DEBUG = True
