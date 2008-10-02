@@ -1,0 +1,9 @@
+{% load crimson_filters %}
+
+<ul class="image_gallery_preview" id="image_gallery_preview_{{gal.pk}}">
+    {% for image in gal.images.all %}
+        <li>
+            {{ image|to_thumb_tag }}
+        </li>
+    {% endfor %}
+</ul>

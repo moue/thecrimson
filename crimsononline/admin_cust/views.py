@@ -1,9 +1,11 @@
+from datetime import datetime
+from django.db import connection
 from django.shortcuts import render_to_response, get_object_or_404
 from django.core.paginator import Paginator
 from django.http import HttpResponse
 from django.template.loader import render_to_string
 from django.utils import simplejson
-from crimsononline.core.models import Image
+from crimsononline.core.models import Image, ImageGallery
 
 def get_imgs(request, page=None, pk=None):
     """
@@ -40,17 +42,23 @@ def get_img_galleries(request, st_yr, st_mnth, end_yr,
     
     tags = [tag.strip() for tag in tags.split(',')]
     st_yr, st_mnth, end_yr, end_mnth = int(st_yr), int(st_mnth), int(end_yr), int(end_mnth)
-    page = page or 1
-    qs = ImageGallery.objects.filter(created_on__year__gte=st_yr,
-        created_on__year__lte=end_yr, created_on__month__gte=st_mnth, 
-        created_on__month__lte=st_mnth)
+    page = int(page or 1)
+    qs = ImageGallery.objects.filter(created_on__range=(
+        datetime(st_yr, st_mnth, 1),
+        datetime(end_yr, end_mnth + 1, 1),
+    ))
     for tag in tags:
-        qs = qs & ImageGallery.objects.filter(tag__text__ilike=tag)
-    p = Paginator(qs, IMGS_GALS_PER_REQ).page(page)
+        qs = qs & ImageGallery.objects.filter(tags__text=tag)
+    p = Paginator(qs, IMG_GALS_PER_REQ).page(page)
     
-    json_dict = []
-    json_dict['galleries']=p.object_list
+    galleries = {}
+    for gal in p.object_list:
+        galleries[gal.pk] = render_to_string('image_gal_fragment.html', {'gal': gal})
+        
+    json_dict = {}
+    json_dict['galleries'] = galleries
     json_dict['next_page'] = p.next_page_number() if p.has_next() else 0
     json_dict['prev_page'] = p.previous_page_number() if p.has_previous() else 0
     
+    print connection.queries
     return HttpResponse(simplejson.dumps(json_dict))

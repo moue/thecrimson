@@ -198,7 +198,7 @@ class ImageGallerySelectWidget(forms.widgets.Select):
             <select id="search_by_start_month">%s</select> |
             End Month: <select id="search_by_end_year">%s</select>
             <select id="search_by_end_month">%s</select>
-            <a href="#" class="button">Find</a>
+            <a href="#" class="button" id="find_image_gallery_button">Find</a>
         </div>""" % \
             (''.join(['<option value="%d">%d</option>' % (i, i) for i in range(1996, datetime.now().year + 1)]), 
             ''.join(['<option value="%d">%d</option>' % (i, i) for i in range(1, 13)]),
@@ -283,6 +283,13 @@ class ArticleAdmin(admin.ModelAdmin):
         })
     )
     form = ArticleForm
+    
+    class Media:
+        js = (
+            'scripts/jquery.js',
+            'scripts/admin/Article.js', 
+        )
+    
     """
     # we need to set the list of images (that show up) on a per instance basis
     # unbound forms => no images
