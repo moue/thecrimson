@@ -41,11 +41,13 @@ def get_img_galleries(request, st_yr, st_mnth, end_yr,
     IMG_GALS_PER_REQ = 6
     
     tags = [tag.strip() for tag in tags.split(',')]
-    st_yr, st_mnth, end_yr, end_mnth = int(st_yr), int(st_mnth), int(end_yr), int(end_mnth)
+    st_yr, st_mnth, end_yr, end_mnth = \
+        int(st_yr), int(st_mnth), int(end_yr), int(end_mnth)
+    end_yr, end_mnth = (end_yr+1, 1) if end_mnth > 11 else (end_yr, end_mnth+1)
     page = int(page or 1)
     qs = ImageGallery.objects.filter(created_on__range=(
         datetime(st_yr, st_mnth, 1),
-        datetime(end_yr, end_mnth + 1, 1),
+        datetime(end_yr, end_mnth, 1),
     ))
     for tag in tags:
         qs = qs & ImageGallery.objects.filter(tags__text=tag)
@@ -60,5 +62,4 @@ def get_img_galleries(request, st_yr, st_mnth, end_yr,
     json_dict['next_page'] = p.next_page_number() if p.has_next() else 0
     json_dict['prev_page'] = p.previous_page_number() if p.has_previous() else 0
     
-    print connection.queries
     return HttpResponse(simplejson.dumps(json_dict))

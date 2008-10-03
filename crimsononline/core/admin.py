@@ -190,22 +190,6 @@ admin.site.register(ImageGallery, ImageGalleryAdmin)
 
 class ImageGallerySelectWidget(forms.widgets.Select):
     def render(self, name, value, attrs=None, choices=()):
-        # show thumbnails of all the galleries
-        thumbs_html = """<div class="image_gallery_select">
-        <div class="image_gallery_search">
-            Tag: <input id="search_by_tag"></input> | 
-            Start Month: <select id="search_by_start_year">%s</select>
-            <select id="search_by_start_month">%s</select> |
-            End Month: <select id="search_by_end_year">%s</select>
-            <select id="search_by_end_month">%s</select>
-            <a href="#" class="button" id="find_image_gallery_button">Find</a>
-        </div>""" % \
-            (''.join(['<option value="%d">%d</option>' % (i, i) for i in range(1996, datetime.now().year + 1)]), 
-            ''.join(['<option value="%d">%d</option>' % (i, i) for i in range(1, 13)]),
-            ''.join(['<option value="%d">%d</option>' % (i, i) for i in range(1996, datetime.now().year + 1)]),
-            ''.join(['<option value="%d">%d</option>' % (i, i) for i in range(1, 13)]),
-            )
-        thumbs_html += "%s</div>"
         if value:
             # HACK: we shouldn't have to re-get the image gallery
             ig = ImageGallery.objects.get(pk=value)
@@ -214,13 +198,38 @@ class ImageGallerySelectWidget(forms.widgets.Select):
             from crimsononline.templ.templatetags.crimson_filters import to_thumb_tag
             _html += ''.join(['<li>%s</li>' % to_thumb_tag(img) for img in ig.images.all()])
             _html += '<ul>'
-            thumbs_html = thumbs_html % _html
+            #thumbs_html = thumbs_html % _html
         else:
-            thumbs_html = thumbs_html % ''
+            #thumbs_html = thumbs_html % ''
+            _html = ''
+        # show thumbnails of all the galleries
+        thumbs_html = """<div class="image_gallery_select">%s
+        <div class="image_gallery_search">
+            Tag: <input id="search_by_tag"></input> | 
+            Start Month: <select id="search_by_start_year">%s</select>
+            <select id="search_by_start_month">%s</select> |
+            End Month: <select id="search_by_end_year">%s</select>
+            <select id="search_by_end_month">%s</select>
+            <a href="#" class="button" id="find_image_gallery_button">Find</a>
+        </div></div>""" % (_html,
+            ''.join(['<option value="%d">%d</option>' % (i, i) for i in range(1996, datetime.now().year + 1)]), 
+            ''.join(['<option value="%d">%d</option>' % (i, i) for i in range(1, 13)]),
+            ''.join(['<option value="%d">%d</option>' % (i, i) for i in range(1996, datetime.now().year + 1)]),
+            ''.join(['<option value="%d">%d</option>' % (i, i) for i in range(1, 13)]),
+            )
         return mark_safe(super(ImageGallerySelectWidget, self).render(
             name, value, attrs, choices) + thumbs_html)
         
 
+class ImageGalleryChoiceField(forms.ModelChoiceField):
+    def __init__(self, *args, **kwargs):
+        super(ImageGalleryChoiceField,self).__init__(*args, **kwargs)
+        self.widget = admin.widgets.RelatedFieldWidgetWrapper(
+            self.widget,
+            Article._meta.get_field('image_gallery').rel,
+            admin.site
+        )
+        
 class SingleImageChoiceField(forms.ModelChoiceField):
     def __init__(self, *args, **kwargs):
         super(SingleImageChoiceField, self).__init__(*args, **kwargs)
@@ -246,7 +255,7 @@ class ArticleForm(ModelForm):
     text = forms.fields.CharField(
         widget=forms.Textarea(attrs={'rows':'50', 'cols':'67'})
     )
-    image_gallery = forms.ModelChoiceField(ImageGallery.objects.all(), 
+    image_gallery = ImageGalleryChoiceField(ImageGallery.objects.all(), 
         widget=ImageGallerySelectWidget(), required=False)
     single_image = SingleImageChoiceField(Image.objects.all(), required=False)
     
@@ -287,7 +296,8 @@ class ArticleAdmin(admin.ModelAdmin):
     class Media:
         js = (
             'scripts/jquery.js',
-            'scripts/admin/Article.js', 
+            'scripts/admin/Article.js',
+			'scripts/framework/jquery.sprintf.js',
         )
     
     """

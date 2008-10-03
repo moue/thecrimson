@@ -7,7 +7,12 @@ from os import path
 try:
     from local_settings import *
 except:
-    print "You need a local_settings.py file. Check settings.py for more info.\n"
+    print """
+	***********************************
+	You need a local_settings.py file. 
+	Check settings.py for more info.
+	***********************************
+	"""
     raise ImportError
 import django.conf.global_settings as defaults
 
