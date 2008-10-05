@@ -73,6 +73,23 @@ class Contributor(models.Model):
     """
     Someone who contributes to the Crimson, 
     like a staff writer, a photographer, or a guest writer.
+	
+	# Create a contributor
+	>>> c = Contributor(first_name='Dan', middle_initial='C',last_name='Carroll')
+	
+	# Test the unicode string
+	>>> str(c)
+	'Dan C. Carroll'
+	
+	# Default is active
+	>>> c.is_active
+	True
+	
+	# Check the hashing of HUIDs
+	>>> c.huid_hash='12345678'
+	'%\xd5Z\xd2\x83\xaa@\n\xf4d\xc7mq<\x07\xad'
+	
+	#Still need to test permalinks...
     """
     user = models.ForeignKey(
         User, verbose_name='web user', unique=True, blank=True, 
@@ -103,7 +120,7 @@ class Contributor(models.Model):
         if self.middle_initial == None or self.middle_initial == '':
             m = ''
         else:
-            m = ' ' + self.middle_initial
+            m = ' ' + self.middle_initial + '.'
         return '%s%s %s' % (self.first_name, m, self.last_name)
         
     def __setattr__(self, name, value):
