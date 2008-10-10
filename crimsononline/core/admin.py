@@ -188,7 +188,7 @@ class ImageGalleryAdmin(admin.ModelAdmin):
 admin.site.register(ImageGallery, ImageGalleryAdmin)
 
 
-class ImageGallerySelectWidget(forms.widgets.Select):
+class ImageGallerySelectWidget(forms.widgets.HiddenInput):
     def render(self, name, value, attrs=None, choices=()):
         if value:
             # HACK: we shouldn't have to re-get the image gallery
@@ -203,6 +203,7 @@ class ImageGallerySelectWidget(forms.widgets.Select):
             #thumbs_html = thumbs_html % ''
             _html = ''
         # show thumbnails of all the galleries
+        slct = 'selected="selected"'
         thumbs_html = """<div class="image_gallery_select">%s
         <div class="image_gallery_search">
             Tag: <input id="search_by_tag"></input> | 
@@ -211,14 +212,14 @@ class ImageGallerySelectWidget(forms.widgets.Select):
             End Month: <select id="search_by_end_year">%s</select>
             <select id="search_by_end_month">%s</select>
             <a href="#" class="button" id="find_image_gallery_button">Find</a>
-        </div></div>""" % (_html,
-            ''.join(['<option value="%d">%d</option>' % (i, i) for i in range(1996, datetime.now().year + 1)]), 
-            ''.join(['<option value="%d">%d</option>' % (i, i) for i in range(1, 13)]),
-            ''.join(['<option value="%d">%d</option>' % (i, i) for i in range(1996, datetime.now().year + 1)]),
-            ''.join(['<option value="%d">%d</option>' % (i, i) for i in range(1, 13)]),
+        </div><div class="image_gallery_results"></div></div>""" % (_html,
+            ''.join(['<option value="%d"%s>%d</option>' % (i, slct if i == datetime.now().year else '', i) for i in range(1996, datetime.now().year + 1)]), 
+            ''.join(['<option value="%d"%s>%d</option>' % (i, slct if i == datetime.now().month else '', i) for i in range(1, 13)]),
+            ''.join(['<option value="%d"%s>%d</option>' % (i, slct if i == datetime.now().year else '', i) for i in range(1996, datetime.now().year + 1)]),
+            ''.join(['<option value="%d"%s>%d</option>' % (i, slct if i == datetime.now().month else '', i) for i in range(1, 13)]),
             )
         return mark_safe(super(ImageGallerySelectWidget, self).render(
-            name, value, attrs, choices) + thumbs_html)
+            name, value, attrs) + thumbs_html)
         
 
 class ImageGalleryChoiceField(forms.ModelChoiceField):

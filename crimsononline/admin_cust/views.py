@@ -38,7 +38,7 @@ def get_img_galleries(request, st_yr, st_mnth, end_yr,
     """
     Returns some JSON corresponding to a list of image galleries.
     """
-    IMG_GALS_PER_REQ = 6
+    IMG_GALS_PER_REQ = 1
     
     tags = [tag.strip() for tag in tags.split(',')]
     st_yr, st_mnth, end_yr, end_mnth = \
