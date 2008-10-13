@@ -18,18 +18,29 @@ $(document).ready(function (){
                 $.each(json.galleries, function(i, val){
                     val = $(val);
                     $(".image_gallery_results").append(val);
-                    //if(val(i)
-                    // when someone clicks the image gallery, it'll be added to the dropdown
-                    // TODO: add it to the preview area too
-                    $(val).click(function(){
-                        // set a background color
-                        var assblue = "lemonchiffon";
-                        $(this).css("background-color", assblue);
-                        // TODO: unset other background colors
-                        
-                        // add it to the <input>
-                        $("#id_image_gallery").val(i);
-                    });
+                    var assblue = "lemonchiffon";
+                    if(i == $("#id_image_gallery").val()){
+                        // pre highlight image gallery if it is already selected
+                        $(val).css("background-color", assblue)
+                    } else {
+                        // when someone clicks the image gallery
+                        $(val)
+                        .hover(function(){
+                            $(val).css("background-color", "lightgreen");
+                        }, function(){
+                            $(val).css("background-color", "white");
+                        })
+                        .click(function(){
+                            $(this).unbind();
+                            // TODO: unset other background colors
+                            $(
+                            // set a background color
+                            $(this).css("background-color", assblue);
+                            // add it to the <input>
+                            $("#id_image_gallery").val(i);
+                            // TODO: add it to the preview area too
+                        });
+                    }
                 });
                 // add the pagination buttons to the end of the image galleries
                 var next_page = parseInt(json.next_page);

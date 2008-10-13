@@ -197,7 +197,7 @@ class ImageGallerySelectWidget(forms.widgets.HiddenInput):
             
             from crimsononline.templ.templatetags.crimson_filters import to_thumb_tag
             _html += ''.join(['<li>%s</li>' % to_thumb_tag(img) for img in ig.images.all()])
-            _html += '<ul>'
+            _html += '</ul>'
             #thumbs_html = thumbs_html % _html
         else:
             #thumbs_html = thumbs_html % ''
