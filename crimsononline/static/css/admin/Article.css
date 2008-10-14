@@ -1,0 +1,26 @@
+.image_gallery_preview li{
+    list-style: none;
+    display: inline;
+    padding: 0px 5px;
+}
+.image_gallery_preview {
+    padding: 5px 0px;
+}
+.image_gallery_search{
+    clear:both;
+}
+#image_gallery_current {
+    float: left;
+    margin-left: 0;
+}
+#image_gallery_remove_button {
+    padding-top: 40px;
+    display: block;
+}
+
+.highlighted {
+    background-color: lightgreen;
+}
+.selected {
+    background-color: cornflowerblue;
+}

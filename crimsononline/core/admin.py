@@ -193,11 +193,11 @@ class ImageGallerySelectWidget(forms.widgets.HiddenInput):
         if value:
             # HACK: we shouldn't have to re-get the image gallery
             ig = ImageGallery.objects.get(pk=value)
-            _html = '<ul class="current_gallery">'
+            _html = '<ul class="image_gallery_preview" id="image_gallery_current">'
             
             from crimsononline.templ.templatetags.crimson_filters import to_thumb_tag
-            _html += ''.join(['<li>%s</li>' % to_thumb_tag(img) for img in ig.images.all()])
-            _html += '</ul>'
+            _html += ''.join(['<li>%s</li>' % to_thumb_tag(img) for img in ig.images.all()[:6]])
+            _html += '</ul><a href="#" id="image_gallery_remove_button" style="display:none;">Remove</a>'
             #thumbs_html = thumbs_html % _html
         else:
             #thumbs_html = thumbs_html % ''
@@ -206,7 +206,7 @@ class ImageGallerySelectWidget(forms.widgets.HiddenInput):
         slct = 'selected="selected"'
         thumbs_html = """<div class="image_gallery_select">%s
         <div class="image_gallery_search">
-            Tag: <input id="search_by_tag"></input> | 
+            Tag: <input id="search_by_tag"> | 
             Start Month: <select id="search_by_start_year">%s</select>
             <select id="search_by_start_month">%s</select> |
             End Month: <select id="search_by_end_year">%s</select>
@@ -241,7 +241,6 @@ class SingleImageChoiceField(forms.ModelChoiceField):
         )
 
 class ArticleForm(ModelForm):
-    #TODO: insert logic to display current image gallery in the image section
     teaser = forms.fields.CharField(
         widget=forms.TextInput(attrs={'size':'70'}),
         required=False
@@ -300,6 +299,9 @@ class ArticleAdmin(admin.ModelAdmin):
             'scripts/admin/Article.js',
 			'scripts/framework/jquery.sprintf.js',
         )
+        css = {
+            'all': ('css/admin/Article.css',)
+        }
     
     """
     # we need to set the list of images (that show up) on a per instance basis
