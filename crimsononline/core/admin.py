@@ -204,6 +204,7 @@ class ImageGallerySelectWidget(forms.widgets.HiddenInput):
             _html = ''
         # show thumbnails of all the galleries
         slct = 'selected="selected"'
+        opt = '<option value="%d"%s>%d</option>'
         thumbs_html = """<div class="image_gallery_select">%s
         <div class="image_gallery_search">
             Tag: <input id="search_by_tag"> | 
@@ -213,10 +214,10 @@ class ImageGallerySelectWidget(forms.widgets.HiddenInput):
             <select id="search_by_end_month">%s</select>
             <a href="#" class="button" id="find_image_gallery_button">Find</a>
         </div><div class="image_gallery_results"></div></div>""" % (_html,
-            ''.join(['<option value="%d"%s>%d</option>' % (i, slct if i == datetime.now().year else '', i) for i in range(1996, datetime.now().year + 1)]), 
-            ''.join(['<option value="%d"%s>%d</option>' % (i, slct if i == datetime.now().month else '', i) for i in range(1, 13)]),
-            ''.join(['<option value="%d"%s>%d</option>' % (i, slct if i == datetime.now().year else '', i) for i in range(1996, datetime.now().year + 1)]),
-            ''.join(['<option value="%d"%s>%d</option>' % (i, slct if i == datetime.now().month else '', i) for i in range(1, 13)]),
+            ''.join([opt % (i, slct if i == datetime.now().year else '', i) for i in range(1996, datetime.now().year + 1)]), 
+            ''.join([opt % (i, slct if i == datetime.now().month else '', i) for i in range(1, 13)]),
+            ''.join([opt % (i, slct if i == datetime.now().year else '', i) for i in range(1996, datetime.now().year + 1)]),
+            ''.join([opt % (i, slct if i == datetime.now().month else '', i) for i in range(1, 13)]),
             )
         return mark_safe(super(ImageGallerySelectWidget, self).render(
             name, value, attrs) + thumbs_html)
@@ -288,7 +289,12 @@ class ArticleAdmin(admin.ModelAdmin):
         }),
         ('Image(s)', {
             'classes': ('collapse',),
-            'fields': ('image_gallery', 'single_image',)
+            'fields': ('image_gallery', 'single_image',),
+            'description': """This article has:<ul>
+                <li><a href="#" id="image_section_single_button">1 image</a></li>
+                <li><a href="#" id="image_section_multiple_button">an image gallery</a></li>
+                <li><a href="#" id="image_section_none_button">no images</a></li>
+                </ul>""",
         })
     )
     form = ArticleForm
