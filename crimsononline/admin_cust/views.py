@@ -38,7 +38,9 @@ def get_img_galleries(request, st_yr, st_mnth, end_yr,
     """
     Returns some JSON corresponding to a list of image galleries.
     """
+    
     IMG_GALS_PER_REQ = 1
+    MAX_IMGS_PER_GAL = 1
     
     tags = [tag.strip() for tag in tags.split(',')]
     st_yr, st_mnth, end_yr, end_mnth = \
@@ -55,8 +57,11 @@ def get_img_galleries(request, st_yr, st_mnth, end_yr,
     
     galleries = {}
     for gal in p.object_list:
-        galleries[gal.pk] = render_to_string('image_gal_fragment.html', {'gal': gal})
-        
+        galleries[gal.pk] = render_to_string('image_gal_fragment.html', {
+            'images': gal.images.all()[:MAX_IMGS_PER_GAL],
+            'more': max(gal.images.count() - MAX_IMGS_PER_GAL, 0),
+            'gal': gal})
+    
     json_dict = {}
     json_dict['galleries'] = galleries
     json_dict['next_page'] = p.next_page_number() if p.has_next() else 0

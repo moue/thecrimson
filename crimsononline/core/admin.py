@@ -256,9 +256,13 @@ class ArticleForm(ModelForm):
     text = forms.fields.CharField(
         widget=forms.Textarea(attrs={'rows':'50', 'cols':'67'})
     )
-    image_gallery = ImageGalleryChoiceField(ImageGallery.objects.all(), 
-        widget=ImageGallerySelectWidget(), required=False)
-    single_image = SingleImageChoiceField(Image.objects.all(), required=False)
+    image_gallery = forms.ModelChoiceField(ImageGallery.objects.all(), 
+        widget=ImageGallerySelectWidget(), required=False,
+        label="Search for existing images")
+    new_image_gallery = ImageGalleryChoiceField(ImageGallery.objects.all(),
+        widget=forms.widgets.HiddenInput, required=False)
+    new_image = SingleImageChoiceField(Image.objects.all(), 
+        widget=forms.widgets.HiddenInput, required=False)
     
     class Meta:
         model = Article
@@ -289,12 +293,7 @@ class ArticleAdmin(admin.ModelAdmin):
         }),
         ('Image(s)', {
             'classes': ('collapse',),
-            'fields': ('image_gallery', 'single_image',),
-            'description': """This article has:<ul>
-                <li><a href="#" id="image_section_single_button">1 image</a></li>
-                <li><a href="#" id="image_section_multiple_button">an image gallery</a></li>
-                <li><a href="#" id="image_section_none_button">no images</a></li>
-                </ul>""",
+            'fields': ('image_gallery', 'new_image_gallery', 'new_image',),
         })
     )
     form = ArticleForm
@@ -308,29 +307,6 @@ class ArticleAdmin(admin.ModelAdmin):
         css = {
             'all': ('css/admin/Article.css',)
         }
-    
-    """
-    # we need to set the list of images (that show up) on a per instance basis
-    # unbound forms => no images
-    # bound forms => images belonging to the ImageGallery instance
-    def get_form(self, request, obj=None):
-        f = super(ArticleAdmin,self).get_form(request, obj)
-        
-        # no bound => no images
-        qs = ImageGallery.objects.none()
-        
-        # yes bound => images that belong to the current ImageGallery
-        if obj is not None:
-            if obj.image_gallery is not None:
-                qs = ImageGallery.objects.filter(pk=obj.image_gallery.pk)
-        
-        # querysets are set for bound and unbound forms because if
-        #    we don't set the queryset on unbound forms, loading a bound
-        #    form and then loading an unbound form leads to the wrong
-        #    images showing up.  (maybe querysets are cached improperly?)
-        f.base_fields['image_gallery'].queryset = qs
-        return f
-    """
     
     def has_change_permission(self, request, obj=None):
         u = request.user
@@ -356,7 +332,8 @@ class ArticleAdmin(admin.ModelAdmin):
         return qs
         
     def save_model(self, request, obj, form, change):
-        img = form.cleaned_data['single_image']
+        # TODO: deal with new_image_gallery
+        img = form.cleaned_data['new_image']
         # turn the image into a gallery, attach the gallery to the article
         if img:
             gal = ImageGallery.objects.create(

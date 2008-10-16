@@ -69,7 +69,7 @@ def linkify(obj, link_text=''):
 		return l[0] if len(l) == 1 else l
 	except:
 		return ''
-		
+        
 @register.filter
 def human_list(list, connector='and'):
 	"""turns list into an comma separated list (with an and)"""
