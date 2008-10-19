@@ -1,8 +1,8 @@
 // monkey patch dismiss related lookup popup to call our code
-var originalDismissRelatedLookupPopup = dismissRelatedLookupPopup;
-var dismissRelatedLookupPopup = function(win, chosenId){
+var originalDismissAddAnotherPopup = dismissAddAnotherPopup;
+dismissAddAnotherPopup = function(win, newId, newRepr){
     alert("hi");
-    originalDismissRelatedLookupPopup(win, chosenId);
+    return originalDismissAddAnotherPopup(win, newId, newRepr);
 }
 
 $(document).ready(function (){
