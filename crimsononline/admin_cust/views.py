@@ -1,5 +1,5 @@
 from datetime import datetime
-from django.db import connection
+from django.db.models import Q
 from django.shortcuts import render_to_response, get_object_or_404
 from django.core.paginator import Paginator
 from django.http import HttpResponse
@@ -7,6 +7,7 @@ from django.template.loader import render_to_string
 from django.utils import simplejson
 from crimsononline.core.models import Image, ImageGallery
 
+# TODO: protect this
 def get_imgs(request, page=None, pk=None):
     """
     Returns some JSON corresponding to a list of image thumbnails.
@@ -32,35 +33,44 @@ def get_imgs(request, page=None, pk=None):
             'image_fragment.html', 
             {'images': [get_object_or_404(Image, pk=pk)]}
         )
-        
+
+# TODO: protect this
 def get_img_galleries(request, st_yr, st_mnth, end_yr, 
                         end_mnth, tags, page=None):
     """
-    Returns some JSON corresponding to a list of image galleries.
+    Returns some JSON corresponding to a list of image galleries and images.
     """
     
-    IMG_GALS_PER_REQ = 1
-    MAX_IMGS_PER_GAL = 1
+    IMG_GALS_PER_REQ = 5
+    MAX_IMGS_PER_GAL = 5
     
     tags = [tag.strip() for tag in tags.split(',')]
     st_yr, st_mnth, end_yr, end_mnth = \
         int(st_yr), int(st_mnth), int(end_yr), int(end_mnth)
     end_yr, end_mnth = (end_yr+1, 1) if end_mnth > 11 else (end_yr, end_mnth+1)
     page = int(page or 1)
-    qs = ImageGallery.objects.filter(created_on__range=(
+    
+    q = Q(created_on__range=(
         datetime(st_yr, st_mnth, 1),
         datetime(end_yr, end_mnth, 1),
     ))
     for tag in tags:
-        qs = qs & ImageGallery.objects.filter(tags__text=tag)
-    p = Paginator(qs, IMG_GALS_PER_REQ).page(page)
+        q = q & Q(tags__text=tag)
+    # TODO: loading all the objects at once is REALLY inefficient; fix it
+    imgs = list(Image.objects.filter(q)) + list(ImageGallery.objects.filter(q))
+    p = Paginator(imgs, IMG_GALS_PER_REQ).page(page)
     
     galleries = {}
-    for gal in p.object_list:
-        galleries[gal.pk] = render_to_string('image_gal_fragment.html', {
-            'images': gal.images.all()[:MAX_IMGS_PER_GAL],
-            'more': max(gal.images.count() - MAX_IMGS_PER_GAL, 0),
-            'gal': gal})
+    for obj in p.object_list:
+        if obj.__class__ == ImageGallery:
+            galleries['gal_%d' % obj.pk] = render_to_string('image_gal_fragment.html', {
+                'images': obj.images.all()[:MAX_IMGS_PER_GAL],
+                'more': max(obj.images.count() - MAX_IMGS_PER_GAL, 0),
+                'gal': obj})
+        else:
+            galleries['img_%d' % obj.pk] = render_to_string('image_gal_fragment.html', {
+                'image': obj,
+            })
     
     json_dict = {}
     json_dict['galleries'] = galleries

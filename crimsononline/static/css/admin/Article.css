@@ -9,6 +9,9 @@
 .image_gallery_search{
     /*clear:both;*/
 }
+.image_gallery_results {
+    padding-top: 5px;
+}
 #image_gallery_current {
     float: left;
     margin-left: 0;
@@ -19,8 +22,10 @@
 }
 
 .highlighted {
-    background-color: lightgreen;
+    background-color: azure;
 }
 .selected {
-    background-color: cornflowerblue;
+    background-color: azure;
+    opacity: .7;
+    filter: alpha(opacity=70);
 }

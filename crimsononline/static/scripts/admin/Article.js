@@ -1,16 +1,25 @@
+// monkey patch dismiss related lookup popup to call our code
+var originalDismissRelatedLookupPopup = dismissRelatedLookupPopup;
+var dismissRelatedLookupPopup = function(win, chosenId){
+    alert("hi");
+    originalDismissRelatedLookupPopup(win, chosenId);
+}
+
 $(document).ready(function (){
 
     // activates the remove gallery button
     var activateRemoveButton = function(){
+        deactivateRemoveButton();
         $("#image_gallery_remove_button")
             .show()
             .click(function(){
                 // remove the gallery from the current gal area
-                $("#image_gallery_current").remove();
+                $("#image_gallery_current").empty();
                 // remove the gallery pk from the input
-                $("#id_image_gallery").val("");
+                $("#id_selected_image").val("");
                 // remove any highlighting from gallery list
-                $("[class*=selected]").removeClass("selected")
+                activateImageSelector($(".image_gallery_results [class*=selected]")
+                    .removeClass("selected"));
                 deactivateRemoveButton();
                 return false;
             });
@@ -20,6 +29,38 @@ $(document).ready(function (){
     var deactivateRemoveButton = function(){
         $("#image_gallery_remove_button")
             .hide().unbind();
+    }
+    
+    //
+    var activateImageSelector = function(ele){
+        $(ele)
+            // flashy hover effect
+            .hover(function(){
+                $(this).addClass("highlighted");
+            }, function(){
+                $(this).removeClass("highlighted");
+            })
+            .click(function(){
+                // deactivate this image selector
+                $(this).removeClass("highlighted").unbind();
+                // add it to the selected image <input>
+                $("#id_selected_image").val($(ele).attr("id").replace("preview_",""));
+                // TODO: add image type to image type <input>
+                
+                // replace the current gallery area with this gallery
+                $("#image_gallery_current").after(
+                    $(this)
+                        .clone()
+                        .attr("id", "image_gallery_current")
+                ).remove();
+                // unset other background colors
+                activateImageSelector($(".image_gallery_results [class*=selected]")
+                    .removeClass("selected"));
+                // set a background color
+                $(this).addClass("selected");
+                // activate the remove button
+                activateRemoveButton();
+            });
     }
     
     // gets the images from the server
@@ -38,44 +79,20 @@ $(document).ready(function (){
                 // clear out the image gallery
                 $(".image_gallery_results").empty();
                 // add the new image galleries into the results div
-                $.each(json.galleries, function(i, val){
+                $.each(json.galleries, function(i, gal_html){
                     galleries_returned = true;
-                    val = $(val);
-                    $(".image_gallery_results").append(val);
-                    if(i == $("#id_image_gallery").val()){
+                    
+                    //var type = i.split("_")[0];
+                    //var pk = i.split("_")[1];
+                    gal = $(gal_html);
+                    $(".image_gallery_results").append(gal);
+                    if(i == $("#id_selected_image").val()){
                         // pre highlight image gallery if it is already selected
-                        $(val).addClass("selected")
+                        $(gal).addClass("selected")
                     } else {
-                        $(val)
-                        // hover
-                            .hover(function(){
-                                $(val).addClass("highlighted");
-                            }, function(){
-                                $(val).removeClass("highlighted");
-                            })
-                        // when someone clicks the image gallery
-                            .click(function(){
-                                $(this).unbind();
-                                // clear replace the current gallery area with this gallery
-                                $("#image_gallery_current").remove()
-                                $(".image_gallery_select").prepend(
-                                    $(this)
-                                        .clone()
-                                        .attr("id", "image_gallery_current")
-                                        .removeClass("highlighted")
-                                );
-                                // unset other background colors
-                                $(".image_gallery_preview").removeClass("selected");
-                                // set a background color
-                                $(this).addClass("selected");
-                                // add it to the <input>
-                                $("#id_image_gallery").val(i);
-                                // activate the remove button
-                                activateRemoveButton();
-                            });
+                        activateImageSelector($(gal));
                     }
                 });
-                console.log(galleries_returned);
                 if(galleries_returned){
                     // add the pagination buttons to the end of the image galleries
                     var next_page = parseInt(json.next_page);
@@ -98,7 +115,8 @@ $(document).ready(function (){
                         });
                     };
                 } else {
-                    $(".image_gallery_results").append("no image galleries found");
+                    // display an error message
+                    $(".image_gallery_results").append("No images matched your query");
                 }
             }
         );
@@ -109,7 +127,7 @@ $(document).ready(function (){
         return false;
     });
     
-    if($("#id_image_gallery").val()){
+    if($("#id_selected_image").val()){
         activateRemoveButton(); 
     }
 });

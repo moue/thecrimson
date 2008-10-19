@@ -1,14 +1,24 @@
 {% load crimson_filters %}
 
-<ul class="image_gallery_preview" id="image_gallery_preview_{{ gal.pk }}">
+<ul class="image_gallery_preview" id="preview_{% if images %}gal{% else %}img{% endif %}_{% firstof gal.pk image.pk %}">
     <li>
-        {{ gal.title|truncatewords:3 }}
+        {% if images %}
+            {{ gal.title|truncatewords:3 }}
+        {% else %}
+            {{ image.caption|truncatewords:3 }}
+        {% endif %}
     </li>
-    {% for image in images %}
+    {% if images %}
+        {% for image in images %}
+            <li>
+                {{ image|to_thumb_tag }}
+            </li>
+        {% endfor %}
+    {% else %}
         <li>
             {{ image|to_thumb_tag }}
         </li>
-    {% endfor %}
+    {% endif %}
     {% if more %}
         <li>
             {{ more }} more image{{ more|pluralize }}.

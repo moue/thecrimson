@@ -200,7 +200,7 @@ class Image(models.Model):
     
     caption = models.CharField(blank=False, max_length=1000)
     kicker = models.CharField(blank=False, max_length=500)
-    uploaded_on = models.DateTimeField(auto_now_add=True)
+    created_on = models.DateTimeField(auto_now_add=True)
     contributor = models.ForeignKey(
         Contributor, limit_choices_to={'is_active': True})
     tags = models.ManyToManyField(Tag, blank=False)
@@ -209,8 +209,8 @@ class Image(models.Model):
     pic = models.ImageField('File', upload_to=get_save_path)
     
     class Meta:
-        get_latest_by = 'uploaded_on'
-        ordering = ['-uploaded_on']
+        get_latest_by = 'created_on'
+        ordering = ['-created_on']
     
     def get_pic_sized_url(self, width=None, height=None):
         """
@@ -307,7 +307,7 @@ class Article(models.Model):
     contributors = models.ManyToManyField(
         Contributor, limit_choices_to={'is_active': True},
         help_text='Who wrote this article')
-    uploaded_on = models.DateTimeField(auto_now_add=True)
+    created_on = models.DateTimeField(auto_now_add=True)
     modified_on = models.DateTimeField(auto_now=True)
     priority = models.IntegerField(default=0, 
         help_text='Higher priority articles are displayed first.' \

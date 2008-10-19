@@ -190,22 +190,9 @@ admin.site.register(ImageGallery, ImageGalleryAdmin)
 
 class ImageGallerySelectWidget(forms.widgets.HiddenInput):
     def render(self, name, value, attrs=None, choices=()):
-        if value:
-            # HACK: we shouldn't have to re-get the image gallery
-            ig = ImageGallery.objects.get(pk=value)
-            _html = '<ul class="image_gallery_preview" id="image_gallery_current">'
-            
-            from crimsononline.templ.templatetags.crimson_filters import to_thumb_tag
-            _html += ''.join(['<li>%s</li>' % to_thumb_tag(img) for img in ig.images.all()[:6]])
-            _html += '</ul><a href="#" id="image_gallery_remove_button" style="display:none;">Remove</a>'
-            #thumbs_html = thumbs_html % _html
-        else:
-            #thumbs_html = thumbs_html % ''
-            _html = ''
-        # show thumbnails of all the galleries
         slct = 'selected="selected"'
         opt = '<option value="%d"%s>%d</option>'
-        thumbs_html = """<div class="image_gallery_select">%s
+        thumbs_html = """<div class="image_gallery_select">
         <div class="image_gallery_search">
             Tag: <input id="search_by_tag"> | 
             Start Month: <select id="search_by_start_year">%s</select>
@@ -213,7 +200,7 @@ class ImageGallerySelectWidget(forms.widgets.HiddenInput):
             End Month: <select id="search_by_end_year">%s</select>
             <select id="search_by_end_month">%s</select>
             <a href="#" class="button" id="find_image_gallery_button">Find</a>
-        </div><div class="image_gallery_results"></div></div>""" % (_html,
+        </div><div class="image_gallery_results"></div></div>""" % (
             ''.join([opt % (i, slct if i == datetime.now().year else '', i) for i in range(1996, datetime.now().year + 1)]), 
             ''.join([opt % (i, slct if i == datetime.now().month else '', i) for i in range(1, 13)]),
             ''.join([opt % (i, slct if i == datetime.now().year else '', i) for i in range(1996, datetime.now().year + 1)]),
@@ -221,20 +208,40 @@ class ImageGallerySelectWidget(forms.widgets.HiddenInput):
             )
         return mark_safe(super(ImageGallerySelectWidget, self).render(
             name, value, attrs) + thumbs_html)
-        
 
-class ImageGalleryChoiceField(forms.ModelChoiceField):
+class ImageGalleryPreviewWidget(forms.widgets.HiddenInput):
+    """
+    Hidden input that displays an image gallery preview
+    """
+    def render(self, name, value, attrs=None, choices=()):
+        ig = self.__dict__.get('gal', None) 
+        _html = '<ul class="image_gallery_preview " id="image_gallery_current">'
+        if ig:
+            # render the image gallery
+            # TODO: make this use the admin_cust template (same one AJAX calls render)
+            from crimsononline.templ.templatetags.crimson_filters import to_thumb_tag
+            _html += ''.join(['<li>%s</li>' % to_thumb_tag(img) for img in ig.images.all()[:6]])
+            # put the image gallery pk into the widget
+            if attrs:
+                attrs['value'] = 'gal_%d' % ig.pk
+            else:
+                attrs = {'value': 'gal_%d' % ig.pk}
+        _html += '</ul><a href="#" id="image_gallery_remove_button" style="display:none;">Remove</a>'
+        return mark_safe(super(ImageGalleryPreviewWidget, self).render(
+            name, value, attrs) + _html)
+
+class ImageGalleryNewField(forms.ModelChoiceField):
     def __init__(self, *args, **kwargs):
-        super(ImageGalleryChoiceField,self).__init__(*args, **kwargs)
+        super(ImageGalleryNewField,self).__init__(*args, **kwargs)
         self.widget = admin.widgets.RelatedFieldWidgetWrapper(
             self.widget,
             Article._meta.get_field('image_gallery').rel,
             admin.site
         )
         
-class SingleImageChoiceField(forms.ModelChoiceField):
+class SingleImageNewField(forms.ModelChoiceField):
     def __init__(self, *args, **kwargs):
-        super(SingleImageChoiceField, self).__init__(*args, **kwargs)
+        super(SingleImageNewField, self).__init__(*args, **kwargs)
         self.widget = admin.widgets.RelatedFieldWidgetWrapper(
             self.widget, 
             ImageGallery._meta.get_field('images').rel, 
@@ -256,13 +263,19 @@ class ArticleForm(ModelForm):
     text = forms.fields.CharField(
         widget=forms.Textarea(attrs={'rows':'50', 'cols':'67'})
     )
-    image_gallery = forms.ModelChoiceField(ImageGallery.objects.all(), 
-        widget=ImageGallerySelectWidget(), required=False,
-        label="Search for existing images")
-    new_image_gallery = ImageGalleryChoiceField(ImageGallery.objects.all(),
+    selected_image = forms.CharField(widget=ImageGalleryPreviewWidget,
+        required=False, label='Selected image gallery')
+    existing_image_type = forms.CharField(widget=ImageGallerySelectWidget(), 
+        required=False, label="Search for existing images")
+    new_image_gallery = ImageGalleryNewField(ImageGallery.objects.all(),
         widget=forms.widgets.HiddenInput, required=False)
-    new_image = SingleImageChoiceField(Image.objects.all(), 
+    new_image = SingleImageNewField(Image.objects.all(), 
         widget=forms.widgets.HiddenInput, required=False)
+    
+    def __init__(self, *args, **kwargs):
+        super(ArticleForm, self).__init__(*args, **kwargs)
+        if self.instance.pk and self.instance.image_gallery:
+            self.fields['selected_image'].widget.__dict__['gal'] = self.instance.image_gallery
     
     class Meta:
         model = Article
@@ -293,7 +306,7 @@ class ArticleAdmin(admin.ModelAdmin):
         }),
         ('Image(s)', {
             'classes': ('collapse',),
-            'fields': ('image_gallery', 'new_image_gallery', 'new_image',),
+            'fields': ('selected_image', 'existing_image_type', 'new_image_gallery', 'new_image',),
         })
     )
     form = ArticleForm
@@ -314,7 +327,7 @@ class ArticleAdmin(admin.ModelAdmin):
             return True
         # cannot make changes after 60 minutes from uploaded time
         elif obj and not u.has_perm('core.article.can_change_after_timeout'):
-            return (datetime.now() - obj.uploaded_on).seconds < (60 * 60)
+            return (datetime.now() - obj.created_on).seconds < (60 * 60)
         return super(ArticleAdmin, self).has_change_permission(request, obj)
     
     def queryset(self, request):
@@ -326,7 +339,7 @@ class ArticleAdmin(admin.ModelAdmin):
         # restrict editing of articles uploaded before 60 min ago
         if not u.has_perm('core.article.can_change_after_timeout'):
             t = datetime.now() - timedelta(seconds=(60*60))
-            qs = qs.filter(uploaded_on__gt=t)
+            qs = qs.filter(created_on__gt=t)
             u.message_set.create(message='Note: you can only change articles' \
                                             ' uploaded in the last hour.')
         return qs
