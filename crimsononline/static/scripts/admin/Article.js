@@ -1,12 +1,41 @@
-// monkey patch dismiss related lookup popup to call our code
-var originalDismissAddAnotherPopup = dismissAddAnotherPopup;
-dismissAddAnotherPopup = function(win, newId, newRepr){
-    alert("hi");
-    return originalDismissAddAnotherPopup(win, newId, newRepr);
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 $(document).ready(function (){
-
+    
+    // monkey patch dismiss related lookup popup to call our code
+    var originalDismissAddAnotherPopup = dismissAddAnotherPopup;
+    dismissAddAnotherPopup = function(win, newId, newRepr){
+        console.log(newId + "  " + newRepr);
+        // put the image into the <input>
+        var prefix = (win.name.indexOf("gallery") == -1) ? "img" : "gal";
+        $("#id_selected_image").val(prefix + "_" + newId);
+        // grab the preview from the server
+        // TODO: fix it so that the remove button only activates after the server responds
+        var url = "/admin/core/imagegallery/get_img_gallery/" + prefix + "/" + newId;
+        $("#image_gallery_current").empty().load(url + " li");
+        activateRemoveButton();
+        return originalDismissAddAnotherPopup(win, newId, newRepr);
+    }
+    
+    
     // activates the remove gallery button
     var activateRemoveButton = function(){
         deactivateRemoveButton();
@@ -45,8 +74,6 @@ $(document).ready(function (){
                 $(this).removeClass("highlighted").unbind();
                 // add it to the selected image <input>
                 $("#id_selected_image").val($(ele).attr("id").replace("preview_",""));
-                // TODO: add image type to image type <input>
-                
                 // replace the current gallery area with this gallery
                 $("#image_gallery_current").after(
                     $(this)

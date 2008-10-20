@@ -34,6 +34,20 @@ def get_imgs(request, page=None, pk=None):
             {'images': [get_object_or_404(Image, pk=pk)]}
         )
 
+
+MAX_IMGS_PER_GAL = 5
+def get_img_gallery(request, type, pk):
+    """
+    Returns some JSON corresponding to an image gallery
+    """
+    if type == "img":
+        dict = {'image': get_object_or_404(Image, pk=int(pk))}
+    else:
+        gal = get_object_or_404(ImageGallery, pk=int(pk))
+        dict = {'images': gal.images.all()[:MAX_IMGS_PER_GAL],
+                'gal': gal}
+    return render_to_response('image_gal_fragment.html', dict)
+
 # TODO: protect this
 def get_img_galleries(request, st_yr, st_mnth, end_yr, 
                         end_mnth, tags, page=None):
@@ -42,7 +56,6 @@ def get_img_galleries(request, st_yr, st_mnth, end_yr,
     """
     
     IMG_GALS_PER_REQ = 5
-    MAX_IMGS_PER_GAL = 5
     
     tags = [tag.strip() for tag in tags.split(',')]
     st_yr, st_mnth, end_yr, end_mnth = \
