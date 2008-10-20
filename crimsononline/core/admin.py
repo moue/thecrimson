@@ -6,6 +6,7 @@ from django.forms import ModelForm
 from django.contrib.auth.models import User
 from django.utils.safestring import mark_safe
 from crimsononline.core.models import *
+from crimsononline.admin_cust.forms import FbSelectMultipleWidget, FbModelMultipleChoiceField
 
 class TagForm(forms.ModelForm):
     ALLOWED_REGEXP = compile(r'[A-Za-z\s]+$')
@@ -263,6 +264,9 @@ class ArticleForm(ModelForm):
     text = forms.fields.CharField(
         widget=forms.Textarea(attrs={'rows':'50', 'cols':'67'})
     )
+    contributors = FbModelMultipleChoiceField(required=False, 
+        url='/admin/core/contributor/search/', model=Contributor,
+        labeler=(lambda obj: obj.__str__()))
     selected_image = forms.CharField(widget=ImageGalleryPreviewWidget,
         required=False, label='Selected image gallery')
     existing_image_type = forms.CharField(widget=ImageGallerySelectWidget(), 
@@ -309,7 +313,7 @@ class ArticleForm(ModelForm):
 class ArticleAdmin(admin.ModelAdmin):
     list_display = ('headline', 'section', 'issue',)
     search_fields = ('headline', 'text',)
-    filter_horizontal = ('contributors', 'tags',)
+    filter_horizontal = ('tags',)
     exclude = ['is_published']
     fieldsets = (
         ('Headline', {
@@ -374,7 +378,7 @@ class ArticleAdmin(admin.ModelAdmin):
         gal_pk = form.cleaned_data['selected_image']
         if gal_pk:
             # TODO: figure out how to not get the image gallery from the db
-            obj.image_gallery = ImageGallery.objects.get(pk=gal_pk)
+            obj.image_gallery_id = gal_pk
         return super(ArticleAdmin, self).save_model(request, obj, form, change)
 
 admin.site.register(Article, ArticleAdmin)

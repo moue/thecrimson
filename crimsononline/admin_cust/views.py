@@ -2,10 +2,22 @@ from datetime import datetime
 from django.db.models import Q
 from django.shortcuts import render_to_response, get_object_or_404
 from django.core.paginator import Paginator
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.template.loader import render_to_string
 from django.utils import simplejson
-from crimsononline.core.models import Image, ImageGallery
+from crimsononline.core.models import Image, ImageGallery, Contributor
+
+def find_contributors(request):
+    if request.method != 'GET':
+        raise Http404
+    q_str, limit = request.GET.get('q', ''), request.GET.get('limit', None)
+    if (len(q_str) < 1) or (not limit):
+        print len(q_str)
+        raise Http404
+    c = Contributor.objects.filter(
+        Q(first_name__contains=q_str) | Q(last_name__contains=q_str),
+        is_active=True)[:limit]
+    return render_to_response('contributors.txt', {'contributors': c})
 
 # TODO: protect this
 def get_imgs(request, page=None, pk=None):
