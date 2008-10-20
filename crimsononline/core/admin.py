@@ -277,6 +277,32 @@ class ArticleForm(ModelForm):
         if self.instance.pk and self.instance.image_gallery:
             self.fields['selected_image'].widget.__dict__['gal'] = self.instance.image_gallery
     
+    def clean_selected_image(self):
+        if not self.cleaned_data['selected_image']:
+            return self.cleaned_data
+        from re import compile
+        r = compile('(img|gal)_(\d+)$')
+        if not r.match(self.cleaned_data['selected_image']):
+            raise forms.ValidationError("Something went terribly wrong!")
+        type = self.cleaned_data['selected_image'][:3]
+        pk = int(self.cleaned_data['selected_image'][4:])
+        # if it's an image, turn it into a gallery
+        if type == 'img':
+            # TODO: this assumes that no we won't be creating duplicate galleries, fix this
+            img = Image.objects.get(pk=pk)
+            ig = ImageGallery(
+                title=img.kicker,
+                description=img.caption,
+                cover_image=img,
+                created_on=img.created_on,
+                tags=img.tags.all(),
+            )
+            ig.images=[img,]
+            ig.save()
+            pk = ig.pk
+        self.cleaned_data['selected_image'] = pk
+        return pk
+    
     class Meta:
         model = Article
 
@@ -345,15 +371,10 @@ class ArticleAdmin(admin.ModelAdmin):
         return qs
         
     def save_model(self, request, obj, form, change):
-        # TODO: deal with new_image_gallery
-        img = form.cleaned_data['new_image']
-        # turn the image into a gallery, attach the gallery to the article
-        if img:
-            gal = ImageGallery.objects.create(
-                title=img.caption, description=img.kicker, cover_image=img)
-            gal.images = [img]
-            gal.save()
-            obj.image_gallery = gal
+        gal_pk = form.cleaned_data['selected_image']
+        if gal_pk:
+            # TODO: figure out how to not get the image gallery from the db
+            obj.image_gallery = ImageGallery.objects.get(pk=gal_pk)
         return super(ArticleAdmin, self).save_model(request, obj, form, change)
 
 admin.site.register(Article, ArticleAdmin)
