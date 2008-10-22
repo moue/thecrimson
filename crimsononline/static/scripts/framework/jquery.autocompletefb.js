@@ -21,13 +21,14 @@ jQuery.fn.autoCompletefb = function(options)
 	var tmp = this;
 	var settings = 
 	{
-		ul         : tmp,
-		urlLookup  : [""],
-		acOptions  : {formatItem: function(row, row_num, rows, q_str){
+		ul            : tmp,
+		urlLookup     : [""],
+		acOptions     : {formatItem: function(row, row_num, rows, q_str){
 		    return row[1];
 		}},
-		foundClass : ".acfb-data",
-		inputClass : ".acfb-input"
+		foundClass    : ".acfb-data",
+		inputClass    : ".acfb-input",
+        multipleInput : false,
 	}
 	if(options) jQuery.extend(settings, options);
 	
@@ -54,15 +55,18 @@ jQuery.fn.autoCompletefb = function(options)
 		removeFind : function(o){
 			$(o).unbind('click').parent().remove();
 			this.dumpData();
-			$(settings.inputClass,tmp).focus();
+			$(settings.inputClass,tmp).show().focus();
 			return tmp.acfb;
 		},
 		dumpData : function(){
-		    $(settings.inputClass,tmp).next().val(this.getData());
-		}
+		    $(settings.inputClass,tmp).parent().next().val(this.getData());
+		},
+        disableInput : function(){
+            $(settings.inputClass,tmp).val('').hide();
+        }
 	}
 	
-	$(settings.foundClass+" img.p").click(function(){
+	$(settings.foundClass+" img.p",tmp).click(function(){
 		acfb.removeFind(this);
 	});
 	
@@ -72,13 +76,20 @@ jQuery.fn.autoCompletefb = function(options)
 	    var label = d[1]+" ";
 		var c = settings.foundClass.replace(/\./,'');
 		var v = '<li class="'+c+'"><span class="label">'+label+'</span><span class="pk" style="display:none">'+pk+'</span><img class="p" src="/site_media/images/delete.gif"/></li>';
-		var x = $(settings.inputClass,tmp).before(v);
+		var x = $(settings.inputClass,tmp).parent().before(v);
 		$('.p',x[0].previousSibling).click(function(){
 			acfb.removeFind(this);
 		});
+        if(settings.multipleInput){
+            $(settings.inputClass,tmp).val('').focus();
+        } else {
+            acfb.disableInput();
+        }
 		acfb.dumpData();
-		$(settings.inputClass,tmp).val('').focus();
 	});
-	$(settings.inputClass,tmp).focus();
+    if(acfb.getData() && !settings.multipleInput){
+        acfb.disableInput();
+    }
+	//$(settings.inputClass,tmp).focus();
 	return acfb;
 }

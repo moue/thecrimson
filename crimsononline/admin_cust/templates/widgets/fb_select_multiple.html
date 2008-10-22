@@ -6,15 +6,16 @@
             <img class="p" src="/site_media/images/delete.gif"/>
         </li>
     {% endfor %}
-    <input type="text" class="acfb-input" id={{attrs.id}}_input />
+    <li><input type="text" class="acfb-input" id={{attrs.id}}_input /></li>
     {{hidden}}
 </ul>
 <script type="text/javascript">
     var acfb_{{attrs.id}};
     $(document).ready(function(){
-        acfg_{{attrs.id}} = 
+        acfb_{{attrs.id}} = 
             $("#acfb_holder_{{attrs.id}}").autoCompletefb(
-                {urlLookup:"{{url|escapejs}}"});
+                {urlLookup:"{{url|escapejs}}",
+                 multipleInput:{{is_multiple}}});
     });
 </script>
 

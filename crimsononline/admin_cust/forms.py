@@ -2,16 +2,17 @@ from django import forms
 from django.conf import settings
 from django.template.loader import render_to_string
 
-class FbSelectMultipleWidget(forms.widgets.HiddenInput):
+class FbSelectWidget(forms.widgets.HiddenInput):
     """
     A widget that allows for multiple model selection, similar to Facebook's
     compose message To: field.
     
-    Takes 3 additional parameters
+    Takes 4 additional named arguments
     url: 
     model: 
-    Labeler: 
-    For explanations, see FbModelMultipleChoiceField's docstring
+    labeler: 
+    multiple: optional
+    For explanations, see FbModelChoiceField's docstring
     """
     class Media:
         js = ("/site_media/scripts/framework/jquery.bgiframe.min.js",
@@ -24,7 +25,8 @@ class FbSelectMultipleWidget(forms.widgets.HiddenInput):
         self.url = kwargs.pop('url')
         self.model = kwargs.pop('model')
         self.labeler = kwargs.pop('labeler')
-        return super(FbSelectMultipleWidget, self).__init__(*args, **kwargs)
+        self.is_multiple = kwargs.pop('multiple', False)
+        return super(FbSelectWidget, self).__init__(*args, **kwargs)
     
     def render(self, name, value, attrs=None):
         if value:
@@ -32,22 +34,23 @@ class FbSelectMultipleWidget(forms.widgets.HiddenInput):
                 obj_list = self.model.objects.filter(pk__in=value)
                 value = ','.join([str(v) for v in value])
             else:
-                obj_list = [self.model.objects.get(pk=pk)]
+                obj_list = [self.model.objects.get(pk=value)]
             objs = {}
             for obj in obj_list:
                 objs[obj.pk] = self.labeler(obj)
-        hidden = super(FbSelectMultipleWidget, self).render(name, value, attrs)
-        url = self.url
+        hidden = super(FbSelectWidget, self).render(name, value, attrs)
+        url, is_multiple = self.url, self.is_multiple
         return render_to_string("widgets/fb_select_multiple.html", locals())
         
-class FbModelMultipleChoiceField(forms.CharField):
+class FbModelChoiceField(forms.CharField):
     """
     A model multiple choice field that uses a Facebook-like autocomplete
     interface / widget.
     
     This field is bound to the FbSelectMultiple Widget.
     
-    Takes 3 additioal arguments:
+    Takes 4 additioal name arguments:
+    multiple: select multiple objects at once? False by default
     model: the model from which to select multiple
     url: the widget makes a AJAX requests for autocompletion. this is the
         url that returns the autcomplete search results. the request is made
@@ -59,12 +62,16 @@ class FbModelMultipleChoiceField(forms.CharField):
     """
     def __init__(self, *args, **kwargs):
         self.model = kwargs.pop('model')
-        kwargs['widget'] = FbSelectMultipleWidget(url=kwargs.pop('url'), 
-            model=self.model, labeler=kwargs.pop('labeler'))
-        super(FbModelMultipleChoiceField, self).__init__(*args, **kwargs)
+        self.is_multiple = 1 if kwargs.pop('multiple', False) else 0
+        kwargs['widget'] = FbSelectWidget(url=kwargs.pop('url'), 
+            model=self.model, labeler=kwargs.pop('labeler'),
+            multiple=self.is_multiple)
+        super(FbModelChoiceField, self).__init__(*args, **kwargs)
     
     def clean(self, value):
         if not value:
+            if self.required:
+                raise forms.ValidationError("This can't be left blank")
             return
         try:
             pks = [int(v) for v in value.split(',') if v]

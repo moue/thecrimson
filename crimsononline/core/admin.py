@@ -6,7 +6,7 @@ from django.forms import ModelForm
 from django.contrib.auth.models import User
 from django.utils.safestring import mark_safe
 from crimsononline.core.models import *
-from crimsononline.admin_cust.forms import FbSelectMultipleWidget, FbModelMultipleChoiceField
+from crimsononline.admin_cust.forms import FbSelectWidget, FbModelChoiceField
 
 class TagForm(forms.ModelForm):
     ALLOWED_REGEXP = compile(r'[A-Za-z\s]+$')
@@ -264,9 +264,15 @@ class ArticleForm(ModelForm):
     text = forms.fields.CharField(
         widget=forms.Textarea(attrs={'rows':'50', 'cols':'67'})
     )
-    contributors = FbModelMultipleChoiceField(required=False, 
+    contributors = FbModelChoiceField(required=True, multiple=True,
         url='/admin/core/contributor/search/', model=Contributor,
-        labeler=(lambda obj: obj.__str__()))
+        labeler=(lambda obj: str(obj)))
+    proofer = FbModelChoiceField(required=True, multiple=True,
+        url='/admin/core/contributor/search/', model=Contributor,
+        labeler=(lambda obj: str(obj)))
+    sne = FbModelChoiceField(required=True, multiple=True,
+        url='/admin/core/contributor/search/', model=Contributor,
+        labeler=(lambda obj: str(obj)))
     selected_image = forms.CharField(widget=ImageGalleryPreviewWidget,
         required=False, label='Selected image gallery')
     existing_image_type = forms.CharField(widget=ImageGallerySelectWidget(), 
