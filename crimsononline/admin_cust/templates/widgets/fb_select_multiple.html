@@ -15,7 +15,8 @@
         acfb_{{attrs.id}} = 
             $("#acfb_holder_{{attrs.id}}").autoCompletefb(
                 {urlLookup:"{{url|escapejs}}",
-                 multipleInput:{{is_multiple}}});
+                 multipleInput:{{is_multiple}},
+                 no_duplicates:{{no_dupes}}});
     });
 </script>
 

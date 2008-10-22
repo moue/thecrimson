@@ -11,12 +11,16 @@ def find_contributors(request):
     if request.method != 'GET':
         raise Http404
     q_str, limit = request.GET.get('q', ''), request.GET.get('limit', None)
+    excludes = request.GET.get('exclude','').split(',')
+    if excludes:
+        excludes = [int(e) for e in excludes if e]
     if (len(q_str) < 1) or (not limit):
         print len(q_str)
         raise Http404
     c = Contributor.objects.filter(
         Q(first_name__contains=q_str) | Q(last_name__contains=q_str),
-        is_active=True)[:limit]
+        is_active=True).exclude(pk__in=excludes)[:limit]
+    print c
     return render_to_response('contributors.txt', {'contributors': c})
 
 # TODO: protect this

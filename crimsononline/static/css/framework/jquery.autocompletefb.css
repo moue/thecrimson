@@ -23,7 +23,7 @@
 	overflow: hidden;
 }
 .ac_loading {
-	background : Window url('indicator.gif') right center no-repeat;
+	background : Window url('/site_media/images/indicator.gif') right center no-repeat;
 }
 .ac_odd {
 	background-color: #eee;

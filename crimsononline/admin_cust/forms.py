@@ -26,6 +26,7 @@ class FbSelectWidget(forms.widgets.HiddenInput):
         self.model = kwargs.pop('model')
         self.labeler = kwargs.pop('labeler')
         self.is_multiple = kwargs.pop('multiple', False)
+        self.no_duplicates = kwargs.pop('no_duplicates', True)
         return super(FbSelectWidget, self).__init__(*args, **kwargs)
     
     def render(self, name, value, attrs=None):
@@ -39,7 +40,7 @@ class FbSelectWidget(forms.widgets.HiddenInput):
             for obj in obj_list:
                 objs[obj.pk] = self.labeler(obj)
         hidden = super(FbSelectWidget, self).render(name, value, attrs)
-        url, is_multiple = self.url, self.is_multiple
+        url, is_multiple, no_dupes = self.url, self.is_multiple, self.no_duplicates
         return render_to_string("widgets/fb_select_multiple.html", locals())
         
 class FbModelChoiceField(forms.CharField):
@@ -49,7 +50,7 @@ class FbModelChoiceField(forms.CharField):
     
     This field is bound to the FbSelectMultiple Widget.
     
-    Takes 4 additioal name arguments:
+    Takes 5 additioal name arguments:
     multiple: select multiple objects at once? False by default
     model: the model from which to select multiple
     url: the widget makes a AJAX requests for autocompletion. this is the
@@ -59,14 +60,25 @@ class FbModelChoiceField(forms.CharField):
         line. each results should look like: primary_key|label
     labeler: a function that takes a model object and returns a label.
         this is used for the initial labels.
+    no_duplicates: is true, AJAX query will tack on the parameter
+        exclude, with value a list of values to exclude in the autosuggest.
+        eg: url?q=fasman&limit=10&exclude=4,1,2
     """
     def __init__(self, *args, **kwargs):
         self.model = kwargs.pop('model')
+        # we use 1 and 0, since these get passed into JS, which doesn't
+        #  like Python's capitalized True / False values
         self.is_multiple = 1 if kwargs.pop('multiple', False) else 0
-        kwargs['widget'] = FbSelectWidget(url=kwargs.pop('url'), 
-            model=self.model, labeler=kwargs.pop('labeler'),
-            multiple=self.is_multiple)
-        return super(FbModelChoiceField, self).__init__(*args, **kwargs)
+        no_dupes = 1 if kwargs.pop('no_duplicates', True) else 0
+        kwargs['widget'] = FbSelectWidget(
+            url=kwargs.pop('url'), 
+            model=self.model, 
+            labeler=kwargs.pop('labeler'),
+            multiple=self.is_multiple, 
+            no_duplicates=no_dupes,
+        )
+        s = super(FbModelChoiceField, self).__init__(*args, **kwargs)
+        self.help_text = "Start typing, we'll provide suggestions.<br>%s" % self.help_text
     
     def clean(self, value):
         if not value:

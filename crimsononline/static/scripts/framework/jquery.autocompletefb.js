@@ -24,11 +24,11 @@ jQuery.fn.autoCompletefb = function(options)
 		ul            : tmp,
 		urlLookup     : [""],
 		acOptions     : {formatItem: function(row, row_num, rows, q_str){
-		    return row[1];
-		}},
+		    return row[1];}, matchContains: true},
 		foundClass    : ".acfb-data",
 		inputClass    : ".acfb-input",
         multipleInput : false,
+        no_duplicates : true,
 	}
 	if(options) jQuery.extend(settings, options);
 	
@@ -60,10 +60,17 @@ jQuery.fn.autoCompletefb = function(options)
 		},
 		dumpData : function(){
 		    $(settings.inputClass,tmp).parent().next().val(this.getData());
+		    $(settings.inputClass,tmp).flushCache();
 		},
         disableInput : function(){
             $(settings.inputClass,tmp).val('').hide();
-        }
+        },
+	}
+	
+	if(settings.no_duplicates){
+	    settings.acOptions['extraParams'] = {exclude: function(){
+	        return acfb.getData();
+        }};
 	}
 	
 	$(settings.foundClass+" img.p",tmp).click(function(){
@@ -90,6 +97,18 @@ jQuery.fn.autoCompletefb = function(options)
     if(acfb.getData() && !settings.multipleInput){
         acfb.disableInput();
     }
-	//$(settings.inputClass,tmp).focus();
+	// focus cursor correctly in the fake input borders
+	$(settings.inputClass,tmp).parent().parent().click(function(){
+	    if(settings.multipleInput || !acfb.getData()){
+	        $(settings.inputClass,tmp).focus();
+	    } else {
+	        ele = $("<li>You can only enter one value here.</li>");
+	        $(settings.inputClass,tmp).after(ele);
+	        $(ele).fadeTo(2000, 1, function(){
+	            $(ele).fadeOut("slow", function(){$(ele).remove()})
+	        });
+	    }
+	})
+	
 	return acfb;
 }
