@@ -5,6 +5,7 @@ from django.contrib import admin
 from django.forms import ModelForm
 from django.contrib.auth.models import User
 from django.utils.safestring import mark_safe
+from django.template.defaultfilters import truncatewords
 from crimsononline.core.models import *
 from crimsononline.admin_cust.forms import FbSelectWidget, FbModelChoiceField
 
@@ -251,8 +252,11 @@ class SingleImageNewField(forms.ModelChoiceField):
 
 class ArticleForm(ModelForm):
     teaser = forms.fields.CharField(
-        widget=forms.TextInput(attrs={'size':'70'}),
-        required=False
+        widget=forms.Textarea(attrs={'rows':'5', 'cols':'67'}),
+        required=False, help_text="""
+        A short sample from the article, or a summary of the article.<br>
+        If you don't provide a teaser, we will automatically generate one for you.
+        """
     )
     subheadline = forms.fields.CharField(
         widget=forms.TextInput(attrs={'size':'70'}),
@@ -267,10 +271,10 @@ class ArticleForm(ModelForm):
     contributors = FbModelChoiceField(required=True, multiple=True,
         url='/admin/core/contributor/search/', model=Contributor,
         labeler=(lambda obj: str(obj)))
-    proofer = FbModelChoiceField(required=True, multiple=True,
+    proofer = FbModelChoiceField(required=True, multiple=False,
         url='/admin/core/contributor/search/', model=Contributor,
         labeler=(lambda obj: str(obj)))
-    sne = FbModelChoiceField(required=True, multiple=True,
+    sne = FbModelChoiceField(required=True, multiple=False,
         url='/admin/core/contributor/search/', model=Contributor,
         labeler=(lambda obj: str(obj)))
     selected_image = forms.CharField(widget=ImageGalleryPreviewWidget,
@@ -283,13 +287,14 @@ class ArticleForm(ModelForm):
         widget=forms.widgets.HiddenInput, required=False)
     
     def __init__(self, *args, **kwargs):
-        super(ArticleForm, self).__init__(*args, **kwargs)
+        s = super(ArticleForm, self).__init__(*args, **kwargs)
         if self.instance.pk and self.instance.image_gallery:
             self.fields['selected_image'].widget.__dict__['gal'] = self.instance.image_gallery
+        return s
     
     def clean_selected_image(self):
         if not self.cleaned_data['selected_image']:
-            return self.cleaned_data
+            return
         from re import compile
         r = compile('(img|gal)_(\d+)$')
         if not r.match(self.cleaned_data['selected_image']):
@@ -298,7 +303,7 @@ class ArticleForm(ModelForm):
         pk = int(self.cleaned_data['selected_image'][4:])
         # if it's an image, turn it into a gallery
         if type == 'img':
-            # TODO: this assumes that no we won't be creating duplicate galleries, fix this
+            # TODO: this assumes that we won't be creating duplicate galleries, fix this
             img = Image.objects.get(pk=pk)
             ig = ImageGallery(
                 title=img.kicker,
@@ -313,6 +318,12 @@ class ArticleForm(ModelForm):
         self.cleaned_data['selected_image'] = pk
         return pk
     
+    def clean_teaser(self):
+        """Adds a teaser if one does not exist."""
+        if self.cleaned_data['teaser']:
+            return self.cleaned_data['teaser']
+        return truncatewords(self.cleaned_data['text'], 20)
+    
     class Meta:
         model = Article
 
@@ -326,19 +337,19 @@ class ArticleAdmin(admin.ModelAdmin):
             'fields': ('headline', 'subheadline', 'slug',),
         }),
         ('Text', {
-            'fields': ('text',)
+            'fields': ('text', 'teaser',),
         }),
         ('Byline', {
-            'fields': ('contributors', 'byline_type',)
+            'fields': ('contributors', 'byline_type',),
         }),
         ('Print', {
-            'fields': ('issue', 'section', 'page',)
+            'fields': ('issue', 'section', 'page',),
         }),
         ('Web', {
-            'fields': ('priority', 'web_only', 'tags',)
+            'fields': ('priority', 'web_only', 'tags',),
         }),
         ('Editing', {
-            'fields': ('proofer', 'sne',)
+            'fields': ('proofer', 'sne',),
         }),
         ('Image(s)', {
             'classes': ('collapse',),

@@ -66,7 +66,7 @@ class FbModelChoiceField(forms.CharField):
         kwargs['widget'] = FbSelectWidget(url=kwargs.pop('url'), 
             model=self.model, labeler=kwargs.pop('labeler'),
             multiple=self.is_multiple)
-        super(FbModelChoiceField, self).__init__(*args, **kwargs)
+        return super(FbModelChoiceField, self).__init__(*args, **kwargs)
     
     def clean(self, value):
         if not value:
@@ -75,7 +75,13 @@ class FbModelChoiceField(forms.CharField):
             return
         try:
             pks = [int(v) for v in value.split(',') if v]
-            return self.model.objects.filter(pk__in=pks)
+            # only is_multiple variants of this should have multiple pks
+            if len(pks) > 1 and not self.is_multiple:
+                raise forms.ValidationError("Something terrible happened!")
+            objs = self.model.objects.filter(pk__in=pks)
+            if objs and not self.is_multiple:
+                objs = objs[0]
+            return objs
         except ValueError:
             # not a normal validation error, since the front end
             # should guarantee valid results. also, users can't
