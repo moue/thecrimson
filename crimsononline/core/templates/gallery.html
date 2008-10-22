@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% load crimson_filters %}
+
+{% block inhead %}
+	<link type="text/css" rel="stylesheet" href="/site_media/css/article_list.css">
+{% endblock %}
+
+{% block body %}
+    <div class="columnLeft">
+        {% block left %}
+            {% block left_before_ad %}
+                <h1>{{ title }}</h1>
+            {% endblock %}
+            {% block left_ad %}
+                <div class="ad">
+                    <span>advertisement</span>
+                    <img src="/site_media/images/ver_ad.gif" />
+                </div>
+            {% endblock %}
+            {% block left_after_ad %}
+                
+            {% endblock %}
+        {% endblock %}
+    </div>
+    <div class="image" style="margin:0px 10px 0px 0px; width: 450px; float: left;">
+		{% block before_image %}
+		{% endblock %}
+		{% block image_gallery %}
+		{% comment %}
+			title here
+		{% endcomment %}
+		<div class="mediaheader">Media For</div>
+		<div class="mediatitle">{{ gallery }}</div>
+		{% comment %}
+			image list
+		{% endcomment %}
+		{% ifnotequal gallery|length 1 %} 
+			<div class="imagelist">
+				{% comment %}
+					left arrow thing
+				{% endcomment %}
+				<ul style="list-style: none;">
+					{% for image in gallery.images.all %}
+						{% comment %}
+							put an image
+						{% endcomment %}
+						<li style="display: inline">
+							{{ image|to_img_tag:"75,75" }}
+						</li>
+					{% endfor %}
+				</ul>
+				{% comment %}
+					right arrow thing
+				{% endcomment %}
+			</div>
+		{% endifnotequal %}
+		{% comment %}
+			big image
+		{% endcomment %}
+		<div class="bigimage">
+			{{ currentimg|to_img_tag:"450," }}
+		</div>
+		{% comment %}
+			caption
+		{% endcomment %}
+		<div class="caption">
+			{{ currentimg.caption }}  <span class="byline">Photo By {{ image.contributor|linkify }}</span>
+		</div>
+		{% endblock %}
+        {% block after_image %}
+        {% endblock %}
+    </div>
+    <div class="columnRight">
+        {% block right %}
+            {% block right_before_ad %}
+                
+            {% endblock %}
+            {% block right_ad %}
+            <div class="ad">
+                <span>advertisement</span>
+                <img src="/site_media/images/medium_rectangle.gif" />
+            </div>
+            {% endblock %}
+            {% block right_after_ad %}
+                
+            {% endblock %}
+        {% endblock %}
+    </div>
+{% endblock %}

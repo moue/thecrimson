@@ -82,7 +82,13 @@ def section(request, section, issue_id=None, tags=None):
     return render_to_response(
         [dict['nav']+'.html', 'section.html', 'article-list.html'], dict
     )
-
+	
+def gallery(request, currentimg_id, gallery_id):
+	currentimg_id = int(currentimg_id)
+	gallery_id = int(gallery_id)
+	image = get_object_or_404(Image, pk=currentimg_id)
+	gallery = get_object_or_404(ImageGallery, pk=gallery_id)
+	return render_to_response('gallery.html', {'currentimg':image, 'gallery':gallery})
     
 # =========== view helpers ============== #
 def get_top_articles(issue_id, section, limit=10):
