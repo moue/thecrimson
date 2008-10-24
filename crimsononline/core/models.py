@@ -7,7 +7,7 @@ from string import letters, digits
 from PIL import Image as pilImage
 from django.conf import settings
 from django.db import models
-from django.db.models import permalink
+from django.db.models import permalink, Q
 from django.contrib.auth.models import User, Group
 from django.contrib.localflavor.us.models import PhoneNumberField
 from django.core.cache import cache
@@ -159,9 +159,34 @@ class OnlineIssueManager(models.Manager):
         return super(OnlineIssueManager, self).get_query_set() \
             .filter(web_publish_date__lte=datetime.now())
 
+class SpecialIssueManager(models.Manager):
+	"""Only returns named issues"""
+	def __init__(self, *args, **kwargs):
+		self.live = kwargs.pop('live', False)
+	
+	def get_query_set(self):
+		return super(SpecialIssueManager, self).get_query_set() \
+			.exclude(Q(special_issue_name=="") | Q(special_issue_name==None))
+
+class DailyIssueManager(models.Manager):
+	"""Only returns unnamed issues"""
+	def __init__(self, *args, **kwargs):
+		self.live = kwargs.pop('live', False)
+	
+	def get_query_set(self):
+		return super(DailyIssueManager, self).get_query_set() \
+			.filter(Q(special_issue_name=="") | Q(special_issue_name==None))
+
 class Issue(models.Model):
-    """A set of content (articles, photos) for a particular date"""
-    
+    """
+	A set of content (articles, photos) for a particular date.
+	
+	Special issues should NEVER be displayed by default on the index.
+	They should be displayed via content modules or special redirects.
+	"""
+	
+    special_issue_name = models.CharField(blank=True, null=True,
+		help_text="Leave this blank for daily issues!!!")
     web_publish_date = models.DateTimeField(
         blank=False, help_text='When this issue goes live (on the web).')
     issue_date = models.DateField(
@@ -171,6 +196,8 @@ class Issue(models.Model):
     
     objects = models.Manager()
     live_objects = OnlineIssueManager()
+	special_objects = SpecialIssueManager()
+	daily_objects = DailyIssueManager()
     
     @staticmethod
     def get_current():
