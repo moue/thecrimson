@@ -7,7 +7,8 @@ from django.contrib.auth.models import User
 from django.utils.safestring import mark_safe
 from django.template.defaultfilters import truncatewords
 from crimsononline.core.models import *
-from crimsononline.admin_cust.forms import FbSelectWidget, FbModelChoiceField
+from crimsononline.admin_cust import forms as cforms
+from crimsononline.admin_cust.forms import FbModelChoiceField, IssuePickerField
 
 class TagForm(forms.ModelForm):
     ALLOWED_REGEXP = compile(r'[A-Za-z\s]+$')
@@ -91,7 +92,7 @@ admin.site.register(Contributor, ContributorAdmin)
 class IssueAdmin(admin.ModelAdmin):
     list_display = ('issue_date',)
     search_fields = ('issue_date',)
-    fields = ('issue_date', 'web_publish_date', 'comments',)
+    fields = ('issue_date', 'web_publish_date', 'special_issue_name', 'comments',)
 
 admin.site.register(Issue, IssueAdmin)
 
@@ -285,6 +286,7 @@ class ArticleForm(ModelForm):
         widget=forms.widgets.HiddenInput, required=False)
     new_image = SingleImageNewField(Image.objects.all(), 
         widget=forms.widgets.HiddenInput, required=False)
+    issue = IssuePickerField()
     
     def __init__(self, *args, **kwargs):
         s = super(ArticleForm, self).__init__(*args, **kwargs)

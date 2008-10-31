@@ -1,6 +1,44 @@
 from django import forms
 from django.conf import settings
 from django.template.loader import render_to_string
+from crimsononline.core.models import Issue
+
+class IssuePickerWidget(forms.widgets.HiddenInput):
+    """
+    Widget that uses a calendar picker and ajax to pick issues.
+    """
+    
+    class Media:
+        js = ('/site_media/scripts/framework/jquery.ui.datepicker.js',)
+        css = {'all': ('/site_media/css/framework/jquery.ui.datepicker.css',)}
+    
+    def render(self, name, value, attrs=None):
+        if value:
+            issue = Issue.objects.get(pk=int(value))
+        hidden = super(IssuePickerWidget, self).render(name, value, attrs)
+        return render_to_string("widgets/issue_picker.html", locals())
+
+
+class IssuePickerField(forms.CharField):
+    """
+    A field that allows you to pick an issue via a date picker.
+    
+    Always uses the IssuePickerWidget.
+    """
+    
+    def __init__(self, *args, **kwargs):
+        kwargs['widget'] = IssuePickerWidget()
+        return super(IssuePickerField, self).__init__(*args, **kwargs)
+    
+    def clean(self, value):
+        if not value:
+            if self.required:
+                raise forms.ValidationError("This can't be left blank")
+            return
+        try:
+            return Issue.objects.get(pk=int(value))
+        except: # the frontend should ensure that these errors never happen
+            raise forms.ValidationError("Something terrible happened!")
 
 class FbSelectWidget(forms.widgets.HiddenInput):
     """
@@ -79,6 +117,7 @@ class FbModelChoiceField(forms.CharField):
         )
         s = super(FbModelChoiceField, self).__init__(*args, **kwargs)
         self.help_text = "Start typing, we'll provide suggestions.<br>%s" % self.help_text
+        return s
     
     def clean(self, value):
         if not value:
