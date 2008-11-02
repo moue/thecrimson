@@ -54,6 +54,8 @@ def tag(request, tags):
 
 def section(request, section, issue_id=None, tags=None):    
     # validate the section (we don't want /section/balls/ to be a valid url)
+    if section == 'photo':
+        return photo(request)
     section = filter(lambda x: section.lower() == x.name.lower(), Section.all())
     if len(section) == 0:
         raise Http404
@@ -82,6 +84,11 @@ def section(request, section, issue_id=None, tags=None):
     return render_to_response(
         [dict['nav']+'.html', 'section.html', 'article-list.html'], dict
     )
+
+def photo(request):
+    galleries = ImageGallery.objects.order_by('-created_on')[:10]
+    nav, title = 'photo', 'Photo'
+    return render_to_response('photo.html', locals())
 	
 def gallery(request, currentimg_id, gallery_id):
 	currentimg_id = int(currentimg_id)

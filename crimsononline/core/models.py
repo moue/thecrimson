@@ -304,6 +304,10 @@ class ImageGallery(models.Model):
     
     def __unicode__(self):
         return self.title
+    
+    @permalink
+    def get_absolute_url(self):
+        return ('core_imagegallery', [self.cover_image.pk, self.pk])
 
 
 class PublishedArticlesManager(models.Manager):

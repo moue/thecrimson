@@ -1,0 +1,20 @@
+{% extends "article-list.html" %}
+
+{% load crimson_filters %}
+
+{% block inhead %}
+	<link type="text/css" rel="stylesheet" href="/site_media/css/photo.css">
+    <link type="text/css" rel="stylesheet" href="/site_media/css/article_list.css">
+{% endblock %}
+
+{% block article_list %}
+<ul>
+    {% for gallery in galleries %}
+        <li class="gallery">
+            {{ gallery.cover_image|to_img_tag:"150,150" }}
+            <p class="title"><a href="{{gallery.get_absolute_url}}">{{ gallery.title }}</a></p>
+            <p class="desc">{{ gallery.description }}</p>
+        </li>
+    {% endfor %}
+</ul>
+{% endblock %}
