@@ -1,8 +1,25 @@
-<input type="text" class="issue_picker" id={{attrs.id}}_input />
+<p id="issue_picker_meta">
+    <input type="radio" name="issue_picker_meta" value="daily" /> Daily / Web Issue<br />
+    <input type="radio" name="issue_picker_meta" value="special" /> Special Issue (like Commencement, Election, etc.)
+</p>
+
+<p id="issue_picker_daily">
+    <input type="text" class="issue_picker" id={{attrs.id}}_input disabled="disabled" value="{{issue_date|date:"m/d/Y"}}" />
+</p>
+<p id="issue_picker_special">
+    Issues from the year <input type="text" size="5" />
+    <select>
+        {{ special_choices }}
+    </select>
+</p>
 {{hidden}}
 <script type="text/javascript">
     $(document).ready(function(){
-        $("#{{attrs.id}}_input").datepicker();
+        set_issue_picker("#{{attrs.id}}_input", 
+            "#{{attrs.id}}", 
+            "/admin/core/issue/issue_list/");
+        $("#issue_picker_meta input[value={{meta_select}}]")
+            .trigger('change').trigger('click');
     });
 </script>
 

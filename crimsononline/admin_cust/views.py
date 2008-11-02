@@ -5,9 +5,9 @@ from django.core.paginator import Paginator
 from django.http import HttpResponse, Http404
 from django.template.loader import render_to_string
 from django.utils import simplejson
-from crimsononline.core.models import Image, ImageGallery, Contributor
+from crimsononline.core.models import Image, ImageGallery, Contributor, Issue
 
-def find_contributors(request):
+def get_contributors(request):
     if request.method != 'GET':
         raise Http404
     q_str, limit = request.GET.get('q', ''), request.GET.get('limit', None)
@@ -20,8 +20,24 @@ def find_contributors(request):
     c = Contributor.objects.filter(
         Q(first_name__contains=q_str) | Q(last_name__contains=q_str),
         is_active=True).exclude(pk__in=excludes)[:limit]
-    print c
     return render_to_response('contributors.txt', {'contributors': c})
+
+def get_issues(request):
+    """
+    Returns a dictionary of issue ids, indexed by issue date.
+    """
+    if request.method != 'GET':
+        raise Http404
+    year, month = request.GET.get('year', ''), request.GET.get('month', '')
+    if not (year and month):
+        raise Http404
+    year, month = int(year), int(month)
+    issues = Issue.daily_objects.filter(
+        issue_date__year=year, issue_date__month=month)
+    dict = {}
+    for issue in issues:
+        dict[issue.issue_date.strftime("%m/%d/%Y")] = issue.pk
+    return HttpResponse(simplejson.dumps(dict))
 
 # TODO: protect this
 def get_imgs(request, page=None, pk=None):

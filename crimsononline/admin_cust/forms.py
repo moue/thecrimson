@@ -1,3 +1,4 @@
+from datetime import date, datetime, timedelta
 from django import forms
 from django.conf import settings
 from django.template.loader import render_to_string
@@ -9,12 +10,35 @@ class IssuePickerWidget(forms.widgets.HiddenInput):
     """
     
     class Media:
-        js = ('/site_media/scripts/framework/jquery.ui.datepicker.js',)
-        css = {'all': ('/site_media/css/framework/jquery.ui.datepicker.css',)}
+        js = ('/site_media/scripts/framework/jquery.ui.datepicker.js',
+                '/site_media/scripts/admin/IssuePickerWidget.js',)
+        css = {'all': ('/site_media/css/framework/jquery.ui.datepicker.css',
+                        '/site_media/css/admin/IssuePickerWidget.css',),}
     
     def render(self, name, value, attrs=None):
+        meta_select = "daily"
         if value:
             issue = Issue.objects.get(pk=int(value))
+            issue_date = issue.issue_date
+            if issue.special_issue_name:
+                meta_select = "special"
+        else:
+            # default value is the next issue
+            issue_date = datetime.now()
+            if issue_date.hour > 11:
+                issue_date = issue_date.date() + timedelta(days=1)
+            else:
+                issue_date = issue_date.date()
+            try:
+                issue = Issue.objects.get(issue_date=issue_date)
+                value = issue.pk
+            except:
+                issue = None
+        year = datetime.now().year
+        special_choices = render_to_string("special_issues_fragment.html", 
+            {'issues': Issue.special_objects.filter(issue_date__year=year), 
+            'blank': "----"}
+        )
         hidden = super(IssuePickerWidget, self).render(name, value, attrs)
         return render_to_string("widgets/issue_picker.html", locals())
 

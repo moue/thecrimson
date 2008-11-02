@@ -156,6 +156,11 @@ class Section(models.Model):
 class LiveIssueManager(models.Manager):
     """
     Only returns Issues which are published / unpublished
+    
+    Arguments
+    live:   True => only live objects
+            False => no live objects
+            None => all objects
     """
     def __init__(self, *args, **kwargs):
         self.live = kwargs.pop('live', None)
@@ -163,25 +168,25 @@ class LiveIssueManager(models.Manager):
     
     def get_query_set(self):
         if self.live is None:
-            return super(OnlineIssueManager, self).get_query_set()
+            return super(LiveIssueManager, self).get_query_set()
         elif self.live:
             q = Q(web_publish_date__lte=datetime.now())
         else:
             q = Q(web_publish_date__gt=datetime.now())
-        return super(OnlineIssueManager, self).get_query_set() \
+        return super(LiveIssueManager, self).get_query_set() \
             .filter(Q)
 
 class SpecialIssueManager(LiveIssueManager):
     """Only returns named issues"""    
     def get_query_set(self):
         return super(SpecialIssueManager, self).get_query_set() \
-            .exclude(Q(special_issue_name=="") | Q(special_issue_name==None))
+            .exclude(Q(special_issue_name="") | Q(special_issue_name=None))
 
 class DailyIssueManager(LiveIssueManager):
     """Only returns unnamed issues"""
     def get_query_set(self):
         return super(DailyIssueManager, self).get_query_set() \
-            .filter(Q(special_issue_name=="") | Q(special_issue_name==None))
+            .filter(Q(special_issue_name="") | Q(special_issue_name=None))
 
 class Issue(models.Model):
     """
@@ -201,9 +206,11 @@ class Issue(models.Model):
         blank=True, null=True, help_text='Notes about this issue.')
     
     objects = models.Manager()
+    special_objects = SpecialIssueManager()
+    daily_objects = DailyIssueManager()
     live_objects = LiveIssueManager(live=True)
-    special_objects = SpecialIssueManager(live=True)
-    daily_objects = DailyIssueManager(live=True)
+    live_special_objects = SpecialIssueManager(live=True)
+    live_daily_objects = DailyIssueManager(live=True)
     
     @staticmethod
     def get_current():
@@ -377,12 +384,9 @@ class Article(models.Model):
         ordering = ['-priority',]
         unique_together = ('slug', 'issue',)
     
-    #TODO: add teaser generating functionality (use __getattr__)
-    # if the teaser doesn't exist, generate one from the article text
-    
     def save(self):
         # autopopulate the slug
-        if self.slug == None or self.slug == '':
+        if not self.slug:
             self.slug = slugify(self.headline)
         return super(Article, self).save()
     

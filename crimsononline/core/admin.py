@@ -221,7 +221,6 @@ class ImageGalleryPreviewWidget(forms.widgets.HiddenInput):
         _html = '<ul class="image_gallery_preview " id="image_gallery_current">'
         if ig:
             # render the image gallery
-            # TODO: make this use the admin_cust template (same one AJAX calls render)
             from crimsononline.templ.templatetags.crimson_filters import to_thumb_tag
             _html += ''.join(['<li>%s</li>' % to_thumb_tag(img) for img in ig.images.all()[:6]])
             # put the image gallery pk into the widget
@@ -286,7 +285,7 @@ class ArticleForm(ModelForm):
         widget=forms.widgets.HiddenInput, required=False)
     new_image = SingleImageNewField(Image.objects.all(), 
         widget=forms.widgets.HiddenInput, required=False)
-    issue = IssuePickerField()
+    issue = IssuePickerField(label='Issue Date', required=True)
     
     def __init__(self, *args, **kwargs):
         s = super(ArticleForm, self).__init__(*args, **kwargs)
@@ -396,7 +395,6 @@ class ArticleAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
         gal_pk = form.cleaned_data['selected_image']
         if gal_pk:
-            # TODO: figure out how to not get the image gallery from the db
             obj.image_gallery_id = gal_pk
         return super(ArticleAdmin, self).save_model(request, obj, form, change)
 

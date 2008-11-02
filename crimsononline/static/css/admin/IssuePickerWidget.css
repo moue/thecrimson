@@ -1,0 +1,7 @@
+#ui-datepicker-div a.ui-datepicker-has-issue{
+    font-weight: bold;
+    color: blue;
+}
+.ui-datepicker-trigger {
+    cursor: pointer;
+}
