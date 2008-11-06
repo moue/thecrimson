@@ -22,6 +22,20 @@ def get_contributors(request):
         is_active=True).exclude(pk__in=excludes)[:limit]
     return render_to_response('contributors.txt', {'contributors': c})
 
+def get_special_issues(request):
+    """
+    Returns an html fragment with special issues as <options>
+    """
+    if request.method != 'GET':
+        raise Http404
+    year = request.GET.get('year', '')
+    if not year.isdigit():
+        raise Http404
+    year = int(year)
+    issues = Issue.special_objects.filter(issue_date__year=year)
+    return render_to_response('special_issue_fragment.html', 
+        {'issues': issues})
+
 def get_issues(request):
     """
     Returns a dictionary of issue ids, indexed by issue date.

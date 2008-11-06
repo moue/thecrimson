@@ -14,7 +14,7 @@ var inspect = function(obj){
     return str;
 }
 
-var set_issue_picker = function(ele, hidden_input, url){
+var set_issue_picker = function(ele, hidden_input, url, spec_url){
     var issueDays = {
         '08/01/2008': 4,
     }
@@ -39,6 +39,19 @@ var set_issue_picker = function(ele, hidden_input, url){
             $("#issue_picker_daily").hide();
             $("#issue_picker_special").show();
         }
+    })
+    
+    // grab list of special issue from server
+    $("#issue_picker_special input").change(function(){
+        if($(this).val().length == 4){
+            $("#issue_picker_special select").load(
+                spec_url, {year:$(this).val()}
+            );
+        }
+    });
+    // TODO: send special issue id to hidden input
+    $("#issue_picker_special select").change(function(){
+        $(hidden_input).val($(this).val());
     })
     
     $(ele).datepicker({

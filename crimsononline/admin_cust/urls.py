@@ -9,6 +9,7 @@ urlpatterns = patterns('',
     (r'^core/imagegallery/get_img_gallery/(img|gal)/(\d+)/$', get_img_gallery),
     (r'^core/contributor/search/$', get_contributors),
     (r'^core/issue/issue_list/$', get_issues),
+    (r'^core/issue/special_issue_list/$', get_special_issues),
 )
 
 urlpatterns += patterns('',
