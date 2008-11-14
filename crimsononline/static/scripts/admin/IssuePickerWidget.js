@@ -6,6 +6,7 @@
  server should return a dictionary of date / issue pairs
 */
 
+
 var inspect = function(obj){
     var str = ""
     for(x in obj){
@@ -37,25 +38,30 @@ var set_issue_picker = function(ele, hidden_input, url, spec_url){
             $("#issue_picker_special").hide();
         } else {
             $("#issue_picker_daily").hide();
-            $("#issue_picker_special").show();
+            $("#issue_picker_special").show().trigger("change");
         }
     })
     
     // grab list of special issue from server
     $("#issue_picker_special input").change(function(){
         if($(this).val().length == 4){
-            $("#issue_picker_special select").load(
-                spec_url, {year:$(this).val()}
-            );
+            var full_url = spec_url + "?year=" + $(this).val();
+            $("#issue_picker_special select").load(full_url);
+        }
+    }).keypress(function(e){
+        // prevent enter from submitting the form
+        if(e.which == 13){
+            $(this).change().blur();
+            return false;
         }
     });
-    // TODO: send special issue id to hidden input
+    // select special issue
     $("#issue_picker_special select").change(function(){
         $(hidden_input).val($(this).val());
     })
     
     $(ele).datepicker({
-        showOn: "button",
+        showOn: "both",
         buttonImage: "/media/img/admin/icon_calendar.gif",
         buttonImageOnly: true,
         mandatory: true,
@@ -68,7 +74,8 @@ var set_issue_picker = function(ele, hidden_input, url, spec_url){
         },
         // ask server for list of date - issues
         onChangeMonthYear: function(date){
-            $.getJSON(url, 
+            $.getJSON(
+                url, 
                 {
                     year: date.getFullYear(), 
                     month: date.getMonth() + 1,

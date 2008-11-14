@@ -4,10 +4,10 @@
 </p>
 
 <p id="issue_picker_daily">
-    <input type="text" class="issue_picker" id={{attrs.id}}_input disabled="disabled" value="{{issue_date|date:"m/d/Y"}}" />
+    <input type="text" class="issue_picker" id={{attrs.id}}_input value="{{issue_date|date:"m/d/Y"}}" />
 </p>
 <p id="issue_picker_special">
-    Issues from the year <input type="text" size="4" />
+    Issues from the year <input type="text" size="4" value="{{year}}"/>
     <select>
         {{ special_choices }}
     </select>

@@ -33,8 +33,8 @@ def get_special_issues(request):
         raise Http404
     year = int(year)
     issues = Issue.special_objects.filter(issue_date__year=year)
-    return render_to_response('special_issue_fragment.html', 
-        {'issues': issues})
+    return render_to_response('special_issues_fragment.html', 
+        {'issues': issues, 'blank': '---'})
 
 def get_issues(request):
     """

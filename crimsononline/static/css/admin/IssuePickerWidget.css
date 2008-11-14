@@ -5,3 +5,6 @@
 .ui-datepicker-trigger {
     cursor: pointer;
 }
+#issue_picker_daily {
+    width: 180px;
+}
