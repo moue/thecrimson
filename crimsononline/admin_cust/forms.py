@@ -37,7 +37,7 @@ class IssuePickerWidget(forms.widgets.HiddenInput):
         year = datetime.now().year
         special_choices = render_to_string("special_issues_fragment.html", 
             {'issues': Issue.special_objects.filter(issue_date__year=year), 
-            'blank': "----"}
+            'blank': "----", 'choice': value}
         )
         hidden = super(IssuePickerWidget, self).render(name, value, attrs)
         return render_to_string("widgets/issue_picker.html", locals())
@@ -60,6 +60,8 @@ class IssuePickerField(forms.CharField):
                 raise forms.ValidationError("This can't be left blank")
             return
         try:
+            # if the value is in dd/mm/yyyy format, look for / create an issue
+            # otherwise, grab the (special) issue from db
             return Issue.objects.get(pk=int(value))
         except: # the frontend should ensure that these errors never happen
             raise forms.ValidationError("Something terrible happened!")

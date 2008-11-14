@@ -28,8 +28,8 @@ jQuery.fn.autoCompletefb = function(options)
 		foundClass    : ".acfb-data",
 		inputClass    : ".acfb-input",
         multipleInput : false,
-        no_duplicates : true,
-	}
+        no_duplicates : true
+	};
 	if(options) jQuery.extend(settings, options);
 	
 	var acfb = 
@@ -64,8 +64,8 @@ jQuery.fn.autoCompletefb = function(options)
 		},
         disableInput : function(){
             $(settings.inputClass,tmp).val('').hide();
-        },
-	}
+        }
+	};
 	
 	if(settings.no_duplicates){
 	    settings.acOptions['extraParams'] = {exclude: function(){
@@ -108,7 +108,7 @@ jQuery.fn.autoCompletefb = function(options)
 	            $(ele).fadeOut("slow", function(){$(ele).remove()})
 	        });
 	    }
-	})
+	});
 	
 	return acfb;
 }

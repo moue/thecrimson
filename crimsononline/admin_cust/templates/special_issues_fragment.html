@@ -2,5 +2,5 @@
     <option value="">{{blank}}</option>
 {% endif %}
 {% for issue in issues %}
-    <option value="{{issue.pk}}">{{issue.special_issue_name}}</option>
+    <option value="{{issue.pk}}" {% ifequal choice issue.pk%}selected="selected"{% endifequal%}>{{issue.special_issue_name}}</option>
 {% endfor %}

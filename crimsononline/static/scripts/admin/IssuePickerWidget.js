@@ -1,7 +1,7 @@
 /*Game plan:
  on month change, ask server for days in that month for which issues exist.
  go through and highlight them all in the calendar.
- on select, convert into an issue.
+ on select, send datestring to the hidden input.
  
  server should return a dictionary of date / issue pairs
 */
@@ -13,12 +13,12 @@ var inspect = function(obj){
         str += x + ": " + obj[x] + "\n";
     }
     return str;
-}
+};
 
 var set_issue_picker = function(ele, hidden_input, url, spec_url){
     var issueDays = {
-        '08/01/2008': 4,
-    }
+        '08/01/2008': 4
+    };
     var highlight_calendar = function(date){
         $(".ui-datepicker-days-cell a").each(function(i){
             var issue_id = 0;
@@ -30,7 +30,7 @@ var set_issue_picker = function(ele, hidden_input, url, spec_url){
                 $(this).addClass("ui-datepicker-has-issue");
             }
         });
-    }
+    };
     // show / hide different daily / special issue pickers
     $("#issue_picker_meta input").change(function(){
         if($(this).val() == 'daily'){
@@ -40,7 +40,7 @@ var set_issue_picker = function(ele, hidden_input, url, spec_url){
             $("#issue_picker_daily").hide();
             $("#issue_picker_special").show().trigger("change");
         }
-    })
+    });
     
     // grab list of special issue from server
     $("#issue_picker_special input").change(function(){
@@ -51,26 +51,18 @@ var set_issue_picker = function(ele, hidden_input, url, spec_url){
     }).keypress(function(e){
         // prevent enter from submitting the form
         if(e.which == 13){
-            $(this).change().blur();
+            $(this).blur();
             return false;
         }
     });
-    // select special issue
-    $("#issue_picker_special select").change(function(){
-        $(hidden_input).val($(this).val());
-    })
     
     $(ele).datepicker({
         showOn: "both",
         buttonImage: "/media/img/admin/icon_calendar.gif",
         buttonImageOnly: true,
         mandatory: true,
-        // convert to issue_id.
         onSelect: function(dateText){
-            var issue_id = 0;
-            if(issue_id = issueDays[dateText]){
-                $(hidden_input).val(issue_id);
-            }
+            $(hidden_input).val(dateText);
         },
         // ask server for list of date - issues
         onChangeMonthYear: function(date){
@@ -78,7 +70,7 @@ var set_issue_picker = function(ele, hidden_input, url, spec_url){
                 url, 
                 {
                     year: date.getFullYear(), 
-                    month: date.getMonth() + 1,
+                    month: date.getMonth() + 1
                 }, 
                 function(data){
                     // append to the issueDays array
@@ -87,6 +79,16 @@ var set_issue_picker = function(ele, hidden_input, url, spec_url){
                     highlight_calendar(date);
                 }
             )
-        },
+        }
     });
-}
+    
+    // before form submit, make sure hidden input matches selected
+    $("#article_form").submit(function(){
+        if($("#issue_picker_meta input").val() == "daily"){
+            $(hidden_input).val($(ele).val());
+        } else {
+            $(hidden_input).val($("#issue_picker_special select").val());
+        }
+        return true;
+    });
+};
