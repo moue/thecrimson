@@ -96,6 +96,13 @@ def gallery(request, currentimg_id, gallery_id):
 	image = get_object_or_404(Image, pk=currentimg_id)
 	gallery = get_object_or_404(ImageGallery, pk=gallery_id)
 	return render_to_response('gallery.html', {'currentimg':image, 'gallery':gallery})
+
+#====== ajax stuff ==========#
+def ajax_get_img(request, pk):
+    image = get_object_or_404(Image, pk=pk)
+    url = image.get_pic_sized_url(500, 500)
+    return render_to_response('ajax_get_image.html', locals())
+    
     
 # =========== view helpers ============== #
 def get_top_articles(issue_id, section, limit=10):

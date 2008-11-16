@@ -4,6 +4,8 @@
 
 {% block inhead %}
 	<link type="text/css" rel="stylesheet" href="/site_media/css/article_list.css">
+    <script type="text/javascript" src="/site_media/scripts/jquery.js" />
+    <script type="text/javascript" src="/site_media/scripts/image_gallery.js" />
 {% endblock %}
 
 {% block body %}
@@ -45,7 +47,7 @@
 						{% comment %}
 							put an image
 						{% endcomment %}
-						<li style="display: inline">
+						<li id="img_prev_{{image.pk}}" style="display: inline">
 							{{ image|to_img_tag:"75,75" }}
 						</li>
 					{% endfor %}
