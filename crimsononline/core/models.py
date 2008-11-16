@@ -1,7 +1,7 @@
 from hashlib import md5
 from random import randint
 from os.path import splitext, exists, split
-from datetime import datetime
+from datetime import datetime, time
 from re import compile, match
 from string import letters, digits
 from PIL import Image as pilImage
@@ -198,7 +198,7 @@ class Issue(models.Model):
     
     special_issue_name = models.CharField(blank=True, null=True,
         help_text="Leave this blank for daily issues!!!", max_length=100)
-    web_publish_date = models.DateTimeField(
+    web_publish_date = models.DateTimeField(null=True,
         blank=False, help_text='When this issue goes live (on the web).')
     issue_date = models.DateField(
         blank=False, help_text='Corresponds with date of print edition.')
@@ -221,12 +221,17 @@ class Issue(models.Model):
             i.set_as_current()
         return i
     
+    def save(self, *args, **kwargs):
+        # web publish date is 6 am on the issue date
+        if self.web_publish_date is None:
+            self.web_publish_date = datetime.combine(self.issue_date, time(6))
+        return super(Issue, self).save(*args, **kwargs)
+    
     def set_as_current(self, timeout=3600):
-        return cache.set('current_issue', self, timeout)    
+        return cache.set('current_issue', self, timeout)
     
     def __unicode__(self):
         return self.issue_date.strftime('%c')
-    
 
 
 def get_save_path(instance, filename):

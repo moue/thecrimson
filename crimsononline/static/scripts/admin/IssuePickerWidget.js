@@ -19,13 +19,17 @@ var set_issue_picker = function(ele, hidden_input, url, spec_url){
     var issueDays = {
         '08/01/2008': 4
     };
+    var make_datestring = function(date){
+        var date_str = (date.getMonth() > 8 ) ? "" : "0";
+        date_str += (date.getMonth() + 1) + "/";
+        date_str += ($(this).html() > 9) ? "" : "0";
+        date_str += $(this).html() + "/" + date.getFullYear();
+        return date_str
+    };
     var highlight_calendar = function(date){
         $(".ui-datepicker-days-cell a").each(function(i){
             var issue_id = 0;
-            var date_str = (date.getMonth() > 8 ) ? "" : "0";
-            date_str += (date.getMonth() + 1) + "/";
-            date_str += ($(this).html() > 9) ? "" : "0";
-            date_str += $(this).html() + "/" + date.getFullYear();
+            var date_str = make_datestring(date);
             if(issue_id = issueDays[date_str]){
                 $(this).addClass("ui-datepicker-has-issue");
             }
@@ -51,12 +55,16 @@ var set_issue_picker = function(ele, hidden_input, url, spec_url){
     }).keypress(function(e){
         // prevent enter from submitting the form
         if(e.which == 13){
-            $(this).blur();
+            $(this).change().blur();
             return false;
         }
     });
     
     $(ele).datepicker({
+        showStatus: true,
+        statusForDate: function(date){
+            return issueDays[make_datestring(date)];
+        },
         showOn: "both",
         buttonImage: "/media/img/admin/icon_calendar.gif",
         buttonImageOnly: true,
@@ -76,7 +84,7 @@ var set_issue_picker = function(ele, hidden_input, url, spec_url){
                     // append to the issueDays array
                     $.extend(issueDays, data);
                     // highlight the calendar days with issues
-                    highlight_calendar(date);
+                    //highlight_calendar(date);
                 }
             )
         }

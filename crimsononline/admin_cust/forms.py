@@ -1,6 +1,9 @@
 from datetime import date, datetime, timedelta
+from time import strptime
+from re import compile
 from django import forms
 from django.conf import settings
+from django.core.exceptions import ObjectDoesNotExist
 from django.template.loader import render_to_string
 from crimsononline.core.models import Issue
 
@@ -59,12 +62,23 @@ class IssuePickerField(forms.CharField):
             if self.required:
                 raise forms.ValidationError("This can't be left blank")
             return
-        try:
-            # if the value is in dd/mm/yyyy format, look for / create an issue
-            # otherwise, grab the (special) issue from db
-            return Issue.objects.get(pk=int(value))
-        except: # the frontend should ensure that these errors never happen
-            raise forms.ValidationError("Something terrible happened!")
+        # if the value is in dd/mm/yyyy format, look for / create an issue
+        DATE_FMT = compile(r'\d{2}/\d{2}/\d{4}')
+        if DATE_FMT.match(value):
+            dt = strptime(value, r"%m/%d/%Y")
+            dt = date(dt[0], dt[1], dt[2])
+            try:
+                issue = Issue.daily_objects.get(issue_date=dt)
+            except ObjectDoesNotExist:
+                issue = Issue(issue_date=dt)
+                issue.save()
+            return issue
+        # otherwise, grab the (special) issue from db
+        else:
+            try:
+                return Issue.objects.get(pk=int(value))
+            except: # the frontend should ensure that these errors never happen
+                raise forms.ValidationError("Something terrible happened!")
 
 class FbSelectWidget(forms.widgets.HiddenInput):
     """
