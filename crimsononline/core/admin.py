@@ -31,7 +31,8 @@ class ContributorForm(forms.ModelForm):
     class Meta:
         model = Contributor
     def clean_huid_hash(self):
-        if len(self.cleaned_data['huid_hash']) != 8:
+        h = self.cleaned_data['huid_hash']
+        if h and len(h) != 8:
             raise forms.ValidationError('HUID must be 8 digits long')
         return self.cleaned_data['huid_hash']
 
@@ -270,7 +271,8 @@ class ArticleForm(ModelForm):
     )
     contributors = FbModelChoiceField(required=True, multiple=True,
         url='/admin/core/contributor/search/', model=Contributor,
-        labeler=(lambda obj: str(obj)))
+        labeler=(lambda obj: str(obj)), admin_site=admin.site,
+        add_rel=Article._meta.get_field('contributors').rel)
     proofer = FbModelChoiceField(required=True, multiple=False,
         url='/admin/core/contributor/search/', model=Contributor,
         labeler=(lambda obj: str(obj)))

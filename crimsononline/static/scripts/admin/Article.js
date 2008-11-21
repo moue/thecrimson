@@ -1,29 +1,11 @@
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 $(document).ready(function (){
     
     // monkey patch dismiss related lookup popup to call our code
+    // TODO: make this only work for callbacks from Image stuff, not tags or contributors (use win.name)
     var originalDismissAddAnotherPopup = dismissAddAnotherPopup;
     dismissAddAnotherPopup = function(win, newId, newRepr){
-        console.log(newId + "  " + newRepr);
+        console.log(newId + "  " + newRepr + ";  " + win.name);
         // put the image into the <input>
         var prefix = (win.name.indexOf("gallery") == -1) ? "img" : "gal";
         $("#id_selected_image").val(prefix + "_" + newId);
@@ -33,8 +15,7 @@ $(document).ready(function (){
         $("#image_gallery_current").empty().load(url + " li");
         activateRemoveButton();
         return originalDismissAddAnotherPopup(win, newId, newRepr);
-    }
-    
+    }    
     
     // activates the remove gallery button
     var activateRemoveButton = function(){
@@ -156,5 +137,13 @@ $(document).ready(function (){
     
     if($("#id_selected_image").val()){
         activateRemoveButton(); 
-    }
+    };
+    
+    $("#add_id_contributors").tooltip({
+        bodyHandler: function(){
+            return $("<span>").html("Create a new Contributor");
+        },
+        showURL: false,
+        delay: 50
+    });
 });

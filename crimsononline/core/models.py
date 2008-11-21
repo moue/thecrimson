@@ -125,8 +125,8 @@ class Contributor(models.Model):
         
     def __setattr__(self, name, value):
         # hash the huid before storing it
-        if name == 'huid_hash' and value != None:
-            value = md5(value).digest()
+        #if name == 'huid_hash' and value != None:
+        #    value = md5(value).digest()
         return super(Contributor, self).__setattr__(name, value)
     
     @permalink

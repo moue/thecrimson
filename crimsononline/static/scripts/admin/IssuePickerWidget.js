@@ -22,8 +22,8 @@ var set_issue_picker = function(ele, hidden_input, url, spec_url){
     var make_datestring = function(date){
         var date_str = (date.getMonth() > 8 ) ? "" : "0";
         date_str += (date.getMonth() + 1) + "/";
-        date_str += ($(this).html() > 9) ? "" : "0";
-        date_str += $(this).html() + "/" + date.getFullYear();
+        date_str += (date.getDate() > 9) ? "" : "0";
+        date_str += date.getDate() + "/" + date.getFullYear();
         return date_str
     };
     var highlight_calendar = function(date){
@@ -62,9 +62,13 @@ var set_issue_picker = function(ele, hidden_input, url, spec_url){
     
     $(ele).datepicker({
         showStatus: true,
-        statusForDate: function(date){
-            return issueDays[make_datestring(date)];
-        },
+        /*statusForDate: function(date){
+            if(! issueDays[make_datestring(date)]){
+                return "Create a new issue.";
+            } else {
+                return "There are other articles in this issue.";
+            }
+        },*/
         showOn: "both",
         buttonImage: "/media/img/admin/icon_calendar.gif",
         buttonImageOnly: true,
@@ -73,7 +77,7 @@ var set_issue_picker = function(ele, hidden_input, url, spec_url){
             $(hidden_input).val(dateText);
         },
         // ask server for list of date - issues
-        onChangeMonthYear: function(date){
+        /*onChangeMonthYear: function(date){
             $.getJSON(
                 url, 
                 {
@@ -87,7 +91,7 @@ var set_issue_picker = function(ele, hidden_input, url, spec_url){
                     //highlight_calendar(date);
                 }
             )
-        }
+        }*/
     });
     
     // before form submit, make sure hidden input matches selected

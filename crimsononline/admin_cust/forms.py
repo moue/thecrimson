@@ -3,6 +3,7 @@ from time import strptime
 from re import compile
 from django import forms
 from django.conf import settings
+from django.contrib import admin
 from django.core.exceptions import ObjectDoesNotExist
 from django.template.loader import render_to_string
 from crimsononline.core.models import Issue
@@ -96,8 +97,10 @@ class FbSelectWidget(forms.widgets.HiddenInput):
         js = ("/site_media/scripts/framework/jquery.bgiframe.min.js",
             "/site_media/scripts/framework/jquery.dimensions.js",
             "/site_media/scripts/framework/jquery.autocomplete.js",
-            "/site_media/scripts/framework/jquery.autocompletefb.js",)
-        css = {'all': ("/site_media/css/framework/jquery.autocompletefb.css",)}
+            "/site_media/scripts/framework/jquery.autocompletefb.js",
+            "/site_media/scripts/framework/jquery.tooltip.pack.js",)
+        css = {'all': ("/site_media/css/framework/jquery.autocompletefb.css",
+                "/site_media/css/framework/jquery.tooltip.css",)}
     
     def __init__(self, *args, **kwargs):
         self.url = kwargs.pop('url')
@@ -105,6 +108,8 @@ class FbSelectWidget(forms.widgets.HiddenInput):
         self.labeler = kwargs.pop('labeler')
         self.is_multiple = kwargs.pop('multiple', False)
         self.no_duplicates = kwargs.pop('no_duplicates', True)
+        # to fool the RelatedFieldWrapper
+        self.choices = []
         return super(FbSelectWidget, self).__init__(*args, **kwargs)
     
     def render(self, name, value, attrs=None):
@@ -128,7 +133,7 @@ class FbModelChoiceField(forms.CharField):
     
     This field is bound to the FbSelectMultiple Widget.
     
-    Takes 5 additioal name arguments:
+    Takes 6 additional named arguments:
     multiple: select multiple objects at once? False by default
     model: the model from which to select multiple
     url: the widget makes a AJAX requests for autocompletion. this is the
@@ -141,6 +146,9 @@ class FbModelChoiceField(forms.CharField):
     no_duplicates: is true, AJAX query will tack on the parameter
         exclude, with value a list of values to exclude in the autosuggest.
         eg: url?q=fasman&limit=10&exclude=4,1,2
+    add_rel: the relation object? required for the "add related" button.
+        None by default. If you set this, you also need to set admin_site.
+    admin_site: the admin site instance.  Not required.  None by default.
     """
     def __init__(self, *args, **kwargs):
         self.model = kwargs.pop('model')
@@ -155,8 +163,13 @@ class FbModelChoiceField(forms.CharField):
             multiple=self.is_multiple, 
             no_duplicates=no_dupes,
         )
+        self.add_rel = kwargs.pop('add_rel', None)
+        # if add_rel, use the related field widget wrapper for the add button
+        if self.add_rel:
+            kwargs['widget'] = admin.widgets.RelatedFieldWidgetWrapper(
+                kwargs['widget'], self.add_rel, kwargs.pop('admin_site'))
         s = super(FbModelChoiceField, self).__init__(*args, **kwargs)
-        self.help_text = "Start typing, we'll provide suggestions.<br>%s" % self.help_text
+        self.help_text = "Start typing the contributor's name, we'll provide suggestions.<br>%s" % self.help_text
         return s
     
     def clean(self, value):
