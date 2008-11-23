@@ -97,9 +97,22 @@ class IssueAdmin(admin.ModelAdmin):
 
 admin.site.register(Issue, IssueAdmin)
 
+class ImageAdminForm(ModelForm):
+    class Meta:
+        model = Image
+    contributor = FbModelChoiceField(required=True, multiple=False,
+        url='/admin/core/contributor/search/', model=Contributor,
+        labeler=(lambda obj: str(obj)), admin_site=admin.site,
+        add_rel=Article._meta.get_field('contributors').rel)
+
 class ImageAdmin(admin.ModelAdmin):
     fields = ('pic', 'caption', 'kicker', 'contributor', 'tags',)
     filter_horizontal = ('tags',)
+    form = ImageAdminForm
+    class Media:
+        js = (
+            'scripts/jquery.js',
+        )
 admin.site.register(Image, ImageAdmin)
 
 
