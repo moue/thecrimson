@@ -17,7 +17,12 @@
                 {urlLookup:"{{url|escapejs}}",
                  multipleInput:{{is_multiple}},
                  no_duplicates:{{no_dupes}}});
+        var originalDismissAddAnotherPopup = dismissAddAnotherPopup;
+        dismissAddAnotherPopup = function(win, newId, newRepr){
+            if(win.name.indexOf("{{attrs.id}}") != -1){
+                acfb_{{attrs.id}}.insertItem(newId, newRepr);
+            }
+            return originalDismissAddAnotherPopup(win, newId, newRepr);
+        }
     });
 </script>
-
-

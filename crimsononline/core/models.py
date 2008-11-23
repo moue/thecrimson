@@ -11,7 +11,7 @@ from django.db.models import permalink, Q
 from django.contrib.auth.models import User, Group
 from django.contrib.localflavor.us.models import PhoneNumberField
 from django.core.cache import cache
-from django.template.defaultfilters import slugify
+from django.template.defaultfilters import slugify, truncatewords
 
 SAFE_CHARS = letters + digits
 def filter_string(allowed_chars, str):
@@ -236,7 +236,7 @@ class Issue(models.Model):
 
 def get_save_path(instance, filename):
     ext = splitext(filename)[1]
-    filtered_capt = filter_string(SAFE_CHARS, instance.caption)
+    filtered_capt = filter_string(SAFE_CHARS, instance.kicker)
     return datetime.now().strftime("photos/%Y/%m/%d/%H%M%S_") + \
         filtered_capt + ext
 
@@ -294,7 +294,7 @@ class Image(models.Model):
         return path
     
     def __unicode__(self):
-        return self.caption
+        return self.kicker
 
 
 class ImageGallery(models.Model):
@@ -326,6 +326,13 @@ class WebOnlyManager(PublishedArticlesManager):
     def get_query_set(self):
         return super(PublishedArticlesManager, self).get_query_set() \
             .filter(web_only=True)
+
+class RecentsManager(PublishedArticlesManager):
+    """Article Manager that returns the most recent articles"""
+    def get_query_set(self):
+        return super(RecentsManager, self).get_query_set() \
+            .exclude(issue__web_publish_date__gt=datetime.now()) \
+            .order_by('-issue__issue_date', 'priority')
 
 def to_slug(text):
     text = filter_string(SAFE_CHARS+' ', text)
@@ -384,6 +391,7 @@ class Article(models.Model):
     objects = PublishedArticlesManager()
     web_objects = WebOnlyManager()
     all_objects = models.Manager()
+    recent_objects = RecentsManager()
     
     class Meta:
         permissions = (
@@ -392,6 +400,10 @@ class Article(models.Model):
         )
         ordering = ['-priority',]
         unique_together = ('slug', 'issue',)
+    
+    def get_long_teaser(self):
+        return truncatewords(self.text, 50)
+    long_teaser = property(get_long_teaser)
     
     def save(self):
         # autopopulate the slug

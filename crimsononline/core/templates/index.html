@@ -17,13 +17,10 @@
 			<div class="topStories">
 			    {% contentmodule index.topstories %}
 				<h1>Top Stories</h1>
-				<ul>
+				<ul class="article_previews">
 					{% for story in top_stories %}
 					<li>
-						<h3>{{ story|linkify }}</a></h3>
-						<span class="byline">By {{ story.contributors.all|linkify|human_list}}
-						</span>
-						<p class="teaser">{{ story.teaser }}</p>
+						{{story|article_preview}}
 					</li>	
 					{% endfor %}
 				</ul>
@@ -62,13 +59,42 @@
 				<div class="featured">
 					<h1>Featured</h1>
 					{% contentmodule index.featured %}
-					
+					    
 					{% endcontentmodule %}
 				</div>
 			</div>
 		</div>
 		<div class="contentBottom">
-			text
+		    {% contentmodule index.arts %}
+			<div class="topArts">
+			    <h1>Arts</h1>
+			    <ul class="article_previews">
+			    {% for story in arts %}
+			        <li>{{ story|article_preview }}</li>
+			    {% endfor %}
+			    </ul>
+			</div>
+		    {% endcontentmodule %}
+		    {% contentmodule index.sports %}
+			<div class="topSports">
+			    <h1>Sports</h1>
+			    <ul class="article_previews">
+			    {% for story in sports %}
+			        <li>{{ story|article_preview }}</li>
+			    {% endfor %}
+			    </ul>
+			</div>
+		    {% endcontentmodule %}
+		    {% contentmodule index.fm %}
+			<div class="topFM">
+			    <h1>FM</h1>
+			    <ul class="article_previews">
+			    {% for story in fm %}
+			        <li>{{ story|article_preview }}</li>
+			    {% endfor %}
+			    </ul>
+			</div>
+		    {% endcontentmodule %}
 		</div>
 	</div>
 	<div class="columnRight">

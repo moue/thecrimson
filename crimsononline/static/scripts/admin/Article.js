@@ -6,14 +6,16 @@ $(document).ready(function (){
     var originalDismissAddAnotherPopup = dismissAddAnotherPopup;
     dismissAddAnotherPopup = function(win, newId, newRepr){
         console.log(newId + "  " + newRepr + ";  " + win.name);
-        // put the image into the <input>
-        var prefix = (win.name.indexOf("gallery") == -1) ? "img" : "gal";
-        $("#id_selected_image").val(prefix + "_" + newId);
-        // grab the preview from the server
-        // TODO: fix it so that the remove button only activates after the server responds
-        var url = "/admin/core/imagegallery/get_img_gallery/" + prefix + "/" + newId;
-        $("#image_gallery_current").empty().load(url + " li");
-        activateRemoveButton();
+        if(win.name.indexOf('image') != -1){
+            // put the image into the <input>
+            var prefix = (win.name.indexOf("gallery") == -1) ? "img" : "gal";
+            $("#id_selected_image").val(prefix + "_" + newId);
+            // grab the preview from the server
+            // TODO: fix so that the remove button only activates after the server responds
+            var url = "/admin/core/imagegallery/get_img_gallery/" + prefix + "/" + newId;
+            $("#image_gallery_current").empty().load(url + " li");
+            activateRemoveButton();
+        }
         return originalDismissAddAnotherPopup(win, newId, newRepr);
     }    
     
@@ -37,8 +39,7 @@ $(document).ready(function (){
     
     // deactivates the remove gallery button
     var deactivateRemoveButton = function(){
-        $("#image_gallery_remove_button")
-            .hide().unbind();
+        $("#image_gallery_remove_button").hide().unbind();
     }
     
     //

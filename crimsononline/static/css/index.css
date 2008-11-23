@@ -8,7 +8,7 @@
 	width: 776px;
 	margin: 0px 4px 0px 0px;
 	paddin: 0px 0px 2px 0px;
-	border-width: 0px 0px 1px 0px;
+	border-width: 0px 0px 0px 0px;
 	border-style: solid;
 	border-color: #c4c5c7;
 	float: left;
@@ -63,26 +63,26 @@
 	border-style: solid;
 	border-color: #cccccc;
 }
-.topStories ul{
+ul.article_previews{
 	list-style: none;
 }
-.topStories li{
+ul.article_previews > li{
 	margin-bottom: 10px;
 }
-.topStories a{
+ul.article_previews a{
 	font-size: 14px;
 	line-height: 1;
 	display: block;
 }
-.topStories .byline {
+ul.article_previews .byline {
 	font-size: 11px;
 	font-weight: bold;
 }
-.topStories .byline a{
+ul.article_previews .byline a{
 	font-size: inherit;
 	display: inline;
 }
-.topStories .teaser {
+ul.article_previews .teaser {
 	font-size: 12px;
 }
 .topOpinions ul, .moreNews ul{
@@ -97,4 +97,14 @@
 }
 .topOpinions a:hover{
 	color: #a02222;
+}
+
+.topArts, .topFM, .topSports {
+    float: left;
+    width: 250px;
+    display: block;
+    margin-top: 3px;
+}
+.topFM, .topSports {
+    margin-left: 8px;
 }

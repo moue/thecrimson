@@ -9,16 +9,16 @@ from crimsononline.content_module.models import ContentModule
 
 def index(request):
     issue = Issue.get_current()
-    stories = get_top_articles(issue.id, 'News')
+    stories = Article.recent_objects.filter(section__name='News')[:9]
     
     dict = {}
     dict['nav'] = 'index'
     dict['top_stories'] = stories[:4]
     dict['more_stories'] = stories[4:9]
-    dict['opeds'] = get_top_articles(issue.id, 'Opinion', 6)
-    dict['arts'] = get_top_articles(issue.id, 'Arts', 6)
-    dict['sports'] = get_top_articles(issue.id, 'Sports', 6)
-    dict['fms'] = get_top_articles(issue.id, 'FM', 6)
+    dict['opeds'] = Article.recent_objects.filter(section__name='Opinion')[:6]
+    dict['arts'] = Article.recent_objects.filter(section__name='Arts')[:6]
+    dict['sports'] = Article.recent_objects.filter(section__name='Sports')[:6]
+    dict['fms'] = Article.recent_objects.filter(section__name='News')[:6]
     dict['issue'] = issue
     
     return render_to_response('index.html', dict)
@@ -67,7 +67,8 @@ def section(request, section, issue_id=None, tags=None):
     else:
         issue = get_object_or_404(Issue, pk=issue_id)
     
-    articles = Article.objects.filter(issue=issue.id, section__pk=section.pk)
+    #articles = Article.objects.filter(issue=issue.id, section__pk=section.pk)
+    articles = Article.recent_objects.filter(section__pk=section.pk)[:20]
     # filter based on tags
     if tags is not None:
         tags = tags.lower().replace('_',' ').split(',')

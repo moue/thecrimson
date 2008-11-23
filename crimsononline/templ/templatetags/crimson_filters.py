@@ -1,8 +1,22 @@
 from django import template
 from django.utils.safestring import mark_safe
-from crimsononline.core.models import Image
+from crimsononline.core.models import Image, Article
 
 register = template.Library()
+
+@register.filter
+def article_preview(article):
+    tag = ''
+    if isinstance(article, Article):
+        tag = """<h3>%s</h3>
+        <span class="byline">By %s</span>
+        <p class="teaser">%s</p>
+        """ % (
+            linkify(article), 
+            human_list(linkify(article.contributors.all())),
+            article.teaser,
+        )
+    return mark_safe(tag)
 
 @register.filter
 def to_img_layout(img, dimensions):
@@ -12,18 +26,16 @@ def to_img_layout(img, dimensions):
         w_constr, h_constr = tuple(dimensions.split(',')[:2])
         if width > height:
             type = 'wide'
-            img_tag = to_img_tag(img, dimensions)
+            w_constr = str(int(int(w_constr) * 0.65) if w_constr else width)
         else:
             type = 'tall'
-            w_constr = str(int(int(w_constr) * 0.4) if w_constr else w_constr)
-            img_tag = to_img_tag(img, 
-                w_constr + ',' + h_constr)
+            w_constr = str(int(int(w_constr) * 0.40) if w_constr else width)
+        img_tag = to_img_tag(img, w_constr + ',' + h_constr)
         print type
-        tag = """<div class="%s_photo" style="width:%s">%s
+        tag = """<div class="%s_photo">%s
             <p class="byline">%s</p>
             <p class="caption">%s</p>
-            </div>""" % (type, w_constr or str(width), img_tag, 
-                        img.contributor, img.caption)
+            </div>""" % (type, img_tag, linkify(img.contributor), img.caption)
     return mark_safe(tag)
 
 @register.filter

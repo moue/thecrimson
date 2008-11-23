@@ -313,10 +313,10 @@ class ArticleForm(ModelForm):
                 description=img.caption,
                 cover_image=img,
                 created_on=img.created_on,
-                tags=img.tags.all(),
             )
-            ig.images=[img,]
             ig.save()
+            ig.tags = img.tags.all()
+            ig.images=[img,]
             pk = ig.pk
         self.cleaned_data['selected_image'] = pk
         return pk

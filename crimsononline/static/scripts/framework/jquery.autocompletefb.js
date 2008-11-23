@@ -14,7 +14,6 @@
  *   http://www.gnu.org/licenses/gpl.html
  */
 
-/* TODO: make this eliminate duplicates entries */
 
 jQuery.fn.autoCompletefb = function(options) 
 {
@@ -64,6 +63,26 @@ jQuery.fn.autoCompletefb = function(options)
 		},
         disableInput : function(){
             $(settings.inputClass,tmp).val('').hide();
+        },
+        insertItem : function(pk, label){
+            //force insert. if there's already an element and only 1 element
+            //  is allowed, remove the previous element.
+            if(!settings.multipleInput && acfb.getData()){
+                acfb.removeFind($(settings.inputClass, tmp).parent().prev());
+            }            
+            label = label+" ";
+            var c = settings.foundClass.replace(/\./,'');
+    		var v = '<li class="'+c+'"><span class="label">'+label+'</span><span class="pk" style="display:none">'+pk+'</span><img class="p" src="/site_media/images/delete.gif"/></li>';
+    		var x = $(settings.inputClass,tmp).parent().before(v);
+    		$('.p',x[0].previousSibling).click(function(){
+    			acfb.removeFind(this);
+    		});
+            if(settings.multipleInput){
+                $(settings.inputClass,tmp).val('').focus();
+            } else {
+                acfb.disableInput();
+            }
+    		acfb.dumpData();
         }
 	};
 	
@@ -80,19 +99,8 @@ jQuery.fn.autoCompletefb = function(options)
 	$(settings.inputClass,tmp).autocomplete(settings.urlLookup,settings.acOptions);
 	$(settings.inputClass,tmp).result(function(e,d,f){
 	    var pk = d[0];
-	    var label = d[1]+" ";
-		var c = settings.foundClass.replace(/\./,'');
-		var v = '<li class="'+c+'"><span class="label">'+label+'</span><span class="pk" style="display:none">'+pk+'</span><img class="p" src="/site_media/images/delete.gif"/></li>';
-		var x = $(settings.inputClass,tmp).parent().before(v);
-		$('.p',x[0].previousSibling).click(function(){
-			acfb.removeFind(this);
-		});
-        if(settings.multipleInput){
-            $(settings.inputClass,tmp).val('').focus();
-        } else {
-            acfb.disableInput();
-        }
-		acfb.dumpData();
+	    var label = d[1];
+		acfb.insertItem(pk, label);
 	});
     if(acfb.getData() && !settings.multipleInput){
         acfb.disableInput();
@@ -101,11 +109,13 @@ jQuery.fn.autoCompletefb = function(options)
 	$(settings.inputClass,tmp).parent().parent().click(function(){
 	    if(settings.multipleInput || !acfb.getData()){
 	        $(settings.inputClass,tmp).focus();
-	    } else {
-	        ele = $("<li>You can only enter one value here.</li>");
-	        $(settings.inputClass,tmp).after(ele);
-	        $(ele).fadeTo(2000, 1, function(){
-	            $(ele).fadeOut("slow", function(){$(ele).remove()})
+	    } else if(! $(".acfb-warning",tmp).html() ){
+	        ele = $('<li class="acfb-warning">You can only enter one value here.</li>');
+	        $(ele)
+	            .insertAfter($(settings.inputClass,tmp))
+	            .fadeTo(2000, 1, function(){
+	                $(this).fadeOut("slow", function(){$(this).remove()
+	            })
 	        });
 	    }
 	});

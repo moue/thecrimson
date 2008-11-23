@@ -44,26 +44,44 @@ p {
 
 /* photo stuff */
 .tall_photo{
-    float: right;
+    width: 240px;
 }
 .wide_photo{
+    width: 390px;
 }
 .tall_photo, .wide_photo {
+    float: right;
     padding: 0 3px 3px 5px;
     border-style: solid;
     border-color: #c4c5c7;
     border-width: 0 0 1px 1px;
     margin: 4px;
+    position: relative;
 }
 .tall_photo > .byline, .wide_photo > .byline {
-    width: inherit;
     text-align: right;
     text-transform: uppercase;
-    margin-top: -5px;
+    margin-top: -28px;
     font-size: 0.7em;
+    position: absolute;
+    right: 0px;
+    color: #000000;
+}
+.tall_photo .byline a, .wide_photo .byline a{
+    background-color: white;
+    opacity: .7;
+    padding: 1px 5px;
+    text-decoration: none;
+    font-weight: normal;
+}
+.tall_photo > .byline > a:hover, .wide_photo > .byline > a:hover{
+    text-decoration: none;
+    opacity: 1;
 }
 .tall_photo > .caption, .wide_photo > .caption {
     margin-left: 4px;
+    font-size: .85em;
+    line-height: 1.4em;
     color: #333333;
 }
 .tall_photo > p, .wide_photo > p {
