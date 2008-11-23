@@ -146,5 +146,6 @@
  {"pk": 17, "model": "auth.group", "fields": {"name": "Photo Exec", "permissions": []}}, 
  {"pk": 18, "model": "auth.group", "fields": {"name": "Sports Exec", "permissions": []}}, 
  {"pk": 1, "model": "auth.user", "fields": {"username": "andylei", "first_name": "", "last_name": "", "is_active": true, "is_superuser": true, "is_staff": true, "last_login": "2008-09-24 16:48:10", "groups": [], "user_permissions": [], "password": "sha1$0790d$8bff2b798568d35c13e727eb17c21fcd2c2b9aa5", "email": "andylei@gmail.com", "date_joined": "2008-09-24 16:47:56"}}, 
- {"pk": 2, "model": "auth.user", "fields": {"username": "joe", "first_name": "", "last_name": "", "is_active": true, "is_superuser": false, "is_staff": true, "last_login": "2008-08-08 22:10:15", "groups": [], "user_permissions": [], "password": "sha1$8d7c5$1471eb99e08bd21152273adf6b3b84c5ed44a3a9", "email": "", "date_joined": "2008-08-08 22:10:15"}}
+ {"pk": 2, "model": "auth.user", "fields": {"username": "joe", "first_name": "", "last_name": "", "is_active": true, "is_superuser": false, "is_staff": true, "last_login": "2008-08-08 22:10:15", "groups": [], "user_permissions": [], "password": "sha1$8d7c5$1471eb99e08bd21152273adf6b3b84c5ed44a3a9", "email": "", "date_joined": "2008-08-08 22:10:15"}},
+ {"pk": 1, "model": "flatpages.flatpage", "fields": {"registration_required": false, "title": "About", "url": "/about/", "template_name": "", "sites": [1], "content": "<h1>About Us</h1>\r\n<p>we're a newspaper son</p>", "enable_comments": false}}
  ]
