@@ -1,6 +1,6 @@
 from hashlib import md5
 from random import randint
-from os.path import splitext, exists, split
+from os.path import splitext, exists, split, join
 from datetime import datetime, time
 from re import compile, match
 from string import letters, digits
@@ -267,6 +267,7 @@ class Image(models.Model):
             return url
         url = split(url)[0]
         file = split(self.get_pic_sized_path(width, height))[1]
+        # this is a url, so don't use os.path.join
         return url + '/' + file
     
     def get_pic_sized_path(self, width=None, height=None):

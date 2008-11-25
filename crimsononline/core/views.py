@@ -68,12 +68,13 @@ def section(request, section, issue_id=None, tags=None):
         issue = get_object_or_404(Issue, pk=issue_id)
     
     #articles = Article.objects.filter(issue=issue.id, section__pk=section.pk)
-    articles = Article.recent_objects.filter(section__pk=section.pk)[:20]
+    articles = Article.recent_objects.filter(section__pk=section.pk)
     # filter based on tags
     if tags is not None:
         tags = tags.lower().replace('_',' ').split(',')
         for tag in tags:
             articles = articles.filter(tags__text=tag)
+    articles = articles[:20]
     
     dict = {
         'nav': section.name.lower(),
