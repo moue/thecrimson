@@ -8,7 +8,7 @@ from django.utils.safestring import mark_safe
 from django.template.defaultfilters import truncatewords
 from crimsononline.core.models import *
 from crimsononline.admin_cust import forms as cforms
-from crimsononline.admin_cust.forms import FbModelChoiceField, IssuePickerField
+from crimsononline.admin_cust.forms import FbModelChoiceField, IssuePickerField, MapBuilderField
 
 class TagForm(forms.ModelForm):
     ALLOWED_REGEXP = compile(r'[A-Za-z\s]+$')
@@ -370,6 +370,10 @@ class ArticleAdmin(admin.ModelAdmin):
         ('Image(s)', {
             'classes': ('collapse',),
             'fields': ('selected_image', 'existing_image_type', 'new_image_gallery', 'new_image',),
+        }),
+        ('Map(s)', {
+            'classes': ('collapse',),
+            'fields': ('maps',),
         })
     )
     form = ArticleForm
@@ -414,3 +418,40 @@ class ArticleAdmin(admin.ModelAdmin):
         return super(ArticleAdmin, self).save_model(request, obj, form, change)
 
 admin.site.register(Article, ArticleAdmin)
+
+
+class MarkerInline(admin.TabularInline):
+    model = Marker
+    extra = 10
+    fields = ('popup_text','lat','lng')
+
+class MapForm(ModelForm):
+    map_preview = MapBuilderField(label='Map Preview', required=False)
+    
+    def __init__(self, *args, **kwargs):
+        s = super(MapForm, self).__init__(*args, **kwargs)
+
+    class Meta:
+        model = Map
+
+class MapAdmin(admin.ModelAdmin):
+    
+    search_fields = ('title','caption',)
+    form = MapForm
+    
+    inlines = [
+        MarkerInline,
+    ]
+
+    fieldsets = (
+        ('Map Setup', {
+            'fields': ('title', 'caption','map_preview'),
+        }),
+        ('Details', {
+            'classes': ('frozen','collapse'),
+            'fields': ('zoom_level','center_lng','center_lat','display_mode','width','height',),
+        }))
+
+        
+admin.site.register(Map, MapAdmin)
+admin.site.register(Marker)

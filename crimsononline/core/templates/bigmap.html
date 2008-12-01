@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% load crimson_filters %}
+{% load content_module %}
+
+{% block title %}
+	{{ "Since 1873, motherfuckers" }}
+{% endblock %}
+
+{% block inhead %}
+	<link type="text/css" rel="stylesheet" href="/site_media/css/index.css" />
+    <script src="http://code.jquery.com/jquery.js" type="text/javascript"></script>
+	<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAA--Z_bVpXIL9HJpQ50CHbfRRi_j0U6kJrkFvY4-OX2XYmEAa76BS5oixsScFqNPn7f8shoeoOZviFMg" type="text/javascript"></script>
+    <script type="text/javascript">
+		
+        var markers = [];
+        function buildBigMap() {
+			if (GBrowserIsCompatible()) {
+                
+                    bigmap = new GMap2(document.getElementById('bigmap'));  
+                    bigmap.setCenter(new GLatLng(42.374144281901906,-71.11990928649902),15);
+                    bigmap.setMapType(G_NORMAL_MAP);
+                    bigmap.addControl(new GLargeMapControl());
+                    bigmap.addControl(new GMapTypeControl(false));
+                    bigmap.addControl(new GOverviewMapControl(false));                   
+                    
+                    $('.articledata').each(function (j) {
+                        var pk = String(this.value);
+                        markers[j] = [];
+                        $('.article_'+pk+'.markerdata').each(function (k) {
+                            var markerpk = String(this.value);
+                            latlng = new GLatLng($('#article_'+pk+'_marker_'+markerpk+'_lat').val(),$('#article_'+pk+'_marker_'+markerpk+'_lng').val());
+                            markers[j][k] = new GMarker(latlng);
+                            markers[j][k].bindInfoWindow(document.getElementById('article_'+pk+'_preview'));
+                            bigmap.addOverlay(markers[j][k]);
+                        });
+                    });                    
+			}
+            //GEvent.trigger(markers[0],'click');
+		}
+		
+		$(document).ready(buildBigMap);
+    </script>
+{% endblock %}
+
+{% block body %}
+	<div class="columnCenter">
+        {% for marker in markers %}
+            <div style="display:none;">
+                <input type = "hidden" class = 'articledata' id="article_{{marker.map.article_set.latest.pk}}_id" value="{{marker.map.article_set.latest.pk}}" />
+                <input type = "hidden" class = 'article_{{marker.map.article_set.latest.pk}} markerdata' id="article_{{marker.map.article_set.latest.pk}}_marker_{{marker.pk}}_id" value="{{marker.pk}}" />
+                <div id="article_{{marker.map.article_set.latest.pk}}_preview"><div style='width: 200px;'>{{marker.map.article_set.latest|article_preview}}</div></div>
+                <input type = "hidden" id="article_{{marker.map.article_set.latest.pk}}_marker_{{marker.pk}}_lat" value="{{marker.lat}}" />
+                <input type = "hidden" id="article_{{marker.map.article_set.latest.pk}}_marker_{{marker.pk}}_lng" value="{{marker.lng}}" />
+            </div>
+        {% endfor %}
+        <h1>Stuff Happening Around Campus</h1>
+        <div id="bigmap" class="map" style="width: 780px; height: 700px"></div>
+        
+	</div>
+	<div class="columnRight">
+		<p>here is a bunch of test text<br/>type type type type type type</p>
+		<p><img src="/site_media/images/ver_ad.gif" /></p>
+	</div>
+{% endblock %}

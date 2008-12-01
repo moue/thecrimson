@@ -338,6 +338,33 @@ class RecentsManager(PublishedArticlesManager):
 def to_slug(text):
     text = filter_string(SAFE_CHARS+' ', text)
     return text.replace(' ','-')
+
+class Map(models.Model):
+    """A Google Map Object"""
+    title = models.CharField(blank=False, max_length=50) #for internal use, doesn't appear on page
+    # values used by Google Maps API
+    zoom_level = models.PositiveSmallIntegerField(default=15)
+    center_lat = models.FloatField(default=42.373002)
+    center_lng = models.FloatField(default=-71.11905)
+    display_mode = models.CharField(default='Map', max_length=50)
+    width = models.IntegerField(default='300')
+    height = models.IntegerField(default='300')
+    # display stuff
+    caption = models.CharField(blank=True, max_length=1000)
+    created_on = models.DateTimeField(auto_now_add=True)
+    
+    def __unicode__(self):
+        return self.title  + ' (' + str(self.center_lat) + ',' + str(self.center_lng) + '): ' + str(self.created_on.month) + '/' + str(self.created_on.day) + '/' + str(self.created_on.year)
+
+class Marker(models.Model):
+    """Markers for a Google Map"""
+    map = models.ForeignKey(Map,related_name='markers')
+    lat = models.FloatField(blank=False)
+    lng = models.FloatField(blank=False)
+    popup_text = models.CharField(blank=True, max_length = 1000) #text that appears when the user clicks the marker
+	
+    def __unicode__(self):
+        return self.map.title  + ' (' + str(self.map.center_lat) + ',' + str(self.map.center_lng) + '): ' + self.map.caption + ' (' + str(self.lat) + ',' + str(self.lng) + ')'
     
 class Article(models.Model):
     """Non serial text content"""
@@ -388,6 +415,7 @@ class Article(models.Model):
         Short descriptors for this article.
         Try to use tags that already exist, if  possible.
         """)
+    maps = models.ManyToManyField(Map)
     
     objects = PublishedArticlesManager()
     web_objects = WebOnlyManager()
@@ -401,6 +429,7 @@ class Article(models.Model):
         )
         ordering = ['-priority',]
         unique_together = ('slug', 'issue',)
+        get_latest_by = 'created_on'
     
     def get_long_teaser(self):
         return truncatewords(self.text, 50)

@@ -20,6 +20,7 @@ urlpatterns = patterns('crimsononline.core.views',
     url(r'^gallery/(\d+)/(\d+)/$',
         'gallery', name='core_imagegallery'),
     url(r'^gallery/get_img/(\d+)/$', 'ajax_get_img'),
+    url(r'^map/$', 'bigmap'),
     url(r'^$', 'index', name='core_index'),
 )
 

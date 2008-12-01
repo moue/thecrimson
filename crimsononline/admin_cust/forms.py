@@ -8,6 +8,28 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.template.loader import render_to_string
 from crimsononline.core.models import Issue
 
+class MapBuilderWidget(forms.widgets.HiddenInput):
+    def render(self, name, value, attrs=None):
+        return render_to_string("widgets/map_builder.html", locals())
+
+class MapBuilderField(forms.CharField):
+    """
+    A field that allows you to add a map via a map builder.
+    
+    Always uses the MapBuilderWidget.
+    """
+    
+    def __init__(self, *args, **kwargs):
+        kwargs['widget'] = MapBuilderWidget()
+        return super(MapBuilderField, self).__init__(*args, **kwargs)
+    
+    def clean(self, value):
+        if not value:
+            if self.required:
+                raise forms.ValidationError("This can't be left blank")
+            return
+        return
+
 class IssuePickerWidget(forms.widgets.HiddenInput):
     """
     Widget that uses a calendar picker and ajax to pick issues.

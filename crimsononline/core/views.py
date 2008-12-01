@@ -6,6 +6,7 @@ from django.template import Context, RequestContext, loader
 from django.contrib.flatpages.models import FlatPage
 from crimsononline.core.models import *
 from crimsononline.content_module.models import ContentModule
+import sys
 
 def index(request):
     issue = Issue.get_current()
@@ -20,15 +21,24 @@ def index(request):
     dict['sports'] = Article.recent_objects.filter(section__name='Sports')[:6]
     dict['fms'] = Article.recent_objects.filter(section__name='News')[:6]
     dict['issue'] = issue
+    dict['markers'] = Marker.objects.filter(map__in = Map.objects.filter(article__in = stories.values('pk').query).values('pk').query)
     
     return render_to_response('index.html', dict)
 
+def bigmap(request):
+    stories = Article.recent_objects.filter(section__name='News')[:20] # how many articles to show markers from...we will have to play with this
+    dict = {}
+    dict['markers'] = Marker.objects.distinct().filter(map__in = Map.objects.filter(article__in = stories.values('pk').query).values('pk').query)
+    
+    return render_to_response('bigmap.html', dict)
+    
 def article(request, year, month, day, slug):
     year, month, day = int(year), int(month), int(day)
     a = get_object_or_404(Article,
         issue__issue_date__year=year, issue__issue_date__month=month,
         issue__issue_date__day=day, slug=slug)
     nav = a.section.name.lower()
+    a.maps.order_by('width') #this looks nicer
     return render_to_response('article.html', {'article': a, 'nav': nav})
     
 def writer(request, contributor_id, f_name, m_name, l_name):
