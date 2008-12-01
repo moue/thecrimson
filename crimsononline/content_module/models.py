@@ -2,6 +2,7 @@ from datetime import datetime, timedelta
 from django.db import models
 from django.utils.safestring import mark_safe
 
+
 class ContentModule(models.Model):
     """A container for custom content"""
     name = models.CharField(
