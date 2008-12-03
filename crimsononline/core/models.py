@@ -415,7 +415,7 @@ class Article(models.Model):
         Short descriptors for this article.
         Try to use tags that already exist, if  possible.
         """)
-    maps = models.ManyToManyField(Map)
+    maps = models.ManyToManyField(Map, blank=True)
     
     objects = PublishedArticlesManager()
     web_objects = WebOnlyManager()

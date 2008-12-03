@@ -44,10 +44,17 @@ class IssuePickerWidget(forms.widgets.HiddenInput):
     def render(self, name, value, attrs=None):
         meta_select = "daily"
         if value:
-            issue = Issue.objects.get(pk=int(value))
-            issue_date = issue.issue_date
-            if issue.special_issue_name:
-                meta_select = "special"
+            # this assumes that there are no errors (the field gets cleaned correctly)
+            #  if there's an error that needs to be corrected on the form, then 
+            #  the next line won't work, since value will be a date string
+            try:
+                issue = Issue.objects.get(pk=int(value))
+                issue_date = issue.issue_date
+                if issue.special_issue_name:
+                    meta_select = "special"
+            except ValueError:
+                dt = strptime(value, r"%m/%d/%Y")
+                issue_date = date(dt[0], dt[1], dt[2])
         else:
             # default value is the next issue
             issue_date = datetime.now()
