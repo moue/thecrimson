@@ -9,7 +9,7 @@ admin.autodiscover()
 urlpatterns = patterns('crimsononline.core.views',
     url(r'^article/(\d{4})/(\d{1,2})/(\d{1,2})/([-\w]+)/$',
         'article', name='core_get_article'),
-    url(r'^writer/(\d+)/([A-Za-z]+)_([A-Za-z]{0,1})_([A-Za-z]+)/$',
+    url(r'^writer/(\d+)/([A-Za-z\s]+)_([A-Za-z]{0,1})_([A-Za-z]+)/$',
         'writer', name='core_writer_profile'),
     url(r'^section/(?P<section>[A-Za-z]+)/$', 'section', name='core_section'),
     url(r'^section/(?P<section>[A-Za-z]+)/issue/(?P<issue_id>\d+)$',

@@ -32,6 +32,7 @@
 .footer{
 	width: 980px;
 	text-align: center;
+    /*clear: both;*/
 }
 .menu {
 	height: 27px;

@@ -3,6 +3,7 @@
     margin: 5px 14px 5px 5px;
 }
 li.gallery {
+    width: 100%;
     display: block;
     float: left;
 }
