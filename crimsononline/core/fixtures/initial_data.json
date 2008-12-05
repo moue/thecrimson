@@ -702,7 +702,7 @@
             "is_active": true, 
             "is_superuser": true, 
             "is_staff": true, 
-            "last_login": "2008-12-03 01:52:26", 
+            "last_login": "2008-12-03 22:08:27", 
             "groups": [
                 6
             ], 
@@ -728,6 +728,34 @@
             "password": "sha1$8d7c5$1471eb99e08bd21152273adf6b3b84c5ed44a3a9", 
             "email": "", 
             "date_joined": "2008-08-08 22:10:15"
+        }
+    }, 
+    {
+        "pk": 3, 
+        "model": "auth.user", 
+        "fields": {
+            "username": "Harvard__Crimson_0", 
+            "first_name": "", 
+            "last_name": "", 
+            "is_active": true, 
+            "is_superuser": false, 
+            "is_staff": true, 
+            "last_login": "2008-12-03 22:12:54", 
+            "groups": [
+                1, 
+                2, 
+                3, 
+                4, 
+                5, 
+                6, 
+                7, 
+                8, 
+                9
+            ], 
+            "user_permissions": [], 
+            "password": "!", 
+            "email": "", 
+            "date_joined": "2008-12-03 22:12:54"
         }
     }, 
     {
@@ -919,6 +947,131 @@
         }
     }, 
     {
+        "pk": "347c4de769026e7a95f1fe47878a52f9", 
+        "model": "sessions.session", 
+        "fields": {
+            "expire_date": "2008-12-17 22:08:27", 
+            "session_data": "gAJ9cQEoVRJfYXV0aF91c2VyX2JhY2tlbmRxAlUpZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5k\ncy5Nb2RlbEJhY2tlbmRxA1UNX2F1dGhfdXNlcl9pZHEESwF1LmNiN2FjMGNjZTcwYWE4YjQzYzJj\nNzA4MjM1MTYwZTRh\n"
+        }
+    }, 
+    {
+        "pk": 20, 
+        "model": "admin.logentry", 
+        "fields": {
+            "action_flag": 2, 
+            "action_time": "2008-12-04 20:26:43", 
+            "object_repr": "index.featured", 
+            "object_id": "5", 
+            "change_message": "Changed content.", 
+            "user": 1, 
+            "content_type": 20
+        }
+    }, 
+    {
+        "pk": 19, 
+        "model": "admin.logentry", 
+        "fields": {
+            "action_flag": 2, 
+            "action_time": "2008-12-04 20:25:36", 
+            "object_repr": "index.featured", 
+            "object_id": "5", 
+            "change_message": "Changed content.", 
+            "user": 1, 
+            "content_type": 20
+        }
+    }, 
+    {
+        "pk": 18, 
+        "model": "admin.logentry", 
+        "fields": {
+            "action_flag": 2, 
+            "action_time": "2008-12-04 20:23:51", 
+            "object_repr": "/about/ -- About", 
+            "object_id": "1", 
+            "change_message": "Changed content.", 
+            "user": 1, 
+            "content_type": 9
+        }
+    }, 
+    {
+        "pk": 17, 
+        "model": "admin.logentry", 
+        "fields": {
+            "action_flag": 2, 
+            "action_time": "2008-12-04 20:22:28", 
+            "object_repr": "/about/ -- About", 
+            "object_id": "1", 
+            "change_message": "Changed content.", 
+            "user": 1, 
+            "content_type": 9
+        }
+    }, 
+    {
+        "pk": 16, 
+        "model": "admin.logentry", 
+        "fields": {
+            "action_flag": 2, 
+            "action_time": "2008-12-03 22:23:17", 
+            "object_repr": "The Harvard Crimson", 
+            "object_id": "13", 
+            "change_message": "Changed first_name.", 
+            "user": 1, 
+            "content_type": 12
+        }
+    }, 
+    {
+        "pk": 15, 
+        "model": "admin.logentry", 
+        "fields": {
+            "action_flag": 2, 
+            "action_time": "2008-12-03 22:12:54", 
+            "object_repr": "Harvard Crimson", 
+            "object_id": "13", 
+            "change_message": "Changed first_name.", 
+            "user": 1, 
+            "content_type": 12
+        }
+    }, 
+    {
+        "pk": 14, 
+        "model": "admin.logentry", 
+        "fields": {
+            "action_flag": 2, 
+            "action_time": "2008-12-03 22:09:32", 
+            "object_repr": "Crate and Barrel", 
+            "object_id": "3", 
+            "change_message": "Changed description.", 
+            "user": 1, 
+            "content_type": 16
+        }
+    }, 
+    {
+        "pk": 13, 
+        "model": "admin.logentry", 
+        "fields": {
+            "action_flag": 2, 
+            "action_time": "2008-12-03 22:09:17", 
+            "object_repr": "Crate and Barrel", 
+            "object_id": "3", 
+            "change_message": "Changed description.", 
+            "user": 1, 
+            "content_type": 16
+        }
+    }, 
+    {
+        "pk": 12, 
+        "model": "admin.logentry", 
+        "fields": {
+            "action_flag": 2, 
+            "action_time": "2008-12-03 22:09:01", 
+            "object_repr": "Crate and Barrel", 
+            "object_id": "3", 
+            "change_message": "Changed description.", 
+            "user": 1, 
+            "content_type": 16
+        }
+    }, 
+    {
         "pk": 11, 
         "model": "admin.logentry", 
         "fields": {
@@ -1080,7 +1233,7 @@
             "sites": [
                 1
             ], 
-            "content": "<h1>About Us</h1>\r\n<p>we're a newspaper son</p>", 
+            "content": "<h1>About Us</h1>\r\n<table id=\"table1\" width=\"100%\" border=\"0\" cellpadding=\"4\" cellspacing=\"4\"> \r\n<tbody> \r\n<tr> \r\n<td valign=\"top\" width=\"40%\"><strong><font size=\"2\" color=\"#660000\" face=\"Arial\">HISTORY OF THE CRIMSON</font></strong><br><font class=\"text\">The Harvard Crimson, the nation's oldest continuously published daily college newspaper, was founded in 1873 and incorporated in 1967. The newspaper traces its history to the first issue of \"The Magenta,\" published January 24, 1873, and changed its name to \"The Crimson\" to reflect the new color of the college on May 21, 1875. The Crimson has a rich tradition of journalistic integrity and counts among its ranks of editorship some of America's greatest journalists. The faces of Pulitzer Prize-winning Crimson editors line the walls of The Crimson. Past editors include John F. Kennedy '40. The name of Franklin D. Roosevelt, Class of 1904, is proudly engraved upon The Crimson's president's chair. One hundred and thirty-five years after its founding, having grown from a fortnightly newspaper to a daily, The Harvard Crimson continues to flourish with a strong body of undergraduate staff volunteers. </font><br><br><strong><font size=\"2\" color=\"#660000\" face=\"Arial\">WHAT WE PRINT</font></strong><br><font class=\"text\">The Harvard Crimson is the only breakfast-table daily newspaper in Cambridge, MA. The Crimson publishes every morning, Monday through Friday, except on federal and University holidays. In addition to the daily newspaper, The Crimson publishes an extended sports section on Mondays; Fifteen Minutes, the weekend magazine of The Crimson on Thursdays; and an arts section on Fridays. Our presses are also available for third-party contract printing. Call 617-576-6600 for more information. <br></font><br><strong><font size=\"2\" color=\"#660000\" face=\"Arial\">JOINING THE CRIMSON</font></strong><br><font class=\"text\">If you are a Harvard College student you are eligible to join The Crimson. Please click <a href=\"/info/comp.aspx\"><u>here</u></a> to learn more about our comp process.<br><br></font><strong><font size=\"2\" color=\"#660000\" face=\"Arial\">WHAT SHOULD I DO IF THE CRIMSON MAKES A MISTAKE IN A STORY?</font></strong><font class=\"text\"><br>In the event that we run something that is factually inaccurate, we are eager to correct the error. When a correction is necessary, it will run in a corrections box on page two. Please e-mail Managing Editor&nbsp;Paras D. Bhayani&nbsp;(pbhayani@fas.harvard.edu) about corrections.<br></font></td> \r\n<td valign=\"top\" width=\"60%\"> \r\n<div class=\"almond_box\"> \r\n<table id=\"table3\" width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\"> \r\n<tbody> \r\n<tr> \r\n<td width=\"50%\"> \r\n<div align=\"right\"><strong><font size=\"2\">President</font></strong></div></td> \r\n<td width=\"2%\"> \r\n<p align=\"right\">&nbsp;</p></td> \r\n<td width=\"48%\"><font size=\"2\">Malcom&nbsp;A.&nbsp;Glenn '09<br></font></td></tr> \r\n<tr> \r\n<td width=\"50%\">&nbsp;</td> \r\n<td width=\"2%\">&nbsp;</td> \r\n<td width=\"48%\">&nbsp;</td></tr> \r\n<tr> \r\n<td width=\"50%\"> \r\n<div align=\"right\"><strong><font size=\"2\">Managing Editor</font></strong></div></td> \r\n<td width=\"2%\">&nbsp;</td> \r\n<td width=\"48%\"><font size=\"2\">Paras&nbsp;D.&nbsp;Bhayani '09<br></font></td></tr> \r\n<tr> \r\n<td width=\"50%\">&nbsp;</td> \r\n<td width=\"2%\">&nbsp;</td> \r\n<td width=\"48%\">&nbsp;</td></tr> \r\n<tr> \r\n<td width=\"50%\"> \r\n<div align=\"right\"><strong><font size=\"2\">Business Manager</font></strong></div></td> \r\n<td width=\"2%\">&nbsp;</td> \r\n<td width=\"48%\"><font size=\"2\">Gideon&nbsp;L. Lowin '09</font><br></td></tr> \r\n<tr> \r\n<td width=\"50%\">&nbsp;</td> \r\n<td width=\"2%\">&nbsp;</td> \r\n<td width=\"48%\">&nbsp;</td></tr></tbody></table> \r\n<table id=\"table2\" style=\"width: 100%;\" border=\"0\" cellpadding=\"2\" cellspacing=\"0\"> \r\n<tbody> \r\n<tr valign=\"top\"> \r\n<td class=\"board\" colspan=\"3\"> \r\n<div align=\"center\"><strong><br>NEWS</strong></div></td></tr> \r\n<tr valign=\"top\"> \r\n<td class=\"title\" width=\"50%\"> \r\n<div align=\"right\"><strong><font size=\"2\">Associate Managing Editors</font></strong><strong><font size=\"2\"><br><br>News Executives<br>&nbsp;<br>&nbsp;<br><br><br>Senior Story Editors<br><br></font></strong></div></td> \r\n<td class=\"name\">&nbsp;</td> \r\n<td class=\"\"><font size=\"2\">Laurence H. M. Holland&nbsp;'09</font><br><font size=\"2\">Samuel&nbsp;P.&nbsp;Jacobs '09<br></font><span class=\"\"><font size=\"2\">Johannah S. Cornblatt&nbsp;'09</font></span><br><font size=\"2\">Claire&nbsp;M.&nbsp;Guehenno '09<br>Victoria&nbsp;B.&nbsp;Kabak '09<br>Madeline W. Lissner '09<br>Laura A. Moore&nbsp;'09<br></font><span class=\"\"><font size=\"2\">Noah S. Bloom '09</font></span><br><p class=\"MsoNormal\"></p><span class=\"\"> \r\n<p class=\"MsoNormal\" style=\"font-family: Times New Roman;\"><font size=\"2\"></font></p><span> \r\n<p style=\"font-family: Times New Roman;\"><font size=\"2\"></font></p><span> \r\n<p style=\"font-family: Times New Roman;\"></p><span><span style=\"font-family: Times New Roman;\"></span></span></span></span> \r\n<p class=\"MsoNormal\"><font style=\"font-family: Times New Roman;\" size=\"2\"></font><o:p></o:p></p><span><span></span> \r\n<p style=\"font-family: Times New Roman;\"><font size=\"2\"></font></p></span> \r\n<p class=\"MsoNormal\" style=\"font-family: Times New Roman;\"><font size=\"2\"></font></p></span> \r\n<p class=\"MsoNormal\"><o:p></o:p></p> \r\n<p class=\"MsoNormal\"><o:p></o:p></p></td></tr> \r\n<tr> \r\n<td colspan=\"3\"> \r\n<div style=\"text-align: center;\">&nbsp;<br><strong>EDITORIAL</strong> \r\n<table id=\"table2\" style=\"width: 100%;\" border=\"0\" cellpadding=\"2\" cellspacing=\"0\"> \r\n<tbody> \r\n<tr valign=\"top\"> \r\n<td class=\"title\" width=\"50%\"> \r\n<div align=\"right\"><strong><font size=\"2\">Editorial Chairs<br>&nbsp;<br>Associate Editorial Editors<br><br><br><br><br></font></strong></div></td> \r\n<td class=\"name\">&nbsp;</td> \r\n \r\n \r\n<td class=\"\"><font style=\"font-family: Times New Roman;\" size=\"5\"><span><span style=\"font-size: 5pt;\"><span style=\"color: rgb(0, 0, 0);\"></span></span></span></font><font style=\"font-family: Times New Roman;\" size=\"2\"><span><span style=\"font-size: 5pt;\"><span style=\"color: rgb(0, 0, 0);\"></span></span></span><span><span style=\"font-size: 5pt;\"></span><span><span><span><span></span><span></span></span></span></span></span></font><font size=\"2\">Emma&nbsp;M.&nbsp;Lind '09<br>Ramya Parthasarathy '09<br>Daniel E. Herz-Roiphe '10<br>Ronald K. Kamdem '10<br>Robert G. King '09-'10<br>J. Maxwell Larkin '10<br>Noah M. Silver '10<font size=\"3\">&nbsp;</font><br>James M. Wilsterman '10</font></td></tr></tbody></table><strong><br>ARTS</strong></div> \r\n<table id=\"table2\" style=\"width: 100%;\" border=\"0\" cellpadding=\"2\" cellspacing=\"0\"> \r\n<tbody> \r\n<tr valign=\"top\"> \r\n<td class=\"title\" width=\"50%\"> \r\n<div align=\"right\"><strong><font size=\"2\">Arts Chairs<br><br>Associate Arts </font></strong><strong><font size=\"2\">Editors</font></strong><br><strong><font size=\"2\"><br><br><br><br><br><br></font></strong></div></td> \r\n<td class=\"name\">&nbsp;</td> \r\n<td class=\"name\"><font size=\"2\">Patrick R. Chesnut '09<br>Jake G. Cohen '09</font><br><font size=\"2\">Anna K. Barnet&nbsp;'10<br>Sanders I. Bernstein&nbsp;'10<br>Joshua Kearney&nbsp;'10<br>Beryl C. D. Lipton&nbsp;'10<br>Nayeli E. Rodriguez&nbsp;'10<br>Claire J. Saffitz&nbsp;'09<br>John D. Selig '10<br></font></td></tr></tbody></table></td></tr> \r\n<tr align=\"center\"> \r\n<td colspan=\"3\">&nbsp;<span style=\"font-weight: bold;\"><br>DESIGN</span> \r\n<table id=\"table2\" style=\"width: 100%;\" border=\"0\" cellpadding=\"2\" cellspacing=\"0\"> \r\n<tbody> \r\n<tr valign=\"top\"> \r\n<td class=\"title\" width=\"50%\"> \r\n<div align=\"right\"><strong><font size=\"2\">Design Chairs<br>&nbsp;<br>Associate Design </font></strong><strong><font size=\"2\">Editors</font></strong></div></td> \r\n<td class=\"name\">&nbsp;</td> \r\n<td class=\"\"><font style=\"font-family: Times New Roman;\" size=\"5\"><span><span style=\"font-size: 5pt;\"><span style=\"color: rgb(0, 0, 0);\"></span></span></span></font><font style=\"font-family: Times New Roman;\" size=\"2\"><span><span style=\"font-size: 5pt;\"><span style=\"color: rgb(0, 0, 0);\"></span></span></span><span><span style=\"font-size: 5pt;\"></span><span><span><span><span></span><span></span></span></span></span></span></font><font size=\"2\">Aditi Banga&nbsp;'09<br></font><font size=\"2\">Samantha P. Krug&nbsp;'10</font><br><font size=\"2\">Sarah B. Joselow&nbsp;'10</font><font size=\"2\"><br>Julia V. Guren&nbsp;'10<br>Devon L. Hein&nbsp;'09<br>Alee Lockman&nbsp;'10<br>Elisa M. Orr '10<br>Katharine E. Lauderdale '11<br></font></td></tr></tbody></table></td></tr> \r\n<tr valign=\"top\"> \r\n<td class=\"board\" colspan=\"3\"> \r\n<div align=\"center\"><strong><br>INFORMATION TECHNOLOGY</strong> \r\n<table id=\"table2\" style=\"width: 100%;\" border=\"0\" cellpadding=\"2\" cellspacing=\"0\"> \r\n<tbody> \r\n<tr valign=\"top\"> \r\n<td class=\"title\" width=\"50%\"> \r\n<div align=\"right\"><strong><font size=\"2\">IT Chair<br>Associate IT </font></strong><strong><font size=\"2\">Editors</font></strong><br><strong><font size=\"2\">&nbsp;<br><br></font></strong></div></td> \r\n<td class=\"name\">&nbsp;</td> \r\n<td class=\"\"><font style=\"font-family: Times New Roman;\" size=\"5\"><span><span style=\"font-size: 5pt;\"><span style=\"color: rgb(0, 0, 0);\"></span></span></span></font><font style=\"font-family: Times New Roman;\" size=\"2\"><span><span style=\"font-size: 5pt;\"><span style=\"color: rgb(0, 0, 0);\"></span></span></span><span><span style=\"font-size: 5pt;\"></span><span><span><span><span></span><span></span></span></span></span></span></font><font size=\"2\">Daniel C. Carroll&nbsp;'09&nbsp;<br>Cindy C. Cheng '10<br>Andy Y. Lei '10<br>Cary Y. Lin '10</font></td></tr></tbody></table><strong></strong></div></td></tr> \r\n<tr valign=\"top\"> \r\n<td class=\"board\" colspan=\"3\"> \r\n<div align=\"center\"><strong><br>MAGAZINE</strong></div></td></tr> \r\n<tr valign=\"top\"> \r\n<td class=\"title\" width=\"50%\"> \r\n<div align=\"right\"><strong><font size=\"2\">Magazine Chairs<br>&nbsp;<br>Associate Magazine Editors</font></strong></div></td> \r\n<td class=\"name\">&nbsp;</td> \r\n<td class=\"name\"><font size=\"2\">Nicola C. Perlman&nbsp;'09<br>Nicole G. White&nbsp;'09<br>Asli A. Bashir '10<br>Kate E. Cetrulo&nbsp;'09<br>Gracye Y. Cheng '10<br>Jessica L. Fleischer '10<br>Emily C. Graff '10<br>Jun Li '10<br>Charles R. Melvoin '10<br>Mark A. Pacult '10</font><br><br><font size=\"2\"></font></td></tr> \r\n<tr valign=\"top\"> \r\n<td class=\"board\" colspan=\"3\"> \r\n<div align=\"center\"><strong><br>PHOTOGRAPHY</strong></div></td></tr> \r\n<tr valign=\"top\"> \r\n<td class=\"title\" width=\"50%\"> \r\n<div align=\"right\"><strong><font size=\"2\">Photography Chairs<br><br>Associate Photography </font></strong><strong><font size=\"2\">Editors</font></strong><br><strong><font size=\"2\">&nbsp;</font></strong></div></td> \r\n<td class=\"name\">&nbsp;</td> \r\n<td class=\"name\"><font size=\"2\">Hillary W Berkowitz '09</font><br><font size=\"2\">Meghan T. Purdy '09</font><font size=\"2\"><br>Alan C. Chiu '10<br>Natasha L. Coleman '09<br></font><font size=\"2\">Rachel M. Douglas '09<br>Jessica S. Lin '09<br></font><font size=\"2\">Peter R. Raymond '09</font><br><font size=\"2\">Sarah M. Roberts '09<br>Raquel Rodriguez '09<br>Adam D. Sidman '10<br>Terrell Woods '11<br></font></td></tr> \r\n<tr align=\"center\"> \r\n<td colspan=\"3\"><strong><br>SPORTS</strong> \r\n<table id=\"table2\" style=\"width: 100%;\" border=\"0\" cellpadding=\"2\" cellspacing=\"0\"> \r\n<tbody> \r\n<tr valign=\"top\"> \r\n<td class=\"title\" width=\"50%\"> \r\n<div align=\"right\"><strong><font size=\"2\">Sports Chairs<br><br>Associate Sports </font></strong><strong><font size=\"2\">Editors</font></strong><br><strong><font size=\"2\">&nbsp;</font></strong></div></td> \r\n<td class=\"name\">&nbsp;</td> \r\n<td class=\"name\"><font size=\"2\">Brad Hinshelwood '09<br></font><font size=\"2\">Madeleine I. Shapiro&nbsp;'09</font><font size=\"2\"><br></font><font size=\"2\">Loren Amor '10<br>Robert T. Hamlin '10<br>Dixon McPhillips&nbsp;'10<br>Julia R. Senior '10<br></font><font size=\"2\">Courtney D. Skinner '10<br></font><font size=\"2\">Walter E. Howell '09<br>Ted Kirby&nbsp;'09<br><br></font></td></tr></tbody></table></td></tr> \r\n<tr valign=\"top\"> \r\n<td class=\"board\" colspan=\"3\"> \r\n<div align=\"center\"><strong><br>BUSINESS</strong></div></td></tr> \r\n<tr valign=\"top\"> \r\n<td class=\"title\" width=\"50%\"> \r\n<div align=\"right\"><strong><font size=\"2\">Associate Business Manager<br>Director of Business Development<br>Director of Staff Development<br>Advertising Managers<br>&nbsp;<br>&nbsp;<br>Circulation Managers<br>&nbsp;<br>Contract Printing Managers<br><br>Operations Managers<br>&nbsp;<br>Sales Managers<br>&nbsp;</font></strong></div></td> \r\n<td class=\"name\">&nbsp;</td> \r\n<td class=\"name\"><font size=\"2\">Tyler W. Bosmeny '09<br></font><font size=\"2\">Katherine R. Hill '09<br></font><font size=\"2\"><br>Robert J. Prior '09<br>Katherine A. Petti '10<br>Jessica H. Roe '09<br>Amartya Sengupta '10<br>Aparicio J. Davis '10<br>Jesse Ge '10<br>Philip J. Daniel '10<br>Thomas J. Lawless '10<br>Maxwell L. Child '10<br>Steven J. Stelmach '10<br>Wenna Jia '10<br>Bohao D. Pan '10<br>Xin Pan '10<br>John C. Zhou '10<br></font></td></tr> \r\n<tr valign=\"top\" align=\"center\"> \r\n<td class=\"board\" colspan=\"3\"><br></td></tr> \r\n<tr> \r\n<td style=\"text-align: left;\"><br></td> \r\n<td><br></td> \r\n<td><br></td></tr></tbody></table></div></td></tr> \r\n<tr> \r\n<td>&nbsp;</td> \r\n<td>&nbsp;</td></tr></tbody></table>", 
             "enable_comments": false
         }
     }, 
@@ -1344,7 +1497,7 @@
         "fields": {
             "middle_initial": "", 
             "first_name": "Matt", 
-            "profile_text": null, 
+            "last_name": "Fasman", 
             "board_number": 134, 
             "boards": [], 
             "huid_hash": null, 
@@ -1352,7 +1505,8 @@
             "class_of": null, 
             "phone": null, 
             "created_on": "2008-05-22", 
-            "last_name": "Fasman", 
+            "profile_text": null, 
+            "user": null, 
             "type": null, 
             "email": null
         }
@@ -1363,7 +1517,7 @@
         "fields": {
             "middle_initial": "", 
             "first_name": "Dan", 
-            "profile_text": null, 
+            "last_name": "Carroll", 
             "board_number": 135, 
             "boards": [], 
             "huid_hash": null, 
@@ -1371,7 +1525,8 @@
             "class_of": null, 
             "phone": null, 
             "created_on": "2008-05-22", 
-            "last_name": "Carroll", 
+            "profile_text": null, 
+            "user": null, 
             "type": null, 
             "email": null
         }
@@ -1382,7 +1537,7 @@
         "fields": {
             "middle_initial": "", 
             "first_name": "Andy", 
-            "profile_text": null, 
+            "last_name": "Lei", 
             "board_number": 136, 
             "boards": [
                 6
@@ -1392,7 +1547,8 @@
             "class_of": null, 
             "phone": "", 
             "created_on": "2008-05-22", 
-            "last_name": "Lei", 
+            "profile_text": null, 
+            "user": null, 
             "type": "", 
             "email": ""
         }
@@ -1403,7 +1559,7 @@
         "fields": {
             "middle_initial": "", 
             "first_name": "Larry", 
-            "profile_text": null, 
+            "last_name": "Summers", 
             "board_number": null, 
             "boards": [], 
             "huid_hash": null, 
@@ -1411,7 +1567,8 @@
             "class_of": null, 
             "phone": null, 
             "created_on": "2008-05-22", 
-            "last_name": "Summers", 
+            "profile_text": null, 
+            "user": null, 
             "type": null, 
             "email": null
         }
@@ -1422,7 +1579,7 @@
         "fields": {
             "middle_initial": "W", 
             "first_name": "George", 
-            "profile_text": null, 
+            "last_name": "Bush", 
             "board_number": 136, 
             "boards": [
                 9
@@ -1432,7 +1589,8 @@
             "class_of": 2010, 
             "phone": "", 
             "created_on": "2008-11-21", 
-            "last_name": "Bush", 
+            "profile_text": null, 
+            "user": null, 
             "type": "", 
             "email": ""
         }
@@ -1443,7 +1601,7 @@
         "fields": {
             "middle_initial": "", 
             "first_name": "Theodore", 
-            "profile_text": null, 
+            "last_name": "Roosevelt", 
             "board_number": 135, 
             "boards": [
                 7
@@ -1453,7 +1611,8 @@
             "class_of": 2009, 
             "phone": "", 
             "created_on": "2008-11-21", 
-            "last_name": "Roosevelt", 
+            "profile_text": null, 
+            "user": null, 
             "type": "", 
             "email": ""
         }
@@ -1464,7 +1623,7 @@
         "fields": {
             "middle_initial": "D", 
             "first_name": "Franklin", 
-            "profile_text": null, 
+            "last_name": "Roosevelt", 
             "board_number": 136, 
             "boards": [
                 7
@@ -1474,7 +1633,8 @@
             "class_of": 2010, 
             "phone": "", 
             "created_on": "2008-11-21", 
-            "last_name": "Roosevelt", 
+            "profile_text": null, 
+            "user": null, 
             "type": "", 
             "email": ""
         }
@@ -1485,7 +1645,7 @@
         "fields": {
             "middle_initial": "F", 
             "first_name": "John", 
-            "profile_text": null, 
+            "last_name": "Kennedy", 
             "board_number": 137, 
             "boards": [
                 7
@@ -1495,7 +1655,8 @@
             "class_of": 2011, 
             "phone": "", 
             "created_on": "2008-11-21", 
-            "last_name": "Kennedy", 
+            "profile_text": null, 
+            "user": null, 
             "type": "", 
             "email": ""
         }
@@ -1506,7 +1667,7 @@
         "fields": {
             "middle_initial": "B", 
             "first_name": "Rutherford", 
-            "profile_text": null, 
+            "last_name": "Hayes", 
             "board_number": 134, 
             "boards": [
                 8
@@ -1516,7 +1677,8 @@
             "class_of": 2008, 
             "phone": "", 
             "created_on": "2008-11-21", 
-            "last_name": "Hayes", 
+            "profile_text": null, 
+            "user": null, 
             "type": "", 
             "email": ""
         }
@@ -1527,7 +1689,7 @@
         "fields": {
             "middle_initial": "Q", 
             "first_name": "John", 
-            "profile_text": null, 
+            "last_name": "Adams", 
             "board_number": 136, 
             "boards": [
                 7
@@ -1537,7 +1699,8 @@
             "class_of": 2010, 
             "phone": "", 
             "created_on": "2008-11-21", 
-            "last_name": "Adams", 
+            "profile_text": null, 
+            "user": null, 
             "type": "", 
             "email": ""
         }
@@ -1548,7 +1711,7 @@
         "fields": {
             "middle_initial": "", 
             "first_name": "John", 
-            "profile_text": null, 
+            "last_name": "Adams", 
             "board_number": 136, 
             "boards": [
                 7
@@ -1558,7 +1721,8 @@
             "class_of": 2010, 
             "phone": "", 
             "created_on": "2008-11-21", 
-            "last_name": "Adams", 
+            "profile_text": null, 
+            "user": null, 
             "type": "", 
             "email": ""
         }
@@ -1569,7 +1733,7 @@
         "fields": {
             "middle_initial": "H", 
             "first_name": "Barack", 
-            "profile_text": null, 
+            "last_name": "Obama", 
             "board_number": 136, 
             "boards": [
                 7
@@ -1579,7 +1743,8 @@
             "class_of": 2010, 
             "phone": "", 
             "created_on": "2008-11-21", 
-            "last_name": "Obama", 
+            "profile_text": null, 
+            "user": null, 
             "type": "", 
             "email": ""
         }
@@ -1590,7 +1755,7 @@
         "fields": {
             "middle_initial": "", 
             "first_name": "The Harvard", 
-            "profile_text": null, 
+            "last_name": "Crimson", 
             "board_number": null, 
             "boards": [
                 1, 
@@ -1608,7 +1773,8 @@
             "class_of": null, 
             "phone": "", 
             "created_on": "2008-11-21", 
-            "last_name": "Crimson", 
+            "profile_text": null, 
+            "user": 3, 
             "type": "", 
             "email": ""
         }
@@ -1834,7 +2000,7 @@
         "pk": 3, 
         "model": "core.imagegallery", 
         "fields": {
-            "description": "The iconic Brattle Square store closes.", 
+            "description": "The iconic Brattle Square store closes. The iconic Brattle", 
             "tags": [
                 20, 
                 21
@@ -2203,9 +2369,9 @@
         "pk": 5, 
         "model": "content_module.contentmodule", 
         "fields": {
-            "content": null, 
-            "comment": null, 
-            "default_content": null, 
+            "content": "", 
+            "comment": "", 
+            "default_content": "", 
             "name": "index.featured", 
             "expiration": "2008-12-05 01:53:05"
         }
