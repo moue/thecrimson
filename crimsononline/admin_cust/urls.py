@@ -13,5 +13,6 @@ urlpatterns = patterns('',
 )
 
 urlpatterns += patterns('',
+    (r'^doc/', include('django.contrib.admindocs.urls')),
     (r'^(.*)', admin.site.root),
 )
