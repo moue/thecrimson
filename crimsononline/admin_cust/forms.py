@@ -198,7 +198,7 @@ class FbModelChoiceField(forms.CharField):
             kwargs['widget'] = admin.widgets.RelatedFieldWidgetWrapper(
                 kwargs['widget'], self.add_rel, kwargs.pop('admin_site'))
         s = super(FbModelChoiceField, self).__init__(*args, **kwargs)
-        self.help_text = "Start typing the contributor's name, we'll provide suggestions.<br>%s" % self.help_text
+        self.help_text = "Start typing; we'll provide suggestions.<br>%s" % self.help_text
         return s
     
     def clean(self, value):

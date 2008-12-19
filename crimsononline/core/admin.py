@@ -100,10 +100,14 @@ admin.site.register(Issue, IssueAdmin)
 class ImageAdminForm(ModelForm):
     class Meta:
         model = Image
+    
     contributor = FbModelChoiceField(required=True, multiple=False,
         url='/admin/core/contributor/search/', model=Contributor,
         labeler=(lambda obj: str(obj)), admin_site=admin.site,
         add_rel=Article._meta.get_field('contributors').rel)
+    caption = forms.fields.CharField(
+        widget=forms.Textarea(attrs={'rows':'5', 'cols':'40'}),
+        required=True)
 
 class ImageAdmin(admin.ModelAdmin):
     fields = ('pic', 'caption', 'kicker', 'contributor', 'tags',)
@@ -371,10 +375,10 @@ class ArticleAdmin(admin.ModelAdmin):
             'classes': ('collapse',),
             'fields': ('selected_image', 'existing_image_type', 'new_image_gallery', 'new_image',),
         }),
-        ('Map(s)', {
-            'classes': ('collapse',),
-            'fields': ('maps',),
-        })
+        #('Map(s)', {
+        #    'classes': ('collapse',),
+        #    'fields': ('maps',),
+        #})
     )
     form = ArticleForm
     

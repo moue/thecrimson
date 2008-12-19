@@ -1,6 +1,6 @@
 $(document).ready(function(){
     //hide the SelectMultiple field
-    //$("#id_images").hide();
+    $("#id_images").hide();
     
     // prefix of the url from which to grab images
     var image_req_url = "/admin/core/imagegallery/get_images/";
@@ -75,6 +75,7 @@ $(document).ready(function(){
                 .children(":contains('Cover')")
                     .click(function(){
                         makeCover(ele);
+                        return false;
                     })
                 .end()
             .end()
