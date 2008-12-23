@@ -23,7 +23,7 @@ class Tag(models.Model):
     A word or phrase used to classify or describe some content.
     
     # A bit of setup
-    >>> from django.db import IntegrityError:
+    >>> from django.db import IntegrityError
     
     # Create some tags
     >>> tag1 = Tag.objects.create(text='potato')
@@ -40,11 +40,6 @@ class Tag(models.Model):
     # __unicode__
     >>> str(tag1)
     'potato'
-    
-    # url
-    >>> tag1.get_absolute_url()
-    '/tag/potato/'
-    
     """
     
     text = models.CharField(blank=False, max_length=25, unique=True,
@@ -61,6 +56,13 @@ class Tag(models.Model):
 class Board(models.Model):
     """
     Organizational unit of the Crimson
+    
+    # create a Board
+    >>> b = Board.objects.create(name='biz')
+    
+    # stupidest test ever
+    >>> b.name
+    'biz'
     """
     name = models.CharField(blank=False, null=False, max_length=20)
     group = models.ForeignKey(Group, null=True, blank=True)
@@ -84,12 +86,6 @@ class Contributor(models.Model):
     # Default is active
     >>> c.is_active
     True
-    
-    # Check the hashing of HUIDs
-    >>> c.huid_hash='12345678'
-    '%\xd5Z\xd2\x83\xaa@\n\xf4d\xc7mq<\x07\xad'
-    
-    #Still need to test permalinks...
     """
     user = models.ForeignKey(
         User, verbose_name='web user', unique=True, blank=True, 
@@ -124,7 +120,7 @@ class Contributor(models.Model):
         return '%s%s %s' % (self.first_name, m, self.last_name)
         
     def __setattr__(self, name, value):
-        # hash the huid before storing it
+        # hash the huid before storing it; but actually don't
         #if name == 'huid_hash' and value != None:
         #    value = md5(value).digest()
         return super(Contributor, self).__setattr__(name, value)
@@ -136,13 +132,35 @@ class Contributor(models.Model):
 
 
 class Section(models.Model):
-    """Eg: News, Sports, etc."""
+    """
+    Eg: News, Sports, etc.
+    
+    # create some Sections
+    >>> l = ['news', 'opinion', 'sports', 'fm']
+    >>> for s in l:
+    ...     a = Section.objects.create(name=s)
+    
+    # all() should return all of them
+    >>> things = Section.all()
+    >>> names = [t.name for t in things]
+    >>> for s in l:
+    ...     assert s in names, True
+    
+    # all()'s cache should be inaccurate
+    >>> Section.objects.create(name='arts')
+    <Section: arts>
+    >>> things = Section.all()
+    >>> 'arts' in [t.name for t in things]
+    False
+    """
     
     name = models.CharField(blank=False, max_length=50)
     audiodizer_id = models.IntegerField(blank=True, null=True)
     
     @staticmethod
     def all():
+        # cache won't be up to date, but that's fine. 
+        #   sections should almost never change
         a = cache.get('sections_all')
         if a is None:
             a = Section.objects.all()[:]
@@ -174,16 +192,20 @@ class LiveIssueManager(models.Manager):
         else:
             q = Q(web_publish_date__gt=datetime.now())
         return super(LiveIssueManager, self).get_query_set() \
-            .filter(Q)
+            .filter(q)
 
 class SpecialIssueManager(LiveIssueManager):
-    """Only returns named issues"""    
+    """
+    Only returns named issues
+    """
     def get_query_set(self):
         return super(SpecialIssueManager, self).get_query_set() \
             .exclude(Q(special_issue_name="") | Q(special_issue_name=None))
 
 class DailyIssueManager(LiveIssueManager):
-    """Only returns unnamed issues"""
+    """
+    Only returns unnamed issues
+    """
     def get_query_set(self):
         return super(DailyIssueManager, self).get_query_set() \
             .filter(Q(special_issue_name="") | Q(special_issue_name=None))
@@ -194,6 +216,43 @@ class Issue(models.Model):
     
     Special issues should NEVER be displayed by default on the index.
     They should be displayed via content modules or special redirects.
+    
+    # Clear out the fixture preloaded issues
+    >>> a = [i.delete() for i in Issue.objects.all()]
+    
+    # Create some issues
+    >>> from datetime import datetime, timedelta
+    >>> deltas = [timedelta(days=i) for i in range(-5, 6) if i]
+    >>> now = datetime.now()
+    >>> for d in deltas:
+    ...     a = Issue.objects.create(issue_date=now+d)
+    
+    # make some of them special
+    >>> i1 = Issue.objects.get(pk=1)
+    >>> i1.special_issue_name = "Commencement 2008"
+    >>> i1.save()
+    >>> i2 = Issue.objects.get(pk=6)
+    >>> i2.special_issue_name = "Election 2008"
+    >>> i2.save()
+    
+    # managers
+    >>> Issue.objects.all().count()
+    10
+    >>> Issue.special_objects.all().count()
+    2
+    >>> Issue.daily_objects.all().count()
+    8
+    >>> Issue.live_objects.all().count()
+    5
+    >>> Issue.live_special_objects.all().count()
+    1
+    >>> Issue.live_daily_objects.all().count()
+    4
+    
+    # set_as_current and get_current
+    >>> i3 = Issue.objects.get(pk=5)
+    >>> i3.set_as_current()
+    >>> assert Issue.get_current().issue_date, i2.issue_date
     """
     
     special_issue_name = models.CharField(blank=True, null=True,
@@ -241,7 +300,12 @@ def get_save_path(instance, filename):
         filtered_capt + ext
 
 class Image(models.Model):
-    """An image"""
+    """
+    An image
+    
+    # TODO: not quite sure how to test Image
+    
+    """
     
     caption = models.CharField(blank=False, max_length=1000)
     kicker = models.CharField(blank=False, max_length=500)
@@ -299,7 +363,9 @@ class Image(models.Model):
 
 
 class ImageGallery(models.Model):
-    """A collection of Images"""
+    """
+    A collection of Images
+    """
     
     title = models.CharField(blank=False, null=False, max_length=200)
     description = models.TextField(blank=False, null=False)
@@ -315,32 +381,10 @@ class ImageGallery(models.Model):
     def get_absolute_url(self):
         return ('core_imagegallery', [self.cover_image.pk, self.pk])
 
-
-class PublishedArticlesManager(models.Manager):
-    """Articles Manager that only returns published articles"""
-    def get_query_set(self):
-        return super(PublishedArticlesManager, self).get_query_set() \
-            .filter(is_published=True)
-
-class WebOnlyManager(PublishedArticlesManager):
-    """Articles Manager that only returns web only articles"""
-    def get_query_set(self):
-        return super(PublishedArticlesManager, self).get_query_set() \
-            .filter(web_only=True)
-
-class RecentsManager(PublishedArticlesManager):
-    """Article Manager that returns the most recent articles"""
-    def get_query_set(self):
-        return super(RecentsManager, self).get_query_set() \
-            .exclude(issue__web_publish_date__gt=datetime.now()) \
-            .order_by('-issue__issue_date', 'priority')
-
-def to_slug(text):
-    text = filter_string(SAFE_CHARS+' ', text)
-    return text.replace(' ','-')
-
 class Map(models.Model):
-    """A Google Map Object"""
+    """
+    A Google Map Object
+    """
     title = models.CharField(blank=False, max_length=50) #for internal use, doesn't appear on page
     # values used by Google Maps API
     zoom_level = models.PositiveSmallIntegerField(default=15)
@@ -356,8 +400,40 @@ class Map(models.Model):
     def __unicode__(self):
         return self.title  + ' (' + str(self.center_lat) + ',' + str(self.center_lng) + '): ' + str(self.created_on.month) + '/' + str(self.created_on.day) + '/' + str(self.created_on.year)
 
+
+class PublishedArticlesManager(models.Manager):
+    """
+    Articles Manager that only returns published articles
+    """
+    def get_query_set(self):
+        return super(PublishedArticlesManager, self).get_query_set() \
+            .filter(is_published=True)
+
+class WebOnlyManager(PublishedArticlesManager):
+    """
+    Articles Manager that only returns web only articles
+    """
+    def get_query_set(self):
+        return super(PublishedArticlesManager, self).get_query_set() \
+            .filter(web_only=True)
+
+class RecentsManager(PublishedArticlesManager):
+    """
+    Article Manager that returns the most recent articles
+    """
+    def get_query_set(self):
+        return super(RecentsManager, self).get_query_set() \
+            .exclude(issue__web_publish_date__gt=datetime.now()) \
+            .order_by('-issue__issue_date', 'priority')
+
+def to_slug(text):
+    text = filter_string(SAFE_CHARS+' ', text)
+    return text.replace(' ','-')
+
 class Marker(models.Model):
-    """Markers for a Google Map"""
+    """
+    Markers for a Google Map
+    """
     map = models.ForeignKey(Map,related_name='markers')
     lat = models.FloatField(blank=False)
     lng = models.FloatField(blank=False)
@@ -367,7 +443,30 @@ class Marker(models.Model):
         return self.map.title  + ' (' + str(self.map.center_lat) + ',' + str(self.map.center_lng) + '): ' + self.map.caption + ' (' + str(self.lat) + ',' + str(self.lng) + ')'
     
 class Article(models.Model):
-    """Non serial text content"""
+    """
+    Non serial text content
+    
+    # create some articles
+    >>> c = Contributor.objects.create(first_name='Kristina',
+    ...     last_name='Moore')
+    >>> t = Tag.objects.create(text='tagg')
+    >>> i = Issue.get_current()
+    >>> s = Section.objects.create(name='movies')
+    >>> a1 = Article.objects.create(headline='abc', text='abcdefg',
+    ...     issue=i, section=s, proofer=c, sne=c)
+    >>> a2 = Article.objects.create(headline='head line', 
+    ...     text='omg. lolz.', issue=i, section=s, proofer=c, sne=c)
+    
+    # teasers
+    >>> str(a2.long_teaser)
+    'omg. lolz.'
+    
+    # slugs
+    >>> str(a1.slug)
+    'abc'
+    >>> str(a2.slug)
+    'head-line'
+    """
     
     BYLINE_TYPE_CHOICES = (
         ('cstaff', 'Crimson Staff Writer'),
@@ -435,16 +534,16 @@ class Article(models.Model):
         return truncatewords(self.text, 50)
     long_teaser = property(get_long_teaser)
     
-    def save(self):
+    def save(self, *args, **kwargs):
         # autopopulate the slug
         if not self.slug:
             self.slug = slugify(self.headline)
-        return super(Article, self).save()
+        return super(Article, self).save(*args, **kwargs)
     
-    def delete(self):
+    def delete(self, *args, **kwargs):
         """don't delete articles, just unpublish them"""
         self.is_published = False
-        self.save()
+        self.save(*args, **kwargs)
     
     def __unicode__(self):
         return self.headline

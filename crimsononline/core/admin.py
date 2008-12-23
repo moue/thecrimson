@@ -48,8 +48,8 @@ class ContributorAdmin(admin.ModelAdmin):
             )
         }),
         ('Crimson Staff Settings', {
-            'description': '<h3><b>Leave this section blank if this contributor ' \
-                            'is not on the staff of The Crimson!</b></h3>',
+            'description': """<h3><b>Leave this section blank if this contributor 
+                            is not on the staff of The Crimson!</b></h3>""",
             'classes': ('collapse',),
             'fields': (
                 'boards',
