@@ -44,8 +44,6 @@ def article(request, year, month, day, slug):
 def writer(request, contributor_id, f_name, m_name, l_name):
     w = get_object_or_404(Contributor, pk=contributor_id)
     # Validate the URL (we don't want /writer/281/Balls_Q_McTitties to be valid)
-    print (w.first_name, w.middle_initial, w.last_name)
-    print (f_name, m_name, l_name)
     if (w.first_name, w.middle_initial, w.last_name) != (f_name, m_name, l_name):
         return HttpResponseRedirect(w.get_absolute_url())
         

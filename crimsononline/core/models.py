@@ -9,13 +9,85 @@ from django.conf import settings
 from django.db import models
 from django.db.models import permalink, Q
 from django.contrib.auth.models import User, Group
+from django.contrib.contenttypes import generic
+from django.contrib.contenttypes.models import ContentType
 from django.contrib.localflavor.us.models import PhoneNumberField
 from django.core.cache import cache
 from django.template.defaultfilters import slugify, truncatewords
+from django.template.loader import render_to_string
+from django.utils.safestring import mark_safe
 
 SAFE_CHARS = letters + digits
 def filter_string(allowed_chars, str):
     return ''.join([c for c in str if c in allowed_chars])
+
+
+class RelatedContent(models.Model):
+    """
+    Facilitates generic relationships between content.
+    """
+    content_type = models.ForeignKey(ContentType)
+    object_id = models.PositiveIntegerField()
+    content_object = generic.GenericForeignKey('content_type', 'object_id')
+    
+    class Meta:
+        unique_together = (('content_type', 'object_id',),)
+    
+    def __unicode__(self):
+        return str(self.content_object)
+    
+
+
+class Content(models.Model):
+    """
+    Has some content rendering functions.
+    """
+    
+    # it's difficult to declare a reverse generic relationship here, since
+    #  the reverse query names would clash, so declare a tracking field
+    related_content_id = models.IntegerField(null=True, editable=False)
+    
+    class Meta:
+        abstract = True
+    
+    def _render(self, method):
+        """
+        renders in different ways, depending on method
+        
+        method is like, 'admin' or 'search'
+        
+        """
+        name = self._meta.object_name.lower()
+        templ = 'models/%s/%s.html' % (name, method)
+        # below, maybe instead of name:, have 'obj':
+        return mark_safe(render_to_string(templ, {name: self}))
+    
+    @classmethod
+    def find_by_date(cls, start, end):
+        """
+        returns a queryset
+        """
+        start, end = start.date(), end.date()
+        lookup = cls._meta.get_latest_by
+        q = {lookup + '__gte': start, lookup + '__lte': end}
+        return cls.objects.filter(**q).order_by('-' + lookup)
+    
+    def save(self, *args, **kwargs):
+        # generate a pk if self doesn't have one
+        if not self.pk:
+            super(Content, self).save(*args, **kwargs)
+            kwargs['force_insert'] = False
+        # create a RelatedContent obj
+        if not self.related_content_id:
+            r = RelatedContent(content_object=self)
+            r.save()
+            self.related_content_id = r.pk
+        return super(Content, self).save(*args, **kwargs)
+    
+    def delete(self, *args, **kwargs):
+        # TODO: delete the associated RelatedContent object
+        return super(Content, self).delete(*args, **kwargs)
+    
 
 
 class Tag(models.Model):
@@ -52,6 +124,7 @@ class Tag(models.Model):
     def get_absolute_url(self):
         return ('core_tag', [self.text])
     
+
 
 class Board(models.Model):
     """
@@ -299,7 +372,7 @@ def get_save_path(instance, filename):
     return datetime.now().strftime("photos/%Y/%m/%d/%H%M%S_") + \
         filtered_capt + ext
 
-class Image(models.Model):
+class Image(Content):
     """
     An image
     
@@ -362,7 +435,7 @@ class Image(models.Model):
         return self.kicker
 
 
-class ImageGallery(models.Model):
+class ImageGallery(Content):
     """
     A collection of Images
     """
@@ -374,14 +447,20 @@ class ImageGallery(models.Model):
     created_on = models.DateTimeField(auto_now_add=True)
     tags = models.ManyToManyField(Tag, blank=False)
     
+    class Meta:
+        get_latest_by = 'created_on'
+        ordering = ['-created_on']
+    
     def __unicode__(self):
         return self.title
     
     @permalink
     def get_absolute_url(self):
         return ('core_imagegallery', [self.cover_image.pk, self.pk])
+    
 
-class Map(models.Model):
+
+class Map(Content):
     """
     A Google Map Object
     """
@@ -397,8 +476,27 @@ class Map(models.Model):
     caption = models.CharField(blank=True, max_length=1000)
     created_on = models.DateTimeField(auto_now_add=True)
     
+    class Meta:
+        get_latest_by = 'created_on'
+        ordering = ['-created_on']
+    
     def __unicode__(self):
         return self.title  + ' (' + str(self.center_lat) + ',' + str(self.center_lng) + '): ' + str(self.created_on.month) + '/' + str(self.created_on.day) + '/' + str(self.created_on.year)
+    
+
+
+class Marker(models.Model):
+    """
+    Markers for a Google Map
+    """
+    map = models.ForeignKey(Map,related_name='markers')
+    lat = models.FloatField(blank=False)
+    lng = models.FloatField(blank=False)
+    popup_text = models.CharField(blank=True, max_length = 1000) #text that appears when the user clicks the marker
+	
+    def __unicode__(self):
+        return self.map.title  + ' (' + str(self.map.center_lat) + ',' + str(self.map.center_lng) + '): ' + self.map.caption + ' (' + str(self.lat) + ',' + str(self.lng) + ')'
+    
 
 
 class PublishedArticlesManager(models.Manager):
@@ -430,19 +528,7 @@ def to_slug(text):
     text = filter_string(SAFE_CHARS+' ', text)
     return text.replace(' ','-')
 
-class Marker(models.Model):
-    """
-    Markers for a Google Map
-    """
-    map = models.ForeignKey(Map,related_name='markers')
-    lat = models.FloatField(blank=False)
-    lng = models.FloatField(blank=False)
-    popup_text = models.CharField(blank=True, max_length = 1000) #text that appears when the user clicks the marker
-	
-    def __unicode__(self):
-        return self.map.title  + ' (' + str(self.map.center_lat) + ',' + str(self.map.center_lng) + '): ' + self.map.caption + ' (' + str(self.lat) + ',' + str(self.lng) + ')'
-    
-class Article(models.Model):
+class Article(Content):
     """
     Non serial text content
     
@@ -516,6 +602,8 @@ class Article(models.Model):
         """)
     maps = models.ManyToManyField(Map, blank=True)
     
+    rel_content = models.ManyToManyField(RelatedContent, null=True, blank=True)
+    
     objects = PublishedArticlesManager()
     web_objects = WebOnlyManager()
     all_objects = models.Manager()
@@ -552,3 +640,5 @@ class Article(models.Model):
     def get_absolute_url(self):
         d = self.issue.issue_date
         return ('core_get_article', [d.year, d.month, d.day, self.slug])
+    
+

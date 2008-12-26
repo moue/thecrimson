@@ -1,16 +1,22 @@
 from datetime import date, datetime, timedelta
 from time import strptime
 from re import compile
+
 from django import forms
 from django.conf import settings
 from django.contrib import admin
+from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ObjectDoesNotExist
+from django.db.models import Q
 from django.template.loader import render_to_string
-from crimsononline.core.models import Issue
+
+from crimsononline.core.models import Issue, RelatedContent
 
 class MapBuilderWidget(forms.widgets.HiddenInput):
     def render(self, name, value, attrs=None):
         return render_to_string("widgets/map_builder.html", locals())
+    
+
 
 class MapBuilderField(forms.CharField):
     """
@@ -29,6 +35,8 @@ class MapBuilderField(forms.CharField):
                 raise forms.ValidationError("This can't be left blank")
             return
         return
+    
+
 
 class IssuePickerWidget(forms.widgets.HiddenInput):
     """
@@ -74,6 +82,7 @@ class IssuePickerWidget(forms.widgets.HiddenInput):
         )
         hidden = super(IssuePickerWidget, self).render(name, value, attrs)
         return render_to_string("widgets/issue_picker.html", locals())
+    
 
 
 class IssuePickerField(forms.CharField):
@@ -109,6 +118,8 @@ class IssuePickerField(forms.CharField):
                 return Issue.objects.get(pk=int(value))
             except: # the frontend should ensure that these errors never happen
                 raise forms.ValidationError("Something terrible happened!")
+    
+
 
 class FbSelectWidget(forms.widgets.HiddenInput):
     """
@@ -154,7 +165,9 @@ class FbSelectWidget(forms.widgets.HiddenInput):
         hidden = super(FbSelectWidget, self).render(name, value, attrs)
         url, is_multiple, no_dupes = self.url, self.is_multiple, self.no_duplicates
         return render_to_string("widgets/fb_select_multiple.html", locals())
-        
+    
+
+
 class FbModelChoiceField(forms.CharField):
     """
     A model multiple choice field that uses a Facebook-like autocomplete
@@ -221,4 +234,78 @@ class FbModelChoiceField(forms.CharField):
             # manually put values in, so a real validation error
             # wouldn't be helpful.
             raise forms.ValidationError("Something terrible happened!")
-         
+    
+
+
+class RelatedContentWidget(forms.widgets.HiddenInput):
+    class Media:
+        js = ('/site_media/scripts/framework/jquery.ui.datepicker.js',
+            '/site_media/scripts/admin/RelatedContentWidget.js',)
+        css = {'all': ('/site_media/css/framework/jquery.ui.datepicker.css',
+            '/site_media/css/admin/RelatedContent.css'),}
+    
+    def __init__(self, admin_site, *args, **kwargs):
+        self.rel_types = kwargs.pop('rel_types', None)
+        self.admin_site = admin_site
+        self.c_types = []
+        
+        return super(RelatedContentWidget, self).__init__(*args, **kwargs)
+        
+    def render(self, name, value, attrs=None):
+        if not self.c_types:
+            for t in self.rel_types:
+                if t not in self.admin_site._registry:
+                    continue
+                t_name = t._meta.object_name
+                t_url = '../../../%s/%s/' % (t._meta.app_label, t_name.lower())
+                t_id = ContentType.objects.get_for_model(t).pk
+                self.c_types.append({'url': t_url, 'name': t_name, 'id': t_id})
+        
+        if value:
+            # grab all related content objects
+            query = reduce(lambda x, y: x|y, [Q(pk=v) for v in value])
+            objs = RelatedContent.objects.filter(query)
+            # construct related content identifiers
+            value = ['%d,%d' % (o.content_type.pk, o.object_id) \
+                for o in objs if o]
+            value = ';'.join(value) + ';'
+        else:
+            # make sure value isn't '', [], or some other fail
+            value = None
+        hidden = super(RelatedContentWidget, self).render(name, value, attrs)
+        today, yesterday = datetime.now(), datetime.now() + timedelta(days=-2)
+        types = self.c_types
+        return render_to_string("widgets/related_content.html", locals())
+    
+
+
+class RelatedContentField(forms.CharField):
+    """
+    The interface for adding / editing related content.
+    """
+    def __init__(self, *args, **kwargs):
+        kwargs['widget'] = RelatedContentWidget(
+            rel_types=kwargs.pop('rel_types', []),
+            admin_site=kwargs.pop('admin_site')
+        )
+        return super(RelatedContentField, self).__init__(*args, **kwargs)
+    
+    def clean(self, value):
+        """
+        Turns value into a list of RelatedContent objects
+        value is received as a ; delimited set of , delimited pairs
+        """
+        if not value:
+            return []
+        
+        ids = [tuple(v.split(',')) for v in value.split(';') if v]
+        
+        q = [Q(content_type__pk=p[0], object_id=p[1]) for p in ids]
+        q = reduce(lambda x, y: x | y, q)
+        objs = list(RelatedContent.objects.filter(q))
+        
+        if len(objs) != len(ids):
+            raise Exception('Unexpected RelatedContent identifiers.')
+        return objs
+    
+

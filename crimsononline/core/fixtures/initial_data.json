@@ -135,30 +135,30 @@
         }
     }, 
     {
-        "pk": 59, 
+        "pk": 62, 
         "model": "auth.permission", 
         "fields": {
             "codename": "add_contentmodule", 
             "name": "Can add content module", 
-            "content_type": 20
+            "content_type": 21
         }
     }, 
     {
-        "pk": 60, 
+        "pk": 63, 
         "model": "auth.permission", 
         "fields": {
             "codename": "change_contentmodule", 
             "name": "Can change content module", 
-            "content_type": 20
+            "content_type": 21
         }
     }, 
     {
-        "pk": 61, 
+        "pk": 64, 
         "model": "auth.permission", 
         "fields": {
             "codename": "delete_contentmodule", 
             "name": "Can delete content module", 
-            "content_type": 20
+            "content_type": 21
         }
     }, 
     {
@@ -204,6 +204,15 @@
             "codename": "add_board", 
             "name": "Can add board", 
             "content_type": 13
+        }
+    }, 
+    {
+        "pk": 59, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "add_contentmodule", 
+            "name": "Can add content module", 
+            "content_type": 20
         }
     }, 
     {
@@ -306,6 +315,15 @@
         }
     }, 
     {
+        "pk": 60, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "change_contentmodule", 
+            "name": "Can change content module", 
+            "content_type": 20
+        }
+    }, 
+    {
         "pk": 41, 
         "model": "auth.permission", 
         "fields": {
@@ -393,6 +411,15 @@
             "codename": "delete_board", 
             "name": "Can delete board", 
             "content_type": 13
+        }
+    }, 
+    {
+        "pk": 61, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "delete_contentmodule", 
+            "name": "Can delete content module", 
+            "content_type": 20
         }
     }, 
     {
@@ -696,18 +723,18 @@
         "pk": 1, 
         "model": "auth.user", 
         "fields": {
-            "username": "andylei", 
+            "username": "crim", 
             "first_name": "", 
             "last_name": "", 
             "is_active": true, 
             "is_superuser": true, 
             "is_staff": true, 
-            "last_login": "2008-12-03 22:08:27", 
+            "last_login": "2008-12-25 17:53:35", 
             "groups": [
                 6
             ], 
             "user_permissions": [], 
-            "password": "sha1$0790d$8bff2b798568d35c13e727eb17c21fcd2c2b9aa5", 
+            "password": "sha1$79fbe$f91c04c41ea3f61ba9266cbee9373e96cdb059fc", 
             "email": "andylei@gmail.com", 
             "date_joined": "2008-09-24 16:47:56"
         }
@@ -759,7 +786,7 @@
         }
     }, 
     {
-        "pk": 19, 
+        "pk": 20, 
         "model": "contenttypes.contenttype", 
         "fields": {
             "model": "article", 
@@ -768,7 +795,7 @@
         }
     }, 
     {
-        "pk": 11, 
+        "pk": 12, 
         "model": "contenttypes.contenttype", 
         "fields": {
             "model": "board", 
@@ -777,7 +804,7 @@
         }
     }, 
     {
-        "pk": 20, 
+        "pk": 21, 
         "model": "contenttypes.contenttype", 
         "fields": {
             "model": "contentmodule", 
@@ -795,7 +822,7 @@
         }
     }, 
     {
-        "pk": 12, 
+        "pk": 13, 
         "model": "contenttypes.contenttype", 
         "fields": {
             "model": "contributor", 
@@ -822,7 +849,7 @@
         }
     }, 
     {
-        "pk": 15, 
+        "pk": 16, 
         "model": "contenttypes.contenttype", 
         "fields": {
             "model": "image", 
@@ -831,7 +858,7 @@
         }
     }, 
     {
-        "pk": 16, 
+        "pk": 17, 
         "model": "contenttypes.contenttype", 
         "fields": {
             "model": "imagegallery", 
@@ -840,7 +867,7 @@
         }
     }, 
     {
-        "pk": 14, 
+        "pk": 15, 
         "model": "contenttypes.contenttype", 
         "fields": {
             "model": "issue", 
@@ -858,7 +885,7 @@
         }
     }, 
     {
-        "pk": 17, 
+        "pk": 18, 
         "model": "contenttypes.contenttype", 
         "fields": {
             "model": "map", 
@@ -867,7 +894,7 @@
         }
     }, 
     {
-        "pk": 18, 
+        "pk": 19, 
         "model": "contenttypes.contenttype", 
         "fields": {
             "model": "marker", 
@@ -894,7 +921,16 @@
         }
     }, 
     {
-        "pk": 13, 
+        "pk": 10, 
+        "model": "contenttypes.contenttype", 
+        "fields": {
+            "model": "relatedcontent", 
+            "name": "related content", 
+            "app_label": "core"
+        }
+    }, 
+    {
+        "pk": 14, 
         "model": "contenttypes.contenttype", 
         "fields": {
             "model": "section", 
@@ -921,7 +957,7 @@
         }
     }, 
     {
-        "pk": 10, 
+        "pk": 11, 
         "model": "contenttypes.contenttype", 
         "fields": {
             "model": "tag", 
@@ -939,19 +975,11 @@
         }
     }, 
     {
-        "pk": "7d49d15d3229ba3d8a54cae527bfe139", 
+        "pk": "86ec2e3f955cd7fc677c494e48ea64ff", 
         "model": "sessions.session", 
         "fields": {
-            "expire_date": "2008-12-17 01:52:26", 
+            "expire_date": "2009-01-08 17:53:35", 
             "session_data": "gAJ9cQEoVRJfYXV0aF91c2VyX2JhY2tlbmRxAlUpZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5k\ncy5Nb2RlbEJhY2tlbmRxA1UNX2F1dGhfdXNlcl9pZHEESwF1LmZkOGUyMjk1YTlkZThhMWI0YTM2\nM2Q5YmZjN2YxYWI4\n"
-        }
-    }, 
-    {
-        "pk": "347c4de769026e7a95f1fe47878a52f9", 
-        "model": "sessions.session", 
-        "fields": {
-            "expire_date": "2008-12-17 22:08:27", 
-            "session_data": "gAJ9cQEoVRJfYXV0aF91c2VyX2JhY2tlbmRxAlUpZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5k\ncy5Nb2RlbEJhY2tlbmRxA1UNX2F1dGhfdXNlcl9pZHEESwF1LmNiN2FjMGNjZTcwYWE4YjQzYzJj\nNzA4MjM1MTYwZTRh\n"
         }
     }, 
     {
@@ -1235,6 +1263,150 @@
             ], 
             "content": "<h1>About Us</h1>\r\n<table id=\"table1\" width=\"100%\" border=\"0\" cellpadding=\"4\" cellspacing=\"4\"> \r\n<tbody> \r\n<tr> \r\n<td valign=\"top\" width=\"40%\"><strong><font size=\"2\" color=\"#660000\" face=\"Arial\">HISTORY OF THE CRIMSON</font></strong><br><font class=\"text\">The Harvard Crimson, the nation's oldest continuously published daily college newspaper, was founded in 1873 and incorporated in 1967. The newspaper traces its history to the first issue of \"The Magenta,\" published January 24, 1873, and changed its name to \"The Crimson\" to reflect the new color of the college on May 21, 1875. The Crimson has a rich tradition of journalistic integrity and counts among its ranks of editorship some of America's greatest journalists. The faces of Pulitzer Prize-winning Crimson editors line the walls of The Crimson. Past editors include John F. Kennedy '40. The name of Franklin D. Roosevelt, Class of 1904, is proudly engraved upon The Crimson's president's chair. One hundred and thirty-five years after its founding, having grown from a fortnightly newspaper to a daily, The Harvard Crimson continues to flourish with a strong body of undergraduate staff volunteers. </font><br><br><strong><font size=\"2\" color=\"#660000\" face=\"Arial\">WHAT WE PRINT</font></strong><br><font class=\"text\">The Harvard Crimson is the only breakfast-table daily newspaper in Cambridge, MA. The Crimson publishes every morning, Monday through Friday, except on federal and University holidays. In addition to the daily newspaper, The Crimson publishes an extended sports section on Mondays; Fifteen Minutes, the weekend magazine of The Crimson on Thursdays; and an arts section on Fridays. Our presses are also available for third-party contract printing. Call 617-576-6600 for more information. <br></font><br><strong><font size=\"2\" color=\"#660000\" face=\"Arial\">JOINING THE CRIMSON</font></strong><br><font class=\"text\">If you are a Harvard College student you are eligible to join The Crimson. Please click <a href=\"/info/comp.aspx\"><u>here</u></a> to learn more about our comp process.<br><br></font><strong><font size=\"2\" color=\"#660000\" face=\"Arial\">WHAT SHOULD I DO IF THE CRIMSON MAKES A MISTAKE IN A STORY?</font></strong><font class=\"text\"><br>In the event that we run something that is factually inaccurate, we are eager to correct the error. When a correction is necessary, it will run in a corrections box on page two. Please e-mail Managing Editor&nbsp;Paras D. Bhayani&nbsp;(pbhayani@fas.harvard.edu) about corrections.<br></font></td> \r\n<td valign=\"top\" width=\"60%\"> \r\n<div class=\"almond_box\"> \r\n<table id=\"table3\" width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\"> \r\n<tbody> \r\n<tr> \r\n<td width=\"50%\"> \r\n<div align=\"right\"><strong><font size=\"2\">President</font></strong></div></td> \r\n<td width=\"2%\"> \r\n<p align=\"right\">&nbsp;</p></td> \r\n<td width=\"48%\"><font size=\"2\">Malcom&nbsp;A.&nbsp;Glenn '09<br></font></td></tr> \r\n<tr> \r\n<td width=\"50%\">&nbsp;</td> \r\n<td width=\"2%\">&nbsp;</td> \r\n<td width=\"48%\">&nbsp;</td></tr> \r\n<tr> \r\n<td width=\"50%\"> \r\n<div align=\"right\"><strong><font size=\"2\">Managing Editor</font></strong></div></td> \r\n<td width=\"2%\">&nbsp;</td> \r\n<td width=\"48%\"><font size=\"2\">Paras&nbsp;D.&nbsp;Bhayani '09<br></font></td></tr> \r\n<tr> \r\n<td width=\"50%\">&nbsp;</td> \r\n<td width=\"2%\">&nbsp;</td> \r\n<td width=\"48%\">&nbsp;</td></tr> \r\n<tr> \r\n<td width=\"50%\"> \r\n<div align=\"right\"><strong><font size=\"2\">Business Manager</font></strong></div></td> \r\n<td width=\"2%\">&nbsp;</td> \r\n<td width=\"48%\"><font size=\"2\">Gideon&nbsp;L. Lowin '09</font><br></td></tr> \r\n<tr> \r\n<td width=\"50%\">&nbsp;</td> \r\n<td width=\"2%\">&nbsp;</td> \r\n<td width=\"48%\">&nbsp;</td></tr></tbody></table> \r\n<table id=\"table2\" style=\"width: 100%;\" border=\"0\" cellpadding=\"2\" cellspacing=\"0\"> \r\n<tbody> \r\n<tr valign=\"top\"> \r\n<td class=\"board\" colspan=\"3\"> \r\n<div align=\"center\"><strong><br>NEWS</strong></div></td></tr> \r\n<tr valign=\"top\"> \r\n<td class=\"title\" width=\"50%\"> \r\n<div align=\"right\"><strong><font size=\"2\">Associate Managing Editors</font></strong><strong><font size=\"2\"><br><br>News Executives<br>&nbsp;<br>&nbsp;<br><br><br>Senior Story Editors<br><br></font></strong></div></td> \r\n<td class=\"name\">&nbsp;</td> \r\n<td class=\"\"><font size=\"2\">Laurence H. M. Holland&nbsp;'09</font><br><font size=\"2\">Samuel&nbsp;P.&nbsp;Jacobs '09<br></font><span class=\"\"><font size=\"2\">Johannah S. Cornblatt&nbsp;'09</font></span><br><font size=\"2\">Claire&nbsp;M.&nbsp;Guehenno '09<br>Victoria&nbsp;B.&nbsp;Kabak '09<br>Madeline W. Lissner '09<br>Laura A. Moore&nbsp;'09<br></font><span class=\"\"><font size=\"2\">Noah S. Bloom '09</font></span><br><p class=\"MsoNormal\"></p><span class=\"\"> \r\n<p class=\"MsoNormal\" style=\"font-family: Times New Roman;\"><font size=\"2\"></font></p><span> \r\n<p style=\"font-family: Times New Roman;\"><font size=\"2\"></font></p><span> \r\n<p style=\"font-family: Times New Roman;\"></p><span><span style=\"font-family: Times New Roman;\"></span></span></span></span> \r\n<p class=\"MsoNormal\"><font style=\"font-family: Times New Roman;\" size=\"2\"></font><o:p></o:p></p><span><span></span> \r\n<p style=\"font-family: Times New Roman;\"><font size=\"2\"></font></p></span> \r\n<p class=\"MsoNormal\" style=\"font-family: Times New Roman;\"><font size=\"2\"></font></p></span> \r\n<p class=\"MsoNormal\"><o:p></o:p></p> \r\n<p class=\"MsoNormal\"><o:p></o:p></p></td></tr> \r\n<tr> \r\n<td colspan=\"3\"> \r\n<div style=\"text-align: center;\">&nbsp;<br><strong>EDITORIAL</strong> \r\n<table id=\"table2\" style=\"width: 100%;\" border=\"0\" cellpadding=\"2\" cellspacing=\"0\"> \r\n<tbody> \r\n<tr valign=\"top\"> \r\n<td class=\"title\" width=\"50%\"> \r\n<div align=\"right\"><strong><font size=\"2\">Editorial Chairs<br>&nbsp;<br>Associate Editorial Editors<br><br><br><br><br></font></strong></div></td> \r\n<td class=\"name\">&nbsp;</td> \r\n \r\n \r\n<td class=\"\"><font style=\"font-family: Times New Roman;\" size=\"5\"><span><span style=\"font-size: 5pt;\"><span style=\"color: rgb(0, 0, 0);\"></span></span></span></font><font style=\"font-family: Times New Roman;\" size=\"2\"><span><span style=\"font-size: 5pt;\"><span style=\"color: rgb(0, 0, 0);\"></span></span></span><span><span style=\"font-size: 5pt;\"></span><span><span><span><span></span><span></span></span></span></span></span></font><font size=\"2\">Emma&nbsp;M.&nbsp;Lind '09<br>Ramya Parthasarathy '09<br>Daniel E. Herz-Roiphe '10<br>Ronald K. Kamdem '10<br>Robert G. King '09-'10<br>J. Maxwell Larkin '10<br>Noah M. Silver '10<font size=\"3\">&nbsp;</font><br>James M. Wilsterman '10</font></td></tr></tbody></table><strong><br>ARTS</strong></div> \r\n<table id=\"table2\" style=\"width: 100%;\" border=\"0\" cellpadding=\"2\" cellspacing=\"0\"> \r\n<tbody> \r\n<tr valign=\"top\"> \r\n<td class=\"title\" width=\"50%\"> \r\n<div align=\"right\"><strong><font size=\"2\">Arts Chairs<br><br>Associate Arts </font></strong><strong><font size=\"2\">Editors</font></strong><br><strong><font size=\"2\"><br><br><br><br><br><br></font></strong></div></td> \r\n<td class=\"name\">&nbsp;</td> \r\n<td class=\"name\"><font size=\"2\">Patrick R. Chesnut '09<br>Jake G. Cohen '09</font><br><font size=\"2\">Anna K. Barnet&nbsp;'10<br>Sanders I. Bernstein&nbsp;'10<br>Joshua Kearney&nbsp;'10<br>Beryl C. D. Lipton&nbsp;'10<br>Nayeli E. Rodriguez&nbsp;'10<br>Claire J. Saffitz&nbsp;'09<br>John D. Selig '10<br></font></td></tr></tbody></table></td></tr> \r\n<tr align=\"center\"> \r\n<td colspan=\"3\">&nbsp;<span style=\"font-weight: bold;\"><br>DESIGN</span> \r\n<table id=\"table2\" style=\"width: 100%;\" border=\"0\" cellpadding=\"2\" cellspacing=\"0\"> \r\n<tbody> \r\n<tr valign=\"top\"> \r\n<td class=\"title\" width=\"50%\"> \r\n<div align=\"right\"><strong><font size=\"2\">Design Chairs<br>&nbsp;<br>Associate Design </font></strong><strong><font size=\"2\">Editors</font></strong></div></td> \r\n<td class=\"name\">&nbsp;</td> \r\n<td class=\"\"><font style=\"font-family: Times New Roman;\" size=\"5\"><span><span style=\"font-size: 5pt;\"><span style=\"color: rgb(0, 0, 0);\"></span></span></span></font><font style=\"font-family: Times New Roman;\" size=\"2\"><span><span style=\"font-size: 5pt;\"><span style=\"color: rgb(0, 0, 0);\"></span></span></span><span><span style=\"font-size: 5pt;\"></span><span><span><span><span></span><span></span></span></span></span></span></font><font size=\"2\">Aditi Banga&nbsp;'09<br></font><font size=\"2\">Samantha P. Krug&nbsp;'10</font><br><font size=\"2\">Sarah B. Joselow&nbsp;'10</font><font size=\"2\"><br>Julia V. Guren&nbsp;'10<br>Devon L. Hein&nbsp;'09<br>Alee Lockman&nbsp;'10<br>Elisa M. Orr '10<br>Katharine E. Lauderdale '11<br></font></td></tr></tbody></table></td></tr> \r\n<tr valign=\"top\"> \r\n<td class=\"board\" colspan=\"3\"> \r\n<div align=\"center\"><strong><br>INFORMATION TECHNOLOGY</strong> \r\n<table id=\"table2\" style=\"width: 100%;\" border=\"0\" cellpadding=\"2\" cellspacing=\"0\"> \r\n<tbody> \r\n<tr valign=\"top\"> \r\n<td class=\"title\" width=\"50%\"> \r\n<div align=\"right\"><strong><font size=\"2\">IT Chair<br>Associate IT </font></strong><strong><font size=\"2\">Editors</font></strong><br><strong><font size=\"2\">&nbsp;<br><br></font></strong></div></td> \r\n<td class=\"name\">&nbsp;</td> \r\n<td class=\"\"><font style=\"font-family: Times New Roman;\" size=\"5\"><span><span style=\"font-size: 5pt;\"><span style=\"color: rgb(0, 0, 0);\"></span></span></span></font><font style=\"font-family: Times New Roman;\" size=\"2\"><span><span style=\"font-size: 5pt;\"><span style=\"color: rgb(0, 0, 0);\"></span></span></span><span><span style=\"font-size: 5pt;\"></span><span><span><span><span></span><span></span></span></span></span></span></font><font size=\"2\">Daniel C. Carroll&nbsp;'09&nbsp;<br>Cindy C. Cheng '10<br>Andy Y. Lei '10<br>Cary Y. Lin '10</font></td></tr></tbody></table><strong></strong></div></td></tr> \r\n<tr valign=\"top\"> \r\n<td class=\"board\" colspan=\"3\"> \r\n<div align=\"center\"><strong><br>MAGAZINE</strong></div></td></tr> \r\n<tr valign=\"top\"> \r\n<td class=\"title\" width=\"50%\"> \r\n<div align=\"right\"><strong><font size=\"2\">Magazine Chairs<br>&nbsp;<br>Associate Magazine Editors</font></strong></div></td> \r\n<td class=\"name\">&nbsp;</td> \r\n<td class=\"name\"><font size=\"2\">Nicola C. Perlman&nbsp;'09<br>Nicole G. White&nbsp;'09<br>Asli A. Bashir '10<br>Kate E. Cetrulo&nbsp;'09<br>Gracye Y. Cheng '10<br>Jessica L. Fleischer '10<br>Emily C. Graff '10<br>Jun Li '10<br>Charles R. Melvoin '10<br>Mark A. Pacult '10</font><br><br><font size=\"2\"></font></td></tr> \r\n<tr valign=\"top\"> \r\n<td class=\"board\" colspan=\"3\"> \r\n<div align=\"center\"><strong><br>PHOTOGRAPHY</strong></div></td></tr> \r\n<tr valign=\"top\"> \r\n<td class=\"title\" width=\"50%\"> \r\n<div align=\"right\"><strong><font size=\"2\">Photography Chairs<br><br>Associate Photography </font></strong><strong><font size=\"2\">Editors</font></strong><br><strong><font size=\"2\">&nbsp;</font></strong></div></td> \r\n<td class=\"name\">&nbsp;</td> \r\n<td class=\"name\"><font size=\"2\">Hillary W Berkowitz '09</font><br><font size=\"2\">Meghan T. Purdy '09</font><font size=\"2\"><br>Alan C. Chiu '10<br>Natasha L. Coleman '09<br></font><font size=\"2\">Rachel M. Douglas '09<br>Jessica S. Lin '09<br></font><font size=\"2\">Peter R. Raymond '09</font><br><font size=\"2\">Sarah M. Roberts '09<br>Raquel Rodriguez '09<br>Adam D. Sidman '10<br>Terrell Woods '11<br></font></td></tr> \r\n<tr align=\"center\"> \r\n<td colspan=\"3\"><strong><br>SPORTS</strong> \r\n<table id=\"table2\" style=\"width: 100%;\" border=\"0\" cellpadding=\"2\" cellspacing=\"0\"> \r\n<tbody> \r\n<tr valign=\"top\"> \r\n<td class=\"title\" width=\"50%\"> \r\n<div align=\"right\"><strong><font size=\"2\">Sports Chairs<br><br>Associate Sports </font></strong><strong><font size=\"2\">Editors</font></strong><br><strong><font size=\"2\">&nbsp;</font></strong></div></td> \r\n<td class=\"name\">&nbsp;</td> \r\n<td class=\"name\"><font size=\"2\">Brad Hinshelwood '09<br></font><font size=\"2\">Madeleine I. Shapiro&nbsp;'09</font><font size=\"2\"><br></font><font size=\"2\">Loren Amor '10<br>Robert T. Hamlin '10<br>Dixon McPhillips&nbsp;'10<br>Julia R. Senior '10<br></font><font size=\"2\">Courtney D. Skinner '10<br></font><font size=\"2\">Walter E. Howell '09<br>Ted Kirby&nbsp;'09<br><br></font></td></tr></tbody></table></td></tr> \r\n<tr valign=\"top\"> \r\n<td class=\"board\" colspan=\"3\"> \r\n<div align=\"center\"><strong><br>BUSINESS</strong></div></td></tr> \r\n<tr valign=\"top\"> \r\n<td class=\"title\" width=\"50%\"> \r\n<div align=\"right\"><strong><font size=\"2\">Associate Business Manager<br>Director of Business Development<br>Director of Staff Development<br>Advertising Managers<br>&nbsp;<br>&nbsp;<br>Circulation Managers<br>&nbsp;<br>Contract Printing Managers<br><br>Operations Managers<br>&nbsp;<br>Sales Managers<br>&nbsp;</font></strong></div></td> \r\n<td class=\"name\">&nbsp;</td> \r\n<td class=\"name\"><font size=\"2\">Tyler W. Bosmeny '09<br></font><font size=\"2\">Katherine R. Hill '09<br></font><font size=\"2\"><br>Robert J. Prior '09<br>Katherine A. Petti '10<br>Jessica H. Roe '09<br>Amartya Sengupta '10<br>Aparicio J. Davis '10<br>Jesse Ge '10<br>Philip J. Daniel '10<br>Thomas J. Lawless '10<br>Maxwell L. Child '10<br>Steven J. Stelmach '10<br>Wenna Jia '10<br>Bohao D. Pan '10<br>Xin Pan '10<br>John C. Zhou '10<br></font></td></tr> \r\n<tr valign=\"top\" align=\"center\"> \r\n<td class=\"board\" colspan=\"3\"><br></td></tr> \r\n<tr> \r\n<td style=\"text-align: left;\"><br></td> \r\n<td><br></td> \r\n<td><br></td></tr></tbody></table></div></td></tr> \r\n<tr> \r\n<td>&nbsp;</td> \r\n<td>&nbsp;</td></tr></tbody></table>", 
             "enable_comments": false
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "core.relatedcontent", 
+        "fields": {
+            "object_id": 9, 
+            "content_type": 20
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "core.relatedcontent", 
+        "fields": {
+            "object_id": 1, 
+            "content_type": 20
+        }
+    }, 
+    {
+        "pk": 3, 
+        "model": "core.relatedcontent", 
+        "fields": {
+            "object_id": 2, 
+            "content_type": 20
+        }
+    }, 
+    {
+        "pk": 4, 
+        "model": "core.relatedcontent", 
+        "fields": {
+            "object_id": 3, 
+            "content_type": 20
+        }
+    }, 
+    {
+        "pk": 5, 
+        "model": "core.relatedcontent", 
+        "fields": {
+            "object_id": 4, 
+            "content_type": 20
+        }
+    }, 
+    {
+        "pk": 6, 
+        "model": "core.relatedcontent", 
+        "fields": {
+            "object_id": 5, 
+            "content_type": 20
+        }
+    }, 
+    {
+        "pk": 7, 
+        "model": "core.relatedcontent", 
+        "fields": {
+            "object_id": 6, 
+            "content_type": 20
+        }
+    }, 
+    {
+        "pk": 8, 
+        "model": "core.relatedcontent", 
+        "fields": {
+            "object_id": 7, 
+            "content_type": 20
+        }
+    }, 
+    {
+        "pk": 9, 
+        "model": "core.relatedcontent", 
+        "fields": {
+            "object_id": 8, 
+            "content_type": 20
+        }
+    }, 
+    {
+        "pk": 10, 
+        "model": "core.relatedcontent", 
+        "fields": {
+            "object_id": 5, 
+            "content_type": 16
+        }
+    }, 
+    {
+        "pk": 11, 
+        "model": "core.relatedcontent", 
+        "fields": {
+            "object_id": 4, 
+            "content_type": 16
+        }
+    }, 
+    {
+        "pk": 12, 
+        "model": "core.relatedcontent", 
+        "fields": {
+            "object_id": 3, 
+            "content_type": 16
+        }
+    }, 
+    {
+        "pk": 13, 
+        "model": "core.relatedcontent", 
+        "fields": {
+            "object_id": 2, 
+            "content_type": 16
+        }
+    }, 
+    {
+        "pk": 14, 
+        "model": "core.relatedcontent", 
+        "fields": {
+            "object_id": 1, 
+            "content_type": 16
+        }
+    }, 
+    {
+        "pk": 15, 
+        "model": "core.relatedcontent", 
+        "fields": {
+            "object_id": 4, 
+            "content_type": 17
+        }
+    }, 
+    {
+        "pk": 16, 
+        "model": "core.relatedcontent", 
+        "fields": {
+            "object_id": 3, 
+            "content_type": 17
+        }
+    }, 
+    {
+        "pk": 17, 
+        "model": "core.relatedcontent", 
+        "fields": {
+            "object_id": 2, 
+            "content_type": 17
+        }
+    }, 
+    {
+        "pk": 18, 
+        "model": "core.relatedcontent", 
+        "fields": {
+            "object_id": 1, 
+            "content_type": 17
         }
     }, 
     {
@@ -1883,134 +2055,85 @@
         "pk": 5, 
         "model": "core.image", 
         "fields": {
-            "tags": [
-                2, 
-                5
-            ], 
+            "related_content_id": 10, 
             "pic": "photos/2008/12/03/024429_ChiaNMustafa09.jpg", 
             "caption": "Chia N. Mustafa \u201909 sits in front of Kirkland House last Friday. The son of a Kurdish leader, Mustafa has spent time in Baghdad. \u201cHe\u2019s lived in the ghetto, he\u2019s eaten from a silver spoon, he\u2019s been through war, he\u2019s been through everything,\u201d his suitemate said.", 
             "created_on": "2008-12-03 02:44:29", 
             "kicker": "Chia N. Mustafa '09", 
-            "contributor": 10
+            "contributor": 10, 
+            "tags": [
+                2, 
+                5
+            ]
         }
     }, 
     {
         "pk": 4, 
         "model": "core.image", 
         "fields": {
-            "tags": [
-                20, 
-                21
-            ], 
+            "related_content_id": 11, 
             "pic": "photos/2008/12/03/024247_CrateandBarrel.jpg", 
             "caption": "The iconic Brattle Square store closes.", 
             "created_on": "2008-12-03 02:42:47", 
             "kicker": "Crate and Barrel", 
-            "contributor": 6
+            "contributor": 6, 
+            "tags": [
+                20, 
+                21
+            ]
         }
     }, 
     {
         "pk": 3, 
         "model": "core.image", 
         "fields": {
+            "related_content_id": 12, 
+            "pic": "photos/2008/12/03/024112_Prop8Protest.jpg", 
+            "caption": "Students prepare posters for a rally to protest Proposition 8, the recently passed California ban on same-sex marriage.", 
+            "created_on": "2008-12-03 02:41:12", 
+            "kicker": "Prop 8 Protest", 
+            "contributor": 2, 
             "tags": [
                 2, 
                 15, 
                 16, 
                 17
-            ], 
-            "pic": "photos/2008/12/03/024112_Prop8Protest.jpg", 
-            "caption": "Students prepare posters for a rally to protest Proposition 8, the recently passed California ban on same-sex marriage.", 
-            "created_on": "2008-12-03 02:41:12", 
-            "kicker": "Prop 8 Protest", 
-            "contributor": 2
+            ]
         }
     }, 
     {
         "pk": 2, 
         "model": "core.image", 
         "fields": {
-            "tags": [
-                2, 
-                8, 
-                10
-            ], 
+            "related_content_id": 13, 
             "pic": "photos/2008/12/03/023928_MillerTime.jpg", 
             "caption": "While the Harvard men\u2019s basketball team\u2019s freshmen stole the spotlight, junior Doug Miller, shown here in earlier action, scored eight points in his first career start on 4-for-5 shooting and grabbing three boards.", 
             "created_on": "2008-12-03 02:39:28", 
             "kicker": "Miller Time", 
-            "contributor": 12
+            "contributor": 12, 
+            "tags": [
+                2, 
+                8, 
+                10
+            ]
         }
     }, 
     {
         "pk": 1, 
         "model": "core.image", 
         "fields": {
+            "related_content_id": 14, 
+            "pic": "photos/2008/12/03/020726_MillerTime.jpg", 
+            "caption": "While the Harvard men\u2019s basketball team\u2019s freshmen stole the spotlight, junior Doug Miller, shown here in earlier action, scored eight points in his first career start on 4-for-5 shooting and grabbing three boards.", 
+            "created_on": "2008-12-03 02:07:26", 
+            "kicker": "Miller Time", 
+            "contributor": 12, 
             "tags": [
                 2, 
                 4, 
                 8, 
                 10
-            ], 
-            "pic": "photos/2008/12/03/020726_MillerTime.jpg", 
-            "caption": "While the Harvard men\u2019s basketball team\u2019s freshmen stole the spotlight, junior Doug Miller, shown here in earlier action, scored eight points in his first career start on 4-for-5 shooting and grabbing three boards.", 
-            "created_on": "2008-12-03 02:07:26", 
-            "kicker": "Miller Time", 
-            "contributor": 12
-        }
-    }, 
-    {
-        "pk": 1, 
-        "model": "core.imagegallery", 
-        "fields": {
-            "description": "While the Harvard men\u2019s basketball team\u2019s freshmen stole the spotlight, junior Doug Miller, shown here in earlier action, scored eight points in his first career start on 4-for-5 shooting and grabbing three boards.", 
-            "tags": [
-                2, 
-                8, 
-                10
-            ], 
-            "title": "Miller Time", 
-            "images": [
-                2
-            ], 
-            "created_on": "2008-12-03 02:39:31", 
-            "cover_image": 2
-        }
-    }, 
-    {
-        "pk": 2, 
-        "model": "core.imagegallery", 
-        "fields": {
-            "description": "Students prepare posters for a rally to protest Proposition 8, the recently passed California ban on same-sex marriage.", 
-            "tags": [
-                2, 
-                15, 
-                16, 
-                17
-            ], 
-            "title": "Prop 8 Protest", 
-            "images": [
-                3
-            ], 
-            "created_on": "2008-12-03 02:41:17", 
-            "cover_image": 3
-        }
-    }, 
-    {
-        "pk": 3, 
-        "model": "core.imagegallery", 
-        "fields": {
-            "description": "The iconic Brattle Square store closes. The iconic Brattle", 
-            "tags": [
-                20, 
-                21
-            ], 
-            "title": "Crate and Barrel", 
-            "images": [
-                4
-            ], 
-            "created_on": "2008-12-03 02:42:56", 
-            "cover_image": 4
+            ]
         }
     }, 
     {
@@ -2018,16 +2141,74 @@
         "model": "core.imagegallery", 
         "fields": {
             "description": "Chia N. Mustafa \u201909 sits in front of Kirkland House last Friday. The son of a Kurdish leader, Mustafa has spent time in Baghdad. \u201cHe\u2019s lived in the ghetto, he\u2019s eaten from a silver spoon, he\u2019s been through war, he\u2019s been through everything,\u201d his suitemate said.", 
-            "tags": [
-                2, 
-                5
-            ], 
             "title": "Chia N. Mustafa '09", 
+            "related_content_id": 15, 
             "images": [
                 5
             ], 
             "created_on": "2008-12-03 02:44:32", 
-            "cover_image": 5
+            "cover_image": 5, 
+            "tags": [
+                2, 
+                5
+            ]
+        }
+    }, 
+    {
+        "pk": 3, 
+        "model": "core.imagegallery", 
+        "fields": {
+            "description": "The iconic Brattle Square store closes. The iconic Brattle", 
+            "title": "Crate and Barrel", 
+            "related_content_id": 16, 
+            "images": [
+                4
+            ], 
+            "created_on": "2008-12-03 02:42:56", 
+            "cover_image": 4, 
+            "tags": [
+                20, 
+                21
+            ]
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "core.imagegallery", 
+        "fields": {
+            "description": "Students prepare posters for a rally to protest Proposition 8, the recently passed California ban on same-sex marriage.", 
+            "title": "Prop 8 Protest", 
+            "related_content_id": 17, 
+            "images": [
+                3
+            ], 
+            "created_on": "2008-12-03 02:41:17", 
+            "cover_image": 3, 
+            "tags": [
+                2, 
+                15, 
+                16, 
+                17
+            ]
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "core.imagegallery", 
+        "fields": {
+            "description": "While the Harvard men\u2019s basketball team\u2019s freshmen stole the spotlight, junior Doug Miller, shown here in earlier action, scored eight points in his first career start on 4-for-5 shooting and grabbing three boards.", 
+            "title": "Miller Time", 
+            "related_content_id": 18, 
+            "images": [
+                2
+            ], 
+            "created_on": "2008-12-03 02:39:31", 
+            "cover_image": 2, 
+            "tags": [
+                2, 
+                8, 
+                10
+            ]
         }
     }, 
     {
@@ -2035,31 +2216,33 @@
         "model": "core.article", 
         "fields": {
             "byline_type": "cstaff", 
-            "image_gallery": null, 
             "contributors": [
                 5, 
                 10
             ], 
+            "text": "The key to world peace is simple. \r\n\r\nAt least according the founder of the non-profit organization One Laptop Per Child (OLPC), who believes it lies in a tiny green and white computer. Nicholas P. Negroponte, who spoke to a captive audience in the Science Center last night, explained his idea: using technology to revolutionize education in the developing world. \r\n\r\nThe basic laptop, characterized by its bright yellow hand crank and once described as \u201cenchanting\u201d by Nigerian President Olusegun Obasanjo, was developed by OLPC and is being distributed to school-age children in the world\u2019s 50 poorest countries. \r\n\r\nThe OLPC laptop, which is marketed to international buyers as a $100 item, actually costs $187 to produce. It is currently sold through OLPC\u2019s Give One Get One Program, which launched Monday through Amazon. For $399, people can buy one laptop and have a second donated to a child in a developing nation. \r\n\r\nFor many children who receive the laptop, according to Negroponte, their first English word is \u201cGoogle.\u201d \r\n\r\n\u201cI see this as a powerful tool that could transform education in developing countries,\u201d said Calestous Juma, a professor at the Kennedy School of Government, who is also a member of the OLPC Board of Directors. \r\n\r\nJuma said he believed yesterday\u2019s event was a chance for Harvard students to get behind the movement of using technology to improve conditions in impoverished countries. \r\n\r\n\u201cI think an interesting outcome of this event would be to see how the various student organizations that have sponsored this event can do something substantive,\u201d he said. \r\n\r\nAmong the sponsoring organizations was the Harvard College Global Hunger Initiative, a new club to which Juma is an adviser. Founded by Eshwan Ramudu \u201910 and Sarah H. Nam \u201910, the organization hopes to increase agricultural sustainability through technology. \r\n\r\n\u201cI think one of the greatest challenges in development is the disparity in technology\u201d between nations, said Nam. \r\n\r\nOther campus groups also hope to see students come together on this issue. \r\n\r\n\u201cI feel like there\u2019s a lot of territoriality between campus groups, and I believe collaboration is necessary,\u201d said Julia C. Silverman \u201910, president of another event co-sponsor, the Harvard College Alliance for Africa (HCAA). \r\n\r\nThe HCAA is currently collecting used laptops to donate to the New Hope Orphanage in Busia, Uganda. The technology would both educate children and eventually help them find higher-level jobs, according to HCAA Treasurer Charlotte A. Chuter \u201910. The HCAA will hold a laptop collection on Dec. 12 and 13 outside Quincy House and in Annenberg. \r\n\r\nNegroponte said he hoped Harvard students would get involved by traveling to developing nations during the summer to distribute the laptops. \r\n\r\nDavid M. Sengeh \u201910 is already organizing a trip to his native country of Sierra Leone to hand out the computers to children there. \r\n\r\n\u201cIlliteracy in Sierra Leone is 70 percent,\u201d said Sengeh. \u201cIf we want to keep in line with Nicholas\u2019s 20-year education plan, we need to start reducing the 70 percent.\u201d \r\n\r\nHis plan may be ambitious, Negroponte said, but he remains optimistic. \r\n\r\n\u201cThe 20-year plan is world peace. The 15-year plan is to eliminate poverty,\u201d he said. \u201cBut the five-year plan is to really see 100 percent of the children in primary education.\u201d", 
+            "created_on": "2008-11-22 02:51:43", 
+            "proofer": 1, 
+            "image_gallery": null, 
+            "headline": "Cheap Laptops, Rich Experience", 
+            "section": 4, 
+            "web_only": true, 
+            "priority": 3, 
+            "maps": [], 
+            "rel_content": [], 
+            "sne": 1, 
             "tags": [
                 24, 
                 25, 
                 26
             ], 
-            "headline": "Cheap Laptops, Rich Experience", 
-            "text": "The key to world peace is simple. \r\n\r\nAt least according the founder of the non-profit organization One Laptop Per Child (OLPC), who believes it lies in a tiny green and white computer. Nicholas P. Negroponte, who spoke to a captive audience in the Science Center last night, explained his idea: using technology to revolutionize education in the developing world. \r\n\r\nThe basic laptop, characterized by its bright yellow hand crank and once described as \u201cenchanting\u201d by Nigerian President Olusegun Obasanjo, was developed by OLPC and is being distributed to school-age children in the world\u2019s 50 poorest countries. \r\n\r\nThe OLPC laptop, which is marketed to international buyers as a $100 item, actually costs $187 to produce. It is currently sold through OLPC\u2019s Give One Get One Program, which launched Monday through Amazon. For $399, people can buy one laptop and have a second donated to a child in a developing nation. \r\n\r\nFor many children who receive the laptop, according to Negroponte, their first English word is \u201cGoogle.\u201d \r\n\r\n\u201cI see this as a powerful tool that could transform education in developing countries,\u201d said Calestous Juma, a professor at the Kennedy School of Government, who is also a member of the OLPC Board of Directors. \r\n\r\nJuma said he believed yesterday\u2019s event was a chance for Harvard students to get behind the movement of using technology to improve conditions in impoverished countries. \r\n\r\n\u201cI think an interesting outcome of this event would be to see how the various student organizations that have sponsored this event can do something substantive,\u201d he said. \r\n\r\nAmong the sponsoring organizations was the Harvard College Global Hunger Initiative, a new club to which Juma is an adviser. Founded by Eshwan Ramudu \u201910 and Sarah H. Nam \u201910, the organization hopes to increase agricultural sustainability through technology. \r\n\r\n\u201cI think one of the greatest challenges in development is the disparity in technology\u201d between nations, said Nam. \r\n\r\nOther campus groups also hope to see students come together on this issue. \r\n\r\n\u201cI feel like there\u2019s a lot of territoriality between campus groups, and I believe collaboration is necessary,\u201d said Julia C. Silverman \u201910, president of another event co-sponsor, the Harvard College Alliance for Africa (HCAA). \r\n\r\nThe HCAA is currently collecting used laptops to donate to the New Hope Orphanage in Busia, Uganda. The technology would both educate children and eventually help them find higher-level jobs, according to HCAA Treasurer Charlotte A. Chuter \u201910. The HCAA will hold a laptop collection on Dec. 12 and 13 outside Quincy House and in Annenberg. \r\n\r\nNegroponte said he hoped Harvard students would get involved by traveling to developing nations during the summer to distribute the laptops. \r\n\r\nDavid M. Sengeh \u201910 is already organizing a trip to his native country of Sierra Leone to hand out the computers to children there. \r\n\r\n\u201cIlliteracy in Sierra Leone is 70 percent,\u201d said Sengeh. \u201cIf we want to keep in line with Nicholas\u2019s 20-year education plan, we need to start reducing the 70 percent.\u201d \r\n\r\nHis plan may be ambitious, Negroponte said, but he remains optimistic. \r\n\r\n\u201cThe 20-year plan is world peace. The 15-year plan is to eliminate poverty,\u201d he said. \u201cBut the five-year plan is to really see 100 percent of the children in primary education.\u201d", 
-            "section": 4, 
-            "created_on": "2008-11-22 02:51:43", 
-            "page": "", 
-            "priority": 3, 
-            "subheadline": "", 
             "teaser": "The key to world peace is simple. At least according the founder of the non-profit organization One Laptop Per Child ...", 
-            "sne": 1, 
-            "proofer": 1, 
-            "modified_on": "2008-11-22 02:51:43", 
-            "maps": [], 
-            "web_only": true, 
-            "issue": 5, 
+            "modified_on": "2008-12-25 17:56:50", 
             "slug": "cheap-laptops-rich-experience", 
+            "related_content_id": 1, 
+            "issue": 5, 
+            "subheadline": "", 
+            "page": "", 
             "is_published": true
         }
     }, 
@@ -2068,30 +2251,32 @@
         "model": "core.article", 
         "fields": {
             "byline_type": "cstaff", 
-            "image_gallery": 1, 
             "contributors": [
                 5
             ], 
+            "text": "Harvard\u2019s Class of 2012 was supposed to wait. \r\n\r\nFreshmen don\u2019t come into their first game, playing on the road, and drop 17 points on the home team. \r\n\r\nFreshmen don\u2019t bury dagger threes to end any threat of a comeback. \r\n\r\nFreshmen don\u2019t pound on the blocks like they were a baby Barkley. \r\n\r\nFortunately for the Crimson, this is not your normal group of rookies. \r\n\r\nMessage to the Ivy League: Tommy Amaker\u2019s highly touted recruiting class is for real. \r\n\r\nWith three freshmen starting\u2014guards Max Kenyi and Oliver McNally and power forward Keith Wright\u2014the coach did not wait to bring in his young guns. \r\n\r\nAnd they did not disappoint, leading the Crimson to a resounding 80-69 win. \r\n\r\nKenyi came out firing, dropping 12 points in the first half in route to a team-leading 17-point night. Kenyi was also 3-3 from behind the arc. \r\n\r\nMcNally was a leader, filling the point guard position as an injured Drew Housman sat for most of the game.\r\n\r\nAnd Wright, battling on the blocks all night, looked superb down the stretch, tallying 15 points despite being in constant foul trouble. \r\n\r\nOn top of this, freshman swingman Peter Boehm came of the bench and stepped in to play the role of closer. \r\n\r\nBoehm sank two late threes in the middle of the second half to silence New Hampshire\u2019s only attempt to get back in the game. \r\n\r\n\u201cAll our freshman played well,\u201d Amaker said. \u201cBoehm had some great shots, two big threes, [Wright]\u2019s presence on the inside allowed the perimeter players to do some big things. I thought [McNally] was tremendous with his presence as well.\u201d \r\n\r\nBut it was one sequence, which told the tale of the class\u2019 dominance. \r\n\r\nAt the 10-minute mark in the second half, the Wildcats (1-1, 0-0 AE) moved to within seven of the Crimson (1-0, 0-0 Ivy) at 62-55. \r\n\r\nNew Hampshire had the momentum, having strung together a 7-2 run in just three minutes prior to the play. \r\n\r\nBut Harvard was able to answer, as Boehm lobbed a great pass into Wright, who laid the ball in over two defenders, drew the foul, then unleashed a resounding yell to cap off the play. \r\n\r\nAfter nailing the free throw and then grabbing the rebound on the other end, he passed up to Kenyi. The guard then kicked the ball over to an open Boehm, who caught, shot, and drilled a three from 24-feet out. \r\n\r\nGame, set, match: Crimson freshmen. \r\n\r\n\u201cI couldn\u2019t play scared,\u201d Wright said. \u201cMy team needed me. We all need each other. I got in a little foul trouble, but they picked me up and we did well.\u201d \r\n\r\nAnd it wasn\u2019t just the freshmen getting in on the action. New starting junior Doug Miller came out strong in the first half, tallying eight points, many on layups after beating the Wildcats down the floor. It was Miller\u2019s most significant work for the Crimson\u2014in only his first start. \r\n\r\nStill, the story on the night was the freshmen. While Kenyi dominated in the first half, and Boehm put the nail in New Hampshire\u2019s coffin, one player stood above the rest\u2014both literally and figuratively. \r\n\r\nThe 6\u20198\u201d, 240 lbs. Keith Wright was, to put it mildly, a beast on the post. He made his first three shots, missing only one on the night in a 6-for-7 performance, and played his best at the end. \r\n\r\nBut Amaker knows that Wright, like all the freshmen, still have a lot of work to do. \r\n\r\n\u201cI wasn\u2019t pleased with only five rebounds, but other than that, I thought he played very well,\u201d Amaker said. \r\n\r\nWith junior forward Pat Magnarelli having re-injured his knee, which cut his season short last year, and captain Andrew Pusar out for the game, the freshmen had an opportunity to shine. \r\n\r\nMagnarelli will be out indefinitely, but when Pusar comes back and senior guard Drew Housman recovers from injury, the team will change dramatically. \r\n\r\n\u201c[Housman] played exceptionally for us in practice, before he was injured,\u201d Amaker said. \u201cAnd we expect him to play a lot as we go down the stretch of our season.\u201d \r\n\r\nOr it may not. If these freshmen continue to play well, the upperclassmen will be the ones coming off the bench. \r\n\r\nFor now, the team will revel in its newfound talent. \r\n\r\nA message to the rest of the Ivy League: watch out. \r\n\r\n\u2014Staff writer Walter E. Howell can be reached at wehowell@fas.harvard.edu.", 
+            "created_on": "2008-11-21 20:57:49", 
+            "proofer": 2, 
+            "image_gallery": 1, 
+            "headline": "SIDEBAR: Newcomers Dominate in Harvard Victory", 
+            "section": 5, 
+            "web_only": false, 
+            "priority": 0, 
+            "maps": [], 
+            "rel_content": [], 
+            "sne": 3, 
             "tags": [
                 2, 
                 8, 
                 9
             ], 
-            "headline": "SIDEBAR: Newcomers Dominate in Harvard Victory", 
-            "text": "Harvard\u2019s Class of 2012 was supposed to wait. \r\n\r\nFreshmen don\u2019t come into their first game, playing on the road, and drop 17 points on the home team. \r\n\r\nFreshmen don\u2019t bury dagger threes to end any threat of a comeback. \r\n\r\nFreshmen don\u2019t pound on the blocks like they were a baby Barkley. \r\n\r\nFortunately for the Crimson, this is not your normal group of rookies. \r\n\r\nMessage to the Ivy League: Tommy Amaker\u2019s highly touted recruiting class is for real. \r\n\r\nWith three freshmen starting\u2014guards Max Kenyi and Oliver McNally and power forward Keith Wright\u2014the coach did not wait to bring in his young guns. \r\n\r\nAnd they did not disappoint, leading the Crimson to a resounding 80-69 win. \r\n\r\nKenyi came out firing, dropping 12 points in the first half in route to a team-leading 17-point night. Kenyi was also 3-3 from behind the arc. \r\n\r\nMcNally was a leader, filling the point guard position as an injured Drew Housman sat for most of the game.\r\n\r\nAnd Wright, battling on the blocks all night, looked superb down the stretch, tallying 15 points despite being in constant foul trouble. \r\n\r\nOn top of this, freshman swingman Peter Boehm came of the bench and stepped in to play the role of closer. \r\n\r\nBoehm sank two late threes in the middle of the second half to silence New Hampshire\u2019s only attempt to get back in the game. \r\n\r\n\u201cAll our freshman played well,\u201d Amaker said. \u201cBoehm had some great shots, two big threes, [Wright]\u2019s presence on the inside allowed the perimeter players to do some big things. I thought [McNally] was tremendous with his presence as well.\u201d \r\n\r\nBut it was one sequence, which told the tale of the class\u2019 dominance. \r\n\r\nAt the 10-minute mark in the second half, the Wildcats (1-1, 0-0 AE) moved to within seven of the Crimson (1-0, 0-0 Ivy) at 62-55. \r\n\r\nNew Hampshire had the momentum, having strung together a 7-2 run in just three minutes prior to the play. \r\n\r\nBut Harvard was able to answer, as Boehm lobbed a great pass into Wright, who laid the ball in over two defenders, drew the foul, then unleashed a resounding yell to cap off the play. \r\n\r\nAfter nailing the free throw and then grabbing the rebound on the other end, he passed up to Kenyi. The guard then kicked the ball over to an open Boehm, who caught, shot, and drilled a three from 24-feet out. \r\n\r\nGame, set, match: Crimson freshmen. \r\n\r\n\u201cI couldn\u2019t play scared,\u201d Wright said. \u201cMy team needed me. We all need each other. I got in a little foul trouble, but they picked me up and we did well.\u201d \r\n\r\nAnd it wasn\u2019t just the freshmen getting in on the action. New starting junior Doug Miller came out strong in the first half, tallying eight points, many on layups after beating the Wildcats down the floor. It was Miller\u2019s most significant work for the Crimson\u2014in only his first start. \r\n\r\nStill, the story on the night was the freshmen. While Kenyi dominated in the first half, and Boehm put the nail in New Hampshire\u2019s coffin, one player stood above the rest\u2014both literally and figuratively. \r\n\r\nThe 6\u20198\u201d, 240 lbs. Keith Wright was, to put it mildly, a beast on the post. He made his first three shots, missing only one on the night in a 6-for-7 performance, and played his best at the end. \r\n\r\nBut Amaker knows that Wright, like all the freshmen, still have a lot of work to do. \r\n\r\n\u201cI wasn\u2019t pleased with only five rebounds, but other than that, I thought he played very well,\u201d Amaker said. \r\n\r\nWith junior forward Pat Magnarelli having re-injured his knee, which cut his season short last year, and captain Andrew Pusar out for the game, the freshmen had an opportunity to shine. \r\n\r\nMagnarelli will be out indefinitely, but when Pusar comes back and senior guard Drew Housman recovers from injury, the team will change dramatically. \r\n\r\n\u201c[Housman] played exceptionally for us in practice, before he was injured,\u201d Amaker said. \u201cAnd we expect him to play a lot as we go down the stretch of our season.\u201d \r\n\r\nOr it may not. If these freshmen continue to play well, the upperclassmen will be the ones coming off the bench. \r\n\r\nFor now, the team will revel in its newfound talent. \r\n\r\nA message to the rest of the Ivy League: watch out. \r\n\r\n\u2014Staff writer Walter E. Howell can be reached at wehowell@fas.harvard.edu.", 
-            "section": 5, 
-            "created_on": "2008-11-21 20:57:49", 
-            "page": "", 
-            "priority": 0, 
-            "subheadline": "", 
             "teaser": "Harvard\u2019s Class of 2012 was supposed to wait. Freshmen don\u2019t come into their first game, playing on the road, and ...", 
-            "sne": 3, 
-            "proofer": 2, 
-            "modified_on": "2008-12-03 02:39:31", 
-            "maps": [], 
-            "web_only": false, 
-            "issue": 4, 
+            "modified_on": "2008-12-25 17:56:50", 
             "slug": "sidebar-newcomers-dominate-in-harvard-victory", 
+            "related_content_id": 2, 
+            "issue": 4, 
+            "subheadline": "", 
+            "page": "", 
             "is_published": true
         }
     }, 
@@ -2100,10 +2285,20 @@
         "model": "core.article", 
         "fields": {
             "byline_type": "cstaff", 
-            "image_gallery": null, 
             "contributors": [
                 7
             ], 
+            "text": "Last night\u2019s pep rally at Harvard Yard was cut short after multiple failed attempts at crowd control, grinding the highly anticipated concert by DJ Girl Talk to a halt. The performance, meant to up the excitement for The Game tomorrow, ended prematurely, with organizers asking the hundreds of attendees to step back. \r\n\r\n\u201cThe ultimate decision to end the concert was that of the Harvard University Police Department,\u201d said College Events Board President John F. Pararas \u201908-\u201909, who is also a former Crimson magazine writer. \r\n\r\nOfficers at the scene referred requests for comment to HUPD spokesman Steven G. Catalano. \r\n\r\nAfter a performance by steppers from the Black Men\u2019s Forum, technicians had to adjust the setup of the stage. As the packed crowd waited for Girl Talk, the stage name of Gregg Gillis, to perform, Fun Czar Jason B. McCoy \u201908 called for concertgoers to move back. \r\n\r\nStudents squeezed up against the stage posed a safety concern because there were no concert barriers in place during the performance. \r\n\r\nAs per Gillis\u2019 contract, no concert barriers were in place during his performance, Pararas said. \r\n\r\nAs throngs filled the Yard in front of the John Harvard statue, students bobbed to the music in parkas and sipped apple cider and hot chocolate. Those who braved the chill waved glow sticks and foam fingers as CEB members threw balloons into the crowd. \r\n\r\nSeveral police officers stood on stage, as Gillis, clad in a crimson CEB sweatshirt, sampled from songs that varied from Elton John\u2019s \u201cTiny Dancer\u201d to UGK\u2019s \u201cInternational Player\u2019s Anthem (I Choose You).\u201d \r\n\r\nBut after crowdgoers caused part of the stage to move, Girl Talk moved his equipment to deejay on the ground. \r\n\r\nBut even with Gillis among the crowd, Alina A. Hooper \u201910, who is also a Crimson photographer, said she was pushed toward the stage and started hyperventilating in the crush of people. \r\n\r\n\u201cI was just freaking out and trying to get out of the center of the crowd,\u201d she said. She was pulled out by the HUPD and was uninjured. \u201cI guess they thought I was worse off.\u201d \r\n\r\nRumors stirred that someone had been pushed under the stage, but McCoy said in an interview after the show that some students had crawled under the stage to get out of the crowd and were not hurt. \r\n\r\nIn an effort to control the crowd, organizers took the stage repeatedly, asking students to step back\u2014only to have glow sticks thrown at them. \r\n\r\nPararas at one point included expletives in his call for students to move away from the stage. \r\n\r\nGillis ended up curtailing his performance because of the failed attempts to control the crowd. After the announcement that the concert was ending, the DJ apologized and said that if it were up to him, he would continue playing and asked if there was \u201ca house somewhere [he] could go, right now.\u201d \r\n\r\nAmid cries to move to a final club or the Hasty Pudding, students lingered outside of University Hall to find out where Gillis was going. According to McCoy, he returned to his hotel. \r\n\r\n\u201cIt was the most unsuccessful successful show ever,\u201d Leah E. Boch \u201909 said. \r\n\r\nHUPD\u2019s Catalano could not be reached for comment last night. ", 
+            "created_on": "2008-11-21 21:09:26", 
+            "proofer": 1, 
+            "image_gallery": null, 
+            "headline": "Rally, Girl Talk Concert Cut Short", 
+            "section": 4, 
+            "web_only": false, 
+            "priority": 0, 
+            "maps": [], 
+            "rel_content": [], 
+            "sne": 1, 
             "tags": [
                 2, 
                 6, 
@@ -2112,21 +2307,13 @@
                 13, 
                 14
             ], 
-            "headline": "Rally, Girl Talk Concert Cut Short", 
-            "text": "Last night\u2019s pep rally at Harvard Yard was cut short after multiple failed attempts at crowd control, grinding the highly anticipated concert by DJ Girl Talk to a halt. The performance, meant to up the excitement for The Game tomorrow, ended prematurely, with organizers asking the hundreds of attendees to step back. \r\n\r\n\u201cThe ultimate decision to end the concert was that of the Harvard University Police Department,\u201d said College Events Board President John F. Pararas \u201908-\u201909, who is also a former Crimson magazine writer. \r\n\r\nOfficers at the scene referred requests for comment to HUPD spokesman Steven G. Catalano. \r\n\r\nAfter a performance by steppers from the Black Men\u2019s Forum, technicians had to adjust the setup of the stage. As the packed crowd waited for Girl Talk, the stage name of Gregg Gillis, to perform, Fun Czar Jason B. McCoy \u201908 called for concertgoers to move back. \r\n\r\nStudents squeezed up against the stage posed a safety concern because there were no concert barriers in place during the performance. \r\n\r\nAs per Gillis\u2019 contract, no concert barriers were in place during his performance, Pararas said. \r\n\r\nAs throngs filled the Yard in front of the John Harvard statue, students bobbed to the music in parkas and sipped apple cider and hot chocolate. Those who braved the chill waved glow sticks and foam fingers as CEB members threw balloons into the crowd. \r\n\r\nSeveral police officers stood on stage, as Gillis, clad in a crimson CEB sweatshirt, sampled from songs that varied from Elton John\u2019s \u201cTiny Dancer\u201d to UGK\u2019s \u201cInternational Player\u2019s Anthem (I Choose You).\u201d \r\n\r\nBut after crowdgoers caused part of the stage to move, Girl Talk moved his equipment to deejay on the ground. \r\n\r\nBut even with Gillis among the crowd, Alina A. Hooper \u201910, who is also a Crimson photographer, said she was pushed toward the stage and started hyperventilating in the crush of people. \r\n\r\n\u201cI was just freaking out and trying to get out of the center of the crowd,\u201d she said. She was pulled out by the HUPD and was uninjured. \u201cI guess they thought I was worse off.\u201d \r\n\r\nRumors stirred that someone had been pushed under the stage, but McCoy said in an interview after the show that some students had crawled under the stage to get out of the crowd and were not hurt. \r\n\r\nIn an effort to control the crowd, organizers took the stage repeatedly, asking students to step back\u2014only to have glow sticks thrown at them. \r\n\r\nPararas at one point included expletives in his call for students to move away from the stage. \r\n\r\nGillis ended up curtailing his performance because of the failed attempts to control the crowd. After the announcement that the concert was ending, the DJ apologized and said that if it were up to him, he would continue playing and asked if there was \u201ca house somewhere [he] could go, right now.\u201d \r\n\r\nAmid cries to move to a final club or the Hasty Pudding, students lingered outside of University Hall to find out where Gillis was going. According to McCoy, he returned to his hotel. \r\n\r\n\u201cIt was the most unsuccessful successful show ever,\u201d Leah E. Boch \u201909 said. \r\n\r\nHUPD\u2019s Catalano could not be reached for comment last night. ", 
-            "section": 4, 
-            "created_on": "2008-11-21 21:09:26", 
-            "page": "", 
-            "priority": 0, 
-            "subheadline": "Event halted after crowds squeeze up against stage, posing safety concerns", 
             "teaser": "Last night\u2019s pep rally at Harvard Yard was cut short after multiple failed attempts at crowd control, grinding the highly ...", 
-            "sne": 1, 
-            "proofer": 1, 
-            "modified_on": "2008-11-21 21:09:26", 
-            "maps": [], 
-            "web_only": false, 
-            "issue": 4, 
+            "modified_on": "2008-12-25 17:56:50", 
             "slug": "rally-girl-talk-concert-cut-short", 
+            "related_content_id": 3, 
+            "issue": 4, 
+            "subheadline": "Event halted after crowds squeeze up against stage, posing safety concerns", 
+            "page": "", 
             "is_published": true
         }
     }, 
@@ -2135,31 +2322,33 @@
         "model": "core.article", 
         "fields": {
             "byline_type": "cstaff", 
-            "image_gallery": 2, 
             "contributors": [
                 8
             ], 
+            "text": "Waiving colorful signs declaring \u201cLove, not H8,\u201d dozens of Harvard students joined roughly 4,000 people gathered in front of Boston City Hall Saturday to protest the recent passing of Proposition 8, a ban on same-sex marriage approved by California voters two weeks ago. \r\n\r\nThe Boston rally was part of a national effort of protests on Saturday led by LBGTQ rights group Join the Impact in opposition to the ban. \r\n\r\nAlthough few Harvard students at the weekend rally were native Californians\u2014and many were international students\u2014participants said Proposition 8 has universal implications. \r\n\r\n\u201cA threat to rights anywhere is a threat to rights everywhere,\u201d said Elizabeth B. Hadaway \u201909, while riding with a group of Quad students on the subway to the rally. \r\n\r\nTsotso T. Ablorh \u201910 also praise the importance of protecting rights everywhere. \r\n\r\n\u201cGay rights are important just like anyone\u2019s rights are important,\u201d Ablorh said while making a poster for Saturday\u2019s rally. \u201cPeople can\u2019t deny rights that they think they should have themselves especially if it doesn\u2019t impact them negatively.\u201d \r\n\r\nNot only did the issue of gay rights seem to transcend state-lines but international borders as well. \r\n\r\nGuo T. \u201cColin\u201d Teo \u201912 said the Proposition 8 rally was his first protest. \r\n\r\n\u201cIn Singapore it is illegal to protest,\u201d Teo said. \u201cGay rights are completely under the radar.\u201d \r\n\r\nOther international students said they had seen the United States\u2014and particularly California\u2014as a beacon of change. \r\n\r\n\u201cA lot of changes originate here,\u201d said Ioannis Kalogirou Valtis \u201912, from Greece. \u201cIf it doesn\u2019t start here, where will it?\u201d \r\n\r\nAlthough the rally focused mainly on Proposition 8, it also touched on other issues in gay rights, such as the Defense of Marriage Act, Don\u2019t Ask Don\u2019t Tell, hate crimes legislation, and obstacles facing the transgender community. Featured speakers included U.S. Congressman Michael E. Capuano and U.S. Congresswoman Niki Tsongas, who called upon the crowd to take their energy and continue to press for change.", 
+            "created_on": "2008-11-21 21:13:40", 
+            "proofer": 1, 
+            "image_gallery": 2, 
+            "headline": "Students Rally To Protest Prop. 8", 
+            "section": 4, 
+            "web_only": false, 
+            "priority": 0, 
+            "maps": [], 
+            "rel_content": [], 
+            "sne": 1, 
             "tags": [
                 2, 
                 15, 
                 16, 
                 17
             ], 
-            "headline": "Students Rally To Protest Prop. 8", 
-            "text": "Waiving colorful signs declaring \u201cLove, not H8,\u201d dozens of Harvard students joined roughly 4,000 people gathered in front of Boston City Hall Saturday to protest the recent passing of Proposition 8, a ban on same-sex marriage approved by California voters two weeks ago. \r\n\r\nThe Boston rally was part of a national effort of protests on Saturday led by LBGTQ rights group Join the Impact in opposition to the ban. \r\n\r\nAlthough few Harvard students at the weekend rally were native Californians\u2014and many were international students\u2014participants said Proposition 8 has universal implications. \r\n\r\n\u201cA threat to rights anywhere is a threat to rights everywhere,\u201d said Elizabeth B. Hadaway \u201909, while riding with a group of Quad students on the subway to the rally. \r\n\r\nTsotso T. Ablorh \u201910 also praise the importance of protecting rights everywhere. \r\n\r\n\u201cGay rights are important just like anyone\u2019s rights are important,\u201d Ablorh said while making a poster for Saturday\u2019s rally. \u201cPeople can\u2019t deny rights that they think they should have themselves especially if it doesn\u2019t impact them negatively.\u201d \r\n\r\nNot only did the issue of gay rights seem to transcend state-lines but international borders as well. \r\n\r\nGuo T. \u201cColin\u201d Teo \u201912 said the Proposition 8 rally was his first protest. \r\n\r\n\u201cIn Singapore it is illegal to protest,\u201d Teo said. \u201cGay rights are completely under the radar.\u201d \r\n\r\nOther international students said they had seen the United States\u2014and particularly California\u2014as a beacon of change. \r\n\r\n\u201cA lot of changes originate here,\u201d said Ioannis Kalogirou Valtis \u201912, from Greece. \u201cIf it doesn\u2019t start here, where will it?\u201d \r\n\r\nAlthough the rally focused mainly on Proposition 8, it also touched on other issues in gay rights, such as the Defense of Marriage Act, Don\u2019t Ask Don\u2019t Tell, hate crimes legislation, and obstacles facing the transgender community. Featured speakers included U.S. Congressman Michael E. Capuano and U.S. Congresswoman Niki Tsongas, who called upon the crowd to take their energy and continue to press for change.", 
-            "section": 4, 
-            "created_on": "2008-11-21 21:13:40", 
-            "page": "", 
-            "priority": 0, 
-            "subheadline": "Undergrads speak out against California same-sex marriage ban", 
             "teaser": "Waiving colorful signs declaring \u201cLove, not H8,\u201d dozens of Harvard students joined roughly 4,000 people gathered in front of Boston ...", 
-            "sne": 1, 
-            "proofer": 1, 
-            "modified_on": "2008-12-03 02:41:17", 
-            "maps": [], 
-            "web_only": false, 
-            "issue": 4, 
+            "modified_on": "2008-12-25 17:56:50", 
             "slug": "students-rally-to-protest-prop-8", 
+            "related_content_id": 4, 
+            "issue": 4, 
+            "subheadline": "Undergrads speak out against California same-sex marriage ban", 
+            "page": "", 
             "is_published": true
         }
     }, 
@@ -2168,31 +2357,33 @@
         "model": "core.article", 
         "fields": {
             "byline_type": null, 
-            "image_gallery": null, 
             "contributors": [
                 10
             ], 
+            "text": "After entering a number of rooms in Cabot House and stealing an Ec 10 problem set about the prisoner\u2019s dilemma, one student may find himself pondering different prisoner\u2019s dilemmas. Real ones, this time. \r\n\r\nMario G. Garcia \u201909 was arrested at 4:42 am on Friday and is charged with assault and battery, annoying and accosting a person of the opposite sex, and breaking and entering in the nighttime with the intent to commit felony, according to the Harvard University Police Department public log. Garcia, who goes by Carlo, is a biology concentrator in Cabot House. He entered at least two rooms while their inhabitants were in bed and tried to talk to them about the homework for Social Analysis 10: \u201cPrinciples of Economics.\u201d \r\n\r\nThe arrest occurred merely five hours into Garcia\u2019s 21st birthday, but HUPD declined to comment on whether Garcia was under the influence of alcohol or other substances. \r\n\r\n\u201cI had no idea who the person was. I then asked him to leave, but instead he sat on my bed and continued to ask questions about the problem set,\u201d Wintha F. Kelati \u201911, who is also on the Crimson business board, wrote in an e-mail. \r\n\r\n\u201cThe whole thing seemed so bizarre I was honestly convinced I was dreaming. I woke up a few hours later and realized my problem set was gone,\u201d she added. \r\n\r\nKelati\u2019s Ec 10 problem set, which was due on that Friday, was repossessed from Garcia by HUPD after the arrest and is currently being held as evidence. \r\n\r\n\u201cI had to call HUPD to get my problem set back so that I could turn it in, but they told me I couldn\u2019t have the original because it was evidence in court. So they had to make me a photocopy,\u201d Kelati said. \r\n\r\nAfter leaving Kelati\u2019s room, Garcia entered another room, laying down on a female student\u2019s bed and touching her body in the process, according to HUPD spokesperson Steven G. Catalano. He was arrested after the student physically forced him out of her room. \r\n\r\nA number of other students living on third floor in Cabot G and H entryway reported that Garcia knocked on their doors that morning and asked them odd questions. Amanda C.E. Klimczuk \u201910 said he asked her if \u201cAlex\u201d lived in her room when she opened the door. \r\n\r\n\u201cI pointed at my name on the door and told him good night,\u201d she said. \r\n\r\nAnother student said Garcia asked her for a certain \u201cKristina Liu,\u201d so that she could help him with a Molecular and Chemical Biology problem set. No College student under that name lives in Cabot. \r\n\r\nGarcia was arraigned on the same day. He could not be reached for comment. \r\n\r\n\u201cIt is my sincere hope that the material taught in Ec 10 will provide a catalyst for discussion among students beyond the classroom,\u201d N. Gregory Mankiw, the professor of Ec 10, wrote in an e-mailed statement. \u201cThere are, however, better ways for that discussion to take place,\u201d he added. ", 
+            "created_on": "2008-11-21 21:22:12", 
+            "proofer": 1, 
+            "image_gallery": null, 
+            "headline": "Student Arrested for Quad Break-In", 
+            "section": 4, 
+            "web_only": false, 
+            "priority": 0, 
+            "maps": [], 
+            "rel_content": [], 
+            "sne": 1, 
             "tags": [
                 2, 
                 6, 
                 18, 
                 19
             ], 
-            "headline": "Student Arrested for Quad Break-In", 
-            "text": "After entering a number of rooms in Cabot House and stealing an Ec 10 problem set about the prisoner\u2019s dilemma, one student may find himself pondering different prisoner\u2019s dilemmas. Real ones, this time. \r\n\r\nMario G. Garcia \u201909 was arrested at 4:42 am on Friday and is charged with assault and battery, annoying and accosting a person of the opposite sex, and breaking and entering in the nighttime with the intent to commit felony, according to the Harvard University Police Department public log. Garcia, who goes by Carlo, is a biology concentrator in Cabot House. He entered at least two rooms while their inhabitants were in bed and tried to talk to them about the homework for Social Analysis 10: \u201cPrinciples of Economics.\u201d \r\n\r\nThe arrest occurred merely five hours into Garcia\u2019s 21st birthday, but HUPD declined to comment on whether Garcia was under the influence of alcohol or other substances. \r\n\r\n\u201cI had no idea who the person was. I then asked him to leave, but instead he sat on my bed and continued to ask questions about the problem set,\u201d Wintha F. Kelati \u201911, who is also on the Crimson business board, wrote in an e-mail. \r\n\r\n\u201cThe whole thing seemed so bizarre I was honestly convinced I was dreaming. I woke up a few hours later and realized my problem set was gone,\u201d she added. \r\n\r\nKelati\u2019s Ec 10 problem set, which was due on that Friday, was repossessed from Garcia by HUPD after the arrest and is currently being held as evidence. \r\n\r\n\u201cI had to call HUPD to get my problem set back so that I could turn it in, but they told me I couldn\u2019t have the original because it was evidence in court. So they had to make me a photocopy,\u201d Kelati said. \r\n\r\nAfter leaving Kelati\u2019s room, Garcia entered another room, laying down on a female student\u2019s bed and touching her body in the process, according to HUPD spokesperson Steven G. Catalano. He was arrested after the student physically forced him out of her room. \r\n\r\nA number of other students living on third floor in Cabot G and H entryway reported that Garcia knocked on their doors that morning and asked them odd questions. Amanda C.E. Klimczuk \u201910 said he asked her if \u201cAlex\u201d lived in her room when she opened the door. \r\n\r\n\u201cI pointed at my name on the door and told him good night,\u201d she said. \r\n\r\nAnother student said Garcia asked her for a certain \u201cKristina Liu,\u201d so that she could help him with a Molecular and Chemical Biology problem set. No College student under that name lives in Cabot. \r\n\r\nGarcia was arraigned on the same day. He could not be reached for comment. \r\n\r\n\u201cIt is my sincere hope that the material taught in Ec 10 will provide a catalyst for discussion among students beyond the classroom,\u201d N. Gregory Mankiw, the professor of Ec 10, wrote in an e-mailed statement. \u201cThere are, however, better ways for that discussion to take place,\u201d he added. ", 
-            "section": 4, 
-            "created_on": "2008-11-21 21:22:12", 
-            "page": "", 
-            "priority": 0, 
-            "subheadline": "Senior steals Ec 10 problem set from Cabot room", 
             "teaser": "After entering a number of rooms in Cabot House and stealing an Ec 10 problem set about the prisoner\u2019s dilemma, ...", 
-            "sne": 1, 
-            "proofer": 1, 
-            "modified_on": "2008-11-21 21:22:12", 
-            "maps": [], 
-            "web_only": false, 
-            "issue": 4, 
+            "modified_on": "2008-12-25 17:56:50", 
             "slug": "student-arrested-for-quad-break-in", 
+            "related_content_id": 5, 
+            "issue": 4, 
+            "subheadline": "Senior steals Ec 10 problem set from Cabot room", 
+            "page": "", 
             "is_published": true
         }
     }, 
@@ -2201,29 +2392,31 @@
         "model": "core.article", 
         "fields": {
             "byline_type": "cstaff", 
-            "image_gallery": 3, 
             "contributors": [
                 11
             ], 
+            "text": "Home furnishing enthusiasts may find themselves indulging in an extended spending spree this holiday season, with Crate & Barrel closing its iconic Brattle Street store on January 25\u2014a move likely to be accompanied by obligatory clearance sales, according to store manager Lauren Boccuzzi. \r\n\r\nThe Brattle Street store, opened in 1979, was one of the chain\u2019s first Boston-area establishments. While Crate & Barrel has no current plans to close its other Cambridge store on Mass. Ave, a fire ravaged its Back Bay outpost this past weekend, shutting that branch down indefinitely. \r\n\r\nBoccuzzi says her store has a strong local customer base and has been very steady in its sales. Instead, the closing may come about because of the building in which the Brattle Street store sits. \r\n\r\nThe jagged concrete and glass edifice was designed and developed in 1969 by the former Harvard Graduate School of Design chairman of architecture, Benjamin C. Thompson. A biography from Thompson\u2019s architecture firm credits him with renovating the Harvard Yard dormitories in the 1950s and helping to persuade the University to renovate\u2014rather than demolish\u2014Boylston Hall. \r\n\r\nThe Brattle Street building served as the headquarters for his legendary (and now-defunct) home furnishings company, Design Research. Thompson and Design Research are credited for bringing the bold and colorful textile designs of the Finnish company Marimekko to the United States. Crate & Barrel has a long partnership with Marimekko, having featured its highly-popular textile designs on its bedding ensembles. \r\n\r\nThompson\u2019s Brattle Street creation was widely praised, receiving the American Institute of Architecture\u2019s Twenty-five Year Award in 2003. However, Pulitzer Prize-winning architectural critic Robert D. Campbell, Jr. \u201958 said that Crate & Barrel \u201cnever did a really good job of taking advantage of the power [the building] has.\u201d \r\n\r\n\u201cIt\u2019s one of the best buildings of its time in Boston,\u201d Campbell said. \u201cEspecially at night, if it\u2019s been well-organized inside, you just see a lovely display of merchandise. It was originally conceived as a glass display case.\u201d \r\n\r\nIndeed, the building\u2019s architectural magnificence may have contributed to Crate & Barrel\u2019s decision to leave. Boccuzzi said that the closing was in no way triggered by the slumping consumer market, and that the company has been examining its usage of the Brattle Street building for years. Building owner and Harvard professor emeritus Bill J. Poorvu and Harvard Square Business Association executive director Denise A. Jillson both expressed similar thoughts, saying the closing was likely driven by changes in the company\u2019s merchandising strategy. \r\n\r\n\u201cThey\u2019re basically more involved with furniture and furnishing now, as opposed to glasses and cookware that they were more involved in years ago,\u201d Poorvu said. \u201cThey need bigger stores with one floor. This was something that\u2019s been coming for some time.\u201d \r\n\r\nWhile a new occupant has not yet been found, Poorvu said he was searching for a company with \u201cdesign qualities that go together with and enhance the building, with exciting merchandise.\u201d \r\n\r\nJillson praised Poorvu for his careful consideration. \r\n\r\n\u201cIt\u2019s such a wonderful, wonderful building in Harvard Square, and we\u2019re so pleased the owners are really going to find a tenant to fit the building, rather than the other way around,\u201d said Jillson. \u201cThe building is so beautiful and at night, it\u2019s such a beacon of light. It\u2019s timeless.\u201d ", 
+            "created_on": "2008-11-21 21:24:17", 
+            "proofer": 1, 
+            "image_gallery": 3, 
+            "headline": "Crate & Barrel To Close", 
+            "section": 4, 
+            "web_only": false, 
+            "priority": 0, 
+            "maps": [], 
+            "rel_content": [], 
+            "sne": 1, 
             "tags": [
                 20, 
                 21
             ], 
-            "headline": "Crate & Barrel To Close", 
-            "text": "Home furnishing enthusiasts may find themselves indulging in an extended spending spree this holiday season, with Crate & Barrel closing its iconic Brattle Street store on January 25\u2014a move likely to be accompanied by obligatory clearance sales, according to store manager Lauren Boccuzzi. \r\n\r\nThe Brattle Street store, opened in 1979, was one of the chain\u2019s first Boston-area establishments. While Crate & Barrel has no current plans to close its other Cambridge store on Mass. Ave, a fire ravaged its Back Bay outpost this past weekend, shutting that branch down indefinitely. \r\n\r\nBoccuzzi says her store has a strong local customer base and has been very steady in its sales. Instead, the closing may come about because of the building in which the Brattle Street store sits. \r\n\r\nThe jagged concrete and glass edifice was designed and developed in 1969 by the former Harvard Graduate School of Design chairman of architecture, Benjamin C. Thompson. A biography from Thompson\u2019s architecture firm credits him with renovating the Harvard Yard dormitories in the 1950s and helping to persuade the University to renovate\u2014rather than demolish\u2014Boylston Hall. \r\n\r\nThe Brattle Street building served as the headquarters for his legendary (and now-defunct) home furnishings company, Design Research. Thompson and Design Research are credited for bringing the bold and colorful textile designs of the Finnish company Marimekko to the United States. Crate & Barrel has a long partnership with Marimekko, having featured its highly-popular textile designs on its bedding ensembles. \r\n\r\nThompson\u2019s Brattle Street creation was widely praised, receiving the American Institute of Architecture\u2019s Twenty-five Year Award in 2003. However, Pulitzer Prize-winning architectural critic Robert D. Campbell, Jr. \u201958 said that Crate & Barrel \u201cnever did a really good job of taking advantage of the power [the building] has.\u201d \r\n\r\n\u201cIt\u2019s one of the best buildings of its time in Boston,\u201d Campbell said. \u201cEspecially at night, if it\u2019s been well-organized inside, you just see a lovely display of merchandise. It was originally conceived as a glass display case.\u201d \r\n\r\nIndeed, the building\u2019s architectural magnificence may have contributed to Crate & Barrel\u2019s decision to leave. Boccuzzi said that the closing was in no way triggered by the slumping consumer market, and that the company has been examining its usage of the Brattle Street building for years. Building owner and Harvard professor emeritus Bill J. Poorvu and Harvard Square Business Association executive director Denise A. Jillson both expressed similar thoughts, saying the closing was likely driven by changes in the company\u2019s merchandising strategy. \r\n\r\n\u201cThey\u2019re basically more involved with furniture and furnishing now, as opposed to glasses and cookware that they were more involved in years ago,\u201d Poorvu said. \u201cThey need bigger stores with one floor. This was something that\u2019s been coming for some time.\u201d \r\n\r\nWhile a new occupant has not yet been found, Poorvu said he was searching for a company with \u201cdesign qualities that go together with and enhance the building, with exciting merchandise.\u201d \r\n\r\nJillson praised Poorvu for his careful consideration. \r\n\r\n\u201cIt\u2019s such a wonderful, wonderful building in Harvard Square, and we\u2019re so pleased the owners are really going to find a tenant to fit the building, rather than the other way around,\u201d said Jillson. \u201cThe building is so beautiful and at night, it\u2019s such a beacon of light. It\u2019s timeless.\u201d ", 
-            "section": 4, 
-            "created_on": "2008-11-21 21:24:17", 
-            "page": "", 
-            "priority": 0, 
-            "subheadline": "", 
             "teaser": "Home furnishing enthusiasts may find themselves indulging in an extended spending spree this holiday season, with Crate & Barrel closing ...", 
-            "sne": 1, 
-            "proofer": 1, 
-            "modified_on": "2008-12-03 02:42:56", 
-            "maps": [], 
-            "web_only": false, 
-            "issue": 4, 
+            "modified_on": "2008-12-25 17:56:50", 
             "slug": "crate-barrel-to-close", 
+            "related_content_id": 6, 
+            "issue": 4, 
+            "subheadline": "", 
+            "page": "", 
             "is_published": true
         }
     }, 
@@ -2232,29 +2425,31 @@
         "model": "core.article", 
         "fields": {
             "byline_type": "cstaff", 
-            "image_gallery": null, 
             "contributors": [
                 12
             ], 
+            "text": "In the 1960s, the Charlesview Apartments were born amid fervent community protests, built upon the rubble of homes razed in the name of urban renewal. \r\n\r\nNow, nearly four decades later, the aging and dilapidated buildings are about to be given a second life: the affordable housing complex will relocate to land further down Western Avenue in the coming years, giving residents more modern facilities on Harvard\u2019s dime and handing control of the site\u2019s prime real estate to the University. \r\n\r\nBut while both Harvard officials and the owners of Charlesview say they are pleased with the deal, the community protests are back. The soon-to-be neighbors of the relocated buildings have expressed strong concerns about the design of the new complex, saying that the plan will lead to too much density and could segregate residents based on income. \r\n\r\nThe Crimson contacted five urban planning experts at the Harvard\u2019s Graduate School of Design for an independent assessment of the Charlesview plan, which was drafted by Community Builders Inc., a non-profit urban housing developer. \r\n\r\nFour of the five academics said they agreed that the proposal was mostly in line with principles of good design, and that while the density issue may be overblown, there is some merit to the residents\u2019 criticisms of whether the plan sufficiently integrates affordable and market-rate units. \r\n\r\nThe professors also said that Allston residents should withhold their judgment until more concrete plans are presented because numbers and two-dimensional grids cannot give a true sense of how effective a design will be. \r\n\r\n\u201cNeighborhood residents without exception will speak against buildings that are denser and new developments in general,\u201d said Brent Ryan, a professor of urban planning at the Design School. \u201cFrom what I can see so far, people anywhere else would say that they are getting a pretty good deal from an urban design perspective.\u201d \r\n\r\nBEYOND THE NUMBERS \r\n\r\nAccording to Allston/Brighton North Neighbors Forum member Tim McHale, the neighborhood\u2019s opposition to the Charlesview plan is anything but your typical Not-In-My-Backyard obstructionism. The objections, McHale says, are over what the residents see as specific flaws in the design. \r\n\r\n\u201cWe really want Charlesview in the neighborhood, but it has got to be done right,\u201d he said. \r\n\r\nMcHale says that residents are most concerned about the height and density of the proposed project because it would change the feel of the residential neighborhood, which has an average density of 25 units per acre and few buildings over four stories high. \r\n\r\nThe proposed Charlesview plan has an average density of 55 units per acre, and includes one 10-story tower on the north side of Western Avenue and a series of four- and six-story buildings on the Brighton Mills site on a total of 6.9 acres of land. The 10-story building consists of 118 condominiums, and lower-elevation buildings contain 282 affordable housing units. The current Charlesview apartments consists of 213 units on 4.5 acres of land.\r\n\r\nBut several urban planning experts said they disagreed with Hale\u2019s view that the new Charlesview would be too dense, noting that adding density and height are not necessarily detrimental to a neighborhood. \r\n\r\n\u201cTaller buildings can be better because they hold the scale of the street together,\u201d Ryan said. \u201cAlong a wide road like Western Avenue, adding some height is in line with good urban design principles.\u201d \r\n\r\nJames Stockard, the curator of the Design School\u2019s Loeb Fellowship, pointed out that some of Boston\u2019s most desirable neighborhoods\u2014Back Bay, Beacon Hill, and South Bay\u2014are also the neighborhoods with the highest densities. \r\n\r\n\u201cDensity does not have to do with desirability,\u201d he said. \u201cThat is a practical question determined by what it\u2019s really like for people on the street.\u201d \r\n\r\nMartin Zogran, a professor of urban design, said that the debate over density could obscure discussion about the more important issues that could make or break Charlesview\u2019s relocation. \r\n\r\n\u201cRather than arguing over the number of units or the number of acres, they should really be looking at the design and what will provide the best environment going forward,\u201d he said. \r\n\r\nSEPARATE BUT EQUAL? \r\n\r\nEven more contentious than the issue of density is the matter of socioeconomic segregation, which Allston residents say is a key factor in determining whether the new Charlesview will be an asset to Allston residents or a blight that hastens the deterioration of the neighborhood. \r\n\r\nThe urban planning experts voiced mixed opinions on whether the separation of the market rate condos and the affordable rentals would lead to the social inequities foreseen by concerned neighbors, who have compared the proposal to failed public housing projects that concentrated impoverished residents in enormous buildings. \r\n\r\nNicolas P. Retsinas, the director of Harvard\u2019s Joint Center for Housing, a project of the Design School and the Harvard Kennedy School, called the comparisons of the Charlesview proposal and decades-old public housing \u201chistorically inaccurate,\u201d noting that the proposed apartments are much smaller in scale and more integrated with the neighborhood. \r\n\r\n\u201cIt\u2019s not a fair comparison because we have not built warehouses for poor people,\u201d he said. \u201cWhile I think that we have learned over time the importance and the potential value of a mixed income community, that is not to say that every single street or building has to have mixed income.\u201d \r\n\r\nBut some urban planning professors did express some sympathy to the residents\u2019 concerns. \r\n\r\nSusan B. Fainstein \u201960 said that while mixed-income housing is generally accepted as a tenet of good design, there could also be benefits to keeping the Charlesview residents together instead of splitting them into two buildings. \r\n\r\n\u201cPeople don\u2019t necessarily want to be moved to a mixed income community because to do so would be to break up the existing community,\u201d she said. \r\n\r\nFainstein also added that many housing studies have shown that within mixed-income developments, there is usually little relationship between people of different classes. \r\n\r\nZogran said that he supports a more even mix of affordable and market-rate units between the condo tower and the lower-rise in order to promote social equity. \r\n\r\n\u201cFrom appearances, it seems that the best units are really going to the market-rate units, which enjoy a view of the river and proximity to the park,\u201d he said. \u201cA more even mix wouldn\u2019t stigmatize the affordable units visually and separate them spatially.\u201d \r\n\r\nGuy D. Stuart, a public policy lecturer at the Kennedy School, was even more severe in his evaluation of the proposal, criticizing not only the segregation of rich from poor, but also of town from gown. \r\n\r\n\u201cI think segregation is bad planning, because it perpetuates social conflict and injustice,\u201d he said in an e-mail. \u201cFurthermore, it is unnecessary for a university to segregate itself from the community in which it exists.\u201d \r\n\r\nStuart suggested that Harvard\u2019s developers should study Oxford and Cambridge for examples of universities that have successfully woven themselves into their cities. \r\n\r\n\u201cThe debate about the Charlesview development is a debate about alternative visions for Allston,\u201d he said. \u201cOne vision is an integrated community where town and gown live, shop and work side-by-side. Another is one in which the community is segregated, town from gown, with the hope that \u2018connections\u2019 and intersections\u2019 will somehow mitigate the planned segregation.\u201d \r\n\r\nA PROPER ROLE \r\n\r\nStuart is not the only one calling on Harvard to reconsider its role in the Allston community. \r\n\r\nThis summer, the Allston/Brighton North Neighbors Forum\u2014with the help of Sy Mintz, the now-retired architect who designed the original Charlesview\u2014drew up a counter proposal framework that solves both the density and segregation problem. \r\n\r\nThe ABNNF framework calls for approximately 640 mixed-income units interspersed with new retail, spread out over the 28 additional acres of the Harvard-owned Holton Street Corridor, which is adjacent to the proposed Charlesview relocation site. \r\n\r\nThe additional land is not currently included in Harvard\u2019s 50-year master plan for development in Allston. \r\n\r\n\u201cOur plan requires Harvard to transact some land that they have no plans for,\u201d McHale said. \u201cThe best use of this land is for housing, parks, retail, and open space that will knit the neighborhoods back together.\u201d \r\n\r\nHarvard\u2019s Director of Community Relations Kevin A. McCluskey \u201976 said that the University will continue to refine the plan for Charlesview on its current plot, allowing Boston\u2019s review process to address resident concerns. \r\n\r\n\u201cWe\u2019re working within the framework we\u2019ve been operating in for a few years now, a framework that was established after many constructive conversations,\u201d McCluskey said. \u201cWe think that this proposal is the appropriate place for our attention to be in.\u201d \r\n\r\nIn April, the Boston Redevelopment Authority issued its scoping determination for the Charlesview relocation, a 200-page document that gives comments and suggestions on how Community Builders\u2014which is responsible for the redesign\u2014can improve the proposal key issues such as neighborhood connectivity, density, and public realms. \r\n\r\n\u201cThe truth is, I think that whatever is to be built, we expect to be built to very high standards,\u201d said the BRA\u2019s deputy director for institutional development, Michael F. Glavin. \r\n\r\nA spokeswoman for Community Builders said that the firm expects to submit its altered plan for consideration in early 2009. \r\n\r\nWhile the urban planning experts said they agreed that Harvard should be vigilant of relocation negotiations, several said that the University\u2019s decision to take a hands-off approach is understandable. \r\n\r\n\u201cHarvard is not a developer for building affordable housing,\u201d Stockard said. \u201cBy choosing a firm that has a reputation for addressing community concerns, they have taken the first step in being responsible.\u201d \r\n\r\nRyan cautioned against focusing on any one element of the ongoing discussions to shape Charlesview, adding that the planners involved had many angles to consider simultaneously. \r\n\r\n\u201cFactors such as urban design, land usage, and social equity all occur in tandem and it is difficult to disentangle them,\u201d he said. \u201cCould I predict, right now, whether Harvard\u2019s current plan will be social failure or an absolute success? Absolutely not.\u201d ", 
+            "created_on": "2008-11-21 21:32:41", 
+            "proofer": 1, 
+            "image_gallery": null, 
+            "headline": "Harvard Profs Weigh in on Charlesview Design", 
+            "section": 4, 
+            "web_only": false, 
+            "priority": 0, 
+            "maps": [], 
+            "rel_content": [], 
+            "sne": 1, 
             "tags": [
                 20, 
                 22
             ], 
-            "headline": "Harvard Profs Weigh in on Charlesview Design", 
-            "text": "In the 1960s, the Charlesview Apartments were born amid fervent community protests, built upon the rubble of homes razed in the name of urban renewal. \r\n\r\nNow, nearly four decades later, the aging and dilapidated buildings are about to be given a second life: the affordable housing complex will relocate to land further down Western Avenue in the coming years, giving residents more modern facilities on Harvard\u2019s dime and handing control of the site\u2019s prime real estate to the University. \r\n\r\nBut while both Harvard officials and the owners of Charlesview say they are pleased with the deal, the community protests are back. The soon-to-be neighbors of the relocated buildings have expressed strong concerns about the design of the new complex, saying that the plan will lead to too much density and could segregate residents based on income. \r\n\r\nThe Crimson contacted five urban planning experts at the Harvard\u2019s Graduate School of Design for an independent assessment of the Charlesview plan, which was drafted by Community Builders Inc., a non-profit urban housing developer. \r\n\r\nFour of the five academics said they agreed that the proposal was mostly in line with principles of good design, and that while the density issue may be overblown, there is some merit to the residents\u2019 criticisms of whether the plan sufficiently integrates affordable and market-rate units. \r\n\r\nThe professors also said that Allston residents should withhold their judgment until more concrete plans are presented because numbers and two-dimensional grids cannot give a true sense of how effective a design will be. \r\n\r\n\u201cNeighborhood residents without exception will speak against buildings that are denser and new developments in general,\u201d said Brent Ryan, a professor of urban planning at the Design School. \u201cFrom what I can see so far, people anywhere else would say that they are getting a pretty good deal from an urban design perspective.\u201d \r\n\r\nBEYOND THE NUMBERS \r\n\r\nAccording to Allston/Brighton North Neighbors Forum member Tim McHale, the neighborhood\u2019s opposition to the Charlesview plan is anything but your typical Not-In-My-Backyard obstructionism. The objections, McHale says, are over what the residents see as specific flaws in the design. \r\n\r\n\u201cWe really want Charlesview in the neighborhood, but it has got to be done right,\u201d he said. \r\n\r\nMcHale says that residents are most concerned about the height and density of the proposed project because it would change the feel of the residential neighborhood, which has an average density of 25 units per acre and few buildings over four stories high. \r\n\r\nThe proposed Charlesview plan has an average density of 55 units per acre, and includes one 10-story tower on the north side of Western Avenue and a series of four- and six-story buildings on the Brighton Mills site on a total of 6.9 acres of land. The 10-story building consists of 118 condominiums, and lower-elevation buildings contain 282 affordable housing units. The current Charlesview apartments consists of 213 units on 4.5 acres of land.\r\n\r\nBut several urban planning experts said they disagreed with Hale\u2019s view that the new Charlesview would be too dense, noting that adding density and height are not necessarily detrimental to a neighborhood. \r\n\r\n\u201cTaller buildings can be better because they hold the scale of the street together,\u201d Ryan said. \u201cAlong a wide road like Western Avenue, adding some height is in line with good urban design principles.\u201d \r\n\r\nJames Stockard, the curator of the Design School\u2019s Loeb Fellowship, pointed out that some of Boston\u2019s most desirable neighborhoods\u2014Back Bay, Beacon Hill, and South Bay\u2014are also the neighborhoods with the highest densities. \r\n\r\n\u201cDensity does not have to do with desirability,\u201d he said. \u201cThat is a practical question determined by what it\u2019s really like for people on the street.\u201d \r\n\r\nMartin Zogran, a professor of urban design, said that the debate over density could obscure discussion about the more important issues that could make or break Charlesview\u2019s relocation. \r\n\r\n\u201cRather than arguing over the number of units or the number of acres, they should really be looking at the design and what will provide the best environment going forward,\u201d he said. \r\n\r\nSEPARATE BUT EQUAL? \r\n\r\nEven more contentious than the issue of density is the matter of socioeconomic segregation, which Allston residents say is a key factor in determining whether the new Charlesview will be an asset to Allston residents or a blight that hastens the deterioration of the neighborhood. \r\n\r\nThe urban planning experts voiced mixed opinions on whether the separation of the market rate condos and the affordable rentals would lead to the social inequities foreseen by concerned neighbors, who have compared the proposal to failed public housing projects that concentrated impoverished residents in enormous buildings. \r\n\r\nNicolas P. Retsinas, the director of Harvard\u2019s Joint Center for Housing, a project of the Design School and the Harvard Kennedy School, called the comparisons of the Charlesview proposal and decades-old public housing \u201chistorically inaccurate,\u201d noting that the proposed apartments are much smaller in scale and more integrated with the neighborhood. \r\n\r\n\u201cIt\u2019s not a fair comparison because we have not built warehouses for poor people,\u201d he said. \u201cWhile I think that we have learned over time the importance and the potential value of a mixed income community, that is not to say that every single street or building has to have mixed income.\u201d \r\n\r\nBut some urban planning professors did express some sympathy to the residents\u2019 concerns. \r\n\r\nSusan B. Fainstein \u201960 said that while mixed-income housing is generally accepted as a tenet of good design, there could also be benefits to keeping the Charlesview residents together instead of splitting them into two buildings. \r\n\r\n\u201cPeople don\u2019t necessarily want to be moved to a mixed income community because to do so would be to break up the existing community,\u201d she said. \r\n\r\nFainstein also added that many housing studies have shown that within mixed-income developments, there is usually little relationship between people of different classes. \r\n\r\nZogran said that he supports a more even mix of affordable and market-rate units between the condo tower and the lower-rise in order to promote social equity. \r\n\r\n\u201cFrom appearances, it seems that the best units are really going to the market-rate units, which enjoy a view of the river and proximity to the park,\u201d he said. \u201cA more even mix wouldn\u2019t stigmatize the affordable units visually and separate them spatially.\u201d \r\n\r\nGuy D. Stuart, a public policy lecturer at the Kennedy School, was even more severe in his evaluation of the proposal, criticizing not only the segregation of rich from poor, but also of town from gown. \r\n\r\n\u201cI think segregation is bad planning, because it perpetuates social conflict and injustice,\u201d he said in an e-mail. \u201cFurthermore, it is unnecessary for a university to segregate itself from the community in which it exists.\u201d \r\n\r\nStuart suggested that Harvard\u2019s developers should study Oxford and Cambridge for examples of universities that have successfully woven themselves into their cities. \r\n\r\n\u201cThe debate about the Charlesview development is a debate about alternative visions for Allston,\u201d he said. \u201cOne vision is an integrated community where town and gown live, shop and work side-by-side. Another is one in which the community is segregated, town from gown, with the hope that \u2018connections\u2019 and intersections\u2019 will somehow mitigate the planned segregation.\u201d \r\n\r\nA PROPER ROLE \r\n\r\nStuart is not the only one calling on Harvard to reconsider its role in the Allston community. \r\n\r\nThis summer, the Allston/Brighton North Neighbors Forum\u2014with the help of Sy Mintz, the now-retired architect who designed the original Charlesview\u2014drew up a counter proposal framework that solves both the density and segregation problem. \r\n\r\nThe ABNNF framework calls for approximately 640 mixed-income units interspersed with new retail, spread out over the 28 additional acres of the Harvard-owned Holton Street Corridor, which is adjacent to the proposed Charlesview relocation site. \r\n\r\nThe additional land is not currently included in Harvard\u2019s 50-year master plan for development in Allston. \r\n\r\n\u201cOur plan requires Harvard to transact some land that they have no plans for,\u201d McHale said. \u201cThe best use of this land is for housing, parks, retail, and open space that will knit the neighborhoods back together.\u201d \r\n\r\nHarvard\u2019s Director of Community Relations Kevin A. McCluskey \u201976 said that the University will continue to refine the plan for Charlesview on its current plot, allowing Boston\u2019s review process to address resident concerns. \r\n\r\n\u201cWe\u2019re working within the framework we\u2019ve been operating in for a few years now, a framework that was established after many constructive conversations,\u201d McCluskey said. \u201cWe think that this proposal is the appropriate place for our attention to be in.\u201d \r\n\r\nIn April, the Boston Redevelopment Authority issued its scoping determination for the Charlesview relocation, a 200-page document that gives comments and suggestions on how Community Builders\u2014which is responsible for the redesign\u2014can improve the proposal key issues such as neighborhood connectivity, density, and public realms. \r\n\r\n\u201cThe truth is, I think that whatever is to be built, we expect to be built to very high standards,\u201d said the BRA\u2019s deputy director for institutional development, Michael F. Glavin. \r\n\r\nA spokeswoman for Community Builders said that the firm expects to submit its altered plan for consideration in early 2009. \r\n\r\nWhile the urban planning experts said they agreed that Harvard should be vigilant of relocation negotiations, several said that the University\u2019s decision to take a hands-off approach is understandable. \r\n\r\n\u201cHarvard is not a developer for building affordable housing,\u201d Stockard said. \u201cBy choosing a firm that has a reputation for addressing community concerns, they have taken the first step in being responsible.\u201d \r\n\r\nRyan cautioned against focusing on any one element of the ongoing discussions to shape Charlesview, adding that the planners involved had many angles to consider simultaneously. \r\n\r\n\u201cFactors such as urban design, land usage, and social equity all occur in tandem and it is difficult to disentangle them,\u201d he said. \u201cCould I predict, right now, whether Harvard\u2019s current plan will be social failure or an absolute success? Absolutely not.\u201d ", 
-            "section": 4, 
-            "created_on": "2008-11-21 21:32:41", 
-            "page": "", 
-            "priority": 0, 
-            "subheadline": "Urban planning professors say that density is not a problem but that concerns about segregation may be valid", 
             "teaser": "In the 1960s, the Charlesview Apartments were born amid fervent community protests, built upon the rubble of homes razed in ...", 
-            "sne": 1, 
-            "proofer": 1, 
-            "modified_on": "2008-11-21 21:32:41", 
-            "maps": [], 
-            "web_only": false, 
-            "issue": 4, 
+            "modified_on": "2008-12-25 17:56:50", 
             "slug": "harvard-profs-weigh-in-on-charlesview-design", 
+            "related_content_id": 7, 
+            "issue": 4, 
+            "subheadline": "Urban planning professors say that density is not a problem but that concerns about segregation may be valid", 
+            "page": "", 
             "is_published": true
         }
     }, 
@@ -2263,30 +2458,32 @@
         "model": "core.article", 
         "fields": {
             "byline_type": "cstaff", 
-            "image_gallery": 4, 
             "contributors": [
                 8, 
                 12
             ], 
+            "text": "It was a sweltering summer in Baghdad, and Chia N. Mustafa \u201909 was bored. \r\n\r\nThe 16-year-old had come to Baghdad in April 2003 to join his father, then the leader of the Patriotic Union of Kurdistan (PUK), he said.\r\n\r\nHe had skipped the last two months of school in London, he said, to witness the toppling of Saddam Hussein\u2019s regime. He said it was a moment he had been waiting for \u201cmy whole life.\u201d \r\n\r\n\u201cI wanted to be at the center of it,\u201d he said. \r\n\r\nBut while his father, Nawshirwan Mustafa, moved from meeting to meeting seeking to promote Kurdistan\u2019s interests in the interim government, Mustafa said he was left behind. \r\n\r\nHe said he would spend his days in his father\u2019s barracks playing dominoes with members of his father\u2019s armed Kurdish contingent, his Kalashnikov rifle close by his side. \r\n\r\nSome nights, when Baghdad\u2019s American-imposed curfew barred them from the streets, Mustafa and the Kurdish soldiers would amuse themselves by shooting their rifles into the air. \r\n\r\nThe bullets whizzed into the darkness. \r\n\r\nAfterwards, he said, he would fall asleep in the courtyard of a looted house\u2014once the residence of a member of Saddam\u2019s secret police\u2014that his father had commandeered as a central base. \r\n\r\nA ROVER\u2019S LIFE \r\n\r\nMustafa, a joint Economics and Government concentrator in Kirkland House, had spent most of his life in exile in Europe and the Middle East. \r\n\r\nAt the age of four, he said that he and his twin sister\u2014along with more than 20 family members\u2014were held as political prisoners by Saddam\u2019s government. \r\n\r\n\u201cIt kind of sucked,\u201d he said. \r\n\r\nLiving with his father in Baghdad was a chance to stand at the front lines of history. \r\n\r\nWhile he was there, Mustafa said, members of his father\u2019s armed contingent engaged in battle to secure Kurdish interests in the capital. \r\n\r\nHe said he spent some of his time with members of his father\u2019s militia, but he declined to comment on whether he had done any fighting himself. (\u201cAwkward question,\u201d he wrote in an e-mail.) \r\n\r\nMustafa remembers his time in the war-torn city as alternating between boredom and absurdity. \r\n\r\nIt was so hot that a cassette tape once melted on the dashboard of his Land Cruiser, Mustafa said. \r\n\r\nWomen in full Islamic garb would knock on the door, Mustafa said, and offer to clean his house. Even when he said no, they persisted, he said. \r\n\r\n\u201cThese are, like, respectable Muslim women\u2014why do they want to clean your house?\u201d Mustafa said. \u201cAnd they say, \u2018We\u2019ll clean your house for a cheap price.\u2019 They\u2019ll emphasize \u201cyour,\u201d and you\u2019d be like, \u2018Oh.\u2019\u201d \r\n\r\nThe women, Mustafa said, were prostitutes. \r\n\r\nOnce he saw a camel tethered to the balcony on the top floor of an apartment building, Mustafa said. \r\n\r\n\u201cYou know you\u2019re in the twilight zone\u2014that\u2019s where you are,\u201d he said. \r\n\r\nThe city had been so thoroughly looted after the invasion that the doorknobs had been stolen off the doors of their central base. \r\n\r\nIn the uncertain political situation, random violence started to consolidate into organized crime, he said. \r\n\r\n\u201cSlowly but surely, gangs were being formed,\u201d Mustafa said. \u201cRandom little gangs\u2014people who just decided they could make money off of killing other people.\u201d \r\n\r\nHe would go to hookah bars in the afternoons out of sheer boredom, he said, even though there was always the risk that whichever bar he had chosen would be bombed. \r\n\r\nMustafa said he called his mother in Kurdistan only once during his five-month stay. \r\n\r\n\u201cWhat are you going to say to her?\u201d Mustafa said. \r\n\r\nShe had warned him not to go to Baghdad. \r\n\r\nFROM THE TIGRIS TO THE CHARLES \r\n\r\nAfter returning to London for school in September 2003, Mustafa returned to Baghdad the following summer to join a better equipped Kurdish militia\u2014now armed, he said, with American guns. \r\n\r\nAs his father attended government meetings, the contingent built into the hundreds, and \u201cit was actually kind of fun,\u201d Mustafa said. His father took him along to the meetings, Mustafa said. \r\n\r\nBut Mustafa\u2019s next big move would bring him away from the chaos of a nation in transition to the bustle of Harvard Yard. \r\n\r\nTitan M. Alon \u201909, Mustafa\u2019s suitemate, remembers that Mustafa spent much of his freshman year chain-smoking Marlboros outside of Holworthy while making long-distance calls to Iraq. \r\n\r\n\u201cYou\u2019d see him yelling in Kurdish,\u201d Alon said. \u201cHe was like a jungle animal that had been brought to live in suburbia.\u201d \r\n\r\nBut as a friend, Alon said, Mustafa proved to be loyal and generous, someone who would buy extravagant birthday gifts for his roommates and expect nothing in return. \r\n\r\n\u201cHe\u2019s lived in the ghetto, he\u2019s eaten from a silver spoon, he\u2019s been through war, he\u2019s been through everything,\u201d Alon said. \r\n\r\nFUTURE PLANS \r\n\r\nToday, Mustafa\u2019s room is sparsely decorated, Alon said, except for a Kurdish flag and a photograph of his father\u2014\u201cthe only things he owns that he doesn\u2019t let anyone touch or move.\u201d \r\n\r\nThe currents of Kurdish politics have continued in Mustafa\u2019s absence. \r\n\r\nIn 2006, Jalal Talabani\u2014the current president of Iraq\u2014replaced Mustafa\u2019s father as head of PUK. \r\n\r\n\u201c[My father\u2019s] the head of the reform movement now in Kurdistan,\u201d Mustafa said. \u201cHe\u2019s leading a movement for change.\u201d \r\n\r\nAt Harvard, Mustafa has found forums for political action that do not require a Kalashnikov. \r\n\r\nLast year, he wrote an article in \u201cThe New Society,\u201d the student Middle East journal, making the case for Kurdish sovereignty. \r\n\r\nHe also started a Facebook group called \u201cIndependent Kurdistan!!!\u201d whose logo is a drawing of four knives\u2014representing Iran, Turkey, Syria, and Iraq\u2014stabbing Kurdistan\u2019s heart. \r\n\r\nMustafa said his current dream is to get a Ph.D. in Economics from Harvard, but his post-graduation plans will depend on the situation in Iraq. \r\n\r\nHe\u2019s not ruling out a career in Kurdish politics. \r\n\r\n\u201cIf it\u2019s stable and good, I\u2019ll go back to the States for grad school. If it\u2019s unstable and there\u2019s political strife, I\u2019ll stay in Kurdistan to do my part,\u201d he said. \u201cWhatever is necessary.\u201d ", 
+            "created_on": "2008-11-21 21:36:13", 
+            "proofer": 1, 
+            "image_gallery": 4, 
+            "headline": "Kurdish Summer in Baghdad", 
+            "section": 4, 
+            "web_only": false, 
+            "priority": 0, 
+            "maps": [], 
+            "rel_content": [], 
+            "sne": 1, 
             "tags": [
                 2, 
                 5
             ], 
-            "headline": "Kurdish Summer in Baghdad", 
-            "text": "It was a sweltering summer in Baghdad, and Chia N. Mustafa \u201909 was bored. \r\n\r\nThe 16-year-old had come to Baghdad in April 2003 to join his father, then the leader of the Patriotic Union of Kurdistan (PUK), he said.\r\n\r\nHe had skipped the last two months of school in London, he said, to witness the toppling of Saddam Hussein\u2019s regime. He said it was a moment he had been waiting for \u201cmy whole life.\u201d \r\n\r\n\u201cI wanted to be at the center of it,\u201d he said. \r\n\r\nBut while his father, Nawshirwan Mustafa, moved from meeting to meeting seeking to promote Kurdistan\u2019s interests in the interim government, Mustafa said he was left behind. \r\n\r\nHe said he would spend his days in his father\u2019s barracks playing dominoes with members of his father\u2019s armed Kurdish contingent, his Kalashnikov rifle close by his side. \r\n\r\nSome nights, when Baghdad\u2019s American-imposed curfew barred them from the streets, Mustafa and the Kurdish soldiers would amuse themselves by shooting their rifles into the air. \r\n\r\nThe bullets whizzed into the darkness. \r\n\r\nAfterwards, he said, he would fall asleep in the courtyard of a looted house\u2014once the residence of a member of Saddam\u2019s secret police\u2014that his father had commandeered as a central base. \r\n\r\nA ROVER\u2019S LIFE \r\n\r\nMustafa, a joint Economics and Government concentrator in Kirkland House, had spent most of his life in exile in Europe and the Middle East. \r\n\r\nAt the age of four, he said that he and his twin sister\u2014along with more than 20 family members\u2014were held as political prisoners by Saddam\u2019s government. \r\n\r\n\u201cIt kind of sucked,\u201d he said. \r\n\r\nLiving with his father in Baghdad was a chance to stand at the front lines of history. \r\n\r\nWhile he was there, Mustafa said, members of his father\u2019s armed contingent engaged in battle to secure Kurdish interests in the capital. \r\n\r\nHe said he spent some of his time with members of his father\u2019s militia, but he declined to comment on whether he had done any fighting himself. (\u201cAwkward question,\u201d he wrote in an e-mail.) \r\n\r\nMustafa remembers his time in the war-torn city as alternating between boredom and absurdity. \r\n\r\nIt was so hot that a cassette tape once melted on the dashboard of his Land Cruiser, Mustafa said. \r\n\r\nWomen in full Islamic garb would knock on the door, Mustafa said, and offer to clean his house. Even when he said no, they persisted, he said. \r\n\r\n\u201cThese are, like, respectable Muslim women\u2014why do they want to clean your house?\u201d Mustafa said. \u201cAnd they say, \u2018We\u2019ll clean your house for a cheap price.\u2019 They\u2019ll emphasize \u201cyour,\u201d and you\u2019d be like, \u2018Oh.\u2019\u201d \r\n\r\nThe women, Mustafa said, were prostitutes. \r\n\r\nOnce he saw a camel tethered to the balcony on the top floor of an apartment building, Mustafa said. \r\n\r\n\u201cYou know you\u2019re in the twilight zone\u2014that\u2019s where you are,\u201d he said. \r\n\r\nThe city had been so thoroughly looted after the invasion that the doorknobs had been stolen off the doors of their central base. \r\n\r\nIn the uncertain political situation, random violence started to consolidate into organized crime, he said. \r\n\r\n\u201cSlowly but surely, gangs were being formed,\u201d Mustafa said. \u201cRandom little gangs\u2014people who just decided they could make money off of killing other people.\u201d \r\n\r\nHe would go to hookah bars in the afternoons out of sheer boredom, he said, even though there was always the risk that whichever bar he had chosen would be bombed. \r\n\r\nMustafa said he called his mother in Kurdistan only once during his five-month stay. \r\n\r\n\u201cWhat are you going to say to her?\u201d Mustafa said. \r\n\r\nShe had warned him not to go to Baghdad. \r\n\r\nFROM THE TIGRIS TO THE CHARLES \r\n\r\nAfter returning to London for school in September 2003, Mustafa returned to Baghdad the following summer to join a better equipped Kurdish militia\u2014now armed, he said, with American guns. \r\n\r\nAs his father attended government meetings, the contingent built into the hundreds, and \u201cit was actually kind of fun,\u201d Mustafa said. His father took him along to the meetings, Mustafa said. \r\n\r\nBut Mustafa\u2019s next big move would bring him away from the chaos of a nation in transition to the bustle of Harvard Yard. \r\n\r\nTitan M. Alon \u201909, Mustafa\u2019s suitemate, remembers that Mustafa spent much of his freshman year chain-smoking Marlboros outside of Holworthy while making long-distance calls to Iraq. \r\n\r\n\u201cYou\u2019d see him yelling in Kurdish,\u201d Alon said. \u201cHe was like a jungle animal that had been brought to live in suburbia.\u201d \r\n\r\nBut as a friend, Alon said, Mustafa proved to be loyal and generous, someone who would buy extravagant birthday gifts for his roommates and expect nothing in return. \r\n\r\n\u201cHe\u2019s lived in the ghetto, he\u2019s eaten from a silver spoon, he\u2019s been through war, he\u2019s been through everything,\u201d Alon said. \r\n\r\nFUTURE PLANS \r\n\r\nToday, Mustafa\u2019s room is sparsely decorated, Alon said, except for a Kurdish flag and a photograph of his father\u2014\u201cthe only things he owns that he doesn\u2019t let anyone touch or move.\u201d \r\n\r\nThe currents of Kurdish politics have continued in Mustafa\u2019s absence. \r\n\r\nIn 2006, Jalal Talabani\u2014the current president of Iraq\u2014replaced Mustafa\u2019s father as head of PUK. \r\n\r\n\u201c[My father\u2019s] the head of the reform movement now in Kurdistan,\u201d Mustafa said. \u201cHe\u2019s leading a movement for change.\u201d \r\n\r\nAt Harvard, Mustafa has found forums for political action that do not require a Kalashnikov. \r\n\r\nLast year, he wrote an article in \u201cThe New Society,\u201d the student Middle East journal, making the case for Kurdish sovereignty. \r\n\r\nHe also started a Facebook group called \u201cIndependent Kurdistan!!!\u201d whose logo is a drawing of four knives\u2014representing Iran, Turkey, Syria, and Iraq\u2014stabbing Kurdistan\u2019s heart. \r\n\r\nMustafa said his current dream is to get a Ph.D. in Economics from Harvard, but his post-graduation plans will depend on the situation in Iraq. \r\n\r\nHe\u2019s not ruling out a career in Kurdish politics. \r\n\r\n\u201cIf it\u2019s stable and good, I\u2019ll go back to the States for grad school. If it\u2019s unstable and there\u2019s political strife, I\u2019ll stay in Kurdistan to do my part,\u201d he said. \u201cWhatever is necessary.\u201d ", 
-            "section": 4, 
-            "created_on": "2008-11-21 21:36:13", 
-            "page": "", 
-            "priority": 0, 
-            "subheadline": "", 
             "teaser": "It was a sweltering summer in Baghdad, and Chia N. Mustafa \u201909 was bored. The 16-year-old had come to Baghdad ...", 
-            "sne": 1, 
-            "proofer": 1, 
-            "modified_on": "2008-12-03 02:44:32", 
-            "maps": [], 
-            "web_only": false, 
-            "issue": 4, 
+            "modified_on": "2008-12-25 17:56:50", 
             "slug": "kurdish-summer-in-baghdad", 
+            "related_content_id": 8, 
+            "issue": 4, 
+            "subheadline": "", 
+            "page": "", 
             "is_published": true
         }
     }, 
@@ -2295,29 +2492,31 @@
         "model": "core.article", 
         "fields": {
             "byline_type": "cstaff", 
-            "image_gallery": null, 
             "contributors": [
                 13
             ], 
+            "text": "Good morning, fellow Harvard people. We, the editorial board of The Harvard Crimson, are taking a break from failing at school and having no social lives to bring you this special Harvard Crimson message. Even though we are Harvard students, we want to say: We think Harvard is going to lose this weekend. In fact, we want it to lose. The Harvard team, which is the football team for the school that we attend, sucks and is going to be destroyed by the Yale team, which comes from a school we do not go to, although we have a lot of respect for it and we really wish we went there. \r\n\r\nHAHA WE FOOLED YOU! WE\u2019RE NOT THE CRIMSON! WE\u2019RE THE YALE DAILY NEWS (suckas)! \r\n\r\nUsing the breaking and entering skills that one naturally picks up from living in New Haven, we infiltrated The Crimson\u2019s press room and inserted this message instead of their staff editorial, which was some dumb thing about Darfur that we didn\u2019t understand and something about a \u201cbailout\u201d that we can only assume relates to crew. \r\n\r\nWe thought it was time we took Harvard students down a notch. People at Harvard are so stuck up about having the top rank in the U.S. News and World Report rankings, and being the oldest university in the United States, and having the largest academic library in the world, and enjoying the most comprehensive financial aid program in the country, and having the wealthiest endowment of any school in history. WHO CARES? Our school provides a kind of education that Harvard\u2019s $37 billion can\u2019t buy. \r\n\r\nThink you\u2019re getting a lot out of that economics class? Try weighing the cost-benefit analysis of leaving your dorm after dark, living in Yale housing, or eating Yale food. Studying environmental degradation? There\u2019s no better research project than examining the fascinating New Haven air. You think you can learn about \u201cJustice\u201d by sitting in a classroom? When a deranged thief who\u2019s broken into your dorm room forces you to choose between sacrificing your own life or your roommate\u2019s, trust us: the hypothetical doesn\u2019t compare. \r\n\r\nAll those other advantages your school seems to enjoy are similarly illusory. None of your much-ballyhooed \u201cextracurriculars\u201d involve lying naked in a coffin, like our illustrious Skull and Bones, so they\u2019re basically a waste of time. Your football team may have beaten us last year, but that\u2019s only because the steroids didn\u2019t work fast enough. Your newspaper [FINISH THIS PARAGRAPH BEFORE MIDNIGHT GUYS] \r\n\r\nSo ignore us. Sure, you\u2019ve got the reputation, the resources, and the intelligence to do so. But deep down, you will still know the truth. Harvard sucks, and we\u2019re just glad we didn\u2019t get in. ", 
+            "created_on": "2008-11-21 21:47:41", 
+            "proofer": 1, 
+            "image_gallery": null, 
+            "headline": "We Suck", 
+            "section": 2, 
+            "web_only": false, 
+            "priority": 0, 
+            "maps": [], 
+            "rel_content": [], 
+            "sne": 1, 
             "tags": [
                 2, 
                 23
             ], 
-            "headline": "We Suck", 
-            "text": "Good morning, fellow Harvard people. We, the editorial board of The Harvard Crimson, are taking a break from failing at school and having no social lives to bring you this special Harvard Crimson message. Even though we are Harvard students, we want to say: We think Harvard is going to lose this weekend. In fact, we want it to lose. The Harvard team, which is the football team for the school that we attend, sucks and is going to be destroyed by the Yale team, which comes from a school we do not go to, although we have a lot of respect for it and we really wish we went there. \r\n\r\nHAHA WE FOOLED YOU! WE\u2019RE NOT THE CRIMSON! WE\u2019RE THE YALE DAILY NEWS (suckas)! \r\n\r\nUsing the breaking and entering skills that one naturally picks up from living in New Haven, we infiltrated The Crimson\u2019s press room and inserted this message instead of their staff editorial, which was some dumb thing about Darfur that we didn\u2019t understand and something about a \u201cbailout\u201d that we can only assume relates to crew. \r\n\r\nWe thought it was time we took Harvard students down a notch. People at Harvard are so stuck up about having the top rank in the U.S. News and World Report rankings, and being the oldest university in the United States, and having the largest academic library in the world, and enjoying the most comprehensive financial aid program in the country, and having the wealthiest endowment of any school in history. WHO CARES? Our school provides a kind of education that Harvard\u2019s $37 billion can\u2019t buy. \r\n\r\nThink you\u2019re getting a lot out of that economics class? Try weighing the cost-benefit analysis of leaving your dorm after dark, living in Yale housing, or eating Yale food. Studying environmental degradation? There\u2019s no better research project than examining the fascinating New Haven air. You think you can learn about \u201cJustice\u201d by sitting in a classroom? When a deranged thief who\u2019s broken into your dorm room forces you to choose between sacrificing your own life or your roommate\u2019s, trust us: the hypothetical doesn\u2019t compare. \r\n\r\nAll those other advantages your school seems to enjoy are similarly illusory. None of your much-ballyhooed \u201cextracurriculars\u201d involve lying naked in a coffin, like our illustrious Skull and Bones, so they\u2019re basically a waste of time. Your football team may have beaten us last year, but that\u2019s only because the steroids didn\u2019t work fast enough. Your newspaper [FINISH THIS PARAGRAPH BEFORE MIDNIGHT GUYS] \r\n\r\nSo ignore us. Sure, you\u2019ve got the reputation, the resources, and the intelligence to do so. But deep down, you will still know the truth. Harvard sucks, and we\u2019re just glad we didn\u2019t get in. ", 
-            "section": 2, 
-            "created_on": "2008-11-21 21:47:41", 
-            "page": "", 
-            "priority": 0, 
-            "subheadline": "Why Harvard is the suckiest lamest dumb school ever (go Bulldogs!!!)", 
             "teaser": "Good morning, fellow Harvard people. We, the editorial board of The Harvard Crimson, are taking a break from failing at ...", 
-            "sne": 1, 
-            "proofer": 1, 
-            "modified_on": "2008-11-21 21:47:41", 
-            "maps": [], 
-            "web_only": false, 
-            "issue": 4, 
+            "modified_on": "2008-12-25 17:56:50", 
             "slug": "we-suck", 
+            "related_content_id": 9, 
+            "issue": 4, 
+            "subheadline": "Why Harvard is the suckiest lamest dumb school ever (go Bulldogs!!!)", 
+            "page": "", 
             "is_published": true
         }
     }, 
@@ -2369,7 +2568,7 @@
         "pk": 5, 
         "model": "content_module.contentmodule", 
         "fields": {
-            "content": "", 
+            "content": null, 
             "comment": "", 
             "default_content": "", 
             "name": "index.featured", 

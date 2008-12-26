@@ -1,0 +1,7 @@
+{% load crimson_filters %}
+
+{% for img in imagegallery.images.all|slice:":3" %}
+    {{ img|to_thumb_tag }}
+{% endfor %}
+<p>{{ imagegallery.title }}</p>
+<p>{{ imagegallery.created_on|date:"m/d/Y" }}</p>

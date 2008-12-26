@@ -1,0 +1,7 @@
+{% load crimson_filters %}
+
+{% for obj in objs %}
+    <li>{{obj|render:"admin.thumbnail"}}</li>
+{% empty %}
+    <li>No objects found</li>
+{% endfor %}

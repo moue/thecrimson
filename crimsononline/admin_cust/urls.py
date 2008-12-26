@@ -10,6 +10,8 @@ urlpatterns = patterns('',
     (r'^core/contributor/search/$', get_contributors),
     (r'^core/issue/issue_list/$', get_issues),
     (r'^core/issue/special_issue_list/$', get_special_issues),
+    (r'^core/rel_content/find/(\d+)/(\d\d/\d\d/\d{4})/(\d\d/\d\d/\d{4})/([\w\-,]*)/(\d+)/$', find_rel_content),
+    (r'^core/rel_content/get/(\d+)/(\d+)/$', get_rel_content),
 )
 
 urlpatterns += patterns('',

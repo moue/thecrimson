@@ -1,0 +1,5 @@
+{% load crimson_filters %}
+
+{{image|to_thumb_tag}}
+<p>{{image.kicker}}</p>
+<p>{{image.created_on|date:"m/d/y"}}</p>

@@ -8,7 +8,7 @@ from django.utils.safestring import mark_safe
 from django.template.defaultfilters import truncatewords
 from crimsononline.core.models import *
 from crimsononline.admin_cust import forms as cforms
-from crimsononline.admin_cust.forms import FbModelChoiceField, IssuePickerField, MapBuilderField
+from crimsononline.admin_cust.forms import FbModelChoiceField, IssuePickerField, MapBuilderField, RelatedContentField
 
 class TagForm(forms.ModelForm):
     ALLOWED_REGEXP = compile(r'[A-Za-z\s]+$')
@@ -16,7 +16,6 @@ class TagForm(forms.ModelForm):
         model = Tag
     def clean_text(self):
         text = self.cleaned_data['text']
-        print text
         if not TagForm.ALLOWED_REGEXP.match(text):
             raise forms.ValidationError(
                 'Tags can only contain letters and spaces')
@@ -296,47 +295,8 @@ class ArticleForm(ModelForm):
     sne = FbModelChoiceField(required=True, multiple=False,
         url='/admin/core/contributor/search/', model=Contributor,
         labeler=(lambda obj: str(obj)))
-    selected_image = forms.CharField(widget=ImageGalleryPreviewWidget,
-        required=False, label='Selected image gallery')
-    existing_image_type = forms.CharField(widget=ImageGallerySelectWidget(), 
-        required=False, label="Search for existing images")
-    new_image_gallery = ImageGalleryNewField(ImageGallery.objects.all(),
-        widget=forms.widgets.HiddenInput, required=False)
-    new_image = SingleImageNewField(Image.objects.all(), 
-        widget=forms.widgets.HiddenInput, required=False)
     issue = IssuePickerField(label='Issue Date', required=True)
-    
-    def __init__(self, *args, **kwargs):
-        s = super(ArticleForm, self).__init__(*args, **kwargs)
-        if self.instance.pk and self.instance.image_gallery:
-            self.fields['selected_image'].widget.__dict__['gal'] = self.instance.image_gallery
-        return s
-    
-    def clean_selected_image(self):
-        if not self.cleaned_data['selected_image']:
-            return
-        from re import compile
-        r = compile('(img|gal)_(\d+)$')
-        if not r.match(self.cleaned_data['selected_image']):
-            raise forms.ValidationError("Something went terribly wrong!")
-        type = self.cleaned_data['selected_image'][:3]
-        pk = int(self.cleaned_data['selected_image'][4:])
-        # if it's an image, turn it into a gallery
-        if type == 'img':
-            # TODO: this assumes that we won't be creating duplicate galleries, fix this
-            img = Image.objects.get(pk=pk)
-            ig = ImageGallery(
-                title=img.kicker,
-                description=img.caption,
-                cover_image=img,
-                created_on=img.created_on,
-            )
-            ig.save()
-            ig.tags = img.tags.all()
-            ig.images=[img,]
-            pk = ig.pk
-        self.cleaned_data['selected_image'] = pk
-        return pk
+    rel_content = RelatedContentField(label='New Content', required=False, admin_site=admin.site, rel_types=[Image, ImageGallery, Article])
     
     def clean_teaser(self):
         """Adds a teaser if one does not exist."""
@@ -371,9 +331,8 @@ class ArticleAdmin(admin.ModelAdmin):
         ('Editing', {
             'fields': ('proofer', 'sne',),
         }),
-        ('Image(s)', {
-            'classes': ('collapse',),
-            'fields': ('selected_image', 'existing_image_type', 'new_image_gallery', 'new_image',),
+        ('Linked Content', {
+            'fields': ('rel_content',),
         }),
         #('Map(s)', {
         #    'classes': ('collapse',),
@@ -414,12 +373,7 @@ class ArticleAdmin(admin.ModelAdmin):
             u.message_set.create(message='Note: you can only change articles' \
                                             ' uploaded in the last hour.')
         return qs
-        
-    def save_model(self, request, obj, form, change):
-        gal_pk = form.cleaned_data['selected_image']
-        if gal_pk:
-            obj.image_gallery_id = gal_pk
-        return super(ArticleAdmin, self).save_model(request, obj, form, change)
+    
 
 admin.site.register(Article, ArticleAdmin)
 

@@ -1,11 +1,44 @@
 from datetime import datetime
 from django.db.models import Q
 from django.shortcuts import render_to_response, get_object_or_404
+from django.contrib.contenttypes.models import ContentType
 from django.core.paginator import Paginator
 from django.http import HttpResponse, Http404
 from django.template.loader import render_to_string
 from django.utils import simplejson
-from crimsononline.core.models import Image, ImageGallery, Contributor, Issue
+from django.utils.safestring import mark_safe
+from crimsononline.core.models import *
+
+def get_rel_content(request, ct_id, obj_id):
+    """
+    returns HTML with a Content obj rendered as 'admin.line_item'
+    """
+    r = get_object_or_404(
+        RelatedContent, content_type__pk=ct_id, object_id=obj_id)
+    return HttpResponse(mark_safe(r.content_object._render('admin.line_item')))
+
+def find_rel_content(request, ct_id, st_dt, end_dt, tags, page):
+    """
+    returns JSON containing Content objects and pg numbers
+    """
+    OBJS_PER_REQ = 3
+    
+    cls = get_object_or_404(ContentType, pk=int(ct_id))
+    cls = cls.model_class()
+    st_dt = datetime.strptime(st_dt, '%m/%d/%Y')
+    end_dt = datetime.strptime(end_dt, '%m/%d/%Y')
+    objs = cls.find_by_date(start=st_dt, end=end_dt)
+    p = Paginator(objs, OBJS_PER_REQ).page(page)
+    
+    json_dict = {}
+    json_dict['objs'] = []
+    for obj in p.object_list:
+        html = render_to_string('content_thumbnail.html', {'objs': [obj]})
+        json_dict['objs'].append([ct_id, obj.pk, html])
+    json_dict['next_page'] = p.next_page_number() if p.has_next() else 0
+    json_dict['prev_page'] = p.previous_page_number() if p.has_previous() else 0
+    
+    return HttpResponse(simplejson.dumps(json_dict))
 
 def get_contributors(request):
     if request.method != 'GET':
@@ -15,7 +48,6 @@ def get_contributors(request):
     if excludes:
         excludes = [int(e) for e in excludes if e]
     if (len(q_str) < 1) or (not limit):
-        print len(q_str)
         raise Http404
     c = Contributor.objects.filter(
         Q(first_name__contains=q_str) | Q(last_name__contains=q_str),

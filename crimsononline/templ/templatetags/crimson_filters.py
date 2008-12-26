@@ -1,9 +1,21 @@
 from django import template
 from django.utils.safestring import mark_safe
-from crimsononline.core.models import Image, Article
+from crimsononline.core.models import Image, Article, Content, RelatedContent
 
 register = template.Library()
 
+@register.filter
+def render(content, method):
+    try:
+        if isinstance(content, RelatedContent):
+            content = content.content_object
+        return mark_safe(content._render(method))
+    except:
+        pass
+    print "whoops; error in crimson_filters.render"
+    return ''
+    
+    
 @register.filter
 def article_preview(article):
     tag = ''
@@ -31,7 +43,6 @@ def to_img_layout(img, dimensions):
             type = 'tall'
             w_constr = str(int(int(w_constr) * 0.40) if w_constr else width)
         img_tag = to_img_tag(img, w_constr + ',' + h_constr)
-        print type
         tag = """<div class="%s_photo">%s
             <p class="byline">%s</p>
             <p class="caption">%s</p>
@@ -40,8 +51,7 @@ def to_img_layout(img, dimensions):
 
 @register.filter
 def to_img_tag(img, dimensions):
-    """
-    Turns an Image into an img tag (html).
+    """Turns an Image into an img tag (html).
     dimensions is the dimension constraint.  It should be a string formattted
      "WIDTH,HEIGHT".  Empty width or height is interpreted as a non-constraint.
     """
