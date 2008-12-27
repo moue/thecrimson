@@ -304,6 +304,15 @@ class ArticleForm(ModelForm):
             return self.cleaned_data['teaser']
         return truncatewords(self.cleaned_data['text'], 20)
     
+    def save(self, *args, **kwargs):
+        rel = self.cleaned_data.pop('rel_content', [])
+        obj = super(ArticleForm, self).save(*args, **kwargs)
+        obj.rel_content.clear()
+        for i, r in enumerate(rel):
+            x = ArticleContentRelation(order=i, article=obj, related_content=r)
+            x.save()
+        return obj
+    
     class Meta:
         model = Article
 
@@ -331,7 +340,7 @@ class ArticleAdmin(admin.ModelAdmin):
         ('Editing', {
             'fields': ('proofer', 'sne',),
         }),
-        ('Linked Content', {
+        ('Associated Content', {
             'fields': ('rel_content',),
         }),
         #('Map(s)', {
@@ -350,6 +359,13 @@ class ArticleAdmin(admin.ModelAdmin):
         css = {
             'all': ('css/admin/Article.css',)
         }
+    
+    #def save_model(self, request, obj, form, change):
+    #    obj.save()
+    #    obj.rel_content.clear()
+    #    for i, r in enumerate(form.cleaned_data['rel_content']):
+    #        x = ArticleContentRelation(order=i, article=obj, related_content=r)
+    #        x.save()
     
     def has_change_permission(self, request, obj=None):
         u = request.user

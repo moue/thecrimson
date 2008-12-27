@@ -239,7 +239,7 @@ class FbModelChoiceField(forms.CharField):
 
 class RelatedContentWidget(forms.widgets.HiddenInput):
     class Media:
-        js = ('/site_media/scripts/framework/jquery.ui.datepicker.js',
+        js = ('/site_media/scripts/framework/jquery-ui.packed.js',
             '/site_media/scripts/admin/RelatedContentWidget.js',)
         css = {'all': ('/site_media/css/framework/jquery.ui.datepicker.css',
             '/site_media/css/admin/RelatedContent.css'),}
@@ -262,9 +262,15 @@ class RelatedContentWidget(forms.widgets.HiddenInput):
                 self.c_types.append({'url': t_url, 'name': t_name, 'id': t_id})
         
         if value:
-            # grab all related content objects
-            query = reduce(lambda x, y: x|y, [Q(pk=v) for v in value])
-            objs = RelatedContent.objects.filter(query)
+            # grab all related content objects AND PRESERVE ORDER !!
+            objs = []
+            for v in value:
+                objs.append(RelatedContent.objects.get(pk=v))
+            
+            # this doesn't preserve order
+            #query = reduce(lambda x, y: x|y, [Q(pk=v) for v in value])
+            #objs = RelatedContent.objects.filter(query)
+            
             # construct related content identifiers
             value = ['%d,%d' % (o.content_type.pk, o.object_id) \
                 for o in objs if o]
@@ -300,9 +306,16 @@ class RelatedContentField(forms.CharField):
         
         ids = [tuple(v.split(',')) for v in value.split(';') if v]
         
-        q = [Q(content_type__pk=p[0], object_id=p[1]) for p in ids]
-        q = reduce(lambda x, y: x | y, q)
-        objs = list(RelatedContent.objects.filter(q))
+        # retrieving RelatedContent objs MUST preserve their order!!!
+        objs = []
+        for p in ids:
+            objs.append(RelatedContent.objects.get(
+                content_type__pk=p[0], object_id=p[1]))
+         
+        # this is faster? but doesn't work because it doesn't preserve order       
+        #q = [Q(content_type__pk=p[0], object_id=p[1]) for p in ids]
+        #q = reduce(lambda x, y: x | y, q)
+        #objs = list(RelatedContent.objects.filter(q))
         
         if len(objs) != len(ids):
             raise Exception('Unexpected RelatedContent identifiers.')

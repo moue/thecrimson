@@ -38,12 +38,15 @@
     margin-right: 2px;
 }
 .rel_content .rel_objs li {
-    margin-bottom: 5px;
+    margin-bottom: 10px;
+    background-color: #eeeeee;
+    padding: 3px 5px;
+    cursor: ns-resize;
 }
 .rel_content .rel_objs p {
     display: block;
     padding: 10px 6px;
-    margin: 0;
+    margin: 4px 0;
     display: inline-block;
     border-right: 1px solid #888888;
 }

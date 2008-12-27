@@ -22,6 +22,8 @@ def filter_string(allowed_chars, str):
     return ''.join([c for c in str if c in allowed_chars])
 
 
+#TODO: implement generic relationships between
+#   contributors - content    and     tags - content
 class RelatedContent(models.Model):
     """
     Facilitates generic relationships between content.
@@ -50,17 +52,18 @@ class Content(models.Model):
     class Meta:
         abstract = True
     
-    def _render(self, method):
+    def _render(self, method, context={}):
         """
         renders in different ways, depending on method
         
-        method is like, 'admin' or 'search'
-        
+        method could be something like, 'admin' or 'search'
+        use context to inject extra variables into the template
         """
         name = self._meta.object_name.lower()
         templ = 'models/%s/%s.html' % (name, method)
+        context.update({name: self, 'class': name})
         # below, maybe instead of name:, have 'obj':
-        return mark_safe(render_to_string(templ, {name: self}))
+        return mark_safe(render_to_string(templ, context))
     
     @classmethod
     def find_by_date(cls, start, end):
@@ -85,8 +88,13 @@ class Content(models.Model):
         return super(Content, self).save(*args, **kwargs)
     
     def delete(self, *args, **kwargs):
-        # TODO: delete the associated RelatedContent object
-        return super(Content, self).delete(*args, **kwargs)
+        r = self.related_content_id if self.related_content_id else None
+        s = super(Content, self).delete(*args, **kwargs)
+        # delete the associated RelatedContent object
+        if r:
+            r = RelatedContent.objects.get(pk=r)
+            r.delete()
+        return s
     
 
 
@@ -382,13 +390,20 @@ class Image(Content):
     
     caption = models.CharField(blank=False, max_length=1000)
     kicker = models.CharField(blank=False, max_length=500)
+    slug = models.SlugField(blank=False, null=True)
     created_on = models.DateTimeField(auto_now_add=True)
     contributor = models.ForeignKey(
-        Contributor, limit_choices_to={'is_active': True})
+        Contributor, limit_choices_to={'is_active': True}
+    )
     tags = models.ManyToManyField(Tag, blank=False)
     # make sure pic is last: get_save_path needs an instance, and if this
     #  attribute is processed first, all the instance attributes will be blank
     pic = models.ImageField('File', upload_to=get_save_path)
+    
+    def _orientation(self):
+        return 'wide' if self.pic.width > self.pic.height else 'tall'
+    orientation = property(_orientation)
+    
     
     class Meta:
         get_latest_by = 'created_on'
@@ -433,6 +448,17 @@ class Image(Content):
     
     def __unicode__(self):
         return self.kicker
+    
+    @permalink
+    def get_absolute_url(self):
+        d = self.created_on
+        return ('core_get_image', [d.year, d.month, d.day, self.slug])
+    
+    def save(self, *args, **kwargs):
+        # autopopulate the slug
+        if not self.slug:
+            self.slug = slugify(self.kicker)
+        return super(Image, self).save(*args, **kwargs)
 
 
 class ImageGallery(Content):
@@ -602,7 +628,8 @@ class Article(Content):
         """)
     maps = models.ManyToManyField(Map, blank=True)
     
-    rel_content = models.ManyToManyField(RelatedContent, null=True, blank=True)
+    rel_content = models.ManyToManyField(RelatedContent,
+        through='ArticleContentRelation', null=True, blank=True)
     
     objects = PublishedArticlesManager()
     web_objects = WebOnlyManager()
@@ -618,9 +645,15 @@ class Article(Content):
         unique_together = ('slug', 'issue',)
         get_latest_by = 'created_on'
     
-    def get_long_teaser(self):
+    def _long_teaser(self):
         return truncatewords(self.text, 50)
-    long_teaser = property(get_long_teaser)
+    long_teaser = property(_long_teaser)
+    
+    def _main_rel_content(self):
+        r = self.rel_content.all()[:1]
+        r = r[0] if r else None
+        return r
+    main_rel_content = property(_main_rel_content)
     
     def save(self, *args, **kwargs):
         # autopopulate the slug
@@ -640,5 +673,23 @@ class Article(Content):
     def get_absolute_url(self):
         d = self.issue.issue_date
         return ('core_get_article', [d.year, d.month, d.day, self.slug])
+    
+
+
+class ArticleContentRelation(models.Model):
+    article = models.ForeignKey(Article)
+    related_content = models.ForeignKey(RelatedContent)
+    order = models.IntegerField(blank=True, null=True)
+    
+    class Meta:
+        ordering = ('order',)
+    
+    """
+    class Meta:
+        unique_together = (
+            ('article', 'related_content',), 
+            ('article', 'order',),
+    )
+    """
     
 

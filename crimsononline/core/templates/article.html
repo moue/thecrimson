@@ -69,8 +69,8 @@
 		<div class="article">
 			<h1>{{ article.headline }}</h1>
 			<h2>{{ article.subheadline }}</h2>
-			{% if article.image_gallery %}
-                {{ article.image_gallery.cover_image|to_img_layout:"600," }}
+			{% if article.main_rel_content %}
+                {{ article.main_rel_content|render:"article.main" }}
 		    {% endif %}
 			<div class="byline">By {{ article.contributors.all|linkify|human_list }}
 			</div>
@@ -113,7 +113,7 @@
                 </script>
                 <script type="text/javascript" src="http://disqus.com/forums/crimson-alpha/embed.js"></script>
                 <noscript>
-                a href="http://crimson-alpha.disqus.com/?url=ref">View the discussion thread.</a>
+                <a href="http://crimson-alpha.disqus.com/?url=ref">View the discussion thread.</a>
                 </noscript>
                 <a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
 		</div>

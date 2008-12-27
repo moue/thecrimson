@@ -1,9 +1,7 @@
-var set_related_content = function(id_prefix){
+var set_related_content = function(id_prefix, types){
     var p;
-    if(id_prefix[0] == '#')
-        p = id_prefix;
-    else
-        p = '#' + id_prefix;
+    if(id_prefix[0] == '#') { p = id_prefix; }
+    else { p = '#' + id_prefix; }
     $(p + '_wrapper .date_input').datepicker();
     
     var hidden = $(p + '_wrapper input[type="hidden"]');
@@ -18,16 +16,21 @@ var set_related_content = function(id_prefix){
             });
     };
     
-    var add_content = function(ct_id, pk){
-        $(hidden).val($(hidden).val() + ct_id + ',' + pk + ';');
-        console.log('hidden: '+$(hidden).val());
+    var add_content = function(ct_id, pk, ct_name){
+        if(!ct_id){
+            ct_id = ct_name
+        }
         var url = '/admin/core/rel_content/get/' + ct_id + '/' + pk + '/';
-        $.get(url, function(html){
+        $.getJSON(url, function(json){
+            // append value to field
+            ct_id = json.ct_id;
+            $(hidden).val($(hidden).val() + ct_id + ',' + pk + ';');
+            console.log($(hidden).val());
             // inject into DOM
-            html = '<li>' + html + '</li>';
+            json.html = '<li>' + json.html + '</li>';
             var target = $(p + '_wrapper .rel_objs');
             bind_remove(
-                $(html)
+                $(json.html)
                     .appendTo(target)
                     .hide()
                     .data('rel_ct_id', ct_id)
@@ -143,6 +146,36 @@ var set_related_content = function(id_prefix){
                 });
         }
     };
+    
+    // monkey patch dismiss related lookup popup to do a custom insert
+    var originalDismissAddAnotherPopup = dismissAddAnotherPopup;
+    dismissAddAnotherPopup = function(win, newId, newRepr){
+        var matched = '';
+        for(var i = 0; i < types.length; i++){
+            console.log('id_' + types[i] + ' :: ' + win.name);
+            if('id_' + types[i] == win.name){
+                matched = types[i];
+                break;
+            }
+        }
+        if(matched){
+            add_content(0, newId, matched);
+            win.close();
+        } else {
+            return originalDismissAddAnotherPopup(win, newId, newRepr);
+        }
+    }
+    
+    
+    // make rel objs sortable
+    $(p + '_wrapper .rel_objs').sortable({stop: function(){
+        // reset value of hidden on sort
+        $(hidden).val('');
+        $(p + '_wrapper .rel_objs li').each(function(){
+            var str = $(this).data('rel_ct_id')+','+$(this).data('rel_pk')+';';
+            $(hidden).val($(hidden).val() + str);
+        });
+    }});
     
     // bind remove buttons and attach rel_content data
     var ids = $(hidden).val().split(';');

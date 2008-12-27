@@ -1,0 +1,18 @@
+{% extends "models/wrapper.html" %}
+
+{% load crimson_filters %}
+
+{% block wrapper_classes %}{{image.orientation}}{% endblock %}
+
+{% block wrapper_contents %}
+    <p class="kicker">{{image.kicker}}</p>
+    <a href="{{image.get_absolute_url}}">
+        {% ifequal image.orientation "tall" %}
+            {{image|to_img_tag:"240,"}}
+        {% else %}
+            {{image|to_img_tag:"390,"}}
+        {% endifequal %}
+    </a>
+    <p class="byline">{{image.contributor|linkify}}</p>
+    <p class="caption">{{image.caption}}</p>
+{% endblock %}

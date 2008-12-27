@@ -24,7 +24,7 @@
         </ul>
         <p class="paging_links">&nbsp;</p>
     </div>
-    <h3>Linked Content</h3>
+    <h3>Associated Content</h3>
     <ul class="rel_objs">
         {% for obj in objs %}
             <li>{{ obj|render:"admin.line_item" }}</li>
@@ -33,7 +33,11 @@
     </ul>
     <script type="text/javascript" charset="utf-8">
         $(document).ready(function(){
-            set_related_content('{{attrs.id}}') 
+            set_related_content('{{attrs.id}}', [
+                {% for t in types %}
+                    '{{t.name}}'{% if forloop.last %}{% else %},{% endif %} 
+                {% endfor %}
+            ]) 
         });
     </script>
 </div>

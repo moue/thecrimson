@@ -9,13 +9,22 @@ from django.utils import simplejson
 from django.utils.safestring import mark_safe
 from crimsononline.core.models import *
 
-def get_rel_content(request, ct_id, obj_id):
+def get_rel_content(request, ct_id, obj_id, ct_name=None):
     """
     returns HTML with a Content obj rendered as 'admin.line_item'
     """
+    if not ct_id:
+        print ct_name.lower()
+        ct = ContentType.objects.get(app_label='core', model=ct_name.lower())
+        ct_id = ct.pk
     r = get_object_or_404(
-        RelatedContent, content_type__pk=ct_id, object_id=obj_id)
-    return HttpResponse(mark_safe(r.content_object._render('admin.line_item')))
+        RelatedContent, content_type__pk=int(ct_id), object_id=int(obj_id)
+    )
+    json_dict = {
+        'html': mark_safe(r.content_object._render('admin.line_item')),
+        'ct_id': ct_id,
+    }
+    return HttpResponse(simplejson.dumps(json_dict))
 
 def find_rel_content(request, ct_id, st_dt, end_dt, tags, page):
     """
@@ -126,7 +135,7 @@ def get_img_gallery(request, type, pk):
                 'gal': gal}
     return render_to_response('image_gal_fragment.html', dict)
 
-# TODO: protect this
+# don't think this is used anymore
 def get_img_galleries(request, st_yr, st_mnth, end_yr, 
                         end_mnth, tags, page=None):
     """
