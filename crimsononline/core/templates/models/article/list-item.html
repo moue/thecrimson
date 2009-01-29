@@ -1,0 +1,10 @@
+{% load crimson_filters %}
+
+<li>
+    <h3><a href="{{ article.get_absolute_url }}">{{ article.headline }}</a></h3>
+    <span class="byline">By {{ article.contributors.all|linkify|human_list}}</span>
+    {% if article.web_only %}    
+    <span class="webonly">Web Only</span>
+    {% endif %}
+    <p class="teaser">{{ article.long_teaser }}</p>
+</li>

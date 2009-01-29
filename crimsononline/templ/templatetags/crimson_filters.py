@@ -1,18 +1,17 @@
 from django import template
 from django.utils.safestring import mark_safe
-from crimsononline.core.models import Image, Article, Content, RelatedContent
+from crimsononline.core.models import Image, Article, Content, ContentGeneric
 
 register = template.Library()
 
 @register.filter
 def render(content, method):
     try:
-        if isinstance(content, RelatedContent):
+        if isinstance(content, ContentGeneric):
             content = content.content_object
         return mark_safe(content._render(method))
-    except:
-        pass
-    print "whoops; error in crimson_filters.render"
+    except Exception, err:
+        print err
     return ''
     
     

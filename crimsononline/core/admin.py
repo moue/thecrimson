@@ -10,6 +10,60 @@ from crimsononline.core.models import *
 from crimsononline.admin_cust import forms as cforms
 from crimsononline.admin_cust.forms import FbModelChoiceField, IssuePickerField, MapBuilderField, RelatedContentField
 
+
+class ContentGenericModelForm(ModelForm):
+    """
+    Parent class for ContentGeneric model forms.
+    Doesn't actually work by itself.
+    """
+    tags = forms.ModelMultipleChoiceField(Tag.objects.all(), required=True,
+        widget=admin.widgets.RelatedFieldWidgetWrapper(
+            admin.widgets.FilteredSelectMultiple('Tags', False),
+            ContentGeneric._meta.get_field('tags').rel,
+            admin.site
+        )
+    )
+    contributors = FbModelChoiceField(required=True, multiple=True,
+        url='/admin/core/contributor/search/', model=Contributor,
+        labeler=(lambda obj: str(obj)), admin_site=admin.site,
+        add_rel=ContentGeneric._meta.get_field('contributors').rel
+    )
+    issue = IssuePickerField(label='Issue Date', required=True)
+    section = forms.ModelChoiceField(Section.all(), required=True)
+    priority = forms.IntegerField(required=False, initial=0,
+        help_text='Higher priority articles are displayed first.' \
+        'Priority be positive or negative.')
+    
+    
+    def __init__(self, *args, **kwargs):
+        instance = kwargs.get('instance', None)
+        # since tags and contributor aren't normal Django fields, admin
+        #  won't load their values by default. override that behavior
+        #  by sticking the values into the 'initial' arg
+        if instance:
+            initial = {
+                'tags': [t.pk for t in instance.tags.all()],
+                'contributors': [c.pk for c in instance.contributors.all()],
+                'issue': instance.issue.pk,
+                'section': instance.section.pk,
+                'priority': instance.priority,
+            }
+            if not kwargs.get('initial', None):
+                kwargs['initial'] = {}
+            kwargs['initial'].update(initial)
+        return super(ContentGenericModelForm, self).__init__(*args, **kwargs)
+    
+    def save(self, *args, **kwargs):
+        obj = super(ContentGenericModelForm, self).save(*args, **kwargs)
+        obj.save()
+        obj.tags = self.cleaned_data['tags']
+        obj.contributors = self.cleaned_data['contributors']
+        obj.section = self.cleaned_data['section']
+        obj.issue = self.cleaned_data['issue']
+        obj.priority = self.cleaned_data['priority']
+        return obj
+        
+
 class TagForm(forms.ModelForm):
     ALLOWED_REGEXP = compile(r'[A-Za-z\s]+$')
     class Meta:
@@ -96,21 +150,16 @@ class IssueAdmin(admin.ModelAdmin):
 
 admin.site.register(Issue, IssueAdmin)
 
-class ImageAdminForm(ModelForm):
+class ImageAdminForm(ContentGenericModelForm):
     class Meta:
         model = Image
     
-    contributor = FbModelChoiceField(required=True, multiple=False,
-        url='/admin/core/contributor/search/', model=Contributor,
-        labeler=(lambda obj: str(obj)), admin_site=admin.site,
-        add_rel=Article._meta.get_field('contributors').rel)
     caption = forms.fields.CharField(
         widget=forms.Textarea(attrs={'rows':'5', 'cols':'40'}),
         required=True)
 
 class ImageAdmin(admin.ModelAdmin):
-    fields = ('pic', 'caption', 'kicker', 'contributor', 'tags',)
-    filter_horizontal = ('tags',)
+    fields = ('pic', 'caption', 'kicker', 'contributors', 'tags',)
     form = ImageAdminForm
     class Media:
         js = (
@@ -151,7 +200,7 @@ class ImageSelectModelChoiceField(forms.ModelChoiceField):
         self.queryset = qs
         return c
 
-class ImageGalleryForm(ModelForm):
+class ImageGalleryForm(ContentGenericModelForm):
     # we use a special widget here so that we can inject an extra div
     #    above the select multiple field.  the extra div is where
     #    the javascript inserts img previews for img selection.
@@ -178,7 +227,6 @@ class ImageGalleryForm(ModelForm):
 
 class ImageGalleryAdmin(admin.ModelAdmin):
     fields = ('title', 'description', 'images', 'cover_image', 'tags')
-    filter_horizontal = ('tags',)
     form = ImageGalleryForm
     
     # we need to set the list of images (that show up) on a per instance basis
@@ -208,66 +256,7 @@ class ImageGalleryAdmin(admin.ModelAdmin):
 admin.site.register(ImageGallery, ImageGalleryAdmin)
 
 
-class ImageGallerySelectWidget(forms.widgets.HiddenInput):
-    def render(self, name, value, attrs=None, choices=()):
-        slct = 'selected="selected"'
-        opt = '<option value="%d"%s>%d</option>'
-        thumbs_html = """<div class="image_gallery_select">
-        <div class="image_gallery_search">
-            Tag: <input id="search_by_tag"> | 
-            Start Month: <select id="search_by_start_year">%s</select>
-            <select id="search_by_start_month">%s</select> |
-            End Month: <select id="search_by_end_year">%s</select>
-            <select id="search_by_end_month">%s</select>
-            <a href="#" class="button" id="find_image_gallery_button">Find</a>
-        </div><div class="image_gallery_results"></div></div>""" % (
-            ''.join([opt % (i, slct if i == datetime.now().year else '', i) for i in range(1996, datetime.now().year + 1)]), 
-            ''.join([opt % (i, slct if i == datetime.now().month else '', i) for i in range(1, 13)]),
-            ''.join([opt % (i, slct if i == datetime.now().year else '', i) for i in range(1996, datetime.now().year + 1)]),
-            ''.join([opt % (i, slct if i == datetime.now().month else '', i) for i in range(1, 13)]),
-            )
-        return mark_safe(super(ImageGallerySelectWidget, self).render(
-            name, value, attrs) + thumbs_html)
-
-class ImageGalleryPreviewWidget(forms.widgets.HiddenInput):
-    """
-    Hidden input that displays an image gallery preview
-    """
-    def render(self, name, value, attrs=None, choices=()):
-        ig = self.__dict__.get('gal', None) 
-        _html = '<ul class="image_gallery_preview " id="image_gallery_current">'
-        if ig:
-            # render the image gallery
-            from crimsononline.templ.templatetags.crimson_filters import to_thumb_tag
-            _html += ''.join(['<li>%s</li>' % to_thumb_tag(img) for img in ig.images.all()[:6]])
-            # put the image gallery pk into the widget
-            if attrs:
-                attrs['value'] = 'gal_%d' % ig.pk
-            else:
-                attrs = {'value': 'gal_%d' % ig.pk}
-        _html += '</ul><a href="#" id="image_gallery_remove_button" style="display:none;">Remove</a>'
-        return mark_safe(super(ImageGalleryPreviewWidget, self).render(
-            name, value, attrs) + _html)
-
-class ImageGalleryNewField(forms.ModelChoiceField):
-    def __init__(self, *args, **kwargs):
-        super(ImageGalleryNewField,self).__init__(*args, **kwargs)
-        self.widget = admin.widgets.RelatedFieldWidgetWrapper(
-            self.widget,
-            Article._meta.get_field('image_gallery').rel,
-            admin.site
-        )
-        
-class SingleImageNewField(forms.ModelChoiceField):
-    def __init__(self, *args, **kwargs):
-        super(SingleImageNewField, self).__init__(*args, **kwargs)
-        self.widget = admin.widgets.RelatedFieldWidgetWrapper(
-            self.widget, 
-            ImageGallery._meta.get_field('images').rel, 
-            admin.site
-        )
-
-class ArticleForm(ModelForm):
+class ArticleForm(ContentGenericModelForm):
     teaser = forms.fields.CharField(
         widget=forms.Textarea(attrs={'rows':'5', 'cols':'67'}),
         required=False, help_text="""
@@ -288,14 +277,14 @@ class ArticleForm(ModelForm):
     contributors = FbModelChoiceField(required=True, multiple=True,
         url='/admin/core/contributor/search/', model=Contributor,
         labeler=(lambda obj: str(obj)), admin_site=admin.site,
-        add_rel=Article._meta.get_field('contributors').rel)
+        #add_rel=Article._meta.get_field('contributors').rel)
+        )
     proofer = FbModelChoiceField(required=True, multiple=False,
         url='/admin/core/contributor/search/', model=Contributor,
         labeler=(lambda obj: str(obj)))
     sne = FbModelChoiceField(required=True, multiple=False,
         url='/admin/core/contributor/search/', model=Contributor,
         labeler=(lambda obj: str(obj)))
-    issue = IssuePickerField(label='Issue Date', required=True)
     rel_content = RelatedContentField(label='New Content', required=False, admin_site=admin.site, rel_types=[Image, ImageGallery, Article])
     
     def clean_teaser(self):
@@ -319,7 +308,6 @@ class ArticleForm(ModelForm):
 class ArticleAdmin(admin.ModelAdmin):
     list_display = ('headline', 'section', 'issue',)
     search_fields = ('headline', 'text',)
-    filter_horizontal = ('tags',)
     exclude = ['is_published']
     fieldsets = (
         ('Headline', {

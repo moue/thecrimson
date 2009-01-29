@@ -12,8 +12,8 @@
 
 {% block before_articles %}
     <h1>Articles tagged {{ tags|human_list }}</h1>
-    {% if not articles %}
-    <p>There are no articles tagged {{ tags|human_list }}.</p>
+    {% if not content %}
+    <p>There is no content tagged {{ tags|human_list }}.</p>
     {% endif %}
 {% endblock %}
 {% comment %}

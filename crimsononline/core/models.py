@@ -22,15 +22,36 @@ def filter_string(allowed_chars, str):
     return ''.join([c for c in str if c in allowed_chars])
 
 
-#TODO: implement generic relationships between
-#   contributors - content    and     tags - content
-class RelatedContent(models.Model):
+class ContentGenericManager(models.Manager):
+    def type(self, model):
+        """takes a model and returns a queryset with all of the 
+        ContentGenerics of that contenttype"""
+        return self.get_query_set().filter(
+            content_type=ContentType.objects.get_for_model(model)
+        )
+        
+    @property
+    def recent(self):
+        return self.get_query_set() \
+            .exclude(issue__web_publish_date__gt=datetime.now()) \
+            .order_by('-issue__issue_date', 'priority')
+
+
+class ContentGeneric(models.Model):
     """
     Facilitates generic relationships between content.
     """
     content_type = models.ForeignKey(ContentType)
     object_id = models.PositiveIntegerField()
     content_object = generic.GenericForeignKey('content_type', 'object_id')
+    contributors = models.ManyToManyField('Contributor', 
+        null=True, related_name='content')
+    tags = models.ManyToManyField('Tag', null=True, related_name='content')
+    issue = models.ForeignKey('Issue', null=True, related_name='content')
+    section = models.ForeignKey('Section', null=True, related_name='content')
+    priority = models.IntegerField(default=0)
+    
+    objects = ContentGenericManager()
     
     class Meta:
         unique_together = (('content_type', 'object_id',),)
@@ -45,18 +66,48 @@ class Content(models.Model):
     Has some content rendering functions.
     """
     
-    # it's difficult to declare a reverse generic relationship here, since
-    #  the reverse query names would clash, so declare a tracking field
-    related_content_id = models.IntegerField(null=True, editable=False)
-    
     class Meta:
         abstract = True
+    
+    def _get_contributors(self):
+        return self.generic.contributors
+    def _set_contributors(self, value):
+        self.generic.contributors = value
+    contributors = property(_get_contributors, _set_contributors)
+    
+    def _get_tags(self):
+        return self.generic.tags
+    def _set_tags(self, value):
+        self.generic.tags = value
+    tags = property(_get_tags, _set_tags)
+    
+    def _get_issue(self):
+        return self.generic.issue
+    def _set_issue(self, value):
+        self.generic.issue = value
+    issue = property(_get_issue, _set_issue)
+    
+    def _get_section(self):
+        return self.generic.section
+    def _set_section(self, value):
+        self.generic.section = value
+    section = property(_get_section, _set_section)
+    
+    def _get_priority(self):
+        return self.generic.priority
+    def _set_priority(self, value):
+        self.generic.priority = value
+    priority = property(_get_priority, _set_priority)
+    
+    generic = models.ForeignKey(ContentGeneric, null=True,
+        related_name="%(class)s_generic_related")
     
     def _render(self, method, context={}):
         """
         renders in different ways, depending on method
         
         method could be something like, 'admin' or 'search'
+        
         use context to inject extra variables into the template
         """
         name = self._meta.object_name.lower()
@@ -80,21 +131,14 @@ class Content(models.Model):
         if not self.pk:
             super(Content, self).save(*args, **kwargs)
             kwargs['force_insert'] = False
-        # create a RelatedContent obj
-        if not self.related_content_id:
-            r = RelatedContent(content_object=self)
+        # create a ContentGeneric obj
+        if not self.generic:
+            r = ContentGeneric(content_object=self)
             r.save()
-            self.related_content_id = r.pk
+            self.generic = r
+        else:
+            self.generic.save()
         return super(Content, self).save(*args, **kwargs)
-    
-    def delete(self, *args, **kwargs):
-        r = self.related_content_id if self.related_content_id else None
-        s = super(Content, self).delete(*args, **kwargs)
-        # delete the associated RelatedContent object
-        if r:
-            r = RelatedContent.objects.get(pk=r)
-            r.delete()
-        return s
     
 
 
@@ -291,6 +335,33 @@ class DailyIssueManager(LiveIssueManager):
         return super(DailyIssueManager, self).get_query_set() \
             .filter(Q(special_issue_name="") | Q(special_issue_name=None))
 
+class IssueManager(models.Manager):
+    
+    LIVE = Q(web_publish_date__lte=datetime.now())
+    DAILY = Q(special_issue_name="") | Q(special_issue_name=None)
+    
+    @property
+    def live(self):
+        return self.get_query_set().filter(IssueManager.LIVE)
+    
+    @property
+    def special(self):
+        return self.get_query_set().exclude(IssueManager.DAILY)
+    
+    @property
+    def daily(self):
+        return self.get_query_set().filter(IssueManager.DAILY)
+    
+    @property
+    def live_daily(self):
+        return self.daily.filter(IssueManager.LIVE)
+    
+    @property
+    def live_special(self):
+        return self.special.filter(IssueManager.LIVE)
+    
+
+
 class Issue(models.Model):
     """
     A set of content (articles, photos) for a particular date.
@@ -319,15 +390,15 @@ class Issue(models.Model):
     # managers
     >>> Issue.objects.all().count()
     10
-    >>> Issue.special_objects.all().count()
+    >>> Issue.objects.special.all().count()
     2
-    >>> Issue.daily_objects.all().count()
+    >>> Issue.objects.daily.all().count()
     8
-    >>> Issue.live_objects.all().count()
+    >>> Issue.objects.live.all().count()
     5
-    >>> Issue.live_special_objects.all().count()
+    >>> Issue.objects.live_special.all().count()
     1
-    >>> Issue.live_daily_objects.all().count()
+    >>> Issue.objects.live_daily.all().count()
     4
     
     # set_as_current and get_current
@@ -345,12 +416,7 @@ class Issue(models.Model):
     comments = models.TextField(
         blank=True, null=True, help_text='Notes about this issue.')
     
-    objects = models.Manager()
-    special_objects = SpecialIssueManager()
-    daily_objects = DailyIssueManager()
-    live_objects = LiveIssueManager(live=True)
-    live_special_objects = SpecialIssueManager(live=True)
-    live_daily_objects = DailyIssueManager(live=True)
+    objects = IssueManager()
     
     @staticmethod
     def get_current():
@@ -392,10 +458,6 @@ class Image(Content):
     kicker = models.CharField(blank=False, max_length=500)
     slug = models.SlugField(blank=False, null=True)
     created_on = models.DateTimeField(auto_now_add=True)
-    contributor = models.ForeignKey(
-        Contributor, limit_choices_to={'is_active': True}
-    )
-    tags = models.ManyToManyField(Tag, blank=False)
     # make sure pic is last: get_save_path needs an instance, and if this
     #  attribute is processed first, all the instance attributes will be blank
     pic = models.ImageField('File', upload_to=get_save_path)
@@ -471,7 +533,6 @@ class ImageGallery(Content):
     images = models.ManyToManyField(Image)
     cover_image = models.ForeignKey(Image, related_name='cover_images')
     created_on = models.DateTimeField(auto_now_add=True)
-    tags = models.ManyToManyField(Tag, blank=False)
     
     class Meta:
         get_latest_by = 'created_on'
@@ -525,30 +586,27 @@ class Marker(models.Model):
     
 
 
-class PublishedArticlesManager(models.Manager):
-    """
-    Articles Manager that only returns published articles
-    """
+class ArticlesManager(models.Manager):
+    
+    # by default, only get published (undeleted) articles
     def get_query_set(self):
-        return super(PublishedArticlesManager, self).get_query_set() \
+        return super(ArticlesManager, self).get_query_set() \
             .filter(is_published=True)
-
-class WebOnlyManager(PublishedArticlesManager):
-    """
-    Articles Manager that only returns web only articles
-    """
-    def get_query_set(self):
-        return super(PublishedArticlesManager, self).get_query_set() \
-            .filter(web_only=True)
-
-class RecentsManager(PublishedArticlesManager):
-    """
-    Article Manager that returns the most recent articles
-    """
-    def get_query_set(self):
-        return super(RecentsManager, self).get_query_set() \
-            .exclude(issue__web_publish_date__gt=datetime.now()) \
-            .order_by('-issue__issue_date', 'priority')
+    
+    @property
+    def recent(self):
+        return self.get_query_set() \
+            .exclude(generic__issue__web_publish_date__gt=datetime.now()) \
+            .order_by('-generic__issue__issue_date', 'generic__priority')
+    
+    @property
+    def web_only(self):
+        return self.get_query_set().filter(web_only=True)
+    
+    @property
+    def deleted(self):
+        return super(ArticlesManager, self).get_query_set() \
+            .filter(is_published=False)
 
 def to_slug(text):
     text = filter_string(SAFE_CHARS+' ', text)
@@ -599,14 +657,8 @@ class Article(Content):
         The text that will be displayed in the URL of this article.
         Can only contain letters, numbers, and dashes (-).
         """)
-    contributors = models.ManyToManyField(
-        Contributor, limit_choices_to={'is_active': True},
-        help_text='Who wrote this article')
     created_on = models.DateTimeField(auto_now_add=True)
     modified_on = models.DateTimeField(auto_now=True)
-    priority = models.IntegerField(default=0, 
-        help_text='Higher priority articles are displayed first.' \
-        'Priority be positive or negative.')
     page = models.CharField(blank=True, null=True, max_length=10,
         help_text='Page in the print edition.')
     proofer = models.ForeignKey(
@@ -615,34 +667,23 @@ class Article(Content):
     sne = models.ForeignKey(
         Contributor, related_name='sned_article_set', 
         limit_choices_to={'is_active': True})
-    issue = models.ForeignKey(Issue, null=False, blank=False, 
-        help_text='If this is a web only article, then Issue is the print' \
-                    ' issue this article should be displayed with.')
-    section = models.ForeignKey(Section)
     image_gallery = models.ForeignKey(ImageGallery, null=True, blank=True)
     is_published = models.BooleanField(default=True, null=False, blank=False)
     web_only = models.BooleanField(default=False, null=False, blank=False)
-    tags = models.ManyToManyField(Tag, blank=False, help_text="""
-        Short descriptors for this article.
-        Try to use tags that already exist, if  possible.
-        """)
     maps = models.ManyToManyField(Map, blank=True)
     
-    rel_content = models.ManyToManyField(RelatedContent,
+    rel_content = models.ManyToManyField(ContentGeneric,
         through='ArticleContentRelation', null=True, blank=True)
     
-    objects = PublishedArticlesManager()
-    web_objects = WebOnlyManager()
-    all_objects = models.Manager()
-    recent_objects = RecentsManager()
+    objects = ArticlesManager()
     
     class Meta:
         permissions = (
             ('article.can_change_after_timeout', 
                 'Can change articles at any time',),
         )
-        ordering = ['-priority',]
-        unique_together = ('slug', 'issue',)
+        #ordering = ['-priority',]
+        #unique_together = ('slug', 'issue',)
         get_latest_by = 'created_on'
     
     def _long_teaser(self):
@@ -678,7 +719,7 @@ class Article(Content):
 
 class ArticleContentRelation(models.Model):
     article = models.ForeignKey(Article)
-    related_content = models.ForeignKey(RelatedContent)
+    related_content = models.ForeignKey(ContentGeneric)
     order = models.IntegerField(blank=True, null=True)
     
     class Meta:

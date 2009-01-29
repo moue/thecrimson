@@ -18,7 +18,7 @@ def get_rel_content(request, ct_id, obj_id, ct_name=None):
         ct = ContentType.objects.get(app_label='core', model=ct_name.lower())
         ct_id = ct.pk
     r = get_object_or_404(
-        RelatedContent, content_type__pk=int(ct_id), object_id=int(obj_id)
+        ContentGeneric, content_type__pk=int(ct_id), object_id=int(obj_id)
     )
     json_dict = {
         'html': mark_safe(r.content_object._render('admin.line_item')),
@@ -73,7 +73,7 @@ def get_special_issues(request):
     if not year.isdigit():
         raise Http404
     year = int(year)
-    issues = Issue.special_objects.filter(issue_date__year=year)
+    issues = Issue.objects.special.filter(issue_date__year=year)
     return render_to_response('special_issues_fragment.html', 
         {'issues': issues, 'blank': '---'})
 
@@ -87,7 +87,7 @@ def get_issues(request):
     if not (year and month):
         raise Http404
     year, month = int(year), int(month)
-    issues = Issue.daily_objects.filter(
+    issues = Issue.objects.daily.filter(
         issue_date__year=year, issue_date__month=month)
     dict = {}
     for issue in issues:

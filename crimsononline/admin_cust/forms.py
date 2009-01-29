@@ -10,7 +10,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
 from django.template.loader import render_to_string
 
-from crimsononline.core.models import Issue, RelatedContent
+from crimsononline.core.models import Issue, ContentGeneric
 
 class MapBuilderWidget(forms.widgets.HiddenInput):
     def render(self, name, value, attrs=None):
@@ -77,7 +77,7 @@ class IssuePickerWidget(forms.widgets.HiddenInput):
                 issue = None
         year = datetime.now().year
         special_choices = render_to_string("special_issues_fragment.html", 
-            {'issues': Issue.special_objects.filter(issue_date__year=year), 
+            {'issues': Issue.objects.special.filter(issue_date__year=year), 
             'blank': "----", 'choice': value}
         )
         hidden = super(IssuePickerWidget, self).render(name, value, attrs)
@@ -107,7 +107,7 @@ class IssuePickerField(forms.CharField):
             dt = strptime(value, r"%m/%d/%Y")
             dt = date(dt[0], dt[1], dt[2])
             try:
-                issue = Issue.daily_objects.get(issue_date=dt)
+                issue = Issue.objects.daily.get(issue_date=dt)
             except ObjectDoesNotExist:
                 issue = Issue(issue_date=dt)
                 issue.save()
@@ -210,6 +210,8 @@ class FbModelChoiceField(forms.CharField):
         if self.add_rel:
             kwargs['widget'] = admin.widgets.RelatedFieldWidgetWrapper(
                 kwargs['widget'], self.add_rel, kwargs.pop('admin_site'))
+        # just in case admin_site is still on there
+        kwargs.pop('admin_site', None)
         s = super(FbModelChoiceField, self).__init__(*args, **kwargs)
         self.help_text = "Start typing; we'll provide suggestions.<br>%s" % self.help_text
         return s
@@ -265,11 +267,11 @@ class RelatedContentWidget(forms.widgets.HiddenInput):
             # grab all related content objects AND PRESERVE ORDER !!
             objs = []
             for v in value:
-                objs.append(RelatedContent.objects.get(pk=v))
+                objs.append(ContentGeneric.objects.get(pk=v))
             
             # this doesn't preserve order
             #query = reduce(lambda x, y: x|y, [Q(pk=v) for v in value])
-            #objs = RelatedContent.objects.filter(query)
+            #objs = ContentGeneric.objects.filter(query)
             
             # construct related content identifiers
             value = ['%d,%d' % (o.content_type.pk, o.object_id) \
@@ -298,7 +300,7 @@ class RelatedContentField(forms.CharField):
     
     def clean(self, value):
         """
-        Turns value into a list of RelatedContent objects
+        Turns value into a list of ContentGeneric objects
         value is received as a ; delimited set of , delimited pairs
         """
         if not value:
@@ -306,19 +308,19 @@ class RelatedContentField(forms.CharField):
         
         ids = [tuple(v.split(',')) for v in value.split(';') if v]
         
-        # retrieving RelatedContent objs MUST preserve their order!!!
+        # retrieving ContentGeneric objs MUST preserve their order!!!
         objs = []
         for p in ids:
-            objs.append(RelatedContent.objects.get(
+            objs.append(ContentGeneric.objects.get(
                 content_type__pk=p[0], object_id=p[1]))
          
         # this is faster? but doesn't work because it doesn't preserve order       
         #q = [Q(content_type__pk=p[0], object_id=p[1]) for p in ids]
         #q = reduce(lambda x, y: x | y, q)
-        #objs = list(RelatedContent.objects.filter(q))
+        #objs = list(ContentGeneric.objects.filter(q))
         
         if len(objs) != len(ids):
-            raise Exception('Unexpected RelatedContent identifiers.')
+            raise Exception('Unexpected ContentGeneric identifiers.')
         return objs
     
 

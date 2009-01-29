@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% load crimson_filters %}
+
 {% block title %}
 	Writer Profile | {{ writer }}
 {% endblock %}
@@ -14,11 +16,8 @@
 			<h1>{{ writer }}'s Profile</h1>
 			<br/>
 			<ul>
-				{% for article in articles %}
-					<h3><a href="{{ article.get_absolute_url }}">{{ article.headline }}</a></h3>
-					<p><span class="timestamp">{{ article.issue.issue_date|date:"F d, Y" }}</span> | {{ article.section }}<br/>
-						{{ article.teaser }}
-					</p>
+				{% for c in content %}
+				    {{ c|render:"list-item" }}
 				{% endfor %}
 			</ul>
 		</div>

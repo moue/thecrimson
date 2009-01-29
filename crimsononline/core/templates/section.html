@@ -14,7 +14,7 @@
 
 {% block before_articles %}
     {% if tags %}
-        {% if articles %}
+        {% if content %}
             <h2>Articles tagged: {{ tags|human_list }}</h2>
         {% else %}
             <p>No {{ section.lower }} articles tagged {{ tags|human_list }} were found.</p>

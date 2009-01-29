@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 from django.shortcuts import \
     render_to_response, get_object_or_404, get_list_or_404
 from django.http import Http404, HttpResponse, HttpResponseRedirect
@@ -10,23 +10,23 @@ import sys
 
 def index(request):
     issue = Issue.get_current()
-    stories = Article.recent_objects.filter(section__name='News')[:9]
+    stories = top_articles('News')[:9]
     
     dict = {}
     dict['nav'] = 'index'
     dict['top_stories'] = stories[:4]
     dict['more_stories'] = stories[4:9]
-    dict['opeds'] = Article.recent_objects.filter(section__name='Opinion')[:6]
-    dict['arts'] = Article.recent_objects.filter(section__name='Arts')[:6]
-    dict['sports'] = Article.recent_objects.filter(section__name='Sports')[:6]
-    dict['fms'] = Article.recent_objects.filter(section__name='News')[:6]
+    dict['opeds'] = top_articles('Opinion')[:6]
+    dict['arts'] = top_articles('Arts')[:6]
+    dict['sports'] = top_articles('Sports')[:6]
+    dict['fms'] = top_articles('News')[:6]
     dict['issue'] = issue
     dict['markers'] = Marker.objects.filter(map__in = Map.objects.filter(article__in = stories.values('pk').query).values('pk').query)
     
     return render_to_response('index.html', dict)
 
 def bigmap(request):
-    stories = Article.recent_objects.filter(section__name='News')[:20] # how many articles to show markers from...we will have to play with this
+    stories = top_articles('News')[:20] # how many articles to show markers from...we will have to play with this
     dict = {}
     dict['markers'] = Marker.objects.distinct().filter(map__in = Map.objects.filter(article__in = stories.values('pk').query).values('pk').query)
     
@@ -34,9 +34,8 @@ def bigmap(request):
     
 def article(request, year, month, day, slug):
     year, month, day = int(year), int(month), int(day)
-    a = get_object_or_404(Article,
-        issue__issue_date__year=year, issue__issue_date__month=month,
-        issue__issue_date__day=day, slug=slug)
+    d = date(year=year, month=month, day=day)
+    a = get_object_or_404(Article, generic__issue__issue_date=d, slug=slug)
     nav = a.section.name.lower()
     a.maps.order_by('width') #this looks nicer
     return render_to_response('article.html', {'article': a, 'nav': nav})
@@ -48,17 +47,17 @@ def writer(request, contributor_id, f_name, m_name, l_name):
         return HttpResponseRedirect(w.get_absolute_url())
         
     #TODO: paginate these articles
-    articles = w.article_set.all()
+    content = w.content.all()
     return render_to_response('writer.html', 
-                            {'writer': w, 'articles': articles})
+                            {'writer': w, 'content': content})
 
 def tag(request, tags):
     tags = tags.lower().replace('_', ' ').split(',')
-    articles = Article.objects.all()
+    content = ContentGeneric.objects.all()
     for tag in tags:
-        articles = articles.filter(tags__text=tag)
+        content = content.filter(tags__text=tag)
     return render_to_response('tag.html', 
-        {'tags': tags, 'articles': articles})
+        {'tags': tags, 'content': content})
 
 def section(request, section, issue_id=None, tags=None):    
     # validate the section (we don't want /section/balls/ to be a valid url)
@@ -75,19 +74,18 @@ def section(request, section, issue_id=None, tags=None):
     else:
         issue = get_object_or_404(Issue, pk=issue_id)
     
-    #articles = Article.objects.filter(issue=issue.id, section__pk=section.pk)
-    articles = Article.recent_objects.filter(section__pk=section.pk)
+    content = ContentGeneric.objects.recent.filter(section__pk=section.pk)
     # filter based on tags
-    if tags is not None:
+    if tags:
         tags = tags.lower().replace('_',' ').split(',')
         for tag in tags:
-            articles = articles.filter(tags__text=tag)
-    articles = articles[:20]
+            content = content.filter(tags__text=tag)
+    content = content[:20]
     
     dict = {
         'nav': section.name.lower(),
         'issue': issue,
-        'articles': articles,
+        'content': content,
         'section': section.name.capitalize(),
         'tags': tags,
     }
@@ -122,7 +120,6 @@ def ajax_get_img(request, pk):
     
     
 # =========== view helpers ============== #
-def get_top_articles(issue_id, section, limit=10):
-    """returns the top limit articles from section for the issue"""
-    return Article.objects.filter(issue=issue_id, section__name=section) \
-        .order_by('-priority')[:limit]
+def top_articles(section):
+    """returns the most recent articles from @section"""
+    return Article.objects.recent.filter(generic__section__name=section)
