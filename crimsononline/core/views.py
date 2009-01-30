@@ -47,9 +47,7 @@ def writer(request, contributor_id, f_name, m_name, l_name):
         return HttpResponseRedirect(w.get_absolute_url())
         
     #TODO: paginate these articles
-    content = w.content.all()
-    return render_to_response('writer.html', 
-                            {'writer': w, 'content': content})
+    return render_to_response('writer.html', {'writer': w})
 
 def tag(request, tags):
     tags = tags.lower().replace('_', ' ').split(',')

@@ -196,6 +196,14 @@ class Board(models.Model):
         return self.name
 
 
+
+def contrib_pic_path(instance, filename):
+    ext = splitext(filename)[1]
+    name = '%s_%s_%s' % \
+        (instance.first_name, instance.middle_initial, instance.last_name)
+    return 'photos/contrib_pics/' + name + ext
+    
+    
 class Contributor(models.Model):
     """
     Someone who contributes to the Crimson, 
@@ -221,7 +229,6 @@ class Contributor(models.Model):
     middle_initial = models.CharField(blank=True, null=True, max_length=1)
     created_on = models.DateField(auto_now_add=True)
     type = models.CharField(blank=True, null=True, max_length=100)
-    profile_text = models.TextField(blank=True, null=True)
     email = models.EmailField(blank=True, null=True)
     phone = PhoneNumberField(blank=True, null=True)
     board_number = models.IntegerField(
@@ -236,6 +243,9 @@ class Contributor(models.Model):
     is_active = models.BooleanField(default=True,
         help_text='This should be true for anyone who could possibly still ' \
                     'write for The Crimson, including guest writers.')
+    profile_text = models.TextField(blank=True, null=True)
+    profile_pic = models.ImageField(blank=True, null=True, 
+        upload_to=contrib_pic_path)
     
     def __unicode__(self):
         if self.middle_initial == None or self.middle_initial == '':
@@ -580,7 +590,7 @@ class Marker(models.Model):
     lat = models.FloatField(blank=False)
     lng = models.FloatField(blank=False)
     popup_text = models.CharField(blank=True, max_length = 1000) #text that appears when the user clicks the marker
-	
+    
     def __unicode__(self):
         return self.map.title  + ' (' + str(self.map.center_lat) + ',' + str(self.map.center_lng) + '): ' + self.map.caption + ' (' + str(self.lat) + ',' + str(self.lng) + ')'
     

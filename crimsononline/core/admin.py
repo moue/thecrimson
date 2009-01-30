@@ -80,6 +80,7 @@ class TagAdmin(admin.ModelAdmin):
 
 admin.site.register(Tag, TagAdmin)
 
+
 class ContributorForm(forms.ModelForm):
     class Meta:
         model = Contributor
@@ -89,8 +90,11 @@ class ContributorForm(forms.ModelForm):
             raise forms.ValidationError('HUID must be 8 digits long')
         return self.cleaned_data['huid_hash']
 
+class ContributorSelfAdmin(admin.ModelAdmin):
+    fields = ('profile_text', 'profile_pic', 'email', 'phone')
+    form = ContributorForm
+    
 class ContributorAdmin(admin.ModelAdmin):
-    list_display = ('last_name', 'first_name', 'middle_initial',)
     search_fields = ('first_name', 'last_name',)
     fieldsets = (
         (None, {
@@ -109,6 +113,7 @@ class ContributorAdmin(admin.ModelAdmin):
                 ('email', 'phone',), 
                 ('board_number', 'class_of',),
                 'huid_hash',
+                ('profile_text', 'profile_pic'),
             )
         }),
     )
@@ -342,7 +347,7 @@ class ArticleAdmin(admin.ModelAdmin):
         js = (
             'scripts/jquery.js',
             'scripts/admin/Article.js',
-			'scripts/framework/jquery.sprintf.js',
+            'scripts/framework/jquery.sprintf.js',
         )
         css = {
             'all': ('css/admin/Article.css',)
