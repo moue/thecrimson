@@ -60,7 +60,7 @@ def to_img_tag(img, dimensions):
         width = int(width) if width else None
         height = int(height) if height else None
         tag = '<img src="%s" title="%s" alt="%s" />' % \
-            (img.get_pic_sized_url(width, height), img.caption, img.caption)
+            (img.display(width, height).url, img.caption, img.caption)
     return mark_safe(tag)
 
 @register.filter

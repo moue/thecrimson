@@ -15,7 +15,7 @@
                 {{image|to_img_tag:"390,"}}
             {% endifequal %}
         </a>
-        <p class="byline">{{image.contributor|linkify}}</p>
+        <p class="byline">{{image.generic.contributors.all|linkify|human_list}}</p>
         <p class="caption">{{image.caption}}</p>
     {% endblock %}
 

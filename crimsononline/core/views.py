@@ -113,7 +113,7 @@ def gallery(request, currentimg_id, gallery_id):
 #====== ajax stuff ==========#
 def ajax_get_img(request, pk):
     image = get_object_or_404(Image, pk=pk)
-    url = image.get_pic_sized_url(500, 500)
+    url = image.display(500, 500).url
     return render_to_response('ajax_get_image.html', locals())
     
     
