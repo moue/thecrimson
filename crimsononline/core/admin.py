@@ -8,7 +8,7 @@ from django.utils.safestring import mark_safe
 from django.template.defaultfilters import truncatewords
 from crimsononline.core.models import *
 from crimsononline.admin_cust import forms as cforms
-from crimsononline.admin_cust.forms import FbModelChoiceField, IssuePickerField, MapBuilderField, RelatedContentField
+from crimsononline.admin_cust.forms import FbModelChoiceField, IssuePickerField, MapBuilderField, RelatedContentField, CropField
 
 
 class ContentGenericModelForm(ModelForm):
@@ -162,14 +162,21 @@ class ImageAdminForm(ContentGenericModelForm):
     caption = forms.fields.CharField(
         widget=forms.Textarea(attrs={'rows':'5', 'cols':'40'}),
         required=True)
+    thumbnail = CropField(required=False)
 
 class ImageAdmin(admin.ModelAdmin):
-    fields = ('pic', 'caption', 'kicker', 'contributors', 'tags',)
+    fields = ('pic', 'thumbnail', 'caption', 'kicker', 'contributors', 'tags',)
     form = ImageAdminForm
     class Media:
         js = (
             'scripts/jquery.js',
         )
+    def get_form(self, request, obj=None):
+        f = super(ImageAdmin, self).get_form(request, obj)
+        if obj:
+            f.base_fields['thumbnail'].widget.image = obj
+        return f
+        
 admin.site.register(Image, ImageAdmin)
 
 
@@ -184,8 +191,8 @@ class ImageSelectMultipleWidget(forms.widgets.SelectMultiple):
         return mark_safe(output)
 
 class ImageSelectModelMultipleChoiceField(forms.ModelMultipleChoiceField):
-    # super's clean thinks that valid Images are images in the initial queryset
-    #    but that is not the case; all images are valid.  we temporarily change
+    # super's clean thinks that valid Images = images in the initial queryset
+    #    but that's not the case; all images are valid.  we temporarily change
     #    the queryset, do a clean, and then change the queryset back (to
     #    mitigate side effects).
     def clean(self, value):

@@ -532,6 +532,12 @@ class Image(Content):
     
     """
     
+    # standard image size constraints
+    SIZE_TINY  = (75, 75)
+    SIZE_THUMB = (150, 150)
+    SIZE_STAND = (600, 600)
+    SIZE_LARGE = (900, 900)
+    
     caption = models.CharField(blank=False, max_length=1000)
     kicker = models.CharField(blank=False, max_length=500)
     slug = models.SlugField(blank=False, null=True)
@@ -543,6 +549,14 @@ class Image(Content):
     @property
     def orientation(self):
         return 'wide' if self.pic.width > self.pic.height else 'tall'
+    
+    def __getattr__(self, attr):
+        "dispatches calls to standard sizes to display()"
+        try:
+            size = getattr(self.__class__, 'SIZE_%s' % attr.upper())
+            return self.display(*size)
+        except:
+            return getattr(super(Image, self), attr)
     
     class Meta:
         get_latest_by = 'created_on'

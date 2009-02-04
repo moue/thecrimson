@@ -52,16 +52,20 @@ def to_img_layout(img, dimensions):
 def to_img_tag(img, dimensions):
     """Turns an Image into an img tag (html).
     dimensions is the dimension constraint.  It should be a string formattted
-     "WIDTH,HEIGHT".  Empty width or height is interpreted as a non-constraint.
+     "WIDTH,HEIGHT".  Empty width or height is interpreted as a non-constraint
     """
-    tag = ''
-    if isinstance(img, Image) and dimensions.find(',') != -1:
-        width, height = tuple(dimensions.split(',')[:2])
-        width = int(width) if width else None
-        height = int(height) if height else None
+    try:
+        disp = getattr(img, dimensions, None)
+        if not disp and dimensions.find(',') != -1:
+            width, height = tuple(dimensions.split(',')[:2])
+            width = int(width) if width else None
+            height = int(height) if height else None
+            disp = img.display(width, height)
         tag = '<img src="%s" title="%s" alt="%s" />' % \
-            (img.display(width, height).url, img.caption, img.caption)
-    return mark_safe(tag)
+                (disp.url, img.kicker, img.kicker)
+        return mark_safe(tag)
+    except:
+        return ''
 
 @register.filter
 def to_thumb_tag(img):

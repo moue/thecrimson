@@ -1,0 +1,31 @@
+{% load crimson_filters %}
+{{ hidden }}
+<div class="crop_thumbnail" id="{{attrs.id}}_thumbnail">
+    Current thumbnail:
+    {{image|to_img_tag:"thumb"}}
+    Click <a href="#" id="{{attrs.id}}_crop_new">here</a> to crop a new one.
+</div>
+<div class="crop_original" id="{{attrs.id}}_original" style="padding-left:116px">
+    {{image|to_img_tag:"stand"}}
+</div>
+<script type="text/javascript" charset="utf-8">
+    $(document).ready(function(){
+        var display = function(s){
+            if(s.w != 0 && s.h != 0){
+                $("input#{{attrs.id}}")
+                    .val(s.x + "," + s.y + "," + s.x2 + "," + s.y2);
+            } else {
+                $("input#{{attrs.id}}").val("");
+            }
+        }
+        $("#{{attrs.id}}_original img").Jcrop({
+            onSelect: display
+        });
+        $("#{{attrs.id}}_crop_new").click(function(){
+            $("#{{attrs.id}}_thumbnail").hide();
+            $("#{{attrs.id}}_original").show();
+            return false;
+        });
+        $("#{{attrs.id}}_original").hide();
+    })
+</script>

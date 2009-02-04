@@ -9,8 +9,51 @@ from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
 from django.template.loader import render_to_string
+from django.utils.safestring import mark_safe
 
 from crimsononline.core.models import Issue, ContentGeneric
+
+
+class CropWidget(forms.widgets.HiddenInput):
+    """
+    Widget for CropField
+    """
+    def __init__(self, *args, **kwargs):
+        self.crop_size = kwargs.pop('crop_size', None)
+        self.image = None
+        return super(CropWidget, self).__init__(*args, **kwargs)
+    
+    class Media:
+        js = ('/site_media/scripts/framework/jquery.Jcrop.js',)
+        css = {'all': ("/site_media/css/framework/jquery.Jcrop.css",)}
+    
+    def render(self, name, value, attrs=None):
+        hidden = super(CropWidget, self).render(name, value, attrs)
+        image = self.image
+        return render_to_string("widgets/crop_widget.html", locals())
+    
+    
+
+class CropField(forms.CharField):
+    """
+    Field for cropping images
+    
+    Note: the form that uses this must inject the form's bound Image object
+    into the widget's image attribute at run time
+    TODO: make it so the above is not true
+    
+    @image => image instance
+    @crop_size => a tuple locking down crop size
+    """
+    def __init__(self, *args, **kwargs):
+        kwargs['widget'] = CropWidget(crop_size=kwargs.pop('crop_size', None))
+        return super(CropField, self).__init__(*args, **kwargs)
+    
+    def clean(self, value):
+        "value should be a , separated quadruple corresponding to the cropbox"
+        return tuple(map(lambda x: int(x), value.split(',')))
+    
+
 
 class MapBuilderWidget(forms.widgets.HiddenInput):
     def render(self, name, value, attrs=None):
