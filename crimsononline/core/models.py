@@ -221,7 +221,7 @@ class Contributor(models.Model):
     True
     """
     user = models.ForeignKey(
-        User, verbose_name='web user', unique=True, blank=True, 
+        "CrimsonUser", verbose_name='web user', unique=True, blank=True, 
         null=True, limit_choices_to={'is_active': True},
     )
     first_name = models.CharField(blank=False, null=True, max_length=70)
@@ -235,11 +235,6 @@ class Contributor(models.Model):
         blank=True, null=True, help_text='Eg: 136')
     boards = models.ManyToManyField(Board, blank=True, null=True)
     class_of = models.IntegerField(blank=True, null=True)
-    huid_hash = models.CharField('Harvard ID',
-        blank=True, null=True, max_length=255,
-        help_text='8 digit HUID. Warning: Without an HUID, this ' \
-                'contributor won\'t be able to log on to the website. <br> ' \
-                'This number will be encrypted before it is stored.')
     is_active = models.BooleanField(default=True,
         help_text='This should be true for anyone who could possibly still ' \
                     'write for The Crimson, including guest writers.')
@@ -812,3 +807,22 @@ class ArticleContentRelation(models.Model):
     """
     
 
+class CrimsonUser(User):
+    huid_hash = models.CharField('Harvard ID',
+        blank=True, null=True, max_length=255,
+        help_text='8 digit HUID. Warning: Without an HUID, this ' \
+                'contributor won\'t be able to log on to the website. <br> ' \
+                'This number will be encrypted before it is stored.')
+                
+    def __unicode__(self):
+        return self.huid_hash
+        
+    def __setattr__(self, name, value):
+        # hash the huid before storing it; but actually don't
+        #if name == 'huid_hash' and value != None:
+        #    value = md5(value).digest()
+        return super(Contributor, self).__setattr__(name, value)
+        
+    def parse_token(self):
+        # a b c d
+        return false
