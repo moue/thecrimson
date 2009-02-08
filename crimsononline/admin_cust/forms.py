@@ -46,7 +46,8 @@ class CropField(forms.CharField):
     @crop_size => a tuple locking down crop size
     """
     def __init__(self, *args, **kwargs):
-        kwargs['widget'] = CropWidget(crop_size=kwargs.pop('crop_size', None))
+        self.crop_size = kwargs.pop('crop_size', None)
+        kwargs['widget'] = CropWidget(crop_size=self.crop_size)
         return super(CropField, self).__init__(*args, **kwargs)
     
     def clean(self, value):

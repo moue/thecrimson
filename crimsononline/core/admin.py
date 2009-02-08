@@ -162,7 +162,12 @@ class ImageAdminForm(ContentGenericModelForm):
     caption = forms.fields.CharField(
         widget=forms.Textarea(attrs={'rows':'5', 'cols':'40'}),
         required=True)
-    thumbnail = CropField(required=False)
+    thumbnail = CropField(required=False, crop_size=Image.SIZE_THUMB)
+    
+    def save(self, *args, **kwargs):
+        s = super(ImageAdminForm, self).save(*args, **kwargs)
+        # TODO: crop the image; problems - use original img or what
+        return s
 
 class ImageAdmin(admin.ModelAdmin):
     fields = ('pic', 'thumbnail', 'caption', 'kicker', 'contributors', 'tags',)
