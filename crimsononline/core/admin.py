@@ -112,7 +112,6 @@ class ContributorAdmin(admin.ModelAdmin):
                 'boards',
                 ('email', 'phone',), 
                 ('board_number', 'class_of',),
-                'huid_hash',
                 ('profile_text', 'profile_pic'),
             )
         }),
@@ -124,7 +123,7 @@ class ContributorAdmin(admin.ModelAdmin):
         # then set the groups of the user
         boards = form.cleaned_data['boards']
         if obj.user is None and boards != []:
-            u = User()
+            u = CrimsonUser()
             class_of = form.cleaned_data['class_of']
             if class_of is None:
                 class_of = 0
