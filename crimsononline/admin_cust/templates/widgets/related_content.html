@@ -28,7 +28,6 @@
     <ul class="rel_objs">
         {% for obj in objs %}
             <li>{{ obj|render:"admin.line_item" }}</li>
-        {% empty %}
         {% endfor %}
     </ul>
     <script type="text/javascript" charset="utf-8">
