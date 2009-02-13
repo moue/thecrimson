@@ -220,9 +220,9 @@ class Contributor(models.Model):
     >>> c.is_active
     True
     """
-    user = models.ForeignKey(
-        "CrimsonUser", verbose_name='web user', unique=True, blank=True, 
-        null=True, limit_choices_to={'is_active': True},
+    user = models.OneToOneField(
+        User, verbose_name='web user', unique=True, blank=False, 
+        null=True,
     )
     first_name = models.CharField(blank=False, null=True, max_length=70)
     last_name = models.CharField(blank=False, null=True, max_length=100)
@@ -807,7 +807,8 @@ class ArticleContentRelation(models.Model):
     """
     
 
-class CrimsonUser(User):
+class UserData(models.Model):
+    user = models.ForeignKey(User, unique=True)
     huid_hash = models.CharField('Harvard ID',
         blank=True, null=True, max_length=255,
         help_text='8 digit HUID. Warning: Without an HUID, this ' \
