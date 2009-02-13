@@ -5,6 +5,7 @@ from django.contrib import admin
 from django.forms import ModelForm
 from django.contrib.auth.models import User
 from django.utils.safestring import mark_safe
+from django.utils import hashcompat
 from django.template.defaultfilters import truncatewords
 from crimsononline.core.models import *
 from crimsononline.admin_cust import forms as cforms
@@ -84,6 +85,8 @@ admin.site.register(Tag, TagAdmin)
 class ContributorForm(forms.ModelForm):
     class Meta:
         model = Contributor
+    huid = forms.fields.IntegerField('HUID')
+    # HOW DO I MAKE THIS ACTUALLY DISPLAY 'HUID' INSTEAD OF 'Huid'
     def clean_huid_hash(self):
         h = self.cleaned_data['huid_hash']
         if h and len(h) != 8:
@@ -112,6 +115,7 @@ class ContributorAdmin(admin.ModelAdmin):
                 'boards',
                 ('email', 'phone',), 
                 ('board_number', 'class_of',),
+                'huid',
                 ('profile_text', 'profile_pic'),
             )
         }),
@@ -123,10 +127,13 @@ class ContributorAdmin(admin.ModelAdmin):
         # then set the groups of the user
         boards = form.cleaned_data['boards']
         if obj.user is None and boards != []:
-            u = CrimsonUser()
+            u = User()
             class_of = form.cleaned_data['class_of']
             if class_of is None:
                 class_of = 0
+            # I wonder if this works
+            huid_hash = md5_constructor(form.cleaned_data['huid']).hexdigest()
+            u.get_profile().huid_hash = huid_hash
             u.username = ('%s_%s_%s_%d' % (
                 form.cleaned_data['first_name'],
                 form.cleaned_data['middle_initial'],
