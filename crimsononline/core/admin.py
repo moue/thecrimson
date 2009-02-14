@@ -168,11 +168,15 @@ class ImageAdminForm(ContentGenericModelForm):
     caption = forms.fields.CharField(
         widget=forms.Textarea(attrs={'rows':'5', 'cols':'40'}),
         required=True)
-    thumbnail = CropField(required=False, crop_size=Image.SIZE_THUMB)
+    thumbnail = CropField(required=False, crop_size=Image.SIZE_THUMB,
+        display_size=Image.SIZE_STAND)
     
     def save(self, *args, **kwargs):
         s = super(ImageAdminForm, self).save(*args, **kwargs)
-        # TODO: crop the image; problems - use original img or what
+        #d = kwargs.pop('display_size', None)
+        #hori_ratio = (float)orig_file.width/(float)s[0]
+        #vert_ratio = (float)orig_file.height/(float)s[1]
+        #s = crop(self, )
         return s
 
 class ImageAdmin(admin.ModelAdmin):

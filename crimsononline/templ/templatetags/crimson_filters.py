@@ -54,18 +54,17 @@ def to_img_tag(img, dimensions):
     dimensions is the dimension constraint.  It should be a string formattted
      "WIDTH,HEIGHT".  Empty width or height is interpreted as a non-constraint
     """
-    try:
-        disp = getattr(img, dimensions, None)
-        if not disp and dimensions.find(',') != -1:
-            width, height = tuple(dimensions.split(',')[:2])
-            width = int(width) if width else None
-            height = int(height) if height else None
-            disp = img.display(width, height)
-        tag = '<img src="%s" title="%s" alt="%s" />' % \
-                (disp.url, img.kicker, img.kicker)
-        return mark_safe(tag)
-    except:
-        return ''
+    dimensions = str(dimensions)
+    disp = getattr(img, dimensions, None)
+    if not disp and dimensions.find(',') != -1:
+        dimensions = dimensions.replace('(','').replace(')','')
+        width, height = tuple(dimensions.split(',')[:2])
+        width = int(width) if width else None
+        height = int(height) if height else None
+        disp = img.display(width, height)
+    tag = '<img src="%s" title="%s" alt="%s" />' % \
+            (disp.url, img.kicker, img.kicker)
+    return mark_safe(tag)
 
 @register.filter
 def to_thumb_tag(img):

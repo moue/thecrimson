@@ -19,7 +19,10 @@ class CropWidget(forms.widgets.HiddenInput):
     Widget for CropField
     """
     def __init__(self, *args, **kwargs):
-        self.crop_size = kwargs.pop('crop_size', None)
+        c = kwargs.pop('crop_size', None)
+        self.crop_size = c
+        self.display_size = kwargs.pop('display_size')
+        self.aspect_ratio = float(c[0]) / float(c[1])
         self.image = None
         return super(CropWidget, self).__init__(*args, **kwargs)
     
@@ -47,7 +50,9 @@ class CropField(forms.CharField):
     """
     def __init__(self, *args, **kwargs):
         self.crop_size = kwargs.pop('crop_size', None)
-        kwargs['widget'] = CropWidget(crop_size=self.crop_size)
+        self.display_size = kwargs.pop('display_size', None)
+        kwargs['widget'] = CropWidget(crop_size=self.crop_size, 
+            display_size=self.display_size)
         return super(CropField, self).__init__(*args, **kwargs)
     
     def clean(self, value):
