@@ -56,6 +56,8 @@ class CropField(forms.CharField):
         return super(CropField, self).__init__(*args, **kwargs)
     
     def clean(self, value):
+        if not value:
+            return None
         "value should be a , separated quadruple corresponding to the cropbox"
         return tuple(map(lambda x: int(x), value.split(',')))
     
@@ -202,6 +204,9 @@ class FbSelectWidget(forms.widgets.HiddenInput):
         return super(FbSelectWidget, self).__init__(*args, **kwargs)
     
     def render(self, name, value, attrs=None):
+        # in case its a string?
+        if value and value.__class__ == unicode:
+            value = list(map(lambda x: int(x), value.split(',')))
         if value:
             if getattr(value, '__iter__', None):
                 obj_list = self.model.objects.filter(pk__in=value)

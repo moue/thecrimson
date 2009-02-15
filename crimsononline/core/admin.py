@@ -171,13 +171,14 @@ class ImageAdminForm(ContentGenericModelForm):
     thumbnail = CropField(required=False, crop_size=Image.SIZE_THUMB,
         display_size=Image.SIZE_STAND)
     
-    def save(self, *args, **kwargs):
-        s = super(ImageAdminForm, self).save(*args, **kwargs)
-        #d = kwargs.pop('display_size', None)
-        #hori_ratio = (float)orig_file.width/(float)s[0]
-        #vert_ratio = (float)orig_file.height/(float)s[1]
-        #s = crop(self, )
-        return s
+    #def save(self, *args, **kwargs):
+    #    i = super(ImageAdminForm, self).save(*args, **kwargs)
+        #hori_ratio = float(i.pic.width) / float(Image.SIZE_THUMB[0])
+        #vert_ratio = float(i.pic.height) / float(Image.SIZE_THUMB[1])
+        #data = self.cleaned_data['thumbnail']
+        #x, y = data[0], data[1]
+        #i.crop(self, Image.SIZE_THUMB[0], Image.SIZE_THUMB[1], x * hori_ratio, y * vert_ratio)
+    #    return i
 
 class ImageAdmin(admin.ModelAdmin):
     fields = ('pic', 'thumbnail', 'caption', 'kicker', 'contributors', 'tags',)
