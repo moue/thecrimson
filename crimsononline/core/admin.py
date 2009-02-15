@@ -5,7 +5,7 @@ from django.contrib import admin
 from django.forms import ModelForm
 from django.contrib.auth.models import User
 from django.utils.safestring import mark_safe
-from django.utils import hashcompat
+from django.utils.hashcompat import md5_constructor
 from django.template.defaultfilters import truncatewords
 from crimsononline.core.models import *
 from crimsononline.admin_cust import forms as cforms
@@ -85,7 +85,7 @@ admin.site.register(Tag, TagAdmin)
 class ContributorForm(forms.ModelForm):
     class Meta:
         model = Contributor
-    huid = forms.fields.IntegerField('HUID')
+    huid = forms.fields.CharField(label='HUID')
     # HOW DO I MAKE THIS ACTUALLY DISPLAY 'HUID' INSTEAD OF 'Huid'
     def clean_huid_hash(self):
         h = self.cleaned_data['huid_hash']
@@ -126,14 +126,14 @@ class ContributorAdmin(admin.ModelAdmin):
         # create a user if one does not exist
         # then set the groups of the user
         boards = form.cleaned_data['boards']
+        huid_hash = md5_constructor(form.cleaned_data['huid']).hexdigest()
         if obj.user is None and boards != []:
             u = User()
+            u.save()
+            ud = UserData(user=u)
             class_of = form.cleaned_data['class_of']
             if class_of is None:
-                class_of = 0
-            # I wonder if this works
-            huid_hash = md5_constructor(form.cleaned_data['huid']).hexdigest()
-            u.get_profile().huid_hash = huid_hash
+                class_of = 0  
             u.username = ('%s_%s_%s_%d' % (
                 form.cleaned_data['first_name'],
                 form.cleaned_data['middle_initial'],
@@ -143,11 +143,15 @@ class ContributorAdmin(admin.ModelAdmin):
             u.set_unusable_password() # auth is done with Harv PIN
             u.is_staff = True
             u.save()
+            ud.save()
             obj.user = u
         if obj.user != None:
             groups = [board.group for board in boards]
             obj.user.groups = groups
             obj.user.save()
+            ud = obj.user.get_profile()
+            ud.huid_hash = huid_hash
+            ud.save()
         return super(ContributorAdmin, self).save_model(
             request, obj, form, change)
     

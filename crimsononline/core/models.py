@@ -220,6 +220,7 @@ class Contributor(models.Model):
     >>> c.is_active
     True
     """
+    
     user = models.OneToOneField(
         User, verbose_name='web user', unique=True, blank=False, 
         null=True,
@@ -822,7 +823,7 @@ class UserData(models.Model):
         # hash the huid before storing it; but actually don't
         #if name == 'huid_hash' and value != None:
         #    value = md5(value).digest()
-        return super(Contributor, self).__setattr__(name, value)
+        return super(UserData, self).__setattr__(name, value)
         
     def parse_token(self):
         # a b c d
