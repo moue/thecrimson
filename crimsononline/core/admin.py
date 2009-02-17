@@ -175,17 +175,22 @@ class ImageAdminForm(ContentGenericModelForm):
     thumbnail = CropField(required=False, crop_size=Image.SIZE_THUMB,
         display_size=Image.SIZE_STAND)
     
-    #def save(self, *args, **kwargs):
-    #    i = super(ImageAdminForm, self).save(*args, **kwargs)
-        #hori_ratio = float(i.pic.width) / float(Image.SIZE_THUMB[0])
-        #vert_ratio = float(i.pic.height) / float(Image.SIZE_THUMB[1])
-        #data = self.cleaned_data['thumbnail']
-        #x, y = data[0], data[1]
-        #i.crop(self, Image.SIZE_THUMB[0], Image.SIZE_THUMB[1], x * hori_ratio, y * vert_ratio)
-    #    return i
+    def save(self, *args, **kwargs):
+        i = super(ImageAdminForm, self).save(*args, **kwargs)
+        hori_ratio = float(i.pic.width) / float(Image.SIZE_THUMB[0])
+        vert_ratio = float(i.pic.height) / float(Image.SIZE_THUMB[1])
+        data = self.cleaned_data['thumbnail']
+        x, y = data[0], data[1]
+        i.crop(Image.SIZE_THUMB[0], Image.SIZE_THUMB[1], 
+            x * hori_ratio, y * vert_ratio)
+        print x, y, Image.SIZE_STAND
+        print Image.SIZE_THUMB, i.pic.width, i.pic.height
+        print Image.SIZE_THUMB[0], Image.SIZE_THUMB[1], x * hori_ratio, y * vert_ratio
+        return i
 
 class ImageAdmin(admin.ModelAdmin):
-    fields = ('pic', 'thumbnail', 'caption', 'kicker', 'contributors', 'tags',)
+    fields = ('pic', 'thumbnail', 'caption', 'kicker', 'section', 'issue',
+        'priority', 'contributors', 'tags')
     form = ImageAdminForm
     class Media:
         js = (
