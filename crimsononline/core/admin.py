@@ -177,6 +177,7 @@ class ImageAdminForm(ContentGenericModelForm):
     
     def save(self, *args, **kwargs):
         i = super(ImageAdminForm, self).save(*args, **kwargs)
+        # logic for saving the cropped stuffs
         data = self.cleaned_data['thumbnail']
         if data:
             hori_ratio = float(i.pic.width) / float(Image.SIZE_STAND[0]) 
