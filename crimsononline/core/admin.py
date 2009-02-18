@@ -177,15 +177,17 @@ class ImageAdminForm(ContentGenericModelForm):
     
     def save(self, *args, **kwargs):
         i = super(ImageAdminForm, self).save(*args, **kwargs)
-        hori_ratio = float(i.pic.width) / float(Image.SIZE_THUMB[0])
-        vert_ratio = float(i.pic.height) / float(Image.SIZE_THUMB[1])
         data = self.cleaned_data['thumbnail']
-        x, y = data[0], data[1]
-        i.crop(Image.SIZE_THUMB[0], Image.SIZE_THUMB[1], 
-            x * hori_ratio, y * vert_ratio)
-        print x, y, Image.SIZE_STAND
-        print Image.SIZE_THUMB, i.pic.width, i.pic.height
-        print Image.SIZE_THUMB[0], Image.SIZE_THUMB[1], x * hori_ratio, y * vert_ratio
+        if data:
+            hori_ratio = float(i.pic.width) / float(Image.SIZE_STAND[0]) 
+            vert_ratio = float(i.pic.height) / float(Image.SIZE_STAND[1])
+            # ratio the image is actually scaled at
+            scale_ratio = max(hori_ratio, vert_ratio)
+            # if this ratio is < 1, then the image wasn't scaled at all
+            if scale_ratio < 1.0:
+                scale_ratio = 1
+            data = map(lambda x: int(x * scale_ratio), data)
+            i.crop(Image.SIZE_THUMB[0], Image.SIZE_THUMB[1], *data)
         return i
 
 class ImageAdmin(admin.ModelAdmin):

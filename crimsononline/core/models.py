@@ -452,12 +452,13 @@ class ImageSpec():
     Automatigically resizes images to correct constraints
     
     @size => width, height tuple
-    @crop_xy => x,y tuple; represents upper left corner of crop region
+    @crop_coords => x1,y1, x2, y2 tuple; represents upper left corner and lower
+        right corner of crop region
     
     cached image resizes are saved as 
         (originalName)_(width)x(height).(ext)
     """
-    def __init__(self, orig_file, size, crop_xy=None):
+    def __init__(self, orig_file, size, crop_coords=None):
         width, height = size
         width = int(min(orig_file.width, width)) if width else None
         height = int(min(orig_file.height, height)) if height else None
@@ -465,11 +466,9 @@ class ImageSpec():
         self.height = height or orig_file.height
         
         self.orig_file = orig_file
-        if crop_xy:
-            x, y = crop_xy
+        if crop_coords:
             img = pilImage.open(self.orig_file.path)
-            img = img.transform(size, pilImage.EXTENT, 
-                (x, y, x + self.width,  y + self.height))
+            img = img.transform(size, pilImage.EXTENT, crop_coords)
             self._path, self._url = self._get_path(), ''
             img.save(self._path)
         else:
@@ -572,13 +571,13 @@ class Image(Content):
         self._spec_cache[(width, height)] = s
         return s
     
-    def crop(self, width, height, x, y):
+    def crop(self, width, height, x1, y1, x2, y2):
         """
         crops the image and returns an ImageSpec object
         
         overwrites any previous ImageSpecs
         """
-        s = ImageSpec(self.pic, (width, height), (x, y))
+        s = ImageSpec(self.pic, (width, height), (x1, y1, x2, y2))
         self._spec_cache[(width, height)] = s
         return s
     
