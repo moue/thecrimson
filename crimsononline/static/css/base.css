@@ -4,70 +4,82 @@
 	padding:0px;
 	margin:0px;
 }
-.wrapper {
+#wrapper {
 	width: 980px;
-	margin: 10px auto 0px auto;
-	border-left-style: solid;
-	border-left-color: #780001;
-	border-left-width: 15px;
-	border-right-style: solid;
-	border-right-width: 15px;
-	border-right-color: #BE0000;
+	margin: 0px auto 0px auto;
+	padding: 0 10px;
 	text-align:left;
 	background-color: #ffffff;
+	background-image: url('/site_media/images/shadow.gif');
 }
-.header {
+#masthead {
+	height: 96px;
+	width: 974px;
+	margin: 0 3px;
 }
-.contentWrapper{
-	margin: 0px 3px 0px 3px;
-	width: 950px;
-	padding: 12px 10px 10px 10px;
-	border-width: 0px 2px 0px 2px;
-	border-style: solid;
-	border-right-color: #c8c8c8;
-	border-left-color: #c8c8c8;
+#main, #footer, #nav{
+    width: 960px;
+    border-width: 0 1px;
+    border-style: solid;
+    border-color: #b90600;
+    margin: 0 3px;
+    padding: 0 6px;
+}
+#main {
 	float: left;
 	font-family: Georgia,serif;
+	clear: both;
 }
-.footer{
-	width: 980px;
+#footer {
 	text-align: center;
     /*clear: both;*/
 }
-.menu {
-	height: 27px;
-	width: 975px;
-	padding-left: 5px;
-	background-image: url('/site_media/images/menubar_background.gif');
+#nav {
+    width: 972px;
+	height: 30px;
+	padding: 5px 0;
 }
-.banner {
-	height: 83px;
-	width: 980px;
+#nav ul{
+    height: 23px;
+    border-width: 1px 0;
+	border-style: solid;
+	border-color: #b5b5b5;
 }
-.menu li{
+#nav li.spacer{
+    padding: 3px 3px 0;
+    height: 20px;
+}
+#nav li{
 	list-style: none;
-	height: 17px;
-	margin: 7px 0px 3px 0px;
+	display: list-item;
+	
+	text-align: center;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: .9em;
+	letter-spacing: 0px;
+	
 	border-width: 0 1px 0 0;
 	border-style: solid;
 	border-color: #b5b5b5;
-	padding: 0 15px 0 15px;
 	
-	line-height: 17px;
-	text-align: center;
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;
-	letter-spacing: 0px;
 	float: left;
 }
-.menu a, .menu a:hover, .menu a:visited{
+#nav a, #nav a:hover, #nav a:visited{
 	text-decoration: none;
 	font-weight:bolder;
-	color:#600000;
+	color: gray;
+	display: block;
+	position: relative;
+	
+	padding: 3px 15px 0 15px;
+	margin: 1px;
+	height: 18px;
 }
-.menu a:hover {
-	color: #e02222;
+#nav a:hover {
+	color: white;
+	background-color: #b90600;
 }
+/*
 #nav_cur {
 	background: white;
 	line-height:22px;
@@ -75,7 +87,6 @@
 	left:-1px;
 	
 	height: 23px;
-	margin: 3px 0px 0px 0px;
 	border-width: 1px 1px 0 1px;
 }
 #nav_cur a {
@@ -83,7 +94,7 @@
 }
 #nav_cur a:hover {
 	color: #600000;
-}
+}*/
 #nav_date{
 	font-weight: bold;
 	color: #600000;
@@ -98,7 +109,7 @@
 }
 body {
 	text-align:center;
-	background-color: #888888;
+	background-color: #ccc;
 }
 
 /* stylings */

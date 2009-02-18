@@ -11,33 +11,32 @@
 	{% block inhead %}{% endblock %}
 </head>
 <body>
-	<div class="wrapper">
-		<div class="header">
-			<div class="banner">
-				<img src="/site_media/images/banner.jpg" alt="">
-			</div>
-			<div class="menu">
-				<ul>
-					<li {{ nav|is_nav_cur:"index" }}><a href="/">HOME</a></li>
-					<li {{ nav|is_nav_cur:"news" }}><a href="/section/news">NEWS</a></li>
-					<li {{ nav|is_nav_cur:"opinion" }}><a href="/section/opinion">OPINION</a></li>
-					<li {{ nav|is_nav_cur:"fm" }}><a href="/section/fm">MAGAZINE</a></li>
-					<li {{ nav|is_nav_cur:"arts" }}><a href="/section/arts">ARTS</a></li>
-					<li {{ nav|is_nav_cur:"photo" }}><a href="/section/photo">PHOTOS</a></li>
-					<li {{ nav|is_nav_cur:"sports" }}><a href="/section/sports">SPORTS</a></li>
-					<li {{ nav|is_nav_cur:"about" }}><a href="/about">ABOUT US</a></li>
-				</ul>
-			</div>
-			<div class="submenu">
-				{% block submenu %}{% endblock %}
-			</div>
+	<div id="wrapper">
+		<div id="masthead">
+			<img src="/site_media/images/banner.png" alt="">
 		</div>
-		<div class="contentWrapper">
+		<div id="nav">
+			<ul>
+			    <li class="spacer">&nbsp;</li>
+				<li {{ nav|is_nav_cur:"index" }}><a href="/"><strong>HOME</strong></a></li>
+				<li {{ nav|is_nav_cur:"news" }}><a href="/section/news">NEWS</a></li>
+				<li {{ nav|is_nav_cur:"opinion" }}><a href="/section/opinion">OPINION</a></li>
+				<li {{ nav|is_nav_cur:"fm" }}><a href="/section/fm">MAGAZINE</a></li>
+				<li {{ nav|is_nav_cur:"arts" }}><a href="/section/arts">ARTS</a></li>
+				<li {{ nav|is_nav_cur:"photo" }}><a href="/section/photo">PHOTOS</a></li>
+				<li {{ nav|is_nav_cur:"sports" }}><a href="/section/sports">SPORTS</a></li>
+				<li {{ nav|is_nav_cur:"about" }}><a href="/about">ABOUT US</a></li>
+			</ul>
+		</div>
+		<div class="submenu">
+			{% block submenu %}{% endblock %}
+		</div>
+		<div id="main">
 			{% block pre_body %}{% endblock %}
 			{% block body %}{% endblock %}
 			{% block post_body %}{% endblock %}
 		</div>
-		<div class="footer">
+		<div id="footer">
 		 copyright 2008
 		</div>
 	</div>
