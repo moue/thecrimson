@@ -458,15 +458,31 @@ class ImageSpec():
     cached image resizes are saved as 
         (originalName)_(width)x(height).(ext)
     """
-    def __init__(self, orig_file, size, crop_coords=None):
-        width, height = size
+    def __init__(self, orig_file, size_spec, crop_coords=None):
+        width, height, crop_ratio = size_spec
         width = int(min(orig_file.width, width)) if width else None
         height = int(min(orig_file.height, height)) if height else None
         self.width = width or orig_file.width
         self.height = height or orig_file.height
+		self.crop_ratio = crop_ratio
         
         self.orig_file = orig_file
-        if crop_coords:
+        if crop_ratio and not crop_coords:
+			# autogenerate crop_coordinates
+			aspect_ratio = float(orig_file.width) / float(orig_file.height)
+			# extra space on left / right => preserve height
+			if  aspect_ratio > crop_ratio:
+				w = int(orig_file.height * crop_ratio)
+				crop_x1 = (orig_file.width - w) / 2
+				crop_coords = (crop_x1, 0, crop_x1 + w, orig_file.height)
+			# extra space on top / bottom => preserve width
+			elif aspect_ratio < crop_ratio:
+				h = int(orig_file.width / crop_ratio)
+				crop_y1 = (orig_file.height - h) / 2
+				crop_coords = (0, crop_y1, orig_file.width, crop_y1 + h)
+			else:
+				crop_coords = (0, 0, orig_file.width, orig_file.height)
+		if crop_coords:
             img = pilImage.open(self.orig_file.path)
             img = img.transform(size, pilImage.EXTENT, crop_coords)
             self._path, self._url = self._get_path(), ''
@@ -479,7 +495,9 @@ class ImageSpec():
         calculates the path, no caching involved
         """
         path, ext = splitext(self.orig_file.path)
-        path += "_%dx%d%s" % (self.width, self.height, ext)
+		c = ("_%f" % self.crop_ratio).replace('.', ',') if self.crop_ratio \
+			else ''
+        path += "_%dx%d%s%s" % (self.width, self.height, c, ext)
         return path
     
     @property
@@ -527,11 +545,12 @@ class Image(Content):
     
     """
     
-    # standard image size constraints
-    SIZE_TINY  = (75, 75)
-    SIZE_THUMB = (150, 150)
-    SIZE_STAND = (600, 600)
-    SIZE_LARGE = (900, 900)
+    # standard image size constraints: 
+	#  width, height, crop_ratio ( 0 => not cropped )
+    SIZE_TINY  = (75, 75, 1)
+    SIZE_THUMB = (150, 150, 1)
+    SIZE_STAND = (600, 600, 0)
+    SIZE_LARGE = (900, 900, 0)
     
     caption = models.CharField(blank=False, max_length=1000)
     kicker = models.CharField(blank=False, max_length=500)
@@ -561,14 +580,14 @@ class Image(Content):
         self._spec_cache = {}
         return super(Image, self).__init__(*args, **kwargs)
     
-    def display(self, width, height):
+    def display(self, width, height, crop_ratio=0):
         """
         returns an ImageSpec object
         """
-        if self._spec_cache.get((width, height), None):
-            return self._spec_cache[(width, height)]
-        s = ImageSpec(self.pic, (width, height))
-        self._spec_cache[(width, height)] = s
+        if self._spec_cache.get((width, height, crop_ratio), None):
+            return self._spec_cache[(width, height, crop_ratio)]
+        s = ImageSpec(self.pic, (width, height, crop_ratio))
+        self._spec_cache[(width, height, crop_ratio)] = s
         return s
     
     def crop(self, width, height, x1, y1, x2, y2):
@@ -578,7 +597,7 @@ class Image(Content):
         overwrites any previous ImageSpecs
         """
         s = ImageSpec(self.pic, (width, height), (x1, y1, x2, y2))
-        self._spec_cache[(width, height)] = s
+        self._spec_cache[(width, height, float(width) / float(height))] = s
         return s
     
     def __unicode__(self):
