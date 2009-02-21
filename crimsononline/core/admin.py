@@ -169,9 +169,9 @@ class ImageAdminForm(ContentGenericModelForm):
     class Meta:
         model = Image
     
-	# the different sizes to crop. these should all be square sizes
-	CROP_SIZES = (Image.SIZE_THUMB, )
-	
+    # the different sizes to crop. these should all be square sizes
+    CROP_SIZES = (Image.SIZE_THUMB, )
+    
     caption = forms.fields.CharField(
         widget=forms.Textarea(attrs={'rows':'5', 'cols':'40'}),
         required=True)
@@ -204,7 +204,7 @@ class ImageAdmin(admin.ModelAdmin):
         )
     def get_form(self, request, obj=None):
         f = super(ImageAdmin, self).get_form(request, obj)
-        f.base_fields['thumbnail'].widget.image = obj	
+        f.base_fields['thumbnail'].widget.image = obj    
         return f
         
 admin.site.register(Image, ImageAdmin)

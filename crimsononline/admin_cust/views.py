@@ -14,7 +14,6 @@ def get_rel_content(request, ct_id, obj_id, ct_name=None):
     returns HTML with a Content obj rendered as 'admin.line_item'
     """
     if not ct_id:
-        print ct_name.lower()
         ct = ContentType.objects.get(app_label='core', model=ct_name.lower())
         ct_id = ct.pk
     r = get_object_or_404(

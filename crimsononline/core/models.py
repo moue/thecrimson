@@ -451,7 +451,7 @@ class ImageSpec():
     Deals with handling files and urls for images of specific size constraints
     Automatigically resizes images to correct constraints
     
-    @size => width, height tuple
+    @size_spec => width, height, crop_ratio tuple
     @crop_coords => x1,y1, x2, y2 tuple; represents upper left corner and lower
         right corner of crop region
     
@@ -464,27 +464,12 @@ class ImageSpec():
         height = int(min(orig_file.height, height)) if height else None
         self.width = width or orig_file.width
         self.height = height or orig_file.height
-		self.crop_ratio = crop_ratio
-        
+        self.crop_ratio = crop_ratio
         self.orig_file = orig_file
-        if crop_ratio and not crop_coords:
-			# autogenerate crop_coordinates
-			aspect_ratio = float(orig_file.width) / float(orig_file.height)
-			# extra space on left / right => preserve height
-			if  aspect_ratio > crop_ratio:
-				w = int(orig_file.height * crop_ratio)
-				crop_x1 = (orig_file.width - w) / 2
-				crop_coords = (crop_x1, 0, crop_x1 + w, orig_file.height)
-			# extra space on top / bottom => preserve width
-			elif aspect_ratio < crop_ratio:
-				h = int(orig_file.width / crop_ratio)
-				crop_y1 = (orig_file.height - h) / 2
-				crop_coords = (0, crop_y1, orig_file.width, crop_y1 + h)
-			else:
-				crop_coords = (0, 0, orig_file.width, orig_file.height)
-		if crop_coords:
+        
+        if crop_coords:
             img = pilImage.open(self.orig_file.path)
-            img = img.transform(size, pilImage.EXTENT, crop_coords)
+            img = img.transform(size_spec[:2], pilImage.EXTENT, crop_coords)
             self._path, self._url = self._get_path(), ''
             img.save(self._path)
         else:
@@ -495,8 +480,8 @@ class ImageSpec():
         calculates the path, no caching involved
         """
         path, ext = splitext(self.orig_file.path)
-		c = ("_%f" % self.crop_ratio).replace('.', ',') if self.crop_ratio \
-			else ''
+        c = ("_%f" % self.crop_ratio).replace('.', ',') if self.crop_ratio \
+            else ''
         path += "_%dx%d%s%s" % (self.width, self.height, c, ext)
         return path
     
@@ -512,7 +497,29 @@ class ImageSpec():
             # if it hasn't been precropped or auto generated
             #  autogenerate it
             img = pilImage.open(self.orig_file.path)
-            img.thumbnail((self.width, self.height), pilImage.ANTIALIAS)
+            
+            # cropped image
+            if self.crop_ratio:
+                o = self.orig_file
+                # autogenerate crop_coordinates
+                aspect_ratio = float(o.width) / float(o.height)
+                # extra space on left / right => preserve height
+                if  aspect_ratio > self.crop_ratio:
+                    w = int(o.height * self.crop_ratio)
+                    crop_x1 = (o.width - w) / 2
+                    crop_coords = (crop_x1, 0, crop_x1 + w, o.height)
+                # extra space on top / bottom => preserve width
+                elif aspect_ratio < self.crop_ratio:
+                    h = int(o.width / self.crop_ratio)
+                    crop_y1 = (o.height - h) / 2
+                    crop_coords = (0, crop_y1, o.width, crop_y1 + h)
+                else:
+                    crop_coords = (0, 0, o.width, o.height)
+                img = img.transform((self.width, self.height), 
+                    pilImage.EXTENT, crop_coords)
+            # constrained image
+            else:
+                img.thumbnail((self.width, self.height), pilImage.ANTIALIAS)
             img.save(path)
         self._path = path
         return path
@@ -546,9 +553,9 @@ class Image(Content):
     """
     
     # standard image size constraints: 
-	#  width, height, crop_ratio ( 0 => not cropped )
-    SIZE_TINY  = (75, 75, 1)
-    SIZE_THUMB = (150, 150, 1)
+    #  width, height, crop_ratio ( 0 => not cropped )
+    SIZE_TINY  = (75, 75, 1.0)
+    SIZE_THUMB = (150, 150, 1.0)
     SIZE_STAND = (600, 600, 0)
     SIZE_LARGE = (900, 900, 0)
     
@@ -596,8 +603,9 @@ class Image(Content):
         
         overwrites any previous ImageSpecs
         """
-        s = ImageSpec(self.pic, (width, height), (x1, y1, x2, y2))
-        self._spec_cache[(width, height, float(width) / float(height))] = s
+        c = float(width) / float(height)
+        s = ImageSpec(self.pic, (width, height, c), (x1, y1, x2, y2))
+        self._spec_cache[(width, height, c)] = s
         return s
     
     def __unicode__(self):

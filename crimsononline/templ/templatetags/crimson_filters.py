@@ -49,19 +49,31 @@ def to_img_layout(img, dimensions):
     return mark_safe(tag)
 
 @register.filter
-def to_img_tag(img, dimensions):
+def to_img_tag(img, size_spec):
     """Turns an Image into an img tag (html).
-    dimensions is the dimension constraint.  It should be a string formattted
-     "WIDTH,HEIGHT".  Empty width or height is interpreted as a non-constraint
+    
+    @size_spec => the size spec of the display image. 3 possible formats:
+        string name of the size_spec defined in the Image model,
+        string formatted "WIDTH,HEIGHT,CROP_RATIO" or "WIDTH,HEIGHT", or
+        tuple given as (WIDTH, HEIGHT, CROP_RATIO) or (WIDTH, HEIGHT)
+     
+    empty or omitted constraints are not binding
+    empty crop ratio assume to be 0
     """
-    dimensions = str(dimensions)
-    disp = getattr(img, dimensions, None)
-    if not disp and dimensions.find(',') != -1:
-        dimensions = dimensions.replace('(','').replace(')','')
-        width, height = tuple(dimensions.split(',')[:2])
-        width = int(width) if width else None
-        height = int(height) if height else None
-        disp = img.display(width, height)
+    size_spec = str(size_spec)
+    # check to see if size_spec is a predefined attribute
+    disp = getattr(img, size_spec, None)
+    if not disp and size_spec.find(',') != -1:
+        # finish converting tuple to string
+        size_spec = size_spec.replace('(','').replace(')','')
+        size_spec = tuple(size_spec.split(','))
+        w = int(size_spec[0]) if size_spec[0] else None
+        h = int(size_spec[1]) if size_spec[1] else None
+        c = float(size_spec[2]) if len(size_spec) > 2 and size_spec[2] \
+            else 0
+        size_spec = (w, h, c)
+        print size_spec
+        disp = img.display(*size_spec)
     tag = '<img src="%s" title="%s" alt="%s" />' % \
             (disp.url, img.kicker, img.kicker)
     return mark_safe(tag)

@@ -102,13 +102,13 @@ def photo(request):
     galleries = ImageGallery.objects.order_by('-created_on')[:10]
     nav, title = 'photo', 'Photo'
     return render_to_response('photo.html', locals())
-	
+    
 def gallery(request, currentimg_id, gallery_id):
-	currentimg_id = int(currentimg_id)
-	gallery_id = int(gallery_id)
-	image = get_object_or_404(Image, pk=currentimg_id)
-	gallery = get_object_or_404(ImageGallery, pk=gallery_id)
-	return render_to_response('gallery.html', {'currentimg':image, 'gallery':gallery})
+    currentimg_id = int(currentimg_id)
+    gallery_id = int(gallery_id)
+    image = get_object_or_404(Image, pk=currentimg_id)
+    gallery = get_object_or_404(ImageGallery, pk=gallery_id)
+    return render_to_response('gallery.html', {'currentimg':image, 'gallery':gallery})
 
 #====== ajax stuff ==========#
 def ajax_get_img(request, pk):
