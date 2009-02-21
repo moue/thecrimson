@@ -559,8 +559,8 @@ class Image(Content):
     SIZE_STAND = (600, 600, 0)
     SIZE_LARGE = (900, 900, 0)
     
-    caption = models.CharField(blank=False, max_length=1000)
-    kicker = models.CharField(blank=False, max_length=500)
+    caption = models.CharField(blank=True, null=True, max_length=1000)
+    kicker = models.CharField(blank=True, null=True, max_length=500)
     slug = models.SlugField(blank=False, null=True)
     created_on = models.DateTimeField(auto_now_add=True)
     # make sure pic is last: get_save_path needs an instance, and if this

@@ -174,7 +174,7 @@ class ImageAdminForm(ContentGenericModelForm):
     
     caption = forms.fields.CharField(
         widget=forms.Textarea(attrs={'rows':'5', 'cols':'40'}),
-        required=True)
+        required=False)
     thumbnail = CropField(required=False, crop_size=Image.SIZE_THUMB,
         display_size=Image.SIZE_STAND)
     
