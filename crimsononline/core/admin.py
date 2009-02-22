@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 from re import compile
 from django import forms
+from django.conf import settings
 from django.contrib import admin
 from django.forms import ModelForm
 from django.contrib.auth.models import User
@@ -459,3 +460,26 @@ class MapAdmin(admin.ModelAdmin):
         
 admin.site.register(Map, MapAdmin)
 admin.site.register(Marker)
+
+class HUIDBackend:
+    """
+    Authenticate HUID (presumably) passed from the Harvard HUID auth thing 
+    against the hashed HUID in the Django database.  Creates a new user if one 
+    doesn't exist (i.e. this person has never logged into the Crimson).
+    """
+    def authenticate(self, huid=None):
+        huid_hash = md5_constructor(huid).hexdigest()
+        try:
+            ud = UserData.objects.get(huid_hash=huid_hash)
+        except UserData.DoesNotExist:
+            return None
+        user = User(UserData=ud)
+        return user
+        
+    def get_user(self, huid):
+        huid_hash = md5_constructor(huid).hexdigest()
+        try:
+            ud = UserData.objects.get(huid_hash=huid_hash)
+            return User(UserData = ud)
+        except UserData.DoesNotExist:
+            return None
