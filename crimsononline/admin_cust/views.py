@@ -1,11 +1,14 @@
 from datetime import datetime
 from django.db.models import Q
 from django.shortcuts import render_to_response, get_object_or_404
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.models import User, Group
 from django.contrib.contenttypes.models import ContentType
 from django.core.paginator import Paginator
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.template.loader import render_to_string
 from django.utils import simplejson
+from django.utils.hashcompat import md5_constructor
 from django.utils.safestring import mark_safe
 from crimsononline.core.models import *
 
@@ -177,3 +180,16 @@ def get_img_galleries(request, st_yr, st_mnth, end_yr,
     json_dict['prev_page'] = p.previous_page_number() if p.has_previous() else 0
     
     return HttpResponse(simplejson.dumps(json_dict))
+
+def login_user(request):
+    """
+    Handles response from PIN application when a user tries to log in.
+    """
+    user = authenticate(huid=request.REQUEST["huid"])
+    if user is not None:
+        if user.is_active:
+            login(request,user)
+            return HttpResponseRedirect('http://www.zombo.com')
+    else:
+        return HttpResponseRedirect('http://www.youtube.com/watch?v=oHg5SJYRHA0')
+    
