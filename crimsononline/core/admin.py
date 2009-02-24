@@ -470,16 +470,16 @@ class HUIDBackend:
     def authenticate(self, huid=None):
         huid_hash = md5_constructor(huid).hexdigest()
         try:
-            ud = UserData.objects.get(huid_hash=huid_hash)
+            ud = UserData(huid_hash=huid_hash)
         except UserData.DoesNotExist:
             return None
-        user = User(UserData=ud)
+        user = ud.user
         return user
         
     def get_user(self, huid):
         huid_hash = md5_constructor(huid).hexdigest()
         try:
-            ud = UserData.objects.get(huid_hash=huid_hash)
-            return User(UserData = ud)
+            ud = UserData(huid_hash=huid_hash)
+            return ud.user
         except UserData.DoesNotExist:
             return None
