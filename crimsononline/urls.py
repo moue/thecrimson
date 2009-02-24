@@ -3,6 +3,7 @@ from django.conf import settings
 from django.conf.urls.defaults import *
 from django.contrib import admin
 from crimsononline.core.views import *
+from crimsononline.admin_cust.views import login_user
 
 admin.autodiscover()
 
@@ -24,6 +25,11 @@ urlpatterns = patterns('crimsononline.core.views',
     url(r'^gallery/get_img/(\d+)/$', 'ajax_get_img'),
     url(r'^map/$', 'bigmap'),
     url(r'^$', 'index', name='core_index'),
+)
+
+urlpatterns += patterns('django.views.generic.simple',
+    (r'login/$', 'redirect_to', { 'url': 'http://www.alondite.com/welp/crimlogin.html'}),
+    (r'login_return/$', login_user),
 )
 
 urlpatterns += patterns('',
