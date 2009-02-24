@@ -1,76 +1,43 @@
 /* wrappers */
-.columnCenter{
-	width: 780px;
-	float: left;
-	font-family: Arial, Helvetica, sans-serif;
+.half_page {
+    width: 954px;
+    padding: 0 6px 0 0;
 }
-.contentTop {
-	width: 776px;
-	margin: 0px 4px 0px 0px;
-	paddin: 0px 0px 2px 0px;
-	border-width: 0px 0px 0px 0px;
-	border-style: solid;
-	border-color: #c4c5c7;
-	float: left;
+.content_column {
+    width: 312px;
+    margin: 0 0 0 6px;
+    float: left
 }
-.contentBottom {
-	width: 776px;
-	margin: 0px 4px 0px 0px;
-	float: left;
+.content_column h1 {
+    font-size: 11px;
+	color: white;
+    background-color: #a02222;
+    display: inline;
+    padding: 2px;
+    font-family: Arial,Helvetica,sans-serif;
 }
-.columnRight {
-	border-width: 0px 0px 0px 1px;
-	border-style: solid;
-	border-color: #c4c5c7;
-	padding: 0px 1px 0px 8px;
-	float:right;
-	width: 160px;
+#the_fold {
+    clear: both;
 }
-.topCenter {
-	width: 300px;
-	float: left;
-}
-.topRight {
-	width: 210px;
-	margin: 0px 0px 0px 8px;
-	float: left;
-}
-
 /* section containers */
-.topStories {
-	width: 255px;
-	margin: 0px 3px 0px 0px;
-	float: left;
-}
-.moreNews {
-	margin: 2px 0px 0px 0px;
+#more_news {
 	font-size: 14px;
 }
-.topOpinions {
+#top_opinions {
 	font-size: 13px;
-	margin-bottom: 10px;
 }
 
 /* section specifics */
-.columnCenter h1{
-	font-size: 12px;
-	color: #e02222;
-	margin-bottom: 8px;
-	width: inherit;
-	
-	border-width: 0px 0px 1px 0px;
-	border-style: solid;
-	border-color: #cccccc;
-}
 ul.article_previews{
 	list-style: none;
 }
 ul.article_previews > li{
-	margin-bottom: 10px;
+	margin-top: 10px;
 }
-ul.article_previews a{
-	font-size: 14px;
+ul.article_previews h3{
+	font-size: 18px;
 	line-height: 1;
+    font-weight: bold;
 	display: block;
 }
 ul.article_previews .byline {
@@ -78,23 +45,23 @@ ul.article_previews .byline {
 	font-weight: bold;
 }
 ul.article_previews .byline a{
-	font-size: inherit;
+	font-size: 11px;
 	display: inline;
 }
 ul.article_previews .teaser {
-	font-size: 12px;
+	font-size: 13px;
 }
-.topOpinions ul, .moreNews ul{
+#top_opinions ul, #more_news ul{
 	/*list-style-image: url('http://www.w3schools.com/Css/arrow.gif');*/
 	padding: 0px 0px 0px 16px;
 }
-.topOpinions a{
+.#top_opinions a{
 	font-size: inherit;
 	font-weight: normal;
 	color: black;
 	display: block;
 }
-.topOpinions a:hover{
+.#top_opinions a:hover{
 	color: #a02222;
 }
 

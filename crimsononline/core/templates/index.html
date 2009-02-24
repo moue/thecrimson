@@ -12,93 +12,87 @@
 {% endblock %}
 
 {% block body %}
-	<div class="columnCenter">
-		<div class="contentTop">
-			<div class="topStories">
-			    {% contentmodule index.topstories %}
-				<h1>Top Stories</h1>
-				<ul class="article_previews">
-					{% for story in top_stories %}
-					<li>
-						{{story|article_preview}}
-					</li>	
-					{% endfor %}
-				</ul>
-			    {% endcontentmodule %}
-			</div>
-			<div class="topCenter">
-				<div class="storyRotater">
-				    {% contentmodule index.rotater %}
-					<img src="/site_media/images/rotater.jpg" />
-					{% endcontentmodule %}
-				</div>
-				<div class="moreNews">
-				    {% contentmodule index.morenews %}
-					<h1>More News</h1>
-					<ul>
-						{% for story in more_stories %}
-						<li><a href="{{ story.get_absolute_url }}">{{ story.headline }}</a></li>
-						{% endfor %}
-					</ul>
-					{% endcontentmodule %}
-				</div>
-			</div>
-			<div class="topRight">
-				<div class="topOpinions">
-				    {% contentmodule index.opinion %}
-					<h1>Opinion</h1>
-					<ul>
-						{% for oped in opeds %}
-							<li>
-								<a href="{{ oped.get_absolute_url }}">{{ oped.headline }}</a>
-							</li>
-						{% endfor %}
-					</ul>
-					{% endcontentmodule %}
-				</div>
-				<div class="featured">
-					<h1>Featured</h1>
-					{% contentmodule index.featured %}
-					    
-					{% endcontentmodule %}
-				</div>
-			</div>
-		</div>
-		<div class="contentBottom">
-		    {% contentmodule index.arts %}
-			<div class="topArts">
-			    <h1>Arts</h1>
-			    <ul class="article_previews">
-			    {% for story in arts %}
-			        <li>{{ story|article_preview }}</li>
-			    {% endfor %}
-			    </ul>
-			</div>
-		    {% endcontentmodule %}
-		    {% contentmodule index.sports %}
-			<div class="topSports">
-			    <h1>Sports</h1>
-			    <ul class="article_previews">
-			    {% for story in sports %}
-			        <li>{{ story|article_preview }}</li>
-			    {% endfor %}
-			    </ul>
-			</div>
-		    {% endcontentmodule %}
-		    {% contentmodule index.fm %}
-			<div class="topFM">
-			    <h1>FM</h1>
-			    <ul class="article_previews">
-			    {% for story in fm %}
-			        <li>{{ story|article_preview }}</li>
-			    {% endfor %}
-			    </ul>
-			</div>
-		    {% endcontentmodule %}
-		</div>
-	</div>
-	<div class="columnRight">
-		<p>here is a bunch of test text<br/>type type type type type type</p>
-		<p><img src="/site_media/images/ver_ad.gif" /></p>
-	</div>
+    <div id="above_the_fold" class="half_page">
+        <div id="top_stories" class="content_column">
+            {% contentmodule index.topstories %}
+            <h1>Top Stories</h1>
+            <ul class="article_previews">
+                {% for story in top_stories %}
+                <li>
+                    {{story|article_preview}}
+                </li>	
+                {% endfor %}
+            </ul>
+            {% endcontentmodule %}
+        </div>
+        <div id="rotator_more_news" class="content_column">
+            <div id="rotator" class="content_column">
+                {% contentmodule index.rotater %}
+                <img src="/site_media/images/rotater.jpg" />
+                {% endcontentmodule %}
+            </div>
+            <div id="more_news" class="content_column">
+                {% contentmodule index.morenews %}
+                <h1>More News</h1>
+                <ul>
+                    {% for story in more_stories %}
+                    <li><a href="{{ story.get_absolute_url }}">{{ story.headline }}</a></li>
+                    {% endfor %}
+                </ul>
+                {% endcontentmodule %}
+            </div>
+        </div>
+        <div id="opinions_ad" class="content_column">
+            <div id="top_opinions" class="content_column">
+                {% contentmodule index.opinion %}
+                <h1>Opinion</h1>
+                <ul>
+                    {% for oped in opeds %}
+                        <li>
+                            <a href="{{ oped.get_absolute_url }}">{{ oped.headline }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+                {% endcontentmodule %}
+            </div>
+            <div id="front_ad" class="content_column">
+                ad here
+            </div>
+        </div>
+    </div>
+    <div id="the_fold">
+        <hr/>
+    </div>
+    <div id="below_the_fold" class="half_page">
+        {% contentmodule index.arts %}
+        <div id="top_arts" class="content_column">
+            <h1>Arts</h1>
+            <ul class="article_previews">
+            {% for story in arts %}
+                <li>{{ story|article_preview }}</li>
+            {% endfor %}
+            </ul>
+        </div>
+        {% endcontentmodule %}
+        {% contentmodule index.sports %}
+        <div id="top_sports" class="content_column">
+            <h1>Sports</h1>
+            <ul class="article_previews">
+            {% for story in sports %}
+                <li>{{ story|article_preview }}</li>
+            {% endfor %}
+            </ul>
+        </div>
+        {% endcontentmodule %}
+        {% contentmodule index.fm %}
+        <div id="top_fm" class="content_column">
+            <h1>FM</h1>
+            <ul class="article_previews">
+            {% for story in fm %}
+                <li>{{ story|article_preview }}</li>
+            {% endfor %}
+            </ul>
+        </div>
+        {% endcontentmodule %}
+    </div>
 {% endblock %}

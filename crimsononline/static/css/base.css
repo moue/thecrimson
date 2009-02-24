@@ -27,7 +27,7 @@
 }
 #main {
 	float: left;
-	font-family: Georgia,serif;
+	font-family: Palatino Linotype, Georgia, serif;
 	clear: both;
 }
 #footer {
@@ -79,34 +79,6 @@
 	color: white;
 	background-color: #b90600;
 }
-/*
-#nav_cur {
-	background: white;
-	line-height:22px;
-	position: relative;
-	left:-1px;
-	
-	height: 23px;
-	border-width: 1px 1px 0 1px;
-}
-#nav_cur a {
-	color: #e02222;
-}
-#nav_cur a:hover {
-	color: #600000;
-}*/
-#nav_date{
-	font-weight: bold;
-	color: #600000;
-	float: right;
-	border: 0 0 0 0;
-}
-#search {
-	float: right;
-	padding: 0 0 0 0;
-	margin: 5px 8px 0 0;
-	border: 0 0 0 0;
-}
 body {
 	text-align:center;
 	background-color: #ccc;
@@ -122,13 +94,13 @@ a:hover {
 	color: #e02222;
 }
 .byline{
-    color: #666666;
+    color: #444;
 }
 .byline a{
     text-transform: uppercase;
     text-decoration: underline;
     font-weight: bold;
-    color: inherit;
+    color: #444;
 }
 .byline a:hover{
     color: black;
