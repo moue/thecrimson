@@ -171,7 +171,7 @@ class ImageAdminForm(ContentGenericModelForm):
         model = Image
     
     # the different sizes to crop. these should all be square sizes
-    CROP_SIZES = (Image.SIZE_THUMB, )
+    CROP_SIZES = (Image.SIZE_THUMB, Image.SIZE_TINY,)
     
     caption = forms.fields.CharField(
         widget=forms.Textarea(attrs={'rows':'5', 'cols':'40'}),
@@ -184,15 +184,17 @@ class ImageAdminForm(ContentGenericModelForm):
         # logic for saving the cropped stuffs
         data = self.cleaned_data['thumbnail']
         if data:
-            hori_ratio = float(i.pic.width) / float(Image.SIZE_STAND[0]) 
-            vert_ratio = float(i.pic.height) / float(Image.SIZE_STAND[1])
-            # ratio the image is actually scaled at
-            scale_ratio = max(hori_ratio, vert_ratio)
-            # if this ratio is < 1, then the image wasn't scaled at all
-            if scale_ratio < 1.0:
-                scale_ratio = 1
-            data = map(lambda x: int(x * scale_ratio), data)
-            i.crop(Image.SIZE_THUMB[0], Image.SIZE_THUMB[1], *data)
+            # crop all the relavent sizes
+            for size in ImageAdminForm.CROP_SIZES:
+                hori_ratio = float(i.pic.width) / float(Image.SIZE_STAND[0])
+                vert_ratio = float(i.pic.height) / float(Image.SIZE_STAND[1])
+                # ratio the image is actually scaled at
+                scale_ratio = max(hori_ratio, vert_ratio)
+                # if this ratio is < 1, then the image wasn't scaled at all
+                if scale_ratio < 1.0:
+                    scale_ratio = 1
+                crop_data = map(lambda x: int(x * scale_ratio), data)
+                i.crop(size[0], size[1], *crop_data)
         return i
 
 class ImageAdmin(admin.ModelAdmin):

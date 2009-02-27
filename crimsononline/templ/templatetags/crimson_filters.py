@@ -72,7 +72,6 @@ def to_img_tag(img, size_spec):
         c = float(size_spec[2]) if len(size_spec) > 2 and size_spec[2] \
             else 0
         size_spec = (w, h, c)
-        print size_spec
         disp = img.display(*size_spec)
     tag = '<img src="%s" title="%s" alt="%s" />' % \
             (disp.url, img.kicker, img.kicker)
