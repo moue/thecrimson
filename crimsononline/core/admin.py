@@ -151,6 +151,8 @@ class ContributorAdmin(admin.ModelAdmin):
             obj.user.groups = groups
             obj.user.save()
             ud = obj.user.get_profile()
+            if ud is None:
+                ud = UserData(user=obj.user)
             ud.huid_hash = huid_hash
             ud.save()
         return super(ContributorAdmin, self).save_model(
@@ -466,22 +468,22 @@ admin.site.register(Marker)
 class HUIDBackend:
     """
     Authenticate HUID (presumably) passed from the Harvard HUID auth thing 
-    against the hashed HUID in the Django database.  Creates a new user if one 
-    doesn't exist (i.e. this person has never logged into the Crimson).
+    against the hashed HUID in the Django database.
     """
     def authenticate(self, huid=None):
+        # TODO: Implement weird BEGIN PGP SIGNED MESSAGE stuff once we get the UIS move done and get an actual
+        # key and stuff from FASIT.
         huid_hash = md5_constructor(huid).hexdigest()
         try:
-            ud = UserData(huid_hash=huid_hash)
+            ud = UserData.objects.get(huid_hash=huid_hash)
         except UserData.DoesNotExist:
             return None
         user = ud.user
         return user
         
-    def get_user(self, huid):
-        huid_hash = md5_constructor(huid).hexdigest()
+    def get_user(self, user_id):
         try:
-            ud = UserData(huid_hash=huid_hash)
-            return ud.user
-        except UserData.DoesNotExist:
+            user = User.objects.get(pk=user_id)
+            return user
+        except User.DoesNotExist:
             return None
