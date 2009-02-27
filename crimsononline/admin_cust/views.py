@@ -189,7 +189,11 @@ def login_user(request):
     if user is not None:
         if user.is_active:
             login(request,user)
-            return HttpResponseRedirect('http://www.zombo.com')
+            contrib = Contributor.objects.get(user=user)
+            if contrib is None:
+                return HttpResponseRedirect('http://www.zombo.com')
+            else:
+                return HttpResponseRedirect('/admin/')
     else:
         return HttpResponseRedirect('http://www.youtube.com/watch?v=oHg5SJYRHA0')
     
