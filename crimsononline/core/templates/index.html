@@ -2,6 +2,7 @@
 
 {% load crimson_filters %}
 {% load content_module %}
+{% load rounded_tag %}
 
 {% block title %}
 	{{ "Since 1873, motherfuckers" }}
@@ -15,7 +16,7 @@
     <div id="above_the_fold" class="half_page">
         <div id="top_stories" class="content_column">
             {% contentmodule index.topstories %}
-            <h1>Top Stories</h1>
+            <div class="rtcontainer">Top Stories</div>
             <ul class="article_previews">
                 {% for story in top_stories %}
                 <li>
@@ -33,7 +34,7 @@
             </div>
             <div id="more_news">
                 {% contentmodule index.morenews %}
-                <h1>More News</h1>
+                <div class="rtcontainer">More News</div>
                 <ul>
                     {% for story in more_stories %}
                     <li><a href="{{ story.get_absolute_url }}">{{ story.headline }}</a></li>
@@ -45,7 +46,7 @@
         <div id="opinions_ad" class="content_column">
             <div id="top_opinions" class="content_column">
                 {% contentmodule index.opinion %}
-                <h1>Opinion</h1>
+                <div class="rtcontainer">Opinion</div>
                 <ul>
                     {% for oped in opeds %}
                         <li>
@@ -66,7 +67,7 @@
     <div id="below_the_fold" class="half_page">
         {% contentmodule index.arts %}
         <div id="top_arts" class="content_column">
-            <h1>Arts</h1>
+            <div class="rtcontainer">Arts</div>
             <ul class="article_previews">
             {% for story in arts %}
                 <li>{{ story|article_preview }}</li>
@@ -76,7 +77,7 @@
         {% endcontentmodule %}
         {% contentmodule index.sports %}
         <div id="top_sports" class="content_column">
-            <h1>Sports</h1>
+            <div class="rtcontainer">Sports</div>
             <ul class="article_previews">
             {% for story in sports %}
                 <li>{{ story|article_preview }}</li>
@@ -86,7 +87,7 @@
         {% endcontentmodule %}
         {% contentmodule index.fm %}
         <div id="top_fm" class="content_column">
-            <h1>FM</h1>
+            <div class="rtcontainer">FM</div>
             <ul class="article_previews">
             {% for story in fm %}
                 <li>{{ story|article_preview }}</li>
