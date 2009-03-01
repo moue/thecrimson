@@ -94,7 +94,7 @@ INSTALLED_APPS = (
     'crimsononline.admin_cust',
     'crimsononline.content_module',
     'crimsononline.templ',
-    'crimsononline.search',
+    #'crimsononline.search',
 )
 
 MEDIA_LOC = MEDIA_ROOT
