@@ -11,6 +11,22 @@ from django.utils import simplejson
 from django.utils.hashcompat import md5_constructor
 from django.utils.safestring import mark_safe
 from crimsononline.core.models import *
+from crimsononline.contentgroup.models import *
+
+def get_content_groups(request):
+    if request.method != 'GET':
+        raise Http404
+    q_str, limit = request.GET.get('q', ''), request.GET.get('limit', None)
+    excludes = request.GET.get('exclude','').split(',')
+    if excludes:
+        excludes = [int(e) for e in excludes if e]
+    if (len(q_str) < 1) or (not limit):
+        raise Http404
+    cg = ContentGroup.objects.filter(
+        Q(type__contains=q_str) | Q(name__contains=q_str)) \
+        .exclude(pk__in=excludes).order_by('-pk')[:limit]
+    # ok, i really shouldn't use contributors.txt, but its exactly what i need
+    return render_to_response('contributors.txt', {'contributors': cg})
 
 def get_rel_content(request, ct_id, obj_id, ct_name=None):
     """

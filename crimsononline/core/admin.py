@@ -9,8 +9,10 @@ from django.utils.safestring import mark_safe
 from django.utils.hashcompat import md5_constructor
 from django.template.defaultfilters import truncatewords
 from crimsononline.core.models import *
+from crimsononline.contentgroup.models import ContentGroup
 from crimsononline.admin_cust import forms as cforms
-from crimsononline.admin_cust.forms import FbModelChoiceField, IssuePickerField, MapBuilderField, RelatedContentField, CropField
+from crimsononline.admin_cust.forms import FbModelChoiceField, \
+    IssuePickerField, MapBuilderField, RelatedContentField, CropField
 
 
 class ContentGenericModelForm(ModelForm):
@@ -35,7 +37,11 @@ class ContentGenericModelForm(ModelForm):
     priority = forms.IntegerField(required=False, initial=0,
         help_text='Higher priority articles are displayed first.' \
         'Priority be positive or negative.')
-    
+    group = FbModelChoiceField(required=False, multiple=False,
+        url='/admin/contentgroup/group/search/', model=ContentGroup,
+        labeler=(lambda obj: str(obj)), admin_site=admin.site,
+        add_rel=ContentGeneric._meta.get_field('group').rel
+    )    
     
     def __init__(self, *args, **kwargs):
         instance = kwargs.get('instance', None)
@@ -201,7 +207,7 @@ class ImageAdminForm(ContentGenericModelForm):
 
 class ImageAdmin(admin.ModelAdmin):
     fields = ('pic', 'thumbnail', 'caption', 'kicker', 'section', 'issue',
-        'priority', 'contributors', 'tags')
+        'priority', 'contributors', 'tags', 'group',)
     form = ImageAdminForm
     class Media:
         js = (
@@ -273,7 +279,7 @@ class ImageGalleryForm(ContentGenericModelForm):
     
 
 class ImageGalleryAdmin(admin.ModelAdmin):
-    fields = ('title', 'description', 'images', 'cover_image', 'tags')
+    fields = ('title', 'description', 'images', 'cover_image', 'tags', 'group')
     form = ImageGalleryForm
     
     # we need to set the list of images (that show up) on a per instance basis
@@ -307,8 +313,9 @@ class ArticleForm(ContentGenericModelForm):
     teaser = forms.fields.CharField(
         widget=forms.Textarea(attrs={'rows':'5', 'cols':'67'}),
         required=False, help_text="""
-        A short sample from the article, or a summary of the article.<br>
-        If you don't provide a teaser, we will automatically generate one for you.
+        A short sample from the article, or a summary of the article. <br>
+        If you don't provide a teaser, we will automatically generate one 
+        for you.
         """
     )
     subheadline = forms.fields.CharField(
@@ -332,7 +339,8 @@ class ArticleForm(ContentGenericModelForm):
     sne = FbModelChoiceField(required=True, multiple=False,
         url='/admin/core/contributor/search/', model=Contributor,
         labeler=(lambda obj: str(obj)))
-    rel_content = RelatedContentField(label='New Content', required=False, admin_site=admin.site, rel_types=[Image, ImageGallery, Article])
+    rel_content = RelatedContentField(label='New Content', required=False,
+        admin_site=admin.site, rel_types=[Image, ImageGallery, Article])
     
     def clean_teaser(self):
         """Adds a teaser if one does not exist."""
@@ -378,10 +386,10 @@ class ArticleAdmin(admin.ModelAdmin):
         ('Associated Content', {
             'fields': ('rel_content',),
         }),
-        #('Map(s)', {
-        #    'classes': ('collapse',),
-        #    'fields': ('maps',),
-        #})
+        ('Grouping', {
+            'fields': ('group',),
+            'classes': ('collapse',),
+        })
     )
     form = ArticleForm
     

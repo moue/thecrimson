@@ -39,17 +39,21 @@ class ContentGenericManager(models.Manager):
 
 class ContentGeneric(models.Model):
     """
+    Class that contains generic properties.
+    
     Facilitates generic relationships between content.
     """
     content_type = models.ForeignKey(ContentType)
     object_id = models.PositiveIntegerField()
     content_object = generic.GenericForeignKey('content_type', 'object_id')
-    contributors = models.ManyToManyField('Contributor', 
-        null=True, related_name='content')
+    contributors = models.ManyToManyField(
+        'Contributor', null=True, related_name='content')
     tags = models.ManyToManyField('Tag', null=True, related_name='content')
     issue = models.ForeignKey('Issue', null=True, related_name='content')
     section = models.ForeignKey('Section', null=True, related_name='content')
     priority = models.IntegerField(default=0)
+    group = models.ForeignKey(
+        'contentgroup.ContentGroup', null=True, blank=True)
     
     objects = ContentGenericManager()
     
@@ -63,7 +67,9 @@ class ContentGeneric(models.Model):
 
 class Content(models.Model):
     """
-    Has some content rendering functions.
+    Base class for all content.
+    
+    Has some content rendering functions and generic property access methods.
     """
     
     class Meta:
