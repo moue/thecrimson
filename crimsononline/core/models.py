@@ -16,10 +16,7 @@ from django.core.cache import cache
 from django.template.defaultfilters import slugify, truncatewords
 from django.template.loader import render_to_string
 from django.utils.safestring import mark_safe
-
-SAFE_CHARS = letters + digits
-def filter_string(allowed_chars, str):
-    return ''.join([c for c in str if c in allowed_chars])
+from crimsononline.util.string import make_file_friendly, make_slug
 
 
 class ContentGenericManager(models.Manager):
@@ -42,6 +39,7 @@ class ContentGeneric(models.Model):
     Class that contains generic properties.
     
     Facilitates generic relationships between content.
+    Only add attributes on which you would want to do cross content queries.
     """
     content_type = models.ForeignKey(ContentType)
     object_id = models.PositiveIntegerField()
@@ -145,6 +143,25 @@ class Content(models.Model):
         else:
             self.generic.save()
         return super(Content, self).save(*args, **kwargs)
+    
+    def identifier(self):
+        """
+        Used in last part of URL.  Child classes should override this.
+        This would be like a headline or a title.
+        """
+        return str(self.pk)
+    
+    @permalink
+    def get_absolute_url(self):
+        i = self.issue.issue_date
+        url_data = [i.year, 
+            i.month, i.day, make_url_friendly(self.identifier())]
+        if self.group:
+            url_data = [self.group.type.lower(), 
+                make_url_friendly(self.group.name)] + url_data
+        else:
+            url_data = [self.__class__.__name__] + url_data
+        return ('core_content', url_data)
     
 
 
@@ -545,7 +562,7 @@ class ImageSpec():
 
 def get_save_path(instance, filename):
     ext = splitext(filename)[1]
-    filtered_capt = filter_string(SAFE_CHARS, instance.kicker)
+    filtered_capt = make_file_friendly(instance.kicker)
     return datetime.now().strftime("photos/%Y/%m/%d/%H%M%S_") + \
         filtered_capt + ext
 
@@ -713,10 +730,7 @@ class ArticlesManager(models.Manager):
     def deleted(self):
         return super(ArticlesManager, self).get_query_set() \
             .filter(is_published=False)
-
-def to_slug(text):
-    text = filter_string(SAFE_CHARS+' ', text)
-    return text.replace(' ','-')
+    
 
 class Article(Content):
     """
@@ -815,6 +829,9 @@ class Article(Content):
     
     def __unicode__(self):
         return self.headline
+    
+    def identifier(self):
+        return self.slug
     
     @permalink
     def get_absolute_url(self):

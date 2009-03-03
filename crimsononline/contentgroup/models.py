@@ -21,13 +21,13 @@ class ContentGroup(models.Model):
     
     Examples:
       * Columns
-      * Image Galleries ?
-      * Blogs ?
+      * Blogs
       * Article Series (say, a series on Iraq or the election)
     """
     TYPE_CHOICES = (
         ('column', 'Column'),
-        ('series', 'Series')
+        ('series', 'Series'),
+        ('blog', 'Blog'),
     )
     type = models.CharField(max_length=25, choices=TYPE_CHOICES)
     name = models.CharField(max_length=25)

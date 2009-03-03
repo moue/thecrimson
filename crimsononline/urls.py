@@ -8,8 +8,8 @@ from crimsononline.admin_cust.views import login_user
 admin.autodiscover()
 
 urlpatterns = patterns('crimsononline.core.views',
-    url(r'^article/(\d{4})/(\d{1,2})/(\d{1,2})/([-\w]+)/$',
-        'article', name='core_get_article'),
+    #url(r'^article/(\d{4})/(\d{1,2})/(\d{1,2})/([-\w]+)/$',
+    #    'article', name='core_get_article'),
     url(r'^writer/(\d+)/([A-Za-z\s]+)_([A-Za-z]{0,1})_([A-Za-z]+)/$',
         'writer', name='core_writer_profile'),
     url(r'^section/(?P<section>[A-Za-z]+)/$', 'section', name='core_section'),
@@ -41,4 +41,12 @@ urlpatterns += patterns('',
     (r'^site_media/(?P<path>.*)$', 
         'django.views.static.serve', 
         {'document_root': settings.MEDIA_ROOT}),
+)
+
+# generic content urls
+CONTENT_URL_RE = r'([a-z]+)/(\d{4})/(\d{1,2})/(\d{1,2})/([0-9A-Za-z_.]+)/\d+$'
+urlpatterns += patterns('crimsononline.core.views',
+    url('^' + CONTENT_URL_RE, 'get_content', name='core_content'),
+    url(r'^([a-z]+)/([A-Za-z0-9_]+)/' + CONTENT_URL_RE, 'get_grouped_content',
+        name='core_grouped_content'),
 )
