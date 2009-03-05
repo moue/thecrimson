@@ -1,3 +1,4 @@
+import sys
 from datetime import datetime, timedelta, date
 from django.shortcuts import \
     render_to_response, get_object_or_404, get_list_or_404
@@ -6,7 +7,19 @@ from django.template import Context, RequestContext, loader
 from django.contrib.flatpages.models import FlatPage
 from crimsononline.core.models import *
 from crimsononline.content_module.models import ContentModule
-import sys
+from crimsononline.contentgroup.models import ContentGroup
+
+
+def get_content(request, ctype, year, month, day, slug, content_group=None):
+    return HttpResponse("hi")
+
+def get_grouped_content(request, gtype, gname, ctype, year, month, day, slug):
+    # validate the contentgroup
+    cg = ContentGroup.by_name(gtype, gname)
+    if cg:
+        return get_content(request, ctype, year, month, day, slug, cg)
+    else:
+        raise Http404
 
 def index(request):
     issue = Issue.get_current()

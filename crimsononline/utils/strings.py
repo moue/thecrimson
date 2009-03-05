@@ -1,6 +1,6 @@
 import string
 
-URL_SAFE = a + string.digits + '._'
+URL_SAFE = string.letters + string.digits + '._'
 def make_url_friendly(str):
     """
     kills non alpha numeric chars and replaces spaces with underscores
@@ -11,7 +11,7 @@ def make_url_friendly(str):
 def make_file_friendly(str):
     return make_url_friendly(str)
     
-SLUG_SAFE = ''#string.ascii_letters + string.digits + '-'
+SLUG_SAFE = string.letters + string.digits + '-'
 def make_slug(str):
     str = str.replace(' ', '-')
     return ''.join([c for c in str if c in SLUG_SAFE])

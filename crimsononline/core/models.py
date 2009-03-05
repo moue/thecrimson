@@ -16,7 +16,7 @@ from django.core.cache import cache
 from django.template.defaultfilters import slugify, truncatewords
 from django.template.loader import render_to_string
 from django.utils.safestring import mark_safe
-#from crimsononline.util.strings import make_file_friendly, make_slug
+from crimsononline.utils.strings import make_file_friendly, make_slug
 
 
 class ContentGenericManager(models.Manager):
@@ -110,9 +110,8 @@ class Content(models.Model):
         """
         renders in different ways, depending on method
         
-        method could be something like, 'admin' or 'search'
-        
-        use context to inject extra variables into the template
+        @method : could be something like, 'admin' or 'search'
+        @context : gets injected into template
         """
         name = self._meta.object_name.lower()
         templ = 'models/%s/%s.html' % (name, method)
