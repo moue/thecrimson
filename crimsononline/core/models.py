@@ -16,7 +16,7 @@ from django.core.cache import cache
 from django.template.defaultfilters import slugify, truncatewords
 from django.template.loader import render_to_string
 from django.utils.safestring import mark_safe
-from crimsononline.util.string import make_file_friendly, make_slug
+#from crimsononline.util.strings import make_file_friendly, make_slug
 
 
 class ContentGenericManager(models.Manager):
