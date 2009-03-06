@@ -16,7 +16,8 @@ from django.core.cache import cache
 from django.template.defaultfilters import slugify, truncatewords
 from django.template.loader import render_to_string
 from django.utils.safestring import mark_safe
-from crimsononline.utils.strings import make_file_friendly, make_slug
+from crimsononline.utils.strings import \
+    make_file_friendly, make_slug, make_url_friendly
 
 
 class ContentGenericManager(models.Manager):
@@ -72,6 +73,12 @@ class Content(models.Model):
     
     class Meta:
         abstract = True
+    
+    def _get_group(self):
+        return self.generic.group
+    def _set_group(self, value):
+        self.generic.group = value
+    group = property(_get_group, _set_group)
     
     def _get_contributors(self):
         return self.generic.contributors
@@ -160,7 +167,7 @@ class Content(models.Model):
                 make_url_friendly(self.group.name)] + url_data
             return ('core_grouped_content', url_data)
         else:
-            url_data = [self.__class__.__name__] + url_data
+            url_data = [self.__class__.__name__.lower()] + url_data
             return ('core_content', url_data)
     
 
@@ -833,10 +840,10 @@ class Article(Content):
     def identifier(self):
         return self.slug
     
-    @permalink
-    def get_absolute_url(self):
-        d = self.issue.issue_date
-        return ('core_get_article', [d.year, d.month, d.day, self.slug])
+    #@permalink
+    #def get_absolute_url(self):
+    #    d = self.issue.issue_date
+    #    return ('core_get_article', [d.year, d.month, d.day, self.slug])
     
 
 

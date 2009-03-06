@@ -103,7 +103,7 @@ def linkify(obj, link_text=''):
                                                         l_text)))
         # nonlists obj's should be returned as nonlists
         return l[0] if len(l) == 1 else l
-    except:
+    except IndexError:
         return ''
         
 @register.filter
