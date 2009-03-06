@@ -641,10 +641,13 @@ class Image(Content):
     def __unicode__(self):
         return self.kicker
     
-    @permalink
-    def get_absolute_url(self):
-        d = self.created_on
-        return ('core_get_image', [d.year, d.month, d.day, self.slug])
+    def identifier(self):
+        return make_url_friendly(self.kicker)
+    
+    #@permalink
+    #def get_absolute_url(self):
+    #    d = self.created_on
+    #    return ('core_get_image', [d.year, d.month, d.day, self.slug])
     
     def save(self, *args, **kwargs):
         # autopopulate the slug
