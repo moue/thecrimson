@@ -158,9 +158,10 @@ class Content(models.Model):
         if self.group:
             url_data = [self.group.type.lower(), 
                 make_url_friendly(self.group.name)] + url_data
+            return ('core_grouped_content', url_data)
         else:
             url_data = [self.__class__.__name__] + url_data
-        return ('core_content', url_data)
+            return ('core_content', url_data)
     
 
 
