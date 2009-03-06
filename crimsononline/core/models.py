@@ -53,6 +53,7 @@ class ContentGeneric(models.Model):
     priority = models.IntegerField(default=0)
     group = models.ForeignKey(
         'contentgroup.ContentGroup', null=True, blank=True)
+    hits = models.IntegerField(default=0)
     
     objects = ContentGenericManager()
     
@@ -110,6 +111,12 @@ class Content(models.Model):
         self.generic.priority = value
     priority = property(_get_priority, _set_priority)
     
+    def _get_hits(self):
+        return self.generic.hits
+    def _set_hits(self, value):
+        self.generic.hits = value
+    hits = property(_get_hits, _set_hits)
+    
     generic = models.ForeignKey(ContentGeneric, null=True,
         related_name="%(class)s_generic_related")
     
@@ -123,6 +130,8 @@ class Content(models.Model):
         name = self._meta.object_name.lower()
         templ = 'models/%s/%s.html' % (name, method)
         context.update({name: self, 'class': name})
+        if method == 'page':
+            self.hits += 1
         # below, maybe instead of name:, have 'obj':
         return mark_safe(render_to_string(templ, context))
     

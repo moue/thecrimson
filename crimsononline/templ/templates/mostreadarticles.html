@@ -1,0 +1,12 @@
+{% load crimson_filters %}
+{% load cache %}
+
+{% cache 500 mostreadarticles %}
+<div id="mostreadarticles">
+<ol>
+{% for article in articlelist %}
+<li>{{article|linkify}}</li>
+{% endfor %}
+</ol>
+</div>
+{% endcache %}

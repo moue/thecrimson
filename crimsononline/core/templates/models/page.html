@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% load top_articles %}
+
 {% block inhead %}
     <link type="text/css" rel="stylesheet" href="/site_media/css/single_content.css" />
     {% block css %}
@@ -14,6 +16,7 @@
         {% endblock %}
     </div>
     <div id="sidebar">
+        {% most_read_articles %}
         {% block sidebar %}
         {% endblock %}
     </div>

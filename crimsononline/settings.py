@@ -80,6 +80,7 @@ TEMPLATE_DIRS = (
     # Don't forget to use absolute paths, not relative paths.
 
     #os.path.join(os.path.dirname(__file__), 'templates').replace('\\','/'),
+    path.join(path.dirname(__file__), 'templ/templatetags/templates').replace('\\','/'),
 )
 
 INSTALLED_APPS = (
