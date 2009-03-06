@@ -10,10 +10,12 @@ from crimsononline.content_module.models import ContentModule
 from crimsononline.contentgroup.models import ContentGroup
 
 
-def get_content(request, ctype, year, month, day, slug, content_group=None):
-    return HttpResponse("hi")
+def get_content(request, ctype, year, month, day, slug, pk, content_group=None):
+    c = ContentGeneric.objects.get(content_type__name=ctype, object_id=int(pk))
+    c = c.content_object
+    return HttpResponse(c._render('page'))
 
-def get_grouped_content(request, gtype, gname, ctype, year, month, day, slug):
+def get_grouped_content(request, gtype, gname, ctype, year, month, day, slug, pk):
     # validate the contentgroup
     cg = ContentGroup.by_name(gtype, gname)
     if cg:
@@ -58,7 +60,6 @@ def writer(request, contributor_id, f_name, m_name, l_name):
     # Validate the URL (we don't want /writer/281/Balls_Q_McTitties to be valid)
     if (w.first_name, w.middle_initial, w.last_name) != (f_name, m_name, l_name):
         return HttpResponseRedirect(w.get_absolute_url())
-        
     #TODO: paginate these articles
     return render_to_response('writer.html', {'writer': w})
 

@@ -1,0 +1,51 @@
+{% extends "models/page.html" %}
+
+{% load crimson_filters %}
+
+{% block title %}
+	{{ article.headline }}
+{% endblock %}
+
+{% block css %}
+    <link type="text/css" rel="stylesheet" href="/site_media/css/article.css" />
+{% endblock %}
+
+{% block content %}
+    <h1>{{ article.headline }}</h1>
+    <h2>{{ article.subheadline }}</h2>
+    {% if article.main_rel_content %}
+        {{ article.main_rel_content|render:"article.main" }}
+    {% endif %}
+    <div class="byline">
+        By {{ article.contributors.all|linkify|human_list }}
+    </div>
+    <div class="timestamp">
+        Published: {{ article.issue.issue_date|date:"F d, Y" }}
+    </div>
+    <div class="text">
+        {{ article.text|escape|linebreaks }}
+    </div>
+    <div id="tags">
+        {% with article.tags.all as a_tags %}
+            {% if a_tags %}
+                Tags: 
+            {% endif %}
+            {% for tag in a_tags %}
+                <a class="tag" href="{{ tag.get_absolute_url }}">{{ tag.text }}</a>{% ifnotequal forloop.last 1 %}, {% endifnotequal %}
+            {% endfor %}
+        {% endwith %}
+    </div>
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        var disqus_developer = 1;
+    </script>
+    <script type="text/javascript" src="http://disqus.com/forums/crimson-alpha/embed.js"></script>
+    <noscript>
+    <a href="http://crimson-alpha.disqus.com/?url=ref">View the discussion thread.</a>
+    </noscript>
+    <a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+{% endblock %}
+
+{% block sidebar %}
+    text in the sidebar
+{% endblock %}

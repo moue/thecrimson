@@ -25,7 +25,7 @@
             </div>
 			<br/>
 			<ul>
-				{% for c in w.content.all %}
+				{% for c in writer.content.all %}
 				    {{ c|render:"list-item" }}
 				{% endfor %}
 			</ul>

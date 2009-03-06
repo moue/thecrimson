@@ -161,7 +161,7 @@ class Content(models.Model):
     def get_absolute_url(self):
         i = self.issue.issue_date
         url_data = [i.year, 
-            i.month, i.day, make_url_friendly(self.identifier())]
+            i.month, i.day, make_url_friendly(self.identifier()), self.pk]
         if self.group:
             url_data = [self.group.type.lower(), 
                 make_url_friendly(self.group.name)] + url_data
@@ -838,7 +838,7 @@ class Article(Content):
         return self.headline
     
     def identifier(self):
-        return self.slug
+        return self.headline
     
     #@permalink
     #def get_absolute_url(self):

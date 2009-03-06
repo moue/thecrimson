@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block inhead %}
+    <link type="text/css" rel="stylesheet" href="/site_media/css/single_content.css" />
+    {% block css %}
+    {% endblock %}
+    {% block js %}
+    {% endblock %}
+{% endblock %}
+
+{% block body %}
+    <div id="content">
+        {% block content %}
+        {% endblock %}
+    </div>
+    <div id="sidebar">
+        {% block sidebar %}
+        {% endblock %}
+    </div>
+{% endblock %}
