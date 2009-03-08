@@ -132,6 +132,7 @@ class Content(models.Model):
         context.update({name: self, 'class': name})
         if method == 'page':
             self.hits += 1
+            self.save()
         # below, maybe instead of name:, have 'obj':
         return mark_safe(render_to_string(templ, context))
     
