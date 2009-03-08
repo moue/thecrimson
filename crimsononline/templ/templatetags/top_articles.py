@@ -15,9 +15,9 @@ class TopArticlesNode(template.Node):
     def render(self, context):
         cursor = connection.cursor()
         # SO GAY
-        cursor.execute("SELECT id, " \
-                       "(10 * (1/(julianday('now') - julianday(core_article.created_on) + 2))) AS hitindex " \
-                       "FROM core_article ORDER BY hitindex DESC LIMIT 5")
+        cursor.execute("SELECT DISTINCT core_article.id, " \
+                       "(core_contentgeneric.hits * (1/(julianday('now') - julianday(core_article.created_on) + 2))) AS hitindex " \
+                       "FROM core_article, core_contentgeneric WHERE core_contentgeneric.object_id = core_article.id ORDER BY hitindex DESC LIMIT 5")
         toparticles = cursor.fetchall()
         toparticles = map(lambda x: Article.objects.get(pk=x[0]), toparticles)
         t = get_template('mostreadarticles.html')
