@@ -5,7 +5,7 @@ from django.shortcuts import \
 from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.template import Context, RequestContext, loader
 from django.contrib.flatpages.models import FlatPage
-from crimsononline.core.models import *
+from crimsononline.content.models import *
 from crimsononline.content_module.models import ContentModule
 from crimsononline.contentgroup.models import ContentGroup
 

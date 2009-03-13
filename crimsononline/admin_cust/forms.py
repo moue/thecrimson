@@ -11,7 +11,7 @@ from django.db.models import Q
 from django.template.loader import render_to_string
 from django.utils.safestring import mark_safe
 
-from crimsononline.core.models import Issue, ContentGeneric
+from crimsononline.content.models import Issue, ContentGeneric
 
 
 class CropWidget(forms.widgets.HiddenInput):

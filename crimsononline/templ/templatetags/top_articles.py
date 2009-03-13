@@ -4,7 +4,7 @@ from django.template import Context
 from django.template.loader import get_template
 from django.utils import simplejson
 from django.utils.safestring import mark_safe
-from crimsononline.core.models import Image, Article, Content, ContentGeneric
+from crimsononline.content.models import Image, Article, Content, ContentGeneric
 import urllib
 
 USER_KEY="vabqI2su93P1wVF3Ls9kXhXhRggV7y2ylokjq137yPAz47cY5dDMHgUA2QlZoWNE"
@@ -22,9 +22,9 @@ class TopArticlesNode(template.Node):
         # Step 1: We want to get the most viewed articles from the database
         cursor = connection.cursor()
         # SO GAY
-        cursor.execute("SELECT DISTINCT core_article.id, " \
-                       "(core_contentgeneric.hits * (1/(julianday('now') - julianday(core_article.created_on) + 2))) AS hitindex " \
-                       "FROM core_article, core_contentgeneric WHERE core_contentgeneric.object_id = core_article.id ORDER BY hitindex DESC LIMIT 5")
+        cursor.execute("SELECT DISTINCT content_article.id, " \
+                       "(content_contentgeneric.hits * (1/(julianday('now') - julianday(content_article.created_on) + 2))) AS hitindex " \
+                       "FROM content_article, content_contentgeneric WHERE content_contentgeneric.object_id = content_article.id ORDER BY hitindex DESC LIMIT 5")
         mostreadarticles = cursor.fetchall()
         mostreadarticles = map(lambda x: Article.objects.get(pk=x[0]), mostreadarticles)
         # Step 2: Grab the JSON crap from Disqus and build another list of the most commented articles

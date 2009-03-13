@@ -3,7 +3,7 @@ $(document).ready(function(){
     $("#id_images").hide();
     
     // prefix of the url from which to grab images
-    var image_req_url = "/admin/core/imagegallery/get_images/";
+    var image_req_url = "/admin/content/imagegallery/get_images/";
     // which pks are already in the SelectMultiple field
     var choices = function(){
        var selects = $("#id_images").children();

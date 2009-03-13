@@ -175,10 +175,10 @@ class Content(models.Model):
         if self.group:
             url_data = [self.group.type.lower(), 
                 make_url_friendly(self.group.name)] + url_data
-            return ('core_grouped_content', url_data)
+            return ('content_grouped_content', url_data)
         else:
             url_data = [self.__class__.__name__.lower()] + url_data
-            return ('core_content', url_data)
+            return ('content_content', url_data)
     
 
 
@@ -214,7 +214,7 @@ class Tag(models.Model):
     
     @permalink
     def get_absolute_url(self):
-        return ('core_tag', [self.text])
+        return ('content_tag', [self.text])
     
 
 
@@ -298,7 +298,7 @@ class Contributor(models.Model):
     
     @permalink
     def get_absolute_url(self):
-        return ('core_writer_profile', 
+        return ('content_writer_profile', 
             [str(self.id), self.first_name, self.middle_initial, self.last_name])
 
 
@@ -657,7 +657,7 @@ class Image(Content):
     #@permalink
     #def get_absolute_url(self):
     #    d = self.created_on
-    #    return ('core_get_image', [d.year, d.month, d.day, self.slug])
+    #    return ('content_get_image', [d.year, d.month, d.day, self.slug])
     
     def save(self, *args, **kwargs):
         # autopopulate the slug
@@ -686,7 +686,7 @@ class ImageGallery(Content):
     
     @permalink
     def get_absolute_url(self):
-        return ('core_imagegallery', [self.cover_image.pk, self.pk])
+        return ('content_imagegallery', [self.cover_image.pk, self.pk])
     
 
 
@@ -856,7 +856,7 @@ class Article(Content):
     #@permalink
     #def get_absolute_url(self):
     #    d = self.issue.issue_date
-    #    return ('core_get_article', [d.year, d.month, d.day, self.slug])
+    #    return ('content_get_article', [d.year, d.month, d.day, self.slug])
     
 
 

@@ -1,6 +1,6 @@
 from django import template
 from django.utils.safestring import mark_safe
-from crimsononline.core.models import Image, Article, Content, ContentGeneric
+from crimsononline.content.models import Image, Article, Content, ContentGeneric
 
 register = template.Library()
 
