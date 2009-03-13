@@ -8,13 +8,14 @@ from django.contrib.auth.models import User
 from django.utils.safestring import mark_safe
 from django.utils.hashcompat import md5_constructor
 from django.template.defaultfilters import truncatewords
-from crimsononline.core.models import *
-from crimsononline.contentgroup.models import ContentGroup
+from crimsononline.content.models import *
 from crimsononline.admin_cust import forms as cforms
 from crimsononline.admin_cust.forms import FbModelChoiceField, \
     IssuePickerField, MapBuilderField, RelatedContentField, CropField
 
 
+admin.site.register(ContentGroup)
+    
 class ContentGenericModelForm(ModelForm):
     """
     Parent class for ContentGeneric model forms.
@@ -28,7 +29,7 @@ class ContentGenericModelForm(ModelForm):
         )
     )
     contributors = FbModelChoiceField(required=True, multiple=True,
-        url='/admin/core/contributor/search/', model=Contributor,
+        url='/admin/content/contributor/search/', model=Contributor,
         labeler=(lambda obj: str(obj)), admin_site=admin.site,
         add_rel=ContentGeneric._meta.get_field('contributors').rel
     )
@@ -38,7 +39,7 @@ class ContentGenericModelForm(ModelForm):
         help_text='Higher priority articles are displayed first.' \
         'Priority be positive or negative.')
     group = FbModelChoiceField(required=False, multiple=False,
-        url='/admin/contentgroup/group/search/', model=ContentGroup,
+        url='/admin/content/contentgroup/search/', model=ContentGroup,
         labeler=(lambda obj: str(obj)), admin_site=admin.site,
         add_rel=ContentGeneric._meta.get_field('group').rel
     )    
@@ -329,17 +330,17 @@ class ArticleForm(ContentGenericModelForm):
         widget=forms.Textarea(attrs={'rows':'50', 'cols':'67'})
     )
     contributors = FbModelChoiceField(required=True, multiple=True,
-        url='/admin/core/contributor/search/', model=Contributor,
+        url='/admin/content/contributor/search/', model=Contributor,
         labeler=(lambda obj: str(obj)), admin_site=admin.site,
         #add_rel=Article._meta.get_field('contributors').rel)
         )
     proofer = FbModelChoiceField(required=True, multiple=False,
-        url='/admin/core/contributor/search/', model=Contributor,
+        url='/admin/content/contributor/search/', model=Contributor,
         labeler=(lambda obj: str(obj)))
     sne = FbModelChoiceField(required=True, multiple=False,
-        url='/admin/core/contributor/search/', model=Contributor,
+        url='/admin/content/contributor/search/', model=Contributor,
         labeler=(lambda obj: str(obj)))
-    rel_content = RelatedContentField(label='New Content', required=False,
+    rel_content = RelatedContentField(label='New content', required=False,
         admin_site=admin.site, rel_types=[Image, ImageGallery, Article])
     
     def clean_teaser(self):
@@ -383,7 +384,7 @@ class ArticleAdmin(admin.ModelAdmin):
         ('Editing', {
             'fields': ('proofer', 'sne',),
         }),
-        ('Associated Content', {
+        ('Associated content', {
             'fields': ('rel_content',),
         }),
         ('Grouping', {
@@ -415,7 +416,7 @@ class ArticleAdmin(admin.ModelAdmin):
         if u.is_superuser:
             return True
         # cannot make changes after 60 minutes from uploaded time
-        elif obj and not u.has_perm('core.article.can_change_after_timeout'):
+        elif obj and not u.has_perm('content.article.can_change_after_timeout'):
             return (datetime.now() - obj.created_on).seconds < (60 * 60)
         return super(ArticleAdmin, self).has_change_permission(request, obj)
     
@@ -426,7 +427,7 @@ class ArticleAdmin(admin.ModelAdmin):
             return qs
        
         # restrict editing of articles uploaded before 60 min ago
-        if not u.has_perm('core.article.can_change_after_timeout'):
+        if not u.has_perm('content.article.can_change_after_timeout'):
             t = datetime.now() - timedelta(seconds=(60*60))
             qs = qs.filter(created_on__gt=t)
             u.message_set.create(message='Note: you can only change articles' \

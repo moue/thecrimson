@@ -1230,7 +1230,7 @@
     }, 
     {
         "pk": 1, 
-        "model": "core.contentgeneric", 
+        "model": "content.contentgeneric", 
         "fields": {
             "contributors": [
                 2, 
@@ -1249,7 +1249,7 @@
     }, 
     {
         "pk": 2, 
-        "model": "core.contentgeneric", 
+        "model": "content.contentgeneric", 
         "fields": {
             "contributors": [
                 1, 
@@ -1270,7 +1270,7 @@
     }, 
     {
         "pk": 3, 
-        "model": "core.contentgeneric", 
+        "model": "content.contentgeneric", 
         "fields": {
             "contributors": [
                 1
@@ -1290,7 +1290,7 @@
     }, 
     {
         "pk": 4, 
-        "model": "core.contentgeneric", 
+        "model": "content.contentgeneric", 
         "fields": {
             "contributors": [
                 5, 
@@ -1312,7 +1312,7 @@
     }, 
     {
         "pk": 5, 
-        "model": "core.contentgeneric", 
+        "model": "content.contentgeneric", 
         "fields": {
             "contributors": [
                 8, 
@@ -1332,7 +1332,7 @@
     }, 
     {
         "pk": 6, 
-        "model": "core.contentgeneric", 
+        "model": "content.contentgeneric", 
         "fields": {
             "contributors": [
                 13
@@ -1352,7 +1352,7 @@
     }, 
     {
         "pk": 7, 
-        "model": "core.contentgeneric", 
+        "model": "content.contentgeneric", 
         "fields": {
             "contributors": [
                 1, 
@@ -1373,7 +1373,7 @@
     }, 
     {
         "pk": 8, 
-        "model": "core.contentgeneric", 
+        "model": "content.contentgeneric", 
         "fields": {
             "contributors": [
                 6, 
@@ -1393,7 +1393,7 @@
     }, 
     {
         "pk": 9, 
-        "model": "core.contentgeneric", 
+        "model": "content.contentgeneric", 
         "fields": {
             "contributors": [
                 5, 
@@ -1415,7 +1415,7 @@
     }, 
     {
         "pk": 10, 
-        "model": "core.contentgeneric", 
+        "model": "content.contentgeneric", 
         "fields": {
             "contributors": [
                 2, 
@@ -1438,7 +1438,7 @@
     }, 
     {
         "pk": 11, 
-        "model": "core.contentgeneric", 
+        "model": "content.contentgeneric", 
         "fields": {
             "contributors": [
                 6
@@ -1457,7 +1457,7 @@
     }, 
     {
         "pk": 12, 
-        "model": "core.contentgeneric", 
+        "model": "content.contentgeneric", 
         "fields": {
             "contributors": [
                 8
@@ -1476,7 +1476,7 @@
     }, 
     {
         "pk": 13, 
-        "model": "core.contentgeneric", 
+        "model": "content.contentgeneric", 
         "fields": {
             "contributors": [
                 9
@@ -1495,7 +1495,7 @@
     }, 
     {
         "pk": 14, 
-        "model": "core.contentgeneric", 
+        "model": "content.contentgeneric", 
         "fields": {
             "contributors": [
                 3
@@ -1515,7 +1515,7 @@
     }, 
     {
         "pk": 15, 
-        "model": "core.contentgeneric", 
+        "model": "content.contentgeneric", 
         "fields": {
             "contributors": [
                 5, 
@@ -1536,7 +1536,7 @@
     }, 
     {
         "pk": 16, 
-        "model": "core.contentgeneric", 
+        "model": "content.contentgeneric", 
         "fields": {
             "contributors": [
                 5
@@ -1555,7 +1555,7 @@
     }, 
     {
         "pk": 17, 
-        "model": "core.contentgeneric", 
+        "model": "content.contentgeneric", 
         "fields": {
             "contributors": [
                 2
@@ -1574,7 +1574,7 @@
     }, 
     {
         "pk": 18, 
-        "model": "core.contentgeneric", 
+        "model": "content.contentgeneric", 
         "fields": {
             "contributors": [
                 3, 
@@ -1596,189 +1596,189 @@
     }, 
     {
         "pk": 1, 
-        "model": "core.tag", 
+        "model": "content.tag", 
         "fields": {
             "text": "it"
         }
     }, 
     {
         "pk": 2, 
-        "model": "core.tag", 
+        "model": "content.tag", 
         "fields": {
             "text": "harvard"
         }
     }, 
     {
         "pk": 3, 
-        "model": "core.tag", 
+        "model": "content.tag", 
         "fields": {
             "text": "the crimson"
         }
     }, 
     {
         "pk": 4, 
-        "model": "core.tag", 
+        "model": "content.tag", 
         "fields": {
             "text": "college"
         }
     }, 
     {
         "pk": 5, 
-        "model": "core.tag", 
+        "model": "content.tag", 
         "fields": {
             "text": "iraq"
         }
     }, 
     {
         "pk": 6, 
-        "model": "core.tag", 
+        "model": "content.tag", 
         "fields": {
             "text": "drinking"
         }
     }, 
     {
         "pk": 7, 
-        "model": "core.tag", 
+        "model": "content.tag", 
         "fields": {
             "text": "hygiene"
         }
     }, 
     {
         "pk": 8, 
-        "model": "core.tag", 
+        "model": "content.tag", 
         "fields": {
             "text": "basketball"
         }
     }, 
     {
         "pk": 9, 
-        "model": "core.tag", 
+        "model": "content.tag", 
         "fields": {
             "text": "freshmen"
         }
     }, 
     {
         "pk": 10, 
-        "model": "core.tag", 
+        "model": "content.tag", 
         "fields": {
             "text": "mens basketball"
         }
     }, 
     {
         "pk": 11, 
-        "model": "core.tag", 
+        "model": "content.tag", 
         "fields": {
             "text": "girl talk"
         }
     }, 
     {
         "pk": 12, 
-        "model": "core.tag", 
+        "model": "content.tag", 
         "fields": {
             "text": "the game"
         }
     }, 
     {
         "pk": 13, 
-        "model": "core.tag", 
+        "model": "content.tag", 
         "fields": {
             "text": "ceb"
         }
     }, 
     {
         "pk": 14, 
-        "model": "core.tag", 
+        "model": "content.tag", 
         "fields": {
             "text": "pep rally"
         }
     }, 
     {
         "pk": 15, 
-        "model": "core.tag", 
+        "model": "content.tag", 
         "fields": {
             "text": "prop eight"
         }
     }, 
     {
         "pk": 16, 
-        "model": "core.tag", 
+        "model": "content.tag", 
         "fields": {
             "text": "california"
         }
     }, 
     {
         "pk": 17, 
-        "model": "core.tag", 
+        "model": "content.tag", 
         "fields": {
             "text": "protest"
         }
     }, 
     {
         "pk": 18, 
-        "model": "core.tag", 
+        "model": "content.tag", 
         "fields": {
             "text": "ec ten"
         }
     }, 
     {
         "pk": 19, 
-        "model": "core.tag", 
+        "model": "content.tag", 
         "fields": {
             "text": "crime"
         }
     }, 
     {
         "pk": 20, 
-        "model": "core.tag", 
+        "model": "content.tag", 
         "fields": {
             "text": "cambridge"
         }
     }, 
     {
         "pk": 21, 
-        "model": "core.tag", 
+        "model": "content.tag", 
         "fields": {
             "text": "harvard square"
         }
     }, 
     {
         "pk": 22, 
-        "model": "core.tag", 
+        "model": "content.tag", 
         "fields": {
             "text": "housing"
         }
     }, 
     {
         "pk": 23, 
-        "model": "core.tag", 
+        "model": "content.tag", 
         "fields": {
             "text": "yale"
         }
     }, 
     {
         "pk": 24, 
-        "model": "core.tag", 
+        "model": "content.tag", 
         "fields": {
             "text": "olpc"
         }
     }, 
     {
         "pk": 25, 
-        "model": "core.tag", 
+        "model": "content.tag", 
         "fields": {
             "text": "computer"
         }
     }, 
     {
         "pk": 26, 
-        "model": "core.tag", 
+        "model": "content.tag", 
         "fields": {
             "text": "charity"
         }
     }, 
     {
         "pk": 1, 
-        "model": "core.board", 
+        "model": "content.board", 
         "fields": {
             "group": 1, 
             "name": "Arts"
@@ -1786,7 +1786,7 @@
     }, 
     {
         "pk": 2, 
-        "model": "core.board", 
+        "model": "content.board", 
         "fields": {
             "group": 2, 
             "name": "Biz"
@@ -1794,7 +1794,7 @@
     }, 
     {
         "pk": 3, 
-        "model": "core.board", 
+        "model": "content.board", 
         "fields": {
             "group": 3, 
             "name": "Design"
@@ -1802,7 +1802,7 @@
     }, 
     {
         "pk": 4, 
-        "model": "core.board", 
+        "model": "content.board", 
         "fields": {
             "group": 4, 
             "name": "Ed"
@@ -1810,7 +1810,7 @@
     }, 
     {
         "pk": 5, 
-        "model": "core.board", 
+        "model": "content.board", 
         "fields": {
             "group": 5, 
             "name": "FM"
@@ -1818,7 +1818,7 @@
     }, 
     {
         "pk": 6, 
-        "model": "core.board", 
+        "model": "content.board", 
         "fields": {
             "group": 6, 
             "name": "IT"
@@ -1826,7 +1826,7 @@
     }, 
     {
         "pk": 7, 
-        "model": "core.board", 
+        "model": "content.board", 
         "fields": {
             "group": 7, 
             "name": "News"
@@ -1834,7 +1834,7 @@
     }, 
     {
         "pk": 8, 
-        "model": "core.board", 
+        "model": "content.board", 
         "fields": {
             "group": 8, 
             "name": "Photo"
@@ -1842,7 +1842,7 @@
     }, 
     {
         "pk": 9, 
-        "model": "core.board", 
+        "model": "content.board", 
         "fields": {
             "group": 9, 
             "name": "Sports"
@@ -1850,7 +1850,7 @@
     }, 
     {
         "pk": 1, 
-        "model": "core.contributor", 
+        "model": "content.contributor", 
         "fields": {
             "middle_initial": "", 
             "first_name": "Matt", 
@@ -1869,7 +1869,7 @@
     }, 
     {
         "pk": 2, 
-        "model": "core.contributor", 
+        "model": "content.contributor", 
         "fields": {
             "middle_initial": "", 
             "first_name": "Dan", 
@@ -1888,7 +1888,7 @@
     }, 
     {
         "pk": 3, 
-        "model": "core.contributor", 
+        "model": "content.contributor", 
         "fields": {
             "middle_initial": "", 
             "first_name": "Andy", 
@@ -1909,7 +1909,7 @@
     }, 
     {
         "pk": 4, 
-        "model": "core.contributor", 
+        "model": "content.contributor", 
         "fields": {
             "middle_initial": "", 
             "first_name": "Larry", 
@@ -1928,7 +1928,7 @@
     }, 
     {
         "pk": 5, 
-        "model": "core.contributor", 
+        "model": "content.contributor", 
         "fields": {
             "middle_initial": "W", 
             "first_name": "George", 
@@ -1949,7 +1949,7 @@
     }, 
     {
         "pk": 6, 
-        "model": "core.contributor", 
+        "model": "content.contributor", 
         "fields": {
             "middle_initial": "", 
             "first_name": "Theodore", 
@@ -1970,7 +1970,7 @@
     }, 
     {
         "pk": 7, 
-        "model": "core.contributor", 
+        "model": "content.contributor", 
         "fields": {
             "middle_initial": "D", 
             "first_name": "Franklin", 
@@ -1991,7 +1991,7 @@
     }, 
     {
         "pk": 8, 
-        "model": "core.contributor", 
+        "model": "content.contributor", 
         "fields": {
             "middle_initial": "F", 
             "first_name": "John", 
@@ -2012,7 +2012,7 @@
     }, 
     {
         "pk": 9, 
-        "model": "core.contributor", 
+        "model": "content.contributor", 
         "fields": {
             "middle_initial": "B", 
             "first_name": "Rutherford", 
@@ -2033,7 +2033,7 @@
     }, 
     {
         "pk": 10, 
-        "model": "core.contributor", 
+        "model": "content.contributor", 
         "fields": {
             "middle_initial": "Q", 
             "first_name": "John", 
@@ -2054,7 +2054,7 @@
     }, 
     {
         "pk": 11, 
-        "model": "core.contributor", 
+        "model": "content.contributor", 
         "fields": {
             "middle_initial": "", 
             "first_name": "John", 
@@ -2075,7 +2075,7 @@
     }, 
     {
         "pk": 12, 
-        "model": "core.contributor", 
+        "model": "content.contributor", 
         "fields": {
             "middle_initial": "H", 
             "first_name": "Barack", 
@@ -2096,7 +2096,7 @@
     }, 
     {
         "pk": 13, 
-        "model": "core.contributor", 
+        "model": "content.contributor", 
         "fields": {
             "middle_initial": "", 
             "first_name": "The Harvard", 
@@ -2125,7 +2125,7 @@
     }, 
     {
         "pk": 1, 
-        "model": "core.section", 
+        "model": "content.section", 
         "fields": {
             "audiodizer_id": null, 
             "name": "Arts"
@@ -2133,7 +2133,7 @@
     }, 
     {
         "pk": 2, 
-        "model": "core.section", 
+        "model": "content.section", 
         "fields": {
             "audiodizer_id": null, 
             "name": "Opinion"
@@ -2141,7 +2141,7 @@
     }, 
     {
         "pk": 3, 
-        "model": "core.section", 
+        "model": "content.section", 
         "fields": {
             "audiodizer_id": null, 
             "name": "FM"
@@ -2149,7 +2149,7 @@
     }, 
     {
         "pk": 4, 
-        "model": "core.section", 
+        "model": "content.section", 
         "fields": {
             "audiodizer_id": null, 
             "name": "News"
@@ -2157,7 +2157,7 @@
     }, 
     {
         "pk": 5, 
-        "model": "core.section", 
+        "model": "content.section", 
         "fields": {
             "audiodizer_id": null, 
             "name": "Sports"
@@ -2165,7 +2165,7 @@
     }, 
     {
         "pk": 1, 
-        "model": "core.issue", 
+        "model": "content.issue", 
         "fields": {
             "web_publish_date": "2008-07-23 00:00:00", 
             "issue_date": "2008-07-23", 
@@ -2175,7 +2175,7 @@
     }, 
     {
         "pk": 2, 
-        "model": "core.issue", 
+        "model": "content.issue", 
         "fields": {
             "web_publish_date": "2008-07-21 00:00:00", 
             "issue_date": "2008-07-21", 
@@ -2185,7 +2185,7 @@
     }, 
     {
         "pk": 3, 
-        "model": "core.issue", 
+        "model": "content.issue", 
         "fields": {
             "web_publish_date": "2008-07-18 00:00:00", 
             "issue_date": "2008-07-18", 
@@ -2195,7 +2195,7 @@
     }, 
     {
         "pk": 4, 
-        "model": "core.issue", 
+        "model": "content.issue", 
         "fields": {
             "web_publish_date": "2008-11-22 06:00:00", 
             "issue_date": "2008-11-22", 
@@ -2205,7 +2205,7 @@
     }, 
     {
         "pk": 5, 
-        "model": "core.issue", 
+        "model": "content.issue", 
         "fields": {
             "web_publish_date": "2008-11-23 06:00:00", 
             "issue_date": "2008-11-23", 
@@ -2215,7 +2215,7 @@
     }, 
     {
         "pk": 6, 
-        "model": "core.issue", 
+        "model": "content.issue", 
         "fields": {
             "web_publish_date": "2008-12-03 06:00:00", 
             "issue_date": "2008-12-03", 
@@ -2225,7 +2225,7 @@
     }, 
     {
         "pk": 7, 
-        "model": "core.issue", 
+        "model": "content.issue", 
         "fields": {
             "web_publish_date": "2009-01-23 06:00:00", 
             "issue_date": "2009-01-23", 
@@ -2235,7 +2235,7 @@
     }, 
     {
         "pk": 5, 
-        "model": "core.image", 
+        "model": "content.image", 
         "fields": {
             "generic": 10, 
             "pic": "photos/2008/12/03/024429_ChiaNMustafa09.jpg", 
@@ -2247,7 +2247,7 @@
     }, 
     {
         "pk": 4, 
-        "model": "core.image", 
+        "model": "content.image", 
         "fields": {
             "generic": 11, 
             "pic": "photos/2008/12/03/024247_CrateandBarrel.jpg", 
@@ -2259,7 +2259,7 @@
     }, 
     {
         "pk": 3, 
-        "model": "core.image", 
+        "model": "content.image", 
         "fields": {
             "generic": 12, 
             "pic": "photos/2008/12/03/024112_Prop8Protest.jpg", 
@@ -2271,11 +2271,11 @@
     }, 
     {
         "pk": 2, 
-        "model": "core.image", 
+        "model": "content.image", 
         "fields": {
             "generic": 13, 
             "pic": "photos/2008/12/03/023928_MillerTime.jpg", 
-            "caption": "While the Harvard men\u2019s basketball team\u2019s freshmen stole the spotlight, junior Doug Miller, shown here in earlier action, scored eight points in his first career start on 4-for-5 shooting and grabbing three boards.", 
+            "caption": "While the Harvard men\u2019s basketball team\u2019s freshmen stole the spotlight, junior Doug Miller, shown here in earlier action, scontentd eight points in his first career start on 4-for-5 shooting and grabbing three boards.", 
             "created_on": "2008-12-03 02:39:28", 
             "kicker": "Miller Time", 
             "slug": "miller-time"
@@ -2283,11 +2283,11 @@
     }, 
     {
         "pk": 1, 
-        "model": "core.image", 
+        "model": "content.image", 
         "fields": {
             "generic": 14, 
             "pic": "photos/2008/12/03/020726_MillerTime.jpg", 
-            "caption": "While the Harvard men\u2019s basketball team\u2019s freshmen stole the spotlight, junior Doug Miller, shown here in earlier action, scored eight points in his first career start on 4-for-5 shooting and grabbing three boards.", 
+            "caption": "While the Harvard men\u2019s basketball team\u2019s freshmen stole the spotlight, junior Doug Miller, shown here in earlier action, scontentd eight points in his first career start on 4-for-5 shooting and grabbing three boards.", 
             "created_on": "2008-12-03 02:07:26", 
             "kicker": "Miller Time", 
             "slug": "miller-time"
@@ -2295,7 +2295,7 @@
     }, 
     {
         "pk": 4, 
-        "model": "core.imagegallery", 
+        "model": "content.imagegallery", 
         "fields": {
             "description": "Chia N. Mustafa \u201909 sits in front of Kirkland House last Friday. The son of a Kurdish leader, Mustafa has spent time in Baghdad. \u201cHe\u2019s lived in the ghetto, he\u2019s eaten from a silver spoon, he\u2019s been through war, he\u2019s been through everything,\u201d his suitemate said.", 
             "title": "Chia N. Mustafa '09", 
@@ -2309,7 +2309,7 @@
     }, 
     {
         "pk": 3, 
-        "model": "core.imagegallery", 
+        "model": "content.imagegallery", 
         "fields": {
             "description": "The iconic Brattle Square store closes. The iconic Brattle", 
             "title": "Crate and Barrel", 
@@ -2323,7 +2323,7 @@
     }, 
     {
         "pk": 2, 
-        "model": "core.imagegallery", 
+        "model": "content.imagegallery", 
         "fields": {
             "description": "Students prepare posters for a rally to protest Proposition 8, the recently passed California ban on same-sex marriage.", 
             "title": "Prop 8 Protest", 
@@ -2337,9 +2337,9 @@
     }, 
     {
         "pk": 1, 
-        "model": "core.imagegallery", 
+        "model": "content.imagegallery", 
         "fields": {
-            "description": "While the Harvard men\u2019s basketball team\u2019s freshmen stole the spotlight, junior Doug Miller, shown here in earlier action, scored eight points in his first career start on 4-for-5 shooting and grabbing three boards.", 
+            "description": "While the Harvard men\u2019s basketball team\u2019s freshmen stole the spotlight, junior Doug Miller, shown here in earlier action, scontentd eight points in his first career start on 4-for-5 shooting and grabbing three boards.", 
             "title": "Miller Time", 
             "generic": 18, 
             "images": [
@@ -2351,7 +2351,7 @@
     }, 
     {
         "pk": 9, 
-        "model": "core.article", 
+        "model": "content.article", 
         "fields": {
             "byline_type": "cstaff", 
             "image_gallery": null, 
@@ -2373,7 +2373,7 @@
     }, 
     {
         "pk": 1, 
-        "model": "core.article", 
+        "model": "content.article", 
         "fields": {
             "byline_type": "cstaff", 
             "image_gallery": 1, 
@@ -2395,7 +2395,7 @@
     }, 
     {
         "pk": 2, 
-        "model": "core.article", 
+        "model": "content.article", 
         "fields": {
             "byline_type": "cstaff", 
             "image_gallery": null, 
@@ -2417,7 +2417,7 @@
     }, 
     {
         "pk": 3, 
-        "model": "core.article", 
+        "model": "content.article", 
         "fields": {
             "byline_type": "cstaff", 
             "image_gallery": 2, 
@@ -2439,7 +2439,7 @@
     }, 
     {
         "pk": 4, 
-        "model": "core.article", 
+        "model": "content.article", 
         "fields": {
             "byline_type": null, 
             "image_gallery": null, 
@@ -2461,7 +2461,7 @@
     }, 
     {
         "pk": 5, 
-        "model": "core.article", 
+        "model": "content.article", 
         "fields": {
             "byline_type": "cstaff", 
             "image_gallery": 3, 
@@ -2483,7 +2483,7 @@
     }, 
     {
         "pk": 6, 
-        "model": "core.article", 
+        "model": "content.article", 
         "fields": {
             "byline_type": "cstaff", 
             "image_gallery": null, 
@@ -2505,7 +2505,7 @@
     }, 
     {
         "pk": 7, 
-        "model": "core.article", 
+        "model": "content.article", 
         "fields": {
             "byline_type": "cstaff", 
             "image_gallery": 4, 
@@ -2527,7 +2527,7 @@
     }, 
     {
         "pk": 8, 
-        "model": "core.article", 
+        "model": "content.article", 
         "fields": {
             "byline_type": "cstaff", 
             "image_gallery": null, 

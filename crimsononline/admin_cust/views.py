@@ -10,8 +10,7 @@ from django.template.loader import render_to_string
 from django.utils import simplejson
 from django.utils.hashcompat import md5_constructor
 from django.utils.safestring import mark_safe
-from crimsononline.core.models import *
-from crimsononline.contentgroup.models import *
+from crimsononline.content.models import *
 
 def get_content_groups(request):
     if request.method != 'GET':
@@ -33,7 +32,7 @@ def get_rel_content(request, ct_id, obj_id, ct_name=None):
     returns HTML with a Content obj rendered as 'admin.line_item'
     """
     if not ct_id:
-        ct = ContentType.objects.get(app_label='core', model=ct_name.lower())
+        ct = ContentType.objects.get(app_label='content', model=ct_name.lower())
         ct_id = ct.pk
     r = get_object_or_404(
         ContentGeneric, content_type__pk=int(ct_id), object_id=int(obj_id)

@@ -51,8 +51,7 @@ class ContentGeneric(models.Model):
     issue = models.ForeignKey('Issue', null=True, related_name='content')
     section = models.ForeignKey('Section', null=True, related_name='content')
     priority = models.IntegerField(default=0)
-    group = models.ForeignKey(
-        'contentgroup.ContentGroup', null=True, blank=True)
+    group = models.ForeignKey('ContentGroup', null=True, blank=True)
     hits = models.IntegerField(default=0)
     
     objects = ContentGenericManager()
@@ -175,10 +174,60 @@ class Content(models.Model):
         if self.group:
             url_data = [self.group.type.lower(), 
                 make_url_friendly(self.group.name)] + url_data
-            return ('core_grouped_content', url_data)
+            return ('content_grouped_content', url_data)
         else:
             url_data = [self.__class__.__name__.lower()] + url_data
-            return ('core_content', url_data)
+            return ('content_content', url_data)
+    
+
+def get_img_path(instance, filename):
+    ext = splitext(filename)[1]
+    safe_name = make_file_friendly(instance.name)
+    return "images/%s/%s.%s" % (instance.type, safe_name, ext)
+
+
+class ContentGroup(models.Model):
+    """
+    Groupings of content.  Best for groupings that have simple metadata
+        (just a blurb and an image), arbitrary (or chronological) ordering, 
+        and not much else.
+    This is different from tags because groupings have metadata.
+    
+    Examples:
+      * Columns
+      * Blogs
+      * Article Series (say, a series on Iraq or the election)
+    """
+    TYPE_CHOICES = (
+        ('column', 'Column'),
+        ('series', 'Series'),
+        ('blog', 'Blog'),
+    )
+    type = models.CharField(max_length=25, choices=TYPE_CHOICES)
+    name = models.CharField(max_length=25)
+    blurb = models.TextField(blank=True, null=True)
+    image = models.ImageField(upload_to=get_img_path, blank=True, null=True)
+    
+    class Meta:
+        unique_together = (('type', 'name',),)
+    
+    def __unicode__(self):
+        return "%s/%s" % (self.type, self.name)
+    
+    @staticmethod
+    def by_name(type, name):
+        """
+        Find CGs by type, name key.
+        Content Groups shouldn't change that much. We cache them.
+        """
+        cg = cache.get('contentgroups_all')
+        if not cg:
+            cg = {}
+            objs = ContentGroup().objects.all()[:]
+            for obj in objs:
+                cg[(obj.type, obj.name)] = obj
+            cache.set('contentgroups_all', cg, 1000000)
+        return cg.get((type, name), None)
     
 
 
@@ -214,7 +263,7 @@ class Tag(models.Model):
     
     @permalink
     def get_absolute_url(self):
-        return ('core_tag', [self.text])
+        return ('content_tag', [self.text])
     
 
 
@@ -298,7 +347,7 @@ class Contributor(models.Model):
     
     @permalink
     def get_absolute_url(self):
-        return ('core_writer_profile', 
+        return ('content_writer_profile', 
             [str(self.id), self.first_name, self.middle_initial, self.last_name])
 
 
@@ -657,7 +706,7 @@ class Image(Content):
     #@permalink
     #def get_absolute_url(self):
     #    d = self.created_on
-    #    return ('core_get_image', [d.year, d.month, d.day, self.slug])
+    #    return ('content_get_image', [d.year, d.month, d.day, self.slug])
     
     def save(self, *args, **kwargs):
         # autopopulate the slug
@@ -686,7 +735,7 @@ class ImageGallery(Content):
     
     @permalink
     def get_absolute_url(self):
-        return ('core_imagegallery', [self.cover_image.pk, self.pk])
+        return ('content_imagegallery', [self.cover_image.pk, self.pk])
     
 
 
@@ -856,7 +905,7 @@ class Article(Content):
     #@permalink
     #def get_absolute_url(self):
     #    d = self.issue.issue_date
-    #    return ('core_get_article', [d.year, d.month, d.day, self.slug])
+    #    return ('content_get_article', [d.year, d.month, d.day, self.slug])
     
 
 
