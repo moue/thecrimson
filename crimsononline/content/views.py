@@ -22,6 +22,14 @@ def get_grouped_content(request, gtype, gname, ctype, year, month, day, slug, pk
     else:
         raise Http404
 
+def get_content_group(request, gtype, gname):
+    # validate the contentgroup
+    cg = ContentGroup.by_name(gtype, gname)
+    if not cg:
+        raise Http404
+    c = cg.contentgeneric_set.all()
+    return render_to_response('contentgroup.html', {'cg': cg, 'content': c})
+
 def index(request):
     issue = Issue.get_current()
     stories = top_articles('News')[:9]

@@ -222,13 +222,27 @@ class ContentGroup(models.Model):
         """
         cg = cache.get('contentgroups_all')
         if not cg:
-            cg = {}
-            objs = ContentGroup().objects.all()[:]
-            for obj in objs:
-                cg[(obj.type, obj.name)] = obj
-            cache.set('contentgroups_all', cg, 1000000)
+            cg = ContentGroup.update_cache()
         return cg.get((type, name), None)
     
+    @staticmethod
+    def update_cache():
+        cg = {}
+        objs = ContentGroup.objects.all()[:]
+        print objs
+        for obj in objs:
+            cg[(obj.type, make_url_friendly(obj.name))] = obj
+        cache.set('contentgroups_all', cg, 1000000)
+        print cg
+        return cg
+    
+    def save(self, *args, **kwargs):
+        """
+        When Content Groups change, we need to update the cache
+        """
+        s = super(ContentGroup, self).save(*args, **kwargs)
+        
+        return s
 
 
 class Tag(models.Model):
