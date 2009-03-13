@@ -7,7 +7,6 @@ from django.template import Context, RequestContext, loader
 from django.contrib.flatpages.models import FlatPage
 from crimsononline.content.models import *
 from crimsononline.content_module.models import ContentModule
-from crimsononline.contentgroup.models import ContentGroup
 
 
 def get_content(request, ctype, year, month, day, slug, pk, content_group=None):

@@ -14,7 +14,7 @@ urlpatterns = patterns('',
     (r'^content/rel_content/get/(\d+)/(\d+)/$', get_rel_content),
     (r'^content/rel_content/get/(?P<ct_name>\w+)/(?P<obj_id>\d+)/$',
         get_rel_content, {'ct_id': 0}),
-    (r'^contentgroup/group/search/$', get_content_groups),
+    (r'^content/contentgroup/search/$', get_content_groups),
 )
 
 urlpatterns += patterns('',

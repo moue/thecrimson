@@ -96,7 +96,6 @@ INSTALLED_APPS = (
     'crimsononline.content_module',
     'crimsononline.templ',
     'crimsononline.search',
-    'crimsononline.contentgroup',
     'crimsononline.utils',
 )
 

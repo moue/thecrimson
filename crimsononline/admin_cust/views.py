@@ -11,7 +11,6 @@ from django.utils import simplejson
 from django.utils.hashcompat import md5_constructor
 from django.utils.safestring import mark_safe
 from crimsononline.content.models import *
-from crimsononline.contentgroup.models import *
 
 def get_content_groups(request):
     if request.method != 'GET':
