@@ -54,13 +54,6 @@ def bigmap(request):
     
     return render_to_response('bigmap.html', dict)
     
-def article(request, year, month, day, slug):
-    year, month, day = int(year), int(month), int(day)
-    d = date(year=year, month=month, day=day)
-    a = get_object_or_404(Article, generic__issue__issue_date=d, slug=slug)
-    nav = a.section.name.lower()
-    a.maps.order_by('width') #this looks nicer
-    return render_to_response('article.html', {'article': a, 'nav': nav})
     
 def writer(request, contributor_id, f_name, m_name, l_name):
     w = get_object_or_404(Contributor, pk=contributor_id)

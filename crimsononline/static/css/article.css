@@ -1,48 +1,11 @@
-.content {
-	width: 610px;
-	padding: 00px 10px 0px 20px;
-	border-style: solid;
-	border-width: 0px 1px 0px 0px;
-	border-color: #c4c5c7;
-	float: left;
-}
-.columnRight {
-	width: 300px;
-	padding: 0px 0px 0px 9px;
-	margin: 0px 0px 0px -1px;
-	border-style: solid;
-	border-width: 0px 0px 0px 1px;
-	border-color: #c4c5c7;
-	float: left;
-}
-h1 {
-	font-size: 24px;
-	margin: 0px 0px 2px 0px;
-	color: #780001;
-}
-h2 {
-	font-size: 18px;
-	margin: 0px 0px 10px 0px;
-	color: #505050;
-}
-.byline, .timestamp {
-	font-size: 12px;
-	margin: 0px;
-	color: #707070;
-	line-height: 14px;
-}
-.timestamp {
-    margin: 0px 0px 10px 0px;
-}
 p {
 	margin: 0px 0px 10px 0px;
 }
-.article {
+.text {
 	font-size: 15px;
 	line-height: 22px;
 }
-
-/* photo stuff */
+/* article photo stuff */
 .tall{
     width: 240px;
 }
@@ -50,7 +13,7 @@ p {
     width: 390px;
 }
 .image {
-    float: right;
+    float: left;
     padding: 0 3px 3px 5px;
     border-style: solid;
     border-color: #c4c5c7;
@@ -67,7 +30,7 @@ p {
     right: 0px;
     color: #000000;
 }
-.image .byline a{
+.image > .byline a{
     background-color: white;
     opacity: .7;
     padding: 1px 5px;

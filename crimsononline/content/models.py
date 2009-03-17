@@ -128,11 +128,12 @@ class Content(models.Model):
         """
         name = self._meta.object_name.lower()
         templ = 'models/%s/%s.html' % (name, method)
-        context.update({name: self, 'class': name})
+        # can access self with either the name of the class (ie, 'article')
+        #   or 'content'
+        context.update({name: self, 'content': self, 'class': name})
         if method == 'page':
             self.hits += 1
             self.save()
-        # below, maybe instead of name:, have 'obj':
         return mark_safe(render_to_string(templ, context))
     
     @classmethod

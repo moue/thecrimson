@@ -21,7 +21,7 @@
     width: 960px;
     border-width: 0 1px;
     border-style: solid;
-    border-color: #b90600;
+    border-color: #b5b5b5;
     margin: 0 3px;
     padding: 0 6px;
 }
@@ -85,7 +85,6 @@ body {
 }
 
 /* stylings */
-
 a {
 	text-decoration: none;
 	color: #a02222;
@@ -128,4 +127,21 @@ a:hover {
     top: -6px;
     background-color: white;
     color: #444444;
+}
+
+/* yuhki labels, "yabels" */
+
+div.label { 
+    margin: 0px 0px;
+    padding: 2px 5px;
+    background: #a02222;
+    width: 100px;
+    font-size: 11px;
+    font-weight: 700;
+    color: white; 
+    font-family: Arial,Helvetica,sans-serif;
+    text-align: center; 
+    display: inline; 
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px; 
 }
