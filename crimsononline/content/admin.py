@@ -9,9 +9,9 @@ from django.utils.safestring import mark_safe
 from django.utils.hashcompat import md5_constructor
 from django.template.defaultfilters import truncatewords
 from crimsononline.content.models import *
-from crimsononline.admin_cust import forms as cforms
-from crimsononline.admin_cust.forms import FbModelChoiceField, \
-    IssuePickerField, MapBuilderField, RelatedContentField, CropField
+from crimsononline.admin_cust.forms import \
+    IssuePickerField, MapBuilderField, RelatedContentField
+from crimsononline.common.forms import FbModelChoiceField, CropField
 
 
 admin.site.register(ContentGroup)

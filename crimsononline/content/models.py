@@ -230,11 +230,9 @@ class ContentGroup(models.Model):
     def update_cache():
         cg = {}
         objs = ContentGroup.objects.all()[:]
-        print objs
         for obj in objs:
             cg[(obj.type, make_url_friendly(obj.name))] = obj
         cache.set('contentgroups_all', cg, 1000000)
-        print cg
         return cg
     
     def save(self, *args, **kwargs):
@@ -574,11 +572,14 @@ class ImageSpec():
         
         if crop_coords:
             img = pilImage.open(self.orig_file.path)
+            #print size_spec, crop_coords
             img = img.transform(size_spec[:2], pilImage.EXTENT, crop_coords)
-            self._path, self._url = self._get_path(), ''
+            self._path = self._get_path()
             img.save(self._path)
+            #print self._path
         else:
-            self._path, self._url = '', ''
+            self._path = ''
+        self._url = ''
     
     def _get_path(self):
         """
@@ -709,6 +710,7 @@ class Image(Content):
         overwrites any previous ImageSpecs
         """
         c = float(width) / float(height)
+        print (width, height, c), (x1, y1, x2, y2)
         s = ImageSpec(self.pic, (width, height, c), (x1, y1, x2, y2))
         self._spec_cache[(width, height, c)] = s
         return s
