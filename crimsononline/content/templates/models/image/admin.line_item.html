@@ -1,4 +1,6 @@
-{% load crimson_filters %}
+{% load content_filters %}
+{% load common_filters %}
+
 <p>Image</p>
 {{ image|to_thumb_tag }}
 <p>{{ image.kicker }}</p>

@@ -1,3 +1,6 @@
+from datetime import datetime, timedelta
+from math import log
+import urllib
 from django import template
 from django.db import connection
 from django.template import Context
@@ -5,9 +8,6 @@ from django.template.loader import get_template
 from django.utils import simplejson
 from django.utils.safestring import mark_safe
 from crimsononline.content.models import Image, Article, Content, ContentGeneric
-from datetime import datetime, timedelta
-from math import log
-import urllib
 
 USER_KEY="vabqI2su93P1wVF3Ls9kXhXhRggV7y2ylokjq137yPAz47cY5dDMHgUA2QlZoWNE"
 # The following is true for now

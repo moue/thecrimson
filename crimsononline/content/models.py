@@ -16,7 +16,7 @@ from django.core.cache import cache
 from django.template.defaultfilters import slugify, truncatewords
 from django.template.loader import render_to_string
 from django.utils.safestring import mark_safe
-from crimsononline.utils.strings import \
+from crimsononline.common.utils.strings import \
     make_file_friendly, make_slug, make_url_friendly
 
 
@@ -564,11 +564,9 @@ class ImageSpec():
     """
     def __init__(self, orig_file, size_spec, crop_coords=None):
         width, height, crop_ratio = size_spec
-        # use these lines if you don't want to scale images up
-        #width = int(min(orig_file.width, width)) if width else None
-        #height = int(min(orig_file.height, height)) if height else None
-        width = int(width) if width else None
-        height = int(height) if height else None
+        # make sure we don't scale images up
+        width = int(min(orig_file.width, width)) if width else None
+        height = int(min(orig_file.height, height)) if height else None
         self.width = width or orig_file.width
         self.height = height or orig_file.height
         self.crop_ratio = crop_ratio
