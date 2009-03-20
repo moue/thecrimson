@@ -564,8 +564,11 @@ class ImageSpec():
     """
     def __init__(self, orig_file, size_spec, crop_coords=None):
         width, height, crop_ratio = size_spec
-        width = int(min(orig_file.width, width)) if width else None
-        height = int(min(orig_file.height, height)) if height else None
+        # use these lines if you don't want to scale images up
+        #width = int(min(orig_file.width, width)) if width else None
+        #height = int(min(orig_file.height, height)) if height else None
+        width = int(width) if width else None
+        height = int(height) if height else None
         self.width = width or orig_file.width
         self.height = height or orig_file.height
         self.crop_ratio = crop_ratio

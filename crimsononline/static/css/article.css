@@ -7,45 +7,50 @@ p {
 }
 /* article photo stuff */
 .tall{
-    width: 240px;
-}
-.wide{
-    width: 390px;
-}
-.image {
-    float: left;
-    padding: 0 3px 3px 5px;
+    width: 260px;
+    float: right;
+    padding: 0 0 3px 0;
     border-style: solid;
     border-color: #c4c5c7;
-    border-width: 0 0 1px 1px;
+    border-width: 0 1px 1px 1px;
     margin: 4px;
-    position: relative;
+    -moz-border-radius: 0 0 8px 8px;
+    -webkit-border-bottom-left-radius: 8px;
+    -webkit-border-bottom-right-radius: 8px;
+}
+.wide{
+    width: 630px;
+}
+.image {
+
+}
+.image img {
+    border-width: 0;
 }
 .image > .byline {
     text-align: right;
     text-transform: uppercase;
-    margin-top: -28px;
-    font-size: 0.7em;
-    position: absolute;
-    right: 0px;
-    color: #000000;
 }
 .image > .byline a{
-    background-color: white;
-    opacity: .7;
     padding: 1px 5px;
     text-decoration: none;
-    font-weight: normal;
+    font-weight: bold;
+    color: #777;
 }
 .image > .byline > a:hover{
     text-decoration: none;
-    opacity: 1;
+    color: black;
+}
+.tall > .caption {
+    margin: 10px 4px 2px;
+}
+.wide > .caption {
+    margin: 0 0 10px 0;
 }
 .image > .caption{
-    margin-left: 4px;
     font-size: .85em;
     line-height: 1.4em;
-    color: #333333;
+    color: #777;
 }
 .image > p{
     padding: 0;
