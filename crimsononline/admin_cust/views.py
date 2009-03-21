@@ -12,59 +12,7 @@ from django.utils.hashcompat import md5_constructor
 from django.utils.safestring import mark_safe
 from crimsononline.content.models import *
 
-def get_content_groups(request):
-    if request.method != 'GET':
-        raise Http404
-    q_str, limit = request.GET.get('q', ''), request.GET.get('limit', None)
-    excludes = request.GET.get('exclude','').split(',')
-    if excludes:
-        excludes = [int(e) for e in excludes if e]
-    if (len(q_str) < 1) or (not limit):
-        raise Http404
-    cg = ContentGroup.objects.filter(
-        Q(type__contains=q_str) | Q(name__contains=q_str)) \
-        .exclude(pk__in=excludes).order_by('-pk')[:limit]
-    # ok, i really shouldn't use contributors.txt, but its exactly what i need
-    return render_to_response('contributors.txt', {'contributors': cg})
 
-def get_rel_content(request, ct_id, obj_id, ct_name=None):
-    """
-    returns HTML with a Content obj rendered as 'admin.line_item'
-    """
-    if not ct_id:
-        ct = ContentType.objects.get(app_label='content', model=ct_name.lower())
-        ct_id = ct.pk
-    r = get_object_or_404(
-        ContentGeneric, content_type__pk=int(ct_id), object_id=int(obj_id)
-    )
-    json_dict = {
-        'html': mark_safe(r.content_object._render('admin.line_item')),
-        'ct_id': ct_id,
-    }
-    return HttpResponse(simplejson.dumps(json_dict))
-
-def find_rel_content(request, ct_id, st_dt, end_dt, tags, page):
-    """
-    returns JSON containing Content objects and pg numbers
-    """
-    OBJS_PER_REQ = 3
-    
-    cls = get_object_or_404(ContentType, pk=int(ct_id))
-    cls = cls.model_class()
-    st_dt = datetime.strptime(st_dt, '%m/%d/%Y')
-    end_dt = datetime.strptime(end_dt, '%m/%d/%Y')
-    objs = cls.find_by_date(start=st_dt, end=end_dt)
-    p = Paginator(objs, OBJS_PER_REQ).page(page)
-    
-    json_dict = {}
-    json_dict['objs'] = []
-    for obj in p.object_list:
-        html = render_to_string('content_thumbnail.html', {'objs': [obj]})
-        json_dict['objs'].append([ct_id, obj.pk, html])
-    json_dict['next_page'] = p.next_page_number() if p.has_next() else 0
-    json_dict['prev_page'] = p.previous_page_number() if p.has_previous() else 0
-    
-    return HttpResponse(simplejson.dumps(json_dict))
 
 def get_contributors(request):
     if request.method != 'GET':

@@ -10,14 +10,9 @@ urlpatterns = patterns('',
     (r'^content/contributor/search/$', get_contributors),
     (r'^content/issue/issue_list/$', get_issues),
     (r'^content/issue/special_issue_list/$', get_special_issues),
-    (r'^content/rel_content/find/(\d+)/(\d\d/\d\d/\d{4})/(\d\d/\d\d/\d{4})/([\w\-,]*)/(\d+)/$', find_rel_content),
-    (r'^content/rel_content/get/(\d+)/(\d+)/$', get_rel_content),
-    (r'^content/rel_content/get/(?P<ct_name>\w+)/(?P<obj_id>\d+)/$',
-        get_rel_content, {'ct_id': 0}),
-    (r'^content/contentgroup/search/$', get_content_groups),
 )
 
 urlpatterns += patterns('',
     (r'^doc/', include('django.contrib.admindocs.urls')),
-    (r'^(.*)', admin.site.root),
+    (r'^', include(admin.site.urls)),
 )

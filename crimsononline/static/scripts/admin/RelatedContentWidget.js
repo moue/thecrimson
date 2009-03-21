@@ -20,7 +20,7 @@ var set_related_content = function(id_prefix, types){
         if(!ct_id){
             ct_id = ct_name
         }
-        var url = '/admin/content/rel_content/get/' + ct_id + '/' + pk + '/';
+        var url = '/admin/content/article/rel_content/get/' + ct_id + '/' + pk + '/';
         $.getJSON(url, function(json){
             // append value to field
             ct_id = json.ct_id;
@@ -193,7 +193,7 @@ var set_related_content = function(id_prefix, types){
         var start = $(p + '_start_date').val();
         var end = $(p + '_end_date').val();
         var type = $(p + '_type').val();
-        var url = '/admin/content/rel_content/find/' + type + '/' + start + '/' + end + '/' + tags + '/1/';
+        var url = '/admin/content/article/rel_content/find/' + type + '/' + start + '/' + end + '/' + tags + '/1/';
         $.getJSON(url, function(data){
             process_ajax(url.substr(0, url.length - 2), data);
         });

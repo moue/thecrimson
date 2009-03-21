@@ -2,20 +2,53 @@ from datetime import datetime, timedelta
 from re import compile
 from django import forms
 from django.conf import settings
+from django.conf.urls.defaults import patterns
 from django.contrib import admin
-from django.forms import ModelForm
 from django.contrib.auth.models import User
+from django.core.paginator import Paginator
+from django.forms import ModelForm
+from django.http import Http404, HttpResponse
+from django.utils import simplejson
 from django.utils.safestring import mark_safe
 from django.utils.hashcompat import md5_constructor
+from django.shortcuts import render_to_response, get_object_or_404
 from django.template.defaultfilters import truncatewords
 from crimsononline.content.models import *
+from crimsononline.content.forms import *
 from crimsononline.admin_cust.forms import \
     IssuePickerField, MapBuilderField, RelatedContentField
 from crimsononline.common.forms import FbModelChoiceField, CropField
 
 
-admin.site.register(ContentGroup)
+class ContentGroupAdmin(admin.ModelAdmin):
+    def get_urls(self):
+        urls = super(ContentGroupAdmin, self).get_urls()
+        urls = patterns('',
+            (r'^search/$', self.admin_site.admin_view(self.fbmc_search)),
+        ) + urls
+        return urls
     
+    def fbmc_search(self, request):
+        """
+        Returns a text response for FBModelChoice Field
+        """
+        if request.method != 'GET':
+            raise Http404
+        q_str, limit = request.GET.get('q', ''), request.GET.get('limit', None)
+        excludes = request.GET.get('exclude','').split(',')
+        if excludes:
+            excludes = [int(e) for e in excludes if e]
+        if (len(q_str) < 1) or (not limit):
+            raise Http404
+        cg = ContentGroup.objects.filter(
+            Q(type__contains=q_str) | Q(name__contains=q_str)) \
+            .exclude(pk__in=excludes).order_by('-pk')[:limit]
+        return render_to_response('fbmc_result_list.txt', {'objs': cg})
+
+
+admin.site.register(ContentGroup, ContentGroupAdmin)
+
+
 class ContentGenericModelForm(ModelForm):
     """
     Parent class for ContentGeneric model forms.
@@ -100,11 +133,8 @@ class ContributorForm(forms.ModelForm):
         if h and len(h) != 8:
             raise forms.ValidationError('HUID must be 8 digits long')
         return self.cleaned_data['huid_hash']
-
-class ContributorSelfAdmin(admin.ModelAdmin):
-    fields = ('profile_text', 'profile_pic', 'email', 'phone')
-    form = ContributorForm
     
+
 class ContributorAdmin(admin.ModelAdmin):
     search_fields = ('first_name', 'last_name',)
     fieldsets = (
@@ -168,12 +198,14 @@ class ContributorAdmin(admin.ModelAdmin):
 
 admin.site.register(Contributor, ContributorAdmin)
 
+
 class IssueAdmin(admin.ModelAdmin):
     list_display = ('issue_date',)
     search_fields = ('issue_date',)
     fields = ('issue_date', 'web_publish_date', 'special_issue_name', 'comments',)
 
 admin.site.register(Issue, IssueAdmin)
+
 
 class ImageAdminForm(ContentGenericModelForm):
     class Meta:
@@ -221,38 +253,6 @@ class ImageAdmin(admin.ModelAdmin):
         
 admin.site.register(Image, ImageAdmin)
 
-
-class ImageSelectMultipleWidget(forms.widgets.SelectMultiple):
-    def render(self, name, value, attrs=None, choices=()):
-        output = '<div id="images-bank"><ul class="image-list"></ul>' \
-                    '<div class="links"></div></div>\n'
-        output += super(ImageSelectMultipleWidget, self). \
-            render(name, value, attrs, choices)
-        output += '<div id="images-current"><h3>Images in this ' \
-                    'Image Gallery</h3><ul class="image-list"></ul></div>'
-        return mark_safe(output)
-
-class ImageSelectModelMultipleChoiceField(forms.ModelMultipleChoiceField):
-    # super's clean thinks that valid Images = images in the initial queryset
-    #    but that's not the case; all images are valid.  we temporarily change
-    #    the queryset, do a clean, and then change the queryset back (to
-    #    mitigate side effects).
-    def clean(self, value):
-        qs = self.queryset
-        self.queryset = Image.objects
-        c = super(ImageSelectModelMultipleChoiceField, self).clean(value)
-        self.queryset = qs
-        return c
-    
-
-class ImageSelectModelChoiceField(forms.ModelChoiceField):
-    # see above
-    def clean(self, value):
-        qs = self.queryset
-        self.queryset = Image.objects
-        c = super(ImageSelectModelChoiceField, self).clean(value)
-        self.queryset = qs
-        return c
 
 class ImageGalleryForm(ContentGenericModelForm):
     # we use a special widget here so that we can inject an extra div
@@ -404,13 +404,6 @@ class ArticleAdmin(admin.ModelAdmin):
             'all': ('css/admin/Article.css',)
         }
     
-    #def save_model(self, request, obj, form, change):
-    #    obj.save()
-    #    obj.rel_content.clear()
-    #    for i, r in enumerate(form.cleaned_data['rel_content']):
-    #        x = ArticleContentRelation(order=i, article=obj, related_content=r)
-    #        x.save()
-    
     def has_change_permission(self, request, obj=None):
         u = request.user
         if u.is_superuser:
@@ -433,6 +426,65 @@ class ArticleAdmin(admin.ModelAdmin):
             u.message_set.create(message='Note: you can only change articles' \
                                             ' uploaded in the last hour.')
         return qs
+        
+    def get_urls(self):
+        urls = super(ArticleAdmin, self).get_urls()
+        urls = patterns('',
+            (r'^rel_content/get/(?P<ct_id>\d+)/(?P<obj_id>\d+)/$',
+                self.admin_site.admin_view(self.get_rel_content)),
+            (r'^rel_content/get/(?P<ct_name>\w+)/(?P<obj_id>\d+)/$',
+                self.admin_site.admin_view(self.get_rel_content)),
+            (r'^rel_content/find/(\d+)/(\d\d/\d\d/\d{4})/(\d\d/\d\d/\d{4})/([\w\-,]*)/(\d+)/$',
+                self.admin_site.admin_view(self.find_rel_content)),
+        ) + urls
+        return urls
+    
+    def get_rel_content(self, request, obj_id, ct_id=0, ct_name=None):
+        """
+        returns HTML with a Content obj rendered as 'admin.line_item'
+        @ct_id : ContentType pk
+        @obj_id : Content pk
+        @ct_name : Name of the ContentType. This overrides @ct_id.
+        """
+        if not ct_id:
+            if not ct_name:
+                raise Http404
+            ct = ContentType.objects.get(
+                app_label='content', model=ct_name.lower())
+            ct_id = ct.pk
+        r = get_object_or_404(
+            ContentGeneric, content_type__pk=int(ct_id), object_id=int(obj_id)
+        )
+        json_dict = {
+            'html': mark_safe(r.content_object._render('admin.line_item')),
+            'ct_id': ct_id,
+        }
+        return HttpResponse(simplejson.dumps(json_dict))
+        
+    def find_rel_content(self, request, ct_id, st_dt, end_dt, tags, page):
+        """
+        returns JSON containing Content objects and pg numbers
+        """
+        OBJS_PER_REQ = 3
+
+        cls = get_object_or_404(ContentType, pk=int(ct_id))
+        cls = cls.model_class()
+        st_dt = datetime.strptime(st_dt, '%m/%d/%Y')
+        end_dt = datetime.strptime(end_dt, '%m/%d/%Y')
+        objs = cls.find_by_date(start=st_dt, end=end_dt)
+        p = Paginator(objs, OBJS_PER_REQ).page(page)
+
+        json_dict = {}
+        json_dict['objs'] = []
+        for obj in p.object_list:
+            html = '<li>%s</li>' % obj._render("admin.thumbnail")
+            html = render_to_string('content_thumbnail.html', {'objs': [obj]})
+            json_dict['objs'].append([ct_id, obj.pk, html])
+        json_dict['next_page'] = p.next_page_number() if p.has_next() else 0
+        json_dict['prev_page'] = p.previous_page_number() \
+            if p.has_previous() else 0
+
+        return HttpResponse(simplejson.dumps(json_dict))
     
 
 admin.site.register(Article, ArticleAdmin)
