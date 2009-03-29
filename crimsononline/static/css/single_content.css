@@ -11,7 +11,8 @@ div#sidebar {
     float: left;
 }
 div#articletools {
-    float:right;
+    display: block;
+    float: right;
     font: Verdana;
     font-size: 12px;
     margin-right: 10px;
@@ -20,11 +21,18 @@ div#articletools {
 div#articletools a {
     color: gray;
 }
+div#articletools a:hover {
+    color: black;
+}
+div.label_wrapper{
+    float: left;
+}
 
 h1 {
 	font-size: 24px;
 	margin: 0px 0px 2px 0px;
 	color: #780001;
+    clear: left;
 }
 h2 {
 	font-size: 18px;

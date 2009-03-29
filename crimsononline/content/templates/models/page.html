@@ -15,11 +15,12 @@
 {% block body %}
     <div id="content">
         {% block pre_content %}
-            <div class="label">{{ content.section }}</div>
-            <div id="articletools">
-                <a href="#">Print</a> |
-                <a href="#">Share</a>
+            <div class="label_wrapper">
+                <div class="label">{{ content.section }}</div>
             </div>
+            <div id="articletools">
+                <a href="#">Print</a> | <a href="#">Share</a>
+            </div>           
         {% endblock %}
         {% block content %}
         {% endblock %}

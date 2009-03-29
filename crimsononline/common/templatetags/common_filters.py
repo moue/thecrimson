@@ -1,7 +1,24 @@
+from re import compile
 from django import template
+from django.template import defaultfilters
 from django.utils.safestring import mark_safe
 
 register = template.Library()
+
+@register.filter
+def paragraphs(str):
+    """
+    Breaks str into paragraphs using linebreak filter, then splits by <p>.
+    Keeps the <p> tags in the output.
+    """
+    str = defaultfilters.escape(str)
+    str = defaultfilters.linebreaks(str)
+    # remove whitespace between adjacent tags, replace with sentinel value
+    r = compile(r'>\s+<')
+    str = r.sub('>,,,<', str)
+    # split by sentinel value
+    l = str.split(',,,')
+    return [mark_safe(x) for x in l]
 
 @register.filter
 def is_nav_cur(current, check):
@@ -19,8 +36,9 @@ def linkify(obj, link_text=''):
         if not getattr(obj,'__iter__',False):
             obj = [obj]
         for item in obj:
-            l_text = item if link_text == '' else getattr(item, link_text, link_text)
-            l.append(mark_safe('<a href="%s">%s</a>' % (item.get_absolute_url(), 
+            l_text = item if link_text == '' \
+                else getattr(item, link_text, link_text)
+            l.append(mark_safe('<a href="%s">%s</a>' % (item.get_absolute_url(),
                                                         l_text)))
         # nonlists obj's should be returned as nonlists
         return l[0] if len(l) == 1 else l
