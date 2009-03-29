@@ -50,7 +50,7 @@ class FbSelectWidget(forms.widgets.HiddenInput):
                 objs[obj.pk] = self.labeler(obj)
         hidden = super(FbSelectWidget, self).render(name, value, attrs)
         url, is_multiple, no_dupes = self.url, self.is_multiple, self.no_duplicates
-        return render_to_string("widgets/fb_select_multiple.html", locals())
+        return render_to_string("forms/fb_select_widget.html", locals())
     
 
 
@@ -100,7 +100,8 @@ class FbModelChoiceField(forms.CharField):
         # just in case admin_site is still on there
         kwargs.pop('admin_site', None)
         s = super(FbModelChoiceField, self).__init__(*args, **kwargs)
-        self.help_text = "Start typing; we'll provide suggestions.<br>%s" % self.help_text
+        self.help_text = "Start typing; we'll provide suggestions.<br>%s" \
+            % self.help_text
         return s
     
     def clean(self, value):
@@ -145,7 +146,7 @@ class CropWidget(forms.widgets.HiddenInput):
     def render(self, name, value, attrs=None):
         hidden = super(CropWidget, self).render(name, value, attrs)
         image = self.image
-        return render_to_string("widgets/crop_widget.html", locals())
+        return render_to_string("forms/crop_widget.html", locals())
     
     
 
@@ -171,4 +172,4 @@ class CropField(forms.CharField):
         if not value:
             return None
         "value should be a , separated quadruple corresponding to the cropbox"
-        return tuple(map(lambda x: int(x), value.split(',')))
+        return tuple([int(i) for i in value.split(',')])

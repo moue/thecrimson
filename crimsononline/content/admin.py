@@ -15,8 +15,6 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.template.defaultfilters import truncatewords
 from crimsononline.content.models import *
 from crimsononline.content.forms import *
-from crimsononline.admin_cust.forms import \
-    IssuePickerField, MapBuilderField, RelatedContentField
 from crimsononline.common.forms import FbModelChoiceField, CropField
 
 
