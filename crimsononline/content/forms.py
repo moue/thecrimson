@@ -109,7 +109,7 @@ class IssuePickerWidget(forms.widgets.HiddenInput):
             except:
                 issue = None
         year = datetime.now().year
-        special_choices = render_to_string("special_issues_fragment.html", 
+        special_choices = render_to_string("ajax/special_issues_fragment.html", 
             {'issues': Issue.objects.special.filter(issue_date__year=year), 
             'blank': "----", 'choice': value}
         )

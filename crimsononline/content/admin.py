@@ -6,13 +6,14 @@ from django.conf.urls.defaults import patterns
 from django.contrib import admin
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
+from django.db.models import Q
 from django.forms import ModelForm
 from django.http import Http404, HttpResponse
+from django.shortcuts import render_to_response, get_object_or_404
+from django.template.defaultfilters import truncatewords
 from django.utils import simplejson
 from django.utils.safestring import mark_safe
 from django.utils.hashcompat import md5_constructor
-from django.shortcuts import render_to_response, get_object_or_404
-from django.template.defaultfilters import truncatewords
 from crimsononline.content.models import *
 from crimsononline.content.forms import *
 from crimsononline.common.forms import FbModelChoiceField, CropField
@@ -102,7 +103,7 @@ class ContentGenericModelForm(ModelForm):
         obj.issue = self.cleaned_data['issue']
         obj.priority = self.cleaned_data['priority']
         return obj
-        
+
 
 class TagForm(forms.ModelForm):
     ALLOWED_REGEXP = compile(r'[A-Za-z\s]+$')
@@ -193,6 +194,26 @@ class ContributorAdmin(admin.ModelAdmin):
         return super(ContributorAdmin, self).save_model(
             request, obj, form, change)
     
+    def get_urls(self):
+        urls = patterns('',
+            (r'^search/$', 
+                self.admin_site.admin_view(self.get_contributors)),
+        ) + super(ContributorAdmin, self).get_urls()
+        return urls
+    
+    def get_contributors(self, request):
+        if request.method != 'GET':
+            raise Http404
+        q_str, limit = request.GET.get('q', ''), request.GET.get('limit', None)
+        excludes = request.GET.get('exclude','').split(',')
+        if excludes:
+            excludes = [int(e) for e in excludes if e]
+        if (len(q_str) < 1) or (not limit):
+            raise Http404
+        c = Contributor.objects.filter(
+            Q(first_name__contains=q_str) | Q(last_name__contains=q_str),
+            is_active=True).exclude(pk__in=excludes)[:limit]
+        return render_to_response('ajax/contributors.txt', {'contributors': c})
 
 admin.site.register(Contributor, ContributorAdmin)
 
@@ -200,7 +221,30 @@ admin.site.register(Contributor, ContributorAdmin)
 class IssueAdmin(admin.ModelAdmin):
     list_display = ('issue_date',)
     search_fields = ('issue_date',)
-    fields = ('issue_date', 'web_publish_date', 'special_issue_name', 'comments',)
+    fields = ('issue_date', 'web_publish_date', 'special_issue_name', 
+        'comments',)
+        
+    def get_urls(self):
+        urls = patterns('',
+            (r'^special_issue_list/$', 
+                self.admin_site.admin_view(self.get_special_issues)),
+        ) + super(IssueAdmin, self).get_urls()
+        return urls
+        
+    def get_special_issues(self, request):
+        """
+        Returns an html fragment with special issues as <options>
+        """
+        if request.method != 'GET':
+            raise Http404
+        year = request.GET.get('year', '')
+        if not year.isdigit():
+            raise Http404
+        year = int(year)
+        issues = Issue.objects.special.filter(issue_date__year=year)
+        return render_to_response('ajax/special_issues_fragment.html', 
+            {'issues': issues, 'blank': '----'})
+    
 
 admin.site.register(Issue, IssueAdmin)
 
@@ -517,7 +561,8 @@ class MapAdmin(admin.ModelAdmin):
         }),
         ('Details', {
             'classes': ('frozen','collapse'),
-            'fields': ('zoom_level','center_lng','center_lat','display_mode','width','height',),
+            'fields': ('zoom_level','center_lng','center_lat','display_mode',
+                'width','height',),
         }))
 
         
@@ -530,8 +575,8 @@ class HUIDBackend:
     against the hashed HUID in the Django database.
     """
     def authenticate(self, huid=None):
-        # TODO: Implement weird BEGIN PGP SIGNED MESSAGE stuff once we get the UIS move done and get an actual
-        # key and stuff from FASIT.
+        # TODO: Implement weird BEGIN PGP SIGNED MESSAGE stuff once we get the 
+        # UIS move done and get an actual key and stuff from FASIT.
         huid_hash = md5_constructor(huid).hexdigest()
         try:
             ud = UserData.objects.get(huid_hash=huid_hash)
