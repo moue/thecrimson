@@ -45,6 +45,11 @@ class TopArticlesNode(template.Node):
         thread_list['message'].sort(lambda x, y: cmp(int(x['comment_index'], y['comment_index'])))
         # Finish this later (need to get articles based on their URL; we can probably grab the ID out of the URL string in the dict
         # mostcommentedarticleslist = map(lambda x: Article.objects.get(
+        THE PLAN HERE:
+        Copy and paste the generic urlpatterns from urls.py.  Create an instance of RegexURLResolver and have it resolve the
+        URL with that pattern, giving us the view function that will give us the article object or nothing at all.
+        Once we have that info, we can call the view on the parameters (it's not a real view since it doesn't return an
+        HTTPResponse) and get the object for the article, which can then be put into the mostcommentedarticles list.
         """
         t = get_template('mostreadarticles.html')
         html = t.render(Context({'mostreadarticleslist': mostreadarticles}))
