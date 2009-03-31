@@ -1,0 +1,12 @@
+{% extends "models/related_content.html" %}
+
+{% load content_filters %}
+{% load common_filters %}
+
+{% block rc %}
+    Photo
+    <a href="{{ image.get_absolute_url }}">{{ image|to_img_tag:"180," }}</a>
+    {% if image.kicker %}
+        <span>{{ image.kicker }}</span>
+    {% endif %}
+{% endblock %}

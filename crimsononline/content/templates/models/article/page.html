@@ -25,11 +25,13 @@
     </div>
     <div class="text">
         {% with article.text|paragraphs as paras %}
-            {{ paras|slice:":2"|join:"" }}
-            {% comment %}
-                TODO: stick the related content stuff here
-            {% endcomment %}
-            {{ paras|slice:"2:"|join:"" }}
+            {{ paras|slice:":5"|join:"" }}
+            <div id="related_contents">
+                {% for rc in article.rel_content.all|slice:"1:" %}
+                    {{ rc|render:"related_content" }}
+                {% endfor %}
+            </div>
+            {{ paras|slice:"5:"|join:"" }}
         {% endwith %}
     </div>
     <div id="tags">

@@ -5,6 +5,24 @@ p {
 	font-size: 15px;
 	line-height: 22px;
 }
+/* related content stuff */
+
+div#related_contents {
+    width: 180px;
+    float: left;
+    margin: 0 10px 0 0;
+}
+
+div.related_content {
+    margin: 0 0 5px 0;
+    border-style: solid;
+    border-width: 0 0 1px 0;
+    border-color: gray;
+}
+div.related_content a img{
+    border-width: 0;
+}
+
 /* article photo stuff */
 .tall{
     width: 260px;
