@@ -27,8 +27,11 @@
         {% with article.text|paragraphs as paras %}
             {{ paras|slice:":5"|join:"" }}
             <div id="related_contents">
+                <div class="label_wrapper"><div class="label">Media</div></div>
                 {% for rc in article.rel_content.all|slice:"1:" %}
-                    {{ rc|render:"related_content" }}
+                    {% ifnotequal rc.content_type.model "article" %}
+                        {{ rc|render:"related_content" }}
+                    {% endifnotequal %}
                 {% endfor %}
             </div>
             {{ paras|slice:"5:"|join:"" }}

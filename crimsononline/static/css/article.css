@@ -11,16 +11,46 @@ div#related_contents {
     width: 180px;
     float: left;
     margin: 0 10px 0 0;
+    border-style: solid;
+    border-color: gray;
+    border-width: 1px 0 0 0;
+    padding: 5px 0 0 0;
 }
-
+div#related_contents div.label_wrapper {
+    text-align: center;
+    display: none;
+    width: 180px;
+}
 div.related_content {
     margin: 0 0 5px 0;
+    padding: 0 0 7px 0;
     border-style: solid;
     border-width: 0 0 1px 0;
     border-color: gray;
 }
-div.related_content a img{
+div.related_content a img {
     border-width: 0;
+}
+div.related_content > a {
+    margin: 0;
+    display: block;
+    line-height: 0;
+}
+div.related_content p {
+    margin: 0;
+    line-height: 100%;
+}
+div.related_content p.ctype {
+    margin: 0 0 2px 0;
+    font-family: Helvetica, Arial, sans-serif;
+    line-height: 100%;
+    font-size: 12px;
+    text-transform: uppercase;
+    color: gray;
+    font-weight: bold;
+}
+div.related_content p.title{
+    margin-top: 3px;
 }
 
 /* article photo stuff */

@@ -15,7 +15,8 @@ def render(content, method):
         print err
     return ''
     
-    
+
+
 @register.filter
 def article_preview(article):
     tag = ''
