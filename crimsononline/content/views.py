@@ -10,25 +10,37 @@ from crimsononline.content_module.models import ContentModule
 
 
 def get_content(request, ctype, year, month, day, slug, pk, content_group=None):
-    c = ContentGeneric.objects.get(content_type__name=ctype, object_id=int(pk))
-    c = c.content_object
+    c = get_content_obj(ctype, pk)
     return HttpResponse(c._render('page'))
 
+def get_content_obj(request, ctype, year, month, day, slug, pk, content_group=None):
+    c = ContentGeneric.objects.get(content_type__name=ctype, object_id=int(pk))
+    c = c.content_object
+    return c
+    
 def get_grouped_content(request, gtype, gname, ctype, year, month, day, slug, pk):
     # validate the contentgroup
-    cg = ContentGroup.by_name(gtype, gname)
+    cg = get_grouped_content_obj(gtype, gname)
     if cg:
         return get_content(request, ctype, year, month, day, slug, cg)
     else:
         raise Http404
 
+def get_grouped_content_obj(request, gtype, gname, ctype, year, month, day, slug, pk):
+    cg = ContentGroup.by_name(gtype, gname)
+    return cg
+        
 def get_content_group(request, gtype, gname):
     # validate the contentgroup
-    cg = ContentGroup.by_name(gtype, gname)
+    cg = get_content_group_obj(gtype, gname)
     if not cg:
         raise Http404
     c = cg.contentgeneric_set.all()
     return render_to_response('contentgroup.html', {'cg': cg, 'content': c})
+
+def get_content_group_obj(request, gtype, gname):
+    cg = ContentGroup.by_name(gtype, gname)
+    return cg
 
 def index(request):
     issue = Issue.get_current()
