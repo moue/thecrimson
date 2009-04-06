@@ -279,7 +279,7 @@ class Tag(models.Model):
         return ('content_tag', [self.text])
     
 
-
+# TODO: move this out of the content app
 class Board(models.Model):
     """
     Organizational unit of the Crimson
@@ -740,13 +740,18 @@ class ImageGallery(Content):
     
     title = models.CharField(blank=False, null=False, max_length=200)
     description = models.TextField(blank=False, null=False)
-    images = models.ManyToManyField(Image)
-    cover_image = models.ForeignKey(Image, related_name='cover_images')
+    images = models.ManyToManyField(Image, through='GalleryMembership')
     created_on = models.DateTimeField(auto_now_add=True)
     
     class Meta:
         get_latest_by = 'created_on'
         ordering = ['-created_on']
+    
+    @property
+    def cover_image(self):
+        if not self.images:
+            return None
+        return self.images.all()[0]
     
     def __unicode__(self):
         return self.title
@@ -754,7 +759,15 @@ class ImageGallery(Content):
     @permalink
     def get_absolute_url(self):
         return ('content_imagegallery', [self.cover_image.pk, self.pk])
+
+
+class GalleryMembership(models.Model):
+    image = models.ForeignKey(Image)
+    image_gallery = models.ForeignKey(ImageGallery)
+    order = models.IntegerField()
     
+    class Meta:
+        ordering = ('order',)
 
 
 class Map(Content):

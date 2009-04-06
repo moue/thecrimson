@@ -126,6 +126,103 @@ class FbModelChoiceField(forms.CharField):
             raise forms.ValidationError("Something terrible happened!")
 
 
+class SearchChoiceWidget(forms.widgets.HiddenInput):
+    class Media:
+        js = ('/site_media/scripts/framework/jquery-ui.packed.js',
+            '/site_media/scripts/admin/SearchModelChoiceWidget.js',)
+        css = {'all': ('/site_media/css/framework/jquery.ui.datepicker.css',
+            '/site_media/css/admin/SearchModelChoiceWidget.css'),}
+    
+    def __init__(self, *args, **kwargs):
+        self.ajax_url = kwargs.pop('ajax_url', None)
+        self.model = kwargs.pop('model', None)
+        self.multiple = kwargs.pop('multiple', None)
+        return super(SearchChoiceWidget, self).__init__(*args, **kwargs)
+    
+    def render(self, name, value, attrs=None):
+        if value:
+            if getattr(value, '__iter__', None):
+                obj_list = list(self.model.objects.filter(pk__in=value))
+                # sort them according to the order from value
+                #  this will error if len(obj_list) < len(value)
+                obj_list = dict([(o.pk, o) for o in obj_list])
+                obj_list = [obj_list[v] for v in value]
+                # turn value into a string, for rendering the hidden input
+                value = ','.join([str(v) for v in value])
+            else:
+                obj_list = [self.model.objects.get(pk=value)]
+        hidden = super(SearchChoiceWidget, self).render(name, value, attrs)
+        ajax_url, multiple, model = self.ajax_url, self.multiple, self.model
+        model_name = model.__name__
+        return render_to_string("forms/search_select_widget.html", locals())
+    
+
+
+class SearchModelChoiceField(forms.CharField):
+    """
+    A model multiple choice field that uses a search and choose interface.
+    Best for cases when the choice space is very large.
+    Cleans into a list of or a single pk.
+    
+    You can supply your own widgets, but if you do, you should pass an
+    instance of a widget in the @widget argument, not a widget class.
+    Your widget should also have the 'multiple', 'ajax_url', and 'model'
+    attributes, as this field will modify them.
+    
+    Takes 6 additional named arguments:
+    @multiple: select multiple objects at once? False by default
+    @model: the model from which to select multiple
+    @ajax_url: the widget makes a AJAX requests for searching. this is the
+        url that returns the search results
+    @add_rel: the relation object? required for the "add related" button.
+        None by default. If you set this, you also need to set admin_site.
+    @admin_site: the admin site instance.  Required if @add_rel is defined.  
+        None by default.
+    """
+    
+    def __init__(self, *args, **kwargs):
+        self.model = kwargs.pop('model')
+        # we use 1 and 0, since these get passed into JS, which doesn't
+        #  like Python's capitalized True / False values
+        self.multiple = 1 if kwargs.pop('multiple', False) else 0
+        # if there's no widget provided, use the default
+        if not kwargs.get('widget', None):
+            kwargs['widget'] = SearchChoiceWidget()
+        # modify the widget either way
+        if kwargs.get('ajax_url'):
+            kwargs['widget'].ajax_url = kwargs.pop('ajax_url')
+        kwargs['widget'].model = self.model
+        kwargs['widget'].multiple = self.multiple
+        
+        self.add_rel = kwargs.pop('add_rel', None)
+        # if add_rel, use the related field widget wrapper for the add button
+        if self.add_rel:
+            kwargs['widget'] = admin.widgets.RelatedFieldWidgetWrapper(
+                kwargs['widget'], self.add_rel, kwargs.pop('admin_site'))
+        # just in case admin_site is still on there
+        kwargs.pop('admin_site', None)
+        return super(SearchModelChoiceField, self).__init__(*args, **kwargs)
+    
+    def clean(self, value):
+        if not value:
+            if self.required:
+                raise forms.ValidationError("This can't be left blank")
+            return
+        try:
+            pks = [int(v) for v in value.split(',') if v]
+            # only is_multiple variants of this should have multiple pks
+            if len(pks) > 1 and not self.is_multiple:
+                raise forms.ValidationError("Something terrible happened!")
+            return pks
+        except ValueError:
+            # not a normal validation error, since the front end
+            # should guarantee valid results. also, users can't
+            # manually put values in, so a real validation error
+            # wouldn't be helpful.
+            raise forms.ValidationError("Something terrible happened!")
+        
+
+
 
 class CropWidget(forms.widgets.HiddenInput):
     """

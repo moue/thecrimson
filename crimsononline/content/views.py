@@ -55,7 +55,7 @@ def index(request):
     dict['opeds'] = top_articles('Opinion')[:6]
     dict['arts'] = top_articles('Arts')[:6]
     dict['sports'] = top_articles('Sports')[:6]
-    dict['fms'] = top_articles('News')[:6]
+    dict['fms'] = top_articles('FM')[:6]
     dict['issue'] = issue
     dict['markers'] = Marker.objects.filter(map__in = Map.objects.filter(article__in = stories.values('pk').query).values('pk').query)
     

@@ -16,7 +16,8 @@ from django.utils.safestring import mark_safe
 from django.utils.hashcompat import md5_constructor
 from crimsononline.content.models import *
 from crimsononline.content.forms import *
-from crimsononline.common.forms import FbModelChoiceField, CropField
+from crimsononline.common.forms import \
+    FbModelChoiceField, CropField, SearchModelChoiceField
 
 
 class ContentGroupAdmin(admin.ModelAdmin):
@@ -300,14 +301,13 @@ class ImageGalleryForm(ContentGenericModelForm):
     # we use a special widget here so that we can inject an extra div
     #    above the select multiple field.  the extra div is where
     #    the javascript inserts img previews for img selection.
-    images = ImageSelectModelMultipleChoiceField(
-        Image.objects.none(),
-        widget=ImageSelectMultipleWidget(),
-    )
-    cover_image = ImageSelectModelChoiceField(
-        Image.objects.none(),
-    )
-    
+    #images = ImageSelectModelMultipleChoiceField(
+    #    Image.objects.none(),
+    #    widget=ImageSelectMultipleWidget(),
+    #)
+    images = SearchModelChoiceField(ajax_url='/admin/content/image/something/',
+        multiple=True, model=Image, label='')
+        
     class Meta:
         model = ImageGallery
     
@@ -322,13 +322,27 @@ class ImageGalleryForm(ContentGenericModelForm):
     
 
 class ImageGalleryAdmin(admin.ModelAdmin):
-    fields = ('title', 'description', 'images', 'cover_image', 'tags', 'group')
+    fieldsets = (
+        (None, {
+            'fields': ('title', 'description',),
+        }),
+        ('Images', {
+            'fields': ('images',),
+        }),
+        ('Organization', {
+            'fields': ('section', 'tags',),
+        }),
+        ('Grouping', {
+            'fields': ('group',),
+            'classes': ('collapse',),
+        }),
+    )
     form = ImageGalleryForm
     
     # we need to set the list of images (that show up) on a per instance basis
     # unbound forms => no images
     # bound forms => images belonging to the ImageGallery instance
-    def get_form(self, request, obj=None):
+    """def get_form(self, request, obj=None):
         f = super(ImageGalleryAdmin,self).get_form(request, obj)
         
         # no bound => no images
@@ -347,7 +361,7 @@ class ImageGalleryAdmin(admin.ModelAdmin):
         #    images showing up.  (maybe querysets are cached improperly?)
         f.base_fields['images'].queryset = qs
         f.base_fields['cover_image'].queryset = cover_qs
-        return f
+        return f"""
 
 admin.site.register(ImageGallery, ImageGalleryAdmin)
 
@@ -446,6 +460,7 @@ class ArticleAdmin(admin.ModelAdmin):
             'all': ('css/admin/Article.css',)
         }
     
+    
     def has_change_permission(self, request, obj=None):
         u = request.user
         if u.is_superuser:
@@ -468,7 +483,7 @@ class ArticleAdmin(admin.ModelAdmin):
             u.message_set.create(message='Note: you can only change articles' \
                                             ' uploaded in the last hour.')
         return qs
-        
+    
     def get_urls(self):
         urls = super(ArticleAdmin, self).get_urls()
         urls = patterns('',
@@ -502,20 +517,20 @@ class ArticleAdmin(admin.ModelAdmin):
             'ct_id': ct_id,
         }
         return HttpResponse(simplejson.dumps(json_dict))
-        
+    
     def find_rel_content(self, request, ct_id, st_dt, end_dt, tags, page):
         """
         returns JSON containing Content objects and pg numbers
         """
         OBJS_PER_REQ = 3
-
+        
         cls = get_object_or_404(ContentType, pk=int(ct_id))
         cls = cls.model_class()
         st_dt = datetime.strptime(st_dt, '%m/%d/%Y')
         end_dt = datetime.strptime(end_dt, '%m/%d/%Y')
         objs = cls.find_by_date(start=st_dt, end=end_dt)
         p = Paginator(objs, OBJS_PER_REQ).page(page)
-
+        
         json_dict = {}
         json_dict['objs'] = []
         for obj in p.object_list:
@@ -525,9 +540,10 @@ class ArticleAdmin(admin.ModelAdmin):
         json_dict['next_page'] = p.next_page_number() if p.has_next() else 0
         json_dict['prev_page'] = p.previous_page_number() \
             if p.has_previous() else 0
-
+        
         return HttpResponse(simplejson.dumps(json_dict))
     
+
 
 admin.site.register(Article, ArticleAdmin)
 
@@ -542,19 +558,19 @@ class MapForm(ModelForm):
     
     def __init__(self, *args, **kwargs):
         s = super(MapForm, self).__init__(*args, **kwargs)
-
+    
     class Meta:
         model = Map
+    
 
 class MapAdmin(admin.ModelAdmin):
-    
     search_fields = ('title','caption',)
     form = MapForm
     
     inlines = [
         MarkerInline,
     ]
-
+    
     fieldsets = (
         ('Map Setup', {
             'fields': ('title', 'caption','map_preview'),
@@ -565,7 +581,7 @@ class MapAdmin(admin.ModelAdmin):
                 'width','height',),
         }))
 
-        
+
 admin.site.register(Map, MapAdmin)
 admin.site.register(Marker)
 
@@ -584,10 +600,11 @@ class HUIDBackend:
             return None
         user = ud.user
         return user
-        
+    
     def get_user(self, user_id):
         try:
             user = User.objects.get(pk=user_id)
             return user
         except User.DoesNotExist:
             return None
+    
