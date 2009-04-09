@@ -21,7 +21,7 @@ class FbSelectWidget(forms.widgets.HiddenInput):
     """
     class Media:
         js = ("/site_media/scripts/framework/jquery.bgiframe.min.js",
-            "/site_media/scripts/framework/jquery.dimensions.js",
+            #"/site_media/scripts/framework/jquery.dimensions.js",
             "/site_media/scripts/framework/jquery.autocomplete.js",
             "/site_media/scripts/framework/jquery.autocompletefb.js",
             "/site_media/scripts/framework/jquery.tooltip.pack.js",)
@@ -174,6 +174,8 @@ class SearchModelChoiceField(forms.CharField):
     @model: the model from which to select multiple
     @ajax_url: the widget makes a AJAX requests for searching. this is the
         url that returns the search results
+    @clean_to_objs: if true, clean returns objects; otherwise, returns pks
+        (which doesn't require any additional db queries)
     @add_rel: the relation object? required for the "add related" button.
         None by default. If you set this, you also need to set admin_site.
     @admin_site: the admin site instance.  Required if @add_rel is defined.  
@@ -182,6 +184,7 @@ class SearchModelChoiceField(forms.CharField):
     
     def __init__(self, *args, **kwargs):
         self.model = kwargs.pop('model')
+        self.clean_to_objs = kwargs.pop('clean_to_objs', False)
         # we use 1 and 0, since these get passed into JS, which doesn't
         #  like Python's capitalized True / False values
         self.multiple = 1 if kwargs.pop('multiple', False) else 0
@@ -213,6 +216,8 @@ class SearchModelChoiceField(forms.CharField):
             # only is_multiple variants of this should have multiple pks
             if len(pks) > 1 and not self.is_multiple:
                 raise forms.ValidationError("Something terrible happened!")
+            if self.clean_to_objs:
+                return self.model.objects.filter(pk__in=pks)
             return pks
         except ValueError:
             # not a normal validation error, since the front end

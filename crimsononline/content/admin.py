@@ -298,13 +298,6 @@ admin.site.register(Image, ImageAdmin)
 
 
 class ImageGalleryForm(ContentGenericModelForm):
-    # we use a special widget here so that we can inject an extra div
-    #    above the select multiple field.  the extra div is where
-    #    the javascript inserts img previews for img selection.
-    #images = ImageSelectModelMultipleChoiceField(
-    #    Image.objects.none(),
-    #    widget=ImageSelectMultipleWidget(),
-    #)
     images = SearchModelChoiceField(ajax_url='/admin/content/image/something/',
         multiple=True, model=Image, label='')
         
