@@ -304,14 +304,6 @@ class ImageGalleryForm(ContentGenericModelForm):
     class Meta:
         model = ImageGallery
     
-    class Media:
-        css = {
-            'all': ('css/admin/ImageGallery.css',)
-        }
-        js = (
-            'scripts/jquery.js',
-            'scripts/admin/ImageGallery.js', 
-        )
     
 
 class ImageGalleryAdmin(admin.ModelAdmin):
@@ -332,29 +324,16 @@ class ImageGalleryAdmin(admin.ModelAdmin):
     )
     form = ImageGalleryForm
     
-    # we need to set the list of images (that show up) on a per instance basis
-    # unbound forms => no images
-    # bound forms => images belonging to the ImageGallery instance
-    """def get_form(self, request, obj=None):
-        f = super(ImageGalleryAdmin,self).get_form(request, obj)
-        
-        # no bound => no images
-        qs = Image.objects.none()
-        cover_qs = Image.objects.none()
-        
-        # yes bound => images that belong to the current ImageGallery
-        if obj is not None:
-            for img in obj.images.all()[:]:
-                qs = qs | Image.objects.filter(pk=img.pk)
-            cover_qs = Image.objects.filter(pk=obj.cover_image.pk)
-        
-        # querysets are set for bound and unbound forms because if
-        #    we don't set the queryset on unbound forms, loading a bound
-        #    form and then loading an unbound form leads to the wrong
-        #    images showing up.  (maybe querysets are cached improperly?)
-        f.base_fields['images'].queryset = qs
-        f.base_fields['cover_image'].queryset = cover_qs
-        return f"""
+    class Media:
+        css = {
+            'all': ('css/admin/ImageGallery.css',)
+        }
+        js = (
+            'scripts/jquery.js',
+            'scripts/admin/ImageGallery.js', 
+        )
+
+
 
 admin.site.register(ImageGallery, ImageGalleryAdmin)
 

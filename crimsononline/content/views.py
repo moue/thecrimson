@@ -10,9 +10,7 @@ from crimsononline.content_module.models import ContentModule
 
 
 def get_content(request, ctype, year, month, day, slug, pk, content_group=None):
-    #c = get_content_obj(ctype, pk)
-    c = ContentGeneric.objects.get(content_type__name=ctype, object_id=int(pk))
-    c = c.content_object
+    c = get_content_obj(request, ctype, year, month, day, slug, pk, content_group)
     return HttpResponse(c._render('page'))
 
 def get_content_obj(request, ctype, year, month, day, slug, pk, content_group=None):

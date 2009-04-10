@@ -25,7 +25,6 @@ var set_related_content = function(id_prefix, types){
             // append value to field
             ct_id = json.ct_id;
             $(hidden).val($(hidden).val() + ct_id + ',' + pk + ';');
-            console.log($(hidden).val());
             // inject into DOM
             json.html = '<li>' + json.html + '</li>';
             var target = $(p + '_wrapper .rel_objs');
@@ -152,7 +151,6 @@ var set_related_content = function(id_prefix, types){
     dismissAddAnotherPopup = function(win, newId, newRepr){
         var matched = '';
         for(var i = 0; i < types.length; i++){
-            console.log('id_' + types[i] + ' :: ' + win.name);
             if('id_' + types[i] == win.name){
                 matched = types[i];
                 break;
