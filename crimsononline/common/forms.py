@@ -129,8 +129,8 @@ class FbModelChoiceField(forms.CharField):
 class SearchChoiceWidget(forms.widgets.HiddenInput):
     class Media:
         js = ('/site_media/scripts/framework/jquery-ui.packed.js',
-            '/site_media/scripts/admin/SearchModelChoiceWidget.js',)
-        css = {'all': ('/site_media/css/framework/jquery.ui.datepicker.css',
+            '/site_media/scripts/admin/widgets/SearchModelChoiceWidget.js',)
+        css = {'all': ('/site_media/css/framework/jquery.ui.css',
             '/site_media/css/admin/SearchModelChoiceWidget.css'),}
     
     def __init__(self, *args, **kwargs):

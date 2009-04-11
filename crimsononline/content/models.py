@@ -141,9 +141,12 @@ class Content(models.Model):
         """
         returns a queryset
         """
-        start, end = start.date(), end.date()
         lookup = cls._meta.get_latest_by
-        q = {lookup + '__gte': start, lookup + '__lte': end}
+        q = {}
+        if start:
+            q[lookup + '__gte'] = start.date()
+        if end:
+            q[lookup + '__lte'] = end.date()
         return cls.objects.filter(**q).order_by('-' + lookup)
     
     def save(self, *args, **kwargs):

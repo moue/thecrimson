@@ -10,30 +10,80 @@ var set_search_choice_field = function(id_prefix, ajax_url){
     // the field where all the values go
     var hidden = $(p + '_wrapper input[type="hidden"]');
     
-    // injects a remove button and binds it to remove_content
+    // injects a remove button and binds it to remove_object
     var bind_remove = function(ele){
         $('<a class="button remove" href="#">Remove</a>')
             .prependTo(ele)
             .one('click', function(){
-                remove_content(ele);
+                remove_object(ele);
                 return false;
             });
     };
     
     // adds the item to the selected items list
     //   also 
-    var add_content = function(ele){
+    var add_object = function(ele){
+        var target = $(p + '_wrapper .chosen_objs');
+        var pk = $(ele).data('pk')
         // append value to field
-        $(hidden).val($(hidden).val() + ',' + $(ele).data('pk'));
+        var cur_val = $(hidden).val()
+        if(!cur_val){
+            $(hidden).val(pk);
+            target.empty();
+        } else {
+            $(hidden).val(cur_val + ',' + pk);
+        }
         // inject into DOM
-        var target = $(p + '_wrapper .rel_objs');
-        ele = $(ele).clone();
+        ele = $(ele).fadeTo('normal', .5).clone();
         bind_remove(
             $(ele)
+                .data('pk', pk)
                 .appendTo(target)
                 .hide()
                 .slideDown('normal')
         );
+    };
+    
+    var remove_object = function(ele){
+        // remove it from the field
+        var pk = $(ele).data('pk');
+        var vals = $(hidden).val().split(',');
+        var str = '';
+        for(var i = 0; i < vals.length; i++){
+            if(vals[i] && pk != vals[i]){
+                str += vals[i] + ',';
+            }
+        }
+        $(hidden).val(str);
+        
+        // remove the element
+        $(ele).slideUp('normal', function(){
+            $(this).remove();
+        })
+        
+        // unfade it in the choices area
+        $(p + '_wrapper .ajax_search .results li').each(function(){
+            if(pk == $(this).data('pk')){
+                $(this)
+                    .fadeTo('normal', 1)
+                    .css('cursor', 'pointer')
+                    .one('click', function(){add_object(this);})
+                    .hover(function(){
+                        $(this).css('background-color', '#eeeeee');
+                    }, function(){
+                        $(this).css('background-color', '');
+                    });
+            }
+        });
+    };
+    
+    // returns true if the content has already been selected
+    var already_added = function(pk){
+        var arr = $(hidden).val().split(',')
+        for(var i = 0; i < arr.length; i++){
+            if(arr[i] && arr[i] == pk) return true;
+        }
+        return false;
     };
     
     // processes the ajax response
@@ -42,22 +92,22 @@ var set_search_choice_field = function(id_prefix, ajax_url){
         // dump results into .results and bind click handlers
         var target = $(p + '_wrapper .ajax_search .results');
         $(target).empty();
-        if(!data.objs.length){
+        if(data.objs.hasOwnProperty('empty')){
             $(target).append('<li>No content found.</li>');
         } else {
-            $.each(data.objs, function(){
-                var ele = $(this[1]);
+            $.each(data.objs, function(pk, html){
+                var ele = $(html);
                 $(ele)
                     .appendTo(target)
-                    .data('pk', this[0])
-                    .one('click', choose_content)
+                    .data('pk', pk)
+                    .one('click', function(){add_object(this);})
                     .css('cursor', 'pointer')
                     .hover(function(){
                         $(this).css('background-color', '#eeeeee');
                     }, function(){
                         $(this).css('background-color', '');
                     });
-                if(already_added(this[0])){ 
+                if(already_added(pk)){ 
                     $(ele)
                         .css('cursor', '')
                         .unbind()
@@ -75,7 +125,7 @@ var set_search_choice_field = function(id_prefix, ajax_url){
                 .appendTo(target)
                 .click(function(){
                     $.getJSON(url_base + '&page=' + data.prev_page, function(data){
-                        process_ajax(url_base, data);
+                        process_response(url_base, data);
                     })
                     return false;
                 });
@@ -86,24 +136,30 @@ var set_search_choice_field = function(id_prefix, ajax_url){
                 .appendTo(target)
                 .click(function(){
                     $.getJSON(url_base + '&page=' + data.next_page + '/', function(data){
-                        process_ajax(url_base, data);
+                        process_response(url_base, data);
                     })
                     return false;
                 });
         }
     };
     
+    $('#id_images_wrapper ul.chosen_objs').sortable({stop: function(){
+        // reset value of hidden on sort
+        $(hidden).val('');
+        $(p + '_wrapper ul.chosen_objs').each(function(){
+            $(hidden).val($(hidden).val() + $(this).data('pk') + ',');
+        });
+    }});
+    
     // send ajax search request
     $(p + '_go').click(function(){
         var args = {};
         args.tags = $(p + '_tags').val();
-        args.start = $(p + '_start_date').val();
-        args.end = $(p + '_end_date').val();
+        args.start_d = $(p + '_start_date').val();
+        args.end_d = $(p + '_end_date').val();
         $.getJSON(ajax_url, args, function(data){
-            process_ajax(args, data);
+            process_response(args, data);
         });
         return false;
     });
-    
-    
 };

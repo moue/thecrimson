@@ -77,10 +77,10 @@ class IssuePickerWidget(forms.widgets.HiddenInput):
     """
     
     class Media:
-        js = ('/site_media/scripts/framework/jquery.ui.datepicker.js',
-                '/site_media/scripts/admin/IssuePickerWidget.js',)
-        css = {'all': ('/site_media/css/framework/jquery.ui.datepicker.css',
-                        '/site_media/css/admin/IssuePickerWidget.css',),}
+        js = ('/site_media/scripts/framework/jquery-ui.packed.js',
+            '/site_media/scripts/admin/IssuePickerWidget.js',)
+        css = {'all': ('/site_media/css/framework/jquery.ui.css',
+            '/site_media/css/admin/IssuePickerWidget.css',),}
     
     def render(self, name, value, attrs=None):
         meta_select = "daily"
@@ -157,7 +157,7 @@ class RelatedContentWidget(forms.widgets.HiddenInput):
     class Media:
         js = ('/site_media/scripts/framework/jquery-ui.packed.js',
             '/site_media/scripts/admin/RelatedContentWidget.js',)
-        css = {'all': ('/site_media/css/framework/jquery.ui.datepicker.css',
+        css = {'all': ('/site_media/css/framework/jquery.ui.css',
             '/site_media/css/admin/RelatedContent.css'),}
     
     def __init__(self, admin_site, *args, **kwargs):

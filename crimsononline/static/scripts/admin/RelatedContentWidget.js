@@ -164,7 +164,6 @@ var set_related_content = function(id_prefix, types){
         }
     }
     
-    
     // make rel objs sortable
     $(p + '_wrapper .rel_objs').sortable({stop: function(){
         // reset value of hidden on sort

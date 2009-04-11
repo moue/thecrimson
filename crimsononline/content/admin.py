@@ -44,6 +44,7 @@ class ContentGroupAdmin(admin.ModelAdmin):
             Q(type__contains=q_str) | Q(name__contains=q_str)) \
             .exclude(pk__in=excludes).order_by('-pk')[:limit]
         return render_to_response('fbmc_result_list.txt', {'objs': cg})
+    
 
 
 admin.site.register(ContentGroup, ContentGroupAdmin)
@@ -70,7 +71,7 @@ class ContentGenericModelForm(ModelForm):
     section = forms.ModelChoiceField(Section.all(), required=True)
     priority = forms.IntegerField(required=False, initial=0,
         help_text='Higher priority articles are displayed first.' \
-        'Priority be positive or negative.')
+        'Priority may be positive or negative.')
     group = FbModelChoiceField(required=False, multiple=False,
         url='/admin/content/contentgroup/search/', model=ContentGroup,
         labeler=(lambda obj: str(obj)), admin_site=admin.site,
@@ -104,7 +105,49 @@ class ContentGenericModelForm(ModelForm):
         obj.issue = self.cleaned_data['issue']
         obj.priority = self.cleaned_data['priority']
         return obj
+    
 
+class ContentGenericAdmin(admin.ModelAdmin):
+    """
+    Parent class for ContentGeneric ModelAdmin classes.
+    Doesn't actually work by itself.
+    """
+    def get_urls(self):
+        return  patterns('',
+            (r'^previews_by_date_tag/$',
+                self.admin_site.admin_view(self.previews_by_date_tag))
+        ) + super(ContentGenericAdmin, self).get_urls()
+    
+    def previews_by_date_tag(self, request):
+        """
+        returns json of previews, for the SearchModelChoiceField
+        """
+        OBJS_PER_REQ = 10
+        
+        tags, start_d, end_d, page = [request.GET.get(x, None) \
+            for x in ['tags', 'start_d', 'end_d', 'page']]
+        start_d = datetime.strptime(start_d, '%m/%d/%Y') if start_d else None
+        end_d = datetime.strptime(end_d, '%m/%d/%Y') if end_d else None
+        objs = self.model.find_by_date(start=start_d, end=end_d)
+        if tags:
+            tags = [t for t in tags.split(',') if t]
+            q = reduce(lambda x,y: x and y, 
+                [Q(generic__tags__text__icontains=t) for t in tags])
+            objs = objs.filter(q)
+        p = Paginator(objs, OBJS_PER_REQ).page(page if page else 1)
+        
+        json_dict = {}
+        json_dict['objs'] = {}
+        for obj in p.object_list:
+            html = '<li>%s</li>' % obj._render("admin.thumbnail")
+            json_dict['objs'][obj.pk] = html
+        if not p.object_list:
+            json_dict['objs']['empty'] = 1
+        json_dict['next_page'] = p.next_page_number() if p.has_next() else 0
+        json_dict['prev_page'] = p.previous_page_number() \
+            if p.has_previous() else 0
+        
+        return HttpResponse(simplejson.dumps(json_dict))
 
 class TagForm(forms.ModelForm):
     ALLOWED_REGEXP = compile(r'[A-Za-z\s]+$')
@@ -281,24 +324,29 @@ class ImageAdminForm(ContentGenericModelForm):
                 i.crop(size[0], size[1], *crop_data)
         return i
 
-class ImageAdmin(admin.ModelAdmin):
+class ImageAdmin(ContentGenericAdmin):
     fields = ('pic', 'thumbnail', 'caption', 'kicker', 'section', 'issue',
         'priority', 'contributors', 'tags', 'group',)
+    
     form = ImageAdminForm
+    
     class Media:
         js = (
             'scripts/jquery.js',
         )
+    
     def get_form(self, request, obj=None):
         f = super(ImageAdmin, self).get_form(request, obj)
         f.base_fields['thumbnail'].widget.image = obj    
         return f
-        
+    
+
 admin.site.register(Image, ImageAdmin)
 
 
 class ImageGalleryForm(ContentGenericModelForm):
-    images = SearchModelChoiceField(ajax_url='/admin/content/image/something/',
+    images = SearchModelChoiceField(
+        ajax_url='/admin/content/image/previews_by_date_tag/',
         multiple=True, model=Image, label='')
         
     class Meta:
@@ -306,7 +354,7 @@ class ImageGalleryForm(ContentGenericModelForm):
     
     
 
-class ImageGalleryAdmin(admin.ModelAdmin):
+class ImageGalleryAdmin(ContentGenericAdmin):
     fieldsets = (
         (None, {
             'fields': ('title', 'description',),
@@ -315,7 +363,7 @@ class ImageGalleryAdmin(admin.ModelAdmin):
             'fields': ('images',),
         }),
         ('Organization', {
-            'fields': ('section', 'tags',),
+            'fields': ('section', 'issue', 'tags', 'priority',),
         }),
         ('Grouping', {
             'fields': ('group',),
@@ -325,14 +373,9 @@ class ImageGalleryAdmin(admin.ModelAdmin):
     form = ImageGalleryForm
     
     class Media:
-        css = {
-            'all': ('css/admin/ImageGallery.css',)
-        }
-        js = (
-            'scripts/jquery.js',
-            'scripts/admin/ImageGallery.js', 
-        )
-
+        css = {'all': ('css/admin/ImageGallery.css',)}
+        js = ('scripts/jquery.js',)
+    
 
 
 admin.site.register(ImageGallery, ImageGalleryAdmin)
@@ -389,7 +432,7 @@ class ArticleForm(ContentGenericModelForm):
     class Meta:
         model = Article
 
-class ArticleAdmin(admin.ModelAdmin):
+class ArticleAdmin(ContentGenericAdmin):
     list_display = ('headline', 'section', 'issue',)
     search_fields = ('headline', 'text',)
     exclude = ['is_published']
@@ -428,9 +471,6 @@ class ArticleAdmin(admin.ModelAdmin):
             'scripts/admin/Article.js',
             'scripts/framework/jquery.sprintf.js',
         )
-        css = {
-            'all': ('css/admin/Article.css',)
-        }
     
     
     def has_change_permission(self, request, obj=None):
