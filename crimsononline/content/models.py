@@ -271,6 +271,7 @@ class Tag(models.Model):
     'potato'
     """
     
+    # validates in the admin
     text = models.CharField(blank=False, max_length=25, unique=True,
         help_text='Tags can contain letters and spaces')
     

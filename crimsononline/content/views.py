@@ -59,6 +59,7 @@ def index(request):
     
     return render_to_response('index.html', dict)
 
+
 def bigmap(request):
     stories = top_articles('News')[:20] # how many articles to show markers from...we will have to play with this
     dict = {}
@@ -66,7 +67,7 @@ def bigmap(request):
     
     return render_to_response('bigmap.html', dict)
     
-    
+
 def writer(request, contributor_id, f_name, m_name, l_name):
     w = get_object_or_404(Contributor, pk=contributor_id)
     # Validate the URL (we don't want /writer/281/Balls_Q_McTitties to be valid)
@@ -76,12 +77,14 @@ def writer(request, contributor_id, f_name, m_name, l_name):
     return render_to_response('writer.html', {'writer': w})
 
 def tag(request, tags):
-    tags = tags.lower().replace('_', ' ').split(',')
-    content = ContentGeneric.objects.all()
-    for tag in tags:
-        content = content.filter(tags__text=tag)
-    return render_to_response('tag.html', 
-        {'tags': tags, 'content': content})
+    tag_texts = [t for t in tags.lower().replace('_', ' ').split(',') if t]
+    tags = Tag.objects.filter(text__in=tag_texts)
+    # there's some tag in the query that doesn't exist.  
+    if len(tags_texts) != len(tags):
+        tags = None
+    q = reduce(lambda x,y: x and y, [Q(tags=tag) for tag in tags])
+    content = ContentGeneric.objects.filter(q)
+    return render_to_response('tag.html', {'tags': tags, 'content': content})
 
 def section(request, section, issue_id=None, tags=None):    
     # validate the section (we don't want /section/balls/ to be a valid url)
