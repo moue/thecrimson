@@ -150,7 +150,10 @@ class SearchChoiceWidget(forms.widgets.HiddenInput):
                 # turn value into a string, for rendering the hidden input
                 value = ','.join([str(v) for v in value])
             else:
-                obj_list = [self.model.objects.get(pk=value)]
+                try:
+                    obj_list = [self.model.objects.get(pk=value)]
+                except:
+                    pass
         hidden = super(SearchChoiceWidget, self).render(name, value, attrs)
         ajax_url, multiple, model = self.ajax_url, self.multiple, self.model
         model_name = model.__name__
@@ -214,7 +217,7 @@ class SearchModelChoiceField(forms.CharField):
         try:
             pks = [int(v) for v in value.split(',') if v]
             # only is_multiple variants of this should have multiple pks
-            if len(pks) > 1 and not self.is_multiple:
+            if len(pks) > 1 and not self.multiple:
                 raise forms.ValidationError("Something terrible happened!")
             if self.clean_to_objs:
                 return self.model.objects.filter(pk__in=pks)

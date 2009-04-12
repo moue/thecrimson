@@ -347,11 +347,20 @@ admin.site.register(Image, ImageAdmin)
 class ImageGalleryForm(ContentGenericModelForm):
     images = SearchModelChoiceField(
         ajax_url='/admin/content/image/previews_by_date_tag/',
-        multiple=True, model=Image, label='')
+        multiple=True, model=Image, label='', clean_to_objs=True)
         
     class Meta:
         model = ImageGallery
     
+    def save(self, *args, **kwargs):
+        print "got here"
+        img_pks = self.cleaned_data.pop('images', [])
+        obj = super(ImageGalleryForm, self).save(*args, **kwargs)
+        obj.images.clear()
+        for i, pk in enumerate(img_pks):
+            x = GalleryMembership(order=i, image_gallery=obj, image=pk)
+            x.save()
+        return obj
     
 
 class ImageGalleryAdmin(ContentGenericAdmin):
@@ -361,6 +370,9 @@ class ImageGalleryAdmin(ContentGenericAdmin):
         }),
         ('Images', {
             'fields': ('images',),
+        }),
+        ('Contributors', {
+            'fields': ('contributors',),
         }),
         ('Organization', {
             'fields': ('section', 'issue', 'tags', 'priority',),
