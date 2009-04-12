@@ -219,7 +219,6 @@ function getter(namespace, plugin, method, args) {
 $.widget = function(name, prototype) {
 	var namespace = name.split(".")[0];
 	name = name.split(".")[1];
-	console.log(name);
 
 	// create plugin method
 	$.fn[name] = function(options) {

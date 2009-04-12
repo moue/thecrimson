@@ -652,6 +652,7 @@ def get_save_path(instance, filename):
     return datetime.now().strftime("photos/%Y/%m/%d/%H%M%S_") + \
         filtered_capt + ext
 
+
 class Image(Content):
     """
     An image. Handles attributes about image. Handling of image resizing and
@@ -713,7 +714,6 @@ class Image(Content):
         overwrites any previous ImageSpecs
         """
         c = float(width) / float(height)
-        print (width, height, c), (x1, y1, x2, y2)
         s = ImageSpec(self.pic, (width, height, c), (x1, y1, x2, y2))
         self._spec_cache[(width, height, c)] = s
         return s
@@ -723,11 +723,6 @@ class Image(Content):
     
     def identifier(self):
         return make_url_friendly(self.kicker)
-    
-    #@permalink
-    #def get_absolute_url(self):
-    #    d = self.created_on
-    #    return ('content_get_image', [d.year, d.month, d.day, self.slug])
     
     def save(self, *args, **kwargs):
         # autopopulate the slug
@@ -765,8 +760,8 @@ class ImageGallery(Content):
 
 
 class GalleryMembership(models.Model):
-    image = models.ForeignKey(Image)
     image_gallery = models.ForeignKey(ImageGallery)
+    image = models.ForeignKey(Image)
     order = models.IntegerField()
     
     class Meta:
@@ -935,11 +930,6 @@ class Article(Content):
     
     def identifier(self):
         return self.headline
-    
-    #@permalink
-    #def get_absolute_url(self):
-    #    d = self.issue.issue_date
-    #    return ('content_get_article', [d.year, d.month, d.day, self.slug])
     
 
 

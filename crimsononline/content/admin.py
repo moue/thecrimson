@@ -353,13 +353,12 @@ class ImageGalleryForm(ContentGenericModelForm):
         model = ImageGallery
     
     def save(self, *args, **kwargs):
-        print "got here"
-        img_pks = self.cleaned_data.pop('images', [])
+        imgs = self.cleaned_data.pop('images', [])
         obj = super(ImageGalleryForm, self).save(*args, **kwargs)
         obj.images.clear()
-        for i, pk in enumerate(img_pks):
-            x = GalleryMembership(order=i, image_gallery=obj, image=pk)
-            x.save()
+        for i, img in enumerate(imgs):
+            GalleryMembership.objects.create(order=i, 
+                image_gallery=obj, image=img)
         return obj
     
 
@@ -387,6 +386,12 @@ class ImageGalleryAdmin(ContentGenericAdmin):
     class Media:
         css = {'all': ('css/admin/ImageGallery.css',)}
         js = ('scripts/jquery.js',)
+    
+    def get_form(self, *args, **kwargs):
+        f = super(ImageGalleryAdmin, self).get_form(*args, **kwargs)
+        print dir(f)
+        print f._meta.fields
+        return f
     
 
 

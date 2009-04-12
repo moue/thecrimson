@@ -143,13 +143,18 @@ var set_search_choice_field = function(id_prefix, ajax_url){
         }
     };
     
-    $('#id_images_wrapper ul.chosen_objs').sortable({stop: function(){
+    $(p + '_wrapper ul.chosen_objs').sortable({stop: function(){
         // reset value of hidden on sort
         $(hidden).val('');
-        $(p + '_wrapper ul.chosen_objs').each(function(){
+        $(p + '_wrapper ul.chosen_objs > li').each(function(){
             $(hidden).val($(hidden).val() + $(this).data('pk') + ',');
         });
     }});
+    
+    $(p + '_wrapper ul.chosen_objs > li').each(function(){
+        console.log($(this).attr('pk'));
+        $(this).data('pk', $(this).attr('pk'));
+    })
     
     // send ajax search request
     $(p + '_go').click(function(){

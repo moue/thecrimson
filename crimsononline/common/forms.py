@@ -220,7 +220,10 @@ class SearchModelChoiceField(forms.CharField):
             if len(pks) > 1 and not self.multiple:
                 raise forms.ValidationError("Something terrible happened!")
             if self.clean_to_objs:
-                return self.model.objects.filter(pk__in=pks)
+                objs = list(self.model.objects.filter(pk__in=pks))
+                objs = dict([(o.pk, o) for o in objs])
+                objs = [objs[v] for v in pks]
+                return objs
             return pks
         except ValueError:
             # not a normal validation error, since the front end

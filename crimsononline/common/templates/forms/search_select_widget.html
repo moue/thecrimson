@@ -17,7 +17,7 @@
     <h3>Selected {{model_name|capfirst}}s:</h3>
     <ul class="chosen_objs">
         {% for obj in obj_list %}
-            <li>{{ obj|render:"admin.thumbnail" }}</li>
+            <li pk="{{obj.pk}}">{{ obj|render:"admin.thumbnail" }}</li>
         {% empty %}
             <li>None</li>
         {% endfor %}
