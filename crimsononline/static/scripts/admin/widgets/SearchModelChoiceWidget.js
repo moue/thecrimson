@@ -151,10 +151,11 @@ var set_search_choice_field = function(id_prefix, ajax_url){
         });
     }});
     
-    $(p + '_wrapper ul.chosen_objs > li').each(function(){
-        console.log($(this).attr('pk'));
-        $(this).data('pk', $(this).attr('pk'));
-    })
+    var ids = $(hidden).val().split(',');
+    $(p + '_wrapper ul.chosen_objs li').each(function(i){
+        $(this).data('pk', ids[i]);
+        bind_remove(this);
+    });
     
     // send ajax search request
     $(p + '_go').click(function(){
