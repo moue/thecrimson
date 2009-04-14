@@ -1,28 +1,18 @@
-{% extends "article-list.html" %}
+{% extends "content_list.html" %}
 
 {% load common_filters %}
 
 {% block title %}
-    Articles tagged {{ tags|human_list }}
+    Content tagged {{ tags|human_list }}
 {% endblock %}
 
-{% block left_before_ad %}
+{% block left %}
     some content here
 {% endblock %}
 
-{% block before_articles %}
-    <h1>Articles tagged {{ tags|human_list }}</h1>
+{% block before_content %}
+    <h1>Content tagged {{ tags|human_list }}</h1>
     {% if not content %}
     <p>There is no content tagged {{ tags|human_list }}.</p>
     {% endif %}
 {% endblock %}
-{% comment %}
-    
-{% block after_articles %}
-    {% for a in articles %}
-        {% tags_for_object a as tag_list %}
-        <p>{{ tag_list|human_list }}</p>
-    {% endfor %}
-{% endblock %}
-
-{% endcomment %}
