@@ -6,7 +6,7 @@
 {% cache 500 mostreadarticles %}
 <div id="mostreadarticles">
 <ol>
-{% for article in mostreadarticleslist %}
+{% for article in mostreadarticles %}
 <li>{{article|linkify}}</li>
 {% endfor %}
 </ol>
@@ -14,11 +14,9 @@
 {% endcache %}
 <div id="mostcommentedarticles" style="display: none">
 <ol>
-<li>HEH</li>
-<li>HEH</li>
-<li>HEH</li>
-<li>HEH</li>
-<li>HEH</li>
+{% for article in mostcommentedarticles %}
+<li>{{article|linkify}}</li>
+{% endfor %}
 </ol>
 </div>
 </div>
