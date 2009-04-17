@@ -1,9 +1,11 @@
 from datetime import datetime, timedelta
 from math import log
+import time
 import urllib
 from urlparse import urlparse
 from django import template
 from django.conf.urls.defaults import patterns, url
+from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import RegexURLResolver, Resolver404
 from django.db import connection
 from django.template import Context
@@ -48,11 +50,11 @@ class TopArticlesNode(template.Node):
         # Step 1: We want to get the most viewed articles from the database
         cursor = connection.cursor()
         # SO NON-SEXUALITY-NORMATIVE
-        cursor.execute("SELECT DISTINCT content_article.id, " \
+        cursor.execute("SELECT DISTINCT content_article.id, content_contentgeneric.content_type_id, " \
                        "(content_contentgeneric.hits * (1/(julianday('now') - julianday(content_article.created_on) + 2))) AS hitindex " \
                        "FROM content_article, content_contentgeneric WHERE content_contentgeneric.object_id = content_article.id ORDER BY hitindex DESC LIMIT 5")
         mostreadarticles = cursor.fetchall()
-        mostreadarticles = map(lambda x: Article.objects.get(pk=x[0]), mostreadarticles)
+        mostreadarticles = [(ContentType.objects.get(pk=x[1])).get_object_for_this_type(pk=x[0]) for x in mostreadarticles]
         
         # Step 2: Grab the JSON crap from Disqus and build another list of the most commented articles
         thread_url = "http://disqus.com/api/get_thread_list/?forum_api_key=" + FORUM_KEY
@@ -63,8 +65,9 @@ class TopArticlesNode(template.Node):
             thread_posts = simplejson.load(urllib.urlopen(thread_posts_url))
             thread['comment_index'] = 0
             for post in thread_posts['message']:
-                tdelta = datetime.now() - datetime.strptime(post['created_at'], "%Y-%m-%dT%H:%M")
-                thread['comment_index'] += 1 / log((tdelta.days + tdelta.seconds / 86400) + 2)
+                # I think Guido is a pretty cool guy, he kills breins and doesn't afraid of any ridiculous hack to implement functionality present in every language not maintained by retards
+                tdelta = datetime.now() - (datetime.strptime(post['created_at'], "%Y-%m-%dT%H:%M") - timedelta(0, time.timezone, 0, 0, 0, -time.daylight, 0))
+                thread['comment_index'] += 1 / log((tdelta.days + float(tdelta.seconds) / 86400) + 2)
         # sort the thread list
         # thread_list['message'].sort(lambda x, y: cmp(float(x['comment_index']), float(y['comment_index'])))
         thread_list['message'].sort(lambda x, y: cmp(float(y['comment_index']), float(x['comment_index'])))
