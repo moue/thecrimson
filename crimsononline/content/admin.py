@@ -357,8 +357,10 @@ class ImageGalleryForm(ContentGenericModelForm):
         obj = super(ImageGalleryForm, self).save(*args, **kwargs)
         obj.images.clear()
         for i, img in enumerate(imgs):
-            GalleryMembership.objects.create(order=i, 
-                image_gallery=obj, image=img)
+            #GalleryMembership.objects.create(order=i, 
+            #    image_gallery=obj, image=img)
+            x = GalleryMembership(order=i, image_gallery=obj, image=img)
+            x.save()
         return obj
     
 
@@ -389,8 +391,8 @@ class ImageGalleryAdmin(ContentGenericAdmin):
     
     def get_form(self, *args, **kwargs):
         f = super(ImageGalleryAdmin, self).get_form(*args, **kwargs)
-        print dir(f)
-        print f._meta.fields
+        #print dir(f)
+        #print f._meta.fields
         return f
     
 

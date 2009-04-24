@@ -408,45 +408,6 @@ class Section(models.Model):
         return self.name
 
 
-class LiveIssueManager(models.Manager):
-    """
-    Only returns Issues which are published / unpublished
-    
-    Arguments
-    live:   True => only live objects
-            False => no live objects
-            None => all objects
-    """
-    def __init__(self, *args, **kwargs):
-        self.live = kwargs.pop('live', None)
-        return super(LiveIssueManager, self).__init__(*args, **kwargs)
-    
-    def get_query_set(self):
-        if self.live is None:
-            return super(LiveIssueManager, self).get_query_set()
-        elif self.live:
-            q = Q(web_publish_date__lte=datetime.now())
-        else:
-            q = Q(web_publish_date__gt=datetime.now())
-        return super(LiveIssueManager, self).get_query_set() \
-            .filter(q)
-
-class SpecialIssueManager(LiveIssueManager):
-    """
-    Only returns named issues
-    """
-    def get_query_set(self):
-        return super(SpecialIssueManager, self).get_query_set() \
-            .exclude(Q(special_issue_name="") | Q(special_issue_name=None))
-
-class DailyIssueManager(LiveIssueManager):
-    """
-    Only returns unnamed issues
-    """
-    def get_query_set(self):
-        return super(DailyIssueManager, self).get_query_set() \
-            .filter(Q(special_issue_name="") | Q(special_issue_name=None))
-
 class IssueManager(models.Manager):
     
     LIVE = Q(web_publish_date__lte=datetime.now())
@@ -653,6 +614,16 @@ def get_save_path(instance, filename):
     return datetime.now().strftime("photos/%Y/%m/%d/%H%M%S_") + \
         filtered_capt + ext
 
+class ImageManager(models.Manager):
+    use_for_related_fields = True  
+    def get_query_set(self):
+        s =  super(ImageManager, self).get_query_set()
+        # this is a hella ghetto way to make sure image galleries always return
+        # images in the right order.  this is probably really inefficient
+        if self.__class__.__name__ == 'ManyRelatedManager':
+            s = s.order_by('gallerymembership__order')
+        return s
+    
 
 class Image(Content):
     """
@@ -677,6 +648,8 @@ class Image(Content):
     # make sure pic is last: get_save_path needs an instance, and if this
     #  attribute is processed first, all the instance attributes will be blank
     pic = models.ImageField('File', upload_to=get_save_path)
+    
+    objects = ImageManager()
     
     @property
     def orientation(self):

@@ -84,7 +84,6 @@ def tag(request, tags):
         tags = None
     q = reduce(lambda x,y: x and y, [Q(tags=tag) for tag in tags])
     content = ContentGeneric.objects.filter(q)
-    print content
     return render_to_response('tag.html', {'tags': tags, 'content': content})
 
 def section(request, section, issue_id=None, tags=None):    
