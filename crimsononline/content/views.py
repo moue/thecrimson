@@ -117,15 +117,8 @@ def section(request, section, issue_id=None, tags=None):
         'tags': tags,
     }
     return render_to_response(
-        [dict['nav']+'.html', 'section.html', 'article-list.html'], dict
+        [dict['nav']+'.html', 'section.html', 'content_list.html'], dict
     )
-
-def image(request, year, month, day, slug):
-    year, month, day = int(year), int(month), int(day)
-    i = get_object_or_404(Image, created_on__year=year, 
-        created_on__month=month, created_on__day=day, slug=slug)
-    nav = 'photo'
-    return render_to_response('image.html', {'image': i, 'nav': nav})
 
 def photo(request):
     galleries = ImageGallery.objects.order_by('-created_on')[:10]

@@ -1,13 +1,13 @@
-{% extends "article-list.html" %}
+{% extends "content_list.html" %}
 
 {% load content_filters %}
 
 {% block inhead %}
 	<link type="text/css" rel="stylesheet" href="/site_media/css/photo.css">
-    <link type="text/css" rel="stylesheet" href="/site_media/css/article_list.css">
+    <link type="text/css" rel="stylesheet" href="/site_media/css/content_list.css">
 {% endblock %}
 
-{% block article_list %}
+{% block content_list %}
 <ul>
     {% for gallery in galleries %}
         <li class="gallery">
