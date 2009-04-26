@@ -128,7 +128,10 @@ a:hover {
     background-color: white;
     color: #444444;
 }
-
+span.clear {
+    display: block;
+    clear: left;
+}
 /* yuhki labels, "yabels" */
 
 div.label { 

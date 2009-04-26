@@ -33,6 +33,9 @@ h3 {
 .content_list ul{
     list-style: none;
 }
+.content_list li img{
+    clear: left;
+}
 .content_list li{
     clear: left;
     padding: 0 0 10px 0;
