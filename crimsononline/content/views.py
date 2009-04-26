@@ -74,7 +74,8 @@ def writer(request, contributor_id, f_name, m_name, l_name):
     if (w.first_name, w.middle_initial, w.last_name) != (f_name, m_name, l_name):
         return HttpResponseRedirect(w.get_absolute_url())
     #TODO: paginate these articles
-    return render_to_response('writer.html', {'writer': w})
+    return render_to_response(
+       'writer.html', {'writer': w, 'content': w.content.all()})
 
 def tag(request, tags):
     tag_texts = [t for t in tags.lower().replace('_', ' ').split(',') if t]

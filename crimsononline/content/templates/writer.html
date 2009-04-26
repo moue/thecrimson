@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "content_list.html" %}
 
 {% load content_filters %}
 
@@ -7,31 +7,18 @@
 {% endblock %}
 
 {% block inhead %}
-	<link type="text/css" rel="stylesheet" href="/site_media/css/article.css" />
+	<link type="text/css" rel="stylesheet" href="/site_media/css/content_list.css" />
     <link type="text/css" rel="stylesheet" href="/site_media/css/writer-profile.css" />
 {% endblock %}
 
-{% block body %}
-	<div class="content">
-		<div class="article">
-			<h1>{{ writer }}'s Profile</h1>
-            <div class="profile-corner">
-                {% if writer.profile_pic %}
-                    <img src="{{ writer.profile_pic.url}}" width="300px" /><br/>
-                {% endif %}
-                {% if writer.profile_text %}
-                    {{ writer.profile_text }}
-                {% endif %}
-            </div>
-			<br/>
-			<ul>
-				{% for c in writer.content.all %}
-				    {{ c|render:"list-item" }}
-				{% endfor %}
-			</ul>
-		</div>
-	</div>
-	<div class="columnRight">
-		<p>here is a bunch of test text<br/>type type type type type type</p>
-	</div>
+{% block left %}
+    <h1>{{ writer }}'s Profile</h1>
+    <div class="profile-corner">
+        {% if writer.profile_pic %}
+            <img src="{{ writer.profile_pic.url}}" width="300px" /><br/>
+        {% endif %}
+        {% if writer.profile_text %}
+            {{ writer.profile_text }}
+        {% endif %}
+    </div>
 {% endblock %}
