@@ -47,9 +47,13 @@ def call_view(view, args):
     
 class TopArticlesNode(template.Node):
     def render(self, context):
+        # DON'T FORGET: >>> data = account.get_data(start_date=start_date, end_date=end_date, dimensions=['pagePath',], metrics=['pageViews',], sort=['-pageviews',])
+        # crimsonanalytics/andylei:male
         # Step 1: We want to get the most viewed articles from the database
         cursor = connection.cursor()
         # SO NON-SEXUALITY-NORMATIVE
+        # Oh, a real comment in case someone comes upon this later: We're selecting article ID, content type ID, and a computed field called "hitindex"
+        # which will eventually use log() for a better curve.  This ages articles' hits to reduce freshness.  Then it sorts by hitindex and returns the top 5.
         cursor.execute("SELECT DISTINCT content_article.id, content_contentgeneric.content_type_id, " \
                        "(content_contentgeneric.hits * (1/(julianday('now') - julianday(content_article.created_on) + 2))) AS hitindex " \
                        "FROM content_article, content_contentgeneric WHERE content_contentgeneric.object_id = content_article.id ORDER BY hitindex DESC LIMIT 5")
@@ -69,15 +73,14 @@ class TopArticlesNode(template.Node):
                 tdelta = datetime.now() - (datetime.strptime(post['created_at'], "%Y-%m-%dT%H:%M") - timedelta(0, time.timezone, 0, 0, 0, -time.daylight, 0))
                 thread['comment_index'] += 1 / log((tdelta.days + float(tdelta.seconds) / 86400) + 2)
         # sort the thread list
-        # thread_list['message'].sort(lambda x, y: cmp(float(x['comment_index']), float(y['comment_index'])))
         thread_list['message'].sort(lambda x, y: cmp(float(y['comment_index']), float(x['comment_index'])))
-        # Finish this later (need to get articles based on their URL; we can probably grab the ID out of the URL string in the dict
-        # mostcommentedarticleslist = map(lambda x: Article.objects.get(
+        # Create a resolver for the slightly modified URL patterns we defined above
         resolver = RegexURLResolver(r'^/', generic_obj_patterns)
         # call resolver.resolve on everything in the list
         urllist = map(lambda x: (urlparse(x['url']))[2], thread_list['message'])
         threadobjlist = map(lambda x: safe_resolve(x, resolver), urllist)
         mostcommentedarticles = map(lambda x: call_view(x[0], x[1]), filter(lambda x: x != None, threadobjlist))
+        # Only want top 5 -- we need to do this last because we're not guaranteed that there won't be some gaps in threadobjlist
         del mostcommentedarticles[5:]
         
         """
