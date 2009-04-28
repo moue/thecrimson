@@ -12,12 +12,29 @@ from django.template import Context
 from django.template.loader import get_template
 from django.utils import simplejson
 from django.utils.safestring import mark_safe
+from googleanalytics import Connection
+from operator import itemgetter
 from crimsononline.content.models import Image, Article, Content, ContentGeneric
 from crimsononline.urls import CONTENT_URL_RE, CGROUP_URL_RE
 
-USER_KEY="vabqI2su93P1wVF3Ls9kXhXhRggV7y2ylokjq137yPAz47cY5dDMHgUA2QlZoWNE"
+D_USER_KEY = "vabqI2su93P1wVF3Ls9kXhXhRggV7y2ylokjq137yPAz47cY5dDMHgUA2QlZoWNE"
 # The following is true for now
-FORUM_KEY="9XGWB9o6NT1ZNiMtc2vt6ZJIUdp0D6sZDvis4hPfGGpsRaUchuH5c4fbO71GPAOj"
+D_FORUM_KEY = "9XGWB9o6NT1ZNiMtc2vt6ZJIUdp0D6sZDvis4hPfGGpsRaUchuH5c4fbO71GPAOj"
+
+GA_LOGIN = "crimsonanalytics@gmail.com"
+GA_PASS = "andylei:male"
+GA_AID = "509545"
+
+# Below falues roughly based on values of 1/log(days + 1.5)
+# Last day
+TP1_FACTOR = 3.6
+# Last week
+TP2_FACTOR = 1.35
+# Last month
+TP3_FACTOR = 0.76
+TP1_TIMEDELTA = timedelta(days = 1)
+TP2_TIMEDELTA = timedelta(days = 7)
+TP3_TIMEDELTA = timedelta(days = 30)
 
 generic_obj_patterns = patterns('crimsononline.content.views',
     url('^' + CONTENT_URL_RE, 'get_content_obj', name='content_content'),
@@ -47,8 +64,32 @@ def call_view(view, args):
     
 class TopArticlesNode(template.Node):
     def render(self, context):
+        # Create a resolver for the slightly modified URL patterns we defined above
+        resolver = RegexURLResolver(r'^/', generic_obj_patterns)
         # DON'T FORGET: >>> data = account.get_data(start_date=start_date, end_date=end_date, dimensions=['pagePath',], metrics=['pageViews',], sort=['-pageviews',])
         # crimsonanalytics/andylei:male
+        # NEW STYLE FOLLOWS
+        gaconn = Connection(GA_LOGIN, GA_PASS)
+        gaacct = gaconn.get_account(GA_AID)
+        # welp this is ugly. someone fix it
+        data_tp1 = gaacct.get_data(start_date=datetime.now() - TP1_TIMEDELTA, end_date=datetime.now(), dimensions=['pagePath',], metrics=['pageViews',])
+        data_tp2 = gaacct.get_data(start_date=datetime.now() - TP2_TIMEDELTA, end_date=datetime.now() - TP1_TIMEDELTA, dimensions=['pagePath',], metrics=['pageViews',])
+        data_tp3 = gaacct.get_data(start_date=datetime.now() - TP3_TIMEDELTA, end_date=datetime.now() - TP2_TIMEDELTA, dimensions=['pagePath',], metrics=['pageViews',])
+        finaldict = {}
+        # replace with """"get""""
+        for k,v in data_tp1.dict.iteritems():
+            finaldict[k] = v * TP1_FACTOR
+        for k,v in data_tp2.dict.iteritems():
+            finaldict[k] = finaldict.get(k,0) + v * TP2_FACTOR
+        for k,v in data_tp3.dict.iteritems():
+            finaldict[k] = finaldict.get(k,0) + v * TP3_FACTOR
+        sortedurllist = sorted(finaldict.items(), key=lambda(k,v):(v,k), reverse=True)
+        # call resolver.resolve on everything in the list
+        threadobjlist = map(lambda x: safe_resolve(x[0], resolver), sortedurllist)
+        mostreadarticles = map(lambda x: call_view(x[0], x[1]), filter(lambda x: x != None, threadobjlist))
+        del mostreadarticles[5:]
+        # TODO: Refactor this so that there's no chance of an article appearing in Analytics by two different links and getting calculated separately as a result (swap order of resolving and index calculation)
+        """
         # Step 1: We want to get the most viewed articles from the database
         cursor = connection.cursor()
         # SO NON-SEXUALITY-NORMATIVE
@@ -59,13 +100,13 @@ class TopArticlesNode(template.Node):
                        "FROM content_article, content_contentgeneric WHERE content_contentgeneric.object_id = content_article.id ORDER BY hitindex DESC LIMIT 5")
         mostreadarticles = cursor.fetchall()
         mostreadarticles = [(ContentType.objects.get(pk=x[1])).get_object_for_this_type(pk=x[0]) for x in mostreadarticles]
-        
+        """
         # Step 2: Grab the JSON crap from Disqus and build another list of the most commented articles
-        thread_url = "http://disqus.com/api/get_thread_list/?forum_api_key=" + FORUM_KEY
+        thread_url = "http://disqus.com/api/get_thread_list/?forum_api_key=" + D_FORUM_KEY
         thread_list = simplejson.load(urllib.urlopen(thread_url))
         # for each thread, grab its posts, then compute the popularity of the thread based on their recency
         for thread in thread_list['message']:
-            thread_posts_url = "http://disqus.com/api/get_thread_posts/?forum_api_key=" + FORUM_KEY + "&thread_id=" + thread['id']
+            thread_posts_url = "http://disqus.com/api/get_thread_posts/?forum_api_key=" + D_FORUM_KEY + "&thread_id=" + thread['id']
             thread_posts = simplejson.load(urllib.urlopen(thread_posts_url))
             thread['comment_index'] = 0
             for post in thread_posts['message']:
@@ -74,8 +115,8 @@ class TopArticlesNode(template.Node):
                 thread['comment_index'] += 1 / log((tdelta.days + float(tdelta.seconds) / 86400) + 2)
         # sort the thread list
         thread_list['message'].sort(lambda x, y: cmp(float(y['comment_index']), float(x['comment_index'])))
-        # Create a resolver for the slightly modified URL patterns we defined above
-        resolver = RegexURLResolver(r'^/', generic_obj_patterns)
+        
+        
         # call resolver.resolve on everything in the list
         urllist = map(lambda x: (urlparse(x['url']))[2], thread_list['message'])
         threadobjlist = map(lambda x: safe_resolve(x, resolver), urllist)
