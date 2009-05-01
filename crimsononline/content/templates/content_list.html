@@ -20,6 +20,7 @@
                 {{ c|render:"list-item"}}
             {% endfor %}
             </ul>
+            <p>{% if p.has_previous %}<{% endif %} {% if p.has_next %}>{% endif %}</p>
         {% endblock %}
         {% block after_content %}
         {% endblock %}

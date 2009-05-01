@@ -7,6 +7,7 @@ from django.template import Context, RequestContext, loader
 from django.contrib.flatpages.models import FlatPage
 from crimsononline.content.models import *
 from crimsononline.content_module.models import ContentModule
+from crimsononline.common.utils.paginate import paginate
 
 
 def get_content(request, ctype, year, month, day, slug, pk, content_group=None):
@@ -80,12 +81,17 @@ def writer(request, contributor_id, f_name, m_name, l_name):
 def tag(request, tags):
     tag_texts = [t for t in tags.lower().replace('_', ' ').split(',') if t]
     tags = Tag.objects.filter(text__in=tag_texts)
-    # there's some tag in the query that doesn't exist.  
+    # there's some tag in the query that doesn't exist.
     if len(tag_texts) != len(tags):
         tags = None
     q = reduce(lambda x,y: x and y, [Q(tags=tag) for tag in tags])
     content = ContentGeneric.objects.filter(q)
-    return render_to_response('tag.html', {'tags': tags, 'content': content})
+    
+    top_content = content.order_by('-priority')[:5]
+    page, paginator = paginate(content, 1, 5)
+    
+    return render_to_response('tag.html', 
+        {'tags': tags, 'content': content, 'p': page, 'paginator': paginator})
 
 def section(request, section, issue_id=None, tags=None):    
     # validate the section (we don't want /section/balls/ to be a valid url)
