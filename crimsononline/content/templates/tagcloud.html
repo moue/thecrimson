@@ -1,0 +1,20 @@
+{% load common_filters %}
+{% load tocloud %}
+{% load cache %}
+
+{% block body %} 
+<div id="tagcloud">
+{% cache 500 mostusedtags_short %}
+
+{% for Tag in mostusedtags_short %}
+
+<a class="{{ Tag|tocloud }}" href="{{ Tag.get_absolute_url }}">
+{{ Tag }}
+</a>
+
+{% endfor %}
+
+{% endcache %}
+</div>
+
+{% endblock %}

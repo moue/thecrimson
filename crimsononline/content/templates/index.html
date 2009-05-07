@@ -2,6 +2,7 @@
 
 {% load content_filters %}
 {% load content_module %}
+{% load tag_cloud %}
 
 {% block title %}
 	{{ "Since 1873, motherfuckers" }}
@@ -9,6 +10,7 @@
 
 {% block inhead %}
 	<link type="text/css" rel="stylesheet" href="/site_media/css/index.css" />
+	<link type="text/css" rel="stylesheet" href="/site_media/css/fontsize.css" />
 {% endblock %}
 
 {% block body %}
@@ -95,4 +97,7 @@
         </div>
         {% endcontentmodule %}
     </div>
+    
+    {% tag_cloud %} 
+    
 {% endblock %}
