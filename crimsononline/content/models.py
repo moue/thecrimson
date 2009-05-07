@@ -542,7 +542,7 @@ class ImageSpec():
             img = img.transform(size_spec[:2], pilImage.EXTENT, crop_coords)
             self._path = self._get_path()
             img.save(self._path)
-            print self._path
+            #print self._path
         else:
             self._path = ''
         self._url = ''

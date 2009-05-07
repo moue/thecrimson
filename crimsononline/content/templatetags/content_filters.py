@@ -55,7 +55,8 @@ def to_img_tag(img, size_spec):
     """Turns an Image into an img tag (html).
     
     @size_spec => the size spec of the display image. 3 possible formats:
-        string name of the size_spec defined in the Image model,
+        string name of the size_spec defined in the Image model
+            (without the SIZE_ prefix),
         string formatted "WIDTH,HEIGHT,CROP_RATIO" or "WIDTH,HEIGHT", or
         tuple given as (WIDTH, HEIGHT, CROP_RATIO) or (WIDTH, HEIGHT)
      
@@ -75,8 +76,6 @@ def to_img_tag(img, size_spec):
             else 0
         size_spec = (w, h, c)
         disp = img.display(*size_spec)
-    elif disp:
-        disp = img.display(*disp)
     tag = '<img src="%s" title="%s" alt="%s" />' % \
             (disp.url, img.kicker, img.kicker)
     return mark_safe(tag)
