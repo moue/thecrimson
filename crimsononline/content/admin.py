@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 from re import compile
 from django import forms
+from django.core.mail import send_mail
 from django.conf import settings
 from django.conf.urls.defaults import patterns
 from django.contrib import admin
@@ -615,6 +616,15 @@ class MapAdmin(admin.ModelAdmin):
 
 admin.site.register(Map, MapAdmin)
 admin.site.register(Marker)
+
+class SubscriptionForm(forms.ModelForm):
+    class Meta:
+        model = Subscription
+		
+class SubscriptionAdmin(admin.ModelAdmin):
+	form = SubscriptionForm
+
+admin.site.register(Subscription, SubscriptionAdmin)
 
 class HUIDBackend:
     """

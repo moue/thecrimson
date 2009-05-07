@@ -1,0 +1,45 @@
+{% load content_filters %}
+{% load common_filters %}
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
+
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>The Harvard Crimson | {% block title %}{{ title }}{% endblock %}</title>
+	<link type="text/css" rel="stylesheet" href="/site_media/css/base.css">
+	{% block inhead %}{% endblock %}
+</head>
+<body>
+	<div id="wrapper">
+		<div id="masthead">
+			<img src="/site_media/images/banner.png" alt="">
+		</div>
+		<div id="nav">
+			<ul>
+			    <li class="spacer">&nbsp;</li>
+				<li {{ nav|is_nav_cur:"index" }}><a href="/"><strong>HOME</strong></a></li>
+				<li {{ nav|is_nav_cur:"news" }}><a href="/section/news">NEWS</a></li>
+				<li {{ nav|is_nav_cur:"opinion" }}><a href="/section/opinion">OPINION</a></li>
+				<li {{ nav|is_nav_cur:"fm" }}><a href="/section/fm">MAGAZINE</a></li>
+				<li {{ nav|is_nav_cur:"arts" }}><a href="/section/arts">ARTS</a></li>
+				<li {{ nav|is_nav_cur:"photo" }}><a href="/section/photo">PHOTOS</a></li>
+				<li {{ nav|is_nav_cur:"sports" }}><a href="/section/sports">SPORTS</a></li>
+				<li {{ nav|is_nav_cur:"about" }}><a href="/about">ABOUT US</a></li>
+			</ul>
+		</div>
+		<div class="submenu">
+			{% block submenu %}{% endblock %}
+		</div>
+		<div id="main">
+			{% block pre_body %}{% endblock %}
+			{% block body %}You are subscribed to The Harvard Crimson!{% endblock %}
+			{% block post_body %}{% endblock %}
+		</div>
+		<div id="footer">
+		 copyright 2008
+		</div>
+	</div>
+</body>
+</html>

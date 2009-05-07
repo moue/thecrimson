@@ -8,6 +8,7 @@ from django.contrib.flatpages.models import FlatPage
 from crimsononline.content.models import *
 from crimsononline.content_module.models import ContentModule
 from crimsononline.common.utils.paginate import paginate
+from django.core.mail import send_mail
 
 
 def get_content(request, ctype, year, month, day, slug, pk, content_group=None):
@@ -138,6 +139,20 @@ def gallery(request, currentimg_id, gallery_id):
     image = get_object_or_404(Image, pk=currentimg_id)
     gallery = get_object_or_404(ImageGallery, pk=gallery_id)
     return render_to_response('gallery.html', {'currentimg':image, 'gallery':gallery})
+
+def subscribe(request):
+	if request.method == 'POST':
+		form = SubscriptionForm(request.POST)
+		if form.is_valid():
+			form.save()
+			#send_mail('Your Harvard Crimson Subscription', 'yay!', 'subscriptions@thecrimson.com', [form.cleaned_data['email']], fail_silently=False)
+			return HttpResponseRedirect('/done')
+	else:
+		form = SubscriptionForm()
+	return render_to_response('subscription.html', {'form': form,})
+
+def subscribed(request):
+	return render_to_response('done.html')
 
 #====== ajax stuff ==========#
 def ajax_get_img(request, pk):

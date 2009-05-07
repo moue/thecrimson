@@ -16,6 +16,7 @@ from django.core.cache import cache
 from django.template.defaultfilters import slugify, truncatewords
 from django.template.loader import render_to_string
 from django.utils.safestring import mark_safe
+from django.forms import ModelForm
 from crimsononline.common.utils.strings import \
     make_file_friendly, make_slug, make_url_friendly
 
@@ -944,3 +945,15 @@ class UserData(models.Model):
     def parse_token(self):
         # a b c d
         return false
+
+class Subscription(models.Model):
+	email = models.EmailField(blank=False)
+	contributors = models.ManyToManyField(Contributor,blank=True)
+	section = models.ManyToManyField(Section,blank=True)
+	tags = models.ManyToManyField(Tag,blank=True)
+	def __unicode__(self):
+		return self.email
+
+class SubscriptionForm(ModelForm):
+	class Meta:
+		model = Subscription
