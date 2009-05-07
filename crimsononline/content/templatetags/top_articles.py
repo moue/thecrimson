@@ -12,8 +12,11 @@ from django.template import Context
 from django.template.loader import get_template
 from django.utils import simplejson
 from django.utils.safestring import mark_safe
-from googleanalytics import Connection
 from operator import itemgetter
+try:
+    from googleanalytics import Connection
+except:
+    Connection = None
 from crimsononline.content.models import Image, Article, Content, ContentGeneric
 from crimsononline.urls import CONTENT_URL_RE, CGROUP_URL_RE
 
@@ -64,6 +67,9 @@ def call_view(view, args):
     
 class TopArticlesNode(template.Node):
     def render(self, context):
+        # library not installed
+        if not Connection:
+            return '<div>Google Analytics Library not installed :(</div>'
         # Create a resolver for the slightly modified URL patterns we defined above
         resolver = RegexURLResolver(r'^/', generic_obj_patterns)
         # DON'T FORGET: >>> data = account.get_data(start_date=start_date, end_date=end_date, dimensions=['pagePath',], metrics=['pageViews',], sort=['-pageviews',])

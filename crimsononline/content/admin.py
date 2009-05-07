@@ -299,7 +299,7 @@ class ImageAdminForm(ContentGenericModelForm):
         model = Image
     
     # the different sizes to crop. these should all be square sizes
-    CROP_SIZES = (Image.SIZE_THUMB, Image.SIZE_TINY,)
+    CROP_SIZES = (Image.SIZE_THUMB, Image.SIZE_TINY, Image.SIZE_SMALL)
     
     caption = forms.fields.CharField(
         widget=forms.Textarea(attrs={'rows':'5', 'cols':'40'}),
@@ -321,7 +321,8 @@ class ImageAdminForm(ContentGenericModelForm):
                 # if this ratio is < 1, then the image wasn't scaled at all
                 if scale_ratio < 1.0:
                     scale_ratio = 1
-                crop_data = map(lambda x: int(x * scale_ratio), data)
+                #crop_data = map(lambda x: int(x * scale_ratio), data)
+                crop_data = [int(x * scale_ratio) for x in data]
                 i.crop(size[0], size[1], *crop_data)
         return i
 

@@ -70,29 +70,25 @@ def bigmap(request):
     return render_to_response('bigmap.html', dict)
     
 
-def writer(request, contributor_id, f_name, m_name, l_name):
+def writer(request, contributor_id, f_name, m_name, l_name, page=None):
     w = get_object_or_404(Contributor, pk=contributor_id)
     # Validate the URL (we don't want /writer/281/Balls_Q_McTitties to be valid)
     if (w.first_name, w.middle_initial, w.last_name) != (f_name, m_name, l_name):
         return HttpResponseRedirect(w.get_absolute_url())
-    #TODO: paginate these articles
-    return render_to_response(
-       'writer.html', {'writer': w, 'content': w.content.all()})
+    
+    d = paginate(w.content.all(), page, 10)
+    d.update({'writer': w, 'url': w.get_absolute_url()})
+    
+    return render_to_response('writer.html', d)
 
-def tag(request, tags):
-    tag_texts = [t for t in tags.lower().replace('_', ' ').split(',') if t]
-    tags = Tag.objects.filter(text__in=tag_texts)
-    # there's some tag in the query that doesn't exist.
-    if len(tag_texts) != len(tags):
-        tags = None
-    q = reduce(lambda x,y: x and y, [Q(tags=tag) for tag in tags])
-    content = ContentGeneric.objects.filter(q)
+def tag(request, tag, page=None):
+    tag = get_object_or_404(Tag, text=tag.replace('_', ' '))
+    content = ContentGeneric.objects.filter(tags=tag)
     
-    top_content = content.order_by('-priority')[:5]
-    page, paginator = paginate(content, 1, 5)
+    d = paginate(content, page, 5)
+    d.update({'tag': tag, 'url': tag.get_absolute_url()})
     
-    return render_to_response('tag.html', 
-        {'tags': tags, 'content': content, 'p': page, 'paginator': paginator})
+    return render_to_response('tag.html', d)
 
 def section(request, section, issue_id=None, tags=None):    
     # validate the section (we don't want /section/balls/ to be a valid url)

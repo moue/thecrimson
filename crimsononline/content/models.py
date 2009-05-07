@@ -542,7 +542,7 @@ class ImageSpec():
             img = img.transform(size_spec[:2], pilImage.EXTENT, crop_coords)
             self._path = self._get_path()
             img.save(self._path)
-            #print self._path
+            print self._path
         else:
             self._path = ''
         self._url = ''
@@ -637,7 +637,8 @@ class Image(Content):
     
     # standard image size constraints: 
     #  width, height, crop_ratio ( 0 => not cropped )
-    SIZE_TINY  = (75, 75, 1.0)
+    SIZE_TINY = (75, 75, 1.0)
+    SIZE_SMALL = (100, 100, 1.0)
     SIZE_THUMB = (150, 150, 1.0)
     SIZE_STAND = (600, 600, 0)
     SIZE_LARGE = (900, 900, 0)

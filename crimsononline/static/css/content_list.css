@@ -19,6 +19,12 @@ div.image_thumb {
     margin-right: 6px;
 }
 
+/* pagination */
+span.pagination {
+    float: right;
+    font-size: .8em;
+}
+
 /*              */
 h1, h2{
     font-size: 24px;

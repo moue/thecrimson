@@ -20,7 +20,17 @@
                 {{ c|render:"list-item"}}
             {% endfor %}
             </ul>
-            <p>{% if p.has_previous %}<{% endif %} {% if p.has_next %}>{% endif %}</p>
+            <span class="pagination">
+                {% if p.has_previous %}
+                    <a href="{{url}}">&lt;&lt; Newest</a>
+                    <a href="{{url}}page/{{p.previous_page_number}}/">&lt; Newer</a>
+                {% endif %}
+                {{p.start_index}} - {{p.end_index}} of {{paginator.count}}
+                {% if p.has_next %}
+                    <a href="{{url}}page/{{p.next_page_number}}/">Older &gt; </a>
+                    <a href="{{url}}page/{{paginator.num_pages}}/">Oldest &gt;&gt; </a>
+                {% endif %}
+            </span>
         {% endblock %}
         {% block after_content %}
         {% endblock %}

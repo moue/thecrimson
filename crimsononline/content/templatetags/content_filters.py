@@ -75,6 +75,8 @@ def to_img_tag(img, size_spec):
             else 0
         size_spec = (w, h, c)
         disp = img.display(*size_spec)
+    elif disp:
+        disp = img.display(*disp)
     tag = '<img src="%s" title="%s" alt="%s" />' % \
             (disp.url, img.kicker, img.kicker)
     return mark_safe(tag)
