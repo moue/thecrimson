@@ -84,6 +84,31 @@ body {
 	background-color: #ccc;
 }
 
+/* tag cloud font sizes */
+
+a.largest {
+    font-size: 23pt;
+}
+a.large {
+	font-size: 19pt;
+}
+a.medium {
+	font-size: 15pt;
+}
+a.small {
+	font-size: 11pt;
+}
+
+/* bordered */
+div.bordered {
+    border: 1px solid #bbb;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px; 
+    padding: 5px;
+    margin-bottom: 10px;
+}
+
 /* stylings */
 a {
 	text-decoration: none;
@@ -144,6 +169,7 @@ div.label {
     font-family: Arial,Helvetica,sans-serif;
     text-align: center; 
     display: inline;
+    border-radius: 3px;
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px; 
 }

@@ -85,8 +85,29 @@ def tag(request, tag, page=None):
     tag = get_object_or_404(Tag, text=tag.replace('_', ' '))
     content = ContentGeneric.objects.filter(tags=tag)
     
+    # top articles
+    articles = ContentGeneric.objects.type(Article).filter(tags=tag)
+    featured_articles = list(articles.filter(
+        issue__issue_date__gte=last_month()).order_by('-priority')[:5])
+    if len(featured_articles) < 5:
+        featured_articles += list(articles.filter(
+            issue__issue_date__gte=last_year(), 
+            issue__issue_date__lte=last_month()).order_by('-priority')[:5])
+    if len(featured_articles) < 5:
+        featured_articles += list(articles.filter( 
+            issue__issue_date__lte=last_year()).order_by('-priority')[:5])
+    featured_articles = featured_articles[:5]
+    
+    # TODO: top writers (contributors that have the most content with this tag)
+    
+    # TODO: related tags (tags with most shared content)
+    #content_pks = [d['id'] for d in content.values('id')]
+    #rel_tags = Tag.objects.filter(content__id__in=content_pks).annotate(
+    
+    
     d = paginate(content, page, 5)
-    d.update({'tag': tag, 'url': tag.get_absolute_url()})
+    d.update({'tag': tag, 'url': tag.get_absolute_url(), 
+        'featured': featured_articles})
     
     return render_to_response('tag.html', d)
 
@@ -161,3 +182,9 @@ def ajax_get_img(request, pk):
 def top_articles(section):
     """returns the most recent articles from @section"""
     return Article.objects.recent.filter(generic__section__name=section)
+
+def last_month():
+    return date.today() + timedelta(days=-30)
+
+def last_year():
+    return date.today() + timedelta(days=-365)

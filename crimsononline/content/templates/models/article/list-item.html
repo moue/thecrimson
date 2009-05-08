@@ -4,7 +4,8 @@
 <li>
     <div class="image_thumb">{{article.main_rel_content|render:"thumb"}}</div>
     <div class="label">{{article.section}}</div>
-    <h3><img src="/site_media/images/arrow_small_up.png"> <a href="{{ article.get_absolute_url }}">{{ article.headline }}</a></h3>
+    <img src="/site_media/images/arrow_small_up.png" alt="article">
+    <h3><a href="{{ article.get_absolute_url }}">{{ article.headline }}</a></h3>
     <span class="byline">By {{ article.generic.contributors.all|linkify|human_list}}</span>
     {% if article.web_only %}    
     <span class="webonly">Web Only</span>

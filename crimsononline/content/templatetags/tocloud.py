@@ -23,16 +23,15 @@ FORUM_KEY="9XGWB9o6NT1ZNiMtc2vt6ZJIUdp0D6sZDvis4hPfGGpsRaUchuH5c4fbO71GPAOj"
 
 register = template.Library()
 
-def tocloud(Tag):
-	#return Tag.num_articles
-	if Tag.num_articles > 2:
-		html = 'largest'
-	elif Tag.num_articles ==2:
-		html = 'larger'
-	elif Tag.num_articles == 1:
-		html = 'medium'
-	elif Tag.num_articles == 0:
-		html = 'small'
-	return mark_safe(html)
-
-register.filter('tocloud', tocloud)
+@register.filter
+def get_size(Tag, levels):
+    #return Tag.content_count
+    if Tag.content_count > levels[0]:
+        html = 'largest'
+    elif Tag.content_count > levels[1]:
+        html = 'larger'
+    elif Tag.content_count > levels[2]:
+        html = 'medium'
+    else:
+        html = 'small'
+    return mark_safe(html)

@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% load top_articles %}
+{% load tag_cloud %}
 
 {% block inhead %}
     <link type="text/css" rel="stylesheet" href="/site_media/css/single_content.css" />
@@ -27,6 +28,8 @@
     </div>
     <div id="sidebar">
         {% most_read_articles %}
+        <p>ad goes here</p>
+        {% tag_cloud 10 "Popular Tags" %}
         {% block sidebar %}
         {% endblock %}
     </div>

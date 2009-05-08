@@ -2,17 +2,42 @@
 
 {% load common_filters %}
 
+{% block css %}
+<link type="text/css" rel="stylesheet" href="/site_media/css/tag.css">
+{% endblock %}
+
 {% block title %}
-    Content tagged {{ tags|human_list }}
+    Content tagged {{ tag }}
 {% endblock %}
 
 {% block left %}
-    some content here
+    <div id="featured_articles" class="bordered">
+        <h3>FEATURED ARTICLES</h3>
+        {% for c in featured %}
+        <p>
+            {{c.content_object|linkify}} 
+            <span class="date">{{c.issue.issue_date|date:"m/d/y"}}</span>
+        </p>
+        {% endfor %}
+    </div>
+    <div id="featured_contributors" class="bordered">
+        <h3>TOP CONTRIBUTORS</h3>
+        {% for c in top_contributors %}
+        <p>
+            {{c|linkify}}
+        </p>
+        {% endfor %}
+        <p>This is where top contributors go, once I implement the feature</p>
+    </div>
 {% endblock %}
 
 {% block before_content %}
-    <h1>Content tagged {{ tags|human_list }}</h1>
-    {% if not content %}
-    <p>There is no content tagged {{ tags|human_list }}.</p>
-    {% endif %}
+    <h1>Content tagged {{ tag }}</h1>
+{% endblock %}
+
+{% block right %}
+    <div id="related_tags" class="bordered">
+        <h3>RELATED TAGS</h3>
+        this is where a list of related tags would go
+    </div>
 {% endblock %}

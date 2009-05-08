@@ -30,8 +30,9 @@ h1, h2{
     font-size: 24px;
     padding: 0 0 10px;
 }
-h3 {
+.content_list ul h3 {
     line-height: 1;
+    display: inline;
 }
 .column_left > .ad {
     margin-left: -3px;
@@ -39,11 +40,11 @@ h3 {
 .content_list ul{
     list-style: none;
 }
-.content_list li img{
+.content_list li div > img{
     clear: left;
 }
 .content_list li{
-    clear: left;
+    clear: both;
     padding: 0 0 10px 0;
     margin: 0px 0px 10px 0px;
     border-width: 0 0 1px 0;
@@ -54,9 +55,13 @@ h3 {
 .content_list li div.label {
     margin-left: 10px;
     float: right;
+    display: block;
 }
-.byline {
+.content_list li h3{
+}
+.content_list li span.byline {
     font-size: 0.75em;
+    display: block;
 }
 .teaser {
     font-size: 0.8em;

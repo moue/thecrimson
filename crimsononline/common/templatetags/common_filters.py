@@ -39,7 +39,7 @@ def linkify(obj, link_text=''):
             l_text = item if link_text == '' \
                 else getattr(item, link_text, link_text)
             l.append(mark_safe('<a href="%s">%s</a>' % (item.get_absolute_url(),
-                                                        l_text)))
+                l_text)))
         # nonlists obj's should be returned as nonlists
         return l[0] if len(l) == 1 else l
     except IndexError:
