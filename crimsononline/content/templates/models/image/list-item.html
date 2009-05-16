@@ -3,6 +3,8 @@
 
 <li>
     <div class="image_thumb">{{image|to_img_tag:"100,100,1.0"}}</div>
+    <div class="label">{{image.section}}</div>
+    <img src="/site_media/images/arrow_small_up.png" alt="image">
     <h3><a href="{{ image.get_absolute_url }}">{{ image.kicker }}</a></h3>
     <span class="byline">By {{ image.generic.contributors.all|linkify|human_list}}</span>
     <p class="teaser">{{ image.caption }}</p>

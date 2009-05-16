@@ -62,6 +62,7 @@ h1, h2{
 .content_list li span.byline {
     font-size: 0.75em;
     display: block;
+    margin: 5px 0;
 }
 .teaser {
     font-size: 0.8em;
