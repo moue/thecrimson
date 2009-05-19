@@ -349,6 +349,10 @@ class Contributor(models.Model):
     profile_pic = models.ImageField(blank=True, null=True, 
         upload_to=contrib_pic_path)
     
+    @property
+    def profile(self):
+        return self.profile_text or self.profile_pic
+    
     def __unicode__(self):
         if self.middle_initial == None or self.middle_initial == '':
             m = ''

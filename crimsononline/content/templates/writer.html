@@ -11,14 +11,21 @@
     <link type="text/css" rel="stylesheet" href="/site_media/css/writer-profile.css" />
 {% endblock %}
 
+{% block before_content %}
+    <h1>{{ writer }}</h1>
+{% endblock %}
+
 {% block left %}
-    <h1>{{ writer }}'s Profile</h1>
-    <div class="profile-corner">
-        {% if writer.profile_pic %}
-            <img src="{{ writer.profile_pic.url}}" width="300px" /><br/>
-        {% endif %}
-        {% if writer.profile_text %}
-            {{ writer.profile_text }}
-        {% endif %}
-    </div>
+    {% if self.profile %}
+        <div class"bordered" id="profile-corner">
+            {% if writer.profile_pic %}
+                <img src="{{ writer.profile_pic.url}}" width="300px" /><br/>
+            {% endif %}
+            {% if writer.profile_text %}
+                {{ writer.profile_text }}
+            {% endif %}
+        </div>
+    {% else %}
+        <div>&nbsp;</div>
+    {% endif %}
 {% endblock %}

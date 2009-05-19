@@ -1,7 +1,6 @@
-.profile-corner {
-    float:right;
-    margin: 25px 1px 5px 5px;
-}
 li {
     list-style: none;
+}
+h1 {
+    color: #a02222;
 }
