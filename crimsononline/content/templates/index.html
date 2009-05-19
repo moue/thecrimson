@@ -13,127 +13,115 @@
 	<link type="text/css" rel="stylesheet" href="/site_media/css/index.css" />
 {% endblock %}
 {% block lefttopcolumn %}
-            {% contentmodule index.topstories %}
-
-			<div class="label">
-			  <div class="edge"><div class="corner"></div></div>
-			  <div class="content">Top Stories</div>
-			  <div class="edge"><div class="corner"></div></div>
-			</div><br />
-			
-			
-			
-			
-			
-
-
-            <ul class="article_previews">
-                {% for story in top_stories %}
-                <li>
-                    {{story|article_preview}}
-                </li>	
-                {% endfor %}
-            </ul>
-            {% endcontentmodule %}
+    {% contentmodule index.topstories %}
+    {{ "Top Stories"|yuhkilabel }}
+    <ul class="article_previews">
+        {% for story in top_stories %}
+        <li>
+            {{story|article_preview}}
+        </li>	
+        {% endfor %}
+    </ul>
+    {% endcontentmodule %}
 {% endblock %}
 {% block middletopcolumn %}
-            <div id="rotator">
-                {% contentmodule index.rotater %}
-                    {% include "rotater2.html" %}
-                {% endcontentmodule %}
-            </div>
-            <div id="more_news">
-                {% contentmodule index.morenews %}
+    <div id="rotator">
+        {% contentmodule index.rotater %}
+            {% include "rotater2.html" %}
+        {% endcontentmodule %}
+    </div>
+    <div id="more_news">
+        {% contentmodule index.morenews %}
 
-				<div class="label">
-				  <div class="edge"><div class="corner"></div></div>
-				  <div class="content">More News</div>
-				  <div class="edge"><div class="corner"></div></div>
-				</div><br />
+        <div class="label">
+          <div class="edge"><div class="corner"></div></div>
+          <div class="content">More News</div>
+          <div class="edge"><div class="corner"></div></div>
+        </div><br />
 
-                <ul>
-                    {% for story in more_stories %}
-                    <li><a href="{{ story.get_absolute_url }}">{{ story.headline }}</a></li>
-                    {% endfor %}
-                </ul>
-                {% endcontentmodule %}
-            </div>
+        <ul>
+            {% for story in more_stories %}
+            <li><a href="{{ story.get_absolute_url }}">{{ story.headline }}</a></li>
+            {% endfor %}
+        </ul>
+        {% endcontentmodule %}
+    </div>
 {% endblock %}
 
 {% block righttopcolumn %}
-        <div id="opinions_ad" class="content_column">
-            <div id="top_opinions" class="content_column">
-                {% contentmodule index.opinion %}
-				<div class="label">
-				  <div class="edge"><div class="corner"></div></div>
-				  <div class="content">Opinion</div>
-				  <div class="edge"><div class="corner"></div></div>
-				</div><br />
-				
-                <ul>
-                    {% for oped in opeds %}
-                        <li>
-                            <a href="{{ oped.get_absolute_url }}">{{ oped.headline }}</a>
-                        </li>
-                    {% endfor %}
-                </ul>
-                {% endcontentmodule %}
-            </div>
-            <div id="front_ad" class="content_column">
-                ad here
-            </div>
+    <div id="opinions_ad" class="content_column">
+        <div id="top_opinions" class="content_column">
+            {% contentmodule index.opinion %}
+            <div class="label">
+              <div class="edge"><div class="corner"></div></div>
+              <div class="content">Opinion</div>
+              <div class="edge"><div class="corner"></div></div>
+            </div><br />
+            
+            <ul>
+                {% for oped in opeds %}
+                    <li>
+                        <a href="{{ oped.get_absolute_url }}">{{ oped.headline }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+            {% endcontentmodule %}
         </div>
+        <div id="front_ad" class="content_column">
+            ad here
+        </div>
+    </div>
 {% endblock %}
 
 {% block leftbottomcolumn %}
-		{% contentmodule index.arts %}
+    {% contentmodule index.arts %}
 
-        <div id="top_arts" class="content_column">
-			<div class="label">
-			  <div class="edge"><div class="corner"></div></div>
-			  <div class="content">Arts</div>
-			  <div class="edge"><div class="corner"></div></div>
-			</div><br />
+    <div id="top_arts" class="content_column">
+        <div class="label">
+          <div class="edge"><div class="corner"></div></div>
+          <div class="content">Arts</div>
+          <div class="edge"><div class="corner"></div></div>
+        </div><br />
 
-            <ul class="article_previews">
-            {% for story in arts %}
-                <li>{{ story|article_preview }}</li>
-            {% endfor %}
-            </ul>
-        </div>
-        {% endcontentmodule %}
+        <ul class="article_previews">
+        {% for story in arts %}
+            <li>{{ story|article_preview }}</li>
+        {% endfor %}
+        </ul>
+    </div>
+    {% endcontentmodule %}
 {% endblock %}
 {% block middlebottomcolumn %}
-		{% contentmodule index.sports %}
-        <div id="top_sports" class="content_column">
-			<div class="label">
-			  <div class="edge"><div class="corner"></div></div>
-			  <div class="content">Sports</div>
-			  <div class="edge"><div class="corner"></div></div>
-			</div><br />
+    {% contentmodule index.sports %}
+    <div id="top_sports" class="content_column">
+        <div class="label">
+          <div class="edge"><div class="corner"></div></div>
+          <div class="content">Sports</div>
+          <div class="edge"><div class="corner"></div></div>
+        </div><br />
 
-            <ul class="article_previews">
-            {% for story in sports %}
-                <li>{{ story|article_preview }}</li>
-            {% endfor %}
-            </ul>
-        </div>
-        {% endcontentmodule %}
+        <ul class="article_previews">
+        {% for story in sports %}
+            <li>{{ story|article_preview }}</li>
+        {% endfor %}
+        </ul>
+    </div>
+    {% endcontentmodule %}
 {% endblock %}
 {% block rightbottomcolumn %}
-        {% contentmodule index.fm %}
-        <div id="top_fm" class="content_column">
+    {% contentmodule index.fm %}
+    <div id="top_fm" class="content_column">
 
-			<div class="label">
-			  <div class="edge"><div class="corner"></div></div>
-			  <div class="content">Fifteen Minutes</div>
-			  <div class="edge"><div class="corner"></div></div>
-			</div><br />
-            <ul class="article_previews">
-            {% for story in fms %}
-                <li>{{ story|article_preview }}</li>
-            {% endfor %}
-            </ul>
-        </div>
-        {% endcontentmodule %}
+        <div class="label">
+          <div class="edge"><div class="corner"></div></div>
+          <div class="content">Fifteen Minutes</div>
+          <div class="edge"><div class="corner"></div></div>
+        </div><br />
+        <ul class="article_previews">
+        {% for story in fms %}
+            <li>{{ story|article_preview }}</li>
+        {% endfor %}
+        </ul>
+    </div>
+    {% endcontentmodule %}
 {% endblock %}
