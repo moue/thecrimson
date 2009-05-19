@@ -32,13 +32,7 @@
     </div>
     <div id="more_news">
         {% contentmodule index.morenews %}
-
-        <div class="label">
-          <div class="edge"><div class="corner"></div></div>
-          <div class="content">More News</div>
-          <div class="edge"><div class="corner"></div></div>
-        </div><br />
-
+        {{ "More News"|yuhkilabel }}
         <ul>
             {% for story in more_stories %}
             <li><a href="{{ story.get_absolute_url }}">{{ story.headline }}</a></li>
@@ -52,12 +46,7 @@
     <div id="opinions_ad" class="content_column">
         <div id="top_opinions" class="content_column">
             {% contentmodule index.opinion %}
-            <div class="label">
-              <div class="edge"><div class="corner"></div></div>
-              <div class="content">Opinion</div>
-              <div class="edge"><div class="corner"></div></div>
-            </div><br />
-            
+            {{ "Opinion"|yuhkilabel }}
             <ul>
                 {% for oped in opeds %}
                     <li>
@@ -77,12 +66,7 @@
     {% contentmodule index.arts %}
 
     <div id="top_arts" class="content_column">
-        <div class="label">
-          <div class="edge"><div class="corner"></div></div>
-          <div class="content">Arts</div>
-          <div class="edge"><div class="corner"></div></div>
-        </div><br />
-
+        {{ "Arts"|yuhkilabel }}
         <ul class="article_previews">
         {% for story in arts %}
             <li>{{ story|article_preview }}</li>
@@ -94,12 +78,7 @@
 {% block middlebottomcolumn %}
     {% contentmodule index.sports %}
     <div id="top_sports" class="content_column">
-        <div class="label">
-          <div class="edge"><div class="corner"></div></div>
-          <div class="content">Sports</div>
-          <div class="edge"><div class="corner"></div></div>
-        </div><br />
-
+        {{ "Sports"|yuhkilabel }}
         <ul class="article_previews">
         {% for story in sports %}
             <li>{{ story|article_preview }}</li>
@@ -111,12 +90,7 @@
 {% block rightbottomcolumn %}
     {% contentmodule index.fm %}
     <div id="top_fm" class="content_column">
-
-        <div class="label">
-          <div class="edge"><div class="corner"></div></div>
-          <div class="content">Fifteen Minutes</div>
-          <div class="edge"><div class="corner"></div></div>
-        </div><br />
+        {{ "FM"|yuhkilabel }}
         <ul class="article_previews">
         {% for story in fms %}
             <li>{{ story|article_preview }}</li>
