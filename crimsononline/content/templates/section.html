@@ -1,4 +1,4 @@
-{% extends "content_list.html" %}
+{% extends "threecolumn.html" %}
 
 {% load common_filters %}
 
@@ -6,18 +6,14 @@
     {{ section }}
 {% endblock %}
 
-{% block left %}
+{% block lefttopcolumn %}
     <h1>{{ section }}</h1>
     {% block section_menu %}
+	
     {% endblock %}
+	
 {% endblock %}
+        
+{% block middletopcolumn %}
 
-{% block before_content %}
-    {% if tags %}
-        {% if content %}
-            <h2>Content tagged: {{ tags|human_list }}</h2>
-        {% else %}
-            <p>No {{ section.lower }} content tagged {{ tags|human_list }} were found.</p>
-        {% endif %}
-    {% endif %}
 {% endblock %}

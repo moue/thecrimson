@@ -1,13 +1,14 @@
 div#content {
+
     width: 630px;
-    padding-right: 4px;
+    padding: 0px 6px;
     border-right: solid 1px #b5b5b5;
     float: left;
 }
 
 div#sidebar {
-    width: 320px;
-    margin-left: 5px;
+    width: 317px;
+    padding: 0px 6px;
     float: left;
 }
 div#articletools {

@@ -16,3 +16,9 @@
         </li>
     </ul>
 {% endblock %}
+
+{% block middletopcolumn %}
+    {% for c in content %}
+        {{ c|render:"list-item"}}
+    {% endfor %}
+{% endblock %}
