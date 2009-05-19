@@ -25,7 +25,9 @@
     margin: 0 3px;
 }
 #main {
+    width:960px;
 	float: left;
+    padding:6px;
 	font-family: Palatino Linotype, Georgia, serif;
 	clear: both;
 }

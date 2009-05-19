@@ -1,14 +1,12 @@
 div#content {
-
     width: 630px;
-    padding: 0px 6px;
     border-right: solid 1px #b5b5b5;
     float: left;
 }
 
 div#sidebar {
-    width: 317px;
-    padding: 0px 6px;
+    width: 323px;
+    padding-left: 6px;
     float: left;
 }
 div#articletools {
