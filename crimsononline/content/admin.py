@@ -91,6 +91,7 @@ class ContentGenericModelForm(ModelForm):
                 'issue': instance.issue.pk,
                 'section': instance.section.pk,
                 'priority': instance.priority,
+                'group': instance.group.pk,
             }
             if not kwargs.get('initial', None):
                 kwargs['initial'] = {}
@@ -105,6 +106,7 @@ class ContentGenericModelForm(ModelForm):
         obj.section = self.cleaned_data['section']
         obj.issue = self.cleaned_data['issue']
         obj.priority = self.cleaned_data['priority']
+        obj.group = self.cleaned_data['group']
         return obj
     
 

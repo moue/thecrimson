@@ -6,6 +6,18 @@ from django.utils.safestring import mark_safe
 register = template.Library()
 
 @register.filter
+def yuhkilabel(s):
+    """
+    produces html for a yuhki label (curved, w/ red in background)
+    """
+    l = """<div class="ylabel_wrapper"><div class="ylabel">
+    <div class="top"><div class="corner"></div></div>
+    <div class="text">%s</div>
+    <div class="bottom"><div class="corner"></div></div>
+    </div><div class="clear"></div></div>""" % str(s)
+    return mark_safe(l)
+
+@register.filter
 def paragraphs(str):
     """
     Breaks str into paragraphs using linebreak filter, then splits by <p>.

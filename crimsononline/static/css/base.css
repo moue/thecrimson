@@ -156,7 +156,7 @@ span.clear {
     display: block;
     clear: left;
 }
-/* yuhki labels, "yabels" */
+/* yuhki labels */
 
 div.label { 
     margin: 0px 0px;
@@ -171,4 +171,39 @@ div.label {
     border-radius: 3px;
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px; 
+}
+
+div.ylabel_wrapper {
+    display: inline;
+    max-width: 100px;
+}
+div.ylabel_wrapper .clear {
+    clear: both;
+    height: 0px;
+}
+div.ylabel {
+    background-color: #ab232a;
+    color: white;
+    font-family: trebuchet ms; 
+    font-size: 9pt;
+    float: left;
+}
+div.ylabel .top, div.ylabel .bottom{
+    display: block;
+    background-color: white;
+}
+div.ylabel .top *, div.ylabel .bottom *{
+    display: block; 
+    height: 1px; 
+    overflow: hidden; 
+    background-color:#ab232a;
+}
+div.ylabel .corner{
+    margin: 0 1px; 
+    height: 1px
+} 
+div.ylabel .text{
+    padding: 1px 4px;
+    height: 16px;
+    margin: -1px 0 0 0;
 }

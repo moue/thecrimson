@@ -12,17 +12,30 @@ from django.core.mail import send_mail
 
 
 def get_content(request, ctype, year, month, day, slug, pk, content_group=None):
+    """
+    View for displaying a piece of content on a page
+    Validates the entire URL
+    """
     c = get_content_obj(request, ctype, year, month, day, slug, pk, content_group)
+    # redirect to canonical URL
+    if request.path != c.get_absolute_url():
+        return HttpResponseRedirect(c.get_absolute_url())
     return HttpResponse(c._render('page'))
 
 def get_content_obj(request, ctype, year, month, day, slug, pk, content_group=None):
+    """
+    Retrieves a content object from the database (no validation of params)
+    """
     c = ContentGeneric.objects.get(content_type__name=ctype, object_id=int(pk))
-    c = c.content_object
-    return c
+    return c.content_object
     
 def get_grouped_content(request, gtype, gname, ctype, year, month, day, slug, pk):
+    """
+    View for displaying a piece of grouped content on a page
+    Validates the entire url
+    """
     # validate the contentgroup
-    cg = get_grouped_content_obj(gtype, gname)
+    cg = get_content_group(gtype, gname)
     if cg:
         return get_content(request, ctype, year, month, day, slug, cg)
     else:
