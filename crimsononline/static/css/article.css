@@ -16,10 +16,9 @@ div#related_contents {
     border-width: 1px 0 0 0;
     padding: 5px 0 0 0;
 }
-div#related_contents div.label_wrapper {
-    text-align: center;
-    display: none;
-    width: 180px;
+div#related_contents div.ylabel_wrapper {
+    float: left;
+    width: 150px;
 }
 div.related_content {
     margin: 0 0 5px 0;

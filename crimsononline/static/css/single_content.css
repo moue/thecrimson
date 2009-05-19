@@ -25,6 +25,10 @@ div#articletools a:hover {
     color: black;
 }
 
+div.ylabel_wrapper {
+    margin: 0 5px;
+    float: left;
+}
 
 h1 {
 	font-size: 24px;

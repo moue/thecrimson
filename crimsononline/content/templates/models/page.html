@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 
+{% load common_filters %}
 {% load top_articles %}
 {% load tag_cloud %}
 
@@ -16,9 +17,7 @@
 {% block body %}
     <div id="content">
         {% block pre_content %}
-            <div class="label_wrapper">
-                <div class="label">{{ content.section }}</div>
-            </div>
+            {{ content.section|yuhkilabel }}
             <div id="articletools">
                 <a href="#">Print</a> | <a href="#">Share</a>
             </div>           

@@ -205,4 +205,5 @@ div.ylabel div.text{
     margin: -1px 0 0 0;
     font-family: trebuchet ms; 
     font-size: 12px;
+    line-height: normal;
 }
