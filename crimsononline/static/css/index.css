@@ -1,24 +1,5 @@
 /* wrappers */
-.half_page {
-    width: 954px;
-    padding: 0 6px 0 0;
-}
-.content_column {
-    width: 312px;
-    margin: 0 0 0 6px;
-    float: left
-}
-.content_column h1 {
-    font-size: 11px;
-	color: white;
-    background-color: #a02222;
-    display: inline;
-    padding: 2px;
-    font-family: Arial,Helvetica,sans-serif;
-}
-#the_fold {
-    clear: both;
-}
+
 /* section containers */
 #more_news {
 	font-size: 14px;
@@ -53,7 +34,7 @@ ul.article_previews .teaser {
 }
 #top_opinions ul, #more_news ul{
 	/*list-style-image: url('http://www.w3schools.com/Css/arrow.gif');*/
-	padding: 0px 0px 0px 16px;
+	/*padding: 0px 0px 0px 16px;*/
 }
 .#top_opinions a{
 	font-size: inherit;

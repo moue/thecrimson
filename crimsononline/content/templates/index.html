@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "threecolumn.html" %}
 
 {% load common_filters %}
 {% load content_filters %}
@@ -9,16 +9,24 @@
 	{{ "Since 1873, motherfuckers" }}
 {% endblock %}
 
-{% block inhead %}
+{% block inheadsub %}
 	<link type="text/css" rel="stylesheet" href="/site_media/css/index.css" />
-	<link type="text/css" rel="stylesheet" href="/site_media/css/fontsize.css" />
 {% endblock %}
-
-{% block body %}
-    <div id="above_the_fold" class="half_page">
-        <div id="top_stories" class="content_column">
+{% block lefttopcolumn %}
             {% contentmodule index.topstories %}
-            <div class="label">Top Stories</div>
+
+			<div class="label">
+			  <div class="edge"><div class="corner"></div></div>
+			  <div class="content">Top Stories</div>
+			  <div class="edge"><div class="corner"></div></div>
+			</div><br />
+			
+			
+			
+			
+			
+
+
             <ul class="article_previews">
                 {% for story in top_stories %}
                 <li>
@@ -27,8 +35,8 @@
                 {% endfor %}
             </ul>
             {% endcontentmodule %}
-        </div>
-        <div id="rotator_more_news" class="content_column">
+{% endblock %}
+{% block middletopcolumn %}
             <div id="rotator">
                 {% contentmodule index.rotater %}
                     {% include "rotater2.html" %}
@@ -36,7 +44,13 @@
             </div>
             <div id="more_news">
                 {% contentmodule index.morenews %}
-                <div class="label">More News</div>
+
+				<div class="label">
+				  <div class="edge"><div class="corner"></div></div>
+				  <div class="content">More News</div>
+				  <div class="edge"><div class="corner"></div></div>
+				</div><br />
+
                 <ul>
                     {% for story in more_stories %}
                     <li><a href="{{ story.get_absolute_url }}">{{ story.headline }}</a></li>
@@ -44,11 +58,18 @@
                 </ul>
                 {% endcontentmodule %}
             </div>
-        </div>
+{% endblock %}
+
+{% block righttopcolumn %}
         <div id="opinions_ad" class="content_column">
             <div id="top_opinions" class="content_column">
                 {% contentmodule index.opinion %}
-                <div class="label">Opinion</div>
+				<div class="label">
+				  <div class="edge"><div class="corner"></div></div>
+				  <div class="content">Opinion</div>
+				  <div class="edge"><div class="corner"></div></div>
+				</div><br />
+				
                 <ul>
                     {% for oped in opeds %}
                         <li>
@@ -62,14 +83,18 @@
                 ad here
             </div>
         </div>
-    </div>
-    <div id="the_fold">
-        <hr/>
-    </div>
-    <div id="below_the_fold" class="half_page">
-        {% contentmodule index.arts %}
+{% endblock %}
+
+{% block leftbottomcolumn %}
+		{% contentmodule index.arts %}
+
         <div id="top_arts" class="content_column">
-            <div class="label">Arts</div>
+			<div class="label">
+			  <div class="edge"><div class="corner"></div></div>
+			  <div class="content">Arts</div>
+			  <div class="edge"><div class="corner"></div></div>
+			</div><br />
+
             <ul class="article_previews">
             {% for story in arts %}
                 <li>{{ story|article_preview }}</li>
@@ -77,9 +102,16 @@
             </ul>
         </div>
         {% endcontentmodule %}
-        {% contentmodule index.sports %}
+{% endblock %}
+{% block middlebottomcolumn %}
+		{% contentmodule index.sports %}
         <div id="top_sports" class="content_column">
-            <div class="label">Sports</div>
+			<div class="label">
+			  <div class="edge"><div class="corner"></div></div>
+			  <div class="content">Sports</div>
+			  <div class="edge"><div class="corner"></div></div>
+			</div><br />
+
             <ul class="article_previews">
             {% for story in sports %}
                 <li>{{ story|article_preview }}</li>
@@ -87,9 +119,16 @@
             </ul>
         </div>
         {% endcontentmodule %}
+{% endblock %}
+{% block rightbottomcolumn %}
         {% contentmodule index.fm %}
         <div id="top_fm" class="content_column">
-            <div class="label">FM</div>
+
+			<div class="label">
+			  <div class="edge"><div class="corner"></div></div>
+			  <div class="content">Fifteen Minutes</div>
+			  <div class="edge"><div class="corner"></div></div>
+			</div><br />
             <ul class="article_previews">
             {% for story in fms %}
                 <li>{{ story|article_preview }}</li>
@@ -97,6 +136,4 @@
             </ul>
         </div>
         {% endcontentmodule %}
-    </div>
-    
 {% endblock %}
