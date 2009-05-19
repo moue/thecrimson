@@ -1,0 +1,11 @@
+div.left_content_column, div.middle_content_column, div.right_content_column{
+    width: 312px;
+	padding: 6px 6px;
+    float: left;
+	overflow:hidden;
+}
+
+div#the_fold{
+	clear:both;
+	margin:5px 0px;
+}
