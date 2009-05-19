@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% load content_filters %}
+{% load content_module %}
+{% load tag_cloud %}
+
+{% block title %}
+	{{ "Since 1873, motherfuckers" }}
+{% endblock %}
+
+{% block inhead %}
+	<link type="text/css" rel="stylesheet" href="/site_media/css/threecolumn.css" />
+	<link type="text/css" rel="stylesheet" href="/site_media/css/fontsize.css" />
+	{% block inheadsub %}{% endblock %}
+{% endblock %}
+
+{% block body %}
+    <div id="above_the_fold" class="half_page">
+        <div class="left_content_column">
+		{% block lefttopcolumn %}{% endblock %}
+        </div>
+        <div class="middle_content_column">
+		{% block middletopcolumn %}{% endblock %}
+        </div>
+        <div class="right_content_column">
+		{% block righttopcolumn %}{% endblock %}
+        </div>
+    </div>
+
+    <div id="the_fold">
+        <hr/>
+    </div>
+
+    <div id="below_the_fold" class="half_page">
+        <div class="left_content_column">
+		{% block leftbottomcolumn %}{% endblock %}
+        </div>
+        <div class="middle_content_column">
+		{% block middlebottomcolumn %}{% endblock %}
+        </div>
+        <div class="right_content_column">
+		{% block rightbottomcolumn %}{% endblock %}
+        </div>
+    </div>
+    
+{% endblock %}
