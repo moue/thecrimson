@@ -183,8 +183,6 @@ div.ylabel_wrapper .clear {
 div.ylabel {
     background-color: #ab232a;
     color: white;
-    font-family: trebuchet ms; 
-    font-size: 9pt;
     float: left;
 }
 div.ylabel div.edge{
@@ -201,8 +199,10 @@ div.ylabel div.edge div.corner{
     margin: 0 1px; 
     height: 1px
 } 
-div.ylabel .text{
+div.ylabel div.text{
     padding: 1px 4px;
     height: 16px;
     margin: -1px 0 0 0;
+    font-family: trebuchet ms; 
+    font-size: 12px;
 }

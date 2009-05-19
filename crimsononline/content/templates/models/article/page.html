@@ -29,7 +29,7 @@
             {% with article.rel_content.all|slice:"1:" as rcs %}
                 {% if rcs %}
                 <div id="related_contents">
-                    <div class="label_wrapper"><div class="label">Media</div></div>
+                    {{ "Media"|yuhkilabel }}
                     {% for rc in rcs %}
                         {% ifnotequal rc.content_type.model "article" %}
                             {{ rc|render:"related_content" }}

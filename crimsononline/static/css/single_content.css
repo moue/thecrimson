@@ -24,9 +24,7 @@ div#articletools a {
 div#articletools a:hover {
     color: black;
 }
-div.label_wrapper{
-    float: left;
-}
+
 
 h1 {
 	font-size: 24px;
