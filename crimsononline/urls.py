@@ -51,7 +51,7 @@ CONTENT_URL_RE = r'([a-z]+)/(\d{4})/(\d{1,2})/(\d{1,2})/([0-9A-Za-z_.]+)/(\d+)$'
 CGROUP_URL_RE = r'([a-z]+)/([A-Za-z0-9_]+)/'
 generic_patterns = patterns('crimsononline.content.views',
     url('^' + CONTENT_URL_RE, 'get_content', name='content_content'),
-    url('^' + CGROUP_URL_RE + CONTENT_URL_RE + '$', 'get_grouped_content',
+    url('^' + CGROUP_URL_RE + CONTENT_URL_RE, 'get_grouped_content',
         name='content_grouped_content'),
     url('^' + CGROUP_URL_RE + '$', 'get_content_group', 
         name='content_contentgroup'),

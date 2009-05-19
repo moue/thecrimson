@@ -174,14 +174,13 @@ class Content(models.Model):
     @permalink
     def get_absolute_url(self):
         i = self.issue.issue_date
-        url_data = [i.year, 
+        url_data = [self.__class__.__name__.lower(), i.year, 
             i.month, i.day, make_url_friendly(self.identifier()), self.pk]
         if self.group:
             url_data = [self.group.type.lower(), 
                 make_url_friendly(self.group.name)] + url_data
             return ('content_grouped_content', url_data)
         else:
-            url_data = [self.__class__.__name__.lower()] + url_data
             return ('content_content', url_data)
     
 

@@ -35,9 +35,10 @@ def get_grouped_content(request, gtype, gname, ctype, year, month, day, slug, pk
     Validates the entire url
     """
     # validate the contentgroup
-    cg = get_content_group(gtype, gname)
+    cg = get_grouped_content_obj(request, gtype, gname, ctype, 
+        year, month, day, slug, pk)
     if cg:
-        return get_content(request, ctype, year, month, day, slug, cg)
+        return get_content(request, ctype, year, month, day, slug, pk, cg)
     else:
         raise Http404
 
@@ -46,6 +47,9 @@ def get_grouped_content_obj(request, gtype, gname, ctype, year, month, day, slug
     return cg
         
 def get_content_group(request, gtype, gname):
+    """
+    View for a Content Group
+    """
     # validate the contentgroup
     cg = get_content_group_obj(gtype, gname)
     if not cg:
