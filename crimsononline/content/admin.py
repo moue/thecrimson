@@ -91,8 +91,10 @@ class ContentGenericModelForm(ModelForm):
                 'issue': instance.issue.pk,
                 'section': instance.section.pk,
                 'priority': instance.priority,
-                'group': instance.group.pk,
+                'group': None,
             }
+            if instance.group:
+                initial['group'] = instance.group.pk
             if not kwargs.get('initial', None):
                 kwargs['initial'] = {}
             kwargs['initial'].update(initial)
