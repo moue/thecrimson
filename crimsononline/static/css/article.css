@@ -12,21 +12,15 @@ div#related_contents {
     float: left;
     margin: 0 10px 0 0;
     border-style: solid;
-    border-color: gray;
-    border-width: 1px 0 0 0;
+    border-color: #ccc;
+    border-width: 3px 0 0 0;
     padding: 5px 0 0 0;
 }
 div#related_contents div.ylabel_wrapper {
     float: left;
     width: 150px;
 }
-div.related_content {
-    margin: 0 0 5px 0;
-    padding: 0 0 7px 0;
-    border-style: solid;
-    border-width: 0 0 1px 0;
-    border-color: gray;
-}
+
 div.related_content a img {
     border-width: 0;
 }
@@ -35,20 +29,21 @@ div.related_content > a {
     display: block;
     line-height: 0;
 }
-div.related_content p {
+div.related_content span {
     margin: 0;
-    line-height: 100%;
+    line-height: normal;
 }
-div.related_content p.ctype {
+div.related_content span.ctype {
     margin: 0 0 2px 0;
     font-family: Helvetica, Arial, sans-serif;
-    line-height: 100%;
+    line-height: normal;
     font-size: 12px;
     text-transform: uppercase;
     color: gray;
     font-weight: bold;
 }
-div.related_content p.title{
+div.related_content span.title{
+    font-weight: bold;
     margin-top: 3px;
 }
 
@@ -75,14 +70,13 @@ div.related_content p.title{
     border-width: 0;
 }
 .image > .byline {
+    padding-right:5px;
+    color: #777;
     text-align: right;
     text-transform: uppercase;
 }
 .image > .byline a{
-    padding: 1px 5px;
     text-decoration: none;
-    font-weight: bold;
-    color: #777;
 }
 .image > .byline > a:hover{
     text-decoration: none;
@@ -95,6 +89,8 @@ div.related_content p.title{
     margin: 0 0 10px 0;
 }
 .image > .caption{
+    padding-right:5px;
+    font-family:times,serif;
     font-size: .85em;
     line-height: 1.4em;
     color: #777;

@@ -25,10 +25,10 @@
     margin: 0 3px;
 }
 #main {
-    width:960px;
+    
 	float: left;
     padding:6px;
-	font-family: Palatino Linotype, Georgia, serif;
+	font-family: Georgia, Palatino Linotype, serif;
 	clear: both;
 }
 #footer {
@@ -50,12 +50,11 @@
 }
 
 #nav ul li{
-	height:19px;
+	height:21px;
 	display: inline;
 	float:left;
 	border: 1px solid #b3b3b3;
 	border-width: 0 1px 0 0;
-	padding-top:2px;/*center text vertically*/
 }
 
 #nav ul li.spacer{
@@ -118,12 +117,11 @@ a:hover {
 	color: #e02222;
 }
 .byline{
-    color: #444;
 }
 .byline a{
+    font-family:helvetica;
     text-transform: uppercase;
     text-decoration: underline;
-    font-weight: bold;
     color: #444;
 }
 .byline a:hover{

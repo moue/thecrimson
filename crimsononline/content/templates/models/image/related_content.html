@@ -4,9 +4,9 @@
 {% load common_filters %}
 
 {% block rc %}
-    <p class="ctype">Photo</p>
+    <span class="ctype">Photo</span>
     <a href="{{ image.get_absolute_url }}">{{ image|to_img_tag:"180," }}</a>
     {% if image.kicker %}
-        <p class="title"><a href="{{ image.get_absolute_url }}">{{ image.kicker }}</a></p>
+        <span class="title"><a href="{{ image.get_absolute_url }}">{{ image.kicker }}</a></span>
     {% endif %}
 {% endblock %}
