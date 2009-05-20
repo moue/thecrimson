@@ -1,4 +1,3 @@
-import random
 from django.db.models import Count
 from django import template
 from django.template.loader import render_to_string
