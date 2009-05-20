@@ -3,6 +3,7 @@
 * {
 	padding:0px;
 	margin:0px;
+	font-family: Georgia, Palatino Linotype, serif;
 }
 #wrapper {
 	width: 980px;
@@ -12,11 +13,51 @@
 	background-color: #ffffff;
 	background-image: url('/site_media/images/shadow.gif');
 }
+
 #masthead {
-	height: 96px;
+	height: 97px;
 	width: 974px;
 	margin: 0 3px;
+    background-image: url('../images/banner_gradient.png');
 }
+
+div#masthead div#banner{
+    float:left;
+    height:97px;
+    width: 473px;
+    background-image: url('../images/banner.png');
+}
+
+div#masthead div#hottopics{
+    float: left;
+    height: 40px;
+    margin: 50px 0 0 -60px;
+    color: white;
+    font-weight: bold;
+    font-size: 8pt;
+}
+
+
+
+div#masthead div#hottopics div#label,
+div#masthead div#hottopics div#topics{
+    float:left;
+}
+
+div#masthead div#hottopics div#label{
+    margin-right:10px;
+}
+
+div#masthead div#hottopics div#topics{
+    width:200px;
+}
+
+div#masthead  div#righttools{
+    float:right;
+    width:253px;
+    height:97px;
+}
+
 #main, #footer, #nav{
     width: 972px;
     border-width: 0 1px;
@@ -28,7 +69,6 @@
     
 	float: left;
     padding:6px;
-	font-family: Georgia, Palatino Linotype, serif;
 	clear: both;
 }
 #footer {
