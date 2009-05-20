@@ -19,6 +19,7 @@
 	width: 974px;
 	margin: 0 3px;
     background-image: url('../images/banner_gradient.png');
+    color: white;
 }
 
 div#masthead div#banner{
@@ -32,7 +33,6 @@ div#masthead div#hottopics{
     float: left;
     height: 40px;
     margin: 50px 0 0 -60px;
-    color: white;
     font-weight: bold;
     font-size: 8pt;
 }
@@ -45,7 +45,7 @@ div#masthead div#hottopics div#topics{
 }
 
 div#masthead div#hottopics div#label{
-    margin-right:10px;
+    margin-right:5px;
 }
 
 div#masthead div#hottopics div#topics{
@@ -56,6 +56,31 @@ div#masthead  div#righttools{
     float:right;
     width:253px;
     height:97px;
+}
+
+div#masthead div#righttools div#top{
+    height: 48px;
+    text-align:center;
+}
+
+div#masthead div#righttools div#line{
+    height: 1px;
+    background-image: url('../images/banner_right_divider.png');
+    width: 240px;
+    float: left;  
+}
+
+div#masthead div#righttools div#descriptions{
+    height: 13px;
+    text-align:center;
+    font-size: 7pt;
+    font-family: sans-serif;
+    font-weight: heavy;
+}
+
+div#masthead div#righttools div#search{
+    text-align:center;
+    height: 25px;
 }
 
 #main, #footer, #nav{
