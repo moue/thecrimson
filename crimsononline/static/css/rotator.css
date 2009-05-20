@@ -1,0 +1,40 @@
+div.rotator {
+    background-color: #eeeeee;
+    width: 300px;
+    padding: 5px;
+}
+div.rotator div.preview_body ul li {
+    height: 350px
+}
+div.rotator div.preview_body div.preview_text h3 {
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 14px;
+}
+div.rotator div.preview_body div.preview_text a {
+    color: #A02222;
+}
+div.rotator div.preview_text p.teaser {
+    font-size: 12px;
+}
+div.rotator div.carousel div.preview_roll {
+    width: 220px;
+    height: 50px;
+    float: left;
+}
+div.rotator div.preview_roll ul li {
+    height: 500px;
+}
+div.rotator div.carousel div.preview_roll ul li img {
+    margin-left: 3px;
+    margin-right: 3px;
+    width: 50px;
+    height: 50px;
+}
+div.rotator div.carousel img.prevbutton, 
+    div.rotator div.carousel img.nextbutton {
+    float: left;
+    margin-top: 12px;
+    margin-left: 5px;
+    margin-right: 5px;
+}
