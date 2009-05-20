@@ -3,7 +3,7 @@
 {% load common_filters %}
 {% load content_filters %}
 {% load content_module %}
-{% load tag_cloud %}
+{% load rotator %}
 
 {% block title %}
 	{{ "Since 1873, motherfuckers" }}
@@ -27,7 +27,7 @@
 {% block middletopcolumn %}
     <div id="rotator">
         {% contentmodule index.rotater %}
-            {% include "rotater2.html" %}
+            {% rotator rotate "main_rotator" %}
         {% endcontentmodule %}
     </div>
     <div id="more_news">

@@ -890,7 +890,7 @@ class Article(Content):
     @property
     def main_rel_content(self):
         r = self.rel_content.all()[:1]
-        r = r[0] if r else None
+        r = r[0].content_object if r else None
         return r
     
     def save(self, *args, **kwargs):

@@ -18,7 +18,22 @@ class RotatorNode(template.Node):
         self.id = id
     
     def render(self, context):
-        if self.contents is None:
+        try:
+            self.contents = self.contents.resolve(context)
+        except:
             return ''
         return render_to_string('templatetag/rotator.html', 
             {'contents': self.contents})
+    
+
+def do_rotator(parser, token):
+    tokens = token.split_contents()
+    if len(tokens) < 3:
+        raise template.TemplateSyntaxError, \
+            "%r tag takes 2 arguments" % tokens[0]
+    contents = tokens[1]
+    id = tokens[2]
+    
+    return RotatorNode(contents, id)
+
+register.tag('rotator', do_rotator)

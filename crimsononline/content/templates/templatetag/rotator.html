@@ -1,0 +1,54 @@
+{% load common_filters %}
+{% load content_filters %}
+{% load rotator %}
+
+<link href="/site_media/css/rotator.css" rel="stylesheet" type="text/css">
+<script src="/site_media/scripts/jquery.js" type="text/javascript"></script>
+<script type="text/javascript" src="/site_media/scripts/framework/jquery.jcarousellite.packed.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("{{id}} div.preview_roll").jCarouselLite({
+            btnNext: ".nextbutton",
+            btnPrev: ".prevbutton",
+            visible: 4,
+            scroll: 1,
+            speed: 1200,
+            auto: 4000
+        });
+        $("{{id}} div.preview_body").jCarouselLite({
+            btnNext: ".nextbutton",
+            btnPrev: ".prevbutton",
+            visible: 1,
+            scroll: 1,
+            speed: 1200,
+            auto: 4000
+        });
+    });
+</script>
+<div class="rotator">
+    <div class="preview_body">
+        <ul>
+            {% for article in contents %}
+                <li>
+                    {{article.main_rel_content|to_img_tag:"300,240,1.25"}}
+                    <div class="preview_text">
+                        <h3>{{article|linkify}}</h3>
+                        <p class="teaser">{{article.teaser}}</p>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="carousel">
+        <img class="prevbutton" src="/site_media/images/rotate-prev.png"/>
+        <div class="preview_roll">
+            <ul>
+                {% for article in contents %}
+                    <li>{{article.main_rel_content|to_img_tag:"50,50,1.0"}}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <img class="nextbutton" src="/site_media/images/rotate-next.png" />
+    </div>
+    <div style="clear:both"></div>
+</div>

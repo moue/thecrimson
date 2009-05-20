@@ -74,7 +74,8 @@ def index(request):
     dict['sports'] = top_articles('Sports')[:6]
     dict['fms'] = top_articles('FM')[:6]
     dict['issue'] = issue
-    dict['markers'] = Marker.objects.filter(map__in = Map.objects.filter(article__in = stories.values('pk').query).values('pk').query)
+    dict['rotate'] = stories[:4]
+    #dict['markers'] = Marker.objects.filter(map__in = Map.objects.filter(article__in = stories.values('pk').query).values('pk').query)
     
     return render_to_response('index.html', dict)
 
