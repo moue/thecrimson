@@ -79,7 +79,6 @@ def index(request):
     
     return render_to_response('index.html', dict)
 
-
 def bigmap(request):
     stories = top_articles('News')[:20] # how many articles to show markers from...we will have to play with this
     dict = {}
@@ -87,7 +86,6 @@ def bigmap(request):
     
     return render_to_response('bigmap.html', dict)
     
-
 def writer(request, contributor_id, f_name, m_name, l_name, page=None):
     w = get_object_or_404(Contributor, pk=contributor_id)
     # Validate the URL (we don't want /writer/281/Balls_Q_McTitties to be valid)

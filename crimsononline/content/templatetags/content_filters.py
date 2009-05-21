@@ -2,6 +2,8 @@ from django import template
 from django.utils.safestring import mark_safe
 from crimsononline.content.models import Image, Article, Content, ContentGeneric
 from crimsononline.common.templatetags.common_filters import linkify, human_list
+# stelmach added this!
+import datetime
 
 register = template.Library()
 
@@ -22,11 +24,13 @@ def article_preview(article):
     tag = ''
     if isinstance(article, Article):
         tag = """<h3>%s</h3>
-        <span class="byline">By %s</span>
+        <div class="byline">By %s</div>
+        <div class="dateline">%s</div>
         <p class="teaser">%s</p>
         """ % (
             linkify(article), 
             human_list(linkify(article.contributors.all())),
+            article.issue.issue_date.strftime("%A, %B %d, %Y %I:%M%p"),
             article.teaser,
         )
     return mark_safe(tag)
