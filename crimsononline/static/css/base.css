@@ -71,7 +71,7 @@ div#masthead div#righttools div#line{
 }
 
 div#masthead div#righttools div#descriptions{
-    height: 13px;
+    height: 17px;
     text-align:center;
     font-size: 7pt;
     font-family: sans-serif;
@@ -80,7 +80,39 @@ div#masthead div#righttools div#descriptions{
 
 div#masthead div#righttools div#search{
     text-align:center;
-    height: 25px;
+    height: 20px;
+    margin-left: 20px;
+    margin-top: 5px;
+}
+
+div#masthead div#righttools div#search input#query{
+    border-collapse: collapse;
+    border: 1px solid white;
+    padding: 1px;
+    width:100%;
+    background-image: url('../images/banner_search_background.png');
+    background-repeat: no-repeat;
+    font-family: sans-serif;
+}
+
+div#masthead div#righttools div#search div#query{
+    float:left;
+    width:160px;
+}
+
+div#masthead div#righttools div#search input#submit{
+    border-collapse: collapse;
+    margin-left:-1px;
+    line-height:1em;
+    background-color:#A02222;
+    color:white;
+    border: 1px solid white;
+    font-family: verdana;
+
+}
+
+div#masthead div#righttools div#search span#submit{
+    float:left;
 }
 
 #main, #footer, #nav{
@@ -91,7 +123,6 @@ div#masthead div#righttools div#search{
     margin: 0 3px;
 }
 #main {
-    
 	float: left;
     padding:6px;
 	clear: both;
