@@ -35,7 +35,7 @@ ul.article_previews h3{
 	font-size: 14pt;
 	line-height: 1;
     font-weight: bold;
-	display: block;
+	display: inline;
 }
 
 ul.article_previews .byline {

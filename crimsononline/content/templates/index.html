@@ -24,8 +24,8 @@
     <ul class="article_previews">
         {% for story in top_stories %}
         <li>
-            {{story|article_preview}}
-        </li>	
+            {{story|render:"preview"}}
+        </li>
         {% endfor %}
     </ul>
     {% endcontentmodule %}
@@ -75,7 +75,7 @@
         {{ "Arts"|yuhkilabel }}
         <ul class="article_previews">
         {% for story in arts %}
-            <li>{{ story|article_preview }}</li>
+            <li>{{ story|render:"preview" }}</li>
         {% endfor %}
         </ul>
     </div>
@@ -87,7 +87,7 @@
         {{ "Sports"|yuhkilabel }}
         <ul class="article_previews">
         {% for story in sports %}
-            <li>{{ story|article_preview }}</li>
+            <li>{{ story|render:"preview" }}</li>
         {% endfor %}
         </ul>
     </div>
@@ -99,7 +99,7 @@
         {{ "FM"|yuhkilabel }}
         <ul class="article_previews">
         {% for story in fms %}
-            <li>{{ story|article_preview }}</li>
+            <li>{{ story|render:"preview" }}</li>
         {% endfor %}
         </ul>
     </div>

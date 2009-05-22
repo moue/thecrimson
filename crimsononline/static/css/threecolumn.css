@@ -9,3 +9,9 @@ div#the_fold{
 	clear:both;
 	margin:5px 0px;
 }
+
+/* preview */
+div.image_thumb {
+    float: left;
+    margin-right: 6px;
+}

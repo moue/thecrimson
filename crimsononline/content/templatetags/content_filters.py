@@ -16,24 +16,6 @@ def render(content, method):
     except Exception, err:
         print err
     return ''
-    
-
-
-@register.filter
-def article_preview(article):
-    tag = ''
-    if isinstance(article, Article):
-        tag = """<h3>%s</h3>
-        <div class="byline">By %s</div>
-        <div class="dateline">%s</div>
-        <p class="teaser">%s</p>
-        """ % (
-            linkify(article), 
-            human_list(linkify(article.contributors.all())),
-            article.issue.issue_date.strftime("%A, %B %d, %Y %I:%M%p"),
-            article.teaser,
-        )
-    return mark_safe(tag)
 
 @register.filter
 def to_img_layout(img, dimensions):
