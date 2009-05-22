@@ -14,29 +14,34 @@
 <body>
 	<div id="wrapper">
 		<div id="masthead">
-        <div id="banner"></div>
-        <div id="hottopics">
-            <div id="label">Hot topics >></div>
-            <div id="topics">topic1 &bull; topic2 &bull; topic3 &bull; topic4
-            <br />topic5 &bull; topic6 &bull; topic7 &bull; topic8</div></div>
-        <div id="righttools">
-            <div id="top">
-                <img src="/site_media/images/banner_right_weather.png"></img>
-                <img src="/site_media/images/banner_right_past.png"></img>
-                <img src="/site_media/images/banner_right_cover.png"></img>                
+            <div id="banner"></div>
+            <div id="masthead_center">
+            {% block masthead_center %}
+            {% endblock %}
             </div>
-            <div id="line"></div>
-            <div id="descriptions">WEATHER&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PAST ISSUES&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TODAY</div>
-            <div id="search">
-                <form action="#">
-                    <div id="query">
-                    <input id="query" type="text" name="query" />
-                    </div>
-                    <span id="submit"><input id="submit" type="submit" value="SEARCH"/></span>
-                </form>
+            <div class="tools">
+                <div class="top">
+                    {% spaceless %}
+                    <span class="cover"><img src="/site_media/images/banner_right_cover.png"></span>
+                    <span class="issues"><img src="/site_media/images/banner_right_past.png"></span>
+                    <span class="weather"><img src="/site_media/images/banner_right_weather.png"></span>
+                    {% endspaceless %}
+                </div>
+                <div class="line"></div>
+                <div class="descriptions">
+                    {% spaceless %}
+                    <span class="cover">TODAY</span>
+                    <span class="issues">ISSUES</span>
+                    <span class="weather">WEATHER</span>
+                    {% endspaceless %}
+                </div>
+                <div class="search">
+                    <form action="#">
+                        <div class="query"><input class="query" type="text" name="query" /></div>
+                        <span class="submit"><input class="submit" type="submit" value="SEARCH"/></span>
+                    </form>
+                </div>
             </div>
-        </div>
-        <div id="searchtools"></div>
 		</div>
 		<div id="nav">
 			<ul>

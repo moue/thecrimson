@@ -1,5 +1,20 @@
 /* wrappers */
 
+/* hot topics */
+
+div#masthead div#masthead_center div.label,
+div#masthead div#masthead_center div.topics{
+    float:left;
+}
+
+div#masthead div#masthead_center div.label{
+    margin-right:5px;
+}
+
+div#masthead div#masthead_center div.topics{
+    width:200px;
+}
+
 /* section containers */
 #more_news {
 	font-size: 14px;

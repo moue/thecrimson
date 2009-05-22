@@ -29,7 +29,7 @@ div#masthead div#banner{
     background-image: url('../images/banner.png');
 }
 
-div#masthead div#hottopics{
+div#masthead div#masthead_center{
     float: left;
     height: 40px;
     margin: 50px 0 0 -60px;
@@ -37,83 +37,97 @@ div#masthead div#hottopics{
     font-size: 8pt;
 }
 
+/*  ==== MASTHEAD ==== */
 
-
-div#masthead div#hottopics div#label,
-div#masthead div#hottopics div#topics{
-    float:left;
-}
-
-div#masthead div#hottopics div#label{
-    margin-right:5px;
-}
-
-div#masthead div#hottopics div#topics{
-    width:200px;
-}
-
-div#masthead  div#righttools{
+div#masthead  div.tools{
     float:right;
     width:253px;
     height:97px;
 }
 
-div#masthead div#righttools div#top{
+div#masthead div.tools div.top{
     height: 48px;
-    text-align:center;
+    margin-right: 20px;
+    text-align: right;
 }
 
-div#masthead div#righttools div#line{
+div#masthead div.tools div.line{
     height: 1px;
     background-image: url('../images/banner_right_divider.png');
     width: 240px;
     float: left;  
 }
 
-div#masthead div#righttools div#descriptions{
+div#masthead div.tools div.descriptions{
     height: 17px;
-    text-align:center;
-    font-size: 7pt;
+    margin-right: 20px;
+}
+div#masthead div.tools div.descriptions span {
+    font-size: 12px;
     font-family: sans-serif;
     font-weight: heavy;
 }
+div#masthead div.tools span {
+    float: right;
+    display: block;
+    text-align:center;
+}
 
-div#masthead div#righttools div#search{
+div#masthead div.tools  span.weather {
+    width: 60px;
+}
+div#masthead div.tools  span.issues {
+    width: 70px;
+}
+div#masthead div.tools div.descriptions span.cover {
+    width: 80px;
+}
+
+div#masthead div.tools div.search {
     text-align:center;
     height: 20px;
     margin-left: 20px;
     margin-top: 5px;
 }
 
-div#masthead div#righttools div#search input#query{
+div#masthead div.tools div.search div.query {
+    height: 20px;
+    overflow: hidden;
+    background-color: white;
+}
+
+div#masthead div.tools div.search input.query{
     border-collapse: collapse;
     border: 1px solid white;
-    padding: 1px;
+    padding: 0px;
     width:100%;
     background-image: url('../images/banner_search_background.png');
     background-repeat: no-repeat;
     font-family: sans-serif;
 }
 
-div#masthead div#righttools div#search div#query{
+div#masthead div.tools div.search div.query{
     float:left;
     width:160px;
 }
 
-div#masthead div#righttools div#search input#submit{
+div#masthead div.tools div.search input.submit{
     border-collapse: collapse;
     margin-left:-1px;
     line-height:1em;
     background-color:#A02222;
-    color:white;
     border: 1px solid white;
+    color:white;
     font-family: verdana;
-
+    height: 20px;
+    width: 59px;
 }
 
-div#masthead div#righttools div#search span#submit{
+div#masthead div.tools div.search span.submit {
     float:left;
 }
+
+/*  */
 
 #main, #footer, #nav{
     width: 972px;

@@ -12,6 +12,12 @@
 {% block inheadsub %}
 	<link type="text/css" rel="stylesheet" href="/site_media/css/index.css" />
 {% endblock %}
+{% block masthead_center %}
+    <div class="label">Hot topics >></div>
+    <div class="topics">topic1 &bull; topic2 &bull; topic3 &bull; topic4
+    <br/>topic5 &bull; topic6 &bull; topic7 &bull; topic8
+    </div>
+{% endblock %}
 {% block lefttopcolumn %}
     {% contentmodule index.topstories %}
     {{ "Top Stories"|yuhkilabel }}
