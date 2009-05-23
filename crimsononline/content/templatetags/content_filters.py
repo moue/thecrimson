@@ -1,20 +1,22 @@
 from django import template
+from django.template import defaultfilters as filter
 from django.utils.safestring import mark_safe
 from crimsononline.content.models import Image, Article, Content, ContentGeneric
 from crimsononline.common.templatetags.common_filters import linkify, human_list
-# stelmach added this!
-import datetime
+
 
 register = template.Library()
 
 @register.filter
 def render(content, method):
+    if not content:
+        return ''
     try:
         if isinstance(content, ContentGeneric):
             content = content.content_object
         return mark_safe(content._render(method))
     except Exception, err:
-        print err
+        print err, content, method
     return ''
 
 @register.filter
@@ -33,7 +35,8 @@ def to_img_layout(img, dimensions):
         tag = """<div class="%s_photo">%s
             <p class="byline">%s</p>
             <p class="caption">%s</p>
-            </div>""" % (type, img_tag, linkify(img.contributor), img.caption)
+            </div>""" % (type, img_tag, linkify(img.contributor), 
+                filter.force_escape(img.caption))
     return mark_safe(tag)
 
 @register.filter
@@ -62,8 +65,9 @@ def to_img_tag(img, size_spec):
             else 0
         size_spec = (w, h, c)
         disp = img.display(*size_spec)
+    k = filter.force_escape(img.kicker)
     tag = '<img src="%s" title="%s" alt="%s" />' % \
-            (disp.url, img.kicker, img.kicker)
+            (disp.url, k, k)
     return mark_safe(tag)
 
 @register.filter

@@ -56,7 +56,9 @@
             {% contentmodule index.opinion %}
             {{ "Opinion"|yuhkilabel }}
             <ul class="article_previews">
-                {{ opeds.0|render:"preview"}}
+                <li>
+                {{ opeds|first|render:"preview"}}
+                </li>
             </ul>
             <ul class="article_headlines">
                 {% for oped in opeds %}

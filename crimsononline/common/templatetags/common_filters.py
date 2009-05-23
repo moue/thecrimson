@@ -1,6 +1,7 @@
 from re import compile
 from django import template
-from django.template import defaultfilters
+from django.template import defaultfilters as filter
+from django.template.loader import render_to_string
 from django.utils.safestring import mark_safe
 import cgi
 
@@ -11,12 +12,7 @@ def yuhkilabel(s):
     """
     produces html for a yuhki label (curved, w/ red in background)
     """
-    l = """<div class="ylabel_wrapper"><div class="ylabel">
-    <div class="edge"><div class="corner"></div></div>
-    <div class="text">%s</div>
-    <div class="edge"><div class="corner"></div></div>
-    </div><div class="clear"></div></div>""" % str(s)
-    return mark_safe(l)
+    return mark_safe(render_to_string('templatetag/yuhkilabel.html', {'s': s}))
 
 @register.filter
 def paragraphs(str):
@@ -24,8 +20,8 @@ def paragraphs(str):
     Breaks str into paragraphs using linebreak filter, then splits by <p>.
     Keeps the <p> tags in the output.
     """
-    str = defaultfilters.escape(str)
-    str = defaultfilters.linebreaks(str)
+    str = filter.force_escape(str)
+    str = filter.linebreaks(str)
     # remove whitespace between adjacent tags, replace with sentinel value
     r = compile(r'>\s+<')
     str = r.sub('>,,,<', str)
@@ -51,7 +47,8 @@ def linkify(obj, link_text=''):
         for item in obj:
             l_text = item if link_text == '' \
                 else getattr(item, link_text, link_text)
-            l.append(mark_safe(('<a href="%s">' % item.get_absolute_url()) + cgi.escape(str(l_text)) + ('</a>')))
+            l.append(mark_safe('<a href="%s">%s</a>' % (item.get_absolute_url(),
+                filter.force_escape(l_text))))
         # nonlists obj's should be returned as nonlists
         return l[0] if len(l) == 1 else l
     except IndexError:
@@ -75,5 +72,5 @@ def human_list(list, connector='and'):
                 t = ' ' + connector + ' %s'
             else:
                 t = ', %s'
-            s += t % item
+            s += t % filter.escape(item)
         return mark_safe(s)
