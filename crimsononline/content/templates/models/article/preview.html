@@ -1,0 +1,8 @@
+{% load common_filters %}
+{% load content_filters %}
+
+<div class="image_thumb">{{article.main_rel_content|to_img_tag:"TINY"}}</div>
+<h3>{{article|linkify}}</h3>
+<div class="byline">By {{article.contributors.all|linkify|human_list}}</div>
+<div class="dateline">{{ article.issue.issue_date|date:"l, F j, Y" }}</div>
+<p class="teaser">{{ article.teaser }}</p>
