@@ -1,9 +1,22 @@
 from django.db.models import Count
 from django import template
 from django.template.loader import render_to_string
+from django.utils.safestring import mark_safe
 from content.models import Tag
 
 register = template.Library()
+
+@register.filter
+def get_size(Tag, levels):
+    if Tag.content_count > levels[0]:
+        html = 'largest'
+    elif Tag.content_count > levels[1]:
+        html = 'larger'
+    elif Tag.content_count > levels[2]:
+        html = 'medium'
+    else:
+        html = 'small'
+    return mark_safe(html)
 
 class TagCloudNode(template.Node):
     """
