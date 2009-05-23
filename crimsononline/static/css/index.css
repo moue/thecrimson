@@ -26,7 +26,7 @@ div#masthead div#masthead_center div.topics{
 /* section specifics */
 ul.article_previews{
 	list-style: none;
-    margin-top: -5px;
+    margin-top: 0;
 }
 ul.article_previews > li{
 	margin-top: 10px;
@@ -57,18 +57,20 @@ ul.article_previews .teaser {
 	font-size: 10pt;
     
 }
-#top_opinions ul, #more_news ul{
-	/*list-style-image: url('http://www.w3schools.com/Css/arrow.gif');*/
-	/*padding: 0px 0px 0px 16px;*/
+ul.article_headlines ul {
+	list-style: disc outside;
+	padding: 0px 0px 0px 18px;
 }
-.#top_opinions a{
+ul.article_headlines li {
+    margin: 0 0 3px;
+}
+ul.article_headlines a{
 	font-size: inherit;
 	font-weight: normal;
-	color: black;
 	display: block;
 }
-.#top_opinions a:hover{
-	color: #a02222;
+div#rotator {
+    margin-bottom: 10px;
 }
 
 .topArts, .topFM, .topSports {

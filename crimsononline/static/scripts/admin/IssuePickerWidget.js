@@ -14,7 +14,7 @@ var inspect = function(obj){
     }
     return str;
 };
-
+var a = 9 / 0;
 var set_issue_picker = function(ele, hidden_input, url, spec_url){
     var issueDays = {
         '08/01/2008': 4
@@ -75,7 +75,7 @@ var set_issue_picker = function(ele, hidden_input, url, spec_url){
         mandatory: true,
         onSelect: function(dateText){
             $(hidden_input).val(dateText);
-        },
+        }
         // ask server for list of date - issues
         /*onChangeMonthYear: function(date){
             $.getJSON(

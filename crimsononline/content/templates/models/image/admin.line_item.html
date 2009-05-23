@@ -1,8 +1,8 @@
 {% load content_filters %}
 {% load common_filters %}
 
-<p>Image</p>
-{{ image|to_thumb_tag }}
-<p>{{ image.kicker }}</p>
-<p>{{ image.generic.contributors.all|human_list }}</p>
-<p>{{ image.created_on|date:"m/d/y" }}</p>
+<span>Image</span>
+<span>{{ image|to_thumb_tag }}</span>
+<span>{{ image.kicker }}</span>
+<span class="contributors">{{ image.generic.contributors.all|human_list }}</span>
+<span>{{ image.created_on|date:"m/d/y" }}</span>

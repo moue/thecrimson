@@ -20,6 +20,7 @@
 {% endblock %}
 {% block lefttopcolumn %}
     {% contentmodule index.topstories %}
+    <div class="topstories">
     {{ "Top Stories"|yuhkilabel }}
     <ul class="article_previews">
         {% for story in top_stories %}
@@ -28,6 +29,7 @@
         </li>
         {% endfor %}
     </ul>
+    </div>
     {% endcontentmodule %}
 {% endblock %}
 {% block middletopcolumn %}
@@ -39,7 +41,7 @@
     <div id="more_news">
         {% contentmodule index.morenews %}
         {{ "More News"|yuhkilabel }}
-        <ul>
+        <ul class="article_headlines">
             {% for story in more_stories %}
             <li><a href="{{ story.get_absolute_url }}">{{ story.headline }}</a></li>
             {% endfor %}
@@ -53,11 +55,17 @@
         <div id="top_opinions" class="content_column">
             {% contentmodule index.opinion %}
             {{ "Opinion"|yuhkilabel }}
-            <ul>
+            <ul class="article_previews">
+                {{ opeds.0|render:"preview"}}
+            </ul>
+            <ul class="article_headlines">
                 {% for oped in opeds %}
+                    {% if forloop.first %}
+                    {% else %}
                     <li>
                         <a href="{{ oped.get_absolute_url }}">{{ oped.headline }}</a>
                     </li>
+                    {% endif %}
                 {% endfor %}
             </ul>
             {% endcontentmodule %}

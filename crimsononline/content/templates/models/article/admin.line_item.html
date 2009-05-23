@@ -1,8 +1,8 @@
 {% load content_filters %}
 {% load common_filters %}
 
-<p>Article</p>
-<p>{{ article.headline }}</p>
-<p>{{ article.section }}</p>
-<p>By {{ article.contributors.all|human_list }}</p>
-<p>{{ article.issue.issue_date|date:"m/d/Y" }}</p>
+<span>Article</span>
+<span>{{ article.headline }}</span>
+<span>{{ article.section }}</span>
+<span>By {{ article.contributors.all|human_list }}</span>
+<span>{{ article.issue.issue_date|date:"m/d/Y" }}</span>

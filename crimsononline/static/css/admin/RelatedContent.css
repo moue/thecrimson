@@ -16,6 +16,8 @@
     border: 1px solid #999;
     padding: 2px 4px;
     margin: 1px;
+    *display: inline;
+    zoom: 1;
 }
 .rel_content .results img{
     display: block;
@@ -43,13 +45,15 @@
     padding: 3px 5px;
     cursor: ns-resize;
 }
-.rel_content .rel_objs p {
+.rel_content .rel_objs span {
     display: block;
     padding: 10px 6px;
     margin: 4px 0;
     display: inline-block;
-    border-right: 1px solid #888888;
+    border-left: 1px solid #888888;
+    max-width: 150px;
 }
+
 .rel_content h3{
     padding: 0;
 }
