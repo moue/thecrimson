@@ -191,7 +191,7 @@ def subscribed(request):
 def ajax_get_img(request, pk):
     image = get_object_or_404(Image, pk=pk)
     url = image.display(500, 500).url
-    return render_to_response('ajax_get_image.html', locals())
+    return render_to_response('ajax/get_image.html', locals())
     
     
 # =========== view helpers ============== #

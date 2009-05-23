@@ -8,8 +8,6 @@ from crimsononline.admin_cust.views import login_user
 admin.autodiscover()
 
 urlpatterns = patterns('crimsononline.content.views',
-    #url(r'^article/(\d{4})/(\d{1,2})/(\d{1,2})/([-\w]+)/$',
-    #    'article', name='content_get_article'),
     url(r'^writer/(\d+)/([A-Za-z\s]+)_([A-Za-z]{0,1})_([A-Za-z]+)/$',
         'writer', name='content_writer_profile'),
     url(r'^writer/(\d+)/([A-Za-z\s]+)_([A-Za-z]{0,1})_([A-Za-z]+)/page/(\d+)/$',
@@ -17,8 +15,6 @@ urlpatterns = patterns('crimsononline.content.views',
     url(r'^section/(?P<section>[A-Za-z]+)/$', 'section', name='content_section'),
     url(r'^section/(?P<section>[A-Za-z]+)/issue/(?P<issue_id>\d+)$',
         'section', name='content_section_by_issue'),
-    url(r'^section/(?P<section>[A-Za-z]+)/tag/(?P<tags>[A-Za-z\s,]+)/$', 
-        'section', name='content_section_by_tag'),
     url(r'^tag/(?P<tag>[A-Za-z\s]+)/$', 'tag', name='content_tag'),
     url(r'^tag/(?P<tag>[A-Za-z\s]+)/page/(?P<page>\d+)/$', 'tag'),
     url(r'^gallery/(\d+)/(\d+)/$',

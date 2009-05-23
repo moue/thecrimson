@@ -234,6 +234,7 @@ a:hover {
 }
 .byline a{
     font-family:helvetica;
+    font-weight: bold;
     text-transform: uppercase;
     text-decoration: underline;
     color: black;
