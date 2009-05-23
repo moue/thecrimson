@@ -171,8 +171,12 @@ div#masthead div.tools div.search span.submit {
 	width:10px;
 }
 
+#nav ul li.spacer:hover{
+    background-color: white;
+}
+
 #nav ul li:hover, #nav ul li#nav_cur{
-	background-color:#A02222;
+	background-color: #A02222;
 }
 
 #nav ul li a{

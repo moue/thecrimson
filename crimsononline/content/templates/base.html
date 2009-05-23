@@ -1,14 +1,14 @@
 {% load content_filters %}
 {% load common_filters %}
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
-   "http://www.w3.org/TR/html4/strict.dtd">
-
-<html lang="en">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title>The Harvard Crimson | {% block title %}{{ title }}{% endblock %}</title>
-	<link type="text/css" rel="stylesheet" href="/site_media/css/base.css">
+	<link type="text/css" rel="stylesheet" href="/site_media/css/base.css" />
+    <link href="/site_media/css/rotator.css" rel="stylesheet" type="text/css" />
 	{% block inhead %}{% endblock %}
 </head>
 <body>
@@ -22,9 +22,9 @@
             <div class="tools">
                 <div class="top">
                     {% spaceless %}
-                    <span class="cover"><img src="/site_media/images/banner_right_cover.png"></span>
-                    <span class="issues"><img src="/site_media/images/banner_right_past.png"></span>
-                    <span class="weather"><img src="/site_media/images/banner_right_weather.png"></span>
+                    <span class="cover"><img src="/site_media/images/banner_right_cover.png" alt="cover" /></span>
+                    <span class="issues"><img src="/site_media/images/banner_right_past.png" alt="past issues" /></span>
+                    <span class="weather"><img src="/site_media/images/banner_right_weather.png" alt="weather" /></span>
                     {% endspaceless %}
                 </div>
                 <div class="line"></div>
@@ -38,7 +38,7 @@
                 <div class="search">
                     <form action="#">
                         <div class="query"><input class="query" type="text" name="query" /></div>
-                        <span class="submit"><input class="submit" type="submit" value="SEARCH"/></span>
+                        <div class="submit"><input class="submit" type="submit" value="SEARCH"/></div>
                     </form>
                 </div>
             </div>
