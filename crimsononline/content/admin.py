@@ -144,7 +144,7 @@ class ContentGenericAdmin(admin.ModelAdmin):
         json_dict = {}
         json_dict['objs'] = {}
         for obj in p.object_list:
-            html = '<li>%s</li>' % obj._render("admin.thumbnail")
+            html = '<li>%s</li>' % obj._render("admin.line_item")
             json_dict['objs'][obj.pk] = html
         if not p.object_list:
             json_dict['objs']['empty'] = 1
@@ -363,8 +363,6 @@ class ImageGalleryForm(ContentGenericModelForm):
         obj = super(ImageGalleryForm, self).save(*args, **kwargs)
         obj.images.clear()
         for i, img in enumerate(imgs):
-            #GalleryMembership.objects.create(order=i, 
-            #    image_gallery=obj, image=img)
             x = GalleryMembership(order=i, image_gallery=obj, image=img)
             x.save()
         return obj
@@ -394,12 +392,6 @@ class ImageGalleryAdmin(ContentGenericAdmin):
     class Media:
         css = {'all': ('css/admin/ImageGallery.css',)}
         js = ('scripts/jquery.js',)
-    
-    def get_form(self, *args, **kwargs):
-        f = super(ImageGalleryAdmin, self).get_form(*args, **kwargs)
-        #print dir(f)
-        #print f._meta.fields
-        return f
     
 
 

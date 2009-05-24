@@ -134,8 +134,6 @@ class SearchChoiceWidget(forms.widgets.HiddenInput):
             '/site_media/css/admin/SearchModelChoiceWidget.css'),}
     
     def __init__(self, *args, **kwargs):
-        #print args
-        #print kwargs
         self.ajax_url = kwargs.pop('ajax_url', None)
         self.model = kwargs.pop('model', None)
         self.multiple = kwargs.pop('multiple', None)
@@ -188,7 +186,6 @@ class SearchModelChoiceField(forms.CharField):
     """
     
     def __init__(self, *args, **kwargs):
-        #print dir(self)
         self.model = kwargs.pop('model')
         self.clean_to_objs = kwargs.pop('clean_to_objs', False)
         # we use 1 and 0, since these get passed into JS, which doesn't
