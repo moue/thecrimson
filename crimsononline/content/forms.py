@@ -103,11 +103,7 @@ class IssuePickerWidget(forms.widgets.HiddenInput):
                 issue_date = issue_date.date() + timedelta(days=1)
             else:
                 issue_date = issue_date.date()
-            try:
-                issue = Issue.objects.get(issue_date=issue_date)
-                value = issue.pk
-            except:
-                issue = None
+            value = issue_date.strftime(r"%m/%d/%Y")
         year = datetime.now().year
         special_choices = render_to_string("ajax/special_issues_fragment.html", 
             {'issues': Issue.objects.special.filter(issue_date__year=year), 

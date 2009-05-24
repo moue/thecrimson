@@ -17,10 +17,8 @@
     $(document).ready(function(){
         set_issue_picker("#{{attrs.id}}_input", 
             "#{{attrs.id}}", 
-            "/admin/content/issue/issue_list/",
             "/admin/content/issue/special_issue_list/");
-        $("#issue_picker_meta input[value={{meta_select}}]")
-            .trigger('change').trigger('click');
+        $("#issue_picker_meta input[value={{meta_select}}]").trigger('click');
     });
 </script>
 

@@ -58,7 +58,8 @@ jQuery.fn.autoCompletefb = function(options)
 			return tmp.acfb;
 		},
 		dumpData : function(){
-		    $(settings.inputClass,tmp).parent().next().val(this.getData());
+            // dumps the from the widget into the hidden input
+		    $(tmp).next().val(this.getData());
 		    $(settings.inputClass,tmp).flushCache();
 		},
         disableInput : function(){

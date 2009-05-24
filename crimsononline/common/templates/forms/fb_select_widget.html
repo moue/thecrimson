@@ -7,16 +7,17 @@
         </li>
     {% endfor %}
     <li><input type="text" class="acfb-input" id={{attrs.id}}_input /></li>
-    {{hidden}}
 </ul>
+{{hidden}}
 <script type="text/javascript">
     var acfb_{{attrs.id}};
     $(document).ready(function(){
         acfb_{{attrs.id}} = 
-            $("#acfb_holder_{{attrs.id}}").autoCompletefb(
-                {urlLookup:"{{url|escapejs}}",
-                 multipleInput:{{is_multiple}},
-                 no_duplicates:{{no_dupes}}});
+            $("#acfb_holder_{{attrs.id}}").autoCompletefb({
+                urlLookup: "{{url|escapejs}}",
+                multipleInput: {{is_multiple}},
+                no_duplicates: {{no_dupes}}
+            });
         var originalDismissAddAnotherPopup = dismissAddAnotherPopup;
         dismissAddAnotherPopup = function(win, newId, newRepr){
             if(win.name.indexOf("{{attrs.id}}") != -1){

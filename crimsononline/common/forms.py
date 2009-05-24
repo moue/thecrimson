@@ -143,7 +143,6 @@ class SearchChoiceWidget(forms.widgets.HiddenInput):
     
     def render(self, name, value, attrs=None):
         if value:
-            print value
             if getattr(value, '__iter__', None):
                 obj_list = list(self.model.objects.filter(pk__in=value))
                 # sort them according to the order from value
