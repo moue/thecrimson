@@ -67,9 +67,7 @@ def index(request):
     
     dict['rotate'] = stories.filter(
         rel_content__content_type=Image.content_type()).distinct()[:4]
-    print dict['rotate']
-    rotator = [c.pk for c in dict['rotate']]
-    stories = stories.exclude(pk__in=rotator)
+    stories = stories.exclude(pk__in=[c.pk for c in dict['rotate']])
     
     dict['nav'] = 'index'
     dict['top_stories'] = stories[:4]

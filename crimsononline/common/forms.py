@@ -7,6 +7,18 @@ from django import forms
 from django.contrib import admin
 from django.template.loader import render_to_string
 
+class MaskedValueTextInput(forms.widgets.TextInput):
+    def __init__(self, *args, **kwargs):
+        self.sentinel = kwargs.pop('sentinel', '***')
+        return super(MaskedValueTextInput, self).__init__(*args, **kwargs)
+    
+    def render(self, name, value, attrs=None):
+        print value
+        if value:
+            value = self.sentinel
+        return super(MaskedValueTextInput, self).render(name, value, attrs)
+    
+
 class FbSelectWidget(forms.widgets.HiddenInput):
     """
     A widget that allows for multiple model selection, similar to Facebook's
@@ -21,7 +33,6 @@ class FbSelectWidget(forms.widgets.HiddenInput):
     """
     class Media:
         js = ("/site_media/scripts/framework/jquery.bgiframe.min.js",
-            #"/site_media/scripts/framework/jquery.dimensions.js",
             "/site_media/scripts/framework/jquery.autocomplete.js",
             "/site_media/scripts/framework/jquery.autocompletefb.js",
             "/site_media/scripts/framework/jquery.tooltip.pack.js",)

@@ -18,7 +18,7 @@ from django.utils.hashcompat import md5_constructor
 from crimsononline.content.models import *
 from crimsononline.content.forms import *
 from crimsononline.common.forms import \
-    FbModelChoiceField, CropField, SearchModelChoiceField
+    FbModelChoiceField, CropField, SearchModelChoiceField, MaskedValueTextInput
 
 
 class ContentGroupAdmin(admin.ModelAdmin):
@@ -45,8 +45,6 @@ class ContentGroupAdmin(admin.ModelAdmin):
             Q(type__contains=q_str) | Q(name__contains=q_str)) \
             .exclude(pk__in=excludes).order_by('-pk')[:limit]
         return render_to_response('fbmc_result_list.txt', {'objs': cg})
-    
-
 
 admin.site.register(ContentGroup, ContentGroupAdmin)
 
@@ -174,13 +172,13 @@ admin.site.register(Tag, TagAdmin)
 class ContributorForm(forms.ModelForm):
     class Meta:
         model = Contributor
-    huid = forms.fields.CharField(label='HUID')
-    # HOW DO I MAKE THIS ACTUALLY DISPLAY 'HUID' INSTEAD OF 'Huid'
-    def clean_huid_hash(self):
-        h = self.cleaned_data['huid_hash']
+    huid = forms.fields.CharField(label='HUID', required=False,
+        widget=MaskedValueTextInput(sentinel="********"))
+    def clean_huid(self):
+        h = self.cleaned_data['huid']
         if h and len(h) != 8:
             raise forms.ValidationError('HUID must be 8 digits long')
-        return self.cleaned_data['huid_hash']
+        return self.cleaned_data['huid']
     
 
 class ContributorAdmin(admin.ModelAdmin):
@@ -208,11 +206,16 @@ class ContributorAdmin(admin.ModelAdmin):
     )
     form = ContributorForm
     
+    def get_form(self, request, obj=None, **kwargs):
+        f = super(ContributorAdmin, self).get_form(request, obj, **kwargs)
+        if obj and obj.user and obj.user.get_profile():
+            f.base_fields['huid'].initial = obj.user.get_profile().huid_hash
+        return f
+    
     def save_model(self, request, obj, form, change):
         # create a user if one does not exist
         # then set the groups of the user
         boards = form.cleaned_data['boards']
-        huid_hash = md5_constructor(form.cleaned_data['huid']).hexdigest()
         if obj.user is None and boards != []:
             u = User()
             u.save()
@@ -231,14 +234,20 @@ class ContributorAdmin(admin.ModelAdmin):
             u.save()
             ud.save()
             obj.user = u
-        if obj.user != None:
+        if obj.user is not None:
             groups = [board.group for board in boards]
             obj.user.groups = groups
             obj.user.save()
             ud = obj.user.get_profile()
             if ud is None:
                 ud = UserData(user=obj.user)
-            ud.huid_hash = huid_hash
+            h = form.cleaned_data['huid']
+            if h != "********":
+                if h:
+                    huid_hash = md5_constructor(h).hexdigest()
+                else:
+                    huid_hash = None                                                                        
+                ud.huid_hash = huid_hash
             ud.save()
         return super(ContributorAdmin, self).save_model(
             request, obj, form, change)
