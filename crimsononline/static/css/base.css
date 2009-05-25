@@ -198,18 +198,29 @@ body {
 }
 
 /* tag cloud font sizes */
-
-a.largest {
-    font-size: 23pt;
+div.tag_cloud {
+    line-height:22px; 
 }
-a.large {
-	font-size: 19pt;
+div.tag_cloud a{
+    border-bottom: 1px dashed #aa2222;
+    padding-bottom: -2px;
+    display: block;
+    float: left;
+    margin-right: 5px;
 }
-a.medium {
-	font-size: 15pt;
+div.tag_cloud a.largest {
+    font-size: 24px;
+    font-weight: bolder;
 }
-a.small {
-	font-size: 11pt;
+div.tag_cloud a.large {
+	font-size: 21px;
+    font-weight: bold;
+}
+div.tag_cloud a.medium {
+	font-size: 18px;
+}
+div.tag_cloud a.small {
+	font-size: 15px;
 }
 
 /* bordered */

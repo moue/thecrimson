@@ -666,7 +666,11 @@ class Image(Content):
     
     @property
     def orientation(self):
-        return 'wide' if self.pic.width > self.pic.height else 'tall'
+        ratio = float(self.pic.width) / float(self.pic.height)
+        if ratio >= 1.4:
+            return 'wide'
+        else:
+            return 'tall'
     
     def __getattr__(self, attr):
         "dispatches calls to standard sizes to display()"

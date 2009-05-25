@@ -9,7 +9,7 @@
     {% comment %}<p class="kicker">{{image.kicker}}</p>{% endcomment %}
     <a href="{{image.get_absolute_url}}">
         {% ifequal image.orientation "tall" %}
-            {{image|to_img_tag:"260,"}}
+            {{image|to_img_tag:"300,"}}
         {% else %}
             {{image|to_img_tag:"630,"}}
         {% endifequal %}
