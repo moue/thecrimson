@@ -18,9 +18,12 @@ div#articletools {
     text-transform: uppercase;
 }
 div#articletools a {
-    color: gray;
+    color: #666;
 }
-
+div#articletools a img{
+    color: #666;
+    border: 0;
+}
 div#articletools a:hover {
     color: black;
 }

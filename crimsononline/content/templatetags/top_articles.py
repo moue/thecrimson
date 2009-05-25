@@ -9,7 +9,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import RegexURLResolver, Resolver404
 from django.db import connection
 from django.template import Context
-from django.template.loader import get_template
+from django.template.loader import get_template, render_to_string
 from django.utils import simplejson
 from django.utils.safestring import mark_safe
 from operator import itemgetter
@@ -138,6 +138,6 @@ class TopArticlesNode(template.Node):
          HTTPResponse) and get the object for the article, which can then be put into the mostcommentedarticles list.
          """
         
-        t = get_template('mostreadarticles.html')
-        html = t.render(Context({'mostreadarticles': mostreadarticles, 'mostcommentedarticles': mostcommentedarticles}))
-        return html
+        return render_to_string('templatetag/mostreadarticles.html',
+            {'mostreadarticles': mostreadarticles, 
+                'mostcommentedarticles': mostcommentedarticles})
