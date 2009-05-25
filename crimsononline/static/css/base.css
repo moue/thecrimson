@@ -176,7 +176,7 @@ div#masthead div.tools div.search span.submit {
 }
 
 #nav ul li:hover, #nav ul li#nav_cur{
-	background-color: #A02222;
+	background-color: #AA2222;
 }
 
 #nav ul li a{
@@ -197,16 +197,16 @@ body {
 	background-color: #ccc;
 }
 
-/* tag cloud font sizes */
+/* tag cloud*/
 div.tag_cloud {
-    line-height:22px; 
+    line-height: 20px; 
 }
 div.tag_cloud a{
-    border-bottom: 1px dashed #aa2222;
-    padding-bottom: -2px;
+    border-bottom: 1px dotted #aa2222;
+    padding-bottom: -5px;
     display: block;
     float: left;
-    margin-right: 5px;
+    margin: 0 5px 6px 0;
 }
 div.tag_cloud a.largest {
     font-size: 24px;

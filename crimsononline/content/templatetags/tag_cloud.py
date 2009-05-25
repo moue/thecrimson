@@ -59,7 +59,7 @@ class TagCloudNode(template.Node):
         # sort alphabetically
         tags.sort(lambda x,y: cmp(x.text, y.text))
         
-        return render_to_string('templates/tagcloud.html', 
+        return render_to_string('templatetag/tagcloud.html', 
             {'tags': tags, 'levels': levels, 'title': self.title})
 
 def do_tag_cloud(parser, token):
