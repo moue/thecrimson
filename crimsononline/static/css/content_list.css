@@ -24,6 +24,9 @@ span.pagination {
     float: right;
     font-size: .8em;
 }
+span.pagination a {
+    text-decoration: underline;
+}
 
 /*              */
 h1, h2{
