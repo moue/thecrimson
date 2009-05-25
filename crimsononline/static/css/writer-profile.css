@@ -4,3 +4,19 @@ li {
 h1 {
     color: #a02222;
 }
+div#profile_corner h3 {
+    color: #666;
+    font-family: arial;
+    font-size: 13px;
+    display: block;
+    margin-bottom: 4px;
+    text-align: center;
+}
+div#profile_corner p{
+    font-size: 11px;
+    margin: 0 0 15px;
+}
+div#profile_corner b{
+    font-size: 12px;
+    color: #a32222;
+}

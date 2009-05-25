@@ -13,7 +13,6 @@ class MaskedValueTextInput(forms.widgets.TextInput):
         return super(MaskedValueTextInput, self).__init__(*args, **kwargs)
     
     def render(self, name, value, attrs=None):
-        print value
         if value:
             value = self.sentinel
         return super(MaskedValueTextInput, self).render(name, value, attrs)

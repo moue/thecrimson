@@ -1,6 +1,7 @@
 {% extends "content_list.html" %}
 
 {% load content_filters %}
+{% load common_filters %}
 
 {% block title %}
 	Writer Profile | {{ writer }}
@@ -16,13 +17,16 @@
 {% endblock %}
 
 {% block left %}
-    {% if self.profile %}
-        <div class"bordered" id="profile-corner">
+    {% if writer.profile %}
+        <div class="bordered" id="profile_corner">
+            <h3>ABOUT THE WRITER</h3>
             {% if writer.profile_pic %}
-                <img src="{{ writer.profile_pic.url}}" width="300px" /><br/>
+                <img src="{{ writer.profile_pic.url}}" /><br/>
             {% endif %}
             {% if writer.profile_text %}
-                {{ writer.profile_text }}
+                {% for para in writer.profile_text|paragraphs %}
+                    {{ para|profileml }}
+                {% endfor %}
             {% endif %}
         </div>
     {% else %}

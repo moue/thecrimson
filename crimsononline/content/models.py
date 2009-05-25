@@ -17,6 +17,8 @@ from django.template.defaultfilters import slugify, truncatewords
 from django.template.loader import render_to_string
 from django.utils.safestring import mark_safe
 from django.forms import ModelForm
+from crimsononline.common.fields import MaxSizeImageField
+from crimsononline.common.storage import OverwriteStorage
 from crimsononline.common.utils.strings import \
     make_file_friendly, make_slug, make_url_friendly
 
@@ -350,15 +352,15 @@ class Contributor(models.Model):
         help_text='This should be true for anyone who could possibly still ' \
                     'write for The Crimson, including guest writers.')
     profile_text = models.TextField(blank=True, null=True)
-    profile_pic = models.ImageField(blank=True, null=True, 
-        upload_to=contrib_pic_path)
+    profile_pic = MaxSizeImageField(blank=True, null=True, max_width=150,
+        upload_to=contrib_pic_path, storage=OverwriteStorage())
     
     @property
     def profile(self):
         return self.profile_text or self.profile_pic
     
     def __unicode__(self):
-        if self.middle_initial == None or self.middle_initial == '':
+        if self.middle_initial is None or self.middle_initial == '':
             m = ''
         else:
             m = ' ' + self.middle_initial + '.'

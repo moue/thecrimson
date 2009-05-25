@@ -7,6 +7,15 @@ import cgi
 
 register = template.Library()
 
+PML_RE = compile(r'\[([^\[^\]]+)\]')
+@register.filter
+def profileml(s):
+    """
+    Turns [str] into <b>str</b>
+    TODO: not quite safe
+    """
+    return mark_safe(PML_RE.sub(r'<b>\1</b>', s))
+
 @register.filter
 def yuhkilabel(s):
     """

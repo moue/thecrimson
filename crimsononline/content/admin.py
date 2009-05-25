@@ -174,6 +174,9 @@ class ContributorForm(forms.ModelForm):
         model = Contributor
     huid = forms.fields.CharField(label='HUID', required=False,
         widget=MaskedValueTextInput(sentinel="********"))
+    profile_pic = forms.fields.ImageField(widget=admin.widgets.AdminFileWidget,
+        required=False, label='Profile Picture')
+
     def clean_huid(self):
         h = self.cleaned_data['huid']
         if h and len(h) != 8:
