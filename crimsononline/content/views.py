@@ -51,7 +51,7 @@ def get_content_group(request, gtype, gname):
     View for a Content Group
     """
     # validate the contentgroup
-    cg = get_content_group_obj(gtype, gname)
+    cg = get_content_group_obj(request, gtype, gname)
     if not cg:
         raise Http404
     c = cg.contentgeneric_set.all()
@@ -62,10 +62,15 @@ def get_content_group_obj(request, gtype, gname):
     return cg
 
 def index(request):
-    issue = Issue.get_current()
-    stories = top_articles('News')[:9]
-    
+    stories = top_articles('News')
     dict = {}
+    
+    dict['rotate'] = stories.filter(
+        rel_content__content_type=Image.content_type()).distinct()[:4]
+    print dict['rotate']
+    rotator = [c.pk for c in dict['rotate']]
+    stories = stories.exclude(pk__in=rotator)
+    
     dict['nav'] = 'index'
     dict['top_stories'] = stories[:4]
     dict['more_stories'] = stories[4:9]
@@ -73,8 +78,7 @@ def index(request):
     dict['arts'] = top_articles('Arts')[:6]
     dict['sports'] = top_articles('Sports')[:6]
     dict['fms'] = top_articles('FM')[:6]
-    dict['issue'] = issue
-    dict['rotate'] = stories[:4]
+    dict['issue'] = Issue.get_current()
     #dict['markers'] = Marker.objects.filter(map__in = Map.objects.filter(article__in = stories.values('pk').query).values('pk').query)
     
     return render_to_response('index.html', dict)
@@ -116,6 +120,7 @@ def tag(request, tag, page=None):
     
     # TODO: top writers (contributors that have the most content with this tag)
     
+    
     # TODO: related tags (tags with most shared content)
     #content_pks = [d['id'] for d in content.values('id')]
     #rel_tags = Tag.objects.filter(content__id__in=content_pks).annotate(
@@ -127,35 +132,22 @@ def tag(request, tag, page=None):
     
     return render_to_response('tag.html', d)
 
-def section(request, section, issue_id=None, tags=None):    
+def section(request, section):    
     # validate the section (we don't want /section/balls/ to be a valid url)
     if section == 'photo':
         return photo(request)
-    section = filter(lambda x: section.lower() == x.name.lower(), Section.all())
+    section = section.lower()
+    section = filter(lambda x: section == x.name.lower(), Section.all())
     if len(section) == 0:
         raise Http404
     section = section[0]
     
-    # grab the correct issue
-    if issue_id is None:
-        issue = Issue.get_current()
-    else:
-        issue = get_object_or_404(Issue, pk=issue_id)
-    
-    content = ContentGeneric.objects.recent.filter(section__pk=section.pk)
-    # filter based on tags
-    if tags:
-        tags = tags.lower().replace('_',' ').split(',')
-        for tag in tags:
-            content = content.filter(tags__text=tag)
-    content = content[:20]
+    content = ContentGeneric.objects.recent.filter(section__pk=section.pk)[:20]
     
     dict = {
         'nav': section.name.lower(),
-        'issue': issue,
         'content': content,
         'section': section.name.capitalize(),
-        'tags': tags,
     }
     return render_to_response(
         [dict['nav']+'.html', 'section.html', 'content_list.html'], dict

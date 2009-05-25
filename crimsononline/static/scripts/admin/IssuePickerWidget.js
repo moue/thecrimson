@@ -5,7 +5,7 @@ var set_issue_picker = function(ele, hidden_input, spec_url){
         date_str += (date.getMonth() + 1) + "/";
         date_str += (date.getDate() > 9) ? "" : "0";
         date_str += date.getDate() + "/" + date.getFullYear();
-        return date_str
+        return date_str;
     };
     // show / hide different daily / special issue pickers
     $("#issue_picker_meta input").click(function(){

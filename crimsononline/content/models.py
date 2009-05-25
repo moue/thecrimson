@@ -138,6 +138,10 @@ class Content(models.Model):
         return mark_safe(render_to_string(templ, context))
     
     @classmethod
+    def content_type(cls):
+        return ContentType.objects.get_for_model(cls)
+    
+    @classmethod
     def find_by_date(cls, start, end):
         """
         returns a queryset

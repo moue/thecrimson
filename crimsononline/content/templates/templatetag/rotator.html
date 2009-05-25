@@ -29,6 +29,7 @@
     <div class="preview_body">
         <ul>
             {% for article in contents %}
+                {% if article.main_rel_content %}
                 <li>
                     {{article.main_rel_content|to_img_tag:"300,240,1.25"}}
                     <div class="preview_text">
@@ -36,6 +37,7 @@
                         <p class="teaser">{{article.teaser}}</p>
                     </div>
                 </li>
+                {% endif %}
             {% endfor %}
         </ul>
     </div>
