@@ -23,5 +23,3 @@ class MaxSizeImageField(ImageField):
             img.save(file.path)
         return file
     
-    def get_internal_type(self):
-        return "ImageField"
