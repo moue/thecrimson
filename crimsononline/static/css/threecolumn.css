@@ -14,7 +14,7 @@ ul.article_previews > li > *{
 }
 ul.article_previews h3{
 	font-size: 18px;
-	line-height: 0.9;
+	line-height: 0.8;
 	display: inline;
 }
 ul.article_previews h3 a{
@@ -24,7 +24,7 @@ ul.article_previews h3 a{
                     "Apple Garamond", "ITC Garamond Narrow", 
                     "New Century Schoolbook", "Century Schoolbook", 
                     "Century Schoolbook L", Georgia, serif;
-    font-weight: normal;
+    font-weight: bold;
 }
 
 ul.article_previews .byline, ul.article_headlines .byline {

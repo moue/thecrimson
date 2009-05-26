@@ -115,7 +115,7 @@ div#masthead div.tools div.search input.submit{
     border-collapse: collapse;
     margin-left:-1px;
     line-height:1em;
-    background-color:#A02222;
+    background-color: #A02222;
     border: 1px solid white;
     color:white;
     font-family: verdana;
@@ -182,14 +182,14 @@ div#masthead div.tools div.search span.submit {
 
 #nav ul li a{
 	text-align: center;
-	font-size: .9em;
-	font-family: Corbel, "Lucida Grande", "Lucida Sans Unicode", 
+	font-size: 12px;
+	font-family: Arial, Helvetica, "Lucida Grande", "Lucida Sans Unicode", 
                 "Lucida Sans", "DejaVu Sans", "Bitstream Vera Sans", 
                 "Liberation Sans", Verdana, "Verdana Ref", sans-serif;
     letter-spacing: 1px;
 	padding:0px 15px;
 	text-decoration: none;
-	color:gray;
+	color: #666;
 }
 
 #nav ul li:hover a, #nav ul li#nav_cur a{
@@ -326,13 +326,14 @@ div.ylabel div.edge div.corner{
     height: 1px
 } 
 div.ylabel div.text{
-    padding: 1px 4px;
-    height: 16px;
+    padding: 1px 3px;
+    height: 14px;
     margin: -1px 0 0 0;
     font-family: "Trebuchet MS", "Segoe UI", Candara, "Bitstream Vera Sans", 
                     "DejaVu Sans", "Bitstream Vera Sans", Verdana, 
                     "Verdana Ref", sans-serif;
-    font-size: 12px;
+    font-size: 11px;
     text-transform: uppercase;
     line-height: normal;
+    letter-spacing: 0;
 }

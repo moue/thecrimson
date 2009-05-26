@@ -224,6 +224,7 @@ class ContentGroup(models.Model):
     )
     type = models.CharField(max_length=25, choices=TYPE_CHOICES)
     name = models.CharField(max_length=25)
+    subname = models.CharField(max_length=40, blank=True, null=True)
     blurb = models.TextField(blank=True, null=True)
     image = models.ImageField(upload_to=get_img_path, blank=True, null=True)
     
@@ -884,7 +885,8 @@ class Article(Content):
         help_text="""
         The text that will be displayed in the URL of this article.
         Can only contain letters, numbers, and dashes (-).
-        """)
+        """
+    )
     created_on = models.DateTimeField(auto_now_add=True)
     modified_on = models.DateTimeField(auto_now=True)
     page = models.CharField(blank=True, null=True, max_length=10,

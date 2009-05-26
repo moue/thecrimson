@@ -1,13 +1,18 @@
 div#content {
-    width: 630px;
+    width: 622px;
     border-right: solid 1px #b5b5b5;
     float: left;
+    padding-right: 8px;
 }
-
 div#sidebar {
     width: 323px;
     padding-left: 6px;
     float: left;
+}
+div#pre_content {
+    width: inherit;
+    float: left;
+    margin-bottom: 3px;
 }
 div#articletools {
     display: block;
@@ -35,11 +40,11 @@ div.ylabel_wrapper {
 h1 {
 	font-size: 24px;
 	margin: 0px 0px 2px 0px;
-	color: #780001;
+	color: #ba0600;
     clear: left;
 }
 h2 {
-	font-size: 18px;
+	font-size: 16px;
 	margin: 0px 0px 10px 0px;
 	color: #505050;
 }

@@ -178,7 +178,10 @@ def section_news(request):
 def section_opinion(request):
     nav = 'opinion'
     section = Section.cached(nav)
-    content = top_articles(nav)
+    stories = Article.objects.recent.filter(generic__section=section)
+    rotate = ContentGeneric.objects.recent \
+        .filter(content_type=Image.content_type()) \
+        .filter(section=section)[:4]
     return render_to_response('sections/opinion.html', locals())
     
 def section_fm(request):
