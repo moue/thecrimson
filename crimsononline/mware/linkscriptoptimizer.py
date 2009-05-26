@@ -15,6 +15,7 @@ class LinkScriptOptimizer(object):
             if not matches:
                 return (string, "")
             tags = '\n'.join(matches)
+            print tags
             return (regexp.sub("", string), tags)
 
         # moves tags matching regexp in front of given tag in given source
