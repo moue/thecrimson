@@ -969,7 +969,7 @@ class UserData(models.Model):
         
     def parse_token(self):
         # a b c d
-        return false
+        return False
 
 class Subscription(models.Model):
 	email = models.EmailField(blank=False)

@@ -100,50 +100,12 @@ def writer(request, pk, f_name, m_name, l_name,
     if (w.first_name, w.middle_initial, w.last_name) != (f_name, m_name, l_name):
         return HttpResponseRedirect(w.get_absolute_url())
     
-    url_base = w.get_absolute_url()
-    content = w.content.all()
-    sects, tps = {}, {}
-    o_section_str = section_str
+    f = filter_helper(w.content.all(), section_str, type_str, 
+        w.get_absolute_url())
     
-    if section_str:
-        section_str = [s.lower() for s in section_str.split(',') if s]
-        sections = [s for s in Section.all() if s.name.lower() in section_str]
-        content = content.filter(section__in=sections)
-    else:
-        section_str = [s.name.lower() for s in Section.all()]
-        sections = Section.all()
-    for section in Section.all():
-        a = section in sections
-        if a:
-            s_str = ','.join([s for s in section_str if s != section.name.lower()])
-        else:
-            s_str = ','.join(section_str + [section.name.lower()])
-        
-        url = url_base 
-        url += ('sections/%s/' % s_str if s_str else '')
-        url += ('types/%s/' % type_str if type_str else '')
-        sects[section.name] = {'selected': a, 'url': url} 
-        
-    if type_str:
-        type_str = [t.lower() for t in type_str.split(',') if t]
-        content = content.filter(content_type__name__in=type_str)
-    else:
-        type_str = [s.name.lower() for t in Content.types()]
-    for type in [t.name.lower() for t in Content.types()]:
-        a = type in type_str
-        if a:
-            t_str = ','.join([t for t in type_str if t != type])
-        else:
-            t_str = ','.join(type_str + [type])
-        
-        url = url_base
-        url += ('sections/%s/' % o_section_str if o_section_str else '')
-        url += ('types/%s/' % t_str if t_str else '')
-        tps[type.title()] = {'selected': a, 'url': url}
-    
-    d = paginate(content, page, 10)
-    d.update({'writer': w, 'url': REMOVE_P_RE.sub(request.path, ''), 
-        'sections': sects, 'types': tps})
+    d = paginate(f.pop('content'), page, 10)
+    d.update({'writer': w, 'url': REMOVE_P_RE.sub(request.path, '')})
+    d.update(f)
     
     return render_to_response('writer.html', d)
 
@@ -233,6 +195,59 @@ def ajax_get_img(request, pk):
     
     
 # =========== view helpers ============== #
+
+def filter_helper(qs, section_str, type_str, url_base):
+    """
+    returns a dictionary with elements necessary for the content_list
+        filter interface
+    """
+    # TODO: refactor the fuck out of this
+    
+    content = qs
+    sects, types = {}, {}
+    o_section_str = section_str
+    
+    # parses the comma delimited section_str
+    if section_str:
+        section_str = [s.lower() for s in section_str.split(',') if s]
+        sections = [s for s in Section.all() if s.name.lower() in section_str]
+        content = content.filter(section__in=sections)
+    else:
+        section_str = [s.name.lower() for s in Section.all()]
+        sections = Section.all()
+    # generates URLs for the different filter links
+    for section in Section.all():
+        a = section in sections
+        if a:
+            s_str = ','.join([s for s in section_str if s != section.name.lower()])
+        else:
+            s_str = ','.join(section_str + [section.name.lower()])
+        
+        url = url_base 
+        url += ('sections/%s/' % s_str if s_str else '')
+        url += ('types/%s/' % type_str if type_str else '')
+        sects[section.name] = {'selected': a, 'url': url} 
+        
+    if type_str:
+        type_str = [t.lower() for t in type_str.split(',') if t]
+        content = content.filter(content_type__name__in=type_str)
+    else:
+        type_str = [t.name.lower() for t in Content.types()]
+    for type in [t.name.lower() for t in Content.types()]:
+        a = type in type_str
+        if a:
+            t_str = ','.join([t for t in type_str if t != type])
+        else:
+            t_str = ','.join(type_str + [type])
+        
+        url = url_base
+        url += ('sections/%s/' % o_section_str if o_section_str else '')
+        url += ('types/%s/' % t_str if t_str else '')
+        types[type.title()] = {'selected': a, 'url': url}
+    
+    return {'content': content, 'sections': sects, 'types': types}
+    
+
 def top_articles(section):
     """returns the most recent articles from @section"""
     return Article.objects.recent.filter(generic__section__name=section)
