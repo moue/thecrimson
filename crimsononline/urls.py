@@ -7,17 +7,16 @@ from crimsononline.admin_cust.views import login_user
 
 admin.autodiscover()
 
-WRITER_URL_RE = r''
+FILTER_URL_RE = r'(?:sections/(?P<section_str>[A-Za-z,]+)/)?' \
+    r'(?:types/(?P<type_str>[A-Za-z,\s]+)/)?' \
+    r'(?:page/(?P<page>\d+)/)?'
 urlpatterns = patterns('crimsononline.content.views',
-    url(r'writer/(?P<pk>\d+)/' \
-        r'(?P<f_name>[A-Za-z\s]+)_(?P<m_name>[A-Za-z]?)_(?P<l_name>[A-Za-z]+)/'\
-        r'(?:sections/(?P<section_str>[A-Za-z,]+)/)?' \
-        r'(?:types/(?P<type_str>[A-Za-z,\s]+)/)?' \
-        r'(?:page/(?P<page>\d+)/)?$', 
+    url(r'writer/(?P<pk>\d+)(?P<f_name>[A-Za-z\s]+)_/' \
+        r'(?P<m_name>[A-Za-z]?)_(?P<l_name>[A-Za-z]+)/%s$' % FILTER_URL_RE,
         'writer', name='content_writer_profile'),
     url(r'^section/(?P<section>[A-Za-z]+)/$', 'section', name='content_section'),
-    url(r'^tag/(?P<tag>[A-Za-z\s]+)/$', 'tag', name='content_tag'),
-    url(r'^tag/(?P<tag>[A-Za-z\s]+)/page/(?P<page>\d+)/$', 'tag'),
+    url(r'^tag/(?P<tag>[A-Za-z\s]+)/%s$' % FILTER_URL_RE, 
+        'tag', name='content_tag'),
     url(r'^gallery/(\d+)/(\d+)/$',
         'gallery', name='content_imagegallery'),
     url(r'^gallery/get_img/(\d+)/$', 'ajax_get_img'),

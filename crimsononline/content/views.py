@@ -109,7 +109,7 @@ def writer(request, pk, f_name, m_name, l_name,
     
     return render_to_response('writer.html', d)
 
-def tag(request, tag, page=None):
+def tag(request, tag, section_str='', type_str='', page=1):
     tag = get_object_or_404(Tag, text=tag.replace('_', ' '))
     content = ContentGeneric.objects.filter(tags=tag)
     
@@ -126,6 +126,9 @@ def tag(request, tag, page=None):
             issue__issue_date__lte=last_year()).order_by('-priority')[:5])
     featured_articles = featured_articles[:5]
     
+    f = filter_helper(content, section_str, type_str, 
+        tag.get_absolute_url())
+    
     # TODO: top writers (contributors that have the most content with this tag)
     
     
@@ -134,9 +137,10 @@ def tag(request, tag, page=None):
     #rel_tags = Tag.objects.filter(content__id__in=content_pks).annotate(
     
     
-    d = paginate(content, page, 5)
+    d = paginate(f.pop('content'), page, 5)
     d.update({'tag': tag, 'url': tag.get_absolute_url(), 
         'featured': featured_articles})
+    d.update(f)
     
     return render_to_response('tag.html', d)
 
