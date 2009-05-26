@@ -21,6 +21,10 @@ div.filters {
 }
 div.filters p {
     margin-bottom: 5px;
+    font-family: Arial;
+}
+div.filters p.title {
+    color: #aa2222;
 }
 div.filters span.button {
     display: inline-block;
@@ -34,11 +38,12 @@ div.filters span.button {
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px;
 }
-div.filters span.button a:hover{
-    text-decoration: underline;
-}
 div.filters span.button a {
     color: white;
+    font-family: Frutiger, "Frutiger Linotype", Univers, Calibri, "Gill Sans", "Gill Sans MT", "Myriad Pro", Myriad, "DejaVu Sans Condensed", "Liberation Sans", "Nimbus Sans L", Tahoma, Geneva, "Helvetica Neue", Helvetica, Arial, sans-serif;;
+}
+div.filters span.button a:hover{
+    text-decoration: underline;
 }
 div.filters span.inverted {
     background-color: white;

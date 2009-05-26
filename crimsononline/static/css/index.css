@@ -24,51 +24,7 @@ div#masthead div#masthead_center div.topics{
 }
 
 /* section specifics */
-ul.article_previews{
-	list-style: none;
-    margin-top: 0;
-}
-ul.article_previews > li{
-	margin-top: 10px;
-}
-ul.article_previews h3{
-	font-size: 14pt;
-	line-height: 1;
-    font-weight: bold;
-	display: inline;
-}
 
-ul.article_previews .byline {
-    font-family: arial, sans-serif;
-	font-size: 8pt;
-	font-weight: bold;
-}
-ul.article_previews .byline a{
-	font-size: 8pt;
-	display: inline;
-}
-
-ul.article_previews .dateline {
-    font-size: 8pt;
-    color: #aaa;
-}
-
-ul.article_previews .teaser {
-	font-size: 10pt;
-    
-}
-ul.article_headlines ul {
-	list-style: disc outside;
-	padding: 0px 0px 0px 18px;
-}
-ul.article_headlines li {
-    margin: 0 0 3px;
-}
-ul.article_headlines a{
-	font-size: inherit;
-	font-weight: normal;
-	display: block;
-}
 div#rotator {
     margin-bottom: 10px;
 }
