@@ -13,14 +13,14 @@ class MaxSizeImageField(ImageField):
     
     def pre_save(self, model_instance, add):
         file = super(MaxSizeImageField, self).pre_save(model_instance, add)
-        img = pilImage.open(file.path)
-        width = min(img.size[0], self.width) if self.width else None
-        height = min(img.size[1], self.height) if self.height else None
-        width = width or img.size[0]
-        height = height or img.size[1]
-        img.thumbnail((width, height), pilImage.ANTIALIAS)
-        img.save(file.path)
-        print width, height, file.path
+        if file:
+            img = pilImage.open(file.path)
+            width = min(img.size[0], self.width) if self.width else None
+            height = min(img.size[1], self.height) if self.height else None
+            width = width or img.size[0]
+            height = height or img.size[1]
+            img.thumbnail((width, height), pilImage.ANTIALIAS)
+            img.save(file.path)
         return file
     
     def get_internal_type(self):
