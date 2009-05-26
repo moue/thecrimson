@@ -13,6 +13,40 @@
     float: left;
 }
 
+/* filter area */
+div.filters {
+    padding-bottom: 5px;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 10px;
+}
+div.filters p {
+    margin-bottom: 5px;
+}
+div.filters span.button {
+    display: inline-block;
+    padding: 1px 2px;
+    margin: 0 3px;
+    font-size: 12px;
+    
+    background-color: #aa2222;
+    border: 1px solid #aa2222;
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+}
+div.filters span.button a:hover{
+    text-decoration: underline;
+}
+div.filters span.button a {
+    color: white;
+}
+div.filters span.inverted {
+    background-color: white;
+}
+div.filters span.inverted a {
+    color: #aa2222;
+}
+
 /* thumbnails */
 div.image_thumb {
     float: left;

@@ -17,11 +17,11 @@ def profileml(s):
     return mark_safe(PML_RE.sub(r'<b>\1</b>', s))
 
 @register.filter
-def yuhkilabel(s):
+def yuhkilabel(s, inverted=False):
     """
     produces html for a yuhki label (curved, w/ red in background)
     """
-    return mark_safe(render_to_string('templatetag/yuhkilabel.html', {'s': s}))
+    return mark_safe(render_to_string('templatetag/yuhkilabel.html', locals()))
 
 @register.filter
 def paragraphs(str):

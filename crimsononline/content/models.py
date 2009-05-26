@@ -139,6 +139,15 @@ class Content(models.Model):
             self.save()
         return mark_safe(render_to_string(templ, context))
     
+    @staticmethod
+    def types():
+        # returns all ContentType objects whose 
+        #    contenttype has parent class Content
+        # TODO: needs MAD caching
+        cts = ContentType.objects.filter(app_label='content')
+        # HACK: i'm not sure how to grab the parent class (super doesn't work)
+        return [ct for ct in cts if hasattr(ct.model_class(), 'generic')]
+    
     @classmethod
     def content_type(cls):
         return ContentType.objects.get_for_model(cls)

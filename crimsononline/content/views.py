@@ -1,13 +1,16 @@
 import sys
+import re
 from datetime import datetime, timedelta, date
 from django.shortcuts import \
     render_to_response, get_object_or_404, get_list_or_404
 from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.template import Context, RequestContext, loader
 from django.contrib.flatpages.models import FlatPage
+from django.contrib.contenttypes.models import ContentType
 from crimsononline.content.models import *
 from crimsononline.content_module.models import ContentModule
 from crimsononline.common.utils.paginate import paginate
+from crimsononline.common.utils.strings import strip_commas
 from django.core.mail import send_mail
 
 
@@ -88,14 +91,63 @@ def bigmap(request):
     
     return render_to_response('bigmap.html', dict)
     
-def writer(request, contributor_id, f_name, m_name, l_name, page=None):
-    w = get_object_or_404(Contributor, pk=contributor_id)
+REMOVE_P_RE = re.compile(r'page/\d+/$')
+def writer(request, pk, f_name, m_name, l_name, 
+    section_str='', type_str='', page=1):
+    
+    w = get_object_or_404(Contributor, pk=pk)
     # Validate the URL (we don't want /writer/281/Balls_Q_McTitties to be valid)
     if (w.first_name, w.middle_initial, w.last_name) != (f_name, m_name, l_name):
         return HttpResponseRedirect(w.get_absolute_url())
     
-    d = paginate(w.content.all(), page, 10)
-    d.update({'writer': w, 'url': w.get_absolute_url()})
+    url_base = w.get_absolute_url()
+    content = w.content.all()
+    sects, tps = {}, {}
+    o_section_str = section_str
+    
+    if section_str:
+        sections = [s.lower() for s in section_str.split(',') if s]
+        sections = [s for s in Section.all() if s.name.lower() in sections]
+        content = content.filter(section__in=sections)
+    else:
+        section_str = ','.join([s.name.lower() for s in Section.all()])
+        sections = Section.all()
+    for section in Section.all():
+        a = section in sections
+        if a:
+            s_str = section_str.replace(section.name.lower(), '')
+        else:
+            s_str = section_str + ',%s' % section.name.lower()
+        # clean the url part
+        s_str = strip_commas(s_str)
+        
+        url = url_base 
+        url += ('sections/%s/' % s_str if s_str else '')
+        url += ('types/%s/' % type_str if type_str else '')
+        sects[section.name] = {'selected': a, 'url': url} 
+        
+    if type_str:
+        types = [t.lower() for t in type_str.split(',') if t]
+        content = content.filter(content_type__name__in=types)
+    else:
+        type_str = ','.join([s.name.lower() for t in Content.types()])
+        types = Content.types()
+    for type in Content.types():
+        a = type.name.lower() in types
+        if a:
+            t_str = type_str.replace(type.name.lower(), '')
+        else:
+            t_str = type_str + ',%s' % type.name.lower()
+        t_str = strip_commas(t_str)
+        
+        url = url_base
+        url += ('sections/%s/' % o_section_str if o_section_str else '')
+        url += ('types/%s/' % t_str if t_str else '')
+        tps[type.name.title()] = {'selected': a, 'url': url}
+    
+    d = paginate(content, page, 10)
+    d.update({'writer': w, 'url': REMOVE_P_RE.sub(request.path, ''), 
+        'sections': sects, 'types': tps})
     
     return render_to_response('writer.html', d)
 

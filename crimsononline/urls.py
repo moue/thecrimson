@@ -7,11 +7,14 @@ from crimsononline.admin_cust.views import login_user
 
 admin.autodiscover()
 
+WRITER_URL_RE = r''
 urlpatterns = patterns('crimsononline.content.views',
-    url(r'^writer/(\d+)/([A-Za-z\s]+)_([A-Za-z]{0,1})_([A-Za-z]+)/$',
+    url(r'writer/(?P<pk>\d+)/' \
+        r'(?P<f_name>[A-Za-z\s]+)_(?P<m_name>[A-Za-z]?)_(?P<l_name>[A-Za-z]+)/'\
+        r'(?:sections/(?P<section_str>[A-Za-z,]+)/)?' \
+        r'(?:types/(?P<type_str>[A-Za-z,\s]+)/)?' \
+        r'(?:page/(?P<page>\d+)/)?$', 
         'writer', name='content_writer_profile'),
-    url(r'^writer/(\d+)/([A-Za-z\s]+)_([A-Za-z]{0,1})_([A-Za-z]+)/page/(\d+)/$',
-        'writer'),
     url(r'^section/(?P<section>[A-Za-z]+)/$', 'section', name='content_section'),
     url(r'^tag/(?P<tag>[A-Za-z\s]+)/$', 'tag', name='content_tag'),
     url(r'^tag/(?P<tag>[A-Za-z\s]+)/page/(?P<page>\d+)/$', 'tag'),
@@ -35,8 +38,7 @@ urlpatterns += patterns('',
 )
 
 urlpatterns += patterns('',
-    (r'^site_media/(?P<path>.*)$', 
-        'django.views.static.serve', 
+    (r'^site_media/(?P<path>.*)$', 'django.views.static.serve', 
         {'document_root': settings.MEDIA_ROOT}),
 )
 

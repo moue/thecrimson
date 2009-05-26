@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% load content_filters %}
+{% load common_filters %}
 
 {% block inhead %}
 	<link type="text/css" rel="stylesheet" href="/site_media/css/content_list.css">
@@ -15,6 +16,27 @@
     </div>
     <div class="content_list">
         {% block before_content %}
+        {% endblock %}
+        {% block content_filters %}
+            <div class="filters">
+                <p>FILTER BY:</p>
+                <p>SECTION {% for section, d in sections.items %}
+                    {% if d.selected %}
+                        <span class="button"><a href="{{d.url}}">{{section}}</a>
+                    {% else %}
+                        <span class="inverted button"><a href="{{d.url}}">{{section}}</a>
+                    {% endif %}
+                    </span>
+                {% endfor %}</p>
+                <p>TYPE {% for type, d in types.items %}
+                    {% if d.selected %}
+                        <span class="button"><a href="{{d.url}}">{{type}}</a>
+                    {% else %}
+                        <span class="inverted button"><a href="{{d.url}}">{{type}}</a>
+                    {% endif %}
+                    </span>
+                {% endfor %}</p>
+            </div>
         {% endblock %}
         {% block content_list %}
             <ul>
