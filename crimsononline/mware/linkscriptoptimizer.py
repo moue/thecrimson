@@ -1,4 +1,5 @@
 import re
+from crimsononline.common.utils import lists
 
 # Uses regular expressions to place link and script tags in the correct place
 # TODO: cache the compiled REs to make it go a bit faster
@@ -14,8 +15,7 @@ class LinkScriptOptimizer(object):
             matches = regexp.findall(string)
             if not matches:
                 return (string, "")
-            tags = '\n'.join(matches)
-            print tags
+            tags = '\n'.join(lists.uniquify(matches))
             return (regexp.sub("", string), tags)
 
         # moves tags matching regexp in front of given tag in given source

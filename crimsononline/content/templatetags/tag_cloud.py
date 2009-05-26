@@ -43,7 +43,10 @@ class TagCloudNode(template.Node):
         
     def render(self, context):
         if self.tags:
-            tags = self.tags
+            try:
+                tags = self.tags.resolve(context)
+            except:
+                return ''
         else:
             tags = Tag.objects.all() \
                 .annotate(content_count=Count('content')) \

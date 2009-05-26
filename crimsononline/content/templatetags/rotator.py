@@ -11,16 +11,15 @@ class RotatorNode(template.Node):
         @id => unique (for the page) id.  used as 'id' attribute in html
     """
     def __init__(self, contents, id):
-        try:
-            self.contents = template.Variable(contents)
-        except:
-            self.contents = None
-        self.id = id
+        print contents
+        self.contents, self.id = contents, id
     
     def render(self, context):
         try:
-            self.contents = self.contents.resolve(context)
+            self.contents = self.contents.resolve(context, True)
+            print self.contents
         except:
+            raise
             return ''
         return render_to_string('templatetag/rotator.html', 
             {'contents': self.contents})
@@ -31,7 +30,7 @@ def do_rotator(parser, token):
     if len(tokens) < 3:
         raise template.TemplateSyntaxError, \
             "%r tag takes 2 arguments" % tokens[0]
-    contents = tokens[1]
+    contents = parser.compile_filter(tokens[1])
     id = tokens[2]
     
     return RotatorNode(contents, id)

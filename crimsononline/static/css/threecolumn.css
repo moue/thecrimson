@@ -13,12 +13,6 @@ ul.article_previews > li > *{
 	margin-top: 3px;
 }
 ul.article_previews h3{
-    font-family: "Palatino Linotype", Palatino, Palladio, "URW Palladio L", 
-                    "Book Antiqua", Baskerville, "Bookman Old Style", 
-                    "Bitstream Charter", "Nimbus Roman No9 L", Garamond, 
-                    "Apple Garamond", "ITC Garamond Narrow", 
-                    "New Century Schoolbook", "Century Schoolbook", 
-                    "Century Schoolbook L", Georgia, serif;
 	font-size: 18px;
 	line-height: 0.9;
 	display: inline;
@@ -33,12 +27,11 @@ ul.article_previews h3 a{
     font-weight: normal;
 }
 
-ul.article_previews .byline {
-    font-family: arial, sans-serif;
+ul.article_previews .byline, ul.article_headlines .byline {
 	font-size: 11px;
 	font-weight: bold;
 }
-ul.article_previews .byline a{
+ul.article_previews .byline a, ul.article_headlines .byline a{
 	font-size: 11px;
 	display: inline;
 }
@@ -54,12 +47,15 @@ ul.article_previews p.teaser {
     clear: left;
     
 }
-ul.article_headlines ul {
+ul.article_headlines {
 	list-style: disc outside;
-	padding: 0px 0px 0px 18px;
+	padding: 0px 0px 0px 20px;
 }
 ul.article_headlines li {
-    margin: 0 0 3px;
+    margin-bottom: 8px;
+}
+ul.article_headlines h3 {
+    font-size: 14px;
 }
 ul.article_headlines a{
 	font-size: inherit;
@@ -67,7 +63,7 @@ ul.article_headlines a{
 	display: block;
 }
 
-div.left_content_column, div.middle_content_column, div.right_content_column{
+div.column {
     width: 308px;
 	padding: 6px 6px;
     float: left;
@@ -77,6 +73,7 @@ div.left_content_column, div.middle_content_column, div.right_content_column{
 div#the_fold{
 	clear:both;
 	margin:5px 0px;
+    border-bottom: 1px solid #ccc;
 }
 
 /* preview */

@@ -1,0 +1,37 @@
+{% extends "threecolumn.html" %}
+
+{% load common_filters %}
+{% load content_filters %}
+{% load rotator %}
+{% load content_module %}
+{% load tag_cloud %}
+{% load top_articles %}
+
+{% block lefttopcolumn %}
+    <ul class="article_previews">
+    {% for s in stories|slice:":4" %}
+        <li>{{ s|render:"preview" }}</li>
+    {% endfor %}
+    </ul>
+    {% contentmodule news_bottom_left %}
+    {% endcontentmodule %}
+{% endblock %}
+
+{% block middletopcolumn %}
+    {% rotator rotate "news_rotator" %}
+    <ul class="article_headlines">
+        {% for s in stories|slice:"4:14" %}
+        <li>
+            <h3><a href="{{s.get_absolute_url}}">{{s}}</a></h3>
+            <span class="byline">By {{s.contributors.all|linkify|human_list}}</span>
+        </li>
+        {% endfor %}
+    </ul>
+    {% contentmodule news_bottom_mid %}
+    {% endcontentmodule %}
+{% endblock %}
+
+{% block righttopcolumn %}
+    {% tag_cloud 20 "tags" %}|
+    
+{% endblock %}

@@ -46,7 +46,9 @@
         <div class="preview_roll">
             <ul>
                 {% for article in contents %}
+                    {% if article.main_rel_content %}
                     <li>{{article.main_rel_content|to_img_tag:"50,50,1.0"}}</li>
+                    {% endif %}
                 {% endfor %}
             </ul>
         </div>

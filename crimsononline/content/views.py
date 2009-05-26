@@ -149,8 +149,8 @@ def section(request, section):
     if section == 'photo':
         return photo(request)
     section = section.lower()
-    section = filter(lambda x: section == x.name.lower(), Section.all())
-    if len(section) == 0:
+    section = [s for s in Section.all() if section == s.name.lower()]
+    if len(section) != 1:
         raise Http404
     section = section[0]
     
@@ -164,6 +164,46 @@ def section(request, section):
     return render_to_response(
         [dict['nav']+'.html', 'section.html', 'content_list.html'], dict
     )
+
+def section_news(request):
+    nav = 'news'
+    section = Section.cached(nav)
+    stories = top_articles('News')
+    rotate = stories.filter(
+        rel_content__content_type=Image.content_type()).distinct()[:4]
+    stories = stories.exclude(pk__in=[c.pk for c in rotate])[:20]
+    
+    return render_to_response('sections/news.html', locals())
+    
+def section_opinion(request):
+    nav = 'opinion'
+    section = Section.cached(nav)
+    content = top_articles(nav)
+    return render_to_response('sections/opinion.html', locals())
+    
+def section_fm(request):
+    nav = 'fm'
+    section = Section.cached(nav)
+    content = top_articles(nav)
+    return render_to_response('sections/fm.html', locals())
+    
+def section_arts(request):
+    nav = 'arts'
+    section = Section.cached(nav)
+    content = top_articles(nav)
+    return render_to_respsonse('sections/arts.html', locals())
+    
+def section_photo(request):
+    nav = 'photo'
+    section = Section.cached(nav)
+    content = top_articles(nav)
+    return render_to_response('sections/photo.html', locals())
+    
+def section_sports(request):
+    nav = 'sports'
+    section = Section.cached(nav)
+    content = top_articles(nav)
+    return render_to_response('sections/sports.html', locals())
 
 def photo(request):
     galleries = ImageGallery.objects.order_by('-created_on')[:10]

@@ -421,8 +421,18 @@ class Section(models.Model):
         #   sections should almost never change
         a = cache.get('sections_all')
         if a is None:
-            a = Section.objects.all()[:]
+            a = Section.objects.all()
             cache.set('sections_all', a, 1000000)
+        return a
+    
+    @staticmethod
+    def cached(section_name=None):
+        a = cache.get('sections_cached')
+        if a is None:
+            a = dict([(s.name.lower(), s) for s in Section.all()])
+            cache.set('sections_cached', a, 1000000)
+        if section_name:
+            return a[section_name]
         return a
     
     def __unicode__(self):

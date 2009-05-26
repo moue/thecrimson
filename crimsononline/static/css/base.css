@@ -137,6 +137,7 @@ div#masthead div.tools div.search span.submit {
     margin: 0 3px;
 }
 #main {
+    width: 960px;
 	float: left;
     padding:6px;
 	clear: both;
@@ -202,7 +203,7 @@ body {
 
 /* tag cloud*/
 div.tag_cloud {
-    line-height: 20px; 
+    line-height: 20px;
 }
 div.tag_cloud a{
     border-bottom: 1px dotted #ba0600;
@@ -210,6 +211,7 @@ div.tag_cloud a{
     display: block;
     float: left;
     margin: 0 5px 6px 0;
+    white-space: nowrap;
 }
 div.tag_cloud a.largest {
     font-size: 24px;
@@ -246,13 +248,20 @@ a:hover {
 	color: #ea0600;
 }
 .byline{
+    font-family: Helvetica, Corbel, "Lucida Grande", "Lucida Sans Unicode", 
+                "Lucida Sans", "DejaVu Sans", "Bitstream Vera Sans", 
+                "Liberation Sans", Verdana, "Verdana Ref", sans-serif;
     color: #444;
+    line-height: normal;
 }
 .byline a{
-    font-family:helvetica;
+    font-family: Helvetica, Corbel, "Lucida Grande", "Lucida Sans Unicode", 
+                "Lucida Sans", "DejaVu Sans", "Bitstream Vera Sans", 
+                "Liberation Sans", Verdana, "Verdana Ref", sans-serif;
     text-transform: uppercase;
     text-decoration: underline;
     color: #666;
+    line-height: normal;
 }
 .dateline {
     color: #666;
