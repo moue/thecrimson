@@ -1575,7 +1575,6 @@
         "model": "content.contributor", 
         "fields": {
             "middle_initial": "", 
-            "profile_pic": "", 
             "first_name": "Matt", 
             "last_name": "Fasman", 
             "board_number": 134, 
@@ -1595,7 +1594,6 @@
         "model": "content.contributor", 
         "fields": {
             "middle_initial": "", 
-            "profile_pic": "", 
             "first_name": "Dan", 
             "last_name": "Carroll", 
             "board_number": 135, 
@@ -1615,7 +1613,6 @@
         "model": "content.contributor", 
         "fields": {
             "middle_initial": "", 
-            "profile_pic": "", 
             "first_name": "Andy", 
             "last_name": "Lei", 
             "board_number": 136, 
@@ -1637,7 +1634,6 @@
         "model": "content.contributor", 
         "fields": {
             "middle_initial": "", 
-            "profile_pic": "", 
             "first_name": "Larry", 
             "last_name": "Summers", 
             "board_number": null, 
@@ -1657,7 +1653,6 @@
         "model": "content.contributor", 
         "fields": {
             "middle_initial": "W", 
-            "profile_pic": "", 
             "first_name": "George", 
             "last_name": "Bush", 
             "board_number": 136, 
@@ -1679,7 +1674,6 @@
         "model": "content.contributor", 
         "fields": {
             "middle_initial": "", 
-            "profile_pic": "", 
             "first_name": "Theodore", 
             "last_name": "Roosevelt", 
             "board_number": 135, 
@@ -1701,7 +1695,6 @@
         "model": "content.contributor", 
         "fields": {
             "middle_initial": "D", 
-            "profile_pic": "", 
             "first_name": "Franklin", 
             "last_name": "Roosevelt", 
             "board_number": 136, 
@@ -1723,7 +1716,6 @@
         "model": "content.contributor", 
         "fields": {
             "middle_initial": "F", 
-            "profile_pic": "", 
             "first_name": "John", 
             "last_name": "Kennedy", 
             "board_number": 137, 
@@ -1745,7 +1737,6 @@
         "model": "content.contributor", 
         "fields": {
             "middle_initial": "B", 
-            "profile_pic": "", 
             "first_name": "Rutherford", 
             "last_name": "Hayes", 
             "board_number": 134, 
@@ -1767,7 +1758,6 @@
         "model": "content.contributor", 
         "fields": {
             "middle_initial": "Q", 
-            "profile_pic": "", 
             "first_name": "John", 
             "last_name": "Adams", 
             "board_number": 136, 
@@ -1789,7 +1779,6 @@
         "model": "content.contributor", 
         "fields": {
             "middle_initial": "", 
-            "profile_pic": "", 
             "first_name": "John", 
             "last_name": "Adams", 
             "board_number": 136, 
@@ -1811,7 +1800,6 @@
         "model": "content.contributor", 
         "fields": {
             "middle_initial": "H", 
-            "profile_pic": "", 
             "first_name": "Barack", 
             "last_name": "Obama", 
             "board_number": 136, 
@@ -1833,7 +1821,6 @@
         "model": "content.contributor", 
         "fields": {
             "middle_initial": "", 
-            "profile_pic": "", 
             "first_name": "The Harvard", 
             "last_name": "Crimson", 
             "board_number": null, 
