@@ -106,20 +106,18 @@ def writer(request, pk, f_name, m_name, l_name,
     o_section_str = section_str
     
     if section_str:
-        sections = [s.lower() for s in section_str.split(',') if s]
-        sections = [s for s in Section.all() if s.name.lower() in sections]
+        section_str = [s.lower() for s in section_str.split(',') if s]
+        sections = [s for s in Section.all() if s.name.lower() in section_str]
         content = content.filter(section__in=sections)
     else:
-        section_str = ','.join([s.name.lower() for s in Section.all()])
+        section_str = [s.name.lower() for s in Section.all()]
         sections = Section.all()
     for section in Section.all():
         a = section in sections
         if a:
-            s_str = section_str.replace(section.name.lower(), '')
+            s_str = ','.join([s for s in section_str if s != section.name.lower()])
         else:
-            s_str = section_str + ',%s' % section.name.lower()
-        # clean the url part
-        s_str = strip_commas(s_str)
+            s_str = ','.join(section_str + [section.name.lower()])
         
         url = url_base 
         url += ('sections/%s/' % s_str if s_str else '')
@@ -127,23 +125,21 @@ def writer(request, pk, f_name, m_name, l_name,
         sects[section.name] = {'selected': a, 'url': url} 
         
     if type_str:
-        types = [t.lower() for t in type_str.split(',') if t]
-        content = content.filter(content_type__name__in=types)
+        type_str = [t.lower() for t in type_str.split(',') if t]
+        content = content.filter(content_type__name__in=type_str)
     else:
-        type_str = ','.join([s.name.lower() for t in Content.types()])
-        types = Content.types()
-    for type in Content.types():
-        a = type.name.lower() in types
+        type_str = [s.name.lower() for t in Content.types()]
+    for type in [t.name.lower() for t in Content.types()]:
+        a = type in type_str
         if a:
-            t_str = type_str.replace(type.name.lower(), '')
+            t_str = ','.join([t for t in type_str if t != type])
         else:
-            t_str = type_str + ',%s' % type.name.lower()
-        t_str = strip_commas(t_str)
+            t_str = ','.join(type_str + [type])
         
         url = url_base
         url += ('sections/%s/' % o_section_str if o_section_str else '')
         url += ('types/%s/' % t_str if t_str else '')
-        tps[type.name.title()] = {'selected': a, 'url': url}
+        tps[type.title()] = {'selected': a, 'url': url}
     
     d = paginate(content, page, 10)
     d.update({'writer': w, 'url': REMOVE_P_RE.sub(request.path, ''), 
