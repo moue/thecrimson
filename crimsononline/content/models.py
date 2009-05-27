@@ -17,7 +17,8 @@ from django.template.defaultfilters import slugify, truncatewords
 from django.template.loader import render_to_string
 from django.utils.safestring import mark_safe
 from django.forms import ModelForm
-from crimsononline.common.fields import MaxSizeImageField
+from crimsononline.common.fields import \
+    MaxSizeImageField, SuperImageField
 from crimsononline.common.storage import OverwriteStorage
 from crimsononline.common.utils.strings import \
     make_file_friendly, make_slug, make_url_friendly
@@ -202,7 +203,7 @@ class Content(models.Model):
 def get_img_path(instance, filename):
     ext = splitext(filename)[1]
     safe_name = make_file_friendly(instance.name)
-    return "images/%s/%s.%s" % (instance.type, safe_name, ext)
+    return "images/%s/%s%s" % (instance.type, safe_name, ext)
 
 
 class ContentGroup(models.Model):
@@ -226,7 +227,8 @@ class ContentGroup(models.Model):
     name = models.CharField(max_length=25)
     subname = models.CharField(max_length=40, blank=True, null=True)
     blurb = models.TextField(blank=True, null=True)
-    image = models.ImageField(upload_to=get_img_path, blank=True, null=True)
+    image = SuperImageField(upload_to=get_img_path, max_width=620,
+        blank=True, null=True, storage=OverwriteStorage())
     
     class Meta:
         unique_together = (('type', 'name',),)
@@ -569,11 +571,9 @@ class ImageSpec():
         
         if crop_coords:
             img = pilImage.open(self.orig_file.path)
-            #print size_spec, crop_coords
             img = img.transform(size_spec[:2], pilImage.EXTENT, crop_coords)
             self._path = self._get_path()
             img.save(self._path)
-            #print self._path
         else:
             self._path = ''
         self._url = ''

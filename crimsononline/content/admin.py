@@ -20,8 +20,14 @@ from crimsononline.content.forms import *
 from crimsononline.common.forms import \
     FbModelChoiceField, CropField, SearchModelChoiceField, MaskedValueTextInput
 
-
+class ContentGroupModelForm(ModelForm):
+    image = forms.ImageField(required=False, 
+        widget=admin.widgets.AdminFileWidget)
+    class Meta:
+        model = ContentGroup
+    
 class ContentGroupAdmin(admin.ModelAdmin):
+    form = ContentGroupModelForm
     def get_urls(self):
         urls = super(ContentGroupAdmin, self).get_urls()
         urls = patterns('',
@@ -337,7 +343,6 @@ class ImageAdminForm(ContentGenericModelForm):
                 # if this ratio is < 1, then the image wasn't scaled at all
                 if scale_ratio < 1.0:
                     scale_ratio = 1
-                #crop_data = map(lambda x: int(x * scale_ratio), data)
                 crop_data = [int(x * scale_ratio) for x in data]
                 i.crop(size[0], size[1], *crop_data)
         return i
