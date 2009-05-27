@@ -46,31 +46,34 @@ def to_img_tag(img, size_spec):
     @size_spec => the size spec of the display image. 3 possible formats:
         string name of the size_spec defined in the Image model
             (without the SIZE_ prefix),
-        string formatted "WIDTH,HEIGHT,CROP_RATIO" or "WIDTH,HEIGHT", or
-        tuple given as (WIDTH, HEIGHT, CROP_RATIO) or (WIDTH, HEIGHT)
+        string formatted "WIDTH,HEIGHT,CROP_W,CROP_H" or "WIDTH,HEIGHT", or
+        tuple given as (WIDTH, HEIGHT, CROP_W, CROP_H) or (WIDTH, HEIGHT)
      
     empty or omitted constraints are not binding
-    empty crop ratio assume to be 0
+    any empty or zero crop parameter = no cropping
     """
-    size_spec = str(size_spec)
-    # check to see if size_spec is a predefined attribute
-    disp = getattr(img, size_spec, None)
-    if not disp and size_spec.find(',') != -1:
-        # finish converting tuple to string
-        size_spec = size_spec.replace('(','').replace(')','')
-        size_spec = tuple(size_spec.split(','))
-        w = int(size_spec[0]) if size_spec[0] else None
-        h = int(size_spec[1]) if size_spec[1] else None
-        c = float(size_spec[2]) if len(size_spec) > 2 and size_spec[2] \
-            else 0
-        size_spec = (w, h, c)
-        disp = img.display(*size_spec)
+    if isinstance(size_spec, tuple) or isinstance(size_spec, list):
+        size_spec = [s or 0 for s in size_spec]
+    else:
+        size_spec = str(size_spec)
+        s = getattr(img, 'SIZE_' + size_spec, None)
+        if not s:
+            size_spec = size_spec.replace('(','').replace(')','')
+            size_spec = [s or 0 for s in size_spec.split(',')]
+            size_spec = [int(s) for s in size_spec]
+        else:
+            size_spec = s
+    if len(size_spec) < 3:
+        size_spec = list(size_spec[:2]) + [0,0]
+    size_spec = tuple(size_spec)
+    
+    disp_url = img.display_url(size_spec)
     k = filter.force_escape(img.kicker)
     tag = '<img src="%s" title="%s" alt="%s" />' % \
-            (disp.url, k, k)
+            (disp_url, k, k)
     return mark_safe(tag)
 
 @register.filter
 def to_thumb_tag(img):
-    THUMB_SIZE = '96'
-    return to_img_tag(img, THUMB_SIZE + ',' + THUMB_SIZE)
+    THUMB_SIZE = 96
+    return to_img_tag(img, (THUMB_SIZE, THUMB_SIZE))

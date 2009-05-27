@@ -35,13 +35,14 @@ def size_spec_to_size(size_spec, img_width, img_height):
     # set width / height constraints so we never upscale images
     max_w = min(img_width, max_w) if max_w else img_width
     max_h = min(img_height, max_h) if max_h else img_height
-
-    h_ratio = float(max_h) / crop_h
-    w_ratio = float(max_w) / crop_w
-    ratio = min(h_ratio, w_ratio)
     
-    max_w = int(ratio * crop_w)
-    max_h = int(ratio * crop_h)
+    if crop_h and crop_w:
+        h_ratio = float(max_h) / crop_h
+        w_ratio = float(max_w) / crop_w
+        ratio = min(h_ratio, w_ratio)
+        
+        max_w = int(ratio * crop_w)
+        max_h = int(ratio * crop_h)
     
     return max_w, max_h
     
@@ -51,6 +52,10 @@ class AutosizeImageFieldFile(ImageFieldFile):
     file attr_class, with additional wizardry for dynamically resizing images.
     keeps all resized images in the cache, to preserve disk space
     """
+    def __init__(self, *args, **kwargs):
+        ImageFieldFile.__init__(self, *args, **kwargs)
+        self._url_cache, self._path_cache = {}, {}
+    
     def crop_thumb(self, size_spec, crop_coords):
         """
         saves a cropped version of the file
@@ -71,13 +76,17 @@ class AutosizeImageFieldFile(ImageFieldFile):
         
         new_path = self._get_path(size_spec)
         img.save(new_path)
+        self._path_cache[size_spec] = new_path
     
     def display_path(self, size_spec):
         """returns the path for a sized image"""
+        path = self._path_cache.get(size_spec, None)
+        if path: return path
         path = self._get_path(size_spec)
         if not exists(path):
             img = pilImage.open(self.path)
             # cropped image
+            print size_spec
             if size_spec[2] and size_spec[3]:
                 # autogenerate crop_coordinates
                 aspect_ratio = float(self.width) / float(self.height)
@@ -89,7 +98,7 @@ class AutosizeImageFieldFile(ImageFieldFile):
                     crop_coords = (crop_x1, 0, crop_x1 + w, self.height)
                 # extra space on top / bottom => preserve width
                 elif aspect_ratio < crop_ratio:
-                    h = int(self.width / self.crop_ratio)
+                    h = int(self.width / crop_ratio)
                     crop_y1 = (self.height - h) / 2
                     crop_coords = (0, crop_y1, self.width, crop_y1 + h)
                 else:
@@ -100,12 +109,17 @@ class AutosizeImageFieldFile(ImageFieldFile):
             else:
                 img.thumbnail((size_spec[0], size_spec[1]), pilImage.ANTIALIAS)
             img.save(path)
+        self._path_cache[size_spec] = path
         return path
     
     def display_url(self, size_spec):
         """returns the path for a sized image"""
-        return '%s/%s' % (split(self.url)[0], 
+        url = self._url_cache.get(size_spec, None)
+        if url: return url
+        url = '%s/%s' % (split(self.url)[0], 
             split(self.display_path(size_spec))[1])
+        self._url_cache[size_spec] = url
+        return url
     
     def _get_path(self, size_spec):
         """

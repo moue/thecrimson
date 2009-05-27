@@ -31,7 +31,7 @@
             {% for article in contents %}
                 {% if article.main_rel_content %}
                 <li>
-                    {{article.main_rel_content|to_img_tag:"300,240,1.25"}}
+                    {{ article.main_rel_content|to_img_tag:"300,240,5,4" }}
                     <div class="preview_text">
                         <h3>{{article|linkify}}</h3>
                         <p class="teaser">{{article.teaser}}</p>
@@ -47,7 +47,7 @@
             <ul>
                 {% for article in contents %}
                     {% if article.main_rel_content %}
-                    <li>{{article.main_rel_content|to_img_tag:"50,50,1.0"}}</li>
+                    <li>{{ article.main_rel_content|to_img_tag:"50,50,1,1" }}</li>
                     {% endif %}
                 {% endfor %}
             </ul>

@@ -201,7 +201,7 @@ class ContributorAdmin(admin.ModelAdmin):
             )
         }),
         ('Crimson Staff Settings', {
-            'description': """<h3><b>Leave this section blank if this contributor 
+            'description': """<h3><b>Leave this section blank if this contributor
                             is not on the staff of The Crimson!</b></h3>""",
             'classes': ('collapse',),
             'fields': (
@@ -323,11 +323,12 @@ class ImageAdminForm(ContentGenericModelForm):
     # the different sizes to crop. these should all be square sizes
     CROP_SIZES = (Image.SIZE_THUMB, Image.SIZE_TINY, Image.SIZE_SMALL)
     
-    caption = forms.fields.CharField(
-        widget=forms.Textarea(attrs={'rows':'5', 'cols':'40'}),
-        required=False)
+    caption = forms.fields.CharField(required=False,
+        widget=forms.Textarea(attrs={'rows':'5', 'cols':'40'})
+    )
     thumbnail = CropField(required=False, crop_size=Image.SIZE_THUMB,
-        display_size=Image.SIZE_STAND)
+        display_size=Image.SIZE_STAND
+    )
     
     def save(self, *args, **kwargs):
         i = super(ImageAdminForm, self).save(*args, **kwargs)
@@ -344,7 +345,7 @@ class ImageAdminForm(ContentGenericModelForm):
                 if scale_ratio < 1.0:
                     scale_ratio = 1
                 crop_data = [int(x * scale_ratio) for x in data]
-                i.crop(size[0], size[1], *crop_data)
+                i.crop_thumb(size, crop_data)
         return i
 
 class ImageAdmin(ContentGenericAdmin):

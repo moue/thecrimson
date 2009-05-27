@@ -11,15 +11,12 @@ class RotatorNode(template.Node):
         @id => unique (for the page) id.  used as 'id' attribute in html
     """
     def __init__(self, contents, id):
-        print contents
         self.contents, self.id = contents, id
     
     def render(self, context):
         try:
             self.contents = self.contents.resolve(context, True)
-            print self.contents
         except:
-            raise
             return ''
         return render_to_string('templatetag/rotator.html', 
             {'contents': self.contents})

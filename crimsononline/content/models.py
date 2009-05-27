@@ -668,11 +668,11 @@ class Image(Content):
     
     # standard image size constraints: 
     #  width, height, crop_ratio ( 0 => not cropped )
-    SIZE_TINY = (75, 75, 1.0)
-    SIZE_SMALL = (100, 100, 1.0)
-    SIZE_THUMB = (150, 150, 1.0)
-    SIZE_STAND = (600, 600, 0)
-    SIZE_LARGE = (900, 900, 0)
+    SIZE_TINY = (75, 75, 1, 1)
+    SIZE_SMALL = (100, 100, 1, 1)
+    SIZE_THUMB = (150, 150, 1, 1)
+    SIZE_STAND = (600, 600, 0, 0)
+    SIZE_LARGE = (900, 900, 0, 0)
     
     caption = models.CharField(blank=True, null=True, max_length=1000)
     kicker = models.CharField(blank=True, null=True, max_length=500)
@@ -680,7 +680,7 @@ class Image(Content):
     created_on = models.DateTimeField(auto_now_add=True)
     # make sure pic is last: get_save_path needs an instance, and if this
     #  attribute is processed first, all the instance attributes will be blank
-    pic = models.ImageField('File', upload_to=get_save_path)
+    pic = SuperImageField('File', max_width=960, upload_to=get_save_path)
     
     objects = ImageManager()
     
@@ -704,30 +704,13 @@ class Image(Content):
         get_latest_by = 'created_on'
         ordering = ['-created_on']
     
-    def __init__(self, *args, **kwargs):
-        self._spec_cache = {}
-        return super(Image, self).__init__(*args, **kwargs)
+    def display_url(self, size_spec):
+        """ convenience method for the pic attribute's method of same name """
+        return self.pic.display_url(size_spec)
     
-    def display(self, width, height, crop_ratio=0):
-        """
-        returns an ImageSpec object
-        """
-        if self._spec_cache.get((width, height, crop_ratio), None):
-            return self._spec_cache[(width, height, crop_ratio)]
-        s = ImageSpec(self.pic, (width, height, crop_ratio))
-        self._spec_cache[(width, height, crop_ratio)] = s
-        return s
-    
-    def crop(self, width, height, x1, y1, x2, y2):
-        """
-        crops the image and returns an ImageSpec object
-        
-        overwrites any previous ImageSpecs
-        """
-        c = float(width) / float(height)
-        s = ImageSpec(self.pic, (width, height, c), (x1, y1, x2, y2))
-        self._spec_cache[(width, height, c)] = s
-        return s
+    def crop_thumb(self, size_spec, crop_coords):
+        """ convenience method for the pic attribute's method of same name """
+        self.pic.crop_thumb(size_spec, crop_coords)
     
     def __unicode__(self):
         return self.kicker
