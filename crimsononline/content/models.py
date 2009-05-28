@@ -21,7 +21,7 @@ from crimsononline.common.fields import \
     MaxSizeImageField, SuperImageField
 from crimsononline.common.storage import OverwriteStorage
 from crimsononline.common.utils.strings import \
-    make_file_friendly, make_slug, make_url_friendly
+    make_file_friendly, make_url_friendly
 
 
 class ContentGenericManager(models.Manager):
@@ -53,6 +53,12 @@ class ContentGeneric(models.Model):
         'Contributor', null=True, related_name='content')
     tags = models.ManyToManyField('Tag', null=True, related_name='content')
     issue = models.ForeignKey('Issue', null=True, related_name='content')
+    slug = models.SlugField(max_length=70, 
+        help_text="""
+        The text that will be displayed in the URL of this article.
+        Can only contain letters, numbers, and dashes (-).
+        """
+    )
     section = models.ForeignKey('Section', null=True, related_name='content')
     priority = models.IntegerField(default=0)
     group = models.ForeignKey('ContentGroup', null=True, blank=True)
@@ -61,7 +67,10 @@ class ContentGeneric(models.Model):
     objects = ContentGenericManager()
     
     class Meta:
-        unique_together = (('content_type', 'object_id',),)
+        unique_together = (
+            ('content_type', 'object_id',),
+            ('issue', 'slug'),
+        )
     
     def __unicode__(self):
         return str(self.content_object)
@@ -77,6 +86,12 @@ class Content(models.Model):
     
     class Meta:
         abstract = True
+    
+    def _get_slug(self):
+        return self.generic.slug
+    def _set_slug(self, value):
+        self.generic.slug = value
+    slug = property(_get_slug, _set_slug)
     
     def _get_group(self):
         return self.generic.group
@@ -140,6 +155,20 @@ class Content(models.Model):
         #    self.save()
         self.store_hit()
         return mark_safe(render_to_string(templ, context))
+    
+    """  this shit does not work
+    # enable access to generic's properties directlys
+    def __getattr__(self, attr):
+        return getattr(self.generic, attr)
+    
+    def __setattr__(self, attr, value):
+        if hasattr(self, attr):
+            models.Model.__setattr__(self, attr, value)
+        elif hasattr(self.generic, attr):
+            self.generic.__setattr__(self, attr, value)
+        else:
+            models.Model.__setattr__(self, attr, value)
+    """
     
     def store_hit(self):
         # (Eventual) minimum amount of time to wait between stores to the database
@@ -244,7 +273,7 @@ class Content(models.Model):
     def get_absolute_url(self):
         i = self.issue.issue_date
         url_data = [self.__class__.__name__.lower(), i.year, 
-            i.month, i.day, make_url_friendly(self.identifier()), self.pk]
+            i.month, i.day, self.slug]
         if self.group:
             url_data = [self.group.type.lower(), 
                 make_url_friendly(self.group.name)] + url_data
@@ -759,7 +788,6 @@ class Image(Content):
     
     caption = models.CharField(blank=True, null=True, max_length=1000)
     kicker = models.CharField(blank=True, null=True, max_length=500)
-    slug = models.SlugField(blank=False, null=True)
     created_on = models.DateTimeField(auto_now_add=True)
     # make sure pic is last: get_save_path needs an instance, and if this
     #  attribute is processed first, all the instance attributes will be blank
@@ -801,11 +829,6 @@ class Image(Content):
     def identifier(self):
         return make_url_friendly(self.kicker)
     
-    def save(self, *args, **kwargs):
-        # autopopulate the slug
-        if not self.slug:
-            self.slug = slugify(self.kicker)
-        return super(Image, self).save(*args, **kwargs)
 
 
 class ImageGallery(Content):
@@ -926,11 +949,6 @@ class Article(Content):
     >>> str(a2.long_teaser)
     'omg. lolz.'
     
-    # slugs
-    >>> str(a1.slug)
-    'abc'
-    >>> str(a2.slug)
-    'head-line'
     """
     
     BYLINE_TYPE_CHOICES = (
@@ -946,12 +964,6 @@ class Article(Content):
         blank=True, max_length=1000,
         help_text='If left blank, this will be the first sentence ' \
                     'of the article text.'
-    )
-    slug = models.SlugField(blank=True, max_length=70, 
-        help_text="""
-        The text that will be displayed in the URL of this article.
-        Can only contain letters, numbers, and dashes (-).
-        """
     )
     created_on = models.DateTimeField(auto_now_add=True)
     modified_on = models.DateTimeField(auto_now=True)
@@ -979,7 +991,6 @@ class Article(Content):
                 'Can change articles at any time',),
         )
         #ordering = ['-priority',]
-        #unique_together = ('slug', 'issue',)
         get_latest_by = 'created_on'
     
     @property
@@ -992,11 +1003,6 @@ class Article(Content):
         r = r[0].content_object if r else None
         return r
     
-    def save(self, *args, **kwargs):
-        # autopopulate the slug
-        if not self.slug:
-            self.slug = slugify(self.headline)
-        return super(Article, self).save(*args, **kwargs)
     
     def delete(self, *args, **kwargs):
         """don't delete articles, just unpublish them"""

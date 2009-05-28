@@ -1962,8 +1962,7 @@
             "pic": "photos/2008/12/03/024429_ChiaNMustafa09.jpg", 
             "caption": "Chia N. Mustafa \u201909 sits in front of Kirkland House last Friday. The son of a Kurdish leader, Mustafa has spent time in Baghdad. \u201cHe\u2019s lived in the ghetto, he\u2019s eaten from a silver spoon, he\u2019s been through war, he\u2019s been through everything,\u201d his suitemate said.", 
             "created_on": "2008-12-03 02:44:29", 
-            "kicker": "Chia N. Mustafa '09", 
-            "slug": "chia-n-mustafa-09"
+            "kicker": "Chia N. Mustafa '09"
         }
     }, 
     {
@@ -1973,8 +1972,7 @@
             "pic": "photos/2008/12/03/024247_CrateandBarrel.jpg", 
             "caption": "The iconic Brattle Square store closes.", 
             "created_on": "2008-12-03 02:42:47", 
-            "kicker": "Crate and Barrel", 
-            "slug": "crate-and-barrel"
+            "kicker": "Crate and Barrel"
         }
     }, 
     {
@@ -1984,8 +1982,7 @@
             "pic": "photos/2008/12/03/024112_Prop8Protest.jpg", 
             "caption": "Students prepare posters for a rally to protest Proposition 8, the recently passed California ban on same-sex marriage.", 
             "created_on": "2008-12-03 02:41:12", 
-            "kicker": "Prop 8 Protest", 
-            "slug": "prop-8-protest"
+            "kicker": "Prop 8 Protest"
         }
     }, 
     {
@@ -1995,8 +1992,7 @@
             "pic": "photos/2008/12/03/023928_MillerTime.jpg", 
             "caption": "While the Harvard men\u2019s basketball team\u2019s freshmen stole the spotlight, junior Doug Miller, shown here in earlier action, scontentd eight points in his first career start on 4-for-5 shooting and grabbing three boards.", 
             "created_on": "2008-12-03 02:39:28", 
-            "kicker": "Miller Time", 
-            "slug": "miller-time"
+            "kicker": "Miller Time"
         }
     }, 
     {
@@ -2006,8 +2002,7 @@
             "pic": "photos/2008/12/03/020726_MillerTime.jpg", 
             "caption": "While the Harvard men\u2019s basketball team\u2019s freshmen stole the spotlight, junior Doug Miller, shown here in earlier action, scontentd eight points in his first career start on 4-for-5 shooting and grabbing three boards.", 
             "created_on": "2008-12-03 02:07:26", 
-            "kicker": "Miller Time", 
-            "slug": "miller-time"
+            "kicker": "Miller Time"
         }
     },
     {
@@ -2025,7 +2020,6 @@
             "proofer": 2, 
             "modified_on": "2009-03-15 17:39:59", 
             "web_only": false, 
-            "slug": "sidebar-newcomers-dominate-in-harvard-victory", 
             "is_published": true
         }
     }, 
@@ -2044,7 +2038,6 @@
             "proofer": 1, 
             "modified_on": "2009-03-15 17:39:59", 
             "web_only": false, 
-            "slug": "rally-girl-talk-concert-cut-short", 
             "is_published": true
         }
     }, 
@@ -2062,8 +2055,7 @@
             "sne": 1, 
             "proofer": 1, 
             "modified_on": "2009-03-15 17:39:59", 
-            "web_only": false, 
-            "slug": "students-rally-to-protest-prop-8", 
+            "web_only": false,  
             "is_published": true
         }
     }, 
@@ -2082,7 +2074,6 @@
             "proofer": 1, 
             "modified_on": "2009-03-15 17:39:59", 
             "web_only": false, 
-            "slug": "student-arrested-for-quad-break-in", 
             "is_published": true
         }
     }, 
@@ -2101,7 +2092,6 @@
             "proofer": 1, 
             "modified_on": "2009-03-15 17:39:59", 
             "web_only": false, 
-            "slug": "crate-barrel-to-close", 
             "is_published": true
         }
     }, 
@@ -2120,7 +2110,6 @@
             "proofer": 1, 
             "modified_on": "2009-03-15 17:39:59", 
             "web_only": false, 
-            "slug": "harvard-profs-weigh-in-on-charlesview-design", 
             "is_published": true
         }
     }, 
@@ -2139,7 +2128,6 @@
             "proofer": 1, 
             "modified_on": "2009-03-15 17:39:59", 
             "web_only": false, 
-            "slug": "kurdish-summer-in-baghdad", 
             "is_published": true
         }
     }, 
@@ -2158,7 +2146,6 @@
             "proofer": 1, 
             "modified_on": "2009-03-15 17:39:59", 
             "web_only": false, 
-            "slug": "we-suck", 
             "is_published": true
         }
     }, 
@@ -2176,8 +2163,7 @@
             "sne": 1, 
             "proofer": 1, 
             "modified_on": "2009-03-15 17:39:59", 
-            "web_only": true, 
-            "slug": "cheap-laptops-rich-experience", 
+            "web_only": true,  
             "is_published": true
         }
     },

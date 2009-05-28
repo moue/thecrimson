@@ -1,20 +1,21 @@
 import string
 
-URL_SAFE = string.letters + string.digits + '._'
-def make_url_friendly(str):
+IDENTITY_TRANS = string.maketrans("","")
+def alphanum_only(s):
+    """ strips punctuation. see http://stackoverflow.com/questions/265960/"""
+    s = s.encode('ascii', 'ignore')
+    return s.translate(IDENTITY_TRANS, string.punctuation)
+
+URL_SAFE = string.letters + string.digits + '._-'
+def make_url_friendly(s):
     """
     kills non alpha numeric chars and replaces spaces with underscores
     """
-    str = str.replace(' ', '_')
-    return ''.join([c for c in str if c in URL_SAFE])
+    # TODO: THIS IS BACKWARDS
+    return s.translate(IDENTITY_TRANS, URL_SAFE)
     
 def make_file_friendly(str):
     return make_url_friendly(str)
-    
-SLUG_SAFE = string.letters + string.digits + '-'
-def make_slug(str):
-    str = str.replace(' ', '-')
-    return ''.join([c for c in str if c in SLUG_SAFE])
     
 def strip_commas(s):
     if s:

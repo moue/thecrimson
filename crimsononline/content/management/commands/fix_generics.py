@@ -1,4 +1,6 @@
+import hashlib
 from django.core.management.base import NoArgsCommand
+from django.template.defaultfilters import slugify
 from crimsononline.content.models import *
 
 class Command(NoArgsCommand):
@@ -26,12 +28,21 @@ class Command(NoArgsCommand):
                 a.generic = None
                 # trigger generation of a new one
                 a.save()
-            
+                
                 shuffle(contributors)
                 shuffle(tags)
                 shuffle(sections)
-            
+                if model == Article:
+                    wrds = a.text.split()
+                elif model == Image:
+                    wrds = a.kicker.split()
+                else:
+                    wrds = a.title.split()
+                shuffle(wrds)
+                
                 # generate some random seed attributes
+                
+                a.slug = slugify('-'.join(wrds[:3]))
                 a.priority = randrange(0, 20)
                 a.issue = issue
                 a.contributors = contributors[:randrange(1,4)]

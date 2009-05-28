@@ -50,6 +50,8 @@ class FbSelectWidget(forms.widgets.HiddenInput):
     
     def render(self, name, value, attrs=None):
         if value:
+            if isinstance(value, unicode) or isinstance(value, str):
+                value = [int(v) for v in value.split(',') if v]
             if getattr(value, '__iter__', None):
                 obj_list = self.model.objects.filter(pk__in=value)
                 value = ','.join([str(v) for v in value])

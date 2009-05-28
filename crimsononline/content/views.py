@@ -15,25 +15,27 @@ from crimsononline.common.utils.strings import strip_commas
 from django.core.mail import send_mail
 
 
-def get_content(request, ctype, year, month, day, slug, pk, content_group=None):
+def get_content(request, ctype, year, month, day, slug, content_group=None):
     """
     View for displaying a piece of content on a page
     Validates the entire URL
     """
-    c = get_content_obj(request, ctype, year, month, day, slug, pk, content_group)
+    c = get_content_obj(request, ctype, year, month, day, slug, content_group)
     # redirect to canonical URL
     if request.path != c.get_absolute_url():
         return HttpResponseRedirect(c.get_absolute_url())
     return HttpResponse(c._render('page'))
 
-def get_content_obj(request, ctype, year, month, day, slug, pk, content_group=None):
+def get_content_obj(request, ctype, year, month, day, slug, content_group=None):
     """
     Retrieves a content object from the database (no validation of params)
     """
-    c = ContentGeneric.objects.get(content_type__name=ctype, object_id=int(pk))
+    c = ContentGeneric.objects.get(content_type__name=ctype, 
+        issue__issue_date=date(int(year), int(month), int(day)), slug=slug
+    )
     return c.content_object
     
-def get_grouped_content(request, gtype, gname, ctype, year, month, day, slug, pk):
+def get_grouped_content(request, gtype, gname, ctype, year, month, day, slug):
     """
     View for displaying a piece of grouped content on a page
     Validates the entire url
@@ -42,11 +44,11 @@ def get_grouped_content(request, gtype, gname, ctype, year, month, day, slug, pk
     cg = get_grouped_content_obj(request, gtype, gname, ctype, 
         year, month, day, slug, pk)
     if cg:
-        return get_content(request, ctype, year, month, day, slug, pk, cg)
+        return get_content(request, ctype, year, month, day, slug, cg)
     else:
         raise Http404
 
-def get_grouped_content_obj(request, gtype, gname, ctype, year, month, day, slug, pk):
+def get_grouped_content_obj(request, gtype, gname, ctype, year, month, day, slug):
     cg = ContentGroup.by_name(gtype, gname)
     return cg
         

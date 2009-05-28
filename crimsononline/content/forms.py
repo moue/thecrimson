@@ -13,7 +13,20 @@ from django.template.loader import render_to_string
 from django.utils.safestring import mark_safe
 from crimsononline.content.models import Image, Issue, ContentGeneric
 
- 
+class AutoGenSlugWidget(forms.widgets.TextInput):
+    def __init__(self, *args, **kwargs):
+        self.url = kwargs.pop('url')
+        self.date_field = kwargs.pop('date_field')
+        self.text_field = kwargs.pop('text_field')
+        super(AutoGenSlugWidget, self).__init__(*args, **kwargs)
+    
+    def render(self, name, value, attrs={}):
+        if value: attrs['disabled'] = 1
+        input = super(AutoGenSlugWidget, self).render(name, value, attrs)
+        date_field, text_field, url = self.date_field, self.text_field, self.url
+        return render_to_string('forms/autogen_slug_widget.html', locals())
+    
+
 class MapBuilderWidget(forms.widgets.HiddenInput):
     def render(self, name, value, attrs=None):
         return render_to_string("forms/map_builder_widget.html", locals())

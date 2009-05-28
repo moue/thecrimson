@@ -1,5 +1,6 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 from re import compile
+from time import strptime
 from django import forms
 from django.core.mail import send_mail
 from django.conf import settings
@@ -12,11 +13,12 @@ from django.forms import ModelForm
 from django.http import Http404, HttpResponse
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template.defaultfilters import truncatewords
-from django.utils import simplejson
+from django.utils import simplejson, html
 from django.utils.safestring import mark_safe
 from django.utils.hashcompat import md5_constructor
 from crimsononline.content.models import *
 from crimsononline.content.forms import *
+from crimsononline.common.utils.strings import alphanum_only
 from crimsononline.common.forms import \
     FbModelChoiceField, CropField, SearchModelChoiceField, MaskedValueTextInput
 
@@ -73,6 +75,14 @@ class ContentGenericModelForm(ModelForm):
         add_rel=ContentGeneric._meta.get_field('contributors').rel
     )
     issue = IssuePickerField(label='Issue Date', required=True)
+    slug = forms.SlugField(widget=AutoGenSlugWidget(
+            url='/admin/content/article/gen_slug/',
+            date_field='#id_issue', text_field='#id_text',
+            attrs={'size': '40'},
+        ),
+        help_text="This is the text that goes in the URL.  Only letters," \
+        "numbers, _, and - are allowed"
+    )
     section = forms.ModelChoiceField(Section.all(), required=True)
     priority = forms.IntegerField(required=False, initial=0,
         help_text='Higher priority articles are displayed first.' \
@@ -96,6 +106,7 @@ class ContentGenericModelForm(ModelForm):
                 'section': instance.section.pk,
                 'priority': instance.priority,
                 'group': None,
+                'slug': instance.slug,
             }
             if instance.group:
                 initial['group'] = instance.group.pk
@@ -113,6 +124,7 @@ class ContentGenericModelForm(ModelForm):
         obj.issue = self.cleaned_data['issue']
         obj.priority = self.cleaned_data['priority']
         obj.group = self.cleaned_data['group']
+        obj.slug = self.cleaned_data['slug']
         return obj
     
 
@@ -350,7 +362,7 @@ class ImageAdminForm(ContentGenericModelForm):
 
 class ImageAdmin(ContentGenericAdmin):
     fields = ('pic', 'thumbnail', 'caption', 'kicker', 'section', 'issue',
-        'priority', 'contributors', 'tags', 'group',)
+        'slug', 'priority', 'contributors', 'tags', 'group',)
     
     form = ImageAdminForm
     
@@ -398,7 +410,7 @@ class ImageGalleryAdmin(ContentGenericAdmin):
             'fields': ('contributors',),
         }),
         ('Organization', {
-            'fields': ('section', 'issue', 'tags', 'priority',),
+            'fields': ('section', 'issue', 'slug', 'tags', 'priority',),
         }),
         ('Grouping', {
             'fields': ('group',),
@@ -467,13 +479,26 @@ class ArticleForm(ContentGenericModelForm):
     class Meta:
         model = Article
 
+STOP_WORDS = ['a', 'able', 'about', 'across', 'after', 'all', 'almost', 'also', 
+    'am', 'among', 'an', 'and', 'any', 'are', 'as', 'at', 'be', 'because', 
+    'been', 'but', 'by', 'can', 'cannot', 'could', 'dear', 'did', 'do', 'does', 
+    'either', 'else', 'ever', 'every', 'for', 'from', 'get', 'got', 'had', 
+    'has', 'have', 'he', 'her', 'hers', 'him', 'his', 'how', 'however', 'i', 
+    'if', 'in', 'into', 'is', 'it', 'its', 'just', 'least', 'let', 'like', 
+    'likely', 'may', 'me', 'might', 'most', 'must', 'my', 'neither', 'no', 
+    'nor', 'not', 'of', 'off', 'often', 'on', 'only', 'or', 'other', 'our', 
+    'own', 'rather', 'said', 'say', 'says', 'she', 'should', 'since', 'so', 
+    'some', 'than', 'that', 'the', 'their', 'them', 'then', 'there', 'these', 
+    'they', 'this', 'tis', 'to', 'too', 'twas', 'us', 'wants', 'was', 'we', 
+    'were', 'what', 'when', 'where', 'which', 'while', 'who', 'whom', 'why', 
+    'will', 'with', 'would', 'yet', 'you', 'your',]
 class ArticleAdmin(ContentGenericAdmin):
     list_display = ('headline', 'section', 'issue',)
     search_fields = ('headline', 'text',)
     exclude = ['is_published']
     fieldsets = (
         ('Headline', {
-            'fields': ('headline', 'subheadline', 'slug',),
+            'fields': ('headline', 'subheadline',),
         }),
         ('Text', {
             'fields': ('text', 'teaser',),
@@ -485,7 +510,7 @@ class ArticleAdmin(ContentGenericAdmin):
             'fields': ('issue', 'section', 'page',),
         }),
         ('Web', {
-            'fields': ('priority', 'web_only', 'tags',),
+            'fields': ('slug', 'priority', 'web_only', 'tags',),
         }),
         ('Editing', {
             'fields': ('proofer', 'sne',),
@@ -540,6 +565,7 @@ class ArticleAdmin(ContentGenericAdmin):
                 self.admin_site.admin_view(self.get_rel_content)),
             (r'^rel_content/find/(\d+)/(\d\d/\d\d/\d{4})/(\d\d/\d\d/\d{4})/([\w\-,]*)/(\d+)/$',
                 self.admin_site.admin_view(self.find_rel_content)),
+            (r'^gen_slug/$', self.admin_site.admin_view(self.gen_slug)),
         ) + urls
         return urls
     
@@ -590,7 +616,32 @@ class ArticleAdmin(ContentGenericAdmin):
         
         return HttpResponse(simplejson.dumps(json_dict))
     
-
+    def gen_slug(self, request):
+        """
+        returns two words corresponding to a unique slug for an issue date
+        """
+        if request.method != 'POST':
+            raise Http404
+        dt, text = request.POST.get('date', 0), request.POST.get('text', 0)
+        if not (dt and text):
+            raise Http404
+        dt = date(*(strptime(str(dt), r"%m/%d/%Y")[:3]))
+        text = text.replace("><", "> <")
+        text = html.strip_tags(text)
+        text = alphanum_only(text.lower())
+        words = {}
+        for wrd in text.split():
+            if wrd not in STOP_WORDS:
+                if wrd in words:
+                    words[wrd] += 1
+                else:
+                    words[wrd] = 1
+        words = words.items()
+        words.sort(lambda x, y: cmp(y[1], x[1]))
+        words = [w[0] for w in words[:3]]
+        # TODO: make sure the slug is valid
+        return HttpResponse('-'.join(words))
+    
 
 admin.site.register(Article, ArticleAdmin)
 
