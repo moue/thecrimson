@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% load common_filters %}
+{% load content_filters %}
 {% load top_articles %}
 {% load tag_cloud %}
 
@@ -18,6 +19,9 @@
     <div id="content">
         {% block pre_content %}
             <div id="pre_content">
+            {% if content.group %}
+                {{ content.group.image|to_img_tag:"620,"}}
+            {% endif %}
             {{ content.section|yuhkilabel }}
             <div id="articletools">
                 <a href="#"><img src="/site_media/images/printer.gif" alt="Print"/> Print</a>

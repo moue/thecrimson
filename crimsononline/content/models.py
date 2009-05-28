@@ -249,6 +249,10 @@ class ContentGroup(models.Model):
     
     @staticmethod
     def update_cache():
+        """
+        This is a separate method, since we want to be add update
+        the cache if we create a new content group
+        """
         cg = {}
         objs = ContentGroup.objects.all()[:]
         for obj in objs:
@@ -263,6 +267,10 @@ class ContentGroup(models.Model):
         s = super(ContentGroup, self).save(*args, **kwargs)
         
         return s
+    
+    @permalink
+    def get_absolute_url(self):
+        return ('content_contentgroup', [self.type, self.name])
 
 
 class Tag(models.Model):

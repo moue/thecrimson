@@ -1,5 +1,19 @@
-{% extends "content_list.html" %}
+{% extends "models/page.html" %}
 
-{% block before_articles %}
-    {{ cg.name }}
+{% load content_filters %}
+
+{% block css %}
+    <link type="text/css" rel="stylesheet" href="/site_media/css/contentgroup.css" />
+{% endblock %}
+
+{% block pre_content%}
+    {{ cg.image|to_img_tag:"620," }}
+{% endblock %}
+
+{% block content %}
+    <ul class="blog_entries">
+    {% for c in content %}
+        <li>{{ c|render:"blog_entry" }}</li>
+    {% endfor %}
+    </ul>
 {% endblock %}

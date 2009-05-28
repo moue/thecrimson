@@ -85,8 +85,9 @@ class AutosizeImageFieldFile(ImageFieldFile):
         path = self._get_path(size_spec)
         if not exists(path):
             img = pilImage.open(self.path)
+            ht, wd = size_spec_to_size(size_spec, 
+                self.width, self.height)
             # cropped image
-            print size_spec
             if size_spec[2] and size_spec[3]:
                 # autogenerate crop_coordinates
                 aspect_ratio = float(self.width) / float(self.height)
@@ -103,11 +104,10 @@ class AutosizeImageFieldFile(ImageFieldFile):
                     crop_coords = (0, crop_y1, self.width, crop_y1 + h)
                 else:
                     crop_coords = (0, 0, self.width, self.height)
-                img = img.transform((size_spec[0], size_spec[1]), 
-                    pilImage.EXTENT, crop_coords)
+                img = img.transform((ht, wd), pilImage.EXTENT, crop_coords)
             # constrained image
             else:
-                img.thumbnail((size_spec[0], size_spec[1]), pilImage.ANTIALIAS)
+                img.thumbnail((ht, wd), pilImage.ANTIALIAS)
             img.save(path)
         self._path_cache[size_spec] = path
         return path

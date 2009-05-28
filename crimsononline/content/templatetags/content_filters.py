@@ -68,7 +68,10 @@ def to_img_tag(img, size_spec):
     size_spec = tuple(size_spec)
     
     disp_url = img.display_url(size_spec)
-    k = filter.force_escape(img.kicker)
+    if hasattr(img, 'kicker'):
+        k = filter.force_escape(img.kicker)
+    else:
+        k = ''
     tag = '<img src="%s" title="%s" alt="%s" />' % \
             (disp_url, k, k)
     return mark_safe(tag)
