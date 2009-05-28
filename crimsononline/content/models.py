@@ -523,15 +523,25 @@ class Issue(models.Model):
     """
     
     special_issue_name = models.CharField(blank=True, null=True,
-        help_text="Leave this blank for daily issues!!!", max_length=100)
+        help_text="Leave this blank for daily issues!!!", max_length=100
+    )
     web_publish_date = models.DateTimeField(null=True,
-        blank=False, help_text='When this issue goes live (on the web).')
+        blank=False, help_text='When this issue goes live (on the web).'
+    )
     issue_date = models.DateField(
-        blank=False, help_text='Corresponds with date of print edition.')
+        blank=False, help_text='Corresponds with date of print edition.'
+    )
+    fm_name = models.CharField('FM name', blank=True, null=True, max_length=100,
+        help_text="The FM issue published on this issue date"
+    )
     comments = models.TextField(
-        blank=True, null=True, help_text='Notes about this issue.')
+        blank=True, null=True, help_text='Notes about this issue.'
+    )
     
     objects = IssueManager()
+    
+    class Meta:
+        ordering = ['-issue_date',]
     
     @staticmethod
     def get_current():

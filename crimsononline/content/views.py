@@ -168,7 +168,7 @@ def section(request, section):
 def section_news(request):
     nav = 'news'
     section = Section.cached(nav)
-    stories = top_articles('News')
+    stories = Article.objects.recent.filter(generic__section=section)
     rotate = stories.filter(
         rel_content__content_type=Image.content_type()).distinct()[:4]
     stories = stories.exclude(pk__in=[c.pk for c in rotate])[:20]
@@ -187,14 +187,21 @@ def section_opinion(request):
 def section_fm(request):
     nav = 'fm'
     section = Section.cached(nav)
-    content = top_articles(nav)
+    stories = Article.objects.recent.filter(generic__section=section)
+    scrutiny = stories.filter(generic__tags__text='scrutiny')[0]
+    endpaper = stories.filter(generic__tags__text='endpaper')[0]
+    ex = [scrutiny.pk, endpaper.pk]
+    rotate = stories.filter(rel_content__content_type=Image.content_type()) \
+        .exclude(pk__in=ex).distinct()[:4]
+    stories = stories.exclude(pk__in=[c.pk for c in rotate]+ex)[:20]
+    issues = Issue.objects.exclude(fm_name=None).exclude(fm_name='')[:3]
     return render_to_response('sections/fm.html', locals())
     
 def section_arts(request):
     nav = 'arts'
     section = Section.cached(nav)
     content = top_articles(nav)
-    return render_to_respsonse('sections/arts.html', locals())
+    return render_to_response('sections/arts.html', locals())
     
 def section_photo(request):
     nav = 'photo'
