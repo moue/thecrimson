@@ -140,6 +140,11 @@ class Content(models.Model):
             self.save()
         return mark_safe(render_to_string(templ, context))
     
+    def store_hit(self):
+        # TODO: smart caching
+        HIT_THRESH = 20
+        cache.set()
+    
     @staticmethod
     def types():
         # returns all ContentType objects whose 
@@ -198,6 +203,12 @@ class Content(models.Model):
             return ('content_grouped_content', url_data)
         else:
             return ('content_content', url_data)
+    
+
+class ContentHits(models.Model):
+    content_generic = models.ForeignKey(ContentGeneric)
+    date = models.DateField(auto_now_add=True)
+    hits = models.PositiveIntegerField(default=1)
     
 
 def get_img_path(instance, filename):
