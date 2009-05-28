@@ -532,7 +532,10 @@ class Issue(models.Model):
         blank=False, help_text='Corresponds with date of print edition.'
     )
     fm_name = models.CharField('FM name', blank=True, null=True, max_length=100,
-        help_text="The FM issue published on this issue date"
+        help_text="The name of the FM issue published on this issue date"
+    )
+    arts_name = models.CharField(blank=True, null=True, max_length=100,
+        help_text="The name of the Arts issue published on this issue date"
     )
     comments = models.TextField(
         blank=True, null=True, help_text='Notes about this issue.'

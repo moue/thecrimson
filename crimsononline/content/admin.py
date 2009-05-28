@@ -289,7 +289,7 @@ class IssueAdmin(admin.ModelAdmin):
     list_display = ('issue_date',)
     search_fields = ('issue_date',)
     fields = ('issue_date', 'web_publish_date', 'special_issue_name', 
-        'fm_name', 'comments',)
+        'fm_name', 'arts_name', 'comments',)
         
     def get_urls(self):
         urls = patterns('',

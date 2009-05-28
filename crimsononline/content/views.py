@@ -192,15 +192,24 @@ def section_fm(request):
     endpaper = stories.filter(generic__tags__text='endpaper')[0]
     ex = [scrutiny.pk, endpaper.pk]
     rotate = stories.filter(rel_content__content_type=Image.content_type()) \
-        .exclude(pk__in=ex).distinct()[:4]
-    stories = stories.exclude(pk__in=[c.pk for c in rotate]+ex)[:20]
+        .distinct()[:4]
+    itm = stories.filter(generic__tags__text='itm')[:3]
+    ftm = stories.filter(generic__tags__text='ftm')[:9]
     issues = Issue.objects.exclude(fm_name=None).exclude(fm_name='')[:3]
     return render_to_response('sections/fm.html', locals())
     
 def section_arts(request):
     nav = 'arts'
     section = Section.cached(nav)
-    content = top_articles(nav)
+    stories = Article.objects.recent.filter(generic__section=section)
+    rotate = stories.filter(rel_content__content_type=Image.content_type()) \
+        .distinct()[:4]
+    stories = stories.exclude(pk__in=[s.pk for s in rotate])
+    books = stories.filter(generic__tags__text='books')[:4]
+    oncampus = stories.filter(generic__tags__text='on campus')[:6]
+    music = stories.filter(generic__tags__text='music')[:2]
+    visualarts = stories.filter(generic__tags__text='visual arts')[:2]
+    issues = Issue.objects.exclude(arts_name=None).exclude(arts_name='')[:3]
     return render_to_response('sections/arts.html', locals())
     
 def section_photo(request):
