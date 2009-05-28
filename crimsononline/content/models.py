@@ -1,7 +1,7 @@
 from hashlib import md5
 from random import randint
 from os.path import splitext, exists, split, join
-from datetime import datetime, time
+from datetime import datetime, time, date
 from re import compile, match
 from string import letters, digits
 from PIL import Image as pilImage
@@ -56,7 +56,7 @@ class ContentGeneric(models.Model):
     section = models.ForeignKey('Section', null=True, related_name='content')
     priority = models.IntegerField(default=0)
     group = models.ForeignKey('ContentGroup', null=True, blank=True)
-    hits = models.IntegerField(default=0)
+    # hits = models.IntegerField(default=0)
     
     objects = ContentGenericManager()
     
@@ -135,15 +135,63 @@ class Content(models.Model):
         # can access self with either the name of the class (ie, 'article')
         #   or 'content'
         context.update({name: self, 'content': self, 'class': name})
-        if method == 'page':
-            self.hits += 1
-            self.save()
+        #if method == 'page':
+        #    self.hits += 1
+        #    self.save()
+        self.store_hit()
         return mark_safe(render_to_string(templ, context))
     
     def store_hit(self):
-        # TODO: smart caching
-        HIT_THRESH = 20
-        cache.set()
+        # (Eventual) minimum amount of time to wait between stores to the database
+        MIN_DB_STORE_INTERVAL = 60
+        # Base number of hits to wait for before storing to the DB
+        BASE_THRESHOLD = 20
+        # Amount to increase the threshold by each time
+        THRESHOLD_JUMP = 5
+        # Amount of time to keep number of hits in cache -- we don't want to lose hits, so make this long
+        # Note that hits are actually lost anyway if the threshold still isn't hit in this interval, but if that happens, the article
+        # is so unpopular that either we don't care at all because it won't be ranked or The Crimson has no readership left
+        HITS_STORE_TIME = 99999
+        # The strings we use as cache keys -- should be unique for a given PK for a given content type on a given day
+        thres_str = str(self.pk) + str(self.generic.content_type) + str(date.today()) + 'thres'
+        time_str = str(self.pk) + str(self.generic.content_type) + str(date.today()) + 'time'
+        hits_str = str(self.pk) + str(self.generic.content_type) + str(date.today()) + 'hits'
+        # Now (we want it only once or else the time the code takes to execute will mess things up)
+        now = datetime.now()
+        # If the value was already in the cache
+        if not cache.add(thres_str, BASE_THRESHOLD, MIN_DB_STORE_INTERVAL * 3):
+            cur_threshold = cache.get(thres_str)
+            last_storetime = cache.get(time_str)
+        # Add the time value to the cache, using the base threshold (previous add already added threshold to cache)
+        else:
+            cache.add(time_str, now, MIN_DB_STORE_INTERVAL * 3)
+            cur_threshold = BASE_THRESHOLD
+            last_storetime = now
+        # Get the current number of cached hits or initialize it to 1
+        try:
+            cached_hits = cache.incr(hits_str)
+        except ValueError:
+            cached_hits = 1
+            cache.add(hits_str, 1, HITS_STORE_TIME)
+        
+        if cur_threshold <= cached_hits:
+            # We hit the threshold
+            # First check whether the interval between the last time the threshold was hit and now is less than the minimum
+            interval = now - last_storetime
+            if interval and interval.seconds < MIN_DB_STORE_INTERVAL:
+                # It was, so increase the interval
+                cache.set(thres_str, cur_threshold + THRESHOLD_JUMP, MIN_DB_STORE_INTERVAL * 3)
+            try:
+                ch = ContentHits.objects.get(content_generic = self.generic, date = date.today())
+                ch.hits += cached_hits
+                ch.save()
+            except ContentHits.DoesNotExist:
+                ch = ContentHits(content_generic = self.generic)
+                ch.hits = cached_hits
+                ch.save()
+            # Reset a things
+            cache.set(time_str, now, MIN_DB_STORE_INTERVAL * 3)
+            cache.delete(hits_str)
     
     @staticmethod
     def types():
@@ -209,6 +257,9 @@ class ContentHits(models.Model):
     content_generic = models.ForeignKey(ContentGeneric)
     date = models.DateField(auto_now_add=True)
     hits = models.PositiveIntegerField(default=1)
+    
+    def save(self, *args, **kwargs):
+        return super(ContentHits, self).save(*args, **kwargs)
     
 
 def get_img_path(instance, filename):

@@ -67,46 +67,20 @@ def call_view(view, args):
     
 class TopArticlesNode(template.Node):
     def render(self, context):
-        # library not installed
-        if not Connection:
-            return '<div>Google Analytics Library not installed :(</div>'
         # Create a resolver for the slightly modified URL patterns we defined above
         resolver = RegexURLResolver(r'^/', generic_obj_patterns)
-        # DON'T FORGET: >>> data = account.get_data(start_date=start_date, end_date=end_date, dimensions=['pagePath',], metrics=['pageViews',], sort=['-pageviews',])
-        # crimsonanalytics/andylei:male
-        # NEW STYLE FOLLOWS
-        gaconn = Connection(GA_LOGIN, GA_PASS)
-        gaacct = gaconn.get_account(GA_AID)
-        # welp this is ugly. someone fix it
-        data_tp1 = gaacct.get_data(start_date=datetime.now() - TP1_TIMEDELTA, end_date=datetime.now(), dimensions=['pagePath',], metrics=['pageViews',])
-        data_tp2 = gaacct.get_data(start_date=datetime.now() - TP2_TIMEDELTA, end_date=datetime.now() - TP1_TIMEDELTA, dimensions=['pagePath',], metrics=['pageViews',])
-        data_tp3 = gaacct.get_data(start_date=datetime.now() - TP3_TIMEDELTA, end_date=datetime.now() - TP2_TIMEDELTA, dimensions=['pagePath',], metrics=['pageViews',])
-        finaldict = {}
-        # replace with """"get""""
-        for k,v in data_tp1.dict.iteritems():
-            finaldict[k] = v * TP1_FACTOR
-        for k,v in data_tp2.dict.iteritems():
-            finaldict[k] = finaldict.get(k,0) + v * TP2_FACTOR
-        for k,v in data_tp3.dict.iteritems():
-            finaldict[k] = finaldict.get(k,0) + v * TP3_FACTOR
-        sortedurllist = sorted(finaldict.items(), key=lambda(k,v):(v,k), reverse=True)
-        # call resolver.resolve on everything in the list
-        threadobjlist = map(lambda x: safe_resolve(x[0], resolver), sortedurllist)
-        mostreadarticles = map(lambda x: call_view(x[0], x[1]), filter(lambda x: x != None, threadobjlist))
-        del mostreadarticles[5:]
-        # TODO: Refactor this so that there's no chance of an article appearing in Analytics by two different links and getting calculated separately as a result (swap order of resolving and index calculation)
-        """
         # Step 1: We want to get the most viewed articles from the database
         cursor = connection.cursor()
         # SO NON-SEXUALITY-NORMATIVE
         # Oh, a real comment in case someone comes upon this later: We're selecting article ID, content type ID, and a computed field called "hitindex"
         # which will eventually use log() for a better curve.  This ages articles' hits to reduce freshness.  Then it sorts by hitindex and returns the top 5.
-        cursor.execute("SELECT DISTINCT content_article.id, content_contentgeneric.content_type_id, " \
-                       "(content_contentgeneric.hits * (1/(julianday('now') - julianday(content_article.created_on) + 2))) AS hitindex " \
-                       "FROM content_article, content_contentgeneric WHERE content_contentgeneric.object_id = content_article.id ORDER BY hitindex DESC LIMIT 5")
+        # TODO: Fix this to use proper decay when we switch to a real SQL server
+        cursor.execute("SELECT DISTINCT content_article.id, content_contentgeneric.content_type_id, SUM(content_contenthits.hits) AS hitnum FROM content_article, " \
+                       "content_contentgeneric, content_contenthits WHERE content_contentgeneric.object_id = content_article.id AND content_contenthits.content_generic_id " \
+                       "= content_contentgeneric.id AND content_contenthits.date > date('now', '-7 days') GROUP BY content_contenthits.content_generic_id ORDER BY hitnum DESC LIMIT 5")
         mostreadarticles = cursor.fetchall()
         mostreadarticles = [(ContentType.objects.get(pk=x[1])).get_object_for_this_type(pk=x[0]) for x in mostreadarticles]
-        """
+        
         # Step 2: Grab the JSON crap from Disqus and build another list of the most commented articles
         thread_url = "http://disqus.com/api/get_thread_list/?forum_api_key=" + D_FORUM_KEY
         thread_list = simplejson.load(urllib.urlopen(thread_url))
