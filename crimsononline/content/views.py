@@ -7,6 +7,7 @@ from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.template import Context, RequestContext, loader
 from django.contrib.flatpages.models import FlatPage
 from django.contrib.contenttypes.models import ContentType
+from django.db import connection
 from crimsononline.content.models import *
 from crimsononline.content_module.models import ContentModule
 from crimsononline.common.utils.paginate import paginate
@@ -130,12 +131,22 @@ def tag(request, tag, section_str='', type_str='', page=1):
         tag.get_absolute_url())
     
     # TODO: top writers (contributors that have the most content with this tag)
-    
+    cursor = connection.cursor()
+    cursor.execute("SELECT count(content_contentgeneric.object_id) as objcount, " \
+                   "content_contentgeneric_contributors.contributor_id FROM content_contentgeneric, " \
+                   "content_contentgeneric_contributors, content_contentgeneric_tags " \
+                   "WHERE content_contentgeneric_contributors.contentgeneric_id = content_contentgeneric.id " \
+                   "AND content_contentgeneric_tags.contentgeneric_id = content_contentgeneric.id " \
+                   "AND content_contentgeneric_tags.tag_id = " + str(tag.pk) + " " \
+                   "GROUP BY content_contentgeneric_contributors.contributor_id ORDER BY objcount DESC LIMIT 5")
+    rows = cursor.fetchall()
+    topcontribs = [Contributor.objects.get(pk=x[1]) for x in rows]
     
     # TODO: related tags (tags with most shared content)
     #content_pks = [d['id'] for d in content.values('id')]
     #rel_tags = Tag.objects.filter(content__id__in=content_pks).annotate(
-    
+    # need to select the tags for which there are the most objects that have both this tag and
+    # that tag within some timeframe
     
     d = paginate(f.pop('content'), page, 5)
     d.update({'tag': tag, 'url': tag.get_absolute_url(), 
