@@ -8,13 +8,6 @@ div#featured_articles .date {
     font-size: 12px;
     color: #666;
 }
-
-div.bordered h2 {
-    font-size: 13px;
-    color: #666;
-    margin: 3px 0 0 0;
-    font-family: Arial, Helvetica, sans-serif;
-}
 div#top_contributors ul li {
     float: left;
     display: block;

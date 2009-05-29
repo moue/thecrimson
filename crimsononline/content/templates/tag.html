@@ -3,6 +3,7 @@
 {% load common_filters %}
 {% load content_filters %}
 {% load tag_cloud %}
+{% load top_articles %}
 
 {% block css %}
 <link type="text/css" rel="stylesheet" href="/site_media/css/tag.css" />
@@ -44,7 +45,10 @@
 {% endblock %}
 
 {% block right %}
-    <div id="related_tags" class="bordered">
-        {% tag_cloud 15 "Related Tags" tags %}
+    {% tag_cloud 15 "RELATED TAGS" tags %}
+    <div class="ad">
+        <span>advertisement</span>
+        <img src="/site_media/images/medium_rectangle.gif" />
     </div>
+    {% most_read_articles %}
 {% endblock %}

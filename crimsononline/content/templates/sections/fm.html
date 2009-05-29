@@ -22,11 +22,13 @@
         <li>{{ s|render:"preview" }}</li>
     {% endfor %}
     </ul>
+    <span class="clear"></span>
     <div class="bordered" id="past_issues">
         <h2>Past Issues</h2>
         <ul>
         {% for issue in issues %}
         <li>
+            {{ issue.fm_cover|to_img_tag:"50,50,1,1"}}
             <h3><a href="">{{ issue.fm_name }}</a></h3>
             <p>{{ issue.issue_date }}</p>
         </li>

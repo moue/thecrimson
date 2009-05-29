@@ -1,7 +1,7 @@
 {% load common_filters %}
 {% load cache %}
 
-<div id="mostxdarticles">
+<div id="mostxdarticles" class="bordered">
 <a onclick="$('#mostreadarticles').show(); $('#mostcommentedarticles').hide();">read</a> <a onclick="$('#mostreadarticles').hide(); $('#mostcommentedarticles').show();">commented</a>
 {% cache 500 mostreadarticles %}
 <div id="mostreadarticles">

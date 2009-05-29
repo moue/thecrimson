@@ -2,7 +2,7 @@
 {% load tag_cloud %}
 
 <div class="bordered tag_cloud">
-<h3>{{ title }}</h3>
+<h2>{{ title }}</h2>
 {% for tag in tags %}
 <a class="{{ tag|get_size:levels }}" href="{{ tag.get_absolute_url }}">{{ tag }}</a>
 {% endfor %}

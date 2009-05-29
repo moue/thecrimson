@@ -1497,7 +1497,35 @@
         "fields": {
             "text": "charity"
         }
+    },  
+    {
+        "pk": 27, 
+        "model": "content.tag", 
+        "fields": {
+            "text": "endpaper"
+        }
     }, 
+    {
+        "pk": 28, 
+        "model": "content.tag", 
+        "fields": {
+            "text": "itm"
+        }
+    }, 
+    {
+        "pk": 29, 
+        "model": "content.tag", 
+        "fields": {
+            "text": "ftm"
+        }
+    }, 
+    {
+        "pk": 30, 
+        "model": "content.tag", 
+        "fields": {
+            "text": "scrutiny"
+        }
+    },
     {
         "pk": 1, 
         "model": "content.board", 
@@ -1932,7 +1960,9 @@
             "web_publish_date": "2008-11-23 06:00:00", 
             "issue_date": "2008-11-23", 
             "special_issue_name": null, 
-            "comments": null
+            "comments": null,
+            "fm_name": "places to poo",
+            "arts_name": "miscellaney"
         }
     }, 
     {
@@ -1942,7 +1972,8 @@
             "web_publish_date": "2008-12-03 06:00:00", 
             "issue_date": "2008-12-03", 
             "special_issue_name": null, 
-            "comments": null
+            "comments": null,
+            "arts_name": "i love tacos!"
         }
     }, 
     {
@@ -1952,7 +1983,8 @@
             "web_publish_date": "2009-01-23 06:00:00", 
             "issue_date": "2009-01-23", 
             "special_issue_name": null, 
-            "comments": null
+            "comments": null,
+            "fm_name": "fm issue name"
         }
     }, 
     {
@@ -2166,7 +2198,7 @@
             "web_only": true,  
             "is_published": true
         }
-    },
+    }, 
     {
         "pk": 1, 
         "model": "content_module.contentmodule", 

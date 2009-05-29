@@ -36,7 +36,7 @@ class ContentGenericManager(models.Manager):
     def recent(self):
         return self.get_query_set() \
             .exclude(issue__web_publish_date__gt=datetime.now()) \
-            .order_by('-issue__issue_date', 'priority')
+            .order_by('-issue__issue_date', '-priority')
 
 
 class ContentGeneric(models.Model):
@@ -171,7 +171,7 @@ class Content(models.Model):
         # (Eventual) minimum amount of time to wait between stores to the database
         MIN_DB_STORE_INTERVAL = 60
         # Base number of hits to wait for before storing to the DB
-        BASE_THRESHOLD = 20
+        BASE_THRESHOLD = 4
         # Amount to increase the threshold by each time
         THRESHOLD_JUMP = 5
         # Amount of time to keep number of hits in cache -- we don't want to lose hits, so make this long
@@ -633,6 +633,15 @@ class Issue(models.Model):
     
     class Meta:
         ordering = ['-issue_date',]
+    
+    @property
+    def fm_cover(self):
+        if not self.fm_name:
+            return None
+        s = Section.cached('fm')
+        return Article.objects.recent.filter(generic__issue=self,
+            rel_content__content_type=Image.content_type(), generic__section=s
+            ).distinct()[0].main_rel_content
     
     @staticmethod
     def get_current():

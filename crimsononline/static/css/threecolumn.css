@@ -62,20 +62,23 @@ ul.article_headlines a{
 	font-weight: normal;
 	display: block;
 }
-
 div.column {
     width: 308px;
 	padding: 6px 6px;
     float: left;
 	overflow:hidden;
 }
-
 div#the_fold{
 	clear:both;
 	margin:5px 0px;
     border-bottom: 1px solid #ccc;
 }
-
+div.bordered ul {
+    list-style: none;
+}
+div.bordered ul  *{
+    font-size: 13px;
+}
 /* preview */
 div.image_thumb {
     float: left;
