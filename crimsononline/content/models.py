@@ -61,7 +61,8 @@ class ContentGeneric(models.Model):
     )
     section = models.ForeignKey('Section', null=True, related_name='content')
     priority = models.IntegerField(default=0)
-    group = models.ForeignKey('ContentGroup', null=True, blank=True)
+    group = models.ForeignKey('ContentGroup', null=True, blank=True, 
+        related_name='content')
     
     objects = ContentGenericManager()
     
@@ -70,6 +71,9 @@ class ContentGeneric(models.Model):
             ('content_type', 'object_id',),
             ('issue', 'slug'),
         )
+    
+    def get_absolute_url(self):
+        return self.content_object.get_absolute_url()
     
     def __unicode__(self):
         return str(self.content_object)
@@ -304,7 +308,7 @@ class ContentGroup(models.Model):
     Examples:
       * Columns
       * Blogs
-      * Article Series (say, a series on Iraq or the election)
+      * Feature (say, a series on Iraq or the election)
     """
     TYPE_CHOICES = (
         ('column', 'Column'),
@@ -315,8 +319,11 @@ class ContentGroup(models.Model):
     name = models.CharField(max_length=25)
     subname = models.CharField(max_length=40, blank=True, null=True)
     blurb = models.TextField(blank=True, null=True)
+    section = models.ForeignKey('Section', blank=True, null=True)
     image = SuperImageField(upload_to=get_img_path, max_width=620,
         blank=True, null=True, storage=OverwriteStorage())
+    #active = models.BoolField(default=True, help_text="ContentGroups that " \
+    #    " could still have content posted to them are active")
     
     class Meta:
         unique_together = (('type', 'name',),)

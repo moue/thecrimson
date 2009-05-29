@@ -73,11 +73,41 @@ div#the_fold{
 	margin:5px 0px;
     border-bottom: 1px solid #ccc;
 }
+.rotator {
+    margin-bottom: 10px;
+}
 div.bordered ul {
     list-style: none;
 }
-div.bordered ul  *{
+div.bordered ul  li{
     font-size: 13px;
+    width: 296px;
+    display: block;
+    float: left;
+    margin-bottom: 8px;
+}
+div.bordered img {
+    float: left;
+    clear: left;
+    margin-right: 5px;
+}
+div.bordered h2 {
+    padding: 0 0 10px;
+}
+div.series img {
+    margin-bottom: 8px;
+}
+div.series ul{
+    list-style: disc outside;
+}
+div.series ul li {
+    display: list-item;
+    margin: 0 0 5px 20px;
+    width: 276px;
+}
+div.series ul li h3{
+    font-size: 13px;
+    font-weight: normal;
 }
 /* preview */
 div.image_thumb {

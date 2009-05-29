@@ -8,6 +8,7 @@ from django.template import Context, RequestContext, loader
 from django.contrib.flatpages.models import FlatPage
 from django.contrib.contenttypes.models import ContentType
 from django.db import connection
+from django.db.models import Count, Max
 from crimsononline.content.models import *
 from crimsononline.content_module.models import ContentModule
 from crimsononline.common.utils.paginate import paginate
@@ -78,10 +79,10 @@ def index(request):
     dict['nav'] = 'index'
     dict['top_stories'] = stories[:4]
     dict['more_stories'] = stories[4:9]
-    dict['opeds'] = top_articles('Opinion')[:6]
-    dict['arts'] = top_articles('Arts')[:6]
-    dict['sports'] = top_articles('Sports')[:6]
-    dict['fms'] = top_articles('FM')[:6]
+    dict['opeds'] = top_articles('Opinion')[:5]
+    dict['arts'] = top_articles('Arts')[:4]
+    dict['sports'] = top_articles('Sports')[:4]
+    dict['fms'] = top_articles('FM')[:4]
     dict['issue'] = Issue.get_current()
     #dict['markers'] = Marker.objects.filter(map__in = Map.objects.filter(article__in = stories.values('pk').query).values('pk').query)
     
@@ -203,7 +204,13 @@ def section_news(request):
     stories = Article.objects.recent.filter(generic__section=section)
     rotate = stories.filter(
         rel_content__content_type=Image.content_type()).distinct()[:4]
-    stories = stories.exclude(pk__in=[c.pk for c in rotate])[:20]
+    stories = stories.exclude(pk__in=[c.pk for c in rotate])[:15]
+    
+    series = ContentGroup.objects.filter(section=section) \
+        .annotate(c_count=Count('content')).filter(c_count__gte=3) \
+        .annotate(latest=Max('content__issue__issue_date')) \
+        .order_by('-latest')[:2]
+    print series
     
     return render_to_response('sections/news.html', locals())
     

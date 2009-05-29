@@ -1,4 +1,5 @@
 import string
+from django.template.defaultfilters import slugify
 
 IDENTITY_TRANS = string.maketrans("","")
 def alphanum_only(s):
@@ -11,11 +12,10 @@ def make_url_friendly(s):
     """
     kills non alpha numeric chars and replaces spaces with underscores
     """
-    # TODO: THIS IS BACKWARDS
-    return s.translate(IDENTITY_TRANS, URL_SAFE)
+    return slugify(s)
     
 def make_file_friendly(str):
-    return make_url_friendly(str)
+    return slugify(str)
     
 def strip_commas(s):
     if s:

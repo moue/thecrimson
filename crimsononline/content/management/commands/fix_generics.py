@@ -35,8 +35,9 @@ class Command(NoArgsCommand):
             while len(h) < 6:
                 h = text[randrange(0,n)]
             r = randrange(0,n-100)
-            t = '\n'.join(text[r:r+100])
-            a = Article(headline=h, text=t, sne_id=1, proofer_id=1)
+            t = ''.join(text[r:r+100])
+            a = Article(headline=h, text=t, sne_id=1, proofer_id=1, 
+                teaser=t[:140])
             a.save()
         
         for model in models:

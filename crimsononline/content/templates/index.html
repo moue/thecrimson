@@ -60,6 +60,7 @@
                 {{ opeds|first|render:"preview"}}
                 </li>
             </ul>
+            <span class="clear"></span>
             <ul class="article_headlines">
                 {% for oped in opeds %}
                     {% if forloop.first %}
@@ -73,7 +74,10 @@
             {% endcontentmodule %}
         </div>
         <div id="front_ad" class="content_column">
-            ad here
+            <div class="ad">
+                <span>Advertisement</span>
+                <img src="/site_media/images/medium_rectangle.gif" />
+            </div>
         </div>
     </div>
 {% endblock %}

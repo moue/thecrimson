@@ -9,18 +9,30 @@
 
 {% block lefttopcolumn %}
     <ul class="article_previews">
-    {% for s in stories|slice:":4" %}
+    {% for s in stories|slice:":5" %}
         <li>{{ s|render:"preview" }}</li>
     {% endfor %}
     </ul>
+    <span class="clear"></span>
     {% contentmodule news_bottom_left %}
+        {% if series.0 %}
+            <div class="bordered series">
+            {{ series.0.image|to_img_tag:"296," }}
+            <ul>
+            {% for story in series.0.content.all %}
+                <li><h3><a href="{{story.get_absolute_url}}">{{story}}</a></h3></li>
+            {% endfor %}
+            </ul>
+            <span class="clear"></span>
+            </div>
+        {% endif %}
     {% endcontentmodule %}
 {% endblock %}
 
 {% block middletopcolumn %}
     {% rotator rotate "news_rotator" %}
     <ul class="article_headlines">
-        {% for s in stories|slice:"4:14" %}
+        {% for s in stories|slice:"5:10" %}
         <li>
             <h3><a href="{{s.get_absolute_url}}">{{s}}</a></h3>
             <span class="byline">By {{s.contributors.all|linkify|human_list}}</span>
@@ -28,10 +40,25 @@
         {% endfor %}
     </ul>
     {% contentmodule news_bottom_mid %}
+        {% if series2 %}
+            <div class="bordered">
+            {{ series1.image|to_img_tag:"290," }}
+            <ul>
+            {% for story in series2.content.all %}
+                <li><h3><a href="{{story.get_absolute_url}}">{{story}}</a></h3></li>
+            {% endfor %}
+            </ul>
+            <span class="clear"></span>
+            </div>
+        {% endif %}
     {% endcontentmodule %}
 {% endblock %}
 
 {% block righttopcolumn %}
-    {% tag_cloud 20 "tags" %}|
-    
+    {% tag_cloud 20 "tags" %}
+    {% most_read_articles %}
+    <div class="ad">
+        <span>advertisement</span>
+        <img src="/site_media/images/medium_rectangle.gif" alt="some ad" />
+    </div>
 {% endblock %}

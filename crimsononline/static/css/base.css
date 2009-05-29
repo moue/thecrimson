@@ -302,6 +302,7 @@ div.ad span{
     top: -8px;
     background-color: white;
     color: #444444;
+    font-family: sans-serif;
 }
 span.clear {
     display: block;
