@@ -81,6 +81,9 @@ class TopArticlesNode(template.Node):
         mostreadarticles = cursor.fetchall()
         mostreadarticles = [(ContentType.objects.get(pk=x[1])).get_object_for_this_type(pk=x[0]) for x in mostreadarticles]
         
+        # TODO: uncomment / fix this.  it calls disqus every time, which is annoying
+        mostcommentedarticles = None # delete this when below is uncommented
+        """
         # Step 2: Grab the JSON crap from Disqus and build another list of the most commented articles
         thread_url = "http://disqus.com/api/get_thread_list/?forum_api_key=" + D_FORUM_KEY
         thread_list = simplejson.load(urllib.urlopen(thread_url))
@@ -100,9 +103,11 @@ class TopArticlesNode(template.Node):
         # call resolver.resolve on everything in the list
         urllist = map(lambda x: (urlparse(x['url']))[2], thread_list['message'])
         threadobjlist = map(lambda x: safe_resolve(x, resolver), urllist)
+        
         mostcommentedarticles = map(lambda x: call_view(x[0], x[1]), filter(lambda x: x != None, threadobjlist))
         # Only want top 5 -- we need to do this last because we're not guaranteed that there won't be some gaps in threadobjlist
         del mostcommentedarticles[5:]
+        """
         
         """
          THE PLAN HERE:

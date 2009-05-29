@@ -1,6 +1,8 @@
 {% extends "content_list.html" %}
 
 {% load common_filters %}
+{% load content_filters %}
+{% load tag_cloud %}
 
 {% block css %}
 <link type="text/css" rel="stylesheet" href="/site_media/css/tag.css" />
@@ -12,7 +14,7 @@
 
 {% block left %}
     <div id="featured_articles" class="bordered">
-        <h3>FEATURED ARTICLES</h3>
+        <h2>FEATURED ARTICLES</h2>
         {% for c in featured %}
         <p>
             {{c.content_object|linkify}} 
@@ -20,14 +22,20 @@
         </p>
         {% endfor %}
     </div>
-    <div id="featured_contributors" class="bordered">
-        <h3>TOP CONTRIBUTORS</h3>
-        {% for c in top_contributors %}
-        <p>
-            {{c|linkify}}
-        </p>
-        {% endfor %}
-        <p>This is where top contributors go, once I implement the feature</p>
+    <div id="top_contributors" class="bordered">
+        <h2>TOP CONTRIBUTORS</h2>
+        <ul>
+        {% for c in top_contributors %}<li>
+        {% if c.profile_pic %}
+            {{c.profile_pic|to_img_tag:"50,50,1,1"}}
+        {% else %}
+            <img src="/site_media/images/noface_50x50.jpg" alt="face"/>
+        {% endif %}
+        <h3>{{c|linkify}} ({{c.c_count}})</h3>
+        <p class="dateline">{{c.rece|date}}</p>
+        {% endfor %}</li>
+        </ul>
+        <span class="clear"></span>
     </div>
 {% endblock %}
 
@@ -37,7 +45,6 @@
 
 {% block right %}
     <div id="related_tags" class="bordered">
-        <h3>RELATED TAGS</h3>
-        this is where a list of related tags would go
+        {% tag_cloud 15 "Related Tags" tags %}
     </div>
 {% endblock %}

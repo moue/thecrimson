@@ -132,27 +132,46 @@ def tag(request, tag, section_str='', type_str='', page=1):
     f = filter_helper(content, section_str, type_str, 
         tag.get_absolute_url())
     
-    # TODO: top writers (contributors that have the most content with this tag)
+    # top writers (contributors that have the most content with this tag)
     cursor = connection.cursor()
-    cursor.execute("SELECT count(content_contentgeneric.object_id) as objcount, " \
-                   "content_contentgeneric_contributors.contributor_id FROM content_contentgeneric, " \
-                   "content_contentgeneric_contributors, content_contentgeneric_tags " \
-                   "WHERE content_contentgeneric_contributors.contentgeneric_id = content_contentgeneric.id " \
-                   "AND content_contentgeneric_tags.contentgeneric_id = content_contentgeneric.id " \
-                   "AND content_contentgeneric_tags.tag_id = " + str(tag.pk) + " " \
-                   "GROUP BY content_contentgeneric_contributors.contributor_id ORDER BY objcount DESC LIMIT 5")
+    cursor.execute("SELECT content_contentgeneric_contributors.contributor_id, " \
+       "count(content_contentgeneric.object_id) as objcount FROM content_contentgeneric, " \
+       "content_contentgeneric_contributors, content_contentgeneric_tags " \
+       "WHERE content_contentgeneric_contributors.contentgeneric_id = content_contentgeneric.id " \
+       "AND content_contentgeneric_tags.contentgeneric_id = content_contentgeneric.id " \
+       "AND content_contentgeneric_tags.tag_id = " + str(tag.pk) + " " \
+       "GROUP BY content_contentgeneric_contributors.contributor_id ORDER BY objcount DESC LIMIT 5")
     rows = cursor.fetchall()
-    topcontribs = [Contributor.objects.get(pk=x[1]) for x in rows]
+    writers = Contributor.objects.filter(pk__in=[r[0] for r in rows])
+    contrib_count = dict(rows)
+    for w in writers:
+        w.c_count = contrib_count[w.pk]
+        w.rece = w.content.recent[:1][0].issue.issue_date
+    writers = list(writers)
+    writers.sort(lambda x, y: cmp(y.c_count, x.c_count))
     
-    # TODO: related tags (tags with most shared content)
-    #content_pks = [d['id'] for d in content.values('id')]
-    #rel_tags = Tag.objects.filter(content__id__in=content_pks).annotate(
-    # need to select the tags for which there are the most objects that have both this tag and
-    # that tag within some timeframe
+    # related tags (tags with most shared content)
+    #  select the tags for which there are the most objects that have both 
+    #  this tag and that tag within some timeframe
+    cursor.execute("""SELECT cgt2.tag_id, 
+        count(cgt2.contentgeneric_id) AS o_count  
+        FROM content_contentgeneric_tags AS cgt1 
+        JOIN content_contentgeneric_tags AS cgt2
+        ON cgt1.contentgeneric_id=cgt2.contentgeneric_id 
+        WHERE cgt1.tag_id = %(pk)i AND cgt2.tag_id != %(pk)i 
+        GROUP BY cgt2.tag_id ORDER BY o_count DESC LIMIT 15;""" % {'pk': tag.pk}
+    )
+    rows = cursor.fetchall()
+    tags = Tag.objects.filter(pk__in=[r[0] for r in rows])
+    tags_count = dict(rows)
+    for t in tags:
+        t.content_count = tags_count[t.pk]
+    tags = list(tags)
+    tags.sort(lambda x,y: cmp(y.content_count, x.content_count))
     
     d = paginate(f.pop('content'), page, 5)
-    d.update({'tag': tag, 'url': tag.get_absolute_url(), 
-        'featured': featured_articles})
+    d.update({'tag': tag, 'url': tag.get_absolute_url(), 'tags': tags,
+        'featured': featured_articles, 'top_contributors': writers,})
     d.update(f)
     
     return render_to_response('tag.html', d)

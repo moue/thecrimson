@@ -18,11 +18,16 @@ class AutoGenSlugWidget(forms.widgets.TextInput):
         self.url = kwargs.pop('url')
         self.date_field = kwargs.pop('date_field')
         self.text_field = kwargs.pop('text_field')
+        self.a, self.kw = args, kwargs
         super(AutoGenSlugWidget, self).__init__(*args, **kwargs)
     
     def render(self, name, value, attrs={}):
-        if value: attrs['disabled'] = 1
         input = super(AutoGenSlugWidget, self).render(name, value, attrs)
+        if value:
+            # render a disabled input, but we still need a hidden input to
+            #  make sure the form validates (slugs are required)
+            fakeinput = mark_safe(input.replace('id="id_slug"', 'disabled="1"'))
+            input = mark_safe(input.replace('type="text"', 'type="hidden"'))
         date_field, text_field, url = self.date_field, self.text_field, self.url
         return render_to_string('forms/autogen_slug_widget.html', locals())
     

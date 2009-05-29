@@ -62,7 +62,6 @@ class ContentGeneric(models.Model):
     section = models.ForeignKey('Section', null=True, related_name='content')
     priority = models.IntegerField(default=0)
     group = models.ForeignKey('ContentGroup', null=True, blank=True)
-    # hits = models.IntegerField(default=0)
     
     objects = ContentGenericManager()
     
@@ -150,10 +149,8 @@ class Content(models.Model):
         # can access self with either the name of the class (ie, 'article')
         #   or 'content'
         context.update({name: self, 'content': self, 'class': name})
-        #if method == 'page':
-        #    self.hits += 1
-        #    self.save()
-        self.store_hit()
+        if method == 'page':
+            self.store_hit()
         return mark_safe(render_to_string(templ, context))
     
     """  this shit does not work
@@ -465,7 +462,7 @@ class Contributor(models.Model):
     profile_text = models.TextField(blank=True, null=True,
         help_text="""<b>Text enclosed in [square brackets] 
         will be bold and red</b>""")
-    profile_pic = MaxSizeImageField(blank=True, null=True, max_width=150,
+    profile_pic = SuperImageField(blank=True, null=True, max_width=150,
         upload_to=contrib_pic_path, storage=OverwriteStorage())
     
     @property

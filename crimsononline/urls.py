@@ -12,7 +12,7 @@ FILTER_URL_RE = r'(?:sections/(?P<section_str>[A-Za-z,]+)/)?' \
     r'(?:page/(?P<page>\d+)/)?'
 urlpatterns = patterns('crimsononline.content.views',
     url(r'writer/(?P<pk>\d+)/(?P<f_name>[A-Za-z\s]+)_' \
-        r'(?P<m_name>[A-Za-z]?)_(?P<l_name>[A-Za-z]+)/%s$' % FILTER_URL_RE,
+        r'(?P<m_name>[A-Za-z]?)_(?P<l_name>[A-Za-z\-\']+)/%s$' % FILTER_URL_RE,
         'writer', name='content_writer_profile'),
     url(r'^section/', include('crimsononline.content.section_urls')),
     url(r'^tag/(?P<tag>[A-Za-z\s]+)/%s$' % FILTER_URL_RE, 
