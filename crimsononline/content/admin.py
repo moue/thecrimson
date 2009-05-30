@@ -20,7 +20,9 @@ from crimsononline.content.models import *
 from crimsononline.content.forms import *
 from crimsononline.common.utils.strings import alphanum_only
 from crimsononline.common.forms import \
-    FbModelChoiceField, CropField, SearchModelChoiceField, MaskedValueTextInput
+    FbModelChoiceField, CropField, SearchModelChoiceField, \
+    MaskedValueTextInput, RatingWidget
+    
 
 STOP_WORDS = ['a', 'able', 'about', 'across', 'after', 'all', 'almost', 'also', 
     'am', 'among', 'an', 'and', 'any', 'are', 'as', 'at', 'be', 'because', 
@@ -667,6 +669,11 @@ class ArticleAdmin(ContentGenericAdmin):
 
 admin.site.register(Article, ArticleAdmin)
 
+
+class ReviewAdmin(admin.ModelAdmin):
+    radio_fields = {"rating": admin.HORIZONTAL}
+
+admin.site.register(Review, ReviewAdmin)
 
 class MarkerInline(admin.TabularInline):
     model = Marker

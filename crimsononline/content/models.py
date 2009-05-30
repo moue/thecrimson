@@ -992,7 +992,6 @@ class Article(Content):
     image_gallery = models.ForeignKey(ImageGallery, null=True, blank=True)
     is_published = models.BooleanField(default=True, null=False, blank=False)
     web_only = models.BooleanField(default=False, null=False, blank=False)
-    review = models.ForeignKey('Review', null=True, blank=True)
     
     rel_content = models.ManyToManyField(ContentGeneric,
         through='ArticleContentRelation', null=True, blank=True)
@@ -1054,10 +1053,15 @@ class Review(models.Model):
         ('music', 'Music'),
         ('book', 'Book'),
     )
-    byline_type = models.CharField(max_length=10, choices=TYPE_CHOICES)
+    RATINGS_CHOIES = tuple([(i, str(i)) for i in range(1,6)])
+    type = models.CharField(max_length=10, choices=TYPE_CHOICES)
     name = models.CharField(max_length=100)
-    rating = models.IntegerField()
+    rating = models.IntegerField(choices=RATINGS_CHOIES)
+    article = models.ForeignKey(Article, null=True, blank=True)
     created_on = models.DateField(auto_now_add=True)
+    
+    class Meta:
+        ordering = ('-created_on',)
 
 
 class UserData(models.Model):

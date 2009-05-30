@@ -91,7 +91,6 @@ div.img_list li img {
     margin-right: 4px;
 }
 
-
 div.series img {
     margin-bottom: 8px;
 }
@@ -106,4 +105,25 @@ div.series ul li {
 div.series ul li h3{
     font-size: 13px;
     font-weight: normal;
+}
+
+div.reviews h2 {
+    border-bottom: 1px solid #bbb;
+}
+div.reviews ul {
+    margin-bottom: 6px;
+    list-style: none;
+}
+div.reviews li * {
+    font-size: 13px;
+    font-weight: normal;
+}
+div.reviews li h3 span {
+    display: inline-block;
+}
+div.reviews li h3 span.link{
+    width: 196px;
+}
+div.reviews li span.rating{
+    width: 90px;
 }

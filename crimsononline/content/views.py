@@ -233,6 +233,9 @@ def section_arts(request):
     music = stories.filter(generic__tags__text='music')[:2]
     visualarts = stories.filter(generic__tags__text='visual arts')[:2]
     issues = Issue.objects.exclude(arts_name=None).exclude(arts_name='')[:3]
+    reviews = {}
+    for t in ['movie', 'music', 'book']:
+        reviews[t] = Review.objects.filter(type=t)[:4]
     return render_to_response('sections/arts.html', locals())
     
 def section_photo(request):
