@@ -23,6 +23,7 @@ urlpatterns = patterns('crimsononline.content.views',
     url(r'^search/', include('crimsononline.search.urls')),
     url(r'^map/$', 'bigmap'),
     url(r'^$', 'index', name='content_index'),
+    url(r'^issue/(\d+)/(\d+)/(\d+)/$', 'index', name='content_index'),    
     url(r'^subscription$', 'subscribe'),
     url(r'^done$', 'subscribed'),
 )

@@ -68,8 +68,17 @@ def get_content_group_obj(request, gtype, gname):
     cg = ContentGroup.by_name(gtype, gname)
     return cg
 
-def index(request):
+def index(request, m=None, d=None, y=None):
     stories = top_articles('News')
+    
+    try:
+        dt = datetime(int(y), int(m), int(d))
+    except:
+        dt = None
+    # Filter stories if we have a past issue date
+    if(dt != None):
+        stories = stories.filter(generic__issue__issue_date__lte = dt)
+        
     dict = {}
     
     dict['rotate'] = stories.filter(
@@ -79,10 +88,10 @@ def index(request):
     dict['nav'] = 'index'
     dict['top_stories'] = stories[:4]
     dict['more_stories'] = stories[4:11]
-    dict['opeds'] = top_articles('Opinion')[:5]
-    dict['arts'] = top_articles('Arts')[:4]
-    dict['sports'] = top_articles('Sports')[:4]
-    dict['fms'] = top_articles('FM')[:4]
+    dict['opeds'] = top_articles('Opinion', dt)[:5]
+    dict['arts'] = top_articles('Arts', dt)[:4]
+    dict['sports'] = top_articles('Sports', dt)[:4]
+    dict['fms'] = top_articles('FM', dt)[:4]
     dict['issue'] = Issue.get_current()
     #dict['markers'] = Marker.objects.filter(map__in = Map.objects.filter(article__in = stories.values('pk').query).values('pk').query)
     
@@ -337,9 +346,12 @@ def filter_helper(qs, section_str, type_str, url_base):
     return {'content': content, 'sections': sects, 'types': types}
     
 
-def top_articles(section):
+def top_articles(section, dt = None):
     """returns the most recent articles from @section"""
-    return Article.objects.recent.filter(generic__section__name=section)
+    stories = Article.objects.recent.filter(generic__section__name=section)
+    if(dt != None):
+        stories = stories.filter(generic__issue__issue_date__lte = dt)
+    return stories
 
 def last_month():
     return date.today() + timedelta(days=-30)
