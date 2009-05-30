@@ -72,21 +72,30 @@ def get_content_group_obj(request, gtype, gname):
 def index(request, m=None, d=None, y=None):
     stories = top_articles('News')
     
-    try:
-        dt = datetime(int(y), int(m), int(d))
-    except:
-        dt = None
+    dt = None
+    # if viewing an issue, try to form date, if not successful, 404
+    if(m != None):
+        try:
+            dt = datetime(int(y), int(m), int(d))
+        except:
+            raise Http404
+
+            
     # Filter stories if we have a past issue date
     if(dt != None):
         stories = stories.filter(generic__issue__issue_date__lte = dt)
-        
+    else:
+        m = date.today().month
+        d = date.today().day
+        y = date.today().year
+
     dict = {}
     
     dict['rotate'] = stories.filter(
         rel_content__content_type=Image.content_type()).distinct()[:4]
     stories = stories.exclude(pk__in=[c.pk for c in dict['rotate']])
     
-    dict['past_issues'] = DateSelectWidget().render(name="past_issues", value=[date.today().month, date.today().day, date.today().year])
+    dict['past_issues'] = DateSelectWidget().render(name="past_issues", value=[m, d, y])
     dict['nav'] = 'index'
     dict['top_stories'] = stories[:4]
     dict['more_stories'] = stories[4:11]
