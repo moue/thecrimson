@@ -13,6 +13,7 @@ from crimsononline.content.models import *
 from crimsononline.content_module.models import ContentModule
 from crimsononline.common.utils.paginate import paginate
 from crimsononline.common.utils.strings import strip_commas
+from crimsononline.common.forms import DateSelectWidget
 from django.core.mail import send_mail
 
 
@@ -85,6 +86,7 @@ def index(request, m=None, d=None, y=None):
         rel_content__content_type=Image.content_type()).distinct()[:4]
     stories = stories.exclude(pk__in=[c.pk for c in dict['rotate']])
     
+    dict['past_issues'] = DateSelectWidget().render(name="past_issues", value=[date.today().month, date.today().day, date.today().year])
     dict['nav'] = 'index'
     dict['top_stories'] = stories[:4]
     dict['more_stories'] = stories[4:11]

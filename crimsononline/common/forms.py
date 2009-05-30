@@ -10,7 +10,19 @@ from django.db.models import ImageField
 from django.db.models.fields.files import ImageFieldFile
 from django.template.loader import render_to_string
 from crimsononline.common.utils.numbers import reduce_fraction
+import datetime
 
+MONTHS = [(i, datetime.date(2008, i, 1).strftime('%B')) for i in range(1,13)]
+DAYS = [(str(i), str(i)) for i in range(1, 32)]
+YEARS = [(str(i), str(i)) for i in range(1900, (datetime.date.today().year) + 1)]
+YEARS.reverse()
+
+class DateSelectWidget(forms.widgets.MultiWidget):
+    def __init__(self, attrs=None):
+        widgets = (forms.widgets.Select(choices=(MONTHS)), \
+            forms.widgets.Select(choices=(DAYS)), \
+            forms.widgets.Select(choices=(YEARS)))
+        super(DateSelectWidget, self).__init__(widgets, attrs)
 
 class RatingWidget(forms.widgets.RadioSelect):
     def __init__(self, *args, **kwargs):
@@ -70,7 +82,6 @@ def size_spec_to_size(size_spec, img_width, img_height):
         max_h = int(ratio * crop_h)
     
     return max_w, max_h
-    
 
 class AutosizeImageFieldFile(ImageFieldFile):
     """
