@@ -1,67 +1,71 @@
-ul.article_previews{
-	list-style: none;
-    margin-top: 5px;
-}
-ul.article_previews > li{
-	margin-bottom: 12px;
-    display: block;
+div.article_previews li {
+    display: block; 
     float: left;
-    clear: both;
-    width: 308px;
+    margin-bottom: 14px;
 }
-ul.article_previews > li > *{
-	margin-top: 3px;
-}
-ul.article_previews h3{
-	font-size: 18px;
-	line-height: 0.8;
-	display: inline;
-}
-ul.article_previews h3 a{
-    font-family: "Palatino Linotype", Palatino, Palladio, "URW Palladio L", 
-                    "Book Antiqua", Baskerville, "Bookman Old Style", 
-                    "Bitstream Charter", "Nimbus Roman No9 L", Garamond, 
-                    "Apple Garamond", "ITC Garamond Narrow", 
-                    "New Century Schoolbook", "Century Schoolbook", 
-                    "Century Schoolbook L", Georgia, serif;
-    font-weight: bold;
-}
-
-ul.article_previews .byline, ul.article_headlines .byline {
-	font-size: 11px;
-	font-weight: bold;
-}
-ul.article_previews .byline a, ul.article_headlines .byline a{
-	font-size: 11px;
-	display: inline;
-}
-
-ul.article_previews .dateline {
-    font-size: 11px;
-}
-
-ul.article_previews p.teaser {
-	font-size: 13px;
-    display: block;
+div.article_previews div.image_thumb {
     float: left;
+    margin: 0 6px 1px 0;
+}
+div.article_previews h3 {
+    font-weight: normal;
+    font-size: 17px;
+    display: inline;
+    line-height: 0.9;
+}
+div.article_previews .byline, div.article_previews .dateline {
+    font-size: 12px;
+}
+div.article_previews .byline {
+    margin-top: 4px;
+}
+div.article_previews .dateline {
+    margin-bottom: 2px;
+}
+div.article_previews .teaser {
+    font-size: 14px;
     clear: left;
-    
 }
-ul.article_headlines {
-	list-style: disc outside;
-	padding: 0px 0px 0px 20px;
+
+div.article_headlines ul {
+    list-style: disc outside;
 }
-ul.article_headlines li {
-    margin-bottom: 8px;
+div.article_headlines li {
+    font-size: 14px;
+    margin: 0 0 6px 22px;
 }
-ul.article_headlines h3 {
+div.article_headlines h3 {
+    font-weight: normal;
+    font-size: 1em;
+}
+div.article_headlines .byline {
+    font-size: 12px;
+}
+
+div.article_feature {
+    text-align: center;
+    background-color: #ddd;
+    border: 1px solid #ddd;
+    padding: 5px;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+}
+div.article_feature h3, div.article_feature p {
+    text-align: left;
+}
+div.article_feature h3 {
+    font-weight: normal;
+    font-size: 16px;
+}
+div.article_feature .byline {
+    font-size: 12px;
+    margin: 4px 0 3px;
+}
+div.article_feature .teaser {
     font-size: 14px;
 }
-ul.article_headlines a{
-	font-size: inherit;
-	font-weight: normal;
-	display: block;
-}
+
 div.column {
     width: 308px;
 	padding: 6px 6px;
@@ -73,27 +77,21 @@ div#the_fold{
 	margin:5px 0px;
     border-bottom: 1px solid #ccc;
 }
-.rotator {
-    margin-bottom: 10px;
-}
-div.bordered ul {
-    list-style: none;
-}
-div.bordered ul  li{
-    font-size: 13px;
+
+div.columnists li {
+    font-size: 12px;
     width: 296px;
+    height: 60px;
+    margin-bottom: 5px;
     display: block;
     float: left;
-    margin-bottom: 8px;
 }
-div.bordered img {
+div.columnists li img {
     float: left;
-    clear: left;
-    margin-right: 5px;
+    margin-right: 4px;
 }
-div.bordered h2 {
-    padding: 0 0 10px;
-}
+
+
 div.series img {
     margin-bottom: 8px;
 }
@@ -108,9 +106,4 @@ div.series ul li {
 div.series ul li h3{
     font-size: 13px;
     font-weight: normal;
-}
-/* preview */
-div.image_thumb {
-    float: left;
-    margin-right: 6px;
 }

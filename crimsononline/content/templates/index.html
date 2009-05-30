@@ -20,15 +20,15 @@
 {% endblock %}
 {% block lefttopcolumn %}
     {% contentmodule index.topstories %}
-    <div class="topstories">
-    {{ "Top Stories"|yuhkilabel }}
-    <ul class="article_previews">
-        {% for story in top_stories %}
-        <li>
-            {{story|render:"preview"}}
-        </li>
-        {% endfor %}
-    </ul>
+        <div id="topstories" class="article_previews">
+        {{ "Top Stories"|yuhkilabel }}
+        <ul>
+            {% for story in top_stories %}
+            <li>
+                {{story|render:"preview"}}
+            </li>
+            {% endfor %}
+        </ul>
     </div>
     {% endcontentmodule %}
 {% endblock %}
@@ -38,12 +38,12 @@
             {% rotator rotate "main_rotator" %}
         {% endcontentmodule %}
     </div>
-    <div id="more_news">
+    <div id="more_news" class="article_headlines">
         {% contentmodule index.morenews %}
         {{ "More News"|yuhkilabel }}
-        <ul class="article_headlines">
+        <ul>
             {% for story in more_stories %}
-            <li><a href="{{ story.get_absolute_url }}">{{ story.headline }}</a></li>
+            <li><h3><a href="{{ story.get_absolute_url }}">{{ story.headline }}</a></h3></li>
             {% endfor %}
         </ul>
         {% endcontentmodule %}
@@ -52,54 +52,40 @@
 
 {% block righttopcolumn %}
     <div id="opinions_ad" class="content_column">
-        <div id="top_opinions" class="content_column">
+        <div id="top_opinion" class="article_previews">
             {% contentmodule index.opinion %}
             {{ "Opinion"|yuhkilabel }}
-            <ul class="article_previews">
+            <ul>
                 <li>
                 {{ opeds|first|render:"preview"}}
                 </li>
             </ul>
-            <span class="clear"></span>
-            <ul class="article_headlines">
-                {% for oped in opeds %}
-                    {% if forloop.first %}
-                    {% else %}
-                    <li>
-                        <a href="{{ oped.get_absolute_url }}">{{ oped.headline }}</a>
-                    </li>
-                    {% endif %}
-                {% endfor %}
+        </div>
+        <span class="clear"></span>
+        <div id="top_opinions" class="article_headlines">
+            <ul>
+            {% for oped in opeds|notfirst %}
+                <li>
+                    <h3><a href="{{ oped.get_absolute_url }}">{{ oped.headline }}</a></h3>
+                    <p class="byline">By {{ oped.contributors.all|linkify|human_list }}</p>
+                </li>
+            {% endfor %}
             </ul>
             {% endcontentmodule %}
         </div>
-        <div id="front_ad" class="content_column">
-            <div class="ad">
-                <span>Advertisement</span>
-                <img src="/site_media/images/medium_rectangle.gif" />
-            </div>
+        <span class="clear"></span>
+        <div id="front_ad" class="ad">
+            <span>Advertisement</span>
+            <img src="/site_media/images/medium_rectangle.gif" />
         </div>
     </div>
 {% endblock %}
 
 {% block leftbottomcolumn %}
-    {% contentmodule index.arts %}
-
-    <div id="top_arts" class="content_column">
-        {{ "Arts"|yuhkilabel }}
-        <ul class="article_previews">
-        {% for story in arts %}
-            <li>{{ story|render:"preview" }}</li>
-        {% endfor %}
-        </ul>
-    </div>
-    {% endcontentmodule %}
-{% endblock %}
-{% block middlebottomcolumn %}
     {% contentmodule index.sports %}
-    <div id="top_sports" class="content_column">
-        {{ "Sports"|yuhkilabel }}
-        <ul class="article_previews">
+    {{ "Sports"|yuhkilabel }}
+    <div id="top_sports" class="article_previews">
+        <ul>
         {% for story in sports %}
             <li>{{ story|render:"preview" }}</li>
         {% endfor %}
@@ -107,13 +93,38 @@
     </div>
     {% endcontentmodule %}
 {% endblock %}
-{% block rightbottomcolumn %}
+
+{% block middlebottomcolumn %}
     {% contentmodule index.fm %}
-    <div id="top_fm" class="content_column">
-        {{ "FM"|yuhkilabel }}
-        <ul class="article_previews">
-        {% for story in fms %}
-            <li>{{ story|render:"preview" }}</li>
+    {{ "FM"|yuhkilabel }}
+    <div id="top_fm" class="article_feature">
+        {{ fms|first|render:"feature" }}
+    </div>
+    <div id="top_fms" class="article_headlines">
+        <ul>
+        {% for story in fms|notfirst %}
+            <li>
+                <h3><a href="{{ story.get_absolute_url }}">{{ story.headline }}</a></h3>
+                <p class="byline">By {{ story.contributors.all|linkify|human_list }}</p>
+            </li>
+        {% endfor %}
+        </ul>
+    </div>
+    {% endcontentmodule %}
+{% endblock %}
+{% block rightbottomcolumn %}
+    {% contentmodule index.arts %}
+    {{ "Arts"|yuhkilabel }}
+    <div id="top_art" class="article_feature">
+        {{ arts|first|render:"feature" }}
+    </div>
+    <div id="top_arts" class="article_headlines">
+        <ul >
+        {% for story in arts|notfirst %}
+            <li>
+                <h3><a href="{{ story.get_absolute_url }}">{{ story.headline }}</a></h3>
+                <p class="byline">By {{ story.contributors.all|linkify|human_list }}</p>
+            </li>
         {% endfor %}
         </ul>
     </div>

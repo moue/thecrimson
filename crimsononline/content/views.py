@@ -61,7 +61,7 @@ def get_content_group(request, gtype, gname):
     cg = get_content_group_obj(request, gtype, gname)
     if not cg:
         raise Http404
-    c = cg.contentgeneric_set.all()
+    c = cg.content.all()
     return render_to_response('contentgroup.html', {'cg': cg, 'content': c})
 
 def get_content_group_obj(request, gtype, gname):
@@ -78,7 +78,7 @@ def index(request):
     
     dict['nav'] = 'index'
     dict['top_stories'] = stories[:4]
-    dict['more_stories'] = stories[4:9]
+    dict['more_stories'] = stories[4:11]
     dict['opeds'] = top_articles('Opinion')[:5]
     dict['arts'] = top_articles('Arts')[:4]
     dict['sports'] = top_articles('Sports')[:4]
@@ -177,26 +177,6 @@ def tag(request, tag, section_str='', type_str='', page=1):
     
     return render_to_response('tag.html', d)
 
-def section(request, section):    
-    # validate the section (we don't want /section/balls/ to be a valid url)
-    if section == 'photo':
-        return photo(request)
-    section = section.lower()
-    section = [s for s in Section.all() if section == s.name.lower()]
-    if len(section) != 1:
-        raise Http404
-    section = section[0]
-    
-    content = ContentGeneric.objects.recent.filter(section__pk=section.pk)[:20]
-    
-    dict = {
-        'nav': section.name.lower(),
-        'content': content,
-        'section': section.name.capitalize(),
-    }
-    return render_to_response(
-        [dict['nav']+'.html', 'section.html', 'content_list.html'], dict
-    )
 
 def section_news(request):
     nav = 'news'
@@ -221,6 +201,8 @@ def section_opinion(request):
     rotate = ContentGeneric.objects.recent \
         .filter(content_type=Image.content_type()) \
         .filter(section=section)[:4]
+    columns = ContentGroup.objects.filter(section=section, active=True,
+        type='column').annotate(recent=Max('content__issue__issue_date'))
     return render_to_response('sections/opinion.html', locals())
     
 def section_fm(request):

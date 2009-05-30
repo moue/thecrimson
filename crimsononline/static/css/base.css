@@ -1,3 +1,10 @@
+/* ========== COLORS ================
+    grey lines:      #BBB
+    darker grey:     #666
+    red for links:   #BA0600
+    darker red:      #EA0600
+*/
+
 /* wrapper type stuff */
 
 * {
@@ -5,7 +12,7 @@
 	margin:0px;
 	font-family: Georgia, Palatino Linotype, serif;
 }
-#wrapper {
+div#wrapper {
 	width: 980px;
 	margin: 0px auto 0px auto;
 	padding: 0 10px;
@@ -14,7 +21,7 @@
 	background-image: url('/site_media/images/shadow.gif');
 }
 
-#masthead {
+div#masthead {
 	height: 97px;
 	width: 974px;
 	margin: 0 3px;
@@ -129,58 +136,58 @@ div#masthead div.tools div.search span.submit {
 
 /*  */
 
-#main, #footer, #nav{
+div#main, div#footer, div#nav{
     width: 972px;
     border-width: 0 1px;
     border-style: solid;
-    border-color: #b3b3b3;
+    border-color: #bbb;
     margin: 0 3px;
 }
-#main {
+div#main {
     width: 960px;
 	float: left;
     padding:6px;
 	clear: both;
 }
-#footer {
+div#footer {
 	text-align: center;
     /*clear: both;*/
 }
-#nav {
+div#nav {
     width: 972px;
 	height:21px;
 	padding:5px 0px;
 }
-#nav ul{
+div#nav ul{
 	height:21px;
-	border: 1px solid #b3b3b3;
+	border: 1px solid #bbb;
 	border-left:0px;
 	float: left;
 	margin:0;
 	width:100%;
 }
 
-#nav ul li{
+div#nav ul li{
 	height:21px;
 	display: inline;
 	float:left;
-	border: 1px solid #b3b3b3;
+	border: 1px solid #bbb;
 	border-width: 0 1px 0 0;
 }
 
-#nav ul li.spacer{
+div#nav ul li.spacer{
 	width:10px;
 }
 
-#nav ul li.spacer:hover{
+div#nav ul li.spacer:hover{
     background-color: white;
 }
 
-#nav ul li:hover, #nav ul li#nav_cur{
-	background-color: #ba0600;
+div#nav ul li:hover, #nav ul li#nav_cur{
+	background-color: #BA0600;
 }
 
-#nav ul li a{
+div#nav ul li a{
 	text-align: center;
 	font-size: 12px;
 	font-family: Arial, Helvetica, "Lucida Grande", "Lucida Sans Unicode", 
@@ -192,7 +199,7 @@ div#masthead div.tools div.search span.submit {
 	color: #666;
 }
 
-#nav ul li:hover a, #nav ul li#nav_cur a{
+div#nav ul li:hover a, #nav ul li#nav_cur a{
 	color:white;
 }
 
@@ -241,7 +248,7 @@ div.bordered {
 div.bordered h2 {
     font-size: 13px;
     color: #666;
-    margin: 3px 0 0 0;
+    margin: 3px 0;
     font-family: Arial, Helvetica, sans-serif;
     text-transform: uppercase;
 }
@@ -258,7 +265,7 @@ a:hover {
     font-family: Helvetica, Corbel, "Lucida Grande", "Lucida Sans Unicode", 
                 "Lucida Sans", "DejaVu Sans", "Bitstream Vera Sans", 
                 "Liberation Sans", Verdana, "Verdana Ref", sans-serif;
-    color: #444;
+    color: #666;
     line-height: normal;
 }
 .byline a{

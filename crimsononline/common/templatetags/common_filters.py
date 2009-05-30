@@ -7,6 +7,11 @@ import cgi
 
 register = template.Library()
 
+@register.filter
+def notfirst(seq):
+    """returns a list of everything but the first"""
+    return seq[1:]
+
 PML_RE = compile(r'\[([^\[^\]]+)\]')
 @register.filter
 def profileml(s):

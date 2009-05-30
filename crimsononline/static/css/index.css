@@ -1,5 +1,3 @@
-/* wrappers */
-
 /* hot topics */
 
 div#masthead div#masthead_center div.label,
@@ -13,28 +11,4 @@ div#masthead div#masthead_center div.label{
 
 div#masthead div#masthead_center div.topics{
     width:200px;
-}
-
-/* section containers */
-#more_news {
-	font-size: 14px;
-}
-#top_opinions {
-	font-size: 13px;
-}
-
-/* section specifics */
-
-div#rotator {
-    margin-bottom: 10px;
-}
-
-.topArts, .topFM, .topSports {
-    float: left;
-    width: 250px;
-    display: block;
-    margin-top: 3px;
-}
-.topFM, .topSports {
-    margin-left: 8px;
 }

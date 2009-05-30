@@ -316,14 +316,15 @@ class ContentGroup(models.Model):
         ('blog', 'Blog'),
     )
     type = models.CharField(max_length=25, choices=TYPE_CHOICES)
-    name = models.CharField(max_length=25)
+    name = models.CharField(max_length=35)
     subname = models.CharField(max_length=40, blank=True, null=True)
     blurb = models.TextField(blank=True, null=True)
     section = models.ForeignKey('Section', blank=True, null=True)
     image = SuperImageField(upload_to=get_img_path, max_width=620,
         blank=True, null=True, storage=OverwriteStorage())
-    #active = models.BoolField(default=True, help_text="ContentGroups that " \
-    #    " could still have content posted to them are active")
+    active = models.BooleanField(default=True, help_text="ContentGroups that " \
+        "could still have content posted to them are active.  Active "\
+        "blogs and columnists show up on section pages.")
     
     class Meta:
         unique_together = (('type', 'name',),)
@@ -365,7 +366,7 @@ class ContentGroup(models.Model):
     
     @permalink
     def get_absolute_url(self):
-        return ('content_contentgroup', [self.type, self.name])
+        return ('content_contentgroup', [self.type, make_url_friendly(self.name)])
 
 
 class Tag(models.Model):
