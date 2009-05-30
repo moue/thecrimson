@@ -217,6 +217,8 @@ def section_fm(request):
     itm = stories.filter(generic__tags__text='itm')[:3]
     ftm = stories.filter(generic__tags__text='ftm')[:9]
     issues = Issue.objects.exclude(fm_name=None).exclude(fm_name='')[:3]
+    columns = ContentGroup.objects.filter(section=section, active=True,
+        type='column').annotate(recent=Max('content__issue__issue_date'))
     return render_to_response('sections/fm.html', locals())
     
 def section_arts(request):

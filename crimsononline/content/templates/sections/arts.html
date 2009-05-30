@@ -8,23 +8,27 @@
 {% load top_articles %}
 
 {% block lefttopcolumn %}
-    <ul class="article_previews">
-    {% for s in stories|slice:":4" %}
-        <li>{{ s|render:"preview" }}</li>
-    {% endfor %}
-    </ul>
+    <div class="article_previews">
+        <ul>
+        {% for s in stories|slice:":4" %}
+            <li>{{ s|render:"preview" }}</li>
+        {% endfor %}
+        </ul>
+    </div>
 {% endblock %}
 
 {% block middletopcolumn %}
     {% rotator rotate "news_rotator" %}
-    <ul class="article_headlines">
-        {% for s in stories|slice:"4:14" %}
-        <li>
-            <h3><a href="{{s.get_absolute_url}}">{{s}}</a></h3>
-            <span class="byline">By {{s.contributors.all|linkify|human_list}}</span>
-        </li>
-        {% endfor %}
-    </ul>
+    <div class="article_headlines">
+        <ul>
+            {% for s in stories|slice:"4:14" %}
+            <li>
+                <h3><a href="{{s.get_absolute_url}}">{{s}}</a></h3>
+                <span class="byline">By {{s.contributors.all|linkify|human_list}}</span>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
 {% endblock %}
 
 {% block righttopcolumn %}

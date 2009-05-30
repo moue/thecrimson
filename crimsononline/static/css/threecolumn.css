@@ -78,7 +78,7 @@ div#the_fold{
     border-bottom: 1px solid #ccc;
 }
 
-div.columnists li {
+div.img_list li {
     font-size: 12px;
     width: 296px;
     height: 60px;
@@ -86,7 +86,7 @@ div.columnists li {
     display: block;
     float: left;
 }
-div.columnists li img {
+div.img_list li img {
     float: left;
     margin-right: 4px;
 }

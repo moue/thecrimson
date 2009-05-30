@@ -21,6 +21,7 @@ class Command(NoArgsCommand):
         tags = list(Tag.objects.all())
         sections = list(Section.all())
         news_section = Section.objects.get(name="News")
+        content_groups = list(ContentGroup.objects.all())
         
         # unlinks all generics and generates new ones
         models = [Article, Image, ImageGallery]
@@ -64,8 +65,12 @@ class Command(NoArgsCommand):
                     a.issue = cur_issue
                 else:
                     a.issue = choice(issues)
-                a.contributors = contributors[:randrange(1,4)]
+                if randrange(0,3):
+                    a.contributors = contributors[:randrange(1,4)]
+                else:
+                    a.contributors = contributors[:1]
                 a.tags = tags[:randrange(1,8)]
+                a.group = choice(content_groups)
                 
                 if randrange(0, 2):
                     a.section = news_section

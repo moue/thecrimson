@@ -1318,6 +1318,90 @@
     }, 
     {
         "pk": 1, 
+        "model": "content.contentgroup", 
+        "fields": {
+            "name": "Iraq", 
+            "section": 4, 
+            "subname": "", 
+            "active": 1, 
+            "type": "series",  
+            "blurb": ""
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "content.contentgroup", 
+        "fields": {
+            "name": "Petri Dishes", 
+            "section": 2, 
+            "subname": "", 
+            "active": 1, 
+            "type": "column", 
+            "blurb": ""
+        }
+    }, 
+    {
+        "pk": 3, 
+        "model": "content.contentgroup", 
+        "fields": {
+            "name": "The F Word", 
+            "section": 2, 
+            "subname": "Courtney Fiske", 
+            "active": 1, 
+            "type": "column", 
+            "blurb": ""
+        }
+    }, 
+    {
+        "pk": 4, 
+        "model": "content.contentgroup", 
+        "fields": {
+            "name": "Modernity and its Discontents", 
+            "section": 2, 
+            "subname": "Some DBag", 
+            "active": 1, 
+            "type": "column", 
+            "blurb": "it's just too painful"
+        }
+    }, 
+    {
+        "pk": 5, 
+        "model": "content.contentgroup", 
+        "fields": {
+            "name": "Commencement 2008", 
+            "section": 4, 
+            "subname": "", 
+            "active": 1, 
+            "type": "series", 
+            "blurb": ""
+        }
+    }, 
+    {
+        "pk": 6, 
+        "model": "content.contentgroup", 
+        "fields": {
+            "name": "some arts column", 
+            "section": 1, 
+            "subname": "", 
+            "active": 1, 
+            "type": "column", 
+            "blurb": ""
+        }
+    }, 
+    {
+        "pk": 7, 
+        "model": "content.contentgroup", 
+        "fields": {
+            "name": "hullo", 
+            "section": 3, 
+            "subname": "", 
+            "active": 1, 
+            "type": "column", 
+            "blurb": ""
+        }
+    },
+    {
+        "pk": 1, 
         "model": "content.tag", 
         "fields": {
             "text": "it"
@@ -1524,6 +1608,34 @@
         "model": "content.tag", 
         "fields": {
             "text": "scrutiny"
+        }
+    }, 
+    {
+        "pk": 31, 
+        "model": "content.tag", 
+        "fields": {
+            "text": "books"
+        }
+    }, 
+    {
+        "pk": 32, 
+        "model": "content.tag", 
+        "fields": {
+            "text": "on campus"
+        }
+    }, 
+    {
+        "pk": 33, 
+        "model": "content.tag", 
+        "fields": {
+            "text": "music"
+        }
+    }, 
+    {
+        "pk": 34, 
+        "model": "content.tag", 
+        "fields": {
+            "text": "visual arts"
         }
     },
     {

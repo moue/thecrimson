@@ -984,15 +984,15 @@ class Article(Content):
     page = models.CharField(blank=True, null=True, max_length=10,
         help_text='Page in the print edition.')
     proofer = models.ForeignKey(
-        Contributor, related_name='proofed_article_set', 
+        Contributor, related_name='proofed_article_set',
         limit_choices_to={'is_active': True})
     sne = models.ForeignKey(
-        Contributor, related_name='sned_article_set', 
+        Contributor, related_name='sned_article_set',
         limit_choices_to={'is_active': True})
     image_gallery = models.ForeignKey(ImageGallery, null=True, blank=True)
     is_published = models.BooleanField(default=True, null=False, blank=False)
     web_only = models.BooleanField(default=False, null=False, blank=False)
-    maps = models.ManyToManyField(Map, blank=True)
+    review = models.ForeignKey('Review', null=True, blank=True)
     
     rel_content = models.ManyToManyField(ContentGeneric,
         through='ArticleContentRelation', null=True, blank=True)
@@ -1047,6 +1047,18 @@ class ArticleContentRelation(models.Model):
     )
     """
     
+
+class Review(models.Model):
+    TYPE_CHOICES = (
+        ('movie', 'Movie'),
+        ('music', 'Music'),
+        ('book', 'Book'),
+    )
+    byline_type = models.CharField(max_length=10, choices=TYPE_CHOICES)
+    name = models.CharField(max_length=100)
+    rating = models.IntegerField()
+    created_on = models.DateField(auto_now_add=True)
+
 
 class UserData(models.Model):
     user = models.ForeignKey(User, unique=True)
