@@ -59,7 +59,12 @@
 			{% block submenu %}{% endblock %}
 		</div>
 		<div id="main">
-			{% block pre_body %}{% endblock %}
+			{% block pre_body %}
+            <div id="top_leaderboard" class="ad">
+            <span>Advertisement</span>
+            <img src="/site_media/images/sample_leaderboard.jpg" />
+            </div>
+            {% endblock %}
 			{% block body %}{% endblock %}
 			{% block post_body %}{% endblock %}
 		</div>
