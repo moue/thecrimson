@@ -1,7 +1,6 @@
 {% extends "threecolumn.html" %}
 
-{% load common_filters %}
-{% load common_tags %}
+{% load common %}
 {% load content_filters %}
 {% load rotator %}
 {% load content_module %}
@@ -82,5 +81,22 @@
             </li>
         {% endfor %}
         </ul>
+    </div>
+    <div class="ad">
+        <span>advertisement</span>
+        <img src="/site_media/images/medium_rectangle.gif" />
+    </div>
+    <div id="issues" class="bordered img_list">
+        <h2>Past Issues</h2>
+                <ul>
+        {% for issue in issues %}
+        <li>
+            {{ issue.arts_cover|to_img_tag:"60,60,1,1"}}
+            <h3><a href="">{{ issue.arts_name }}</a></h3>
+            <p class="dateline">{{ issue.issue_date }}</p>
+        </li>
+        {% endfor %}
+        </ul>
+        <span class="clear"></span>
     </div>
 {% endblock %}

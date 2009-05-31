@@ -1,6 +1,6 @@
 {% extends "threecolumn.html" %}
 
-{% load common_filters %}
+{% load common %}
 {% load content_filters %}
 {% load rotator %}
 {% load content_module %}
@@ -35,7 +35,8 @@
         <ul>
         {% for column in columns %}
             <li>
-                {{ column.image|to_img_tag:"60,60,1,1" }}
+                {% if column.image %}{{ column.image|to_img_tag:"60,60,1,1" }}
+                {% else %}<img src="/site_media/images/noface_60x60.jpg" />{% endif %}
                 <h3>{{ column|linkify:column.name }}</h3>
                 <p>{{ column.subname }}</p>
                 <p class="dateline">Updated {{ column.recent|date }}</p>

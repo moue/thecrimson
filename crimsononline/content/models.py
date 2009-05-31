@@ -651,6 +651,15 @@ class Issue(models.Model):
             rel_content__content_type=Image.content_type(), generic__section=s
             ).distinct()[0].main_rel_content
     
+    @property
+    def arts_cover(self):
+        if not self.arts_name:
+            return None
+        s = Section.cached('arts')
+        return Article.objects.recent.filter(generic__issue=self,
+            rel_content__content_type=Image.content_type(), generic__section=s
+            ).distinct()[0].main_rel_content
+    
     @staticmethod
     def get_current():
         """gets current issue from cache"""

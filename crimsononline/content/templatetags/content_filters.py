@@ -2,7 +2,7 @@ from django import template
 from django.template import defaultfilters as filter
 from django.utils.safestring import mark_safe
 from crimsononline.content.models import Image, Article, Content, ContentGeneric
-from crimsononline.common.templatetags.common_filters import linkify, human_list
+from crimsononline.common.templatetags.common import linkify, human_list
 
 
 register = template.Library()

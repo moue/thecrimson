@@ -1,6 +1,6 @@
 {% extends "threecolumn.html" %}
 
-{% load common_filters %}
+{% load common %}
 {% load content_filters %}
 {% load rotator %}
 {% load content_module %}
@@ -14,9 +14,9 @@
 {% block lefttopcolumn %}
     {{ "Scrutiny"|yuhkilabel }}
     <div class="article_previews" id="scrutiny" >
-    <ul>
-    <li>{{ scrutiny|render:"preview" }}</li>
-    </ul>
+        <ul>
+        <li>{{ scrutiny|render:"preview" }}</li>
+        </ul>
     </div>
     <span class="clear"></span>
     <div class="article_previews" id="itm">
