@@ -10,20 +10,20 @@
             End Date: <input class="date_input" id="{{attrs.id}}_end_date" size="10" value="{{today|date:"m/d/Y"}}">
             <a href="#" class="button" id="{{attrs.id}}_go">Find</a>
         </div>
-        <ul class="results">
-        </ul>
+        <div class="results">
+        </div>
         <p class="paging_links">&nbsp;</p>
         <span style="clear:both">&nbsp;</span>
     </div>
     <span style="clear:both"></span>
     <h3>Selected {{model_name|capfirst}}s:</h3>
-    <ul class="chosen_objs">
+    <div class="chosen_objs">
         {% for obj in obj_list %}
-            <li pk="{{obj.pk}}">{{ obj|render:"admin.line_item" }}</li>
+            <span pk="{{obj.pk}}">{{ obj|render:"admin.line_item" }}</span>
         {% empty %}
-            <li>None</li>
+            <span>None</span>
         {% endfor %}
-    </ul>
+    </div>
     <script type="text/javascript" charset="utf-8">
         $(document).ready(function(){
             set_search_choice_field('{{attrs.id}}', '{{ajax_url}}', '{{model_name|capfirst}}');

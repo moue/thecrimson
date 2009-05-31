@@ -201,7 +201,7 @@ class ContentGenericAdmin(admin.ModelAdmin):
         json_dict = {}
         json_dict['objs'] = {}
         for obj in p.object_list:
-            html = '<li>%s</li>' % obj._render("admin.line_item")
+            html = '<span>%s</span>' % obj._render("admin.line_item")
             json_dict['objs'][obj.pk] = html
         if not p.object_list:
             json_dict['objs']['empty'] = 1

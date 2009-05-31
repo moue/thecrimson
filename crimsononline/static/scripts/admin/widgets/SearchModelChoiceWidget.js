@@ -40,6 +40,7 @@ var set_search_choice_field = function(id_prefix, ajax_url){
                 .data('pk', pk)
                 .appendTo(target)
                 .hide()
+                .css('cursor', '')
                 .slideDown('normal')
         );
     };
@@ -62,7 +63,7 @@ var set_search_choice_field = function(id_prefix, ajax_url){
         })
         
         // unfade it in the choices area
-        $(p + '_wrapper .ajax_search .results li').each(function(){
+        $(p + '_wrapper .ajax_search .results > span').each(function(){
             if(pk == $(this).data('pk')){
                 $(this)
                     .fadeTo('normal', 1)
@@ -93,7 +94,7 @@ var set_search_choice_field = function(id_prefix, ajax_url){
         var target = $(p + '_wrapper .ajax_search .results');
         $(target).empty();
         if(data.objs.hasOwnProperty('empty')){
-            $(target).append('<li>No content found.</li>');
+            $(target).append('<span>No content found.</span>');
         } else {
             $.each(data.objs, function(pk, html){
                 var ele = $(html);
@@ -143,16 +144,16 @@ var set_search_choice_field = function(id_prefix, ajax_url){
         }
     };
     
-    $(p + '_wrapper ul.chosen_objs').sortable({stop: function(){
+    $(p + '_wrapper div.chosen_objs').sortable({stop: function(){
         // reset value of hidden on sort
         $(hidden).val('');
-        $(p + '_wrapper ul.chosen_objs > li').each(function(){
+        $(p + '_wrapper div.chosen_objs > span').each(function(){
             $(hidden).val($(hidden).val() + $(this).data('pk') + ',');
         });
     }});
     
     var ids = $(hidden).val().split(',');
-    $(p + '_wrapper ul.chosen_objs li').each(function(i){
+    $(p + '_wrapper div.chosen_objs > span').each(function(i){
         $(this).data('pk', ids[i]);
         bind_remove(this);
     });
