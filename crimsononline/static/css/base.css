@@ -97,20 +97,20 @@ div#masthead div.tools div.search {
     margin-top: 5px;
 }
 
-div#masthead div.tools div.search div.query {
-    height: 20px;
-    overflow: hidden;
-    background-color: white;
-}
-
 div#masthead div.tools div.search input.query{
     border-collapse: collapse;
+    float:left;
     border: 1px solid white;
     padding: 0px;
-    width:100%;
+    width:150px;
+    height:18px;
     background-image: url('../images/banner_search_background.png');
     background-repeat: no-repeat;
     font-family: sans-serif;
+}
+
+div#masthead div.tools div.search input.query:focus{
+    background-image: none;
 }
 
 div#masthead div.tools div.search div.query{
@@ -118,23 +118,30 @@ div#masthead div.tools div.search div.query{
     width:160px;
 }
 
-div#masthead div.tools div.search input.submit{
-    border-collapse: collapse;
-    margin-left:-1px;
-    line-height:1em;
-    background-color: #A02222;
-    border: 1px solid white;
-    color:white;
-    font-family: verdana;
-    height: 20px;
-    width: 59px;
-}
-
-div#masthead div.tools div.search span.submit {
+div#masthead div.tools div.search button.submit{
+    display:block;
+    height:20px;
     float:left;
+    background-color:#BA0600;
+    border:1px solid #fff;
+    font-family: arial, helvetica, sans-serif;
+    font-size:8pt;
+    text-decoration:none;
+    font-weight:normal;
+    color:#fff;
+    cursor:pointer;
 }
 
-/*  */
+div#masthead div.tools div.search button[type]{
+    padding:0px 5px; /* Firefox */
+    line-height:17px; /* Safari */
+}
+/*TODO: figure out what this does*/
+*:first-child+html button[type]{
+    padding:4px 10px 3px 7px; /* IE7 */
+}
+
+
 
 div#main, div#footer, div#nav{
     width: 972px;
