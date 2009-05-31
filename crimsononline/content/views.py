@@ -44,7 +44,7 @@ def get_grouped_content(request, gtype, gname, ctype, year, month, day, slug):
     """
     # validate the contentgroup
     cg = get_grouped_content_obj(request, gtype, gname, ctype, 
-        year, month, day, slug, pk)
+        year, month, day, slug)
     if cg:
         return get_content(request, ctype, year, month, day, slug, cg)
     else:
@@ -260,8 +260,9 @@ def section_arts(request):
     
 def section_photo(request):
     nav = 'photo'
-    section = Section.cached(nav)
-    content = top_articles(nav)
+    content = ContentGeneric.objects.recent.exclude(
+        content_type=Image.content_type()).exclude(
+        content_type=Article.content_type())[:8]
     return render_to_response('sections/photo.html', locals())
     
 def section_sports(request):

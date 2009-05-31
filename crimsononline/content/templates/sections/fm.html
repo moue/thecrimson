@@ -31,11 +31,12 @@
     <div class="img_list bordered" id="past_issues">
         <h2>Past Issues</h2>
         <ul>
-        {% for issue in issues %}
+        {% for i in issues %}
         <li>
-            {{ issue.fm_cover|to_img_tag:"60,60,1,1"}}
-            <h3><a href="">{{ issue.fm_name }}</a></h3>
-            <p class="dateline">{{ issue.issue_date }}</p>
+            {% if i.fm_cover %}{{ i.fm_cover|to_img_tag:"60,60,1,1"}}
+            {% else %}{% endif %}
+            <h3><a href="">{{ i.fm_name }}</a></h3>
+            <p class="dateline">{{ i.issue_date }}</p>
         </li>
         {% endfor %}
         </ul>
@@ -77,7 +78,8 @@
         <h2>Columnists</h2>
         {% for column in columns %}
         <li>
-            {{ column.image|to_img_tag:"60,60,1,1" }}
+            {% if column.image %}{{ column.image|to_img_tag:"60,60,1,1" }}
+            {% else %}{% endif %}
             <h3>{{ column|linkify:column.name }}</h3>
             <p>{{ column.subname }}</p>
             <p class="dateline">Updated {{ column.recent|date }}</p>

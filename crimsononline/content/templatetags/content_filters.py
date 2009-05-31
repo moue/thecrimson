@@ -52,6 +52,8 @@ def to_img_tag(img, size_spec):
     empty or omitted constraints are not binding
     any empty or zero crop parameter = no cropping
     """
+    if not img:
+        return ''
     if isinstance(size_spec, tuple) or isinstance(size_spec, list):
         size_spec = [s or 0 for s in size_spec]
     else:

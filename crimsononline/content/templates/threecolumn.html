@@ -19,29 +19,33 @@
 
 {% block body %}
     <div id="above_the_fold" class="half_page">
-        <div class="column">
-		{% block lefttopcolumn %}{% endblock %}
-        </div>
-        <div class="column">
-		{% block middletopcolumn %}{% endblock %}
-        </div>
-        <div class="column">
-		{% block righttopcolumn %}{% endblock %}
-        </div>
+        {% block above_the_fold %}
+            <div class="column">
+            {% block lefttopcolumn %}{% endblock %}
+            </div>
+            <div class="column">
+            {% block middletopcolumn %}{% endblock %}
+            </div>
+            <div class="column">
+            {% block righttopcolumn %}{% endblock %}
+            </div>
+        {% endblock %}
     </div>
 
     <div id="the_fold"></div>
 
     <div id="below_the_fold" class="half_page">
-        <div class="column">
-		{% block leftbottomcolumn %}{% endblock %}
-        </div>
-        <div class="column">
-		{% block middlebottomcolumn %}{% endblock %}
-        </div>
-        <div class="column">
-		{% block rightbottomcolumn %}{% endblock %}
-        </div>
+        {% block below_the_fold %}
+            <div class="column">
+            {% block leftbottomcolumn %}{% endblock %}
+            </div>
+            <div class="column">
+            {% block middlebottomcolumn %}{% endblock %}
+            </div>
+            <div class="column">
+            {% block rightbottomcolumn %}{% endblock %}
+            </div>
+        {% endblock %}
     </div>
     
 {% endblock %}

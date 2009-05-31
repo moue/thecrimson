@@ -1,5 +1,6 @@
 .image-list li{
-    width: 100px;
+    width: 80px;
+    height: 100px;
     list-style: none;
     float: left;
     display: block;

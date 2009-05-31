@@ -146,7 +146,7 @@ class Content(models.Model):
         renders in different ways, depending on method
         
         @method : could be something like, 'admin' or 'search'
-        @context : gets injected into template
+        @context : gets injected into template (optional)
         """
         name = self._meta.object_name.lower()
         templ = 'models/%s/%s.html' % (name, method)
@@ -647,18 +647,22 @@ class Issue(models.Model):
         if not self.fm_name:
             return None
         s = Section.cached('fm')
-        return Article.objects.recent.filter(generic__issue=self,
-            rel_content__content_type=Image.content_type(), generic__section=s
-            ).distinct()[0].main_rel_content
+        a = Article.objects.recent.filter(generic__issue=self,
+            rel_content__content_type=Image.content_type(), generic__section=s) \
+            .distinct()[:1]
+        if a: return a[0].main_rel_content
+        else: return None
     
     @property
     def arts_cover(self):
         if not self.arts_name:
             return None
         s = Section.cached('arts')
-        return Article.objects.recent.filter(generic__issue=self,
-            rel_content__content_type=Image.content_type(), generic__section=s
-            ).distinct()[0].main_rel_content
+        a = Article.objects.recent.filter(generic__issue=self,
+            rel_content__content_type=Image.content_type(), generic__section=s) \
+            .distinct()[:1]
+        if a: return a[0].main_rel_content
+        else: return None
     
     @staticmethod
     def get_current():

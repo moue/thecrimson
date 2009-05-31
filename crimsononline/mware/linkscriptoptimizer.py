@@ -5,8 +5,8 @@ from crimsononline.common.utils import lists
 # TODO: cache the compiled REs to make it go a bit faster
 class LinkScriptOptimizer(object):
     def process_response(self, request, response):
-        # only process if we have an html file
-        if response.content.find('<html') < 0:
+        # ignore non html and admin pages
+        if request.path[:6] == '/admin' or response.content.find('<html') < 0:
             return(response)
         
         # filters a regular expression from html, returning 

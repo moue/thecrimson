@@ -1,9 +1,9 @@
 div.search_choice_field li{
     list-style: none;
 }
-
 div.search_choice_field .results li{
-    max-width: 300px;
+    width: 200px;
+    height: 200px;
     display: block;
     border: 1px solid #999;
     padding: 2px 4px;

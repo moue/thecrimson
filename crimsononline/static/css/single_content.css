@@ -32,7 +32,12 @@ div#articletools a img{
 div#articletools a:hover {
     color: black;
 }
-
+div#pre_content > a {
+    display: block;
+    clear:both;
+    font-size: 22px;
+    margin-bottom: 5px;
+}
 div.ylabel_wrapper {
     float: left;
 }

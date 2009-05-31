@@ -253,6 +253,23 @@ div.bordered h2 {
     text-transform: uppercase;
 }
 
+/* blackground  */
+div.blackground {
+    color: #e7e7e7;
+    background-color: #222;
+    border: 1px solid #222;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+}
+div.blackground a {
+    color: #e7e7e7;
+    text-decoration: underline;
+}
+div.blackground a:hover {
+    color: #aaa;
+}
+
 /* stylings */
 a {
 	text-decoration: none;

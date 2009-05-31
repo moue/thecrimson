@@ -1,0 +1,15 @@
+{% load common %}
+{% load content_filters %}
+
+<div class="header">
+    <h1><a href="{{ imagegallery.get_absolute_url }}">{{ imagegallery.title }}</a></h1>
+    <div class="right_info">
+        <span>GALLERY</span>
+        {{ "tags"|yuhkilabel }}
+        <span class="tags">{{ imagegallery.tags.all|linkify|human_list }}</span>
+    </div>
+</div>
+<div class="media">
+    {{ imagegallery.cover_image|to_img_tag:"600,450" }}
+</div>
+<div class="media_info"></div>

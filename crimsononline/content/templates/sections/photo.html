@@ -1,0 +1,28 @@
+{% extends "threecolumn.html" %}
+
+{% load common %}
+{% load content_filters %}
+
+{% block css %}<link type="text/css" rel="stylesheet" href="/site_media/css/photo.css" />{% endblock %}
+
+{% block above_the_fold %}
+<div id="media_viewer" class="blackground">
+    <div id="viewer_main">
+        {{ content.0|render:"media_viewer" }}
+    </div>
+    <div id="viewer_sidebar">
+        <span class="filters">MOST Recent Videos Photos</span>
+        <ul>
+        {% for c in content|notfirst %}
+            <li>{{ c|render:"preview" }}</li>
+        {% endfor %}
+        </ul>
+        <span class="paging"></span>
+    </div>
+    <span class="clear"></span>
+</div>
+{% endblock %}
+
+{% block leftbottomcolumn %}
+    thing
+{% endblock %}

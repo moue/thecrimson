@@ -74,7 +74,8 @@
         <ul>
         {% for column in columns %}
             <li>
-                {{ column.image|to_img_tag:"60,60,1,1" }}
+                {% if column.image %}{{ column.image|to_img_tag:"60,60,1,1" }}
+                {% else %}{% endif %}
                 <h3>{{ column|linkify:column.name }}</h3>
                 <p>{{ column.subname }}</p>
                 <p class="dateline">Updated {{ column.recent|date }}</p>
@@ -91,7 +92,8 @@
                 <ul>
         {% for issue in issues %}
         <li>
-            {{ issue.arts_cover|to_img_tag:"60,60,1,1"}}
+            {% if issue.arts_cover %}{{ issue.arts_cover|to_img_tag:"60,60,1,1"}}
+            {% else %}{% endif %}
             <h3><a href="">{{ issue.arts_name }}</a></h3>
             <p class="dateline">{{ issue.issue_date }}</p>
         </li>
