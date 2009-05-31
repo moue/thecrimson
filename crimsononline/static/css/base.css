@@ -107,10 +107,12 @@ div#masthead div.tools div.search input.query{
     background-image: url('../images/banner_search_background.png');
     background-repeat: no-repeat;
     font-family: sans-serif;
+    font-size: 0pt;
 }
 
 div#masthead div.tools div.search input.query:focus{
     background-image: none;
+    font-size:10pt;
 }
 
 div#masthead div.tools div.search div.query{
@@ -152,9 +154,7 @@ div#main, div#footer, div#nav{
 }
 div#main {
     width: 960px;
-	float: left;
     padding:6px;
-	clear: both;
 }
 div#footer {
 	text-align: center;
@@ -289,23 +289,27 @@ a:hover {
     font-family: Helvetica, Corbel, "Lucida Grande", "Lucida Sans Unicode", 
                 "Lucida Sans", "DejaVu Sans", "Bitstream Vera Sans", 
                 "Liberation Sans", Verdana, "Verdana Ref", sans-serif;
-    color: #666;
+	font-family: Georgia, Palatino Linotype, serif;
+    font-size: 10px;
+    color: #000;
     line-height: normal;
+    font-weight:bold;
 }
 .byline a{
     font-family: Helvetica, Corbel, "Lucida Grande", "Lucida Sans Unicode", 
                 "Lucida Sans", "DejaVu Sans", "Bitstream Vera Sans", 
                 "Liberation Sans", Verdana, "Verdana Ref", sans-serif;
+	font-family: Georgia, Palatino Linotype, serif;
     text-transform: uppercase;
     text-decoration: underline;
-    color: #666;
+    color: #000;
     line-height: normal;
 }
 .dateline {
     color: #666;
 }
 .byline a:hover{
-    color: #333;
+    color: #666;
 }
 .webonly {
     display: inline;
