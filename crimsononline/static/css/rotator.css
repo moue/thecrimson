@@ -1,40 +1,77 @@
 div.rotator {
     background-color: #eeeeee;
     width: 300px;
+	height: 400px;
     padding: 5px;
 }
-div.rotator div.preview_body ul li {
-    height:310px;
-}
-div.rotator div.preview_body div.preview_text h3 {
-    font-size: 12px;
-    font-weight: bold;
-    line-height: 14px;
-}
-div.rotator div.preview_body div.preview_text a {
-    color: #A02222;
-}
-div.rotator div.preview_text p.teaser {
-    font-size: 12px;
+
+div.rotator ul.preview_body{
+	height:430px;
 }
 
-div.rotator div.carousel div.preview_roll {
-    width: 240px;
-    height: 50px;
+div.rotator ul.preview_body li{
+	height:440px;
+	list-style-type: none;
+}
+
+div.rotator ul.preview_body li img{
+	margin-bottom: 40px;
+}
+
+div.rotator ul.preview_body li div.preview_text h3 {
+    font-size: 17px;
+    font-weight: bold;
+    line-height: .9;
+}
+div.rotator ul.preview_body li div.preview_text a {
+    color: #A02222;
+}
+
+div.rotator ul.preview_body li div.preview_text p.teaser {
+    font-size: 14px;
+}
+
+div.rotator div.carousel {
+	margin-top: -190px;
+	z-index: 10000;
+	position:absolute;
+    width: 300px;
+    height: 40px;
+	overflow: hidden;
     float: left;
+	background-color: #222;
 }
-div.rotator div.preview_roll ul li {
-    height: 500px;
+
+div.rotator div#preview_roll{
+	float:left;
+	width: 252px;
+	text-align:center;
 }
-div.rotator div.carousel div.preview_roll ul li img {
-    margin-left: 3px;
-    margin-right: 3px;
-    width: 50px;
-    height: 50px;
+
+div.rotator div.carousel div#preview_roll img {
+	margin: 5px 3px;
+    width: 30px;
+    height: 30px;
+	border: 0;
 }
-div.rotator div.carousel img.prevbutton, 
-    div.rotator div.carousel img.nextbutton {
-    float: left;
-    margin-left: 5px;
-    margin-right: 5px;
+
+div.rotator div.carousel div#preview_roll a{
+	color: white;
 }
+
+div.rotator div.carousel div#preview_roll a.activeSlide img{
+	border: 1px solid white;
+	margin: 4px 2px;
+}
+
+div.rotator div.carousel div.previousbutton, 
+div.nextbutton {
+	float:left;
+	margin:13px 5px;
+}
+
+div.rotator div.carousel div.previousbutton{background-image:url('../images/rotator/left_off.gif');}
+div.rotator div.carousel div.previousbutton:hover{background-image:url('../images/rotator/left_on.gif');}
+div.rotator div.carousel div.nextbutton{background-image:url('../images/rotator/right_off.gif');}
+div.rotator div.carousel div.nextbutton:hover{background-image:url('../images/rotator/right_on.gif');}
+
