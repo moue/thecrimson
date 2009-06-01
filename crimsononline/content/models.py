@@ -273,7 +273,7 @@ class Content(models.Model):
     @permalink
     def get_absolute_url(self):
         i = self.issue.issue_date
-        url_data = [self.__class__.__name__.lower(), i.year, 
+        url_data = [self.content_type().name.replace(' ', '-'), i.year, 
             i.month, i.day, self.slug]
         if self.group:
             url_data = [self.group.type.lower(), 
@@ -880,10 +880,6 @@ class ImageGallery(Content):
     
     def __unicode__(self):
         return self.title
-    
-    @permalink
-    def get_absolute_url(self):
-        return ('content_imagegallery', [self.cover_image.pk, self.pk])
 
 
 class GalleryMembership(models.Model):

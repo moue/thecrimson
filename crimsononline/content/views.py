@@ -32,6 +32,7 @@ def get_content_obj(request, ctype, year, month, day, slug, content_group=None):
     """
     Retrieves a content object from the database (no validation of params)
     """
+    ctype = ctype.replace('-', ' ') # convert from url
     c = ContentGeneric.objects.get(content_type__name=ctype, 
         issue__issue_date=date(int(year), int(month), int(day)), slug=slug
     )
@@ -339,6 +340,7 @@ def filter_helper(qs, section_str, type_str, url_base):
         sects[section.name] = {'selected': a, 'url': url} 
         
     if type_str:
+        type_str = type_str.replace('-', ' ') # convert from url
         type_str = [t.lower() for t in type_str.split(',') if t]
         content = content.filter(content_type__name__in=type_str)
     else:

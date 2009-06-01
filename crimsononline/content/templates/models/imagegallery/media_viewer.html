@@ -3,13 +3,28 @@
 
 <div class="header">
     <h1><a href="{{ imagegallery.get_absolute_url }}">{{ imagegallery.title }}</a></h1>
-    <div class="right_info">
-        <span>GALLERY</span>
-        {{ "tags"|yuhkilabel }}
-        <span class="tags">{{ imagegallery.tags.all|linkify|human_list }}</span>
+</div>
+<div class="media">{{ imagegallery.cover_image|to_img_tag:"600,450" }}</div>
+<div class="media_info">
+    <div class="left">
+        <h3>{{ imagegallery.cover_image.kicker }}</h3>
+        <p>{{ imagegallery.cover_image.caption }}</p>
+        <div class="gallery_control">
+            <span class="arrow"><</span>
+            <div class="images">
+            {% for img in imagegallery.images.all %}
+                <a href="{{ img.get_absolute_url }}" >{{ img|to_img_tag:"50,50,1,1" }}</a>
+            {% endfor %}
+            </div>
+            <span class="arrow">></span>
+        </div>
+    </div>
+    <div class="right">
+        <p class="byline">
+            CRIMSON/ {{ imagegallery.cover_image.contributors.all|linkify|human_list }}
+        </p>
+        <p class="buyline">Buy this photo</p>
+        <p class="tags_heading">Photo Tags</p>
+        <p class="tags">{{ imagegallery.cover_image.tags.all|linkify|human_list}}</p>
     </div>
 </div>
-<div class="media">
-    {{ imagegallery.cover_image|to_img_tag:"600,450" }}
-</div>
-<div class="media_info"></div>

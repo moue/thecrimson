@@ -17,7 +17,13 @@
             <li>{{ c|render:"preview" }}</li>
         {% endfor %}
         </ul>
-        <span class="paging"></span>
+        <span class="pagination">
+            <a href="{{url}}">&laquo; Newest</a>
+            <a href="{{url}}page/{{p.previous_page_number}}/">&lsaquo; Newer</a>
+            1 - 6 of 200
+            <a href="{{url}}page/{{p.next_page_number}}/">Older &rsaquo;</a>
+            <a href="{{url}}page/{{paginator.num_pages}}/">Oldest &raquo;</a>
+        </span>
     </div>
     <span class="clear"></span>
 </div>

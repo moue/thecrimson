@@ -291,9 +291,8 @@ a:hover {
                 "Liberation Sans", Verdana, "Verdana Ref", sans-serif;
 	font-family: Georgia, Palatino Linotype, serif;
     font-size: 10px;
-    color: #000;
+    color: #666;
     line-height: normal;
-    font-weight:bold;
 }
 .byline a{
     font-family: Helvetica, Corbel, "Lucida Grande", "Lucida Sans Unicode", 
