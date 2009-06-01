@@ -4,6 +4,10 @@
 {% load content_filters %}
 
 {% block css %}<link type="text/css" rel="stylesheet" href="/site_media/css/photo.css" />{% endblock %}
+{% block js %}
+    <script type="text/javascript" src="/site_media/scripts/jquery.js"></script>
+    <script type="text/javascript" src="/site_media/scripts/media_viewer.js"></script>
+{% endblock %}
 
 {% block above_the_fold %}
 <div id="media_viewer" class="blackground">
@@ -12,18 +16,9 @@
     </div>
     <div id="viewer_sidebar">
         <span class="filters">MOST Recent Videos Photos</span>
-        <ul>
-        {% for c in content|notfirst %}
-            <li>{{ c|render:"preview" }}</li>
-        {% endfor %}
-        </ul>
-        <span class="pagination">
-            <a href="{{url}}">&laquo; Newest</a>
-            <a href="{{url}}page/{{p.previous_page_number}}/">&lsaquo; Newer</a>
-            1 - 6 of 200
-            <a href="{{url}}page/{{p.next_page_number}}/">Older &rsaquo;</a>
-            <a href="{{url}}page/{{paginator.num_pages}}/">Oldest &raquo;</a>
-        </span>
+        <div>
+        {% include "ajax/media_viewer_page.html" %}
+        </div>
     </div>
     <span class="clear"></span>
 </div>

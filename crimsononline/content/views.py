@@ -26,7 +26,9 @@ def get_content(request, ctype, year, month, day, slug, content_group=None):
     # redirect to canonical URL
     if request.path != c.get_absolute_url():
         return HttpResponseRedirect(c.get_absolute_url())
-    return HttpResponse(c._render('page'))
+    if request.method == 'GET':
+        return HttpResponse(c._render(request.GET.get('render','page')))
+    return Http404
 
 def get_content_obj(request, ctype, year, month, day, slug, content_group=None):
     """
@@ -260,11 +262,21 @@ def section_arts(request):
     return render_to_response('sections/arts.html', locals())
     
 def section_photo(request):
+    if request.method == 'GET':
+        page = request.GET.get('page', 1)
+    else: raise Http404
     nav = 'photo'
     content = ContentGeneric.objects.recent.exclude(
         content_type=Image.content_type()).exclude(
         content_type=Article.content_type())[:8]
-    return render_to_response('sections/photo.html', locals())
+    
+    d = paginate(content, page, 2)
+    d.update({'nav': nav})
+    
+    t = 'sections/photo.html'
+    if request.GET.has_key('ajax'):
+        t = 'ajax/media_viewer_page.html'
+    return render_to_response(t, d)
     
 def section_sports(request):
     nav = 'sports'

@@ -313,7 +313,9 @@ a:hover {
     display: inline;
     color: black;
 }
-
+img {
+    border: none;
+}
 /* ads */
 div.ad {
     padding: 6px 4px 0px 4px;

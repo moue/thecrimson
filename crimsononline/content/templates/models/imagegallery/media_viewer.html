@@ -1,30 +1,90 @@
 {% load common %}
 {% load content_filters %}
 
+<link type="text/css" rel="stylesheet" href="/site_media/css/framework/jquery.jcarousel.css" />
 <div class="header">
     <h1><a href="{{ imagegallery.get_absolute_url }}">{{ imagegallery.title }}</a></h1>
 </div>
 <div class="media">{{ imagegallery.cover_image|to_img_tag:"600,450" }}</div>
 <div class="media_info">
-    <div class="left">
-        <h3>{{ imagegallery.cover_image.kicker }}</h3>
-        <p>{{ imagegallery.cover_image.caption }}</p>
-        <div class="gallery_control">
-            <span class="arrow"><</span>
-            <div class="images">
-            {% for img in imagegallery.images.all %}
-                <a href="{{ img.get_absolute_url }}" >{{ img|to_img_tag:"50,50,1,1" }}</a>
-            {% endfor %}
-            </div>
-            <span class="arrow">></span>
+    <div class="media_details">
+        <div class="right">
+            <p class="byline">
+                CRIMSON/ {{ imagegallery.cover_image.contributors.all|linkify|human_list }}
+            </p>
+            <p class="buyline">Buy this photo</p>
+            <p class="tags_heading">Photo Tags</p>
+            <p class="tags">{{ imagegallery.cover_image.tags.all|linkify|human_list}}</p>
+        </div>
+        <div class="left">
+            <h3>{{ imagegallery.cover_image.kicker }}</h3>
+            <p>{{ imagegallery.cover_image.caption }}</p>
         </div>
     </div>
-    <div class="right">
-        <p class="byline">
-            CRIMSON/ {{ imagegallery.cover_image.contributors.all|linkify|human_list }}
-        </p>
-        <p class="buyline">Buy this photo</p>
-        <p class="tags_heading">Photo Tags</p>
-        <p class="tags">{{ imagegallery.cover_image.tags.all|linkify|human_list}}</p>
+    <div class="gallery_control">
+        <span class="arrow" id="gal_left"> <img src="/site_media/images/left_off.gif"/></span>
+        <div class="carousel_frame">
+            <div class="carousel">
+            {% spaceless %}
+            {% for img in imagegallery.images.all %}
+                <a href="{{ img.get_absolute_url }}">{{ img|to_img_tag:"50,50,1,1" }}</a>
+            {% endfor %}
+            {% endspaceless %}
+            </div>
+        </div>
+        <span class="arrow" id="gal_right"> <img src="/site_media/images/right_off.gif"/></span>
     </div>
+    <script type="text/javascript" src="/site_media/scripts/framework/jquery.jcarousel.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            /* ========= the carousel stuff ============== */
+            var num_items = $(".carousel_frame .carousel").children().length - 6;
+            $(".carousel_frame .carousel").css("width", (num_items + 6) * 54);
+            var cur_item = 0;
+            // returns false if the slide was unsuccessful
+            var slide_carousel = function(dir){
+                if(cur_item + dir > num_items || cur_item + dir < 0){
+                    return false;
+                }
+                var p = parseInt($(".carousel_frame .carousel").css("left"))
+                $(".carousel_frame .carousel").animate({left: p - 54 * dir}, "normal");
+                cur_item += dir;
+                return true;
+            }
+            $("#gal_left").click(function(){slide_carousel(-1)});
+            $("#gal_right").click(function(){slide_carousel(1)});
+            
+            /* ========== changing photos in the gallery ============ */
+            var _photo_cache = {};
+            
+            $(".carousel_frame .carousel a").click(function(e){
+                var url = $(this).attr('href');
+                
+                // destroy the old object in the viewer area and add the new item
+                var inject_results = function(results){            
+                    results = results.split("<!-- split -->");
+                    $("#media_viewer div.media").fadeOut('fast', function(){
+                        $(this).empty().append($(results[0]));
+                        // center the image vertically
+                        // $(this).children("img").css("margin", m + "px 0");
+                        $(this).fadeIn('fast');
+                    });
+                    $("#media_viewer div.media_details").fadeOut('fast', function(){
+                        $(this).empty().append($(results[1])).fadeIn('fast');
+                    });
+                }
+                
+                // look for the object in the cache, fallback on ajax
+                if(_photo_cache.hasOwnProperty(url)){
+                    inject_results(_media_cache[url]);
+                } else {
+                    $.get(url, {render:'media_viewer_gallery'}, inject_results, function(html){
+                        _photo_cache[url] = html;
+                        inject_results(html);
+                    },'html');
+                }
+                return false;
+            });
+        });
+    </script>
 </div>

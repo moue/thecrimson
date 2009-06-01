@@ -1,0 +1,20 @@
+{% load common %}
+{% load content_filters %}
+
+<ul>
+    <li class="active">{{ content|first|render:"preview" }}</li>
+{% for c in content|notfirst %}
+    <li>{{ c|render:"preview" }}</li>
+{% endfor %}
+</ul>
+<span class="pagination">
+{% if p.has_previous %}
+    <a href="#1">&laquo; Newest</a>
+    <a href="#{{p.previous_page_number}}">&lsaquo; Newer</a>
+{% endif %}
+{{p.start_index}} - {{p.end_index}} of {{paginator.count}}
+{% if p.has_next %}
+    <a href="#{{p.next_page_number}}">Older &rsaquo;</a>
+    <a href="#{{paginator.num_pages}}">Oldest &raquo;</a>
+{% endif %}
+</span>
