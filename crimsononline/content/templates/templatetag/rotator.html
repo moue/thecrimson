@@ -16,10 +16,11 @@ $(function(){
 		next: '.nextbutton',
 		prev: '.previousbutton',
 	    pagerAnchorBuilder: function(idx, slide) {
-	        return '#preview_roll a:eq(' + (idx) + ')';
-	    }
+	        return '<span class="pager_item"><a href="#">' + (idx + 1) + '</a></span>';
+        }
 	});
 });
+
 </script>
 <div class="rotator">
     <ul class="preview_body">
@@ -36,15 +37,11 @@ $(function(){
         {% endfor %}
     </ul>
     <div class="carousel">
-        <div class="previousbutton" style="width:14px; height:14px;"></div>
-        <div id="preview_roll">
-			{% for article in contents %}
-                {% if article.main_rel_content %}
-                    <a href="#">{{ article.main_rel_content|to_img_tag:"50,50,1,1" }}</a>
-                {% endif %}
-            {% endfor %}
-		</div>
-        <div class="nextbutton" style="width:14px; height:14px;"></div>
+        <div class="c_items">
+            <div class="previousbutton" style="width:14px; height:14px;"></div>
+            <div id="preview_roll"></div>
+            <div class="nextbutton" style="width:14px; height:14px;"></div>
+            <div style="clear:both;"></div>
+        </div>
     </div>
-    <div style="clear:both"></div>
 </div>

@@ -1,21 +1,21 @@
 div.rotator {
     background-color: #eeeeee;
     width: 300px;
-	height: 400px;
+	height: 360px;
     padding: 5px;
 }
 
 div.rotator ul.preview_body{
-	height:430px;
+	height:340px;
 }
 
 div.rotator ul.preview_body li{
-	height:440px;
+	height:350px;
 	list-style-type: none;
 }
 
 div.rotator ul.preview_body li img{
-	margin-bottom: 40px;
+	margin-bottom: 5px;
 }
 
 div.rotator ul.preview_body li div.preview_text h3 {
@@ -32,46 +32,76 @@ div.rotator ul.preview_body li div.preview_text p.teaser {
 }
 
 div.rotator div.carousel {
-	margin-top: -190px;
+	margin-top: -124px;
 	z-index: 10000;
 	position:absolute;
     width: 300px;
-    height: 40px;
+    height: 24px;
 	overflow: hidden;
-    float: left;
-	background-color: #222;
+	background-image: url('../images/semitransparent.png');
+    text-align: center;
 }
 
 div.rotator div#preview_roll{
 	float:left;
-	width: 252px;
+	width: 100px;
 	text-align:center;
+    border: 0;
+    padding: 0;
+    height: 16px;
+    margin-top: 4px;
 }
 
-div.rotator div.carousel div#preview_roll img {
-	margin: 5px 3px;
-    width: 30px;
-    height: 30px;
-	border: 0;
+div.rotator div.carousel #preview_roll span{
+    display:inline-block;
+    margin: 0 4px;
+    vertical-align: top;
+    margin-top: -1px;
+    width: 16px;
+    color: white;
+    height: 100%;
+
 }
 
-div.rotator div.carousel div#preview_roll a{
-	color: white;
+div.rotator div.carousel #preview_roll span a{
+    display: block;
+    height: 16px;
+    width: 16px;
+    font-family: sans-serif;
+    font-size: 10px;
+    line-height: 15px;
+    color: white;
+    border: 1px solid white;
 }
 
-div.rotator div.carousel div#preview_roll a.activeSlide img{
-	border: 1px solid white;
-	margin: 4px 2px;
+div.rotator div.carousel #preview_roll span a.activeSlide{
+    background-color: #eee;
+    color: #333;
+    border: 1px solid #333;
+}
+
+div.rotator div.carousel #preview_roll span a:hover{
+    background-color: #fff;
+    color: #333;
+    border: 1px solid #333;
+
 }
 
 div.rotator div.carousel div.previousbutton, 
-div.nextbutton {
+div.nextbutton,
+div.carousel #preview_roll {
 	float:left;
-	margin:13px 5px;
+    margin-top: 5px;
 }
 
-div.rotator div.carousel div.previousbutton{background-image:url('../images/rotator/left_off.gif');}
-div.rotator div.carousel div.previousbutton:hover{background-image:url('../images/rotator/left_on.gif');}
-div.rotator div.carousel div.nextbutton{background-image:url('../images/rotator/right_off.gif');}
-div.rotator div.carousel div.nextbutton:hover{background-image:url('../images/rotator/right_on.gif');}
+div.rotator div.c_items{
+    text-align:center;
+    margin: 0 auto;
+    width: 128px;
+}
+
+div.rotator div.carousel div.previousbutton{background-image:url('../images/arrows/left_off.png');}
+div.rotator div.carousel div.previousbutton:hover{background-image:url('../images/arrows/left_on.png');}
+div.rotator div.carousel div.nextbutton{background-image:url('../images/arrows/right_off.png');}
+div.rotator div.carousel div.nextbutton:hover{background-image:url('../images/arrows/right_on.png');}
 
