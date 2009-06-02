@@ -73,13 +73,15 @@ def size_spec_to_size(size_spec, img_width, img_height):
     max_w = min(img_width, max_w) if max_w else img_width
     max_h = min(img_height, max_h) if max_h else img_height
     
-    if crop_h and crop_w:
-        h_ratio = float(max_h) / crop_h
-        w_ratio = float(max_w) / crop_w
-        ratio = min(h_ratio, w_ratio)
-        
-        max_w = int(ratio * crop_w)
-        max_h = int(ratio * crop_h)
+    if not crop_w:
+        crop_w, crop_h = img_width, img_height
+    
+    h_ratio = float(max_h) / crop_h
+    w_ratio = float(max_w) / crop_w
+    ratio = min(h_ratio, w_ratio)
+    
+    max_w = int(ratio * crop_w)
+    max_h = int(ratio * crop_h)
     
     return max_w, max_h
 

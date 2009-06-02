@@ -1,0 +1,17 @@
+{% spaceless %}{% load common %}
+{% load content_filters %}
+
+{{ image|to_img_tag:"600,450" }}
+{% endspaceless %}<!-- split -->
+<div class="right">
+    <p class="byline">
+        CRIMSON/ {{ image.contributors.all|linkify|human_list }}
+    </p>
+    <p class="buyline">Buy this photo</p>
+    <p class="tags_heading">Photo Tags</p>
+    <p class="tags">{{ image.tags.all|linkify|human_list}}</p>
+</div>
+<div class="left">
+    <h3>{{ image|linkify:image.kicker }}</h3>
+    <p>{{ image.caption }}</p>
+</div>

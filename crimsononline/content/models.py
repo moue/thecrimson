@@ -17,7 +17,7 @@ from django.template.defaultfilters import slugify, truncatewords
 from django.template.loader import render_to_string
 from django.utils.safestring import mark_safe
 from django.forms import ModelForm
-from crimsononline.common.fields import \
+from crimsononline.common.forms import \
     MaxSizeImageField, SuperImageField
 from crimsononline.common.storage import OverwriteStorage
 from crimsononline.common.utils.strings import \

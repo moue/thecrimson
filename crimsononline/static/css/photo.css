@@ -2,7 +2,8 @@ div#media_viewer {
     margin: 0 6px;
     padding: 10px;
     width: 926px;
-    height: 700px;
+    height: 704px;
+    position: relative;
 }
 div#media_viewer > div {
     float: left;
@@ -35,7 +36,7 @@ div#media_viewer div#viewer_main div.media_info {
     font-size: 13px;
 }
 div#media_viewer div#viewer_main div.media_info img{
-    display: block;
+    display: block
 }
 div#media_viewer div#viewer_main div.media_info .header .right_info{
     display: block;
@@ -51,7 +52,9 @@ div#media_viewer div#viewer_main div.media_info .left h3{
     margin: 4px 1px;
 }
 div#viewer_main div.media_info .gallery_control{
-    float: left;
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
     width: 370px;
     height: 52px;
     margin: 10px 0 0;
@@ -105,7 +108,7 @@ div#media_viewer div#viewer_main div.media_info .right .buyline {
 }
 div#media_viewer div#viewer_sidebar {
     width: 300px;
-    padding: 0 4px 8px;
+    padding: 0 4px 6px;
     border: 1px solid #666;
     border-radius: 5px;
     -moz-border-radius: 5px;

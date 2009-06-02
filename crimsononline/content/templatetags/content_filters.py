@@ -52,6 +52,17 @@ def to_img_tag(img, size_spec):
     empty or omitted constraints are not binding
     any empty or zero crop parameter = no cropping
     """
+    disp_url = img_url(img, size_spec)
+    if hasattr(img, 'kicker'):
+        k = filter.force_escape(img.kicker)
+    else:
+        k = ''
+    tag = '<img src="%s" title="%s" alt="%s" />' % \
+            (disp_url, k, k)
+    return mark_safe(tag)
+
+@register.filter
+def img_url(img, size_spec):
     if not img:
         return ''
     if isinstance(size_spec, tuple) or isinstance(size_spec, list):
@@ -69,15 +80,8 @@ def to_img_tag(img, size_spec):
         size_spec = list(size_spec[:2]) + [0,0]
     size_spec = tuple(size_spec)
     
-    disp_url = img.display_url(size_spec)
-    if hasattr(img, 'kicker'):
-        k = filter.force_escape(img.kicker)
-    else:
-        k = ''
-    tag = '<img src="%s" title="%s" alt="%s" />' % \
-            (disp_url, k, k)
-    return mark_safe(tag)
-
+    return mark_safe(img.display_url(size_spec))
+    
 @register.filter
 def to_thumb_tag(img):
     THUMB_SIZE = 96

@@ -17,7 +17,7 @@
             <p class="tags">{{ imagegallery.cover_image.tags.all|linkify|human_list}}</p>
         </div>
         <div class="left">
-            <h3>{{ imagegallery.cover_image.kicker }}</h3>
+            <h3>{{ imagegallery.cover_image|linkify:imagegallery.cover_image.kicker }}</h3>
             <p>{{ imagegallery.cover_image.caption }}</p>
         </div>
     </div>
@@ -61,24 +61,38 @@
                 var url = $(this).attr('href');
                 
                 // destroy the old object in the viewer area and add the new item
-                var inject_results = function(results){            
+                var inject_results = function(results){
                     results = results.split("<!-- split -->");
+                    
+                    //img_url = img_url.split('_');
+                    //img_url = img_url[url.length - 1];
+                    
+                    //var img_ht = parseInt(img_url.substring(img_url.indexOf('x'), img_url.indexOf('.') + 1));
+                    //var mar = (450 - img_ht) / 2;
                     $("#media_viewer div.media").fadeOut('fast', function(){
                         $(this).empty().append($(results[0]));
+                        
                         // center the image vertically
-                        // $(this).children("img").css("margin", m + "px 0");
+                        var img_url = $(this).children("img").attr("src");
+                        img_url = img_url.split('_');
+                        img_url = img_url[img_url.length - 1];
+                        var img_ht = parseInt(img_url.substring(img_url.indexOf('x') + 1, img_url.indexOf('.')));
+                        var mar = (450 - img_ht) / 2;
+                        if( mar ){
+                            $(this).children("img").css("margin", mar + "px 0");
+                        }
                         $(this).fadeIn('fast');
-                    });
-                    $("#media_viewer div.media_details").fadeOut('fast', function(){
-                        $(this).empty().append($(results[1])).fadeIn('fast');
+                        $("#media_viewer div.media_details").fadeOut('fast', function(){
+                            $(this).empty().append($(results[1])).fadeIn('fast');
+                        });
                     });
                 }
                 
                 // look for the object in the cache, fallback on ajax
                 if(_photo_cache.hasOwnProperty(url)){
-                    inject_results(_media_cache[url]);
+                    inject_results(_photo_cache[url]);
                 } else {
-                    $.get(url, {render:'media_viewer_gallery'}, inject_results, function(html){
+                    $.get(url, {render:'media_viewer_gallery'}, function(html){
                         _photo_cache[url] = html;
                         inject_results(html);
                     },'html');

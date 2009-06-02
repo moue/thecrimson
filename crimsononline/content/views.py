@@ -270,7 +270,7 @@ def section_photo(request):
         content_type=Image.content_type()).exclude(
         content_type=Article.content_type())[:8]
     
-    d = paginate(content, page, 2)
+    d = paginate(content, page, 7)
     d.update({'nav': nav})
     
     t = 'sections/photo.html'
