@@ -1,8 +1,12 @@
+from datetime import datetime, timedelta
 from django.db.models import Count
 from django import template
 from django.template.loader import render_to_string
 from django.utils.safestring import mark_safe
 from content.models import Tag
+
+# Number of days to consider content for tag cloud sizing
+WINDOWSIZE = 140
 
 register = template.Library()
 
@@ -48,7 +52,9 @@ class TagCloudNode(template.Node):
             except:
                 return ''
         else:
+            too_old = datetime.now() - timedelta(days = WINDOWSIZE)
             tags = Tag.objects.all() \
+                .filter(content__issue__issue_date__gt = too_old) \
                 .annotate(content_count=Count('content')) \
                 .order_by('-content_count')
             tags = list(tags[0:self.num])
