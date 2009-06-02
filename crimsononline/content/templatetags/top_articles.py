@@ -17,7 +17,7 @@ try:
     from googleanalytics import Connection
 except:
     Connection = None
-from crimsononline.content.models import Image, Article, Content, ContentGeneric
+from crimsononline.content.models import Image, Article, Content, ContentGeneric, Section, Contributor, Tag
 from crimsononline.urls import CONTENT_URL_RE, CGROUP_URL_RE
 
 D_USER_KEY = "vabqI2su93P1wVF3Ls9kXhXhRggV7y2ylokjq137yPAz47cY5dDMHgUA2QlZoWNE"
@@ -51,7 +51,14 @@ register = template.Library()
 
 @register.tag(name="most_read_articles")
 def compile_most_read(parser, token):
-    return TopArticlesNode()
+    tokens = token.split_contents()
+    if len(tokens) == 1:
+        specifier = None
+    elif len(tokens) == 2:
+        specifier = tokens[1]
+    else:
+        raise template.TemplateSyntaxError, "%r tag requires 1 or 0 arguments" % tokens[0]
+    return TopArticlesNode(specifier)
     
 def safe_resolve(url, resolver):
     try:
@@ -66,23 +73,54 @@ def call_view(view, args):
         return None
     
 class TopArticlesNode(template.Node):
+    """
+    Generates the most read articles/most commented articles widget.
+    
+    Takes one argument, which should be a tag, author, or section within which to look.
+    """
+    def __init__(self, specifier):
+        try:
+            self.specifier = template.Variable(specifier)
+        except:
+            self.specifier = None
+        
     def render(self, context):
         # Create a resolver for the slightly modified URL patterns we defined above
         resolver = RegexURLResolver(r'^/', generic_obj_patterns)
         # Step 1: We want to get the most viewed articles from the database
         cursor = connection.cursor()
+        if self.specifier:
+            try:
+                self.specifier = self.specifier.resolve(context)
+            except:
+                return ''
+            if self.specifier.__class__ == Section:
+                tableStr = ""
+                limitStr = " AND content_contentgeneric.section_id = " + str(self.specifier.id)
+            elif self.specifier.__class__ == Contributor:
+                tableStr = ", content_contentgeneric_contributors"
+                limitStr = " AND content_contentgeneric_contributors.contributor_id = " + str(self.specifier.id) + " AND content_contentgeneric_contributors.contentgeneric_id = content_contentgeneric.id"
+            elif self.specifier.__class__ == Tag:
+                tableStr = ", content_contentgeneric_tags"
+                limitStr = " AND content_contentgeneric_tags.tag_id = " + str(self.specifier.id) + " AND content_contentgeneric_tags.contentgeneric_id = content_contentgeneric.id"
+            else:
+                raise template.TemplateSyntaxError, "The TopArticles tag can only take a section, contributor, or tag argument (%r passed)" % self.specifier.__class__
+        else:
+            tableStr = ""
+            limitStr = ""
         # SO NON-SEXUALITY-NORMATIVE
         # Oh, a real comment in case someone comes upon this later: We're selecting article ID, content type ID, and a computed field called "hitindex"
         # which will eventually use log() for a better curve.  This ages articles' hits to reduce freshness.  Then it sorts by hitindex and returns the top 5.
         # TODO: Fix this to use proper decay when we switch to a real SQL server
         cursor.execute("SELECT DISTINCT content_article.id, content_contentgeneric.content_type_id, SUM(content_contenthits.hits) AS hitnum FROM content_article, " \
-                       "content_contentgeneric, content_contenthits WHERE content_contentgeneric.object_id = content_article.id AND content_contenthits.content_generic_id " \
-                       "= content_contentgeneric.id AND content_contenthits.date > date('now', '-7 days') GROUP BY content_contenthits.content_generic_id ORDER BY hitnum DESC LIMIT 5")
+                       "content_contentgeneric, content_contenthits" + tableStr + " WHERE content_contentgeneric.object_id = content_article.id AND content_contenthits.content_generic_id " \
+                       "= content_contentgeneric.id AND content_contenthits.date > date('now', '-7 days')" + limitStr + " GROUP BY content_contenthits.content_generic_id ORDER BY hitnum DESC LIMIT 5")
         mostreadarticles = cursor.fetchall()
         mostreadarticles = [(ContentType.objects.get(pk=x[1])).get_object_for_this_type(pk=x[0]) for x in mostreadarticles]
         
         # TODO: uncomment / fix this.  it calls disqus every time, which is annoying
         mostcommentedarticles = None # delete this when below is uncommented
+        # I think this all works, but I can't test it right now because there are no comments at the moment
         """
         # Step 2: Grab the JSON crap from Disqus and build another list of the most commented articles
         thread_url = "http://disqus.com/api/get_thread_list/?forum_api_key=" + D_FORUM_KEY
@@ -99,23 +137,29 @@ class TopArticlesNode(template.Node):
         # sort the thread list
         thread_list['message'].sort(lambda x, y: cmp(float(y['comment_index']), float(x['comment_index'])))
         
-        
         # call resolver.resolve on everything in the list
         urllist = map(lambda x: (urlparse(x['url']))[2], thread_list['message'])
+        # Optimization: we assume that at least 5 of these 20 articles will not resolve to None
+        if not self.specifier:
+            del urllist[20:]
         threadobjlist = map(lambda x: safe_resolve(x, resolver), urllist)
+        # Filter according to specifier
+        # No error checking here since it should have happened before
+        if self.specifier:
+            if self.specifier.__class__ == Section:
+                threadobjlist = [x for x in threadobjlist if x.section == self.specifier.id]
+            elif self.specifier.__class__ == Contributor:
+                threadobjlist = [x for x in threadobjlist if self.specifier.id in [x.id for x in threadobjlist.contributors]]
+            elif self.specifier.__class__ == Tag:
+                threadobjlist = [x for x in threadobjlist if self.specifier.id in [x.id for x in threadobjlist.tags]]
+
+        if self.specifier:
+            del threadobjlist[20:]
         
-        mostcommentedarticles = map(lambda x: call_view(x[0], x[1]), filter(lambda x: x != None, threadobjlist))
+        mostcommentedarticles = [x for x in map(lambda x: call_view(x[0], x[1]), filter(lambda x: x != None, threadobjlist)) if x is not None]
         # Only want top 5 -- we need to do this last because we're not guaranteed that there won't be some gaps in threadobjlist
         del mostcommentedarticles[5:]
         """
-        
-        """
-         THE PLAN HERE:
-         Copy and paste the generic urlpatterns from urls.py.  Create an instance of RegexURLResolver and have it resolve the
-         URL with that pattern, giving us the view function that will give us the article object or nothing at all.
-         Once we have that info, we can call the view on the parameters (it's not a real view since it doesn't return an
-         HTTPResponse) and get the object for the article, which can then be put into the mostcommentedarticles list.
-         """
         
         return render_to_string('templatetag/mostreadarticles.html',
             {'mostreadarticles': mostreadarticles, 
