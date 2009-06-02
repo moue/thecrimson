@@ -83,9 +83,22 @@ class Command(NoArgsCommand):
                     a.slug = hashlib.md5(str(datetime.now())).hexdigest()
                     a.save()
         
+        images = list(Image.objects.all())
+        
+        # make some new image galleries
+        for i in range(0, 10):
+            ig = ImageGallery(title=hashlib.md5(str(datetime.now())).hexdigest(),
+                description=hashlib.md5(str(datetime.now())).hexdigest())
+            ig.save()
+            
+            shuffle(images)
+            
+            for n, img in enumerate(images[:randrange(2,6)]):
+                GalleryMembership.objects.create(image_gallery=ig, image=img, order=n)
+            
         
         # generate some random Image - Article associations
-        images = list(Image.objects.all())
+        
         for a in Article.objects.all():
             shuffle(images)
             imgs = images[:randrange(0,4)]

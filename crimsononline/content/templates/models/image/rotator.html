@@ -1,0 +1,16 @@
+{% extends "models/rotator.html" %}
+{% spaceless %}
+
+{% load common %}
+{% load content_filters %}
+
+{% block img %}
+    {{ image|to_img_tag:"300,240,5,4" }}
+{% endblock %}
+{% block text %}
+    <h3>{{ image|linkify }}</h3>
+    <p class="byline">By {{ image.contributors.all|linkify|human_list}}
+    <p class="teaser">{{ image.caption }}</p>
+{% endblock %}
+
+{% endspaceless %}

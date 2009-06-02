@@ -265,8 +265,7 @@ class Content(models.Model):
     
     def identifier(self):
         """
-        Used in last part of URL.  Child classes should override this.
-        This would be like a headline or a title.
+        not used anymore (?)
         """
         return str(self.pk)
     
@@ -1072,6 +1071,16 @@ class Review(models.Model):
     class Meta:
         ordering = ('-created_on',)
 
+
+class Score(models.Model):
+    team1 = models.CharField(max_length=50, null=True, blank=True)
+    team2 = models.CharField(max_length=50, null=True, blank=True)
+    score1 = models.CharField(max_length=20, null=True, blank=True)
+    score2 = models.CharField(max_length=20, null=True, blank=True)
+    comment = models.CharField(max_length=50, null=True, blank=True)
+    event_date = models.DateField()
+    
+    
 
 class UserData(models.Model):
     user = models.ForeignKey(User, unique=True)

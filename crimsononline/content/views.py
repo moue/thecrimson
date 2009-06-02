@@ -281,7 +281,10 @@ def section_photo(request):
 def section_sports(request):
     nav = 'sports'
     section = Section.cached(nav)
-    content = top_articles(nav)
+    stories = Article.objects.recent.filter(generic__section=section)
+    rotate = stories.filter(rel_content__content_type=Image.content_type()) \
+        .distinct()[:4]
+    stories = stories.exclude(pk__in=[r.pk for r in rotate])
     return render_to_response('sections/sports.html', locals())
 
 def photo(request):

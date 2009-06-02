@@ -1,0 +1,65 @@
+{% extends "threecolumn.html" %}
+
+{% load common %}
+{% load content_filters %}
+{% load rotator %}
+{% load content_module %}
+{% load tag_cloud %}
+{% load top_articles %}
+
+{% block lefttopcolumn %}
+    {% rotator rotate "sports_rotator" %}
+    <div id="updates" class="article_previews">
+        <h2>Latest Updates</h2>
+        <ul>
+        {% for s in updates %}
+            <li><h3><a href="{{s.get_absolute_url}}">{{s}}</a></h3></li>
+        {% endfor %}
+        </ul>
+    </div>
+    <span class="clear"></span>
+    <div id="blogs" class="bordered series">
+        <h2>Sports Blogs</h2>
+        <ul>
+            {% for s in blog_posts %}
+            <li>
+                <h3><a href="{{s.get_absolute_url}}">{{s}}</a></h3>
+                <p class="byline">By {{s.contributors.all|linkify|human_list}}</p>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}
+
+{% block middletopcolumn %}
+    <div id="top_stories" class="article_previews">
+        <h2>Top Stories</h2>
+        <ul>
+        {% for s in top_stories %}
+            <li>{{ s|render:"preview" }}</li>
+        {% endfor %}
+        </ul>
+    </div>
+    <span class="clear"></span>
+    <div id="athlete_o_week" class="img_list">
+        <h2>Athlete of the Week {{ athlete.subheadline }}</h2>
+        <ul>
+            <li>
+                {{ athlete.main_rel_content|to_img_tag:"60,60" }}
+                <h3>{{ athlete|linkify }}</h3>
+                <p class="teaser">{{ athlete.teaser }}</p>
+            </li>
+        </ul>
+    </div>
+{% endblock %}
+
+{% block righttopcolumn %}
+    <div class="bordered" id="tags">
+        <h2>Tags</h2>
+        <p> some mysterious tag interface here </p>
+    </div>
+    <div class="">
+        <span>advertisement</span>
+        <img src="/site_media/images/medium_rectangle.gif" />
+    </div>
+{% endblock %}
