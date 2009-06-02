@@ -173,7 +173,7 @@ class Content(models.Model):
     
     def store_hit(self):
         # (Eventual) minimum amount of time to wait between stores to the database
-        MIN_DB_STORE_INTERVAL = 60
+        MIN_DB_STORE_INTERVAL = 1
         # Base number of hits to wait for before storing to the DB
         BASE_THRESHOLD = 4
         # Amount to increase the threshold by each time

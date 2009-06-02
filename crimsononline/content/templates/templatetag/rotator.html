@@ -3,7 +3,6 @@
 
 <link href="/site_media/css/rotator.css" rel="stylesheet" type="text/css" />
 <script src="/site_media/scripts/jquery.js" type="text/javascript"></script>
-<script type="text/javascript" src="/site_media/scripts/framework/jquery.jcarousellite.packed.js"></script>
 <script type="text/javascript" src="/site_media/scripts/jquery.cycle.all.min.js"></script>
 <script type="text/javascript">
 $(function(){
@@ -19,9 +18,9 @@ $(function(){
         }
 	});
 });
-
 </script>
 <div class="rotator">
+    {% if title %}<h2>{{ title }}</h2>{% endif %}
     <ul class="preview_body">
 		{% for c in contents %}
             <li>{{ c|render:"rotator" }}</li>

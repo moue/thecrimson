@@ -1,22 +1,26 @@
 {% load common %}
 {% load cache %}
 
+<link href="/site_media/css/mostread.css" rel="stylesheet" type="text/css" />
 <div id="mostxdarticles" class="bordered">
-<a onclick="$('#mostreadarticles').show(); $('#mostcommentedarticles').hide();">read</a> <a onclick="$('#mostreadarticles').hide(); $('#mostcommentedarticles').show();">commented</a>
-{% cache 500 mostreadarticles %}
-<div id="mostreadarticles">
-<ol>
-{% for article in mostreadarticles %}
-<li>{{article|linkify}}</li>
-{% endfor %}
-</ol>
-</div>
-{% endcache %}
-<div id="mostcommentedarticles" style="display: none">
-<ol>
-{% for article in mostcommentedarticles %}
-<li>{{article|linkify}}</li>
-{% endfor %}
-</ol>
-</div>
+    <h2> MOST
+        <a onclick="$('#mostreadarticles').show(); $('#mostcommentedarticles').hide();">read</a>
+        <a onclick="$('#mostreadarticles').hide(); $('#mostcommentedarticles').show();">commented</a>
+    </h2>
+    {% cache 500 mostreadarticles %}
+    <div id="mostreadarticles">
+        <ol>
+        {% for article in mostreadarticles %}
+            <li>{{article|linkify}}</li>
+        {% endfor %}
+        </ol>
+    </div>
+    {% endcache %}
+    <div id="mostcommentedarticles" style="display: none">
+        <ol>
+        {% for article in mostcommentedarticles %}
+            <li>{{article|linkify}}</li>
+        {% endfor %}
+        </ol>
+    </div>
 </div>

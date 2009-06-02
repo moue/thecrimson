@@ -6,6 +6,14 @@ div.rotator {
     width: 300px;
 	height: 360px;
     padding: 5px;
+    overflow: hidden;
+}
+div.rotator h2{
+    font-family: Arial;
+    font-size: 15px;
+    color: #ba0600;
+    margin: 0 0 4px 2px;
+    font-weight: normal;
 }
 
 div.rotator ul.preview_body{
