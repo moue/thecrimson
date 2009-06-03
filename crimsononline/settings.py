@@ -103,6 +103,7 @@ INSTALLED_APPS = (
     'crimsononline.content_module',
     'crimsononline.search',
     'crimsononline.common',
+    'crimsononline.subscriptions',
 )
 
 MEDIA_LOC = MEDIA_ROOT

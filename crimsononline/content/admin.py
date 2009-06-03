@@ -712,14 +712,6 @@ class MapAdmin(admin.ModelAdmin):
 admin.site.register(Map, MapAdmin)
 admin.site.register(Marker)
 
-class SubscriptionForm(forms.ModelForm):
-    class Meta:
-        model = Subscription
-		
-class SubscriptionAdmin(admin.ModelAdmin):
-	form = SubscriptionForm
-
-admin.site.register(Subscription, SubscriptionAdmin)
 
 class HUIDBackend:
     """

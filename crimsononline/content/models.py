@@ -1092,25 +1092,17 @@ class UserData(models.Model):
                 
     def __unicode__(self):
         return self.huid_hash
-        
+    
+    """
     def __setattr__(self, name, value):
         # hash the huid before storing it; but actually don't
         #if name == 'huid_hash' and value != None:
         #    value = md5(value).digest()
         return super(UserData, self).__setattr__(name, value)
+    """
         
     def parse_token(self):
         # a b c d
         return False
+    
 
-class Subscription(models.Model):
-	email = models.EmailField(blank=False)
-	contributors = models.ManyToManyField(Contributor,blank=True)
-	section = models.ManyToManyField(Section,blank=True)
-	tags = models.ManyToManyField(Tag,blank=True)
-	def __unicode__(self):
-		return self.email
-
-class SubscriptionForm(ModelForm):
-	class Meta:
-		model = Subscription

@@ -23,7 +23,7 @@ class RotatorNode(template.Node):
         try:
             self.title = self.title.resolve(context, True) if self.title else ''
         except:
-            pass
+            self.title = ''
         return render_to_string('templatetag/rotator.html', 
             {'contents': self.contents, 'title': self.title})
     

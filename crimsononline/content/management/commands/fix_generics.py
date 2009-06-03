@@ -27,19 +27,22 @@ class Command(NoArgsCommand):
         models = [Article, Image, ImageGallery]
         
         # make some new articles
-        u = urllib.urlopen('http://www.gutenberg.org/files/61/61.txt')
-        text = u.readlines()
-        text = [t for t in text if t]
-        n = len(text)
-        for i in range(0, 100):
-            h = ''
-            while len(h) < 6:
-                h = text[randrange(0,n)]
-            r = randrange(0,n-100)
-            t = ''.join(text[r:r+100])
-            a = Article(headline=h, text=t, sne_id=1, proofer_id=1, 
-                teaser=t[:140])
-            a.save()
+        try:
+            u = urllib.urlopen('http://www.gutenberg.org/files/61/61.txt')
+            text = u.readlines()
+            text = [t for t in text if t]
+            n = len(text)
+            for i in range(0, 100):
+                h = ''
+                while len(h) < 6:
+                    h = text[randrange(0,n)]
+                r = randrange(0,n-100)
+                t = ''.join(text[r:r+100])
+                a = Article(headline=h, text=t, sne_id=1, proofer_id=1, 
+                    teaser=t[:140])
+                a.save()
+        except:
+            print "couldn't download new articles from project gutenburg"
         
         images = list(Image.objects.all())
         # make some new image galleries
