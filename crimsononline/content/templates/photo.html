@@ -3,8 +3,8 @@
 {% load content_filters %}
 
 {% block inhead %}
-	<link type="text/css" rel="stylesheet" href="/site_media/css/photo.css" />
-    <link type="text/css" rel="stylesheet" href="/site_media/css/content_list.css" />
+    {% static_css "photo.css" %}
+    {% static_css "content_list.css" %}
 {% endblock %}
 
 {% block content_list %}

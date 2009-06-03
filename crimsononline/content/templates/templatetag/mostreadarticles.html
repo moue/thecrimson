@@ -1,7 +1,7 @@
 {% load common %}
 {% load cache %}
 
-<link href="/site_media/css/mostread.css" rel="stylesheet" type="text/css" />
+{% static_css "mostread.css" %}
 <div id="mostxdarticles" class="bordered">
     <h2> MOST
         <a onclick="$('#mostreadarticles').show(); $('#mostcommentedarticles').hide();">read</a>

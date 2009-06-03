@@ -7,7 +7,7 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title>The Harvard Crimson | {% block title %}{{ title }}{% endblock %}</title>
-	<link type="text/css" rel="stylesheet" href="/site_media/css/base.css" />
+	{% static_css "base.css" %}
 	{% block inhead %}{% endblock %}
 </head>
 <body>
@@ -21,9 +21,9 @@
             <div class="tools">
                 <div class="top">
                     {% spaceless %}
-                    <span class="cover"><img src="/site_media/images/banner_right_cover.png" alt="cover" /></span>
-                    <span class="issues"><img src="/site_media/images/banner_right_past.png" alt="past issues" /></span>
-                    <span class="weather"><img src="/site_media/images/banner_right_weather.png" alt="weather" /></span>
+                    <span class="cover"><img src="{% static_url "images/banner_right_cover.png" %}" alt="cover" /></span>
+                    <span class="issues"><img src="{% static_url "images/banner_right_past.png" %}" alt="past issues" /></span>
+                    <span class="weather"><img src="{% static_url "images/banner_right_weather.png" %}" alt="weather" /></span>
                     {% endspaceless %}
                 </div>
                 <div class="line"></div>
@@ -64,7 +64,7 @@
 			{% block pre_body %}
             <div id="top_leaderboard" class="ad">
             <span>Advertisement</span>
-            <img src="/site_media/images/sample_leaderboard.jpg" />
+            <img src="{% static_url "images/sample_leaderboard.jpg" %}" />
             </div>
             {% endblock %}
 			{% block body %}{% endblock %}

@@ -6,7 +6,7 @@
 {% endif %}
 <h3>{{ imagegallery|linkify }}</h3>
 <div class="dateline">
-    <img src="/site_media/images/printer.gif" alt="image gallery" />
+    <img src="{% static_url "images/printer.gif" %}" alt="image gallery" />
     {{ imagegallery.issue.issue_date|date:"F j, Y" }}
     ({{ imagegallery.images.count }} photos)
 </div>

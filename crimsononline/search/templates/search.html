@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block inhead %}
-    <script type="text/javascript" src="http://google.com/jsapi?key=ABQIAAAA1m5RwdAfIaeSMlrcZCgIjhQCULP4XOMyhPd8d_NrQQEO8sT8XBQgiF6QEwMTU0yZOuL7Z9tpPywdeg" />
+    {% static_js "http://google.com/jsapi?key=ABQIAAAA1m5RwdAfIaeSMlrcZCgIjhQCULP4XOMyhPd8d_NrQQEO8sT8XBQgiF6QEwMTU0yZOuL7Z9tpPywdeg" %}
     <script type="text/javascript">
         google.load('search', '1');
         function search_load() {

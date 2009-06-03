@@ -2,6 +2,7 @@
 Form things that would be useful across apps and models.  
 This probably means only widgets and fields.
 """
+import datetime
 from os.path import split, exists, splitext
 from PIL import Image as pilImage
 from django import forms
@@ -10,7 +11,7 @@ from django.db.models import ImageField
 from django.db.models.fields.files import ImageFieldFile
 from django.template.loader import render_to_string
 from crimsononline.common.utils.numbers import reduce_fraction
-import datetime
+from crimsononline.common.utils.misc import static_content
 
 MONTHS = [(i, datetime.date(2008, i, 1).strftime('%B')) for i in range(1,13)]
 DAYS = [(str(i), str(i)) for i in range(1, 32)]
@@ -207,12 +208,13 @@ class FbSelectWidget(forms.widgets.HiddenInput):
     For explanations, see FbModelChoiceField's docstring
     """
     class Media:
-        js = ("/site_media/scripts/framework/jquery.bgiframe.min.js",
-            "/site_media/scripts/framework/jquery.autocomplete.js",
-            "/site_media/scripts/framework/jquery.autocompletefb.js",
-            "/site_media/scripts/framework/jquery.tooltip.pack.js",)
-        css = {'all': ("/site_media/css/framework/jquery.autocompletefb.css",
-                "/site_media/css/framework/jquery.tooltip.css",)}
+        js = (static_content('scripts/framework/jquery.bgiframe.min.js'),
+            static_content('scripts/framework/jquery.autocomplete.js'),
+            static_content('scripts/framework/jquery.autocompletefb.js'),
+            static_content('scripts/framework/jquery.tooltip.pack.js'),
+            )
+        css = {'all': (static_content('css/framework/jquery.autocompletefb.css'),
+            static_content('css/framework/jquery.tooltip.css'))}
     
     def __init__(self, *args, **kwargs):
         self.url = kwargs.pop('url')
@@ -316,10 +318,10 @@ class FbModelChoiceField(forms.CharField):
 
 class SearchChoiceWidget(forms.widgets.HiddenInput):
     class Media:
-        js = ('/site_media/scripts/framework/jquery-ui.packed.js',
-            '/site_media/scripts/admin/widgets/SearchModelChoiceWidget.js',)
-        css = {'all': ('/site_media/css/framework/jquery.ui.css',
-            '/site_media/css/admin/SearchModelChoiceWidget.css'),}
+        js = (static_content('scripts/framework/jquery-ui.packed.js'),
+            static_content('scripts/admin/widgets/SearchModelChoiceWidget.js'))
+        css = {'all': (static_content('css/framework/jquery.ui.css'),
+            static_content('css/admin/SearchModelChoiceWidget.css'))}
     
     def __init__(self, *args, **kwargs):
         self.ajax_url = kwargs.pop('ajax_url', None)
@@ -436,8 +438,8 @@ class CropWidget(forms.widgets.HiddenInput):
         return super(CropWidget, self).__init__(*args, **kwargs)
     
     class Media:
-        js = ('/site_media/scripts/framework/jquery.Jcrop.js',)
-        css = {'all': ("/site_media/css/framework/jquery.Jcrop.css",)}
+        js = (static_content('scripts/framework/jquery.Jcrop.js'),)
+        css = {'all': (static_content('css/framework/jquery.Jcrop.css'),)}
     
     def render(self, name, value, attrs=None):
         hidden = super(CropWidget, self).render(name, value, attrs)

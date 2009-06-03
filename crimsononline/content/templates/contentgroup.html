@@ -1,9 +1,10 @@
 {% extends "models/page.html" %}
 
 {% load content_filters %}
+{% load common %}
 
 {% block css %}
-    <link type="text/css" rel="stylesheet" href="/site_media/css/contentgroup.css" />
+    {% static_css "contentgroup.css" %}
 {% endblock %}
 
 {% block pre_content%}

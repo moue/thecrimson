@@ -6,7 +6,7 @@
 {% load top_articles %}
 
 {% block css %}
-<link type="text/css" rel="stylesheet" href="/site_media/css/tag.css" />
+    {% static_css "tag.css" %}
 {% endblock %}
 
 {% block title %}
@@ -30,7 +30,7 @@
         {% if c.profile_pic %}
             {{c.profile_pic|to_img_tag:"50,50,1,1"}}
         {% else %}
-            <img src="/site_media/images/noface_50x50.jpg" alt="face"/>
+            <img src="{% static_url "images/noface_50x50.jpg" %}" alt="face"/>
         {% endif %}
         <h3>{{c|linkify}} ({{c.c_count}})</h3>
         <p class="dateline">{{c.rece|date}}</p>

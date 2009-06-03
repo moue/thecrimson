@@ -5,7 +5,7 @@
     <div class="image_thumb">{{image|to_img_tag:"150,150"}}</div>
     {{image.section|yuhkilabel}}
     <h3><a href="{{ image.get_absolute_url }}">{{ image.kicker }}</a></h3>
-    <span class="byline"><img src="/site_media/images/arrow_small_up.png" alt="image"> By {{ image.generic.contributors.all|linkify|human_list}}</span>
+    <span class="byline"><img src="{% static_url "images/arrow_small_up.png" %}" alt="image"> By {{ image.generic.contributors.all|linkify|human_list}}</span>
     <p class="teaser">{{ image.caption|truncatewords:"10" }}</p>
     <span class="clear"></span>
 </li>

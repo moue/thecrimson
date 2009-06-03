@@ -12,6 +12,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.template.loader import render_to_string
 from django.utils.safestring import mark_safe
 from crimsononline.content.models import Image, Issue, ContentGeneric
+from crimsononline.common.utils.misc import static_content
 
 class AutoGenSlugWidget(forms.widgets.TextInput):
     def __init__(self, *args, **kwargs):
@@ -61,10 +62,10 @@ class IssuePickerWidget(forms.widgets.HiddenInput):
     """
     
     class Media:
-        js = ('/site_media/scripts/framework/jquery-ui.packed.js',
-            '/site_media/scripts/admin/IssuePickerWidget.js',)
-        css = {'all': ('/site_media/css/framework/jquery.ui.css',
-            '/site_media/css/admin/IssuePickerWidget.css',),}
+        js = (static_content('scripts/framework/jquery-ui.packed.js'),
+            static_content('scripts/admin/IssuePickerWidget.js'),)
+        css = {'all': (static_content('css/framework/jquery.ui.css'),
+            static_content('css/admin/IssuePickerWidget.css'),)}
     
     def render(self, name, value, attrs=None):
         meta_select = "daily"
@@ -135,10 +136,10 @@ class IssuePickerField(forms.CharField):
 
 class RelatedContentWidget(forms.widgets.HiddenInput):
     class Media:
-        js = ('/site_media/scripts/framework/jquery-ui.packed.js',
-            '/site_media/scripts/admin/RelatedContentWidget.js',)
-        css = {'all': ('/site_media/css/framework/jquery.ui.css',
-            '/site_media/css/admin/RelatedContent.css'),}
+        js = (static_content('scripts/framework/jquery-ui.packed.js'),
+            static_content('scripts/admin/RelatedContentWidget.js'))
+        css = {'all': (static_content('css/framework/jquery.ui.css'),
+            static_content('css/admin/RelatedContent.css'))}
     
     def __init__(self, admin_site, *args, **kwargs):
         self.rel_types = kwargs.pop('rel_types', None)

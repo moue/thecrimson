@@ -3,10 +3,10 @@
 {% load common %}
 {% load content_filters %}
 
-{% block css %}<link type="text/css" rel="stylesheet" href="/site_media/css/photo.css" />{% endblock %}
+{% block css %}{% static_css "photo.css" %}{% endblock %}
 {% block js %}
-    <script type="text/javascript" src="/site_media/scripts/jquery.js"></script>
-    <script type="text/javascript" src="/site_media/scripts/media_viewer.js"></script>
+    {% static_js "jquery.js" %}
+    {% static_js "media_viewer.js" %}
 {% endblock %}
 
 {% block above_the_fold %}

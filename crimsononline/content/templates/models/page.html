@@ -6,10 +6,10 @@
 {% load tag_cloud %}
 
 {% block inhead %}
-    <link type="text/css" rel="stylesheet" href="/site_media/css/single_content.css" />
+    {% static_css "single_content.css" %}
     {% block css %}
     {% endblock %}
-    <script type="text/javascript" src="/site_media/scripts/jquery.js"></script>
+    {% static_js "jquery.js" %}
     {% block js %}
         
     {% endblock %}
@@ -30,7 +30,7 @@
             {% endspaceless %}{% endif %}
             {{ content.section|yuhkilabel }}
                 <div id="articletools">
-                    <a href="#"><img src="/site_media/images/printer.gif" alt="Print"/> Print</a>
+                    <a href="#"><img src="{% static_url "images/printer.gif" %}" alt="Print"/> Print</a>
                     | <!-- AddThis Button BEGIN -->
     <script type="text/javascript">var addthis_pub="4a1b0ea00f31f08e"; var addthis_options='email, facebook, twitter, digg';</script>
     <a href="http://www.addthis.com/bookmark.php?v=20" onmouseover="return addthis_open(this, '', '[URL]', '[TITLE]')" onmouseout="addthis_close()" onclick="return addthis_sendto()"><img src="http://s7.addthis.com/static/btn/sm-plus.gif" width="16" height="16" alt="Bookmark and Share" style="border:0"/> SHARE</a><script type="text/javascript" src="http://s7.addthis.com/js/200/addthis_widget.js"></script>

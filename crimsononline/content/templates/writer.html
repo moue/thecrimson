@@ -8,8 +8,8 @@
 {% endblock %}
 
 {% block inhead %}
-	<link type="text/css" rel="stylesheet" href="/site_media/css/content_list.css" />
-    <link type="text/css" rel="stylesheet" href="/site_media/css/writer-profile.css" />
+    {% static_css "content_list.css" %}
+    {% static_css "writer-profile.css" %}
 {% endblock %}
 
 {% block before_content %}

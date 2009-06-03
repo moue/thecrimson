@@ -3,7 +3,7 @@ from django import template
 from django.template import defaultfilters as filter
 from django.template.loader import render_to_string
 from django.utils.safestring import mark_safe
-import cgi
+from crimsononline.common.utils import misc
 
 register = template.Library()
 
@@ -127,8 +127,11 @@ def repeat(parser, token):
     return RepeatNode(nodelist, count)
 repeat = register.tag(repeat)
 
-FULL_IMG = """<img src="/site_media/images/star_full.png" alt="star_full" />"""
-EMPTY_IMG = """<img src="/site_media/images/star_empty.png" alt="star_empty" />"""
+
+FULL_IMG = """<img src="%s" alt="star_full" />""" \
+    % misc.static_content('images/star_full.png')
+EMPTY_IMG = """<img src="%s" alt="star_empty" />""" \
+    % misc.static_content('images/star_empty.png')
 class RatingNode(template.Node):
     def __init__(self, rating, rating_max):
         self.r = template.Variable(rating)
@@ -159,3 +162,35 @@ def rating(parser, token):
         raise template.TemplateSyntaxError('%r tag requires 2 argument.' % bits[0])
     return RatingNode(*(bits[1:3]))
 rating = register.tag(rating)
+
+
+@register.simple_tag
+def static_url(link):
+    return mark_safe(misc.static_content(link))
+
+
+@register.simple_tag
+def static_css(link_to_css):
+    """
+    renders a css link.  
+    make sure you use a url relative to the base css folder, or a link that
+        starts with http://
+    """
+    if link_to_css[:7] != 'http://':
+        link_to_css = misc.static_content("css/%s" % link_to_css)
+    return mark_safe("""<link type="text/css" rel="stylesheet" href="%s" />""" \
+        % link_to_css)
+
+
+@register.simple_tag
+def static_js(link_to_js):
+    """
+    renders a javascript include.
+    make sure you use a url relative to the base javascript folder, or a link that
+        starts with http://
+    """
+    if link_to_js[:7] != 'http://':
+        link_to_js = misc.static_content("scripts/%s" % link_to_js)
+    return mark_safe("""<script type="text/javascript" src="%s"></script>""" \
+        % link_to_js)
+

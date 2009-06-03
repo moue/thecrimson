@@ -41,6 +41,18 @@ class Command(NoArgsCommand):
                 teaser=t[:140])
             a.save()
         
+        images = list(Image.objects.all())
+        # make some new image galleries
+        for i in range(0, 10):
+            ig = ImageGallery(title=hashlib.md5(str(datetime.now())).hexdigest()[:10],
+                description=hashlib.md5(str(datetime.now())).hexdigest())
+            ig.save()
+            
+            shuffle(images)
+            
+            for n, img in enumerate(images[:randrange(2,6)]):
+                GalleryMembership.objects.create(image_gallery=ig, image=img, order=n)
+        
         for model in models:
             for a in model.objects.all():
                 # trigger generation of a generic object
@@ -84,18 +96,6 @@ class Command(NoArgsCommand):
                     a.save()
         
         images = list(Image.objects.all())
-        
-        # make some new image galleries
-        for i in range(0, 10):
-            ig = ImageGallery(title=hashlib.md5(str(datetime.now())).hexdigest(),
-                description=hashlib.md5(str(datetime.now())).hexdigest())
-            ig.save()
-            
-            shuffle(images)
-            
-            for n, img in enumerate(images[:randrange(2,6)]):
-                GalleryMembership.objects.create(image_gallery=ig, image=img, order=n)
-            
         
         # generate some random Image - Article associations
         

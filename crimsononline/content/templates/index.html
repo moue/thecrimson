@@ -10,7 +10,9 @@
 {% endblock %}
 
 {% block css %}
-	<link type="text/css" rel="stylesheet" href="/site_media/css/index.css" />
+    {% static_css "index.css" %}
+    {% static_js "jquery.js" %}
+    {% static_js "past_issues.js" %}
 {% endblock %}
 {% block masthead_center %}
     <div class="label">Hot topics >></div>

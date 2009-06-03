@@ -1,9 +1,11 @@
+{% load common %}
+
 <ul class="acfb-holder" id="acfb_holder_{{attrs.id}}">
     {% for pk, label in objs.iteritems %}
         <li class="acfb-data">
             <span class="label">{{label}}</span>
             <span class="pk" style="display:none">{{pk}}</span>
-            <img class="p" src="/site_media/images/delete.gif"/>
+            <img class="p" src="{% static_url "images/delete.gif" %}"/>
         </li>
     {% endfor %}
     <li><input type="text" class="acfb-input" id={{attrs.id}}_input /></li>

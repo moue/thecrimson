@@ -1,7 +1,6 @@
 {% load common %}
 {% load content_filters %}
 
-<link type="text/css" rel="stylesheet" href="/site_media/css/framework/jquery.jcarousel.css" />
 <div class="header">
     <h1><a href="{{ imagegallery.get_absolute_url }}">{{ imagegallery.title }}</a></h1>
 </div>
@@ -22,7 +21,7 @@
         </div>
     </div>
     <div class="gallery_control">
-        <span class="arrow" id="gal_left"> <img src="/site_media/images/left_off.gif"/></span>
+        <span class="arrow" id="gal_left"> <img src="{% static_url "images/left_off.gif" %}"/></span>
         <div class="carousel_frame">
             <div class="carousel">
             {% spaceless %}
@@ -32,9 +31,8 @@
             {% endspaceless %}
             </div>
         </div>
-        <span class="arrow" id="gal_right"> <img src="/site_media/images/right_off.gif"/></span>
+        <span class="arrow" id="gal_right"> <img src="{% static_url "images/right_off.gif" %}"/></span>
     </div>
-    <script type="text/javascript" src="/site_media/scripts/framework/jquery.jcarousel.js"></script>
     <script type="text/javascript">
         $(document).ready(function(){
             /* ========= the carousel stuff ============== */

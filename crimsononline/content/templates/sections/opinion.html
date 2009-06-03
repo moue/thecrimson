@@ -36,7 +36,7 @@
         {% for column in columns %}
             <li>
                 {% if column.image %}{{ column.image|to_img_tag:"60,60,1,1" }}
-                {% else %}<img src="/site_media/images/noface_60x60.jpg" />{% endif %}
+                {% else %}<img src="{% static_url "images/noface_60x60.jpg" %}" />{% endif %}
                 <h3>{{ column|linkify:column.name }}</h3>
                 <p>{{ column.subname }}</p>
                 <p class="dateline">Updated {{ column.recent|date }}</p>
