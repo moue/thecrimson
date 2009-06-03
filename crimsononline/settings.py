@@ -46,11 +46,17 @@ USE_I18N = False
 
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
-MEDIA_ROOT = path.join(path.split(path.abspath(__file__))[0], 'static')
+try:
+    MEDIA_ROOT
+except:
+    MEDIA_ROOT = path.join(path.split(path.abspath(__file__))[0], 'static')
 
 # URL that handles the media served from MEDIA_ROOT.
 # Example: "http://media.lawrence.com"
-MEDIA_URL = URL_BASE + 'site_media/'
+try:
+    MEDIA_URL
+except:
+    MEDIA_URL = URL_BASE + 'site_media/'
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (

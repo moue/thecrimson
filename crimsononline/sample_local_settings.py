@@ -1,3 +1,5 @@
+from os import path
+
 ADMINS = (
     # ('Your Name', 'your_email@domain.com'),
 )
@@ -21,3 +23,11 @@ ADMIN_MEDIA_PREFIX = '/media/'
 
 # keep this for local dev servers
 URL_BASE = 'http://localhost:8000/'
+
+# Absolute path to the directory that holds media.
+# Example: "/home/media/media.lawrence.com/"
+MEDIA_ROOT = path.join(path.split(path.abspath(__file__))[0], 'static')
+
+# URL that handles the media served from MEDIA_ROOT.
+# Example: "http://media.lawrence.com"
+MEDIA_URL = URL_BASE + 'site_media/'
