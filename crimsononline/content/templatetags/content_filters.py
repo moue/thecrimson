@@ -3,6 +3,7 @@ from django.template import defaultfilters as filter
 from django.utils.safestring import mark_safe
 from crimsononline.content.models import Image, Article, Content, ContentGeneric
 from crimsononline.common.templatetags.common import linkify, human_list
+from crimsononline.common.forms import size_spec_to_size
 
 
 register = template.Library()
@@ -57,7 +58,7 @@ def to_img_tag(img, size_spec):
         k = filter.force_escape(img.kicker)
     else:
         k = ''
-    tag = '<img src="%s" title="%s" alt="%s" />' % \
+    tag = '<img src="%s" title="%s" alt="%s"/>' % \
             (disp_url, k, k)
     return mark_safe(tag)
 

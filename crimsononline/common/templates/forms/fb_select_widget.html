@@ -20,6 +20,7 @@
                 multipleInput: {{is_multiple}},
                 no_duplicates: {{no_dupes}}
             });
+        {% if self.add_rel %}
         var originalDismissAddAnotherPopup = dismissAddAnotherPopup;
         dismissAddAnotherPopup = function(win, newId, newRepr){
             if(win.name.indexOf("{{attrs.id}}") != -1){
@@ -27,5 +28,6 @@
             }
             return originalDismissAddAnotherPopup(win, newId, newRepr);
         }
+        {% endif %}
     });
 </script>

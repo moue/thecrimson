@@ -9,6 +9,7 @@ from django import forms
 from django.contrib import admin
 from django.db.models import ImageField
 from django.db.models.fields.files import ImageFieldFile
+from django.http import Http404
 from django.template.loader import render_to_string
 from crimsononline.common.utils.numbers import reduce_fraction
 from crimsononline.common.utils.misc import static_content
@@ -222,6 +223,7 @@ class FbSelectWidget(forms.widgets.HiddenInput):
         self.labeler = kwargs.pop('labeler')
         self.is_multiple = kwargs.pop('multiple', False)
         self.no_duplicates = kwargs.pop('no_duplicates', True)
+        self.add_rel = kwargs.pop('add_rel', False)
         # to fool the RelatedFieldWrapper
         self.choices = []
         return super(FbSelectWidget, self).__init__(*args, **kwargs)
@@ -244,6 +246,31 @@ class FbSelectWidget(forms.widgets.HiddenInput):
     
 
 
+def fbmc_search_helper(request):
+    """
+    A view function that parses the ajax query from the FBModelChoiceWidget
+        and returns (query_string, exclude_list, limit)
+        query_string: (what user typed into field),
+        exclude_list: a list of excluded pks
+        limit: limit on the number of items in the response
+    
+    Call this in your ajax processing views.  Your views are responsible for
+        making the actual query and rendering the text response.  The response
+        should be in the format:
+            PRIMARY_KEY|TEXT_LABEL
+        with one entry per line
+    """
+    if request.method != 'GET':
+        raise Http404
+    q_str, limit = request.GET.get('q', ''), request.GET.get('limit', None)
+    excludes = request.GET.get('exclude','').split(',')
+    if excludes:
+        excludes = [int(e) for e in excludes if e]
+    if (len(q_str) < 1) or (not limit):
+        raise Http404
+    return (q_str, excludes, limit)
+    
+
 class FbModelChoiceField(forms.CharField):
     """
     A model multiple choice field that uses a Facebook-like autocomplete
@@ -251,16 +278,19 @@ class FbModelChoiceField(forms.CharField):
     
     This field is bound to the FbSelectMultiple Widget.
     
+    If you use this outside of admin, you need to manually link to the
+    javascript and css from FbSelectWidget
+    
     Takes 6 additional named arguments:
-    multiple: select multiple objects at once? False by default
-    model: the model from which to select multiple
+    @multiple: select multiple objects at once? False by default
+    @model: the model from which to select multiple
     @url: the widget makes a AJAX requests for autocompletion. this is the
         url that returns the autcomplete search results. the request is made
         to the url: url?q=query_string&limit=max_results
         the results should be returned as text, with one result on each
         line. each results should look like: primary_key|label
     @labeler: a function that takes a model object and returns a label.
-        this is used for the initial labels.
+        this is used for the initial labels.  default is just str(x)
     @no_duplicates: is true, AJAX query will tack on the parameter
         exclude, with value a list of values to exclude in the autosuggest.
         eg: url?q=fasman&limit=10&exclude=4,1,2
@@ -275,14 +305,15 @@ class FbModelChoiceField(forms.CharField):
         #  like Python's capitalized True / False values
         self.is_multiple = 1 if kwargs.pop('multiple', False) else 0
         no_dupes = 1 if kwargs.pop('no_duplicates', True) else 0
+        self.add_rel = kwargs.pop('add_rel', None)
         kwargs['widget'] = FbSelectWidget(
             url=kwargs.pop('url'), 
             model=self.model, 
-            labeler=kwargs.pop('labeler'),
+            labeler=kwargs.pop('labeler', lambda x: str(x)),
             multiple=self.is_multiple, 
             no_duplicates=no_dupes,
+            add_rel=self.add_rel
         )
-        self.add_rel = kwargs.pop('add_rel', None)
         # if add_rel, use the related field widget wrapper for the add button
         if self.add_rel:
             kwargs['widget'] = admin.widgets.RelatedFieldWidgetWrapper(
@@ -298,7 +329,7 @@ class FbModelChoiceField(forms.CharField):
         if not value:
             if self.required:
                 raise forms.ValidationError("This can't be left blank")
-            return
+            return [] if self.is_multiple else None
         try:
             pks = [int(v) for v in value.split(',') if v]
             # only is_multiple variants of this should have multiple pks

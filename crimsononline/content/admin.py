@@ -21,7 +21,7 @@ from crimsononline.content.forms import *
 from crimsononline.common.utils.strings import alphanum_only
 from crimsononline.common.forms import \
     FbModelChoiceField, CropField, SearchModelChoiceField, \
-    MaskedValueTextInput, RatingWidget
+    MaskedValueTextInput, RatingWidget, fbmc_search_helper
     
 
 STOP_WORDS = ['a', 'able', 'about', 'across', 'after', 'all', 'almost', 'also', 
@@ -57,14 +57,7 @@ class ContentGroupAdmin(admin.ModelAdmin):
         """
         Returns a text response for FBModelChoice Field
         """
-        if request.method != 'GET':
-            raise Http404
-        q_str, limit = request.GET.get('q', ''), request.GET.get('limit', None)
-        excludes = request.GET.get('exclude','').split(',')
-        if excludes:
-            excludes = [int(e) for e in excludes if e]
-        if (len(q_str) < 1) or (not limit):
-            raise Http404
+        q_str, excludes, limit = fbmc_search_helper(request)
         cg = ContentGroup.objects.filter(
             Q(type__contains=q_str) | Q(name__contains=q_str)) \
             .exclude(pk__in=excludes).order_by('-pk')[:limit]
@@ -322,14 +315,7 @@ class ContributorAdmin(admin.ModelAdmin):
         return urls
     
     def get_contributors(self, request):
-        if request.method != 'GET':
-            raise Http404
-        q_str, limit = request.GET.get('q', ''), request.GET.get('limit', None)
-        excludes = request.GET.get('exclude','').split(',')
-        if excludes:
-            excludes = [int(e) for e in excludes if e]
-        if (len(q_str) < 1) or (not limit):
-            raise Http404
+        q_str, excludes, limit = fbmc_search_helper(request)
         c = Contributor.objects.filter(
             Q(first_name__contains=q_str) | Q(last_name__contains=q_str),
             is_active=True).exclude(pk__in=excludes)[:limit]
@@ -674,6 +660,10 @@ class ReviewAdmin(admin.ModelAdmin):
     radio_fields = {"rating": admin.HORIZONTAL}
 
 admin.site.register(Review, ReviewAdmin)
+
+
+admin.site.register(Score)
+
 
 class MarkerInline(admin.TabularInline):
     model = Marker
