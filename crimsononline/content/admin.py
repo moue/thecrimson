@@ -86,7 +86,8 @@ class ContentGenericModelForm(ModelForm):
     issue = IssuePickerField(label='Issue Date', required=True)
     slug = forms.SlugField(
         help_text="This is the text that goes in the URL.  Only letters," \
-        "numbers, _, and - are allowed"
+        "numbers, _, and - are allowed",
+        widget=AutoGenSlugWidget(attrs={'size': '40'})
     )
     section = forms.ModelChoiceField(Section.all(), required=True)
     priority = forms.IntegerField(required=False, initial=0,
@@ -690,7 +691,7 @@ class MapAdmin(ContentGenericAdmin):
     
     fieldsets = (
         ('Map Setup', {
-            'fields': ('title', 'caption','map_preview'),
+            'fields': ('title', 'caption', 'map_preview'),
         }),
         ('Details', {
             'classes': ('frozen','collapse'),

@@ -15,10 +15,21 @@ from crimsononline.content.models import Image, Issue, ContentGeneric
 from crimsononline.common.utils.misc import static_content
 
 class AutoGenSlugWidget(forms.widgets.TextInput):
+    """
+    A slug widget that doesn't allow you to change pre-existing slugs.  
+    Also automatically generates slugs based on some text field.
+    @url => the url which responds with generated slug
+    @date_field => css selector to gather issue date (sent with XHR)
+    @text_field => css selector to gather text (sent with XHR)
+    
+    If you don't include a URL, then the autogeneration features just won't
+    show up.
+    """
+    # todo: move the js out of the template and into class Media
     def __init__(self, *args, **kwargs):
-        self.url = kwargs.pop('url')
-        self.date_field = kwargs.pop('date_field')
-        self.text_field = kwargs.pop('text_field')
+        self.url = kwargs.pop('url', None)
+        self.date_field = kwargs.pop('date_field', None)
+        self.text_field = kwargs.pop('text_field', None)
         self.a, self.kw = args, kwargs
         super(AutoGenSlugWidget, self).__init__(*args, **kwargs)
     
@@ -34,6 +45,12 @@ class AutoGenSlugWidget(forms.widgets.TextInput):
     
 
 class MapBuilderWidget(forms.widgets.HiddenInput):
+    
+    class Media:
+        js = (static_content('scripts/jquery.js'),
+            static_content('scripts/jquery-ui-resizable.js'),
+        )
+    
     def render(self, name, value, attrs=None):
         return render_to_string("forms/map_builder_widget.html", locals())
     

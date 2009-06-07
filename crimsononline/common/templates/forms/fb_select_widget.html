@@ -8,14 +8,14 @@
             <img class="p" src="{% static_url "images/delete.gif" %}"/>
         </li>
     {% endfor %}
-    <li><input type="text" class="acfb-input" id={{attrs.id}}_input /></li>
+    <li><input type="text" class="acfb-input" id="{{attrs.id}}_input" /></li>
 </ul>
 {{hidden}}
 <script type="text/javascript">
     var acfb_{{attrs.id}};
     $(document).ready(function(){
         acfb_{{attrs.id}} = 
-            $("#acfb_holder_{{attrs.id}}").autoCompletefb({
+            jQuery("#acfb_holder_{{attrs.id}}").autoCompletefb({
                 urlLookup: "{{url|escapejs}}",
                 multipleInput: {{is_multiple}},
                 no_duplicates: {{no_dupes}}

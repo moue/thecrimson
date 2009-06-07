@@ -1,22 +1,24 @@
 {{ input }} 
 {% if value %}
-{{ fakeinput }} Slugs can't be changed, since URLs need to stay the same.
+    {{ fakeinput }} Slugs can't be changed, since URLs need to stay the same.
 {% else %}
-<a href="#" class="button" id="{{attrs.id}}_go">
-    Generate a Slug
-</a>
-    <br/>
-<p class="help_text">Make sure you've filled out all the other fields before you click the button</p>
-<script type="text/javascript" charset="utf-8">
-    $(document).ready(function(){
-        $("#{{attrs.id}}_go").click(function(){
-            var text = $("{{text_field}}").val();
-            var date = $("{{date_field}}").val();
-            $.post('{{url}}', {'text': text, 'date': date}, function(data){
-                $("#{{attrs.id}}").val(data);
-            }, 'text');
-            return false;
+    {% if url %}
+    <a href="#" class="button" id="{{attrs.id}}_go">
+        Generate a Slug
+    </a>
+        <br/>
+    <p class="help_text">Make sure you've filled out all the other fields before you click the button</p>
+    <script type="text/javascript" charset="utf-8">
+        $(document).ready(function(){
+            $("#{{attrs.id}}_go").click(function(){
+                var text = $("{{text_field}}").val();
+                var date = $("{{date_field}}").val();
+                $.post('{{url}}', {'text': text, 'date': date}, function(data){
+                    $("#{{attrs.id}}").val(data);
+                }, 'text');
+                return false;
+            });
         });
-    });
-</script>
+    </script>
+    {% endif %}
 {% endif %}

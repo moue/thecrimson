@@ -11,8 +11,6 @@
     </div>
 </div>
 
-{% static_js "jquery.js" %}
-{% static_js "jquery-ui-resizable.js" %}
 {% static_js "http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAA--Z_bVpXIL9HJpQ50CHbfRRi_j0U6kJrkFvY4-OX2XYmEAa76BS5oixsScFqNPn7f8shoeoOZviFMg" %}
 <script type="text/javascript">
     var gmap;
@@ -66,6 +64,7 @@
                 $('#id_display_mode').val(gmap.getCurrentMapType().getName(false));
 			});
             
+            /*
             $('#map_preview').resizable({
                 'minWidth': 200,
                 'minHeight': 200,
@@ -73,7 +72,7 @@
                     $('#id_width').val($('#map_preview').width());
                     $('#id_height').val($('#map_preview').height());
                     gmap.checkResize();
-                }});
+                }});*/
                 
             for (currentMarker = 0; currentMarker < numMarkers; currentMarker=currentMarker+1) 
             {
