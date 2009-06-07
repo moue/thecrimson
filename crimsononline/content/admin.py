@@ -707,11 +707,14 @@ class MapAdmin(ContentGenericAdmin):
             'fields': ('group',),
             'classes': ('collapse',),
         }))
-
+    
+    class Media:
+        js = (
+            'scripts/jquery.js',
+        )
 
 admin.site.register(Map, MapAdmin)
 admin.site.register(Marker)
-
 
 class HUIDBackend:
     """
