@@ -670,7 +670,7 @@ class MarkerInline(admin.TabularInline):
     extra = 10
     fields = ('popup_text','lat','lng')
 
-class MapForm(ModelForm):
+class MapForm(ContentGenericModelForm):
     map_preview = MapBuilderField(label='Map Preview', required=False)
     
     def __init__(self, *args, **kwargs):
@@ -680,7 +680,7 @@ class MapForm(ModelForm):
         model = Map
     
 
-class MapAdmin(admin.ModelAdmin):
+class MapAdmin(ContentGenericAdmin):
     search_fields = ('title','caption',)
     form = MapForm
     
@@ -696,6 +696,16 @@ class MapAdmin(admin.ModelAdmin):
             'classes': ('frozen','collapse'),
             'fields': ('zoom_level','center_lng','center_lat','display_mode',
                 'width','height',),
+        }),
+        ('Contributors', {
+            'fields': ('contributors',),
+        }),
+        ('Organization', {
+            'fields': ('section', 'issue', 'slug', 'tags', 'priority',),
+        }),
+        ('Grouping', {
+            'fields': ('group',),
+            'classes': ('collapse',),
         }))
 
 
