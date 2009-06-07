@@ -508,7 +508,7 @@ class ArticleForm(ContentGenericModelForm):
         url='/admin/content/contributor/search/', model=Contributor,
         labeler=(lambda obj: str(obj)))
     rel_content = RelatedContentField(label='New content', required=False,
-        admin_site=admin.site, rel_types=[Image, ImageGallery, Article])
+        admin_site=admin.site, rel_types=[Image, ImageGallery, Article, Map])
     
     def clean_teaser(self):
         """Adds a teaser if one does not exist."""

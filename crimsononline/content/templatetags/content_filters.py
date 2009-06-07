@@ -1,7 +1,7 @@
 from django import template
 from django.template import defaultfilters as filter
 from django.utils.safestring import mark_safe
-from crimsononline.content.models import Image, Article, Content, ContentGeneric
+from crimsononline.content.models import Image, Map, Article, Content, ContentGeneric
 from crimsononline.common.templatetags.common import linkify, human_list
 from crimsononline.common.forms import size_spec_to_size
 
@@ -87,3 +87,16 @@ def img_url(img, size_spec):
 def to_thumb_tag(img):
     THUMB_SIZE = 96
     return to_img_tag(img, (THUMB_SIZE, THUMB_SIZE))
+    
+@register.filter
+def to_map_thumb(map, size):
+    """ Turns a map into a static thumbnail 
+    
+    @width, @height => width and height of box
+    """
+    
+    GMaps_key = "ABQIAAAA--Z_bVpXIL9HJpQ50CHbfRRi_j0U6kJrkFvY4-OX2XYmEAa76BS5oixsScFqNPn7f8shoeoOZviFMg"
+    
+    tag = '<img src="http://maps.google.com/staticmap?center=%s,%s&zoom=%s&size=%sx%s&maptype=mobile&key=%s&sensor=false" />' % (map.center_lat, map.center_lng, map.zoom_level, size, size, GMaps_key)
+    return mark_safe(tag)
+    

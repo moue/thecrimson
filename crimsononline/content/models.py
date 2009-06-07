@@ -274,6 +274,7 @@ class Content(models.Model):
         i = self.issue.issue_date
         url_data = [self.content_type().name.replace(' ', '-'), i.year, 
             i.month, i.day, self.slug]
+        print(url_data)
         if self.group:
             url_data = [self.group.type.lower(), 
                 make_url_friendly(self.group.name)] + url_data
