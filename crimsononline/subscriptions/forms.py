@@ -20,4 +20,10 @@ class EmailSubscriptionForm(forms.ModelForm):
         model = Subscription
         fields = ('email', 'sections', 'contributors', 'tags',)
     
-    #def save(self, 
+class EmailConfirmSubscriptionForm(forms.ModelForm):
+    email = forms.EmailField()
+    confirmation_code = forms.CharField(max_length=50)
+    
+    class Meta:
+        model = Subscription
+        fields = ('email','confirmation_code')

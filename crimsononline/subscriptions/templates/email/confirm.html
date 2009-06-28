@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% load common %}
+
+{% block inhead %}
+    {% static_js "jquery.js" %}
+    {{ form.media }}
+{% endblock %}
+
+{% block body %}
+    <div>
+        <h3>You've just been emailed a confirmation code. Enter it in the box below to activate your subscription</h3>
+    </div>
+    <div>
+        <form action="." method="POST">
+            {% for field in form %}
+                <div class="fieldWrapper">
+                    <span class="fieldError">{{ field.errors }}</span>
+                    {{ field.label_tag }}: {{ field }}
+                </div>
+            {% endfor %}
+        <input type="submit" value="submit" />
+        </form>
+    </div>
+    
+{% endblock %}

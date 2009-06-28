@@ -57,8 +57,12 @@ class TagCloudNode(template.Node):
                 .filter(content__issue__issue_date__gt = too_old) \
                 .annotate(content_count=Count('content')) \
                 .order_by('-content_count')
+            # this will only be called if there aren't any issues within the past 140 days
+            if len(tags) == 0:
+                tags = Tag.objects.all() \
+                    .annotate(content_count=Count('content')) \
+                    .order_by('-content_count')
             tags = list(tags[0:self.num])
-        
         # base sizes on relative max, min of counts
         mx, mn = tags[0].content_count, tags[-1].content_count
         step = float(mx - mn) / 4.0
@@ -67,7 +71,6 @@ class TagCloudNode(template.Node):
         
         # sort alphabetically
         tags.sort(lambda x,y: cmp(x.text, y.text))
-        
         return render_to_string('templatetag/tagcloud.html', 
             {'tags': tags, 'levels': levels, 'title': self.title})
 
