@@ -12,3 +12,15 @@ div#masthead div#masthead_center div.label{
 div#masthead div#masthead_center div.topics{
     width:200px;
 }
+
+.ylabel{
+    margin-bottom: 5px;
+}
+
+#top_opinion{
+    margin-bottom: 5px;
+}
+
+#top_opinions{
+    margin-bottom: 10px;
+}

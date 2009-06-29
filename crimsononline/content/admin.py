@@ -254,7 +254,7 @@ class ContributorAdmin(admin.ModelAdmin):
             'fields': (
                 'boards',
                 ('email', 'phone',), 
-                ('board_number', 'class_of',),
+                ('board_number', 'class_of', 'concentration'),
                 'huid',
                 ('profile_text', 'profile_pic'),
             )

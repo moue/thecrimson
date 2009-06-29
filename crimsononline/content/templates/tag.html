@@ -15,7 +15,7 @@
 
 {% block left %}
     <div id="featured_articles" class="bordered">
-        <h2>FEATURED ARTICLES</h2>
+        <h2>Top Related Articles</h2>
         {% for c in featured %}
         <p>
             {{c.content_object|linkify}} 
@@ -45,10 +45,10 @@
 {% endblock %}
 
 {% block right %}
-    {% tag_cloud 15 "RELATED TAGS" tags %}
-    <div class="ad">
-        <span>advertisement</span>
-        <img src="/site_media/images/medium_rectangle.gif" />
-    </div>
-    {% most_read_articles %}
+{% tag_cloud 15 "RELATED TAGS" tags %}
+<div class="ad bordered">
+    <span>advertisement</span>
+    <img src="/site_media/images/medium_rectangle.gif" />
+</div>
+{% most_read_articles %}
 {% endblock %}

@@ -89,7 +89,6 @@ def do_tag_cloud(parser, token):
     else:
         raise template.TemplateSyntaxError, \
             "%r tag requires at least 2 arguments" % tokens[0]
-    
     return TagCloudNode(num_tags, title[1:-1], tags)
 
 register.tag('tag_cloud', do_tag_cloud)

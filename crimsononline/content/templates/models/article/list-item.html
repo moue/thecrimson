@@ -7,6 +7,7 @@
     <img src="{% static_url "images/arrow_small_up.png" %}" alt="article">
     <h3><a href="{{ article.get_absolute_url }}">{{ article.headline }}</a></h3>
     <span class="byline">By {{ article.generic.contributors.all|linkify|human_list}}</span>
+    <div class="dateline">{{ article.issue.issue_date|date:"l, F j, Y" }}</div>
     {% if article.web_only %}    
     <span class="webonly">Web Only</span>
     {% endif %}

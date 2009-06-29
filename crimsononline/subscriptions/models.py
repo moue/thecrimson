@@ -1,8 +1,12 @@
 import hashlib
+
 from random import random
 from datetime import datetime
+from django.conf import settings
 from django.db import models
-from django.core.mail import send_mail
+from django.core.urlresolvers import reverse
+from django.core.mail import EmailMessage
+from django.template.loader import render_to_string
 
 def new_conf_code():
     return hashlib.md5(str(datetime.now()) + str(random())).hexdigest()
@@ -16,10 +20,23 @@ class Subscription(models.Model):
     active = models.BooleanField(default=False)
     
     def send_confirmation(self):
-        "SENDING CONFIRMATION!!!!"
+        domain = settings.URL_BASE
+        path = reverse("crimsononline.subscriptions.views.email_confirm")
+        email_url = u"%s%s" % (domain, path[1:(len(path)-1)])
+        
+        context = {
+            "email_url": email_url,
+            "email_address": self.email,
+            "confirmation_code": self.confirmation_code
+        }
+        
         subject = "Subscription Confirmation for The Harvard Crimson"
-        body = "Thanks for subscribing to The Harvard Crimson. To activate your subscription, please enter the code: '" \
-            + self.confirmation_code + "' on your other tab"
+        body = render_to_string("email/email_body.txt", context)
+        
+        msg = EmailMessage(subject, body, "test@test.com", [self.email])
+        msg.content_subtype = "html"  # Main content is now text/html
+        msg.send()
+        
         #send_mail(subject,body,'from@example.com',[self.email])
     
     def confirm(self, code):

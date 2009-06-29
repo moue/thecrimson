@@ -9,7 +9,7 @@
 
 {% block body %}
     <div>
-        <h3>You've just been emailed a confirmation code. Enter it in the box below to activate your subscription</h3>
+    <p>{% firstof status "You've just been emailed a confirmation code. Enter it in the box below to activate your subscription!" %}</p><br />
     </div>
     <div>
         <form action="." method="POST">

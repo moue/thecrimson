@@ -1,10 +1,12 @@
+#rotator{
+    margin-bottom: 5px;
+}
 div.rotator {
     border-radius: 5px;
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
     background-color: #eeeeee;
     width: 300px;
-	height: 360px;
     padding: 5px;
     overflow: hidden;
 }

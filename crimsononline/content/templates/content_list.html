@@ -2,6 +2,8 @@
 
 {% load content_filters %}
 {% load common %}
+{% load tag_cloud %}
+{% load top_articles %}
 
 {% block inhead %}
     {% static_css "content_list.css" %}
@@ -19,23 +21,46 @@
         {% endblock %}
         {% block content_filters %}
             <div class="filters">
-                <p>FILTER BY:</p>
-                <p>SECTION {% for section, d in sections.items %}
+                
+                <table>
+                <tbody>
+                <tr><td><span class="filter_text">FILTER BY:</span></td></tr>
+                <tr>
+                <td><span class="gray_small">SECTION:</td>
+                <td>
+                {% for section, d in sections.items %}
                     {% if d.selected %}
                         <span class="button"><a href="{{d.url}}">{{section}}</a>
                     {% else %}
                         <span class="inverted button"><a href="{{d.url}}">{{section}}</a>
                     {% endif %}
                     </span>
-                {% endfor %}</p>
-                <p>TYPE {% for type, d in types.items %}
-                    {% if d.selected %}
-                        <span class="button"><a href="{{d.url}}">{{type}}</a>
-                    {% else %}
-                        <span class="inverted button"><a href="{{d.url}}">{{type}}</a>
+                {% endfor %}</span></td></tr>
+                <tr>
+                <form>
+                <td><span class="gray_small">TYPE:</span></td>
+                <td>
+                {% for type, d in types.items %}    
+                <input type="checkbox" onclick="window.location = '{{ d.url }}'" 
+                        {% if d.selected %}checked{% endif %}
+                /><span class="reg_text">{{type}}s</span>
+                {% endfor %}
+                </td></tr>
+                </form>
+                </table>
+                
+                <span class="pagination">
+                    {% if p.has_previous %}
+                        <a href="{{url}}">&laquo; Newest</a>
+                        <a href="{{url}}page/{{p.previous_page_number}}/">&lsaquo; Newer</a>
                     {% endif %}
-                    </span>
-                {% endfor %}</p>
+                    <span class="reg_text">{{p.start_index}} - {{p.end_index}} of {{paginator.count}}</span>
+                    {% if p.has_next %}
+                        <a href="{{url}}page/{{p.next_page_number}}/">Older &rsaquo;</a>
+                        <a href="{{url}}page/{{paginator.num_pages}}/">Oldest &raquo;</a>
+                    {% endif %}
+                </span>
+                <div >&nbsp;</div>
             </div>
         {% endblock %}
         {% block content_list %}
@@ -44,23 +69,18 @@
                 {{ c|render:"list-item"}}
             {% endfor %}
             </ul>
-            <span class="pagination">
-                {% if p.has_previous %}
-                    <a href="{{url}}">&laquo; Newest</a>
-                    <a href="{{url}}page/{{p.previous_page_number}}/">&lsaquo; Newer</a>
-                {% endif %}
-                {{p.start_index}} - {{p.end_index}} of {{paginator.count}}
-                {% if p.has_next %}
-                    <a href="{{url}}page/{{p.next_page_number}}/">Older &rsaquo;</a>
-                    <a href="{{url}}page/{{paginator.num_pages}}/">Oldest &raquo;</a>
-                {% endif %}
-            </span>
         {% endblock %}
         {% block after_content %}
         {% endblock %}
     </div>
     <div class="column_right">
         {% block right %}
+        {% tag_cloud 15 "RELATED TAGS" tags %}
+        <div class="ad bordered">
+            <span>advertisement</span>
+            <img src="/site_media/images/medium_rectangle.gif" />
+        </div>
+        {% most_read_articles %}
         {% endblock %}
     </div>
 	<div style="clear:both"></div>

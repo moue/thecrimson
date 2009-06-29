@@ -55,37 +55,34 @@
 {% endblock %}
 
 {% block righttopcolumn %}
-    <div id="opinions_ad" class="content_column">
-        <div id="past_issue" class="bordered">
-		<h2>View Past Issues</h2>
-        {{ past_issues }}<span id="past_issues_button">GO!</span>
-		</div>
-		<div id="top_opinion" class="article_previews">
-            {% contentmodule index.opinion %}
-            {{ "Opinion"|yuhkilabel }}
-            <ul>
-                <li>
-                {{ opeds|first|render:"preview"}}
-                </li>
-            </ul>
-        </div>
-        <span class="clear"></span>
-        <div id="top_opinions" class="article_headlines">
-            <ul>
-            {% for oped in opeds|notfirst %}
-                <li>
-                    <h3><a href="{{ oped.get_absolute_url }}">{{ oped.headline }}</a></h3>
-                    <p class="byline">By {{ oped.contributors.all|linkify|human_list }}</p>
-                </li>
-            {% endfor %}
-            </ul>
-            {% endcontentmodule %}
-        </div>
-        <span class="clear"></span>
-        <div id="front_ad" class="ad">
-            <span>Advertisement</span>
-            <img src="/site_media/images/medium_rectangle.gif" alt="ad" />
-        </div>
+    <div id="past_issue" class="bordered">
+	<h2>View Past Issues</h2>
+    {{ past_issues }}<span id="past_issues_button">GO!</span>
+	</div>
+    {{ "Opinion"|yuhkilabel }}
+	<div id="top_opinion" class="article_previews">
+        {% contentmodule index.opinion %}
+        <ul>
+            <li>
+            {{ opeds|first|render:"preview"}}
+            </li>
+        </ul>
+    <span class="clear" />
+    </div>
+    <div id="top_opinions" class="article_headlines">
+        <ul>
+        {% for oped in opeds|notfirst %}
+            <li>
+                <h3><a href="{{ oped.get_absolute_url }}">{{ oped.headline }}</a></h3>
+                <p class="byline">By {{ oped.contributors.all|linkify|human_list }}</p>
+            </li>
+        {% endfor %}
+        </ul>
+        {% endcontentmodule %}
+    </div>
+    <div id="front_ad" class="ad bordered">
+        <span>Advertisement</span>
+        <img src="/site_media/images/medium_rectangle.gif" alt="ad" />
     </div>
 {% endblock %}
 

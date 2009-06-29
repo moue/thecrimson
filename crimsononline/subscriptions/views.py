@@ -7,14 +7,17 @@ from crimsononline.subscriptions.models import Subscription
 from crimsononline.common.forms import fbmc_search_helper
 
 def email_confirm(request):
-    if request.method == 'POST' or \
-        (request.method == 'GET' and request.GET.get('')):
+    if request.method == 'POST':
         f = EmailConfirmSubscriptionForm(request.POST)
         if f.is_valid():
-            s = Subscription.objects.filter(confirmation_code = request.POST.get('confirmation_code'))[0]
-            if s.confirm(request.POST.get('confirmation_code')):
-                render_to_response('email/success.html')
+            s = Subscription.objects.filter(email = request.POST.get('email'))[0]
             
+            if s.confirm(request.POST.get('confirmation_code')):
+                return render_to_response('email/confirm.html', {'form': f, \
+                    'status':'Subscription actived successfully!'})
+            else:
+                return render_to_response('email/confirm.html', {'form': f, \
+                    'status':'Activation failed.'})        
     else:
         email_address = request.GET.get('email', None)
         confirmation_code = request.GET.get('confirmation_code', None)

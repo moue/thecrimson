@@ -28,11 +28,11 @@ div.article_previews .teaser {
 }
 
 div.article_headlines ul {
-    list-style: disc outside;
+    list-style-type: none;
 }
 div.article_headlines li {
-    font-size: 14px;
-    margin: 0 0 6px 22px;
+    font-size: 13px;
+    margin: 0 0 6px;
 }
 div.article_headlines h3 {
     font-weight: normal;
@@ -66,9 +66,9 @@ div.article_feature .teaser {
     font-size: 14px;
 }
 
-div.column {
+.column {
     width: 308px;
-	padding: 6px 6px;
+	padding: 0px 6px 6px 6px;
     float: left;
 	overflow:hidden;
 }

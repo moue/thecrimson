@@ -464,6 +464,7 @@ class Contributor(models.Model):
         blank=True, null=True, help_text='Eg: 136')
     boards = models.ManyToManyField(Board, blank=True, null=True)
     class_of = models.IntegerField(blank=True, null=True)
+    concentration = models.CharField(blank = True, null = True, max_length = 50)
     is_active = models.BooleanField(default=True,
         help_text='This should be true for anyone who could possibly still ' \
                     'write for The Crimson, including guest writers.')
@@ -475,7 +476,7 @@ class Contributor(models.Model):
     
     @property
     def profile(self):
-        return self.profile_text or self.profile_pic
+        return self.profile_text or self.profile_pic or self.class_of or self.concentration
     
     def __unicode__(self):
         if self.middle_initial is None or self.middle_initial == '':

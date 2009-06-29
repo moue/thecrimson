@@ -235,7 +235,7 @@ body {
 }
 
 /* tag cloud*/
-div.tag_cloud {
+div.tag_cloud a{
     line-height: 20px;
 }
 div.tag_cloud a{
@@ -267,15 +267,16 @@ div.bordered {
     border-radius: 5px;
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
-    padding: 5px;
-    margin-bottom: 10px;
+    padding: 3px;
+    margin-bottom: 5px;
     overflow: none;
 }
 div.bordered h2 {
-    font-size: 13px;
+    font-size: 10px;
     color: #666;
     margin: 0 0 3px 3px;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: arial;
+    font-weight: bold;
     text-transform: uppercase;
 }
 
@@ -310,8 +311,9 @@ a:hover {
                 "Liberation Sans", Verdana, "Verdana Ref", sans-serif;
 	font-family: Georgia, Palatino Linotype, serif;
     font-size: 10px;
-    color: #666;
+    color: #000;
     line-height: normal;
+    font-weight: bold;
 }
 .byline a{
     font-family: Helvetica, Corbel, "Lucida Grande", "Lucida Sans Unicode", 
@@ -324,6 +326,7 @@ a:hover {
     line-height: normal;
 }
 .dateline {
+    font-size: 12px;
     color: #666;
 }
 .byline a:hover{
@@ -337,32 +340,35 @@ img {
     border: none;
 }
 /* ads */
-div.ad {
-    padding: 6px 4px 0px 4px;
-    border-style: solid;
-    border-width: 1px;
-    border-color: #aaaaaa;
-    position: relative;
-    border-radius: 5px;
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
-}
 
 div#top_leaderboard{
-    width:728px;
+    width:100%;
+    border-width: 1px 0px;
+    border-color: #bbb;
+    border-style: solid;
     margin:0 auto;
+    margin-bottom: 5px;
+    text-align: center;
 }
 
+div#top_leaderboard{}
+
+div.ad{
+    position: relative;
+    padding-top: 5px;
+    margin-top: 6px;
+}
 div.ad span{
     padding: 0px 4px 0px 4px;
-    position: absolute;
     text-transform: uppercase;
     font-size: 10px;
-    left: 30px;
-    top: -8px;
+    position: absolute;
+    left: 50%;
+    margin-left: -45px;
+    top: -9px;
     background-color: white;
-    color: #444444;
-    font-family: sans-serif;
+    color: #666;
+    font-family: arial;
 }
 span.clear {
     display: block;

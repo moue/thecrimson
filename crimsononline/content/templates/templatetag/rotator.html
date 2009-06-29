@@ -4,21 +4,7 @@
 {% static_css "rotator.css" %}
 {% static_js "jquery.js" %}
 {% static_js "jquery.cycle.all.min.js" %}
-<script type="text/javascript">
-$(function(){
-	$('.preview_body').cycle({
-	    fx:     'fade',
-	    speed:  'slow',
-		timeout: 3000,
-	    pager:  '#preview_roll',
-		next: '.nextbutton',
-		prev: '.previousbutton',
-	    pagerAnchorBuilder: function(idx, slide) {
-	        return '<span class="pager_item"><a href="#">' + (idx + 1) + '</a></span>';
-        }
-	});
-});
-</script>
+{% static_js "rotator.js" %}
 <div class="rotator">
     {% if title %}<h2>{{ title }}</h2>{% endif %}
     <ul class="preview_body">
