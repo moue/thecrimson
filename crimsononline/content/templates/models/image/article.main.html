@@ -4,7 +4,7 @@
 {% load common %}
 
 {% block wrapper_classes %}{{image.orientation}}{% endblock %}
-
+{% block wrapper_id %}{{image.orientation}}{% endblock %}
 {% block wrapper_contents %}
     {% comment %}<p class="kicker">{{image.kicker}}</p>{% endcomment %}
     <a href="{{image.get_absolute_url}}">

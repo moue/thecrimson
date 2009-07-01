@@ -124,7 +124,7 @@ def writer(request, pk, f_name, m_name, l_name,
     
     w = get_object_or_404(Contributor, pk=pk)
     # Validate the URL (we don't want /writer/281/Balls_Q_McTitties to be valid)
-    if (w.first_name, w.middle_initial, w.last_name) != (f_name, m_name, l_name):
+    if (w.first_name, w.middle_name, w.last_name) != (f_name, m_name, l_name):
         return HttpResponseRedirect(w.get_absolute_url())
     
     f = filter_helper(w.content.all(), section_str, type_str, 

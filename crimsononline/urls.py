@@ -2,6 +2,7 @@ from os import path
 from django.conf import settings
 from django.conf.urls.defaults import *
 from django.contrib import admin
+from django.conf.urls.defaults import *
 from crimsononline.content.views import *
 from crimsononline.admin_cust.views import login_user
 
@@ -9,7 +10,7 @@ admin.autodiscover()
 
 FILTER_URL_RE = r'(?:sections/(?P<section_str>[A-Za-z,]+)/)?' \
     r'(?:types/(?P<type_str>[A-Za-z,\s]+)/)?' \
-    r'(?:page/(?P<page>\d+)/)?'
+    r'(?:page/(?P<page>\d+)/)?' 
 urlpatterns = patterns('crimsononline.content.views',
     url(r'writer/(?P<pk>\d+)/(?P<f_name>[A-Za-z\s]+)_' \
         r'(?P<m_name>[A-Za-z]?)_(?P<l_name>[A-Za-z\-\']+)/%s$' % FILTER_URL_RE,
@@ -39,7 +40,7 @@ urlpatterns += patterns('',
 
 urlpatterns += patterns('',
     (r'^site_media/(?P<path>.*)$', 'django.views.static.serve', 
-        {'document_root': settings.MEDIA_ROOT}),
+        {'document_root': settings.MEDIA_ROOT}),    
 )
 
 # generic content urls

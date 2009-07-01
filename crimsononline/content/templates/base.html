@@ -7,6 +7,7 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title>The Harvard Crimson | {% block title %}{{ title }}{% endblock %}</title>
+	 <link rel="icon" type="image/vnd.microsoft.icon" href="/site_media/images/favicon.ico" />
 	{% static_css "base.css" %}
 	{% block inhead %}{% endblock %}
 </head>
@@ -64,7 +65,7 @@
 			{% block pre_body %}
             <div id="top_leaderboard" class="ad">
             <span>Advertisement</span>
-            <img src="{% static_url "images/sample_leaderboard.jpg" %}" />
+            <img src="{% static_url "images/sample_leaderboard.jpg" %}" alt="ad" />
             </div>
             {% endblock %}
 			{% block body %}{% endblock %}

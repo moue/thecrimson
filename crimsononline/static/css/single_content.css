@@ -17,16 +17,18 @@ div#pre_content {
 div#articletools {
     display: block;
     float: right;
-    font: Verdana;
     font-size: 12px;
     margin-right: 2px;
     text-transform: uppercase;
 }
 div#articletools a {
-    color: #666;
+    font-family:arial;
+    font-size:10px;
+    font-weight:bold;
+    text-transform:uppercase;
+    color: #888;
 }
 div#articletools a img{
-    color: #666;
     border: 0;
 }
 div#articletools a:hover {

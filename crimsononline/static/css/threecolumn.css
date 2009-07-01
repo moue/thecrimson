@@ -14,10 +14,7 @@ div.article_previews h3 {
     line-height: 0.9;
 }
 div.article_previews .byline, div.article_previews .dateline {
-    font-size: 12px;
-}
-div.article_previews .byline {
-    margin-top: 4px;
+    font-size: 11px;
 }
 div.article_previews .dateline {
     margin-bottom: 2px;

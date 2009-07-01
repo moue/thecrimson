@@ -89,13 +89,11 @@ div.rotator div.carousel #preview_roll span a{
 div.rotator div.carousel #preview_roll span a.activeSlide{
     background-color: #eee;
     color: #333;
-    border: 1px solid #333;
 }
 
 div.rotator div.carousel #preview_roll span a:hover{
     background-color: #fff;
     color: #333;
-    border: 1px solid #333;
 
 }
 

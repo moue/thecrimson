@@ -242,7 +242,7 @@ class ContributorAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {
             'fields': (
-                ('first_name', 'middle_initial', 'last_name'),
+                ('first_name', 'middle_name', 'last_name'),
                 'type',
                 'is_active',
             )
@@ -281,7 +281,7 @@ class ContributorAdmin(admin.ModelAdmin):
                 class_of = 0  
             u.username = ('%s_%s_%s_%d' % (
                 form.cleaned_data['first_name'],
-                form.cleaned_data['middle_initial'],
+                form.cleaned_data['middle_name'],
                 form.cleaned_data['last_name'],
                 class_of
             ))[:30]

@@ -428,7 +428,7 @@ class Board(models.Model):
 def contrib_pic_path(instance, filename):
     ext = splitext(filename)[1]
     name = '%s_%s_%s' % \
-        (instance.first_name, instance.middle_initial, instance.last_name)
+        (instance.first_name, instance.middle_name, instance.last_name)
     return 'photos/contrib_pics/' + name + ext
     
     
@@ -438,7 +438,7 @@ class Contributor(models.Model):
     like a staff writer, a photographer, or a guest writer.
     
     # Create a contributor
-    >>> c = Contributor(first_name='Dan', middle_initial='C',last_name='Carroll')
+    >>> c = Contributor(first_name='Dan', middle_name='C',last_name='Carroll')
     
     # Test the unicode string
     >>> str(c)
@@ -455,7 +455,7 @@ class Contributor(models.Model):
     )
     first_name = models.CharField(blank=False, null=True, max_length=70)
     last_name = models.CharField(blank=False, null=True, max_length=100)
-    middle_initial = models.CharField(blank=True, null=True, max_length=1)
+    middle_name = models.CharField(blank=True, null=True, max_length=70)
     created_on = models.DateField(auto_now_add=True)
     type = models.CharField(blank=True, null=True, max_length=100)
     email = models.EmailField(blank=True, null=True)
@@ -479,10 +479,10 @@ class Contributor(models.Model):
         return self.profile_text or self.profile_pic or self.class_of or self.concentration
     
     def __unicode__(self):
-        if self.middle_initial is None or self.middle_initial == '':
+        if self.middle_name is None or self.middle_name == '':
             m = ''
         else:
-            m = ' ' + self.middle_initial + '.'
+            m = ' ' + self.middle_name
         return '%s%s %s' % (self.first_name, m, self.last_name)
         
     def __setattr__(self, name, value):
@@ -494,7 +494,7 @@ class Contributor(models.Model):
     @permalink
     def get_absolute_url(self):
         return ('content_writer_profile', 
-            [str(self.id), self.first_name, self.middle_initial, self.last_name])
+            [str(self.id), self.first_name, self.middle_name, self.last_name])
 
 
 class Section(models.Model):
