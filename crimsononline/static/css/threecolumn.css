@@ -41,8 +41,6 @@ div.article_headlines .byline {
 
 div.article_feature {
     text-align: center;
-    background-color: #ddd;
-    border: 1px solid #ddd;
     padding: 5px;
     border-radius: 5px;
     -moz-border-radius: 5px;

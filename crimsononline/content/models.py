@@ -913,8 +913,7 @@ class Map(Content):
         ordering = ['-created_on']
     
     def __unicode__(self):
-        return self.title  + ' (' + self.caption + '): ' + str(self.created_on.month) + '/' + str(self.created_on.day) + '/' + str(self.created_on.year)
-    
+        return self.title    
 
 
 class Marker(models.Model):

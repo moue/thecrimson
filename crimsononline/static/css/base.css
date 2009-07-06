@@ -2,16 +2,30 @@
     grey lines:      #BBB
     darker grey:     #666
     red for links:   #BA0600
-    darker red:      #EA0600
+    red hover:      #EA0600
 */
 
 /* wrapper type stuff */
+
+/* COLOR DEFINITIONS */
+
+.gray-bg{
+    background-color: #eee;
+}
+
+.red-text{
+    color: #BA0600;
+}
 
 * {
 	padding:0px;
 	margin:0px;
 	font-family: Georgia, Palatino Linotype, serif;
 }
+
+a{color:#BA0600;}
+a:hover{color:#EA0600;}
+
 div#wrapper {
 	width: 980px;
 	margin: 0px auto 0px auto;
@@ -168,10 +182,6 @@ div#footer .g{
     color: #bbb;
 }
 
-div#footer .r{
-    color: #BA0600;
-}
-
 div#footer div.sep{
     width:100%;
     height:1px;
@@ -275,6 +285,7 @@ div.bordered h2 {
     font-size: 10px;
     color: #666;
     margin: 0 0 3px 3px;
+    padding-bottom: 3px;
     font-family: arial;
     font-weight: bold;
     text-transform: uppercase;
@@ -300,10 +311,6 @@ div.blackground a:hover {
 /* stylings */
 a {
 	text-decoration: none;
-	color: #ba0600;
-}
-a:hover {
-	color: #ea0600;
 }
 .byline{
     font-family: Helvetica, Corbel, "Lucida Grande", "Lucida Sans Unicode", 
@@ -405,12 +412,17 @@ div.ylabel div.edge div.corner{
 div.ylabel div.text{
     padding: 1px 3px;
     height: 14px;
-    margin: -1px 0 0 0;
-    font-family: "Trebuchet MS", "Segoe UI", Candara, "Bitstream Vera Sans", 
-                    "DejaVu Sans", "Bitstream Vera Sans", Verdana, 
-                    "Verdana Ref", sans-serif;
+    margin: 0;
+    color: white;
+    font-family: Helvetica, Arial, sans-serif;
     font-size: 11px;
+    font-weight: bold;
     text-transform: uppercase;
     line-height: normal;
     letter-spacing: 0;
 }
+
+ol{
+    padding-left: 20px;
+}
+

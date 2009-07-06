@@ -5,7 +5,7 @@
     <div class="image_thumb">{{article.main_rel_content|render:"thumb"}}</div>
     {{article.section|yuhkilabel}}
     <img src="{% static_url "images/icons/article.gif" %}" alt="article">
-    <h3><a href="{{ article.get_absolute_url }}">{{ article.headline }}</a></h3>
+    <h3><a href="{{ article.get_absolute_url }}" class="red-text light-red-text-hover">{{ article.headline }}</a></h3>
     <span class="byline">By {{ article.generic.contributors.all|linkify|human_list}}</span>
     <div class="dateline">{{ article.issue.issue_date|date:"l, F j, Y" }}</div>
     {% if article.web_only %}    

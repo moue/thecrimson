@@ -13,7 +13,6 @@
 
 {% block content %}
     <h1>{{ map.title }}</h1>
-    <h2>{{ map.caption }}</h2>
 
     {% static_js "http://maps.google.com/maps?file=api&v=2&key=ABQIAAAA--Z_bVpXIL9HJpQ50CHbfRRi_j0U6kJrkFvY4-OX2XYmEAa76BS5oixsScFqNPn7f8shoeoOZviFMg" %}
     <script type="text/javascript">
@@ -39,6 +38,7 @@
     <div class="timestamp">
         Published: {{ map.issue.issue_date|date:"F d, Y" }}
     </div>
+    <p>{{ map.caption }}</p>
     <div id="tags">
         {% with map.tags.all as a_tags %}
             {% if a_tags %}

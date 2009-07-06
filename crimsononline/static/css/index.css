@@ -24,3 +24,8 @@ div#masthead div#masthead_center div.topics{
 #top_opinions{
     margin-bottom: 10px;
 }
+
+#past_issue select{
+    margin-right: 5px;
+}
+

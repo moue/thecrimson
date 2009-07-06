@@ -40,7 +40,7 @@ div.filters span.button {
 }
 div.filters span.button a {
     color: white;
-    font-family: Frutiger, "Frutiger Linotype", Univers, Calibri, "Gill Sans", "Gill Sans MT", "Myriad Pro", Myriad, "DejaVu Sans Condensed", "Liberation Sans", "Nimbus Sans L", Tahoma, Geneva, "Helvetica Neue", Helvetica, Arial, sans-serif;;
+    font-family: Helvetica, Arial, sans-serif;;
 }
 div.filters span.button a:hover{
     text-decoration: underline;

@@ -15,10 +15,6 @@
     {% static_js "past_issues.js" %}
 {% endblock %}
 {% block masthead_center %}
-    <div class="label">Hot topics >></div>
-    <div class="topics">topic1 &bull; topic2 &bull; topic3 &bull; topic4
-    <br/>topic5 &bull; topic6 &bull; topic7 &bull; topic8
-    </div>
 {% endblock %}
 {% block pre_body %}
 {% endblock %}
@@ -57,7 +53,7 @@
 {% block righttopcolumn %}
     <div id="past_issue" class="bordered">
 	<h2>View Past Issues</h2>
-    {{ past_issues }}<span id="past_issues_button">GO!</span>
+    {{ past_issues }}<button id="past_issues_button">Search</button>
 	</div>
     {{ "Opinion"|yuhkilabel }}
 	<div id="top_opinion" class="article_previews">
@@ -102,7 +98,7 @@
 {% block middlebottomcolumn %}
     {% contentmodule index.fm %}
     {{ "FM"|yuhkilabel }}
-    <div id="top_fm" class="article_feature">
+    <div id="top_fm" class="article_feature gray-bg">
         {{ fms|first|render:"feature" }}
     </div>
     <div id="top_fms" class="article_headlines">
@@ -120,14 +116,14 @@
 {% block rightbottomcolumn %}
     {% contentmodule index.arts %}
     {{ "Arts"|yuhkilabel }}
-    <div id="top_art" class="article_feature">
+    <div id="top_art" class="article_feature gray-bg">
         {{ arts|first|render:"feature" }}
     </div>
     <div id="top_arts" class="article_headlines">
         <ul >
         {% for story in arts|notfirst %}
             <li>
-                <h3><a href="{{ story.get_absolute_url }}">{{ story.headline }}</a></h3>
+                <h3><a href="{{ story.get_absolute_url }}" >{{ story.headline }}</a></h3>
                 <p class="byline">By {{ story.contributors.all|linkify|human_list }}</p>
             </li>
         {% endfor %}

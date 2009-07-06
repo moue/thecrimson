@@ -5,7 +5,6 @@ div.rotator {
     border-radius: 5px;
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
-    background-color: #eeeeee;
     width: 300px;
     padding: 5px;
     overflow: hidden;
@@ -19,11 +18,11 @@ div.rotator h2{
 }
 
 div.rotator ul.preview_body{
-	height:340px;
+	height:360px;
 }
 
 div.rotator ul.preview_body li{
-	height:350px;
+	height:360px;
 	list-style-type: none;
 }
 
@@ -44,7 +43,7 @@ div.rotator ul.preview_body li div.preview_text p.teaser {
 }
 
 div.rotator div.carousel {
-	margin-top: -124px;
+	margin-top: -144px;
 	z-index: 10000;
 	position:absolute;
     width: 300px;
