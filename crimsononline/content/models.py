@@ -913,7 +913,7 @@ class Map(Content):
         ordering = ['-created_on']
     
     def __unicode__(self):
-        return self.title  + ' (' + str(self.center_lat) + ',' + str(self.center_lng) + '): ' + str(self.created_on.month) + '/' + str(self.created_on.day) + '/' + str(self.created_on.year)
+        return self.title  + ' (' + self.caption + '): ' + str(self.created_on.month) + '/' + str(self.created_on.day) + '/' + str(self.created_on.year)
     
 
 
@@ -927,7 +927,7 @@ class Marker(models.Model):
     popup_text = models.CharField(blank=True, max_length = 1000) #text that appears when the user clicks the marker
     
     def __unicode__(self):
-        return self.map.title  + ' (' + str(self.map.center_lat) + ',' + str(self.map.center_lng) + '): ' + self.map.caption + ' (' + str(self.lat) + ',' + str(self.lng) + ')'
+        return str(self.map) + ' (' + str(self.lat) + ',' + str(self.lng) + ')'
     
 
 

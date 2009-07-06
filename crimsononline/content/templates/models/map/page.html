@@ -20,8 +20,12 @@
     gmap = new GMap2(document.getElementById('map_preview'));
     gmap.setCenter(new GLatLng({{ map.center_lat }},{{ map.center_lng }}), {{ map.zoom_level }});
     {% for marker in map.markers.all %}
-        var point = new GLatLng({{ marker.lat }},{{ marker.lng }})
-        gmap.addOverlay(new GMarker(point));
+        var point = new GLatLng({{ marker.lat }},{{ marker.lng }});
+        var marker{{ marker.pk }} = new GMarker(point);
+        gmap.addOverlay(marker{{ marker.pk }}, { title: "{{ map.title }}" });
+        {% if marker.popup_text %}
+            GEvent.addListener(marker{{ marker.pk }}, "click", function(){marker{{ marker.pk }}.openInfoWindow("{{ marker.popup_text }}")});
+        {% endif %}
     {% endfor %}
     gmap.addControl(new GLargeMapControl());
     </script>

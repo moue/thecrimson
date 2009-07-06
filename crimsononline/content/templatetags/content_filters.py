@@ -1,7 +1,7 @@
 from django import template
 from django.template import defaultfilters as filter
 from django.utils.safestring import mark_safe
-from crimsononline.content.models import Image, Map, Article, Content, ContentGeneric
+from crimsononline.content.models import Image, Map, Article, Content, ContentGeneric, Marker
 from crimsononline.common.templatetags.common import linkify, human_list
 from crimsononline.common.forms import size_spec_to_size
 
@@ -90,13 +90,21 @@ def to_thumb_tag(img):
     
 @register.filter
 def to_map_thumb(map, size):
-    """ Turns a map into a static thumbnail 
+    """ Gets the url of a static image for a map
     
     @width, @height => width and height of box
+    
+    TODO: cache this
     """
     
     GMaps_key = "ABQIAAAA--Z_bVpXIL9HJpQ50CHbfRRi_j0U6kJrkFvY4-OX2XYmEAa76BS5oixsScFqNPn7f8shoeoOZviFMg"
+
+    markerstr = ""
+    markers = Marker.objects.filter(map__pk = map.pk)
+    for marker in markers:
+        markerstr = markerstr + str(marker.lat) + "," + str(marker.lng) + "|"
     
-    tag = '<img src="http://maps.google.com/staticmap?center=%s,%s&zoom=%s&size=%sx%s&maptype=mobile&key=%s&sensor=false" />' % (map.center_lat, map.center_lng, map.zoom_level, size, size, GMaps_key)
+    tag = '<img src="http://maps.google.com/staticmap?center=%s,%s&zoom=%s&size=%sx%s&maptype=mobile&key=%s&sensor=false&markers=%s" />' % \
+        (map.center_lat, map.center_lng, map.zoom_level, size, size, GMaps_key, markerstr)
     return mark_safe(tag)
     

@@ -668,7 +668,7 @@ admin.site.register(Score)
 
 class MarkerInline(admin.TabularInline):
     model = Marker
-    extra = 10
+    extra = 3
     fields = ('popup_text','lat','lng')
 
 class MapForm(ContentGenericModelForm):

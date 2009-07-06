@@ -189,7 +189,8 @@ class RelatedContentWidget(forms.widgets.HiddenInput):
             # make sure value isn't '', [], or some other fail
             value = None
         hidden = super(RelatedContentWidget, self).render(name, value, attrs)
-        today, yesterday = datetime.now(), datetime.now() + timedelta(days=-2)
+        # account for closeouts before midnight
+        today, yesterday = datetime.now() + timedelta(days=1), datetime.now() + timedelta(days=-2)
         types = self.c_types
         return render_to_string("forms/related_content_widget.html", locals())
     
