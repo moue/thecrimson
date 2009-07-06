@@ -1,0 +1,7 @@
+{% load content_filters %}
+{% load common %}
+
+<span>Map</span>
+<span>{{ map.title }}</span>
+<span>{{ map|to_map_thumb:"100" }}</span>
+<span>{{ map.caption }}</span>

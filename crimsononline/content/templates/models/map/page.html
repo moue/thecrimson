@@ -1,0 +1,63 @@
+{% extends "models/page.html" %}
+
+{% load content_filters %}
+{% load common %}
+
+{% block title %}
+	{{ map.title }}
+{% endblock %}
+
+{% block css %}
+    {% static_css "map.css" %}
+{% endblock %}
+
+{% block content %}
+    <h1>{{ map.title }}</h1>
+    <h2>{{ map.caption }}</h2>
+
+    {% static_js "http://maps.google.com/maps?file=api&v=2&key=ABQIAAAA--Z_bVpXIL9HJpQ50CHbfRRi_j0U6kJrkFvY4-OX2XYmEAa76BS5oixsScFqNPn7f8shoeoOZviFMg" %}
+    <script type="text/javascript">
+    gmap = new GMap2(document.getElementById('map_preview'));
+    gmap.setCenter(new GLatLng({{ map.center_lat }},{{ map.center_lng }}), {{ map.zoom_level }});
+    {% for marker in map.markers.all %}
+        var point = new GLatLng({{ marker.lat }},{{ marker.lng }})
+        gmap.addOverlay(new GMarker(point));
+    {% endfor %}
+    gmap.addControl(new GLargeMapControl());
+    </script>
+    <div id="map_preview" style="width:100%; height:500px;"></div>
+    {% if map.main_rel_content %}
+        {{ map.main_rel_content|render:"map.main" }}
+    {% endif %}
+    <div class="byline">
+        By {{ map.contributors.all|linkify|human_list }}
+    </div>
+    <div class="timestamp">
+        Published: {{ map.issue.issue_date|date:"F d, Y" }}
+    </div>
+    <div id="tags">
+        {% with map.tags.all as a_tags %}
+            {% if a_tags %}
+                Tags: 
+            {% endif %}
+            {% for tag in a_tags %}
+                <a class="tag" href="{{ tag.get_absolute_url }}">{{ tag.text }}</a>{% ifnotequal forloop.last 1 %}, {% endifnotequal %}
+            {% endfor %}
+        {% endwith %}
+    </div>
+    {% comment %}
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        var disqus_developer = 1;
+    </script>
+    <script type="text/javascript" src="http://disqus.com/forums/crimson-alpha/embed.js"></script>
+    <noscript>
+    <a href="http://crimson-alpha.disqus.com/?url=ref">View the discussion thread.</a>
+    </noscript>
+    <a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+    {% endcomment %}
+{% endblock %}
+
+{% block sidebar %}
+    text in the sidebar
+{% endblock %}
