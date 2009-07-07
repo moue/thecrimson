@@ -196,4 +196,26 @@ var set_related_content = function(id_prefix, types){
         });
         return false;
     });
+
+    // send ajax request for suggesting related content
+    $(p + '_suggest').click(function(){
+    
+        var tags = [];
+        $('#id_tags_to').find("option").each(function(i){
+        tags[i] = $(this).val();
+        });
+        tagstr = ""
+        for(i = 0; i < tags.length; i++){
+            if(tagstr != "")
+                tagstr = tagstr + ","
+            tagstr = tagstr + tags[i]
+        }
+      
+        var url = '/admin/content/article/rel_content/suggest/' + tagstr + '/1/';
+        $.getJSON(url, function(data){
+            process_ajax(url.substr(0, url.length - 2), data);
+        });
+        return false;
+    });
+    
 };

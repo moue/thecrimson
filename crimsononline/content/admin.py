@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta, date
 from re import compile
 from time import strptime
+from itertools import *
 from django import forms
 from django.core.mail import send_mail
 from django.conf import settings
@@ -603,6 +604,8 @@ class ArticleAdmin(ContentGenericAdmin):
                 self.admin_site.admin_view(self.get_rel_content)),
             (r'^rel_content/find/(\d+)/(\d\d/\d\d/\d{4})/(\d\d/\d\d/\d{4})/([\w\-,]*)/(\d+)/$',
                 self.admin_site.admin_view(self.find_rel_content)),
+            (r'^rel_content/suggest/([\w\-,]*)/(\d+)/$',
+                self.admin_site.admin_view(self.suggest_rel_content)),
         ) + urls
         return urls
     
@@ -651,8 +654,54 @@ class ArticleAdmin(ContentGenericAdmin):
         json_dict['prev_page'] = p.previous_page_number() \
             if p.has_previous() else 0
         
+        print json_dict
+       
         return HttpResponse(simplejson.dumps(json_dict))
-    
+        
+    def suggest_rel_content(self, request, tags, page):
+        """
+        returns JSON containing Content objects and pg numbers
+        """
+        
+        # intersection between multiple lists using reduce
+        def intersect(lists):
+            return list(reduce(set.intersection, (set(l) for l in lists)))
+        
+        OBJS_PER_REQ = 3
+        
+        tags = tags.split(",");
+        tagarticles = []
+        newerthan = date.today() + timedelta(days=-30)
+        for tag in tags:
+            tagarticles.append(ContentGeneric.objects.filter(issue__issue_date__gte = newerthan).filter(tags__pk = 21))
+
+        objstemp = []
+        # Iterate through from most to least matches on tags
+        for i in range(len(tagarticles),0,-1):
+            combs = combinations(tagarticles, i)
+            for comb in combs:
+                inter = (intersect(comb))
+                for inte in inter:
+                    if inte not in objstemp:
+                        objstemp.append(inte)
+        
+        objs = []
+        for o in objstemp[:3]:
+            objs.append(o.content_object)
+
+        p = Paginator(objs, OBJS_PER_REQ).page(page)
+
+        json_dict = {}
+        json_dict['objs'] = []
+        for obj in p.object_list:
+            #html = '<li>%s</li>' % obj._render("admin.thumbnail")
+            html = render_to_string('content_thumbnail.html', {'objs': [obj]})
+            json_dict['objs'].append([obj.generic.content_type.pk, obj.pk, html])
+        json_dict['next_page'] = p.next_page_number() if p.has_next() else 0
+        json_dict['prev_page'] = p.previous_page_number() \
+            if p.has_previous() else 0
+        print json_dict
+        return HttpResponse(simplejson.dumps(json_dict))
 
 admin.site.register(Article, ArticleAdmin)
 

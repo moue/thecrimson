@@ -140,23 +140,18 @@ div#masthead div.tools div.search button.submit{
     float:left;
     background-color:#BA0600;
     border:1px solid #fff;
-    font-family: arial, helvetica, sans-serif;
-    font-size:8pt;
     text-decoration:none;
-    font-weight:normal;
+    padding: 0px 4px;
     color:#fff;
     cursor:pointer;
 }
 
-div#masthead div.tools div.search button[type]{
-    padding:0px 5px; /* Firefox */
-    line-height:17px; /* Safari */
+div#masthead div.tools div.search button.submit span{
+    margin-top: -2px;
+    font-family: arial, helvetica, sans-serif;
+    font-weight: bold;
+    font-size:10px;
 }
-/*TODO: figure out what this does*/
-*:first-child+html button[type]{
-    padding:4px 10px 3px 7px; /* IE7 */
-}
-
 
 
 div#main, div#footer, div#nav{
@@ -241,7 +236,7 @@ div#nav ul li:hover a, #nav ul li#nav_cur a{
 
 body {
 	text-align:center;
-	background-color: #ccc;
+	background-color: #ddd;
 }
 
 /* tag cloud*/
