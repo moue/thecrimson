@@ -662,18 +662,24 @@ class ArticleAdmin(ContentGenericAdmin):
         """
         returns JSON containing Content objects and pg numbers
         """
+        OBJS_PER_REQ = 3
         
         # intersection between multiple lists using reduce
         def intersect(lists):
             return list(reduce(set.intersection, (set(l) for l in lists)))
-        
-        OBJS_PER_REQ = 3
+
+            # can't really suggest if they don't give you any tags
+        if tags == "":
+            json_dict = {}
+            json_dict['objs'] = []
+            return HttpResponse(simplejson.dumps(json_dict))
         
         tags = tags.split(",");
         tagarticles = []
-        newerthan = date.today() + timedelta(days=-30)
+        newerthan = date.today() + timedelta(days=-365)
         for tag in tags:
-            tagarticles.append(ContentGeneric.objects.filter(issue__issue_date__gte = newerthan).filter(tags__pk = 21))
+            print "TAG EQUALZ " + tag
+            tagarticles.append(ContentGeneric.objects.filter(issue__issue_date__gte = newerthan).filter(tags__pk = tag))
 
         objstemp = []
         # Iterate through from most to least matches on tags
@@ -686,7 +692,7 @@ class ArticleAdmin(ContentGenericAdmin):
                         objstemp.append(inte)
         
         objs = []
-        for o in objstemp[:3]:
+        for o in objstemp:
             objs.append(o.content_object)
 
         p = Paginator(objs, OBJS_PER_REQ).page(page)
@@ -700,7 +706,6 @@ class ArticleAdmin(ContentGenericAdmin):
         json_dict['next_page'] = p.next_page_number() if p.has_next() else 0
         json_dict['prev_page'] = p.previous_page_number() \
             if p.has_previous() else 0
-        print json_dict
         return HttpResponse(simplejson.dumps(json_dict))
 
 admin.site.register(Article, ArticleAdmin)
