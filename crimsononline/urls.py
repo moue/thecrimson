@@ -5,8 +5,10 @@ from django.contrib import admin
 from django.conf.urls.defaults import *
 from crimsononline.content.views import *
 from crimsononline.admin_cust.views import login_user
+import haystack
 
 admin.autodiscover()
+haystack.autodiscover()
 
 FILTER_URL_RE = r'(?:sections/(?P<section_str>[A-Za-z,]+)/)?' \
     r'(?:types/(?P<type_str>[A-Za-z,\s]+)/)?' \
@@ -21,7 +23,9 @@ urlpatterns = patterns('crimsononline.content.views',
     url(r'^gallery/(\d+)/(\d+)/$',
         'gallery', name='content_imagegallery'),
     url(r'^gallery/get_img/(\d+)/$', 'ajax_get_img'),
-    url(r'^search/', include('crimsononline.search.urls')),
+    #url(r'^search/', include('crimsononline.search.urls')),
+    #url(r'^search/', include('haystack.urls')),
+    url(r'^search/', include('solango.urls')),
     url(r'^map/$', 'bigmap'),
     url(r'^$', 'index', name='content_index'),
     url(r'^issue/(\d+)/(\d+)/(\d+)/$', 'index', name='content_index'),    

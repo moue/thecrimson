@@ -104,6 +104,7 @@ INSTALLED_APPS = (
     'crimsononline.search',
     'crimsononline.common',
     'crimsononline.subscriptions',
+    'solango',
 )
 
 MEDIA_LOC = MEDIA_ROOT
@@ -118,4 +119,15 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'crimsononlinemailer'
 EMAIL_HOST_PASSWORD = 'abomination'
 EMAIL_PORT = 587
-EMAIL_USE_TLS = True    
+EMAIL_USE_TLS = True
+
+HAYSTACK_SEARCH_ENGINE = 'solr'
+HAYSTACK_SOLR_URL = 'http://127.0.0.1:8983/solr/'
+
+SOLR_ROOT = '/Users/sstelmach/Documents/solr/example/'
+SOLR_SCHEMA_PATH = SOLR_ROOT + 'solr/conf/schema.xml'
+SOLR_DATA_DIR = SOLR_ROOT + 'solr/data'
+SEARCH_SORT_PARAMS = {
+    "score desc": "Relevance",
+    "date desc" : "Date" # Added date
+}
