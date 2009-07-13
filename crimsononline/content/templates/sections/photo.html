@@ -14,8 +14,9 @@
     <div id="viewer_main">
         {{ content.0|render:"media_viewer" }}
     </div>
+    
     <div id="viewer_sidebar">
-        <span class="filters">MOST Recent Videos Photos</span>
+        <span class="filters">MOST {{"viewed"|yuhkilabel:"blacktive"}} {{"Recent"|yuhkilabel:"blacktive"}} {{"videos"|yuhkilabel:"black"}} {{"photos"|yuhkilabel:"blacktive"}} </span>
         <div>
         {% include "ajax/media_viewer_page.html" %}
         </div>

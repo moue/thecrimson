@@ -4,9 +4,9 @@
 {% if imagegallery.cover_image %}
 <div class="image_thumb">{{imagegallery.cover_image|to_img_tag:"TINY"}}</div>
 {% endif %}
-<h3>{{ imagegallery|linkify }}</h3>
+<div class="title">{{ imagegallery|linkify }}</div>
 <div class="dateline">
-    <img src="{% static_url "images/printer.gif" %}" alt="image gallery" />
-    {{ imagegallery.issue.issue_date|date:"F j, Y" }}
+    <img src="{% static_url "images/icons/photo.gif" %}" alt="image gallery" />
+    Added: {{ imagegallery.issue.issue_date|date:"F j, Y" }}
     ({{ imagegallery.images.count }} photos)
 </div>

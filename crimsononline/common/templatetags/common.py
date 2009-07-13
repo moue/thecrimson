@@ -22,9 +22,15 @@ def profileml(s):
     return mark_safe(PML_RE.sub(r'<b>\1</b>', s))
 
 @register.filter
-def yuhkilabel(s, inverted=False):
+def yuhkilabel(s, type="red"):
     """
     produces html for a yuhki label (curved, w/ red in background)
+    
+    available types: 
+    "red" = red background, no border
+    "gray" = white background, gray border
+    "black" = media viewer inactive
+    "blacktive" = media viewer active
     """
     return mark_safe(render_to_string('templatetag/yuhkilabel.html', locals()))
 

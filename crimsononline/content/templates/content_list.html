@@ -8,7 +8,7 @@
 {% block inhead %}
     {% static_css "content_list.css" %}
     {% block css %}{% endblock %}
-    {% block js %}{% endblock %}
+    {% block js %}{% static_js "jquery.js" %}{% endblock %}
 {% endblock %}
 
 {% block body %}
@@ -24,21 +24,20 @@
                 
                 <table>
                 <tbody>
-                <tr><td><span class="filter_text">FILTER BY:</span></td></tr>
+                <tr><td><span class="filter_text filter_label">FILTER BY:</span></td></tr>
                 <tr>
-                <td><span class="gray_small">SECTION:</td>
+                <td><span class="filter_label">SECTION:</td>
                 <td>
                 {% for section, d in sections.items %}
                     {% if d.selected %}
-                        <span class="button"><a href="{{d.url}}">{{section}}</a>
+                        <a href="{{d.url}}">{{section|yuhkilabel}}</a>
                     {% else %}
-                        <span class="inverted button"><a href="{{d.url}}">{{section}}</a>
+                        <a href="{{d.url}}">{{section|yuhkilabel:"gray"}}</a>
                     {% endif %}
-                    </span>
                 {% endfor %}</span></td></tr>
                 <tr>
                 <form>
-                <td><span class="gray_small">TYPE:</span></td>
+                <td><span class="filter_label">TYPE:</span></td>
                 <td>
                 {% for type, d in types.items %}    
                 <input type="checkbox" onclick="window.location = '{{ d.url }}'" 

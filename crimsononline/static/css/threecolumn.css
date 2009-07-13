@@ -8,14 +8,12 @@ div.article_previews div.image_thumb {
     margin: 0 6px 1px 0;
 }
 div.article_previews h3 {
-    font-weight: bold;
-    font-size: 17px;
+    font-weight: normal;
+    font-size: 20px;
     display: inline;
-    line-height: 0.9;
+    line-height: 1.1;
 }
-div.article_previews .byline, div.article_previews .dateline {
-    font-size: 11px;
-}
+
 div.article_previews .dateline {
     margin-bottom: 2px;
 }
@@ -25,7 +23,7 @@ div.article_previews .teaser {
 }
 
 div.article_headlines ul {
-    list-style-type: none;
+    list-style-type: circle;
 }
 div.article_headlines li {
     font-size: 13px;
@@ -35,9 +33,7 @@ div.article_headlines h3 {
     font-weight: normal;
     font-size: 1em;
 }
-div.article_headlines .byline {
-    font-size: 12px;
-}
+
 
 div.article_feature {
     text-align: center;

@@ -1,9 +1,5 @@
 {% spaceless %}
-<div class="ylabel_wrapper">
-    <div class="ylabel{% if inverted %} inverted{% endif %}">
-    <div class="edge"><div class="corner"></div></div>
-    <div class="text">{{ s }}</div>
-    <div class="edge"><div class="corner"></div></div>
-    </div><div class="clear"></div>
-</div>
+<span class="thclabel thclabel_{{type}}">
+    {{ s|upper }}
+</span>
 {% endspaceless %}

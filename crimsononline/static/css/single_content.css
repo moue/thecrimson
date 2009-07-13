@@ -14,6 +14,8 @@ div#pre_content {
     float: left;
     margin-bottom: 3px;
 }
+
+/* ARTICLE TOOLS */
 div#articletools {
     display: block;
     float: right;
@@ -55,11 +57,7 @@ h2 {
 	margin: 0px 0px 10px 0px;
 	color: #505050;
 }
-.byline, .timestamp {
-	font-size: 12px;
-	margin: 0px;
-	line-height: 14px;
-}
+
 .timestamp {
     margin: 0px 0px 10px 0px;
 }

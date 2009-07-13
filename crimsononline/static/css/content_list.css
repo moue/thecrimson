@@ -70,7 +70,7 @@ span.pagination a {
 /*              */
 h1, h2{
     font-size: 24px;
-    color: #aa2222;
+    color: #BA0600;
     padding: 0 0 10px;
 }
 .content_list ul h3 {
@@ -122,7 +122,7 @@ h1, h2{
     border-width: 0 0 0 2px;
 }
 
-.filters span{
+.filters .filter_label{
     font-family: arial;
     font-size: 11px;
     color: #888;
@@ -130,7 +130,7 @@ h1, h2{
 }
 
 .filters span.filter_text{
-    color: #a02222;
+    color: #BA0600
 }
 
 .filters span.reg_text{

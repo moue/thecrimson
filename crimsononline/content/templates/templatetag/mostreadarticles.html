@@ -2,10 +2,32 @@
 {% load cache %}
 
 {% static_css "mostread.css" %}
+<script type="text/javascript">
+function mra(){
+    $('#mostreadarticles').show();
+    $('#mra').find('span').addClass("thclabel_red");
+    $('#mra').find('span').removeClass("thclabel_gray");
+    
+    $('#mostcommentedarticles').hide();
+    $('#mca').find('span').addClass("thclabel_gray");
+    $('#mca').find('span').removeClass("thclabel_red");
+}
+
+function mca(){
+    $('#mostreadarticles').hide();
+    $('#mra').find('span').removeClass("thclabel_red");
+    $('#mra').find('span').addClass("thclabel_gray");
+    
+    $('#mostcommentedarticles').show();
+    $('#mca').find('span').removeClass("thclabel_gray");
+    $('#mca').find('span').addClass("thclabel_red");
+}
+
+</script>
 <div id="mostxdarticles" class="bordered">
     <h2> MOST
-        <a onclick="$('#mostreadarticles').show(); $('#mostcommentedarticles').hide();">read</a>
-        <a onclick="$('#mostreadarticles').hide(); $('#mostcommentedarticles').show();">commented</a>
+        <a id="mra" onclick="mra();" style="cursor:pointer;">{{"read"|yuhkilabel:"red"}}</a>
+        <a id="mca" onclick="mca();" style="cursor:pointer;">{{"commented"|yuhkilabel:"gray"}}</a>
     </h2>
     {% cache 500 mostreadarticles %}
     <div id="mostreadarticles">

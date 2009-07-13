@@ -8,18 +8,19 @@
 <div class="media_info">
     <div class="media_details">
         <div class="right">
-            <p class="byline">
-                CRIMSON/ {{ imagegallery.cover_image.contributors.all|linkify|human_list }}
-            </p>
-            <p class="buyline">Buy this photo</p>
-            <p class="tags_heading">Photo Tags</p>
+                <div class="byline">CRIMSON/ {{ imagegallery.cover_image.contributors.all|linkify|human_list }}</div>
+                <div class="buyline"><img src="{% static_url "images/icons/shoppingcart.gif" %}" />Buy</div>
+            <p class="tags_heading">Photo {{"Tags"|yuhkilabel:"black"}}</p>
             <p class="tags">{{ imagegallery.cover_image.tags.all|linkify|human_list}}</p>
         </div>
+        
         <div class="left">
             <h3>{{ imagegallery.cover_image|linkify:imagegallery.cover_image.kicker }}</h3>
             <p>{{ imagegallery.cover_image.caption }}</p>
         </div>
+        <span class="clear" />
     </div>
+
     <div class="gallery_control">
         <span class="arrow" id="gal_left"> <img src="{% static_url "images/left_off.gif" %}"/></span>
         <div class="carousel_frame">
@@ -33,7 +34,12 @@
         </div>
         <span class="arrow" id="gal_right"> <img src="{% static_url "images/right_off.gif" %}"/></span>
     </div>
-    <script type="text/javascript">
+</div>
+
+
+
+
+<script type="text/javascript">
         $(document).ready(function(){
             /* ========= the carousel stuff ============== */
             var num_items = $(".carousel_frame .carousel").children().length - 6;
@@ -77,7 +83,7 @@
                         var img_ht = parseInt(img_url.substring(img_url.indexOf('x') + 1, img_url.indexOf('.')));
                         var mar = (450 - img_ht) / 2;
                         if( mar ){
-                            $(this).children("img").css("margin", mar + "px 0");
+                            $("div.media").children("img").css("margin", mar + "px 0");
                         }
                         $(this).fadeIn('fast');
                         $("#media_viewer div.media_details").fadeOut('fast', function(){
@@ -98,5 +104,4 @@
                 return false;
             });
         });
-    </script>
-</div>
+</script>

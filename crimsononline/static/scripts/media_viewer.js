@@ -46,6 +46,11 @@ $(document).ready(function(){
                 inject_results(html);
             }, 'html');
         }
+        
+        // make active gallery highlight
+        $("#media_viewer #viewer_sidebar").find("li.active").removeClass("active");
+        $(this).parent().parent().addClass("active");
+        
         return false;
     });
 });

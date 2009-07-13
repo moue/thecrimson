@@ -20,7 +20,8 @@
 * {
 	padding:0px;
 	margin:0px;
-	font-family: Georgia, Palatino Linotype, serif;
+    font-family:georgia,"times new roman",times,serif;
+    font-weight:normal;
 }
 
 a{color:#BA0600;}
@@ -84,9 +85,8 @@ div#masthead div.tools div.descriptions{
     margin-right: 20px;
 }
 div#masthead div.tools div.descriptions span {
-    font-size: 12px;
+    font-size: 10px;
     font-family: sans-serif;
-    font-weight: heavy;
 }
 div#masthead div.tools span {
     float: right;
@@ -118,15 +118,9 @@ div#masthead div.tools div.search input.query{
     padding: 0px;
     width:150px;
     height:18px;
-    background-image: url('../images/banner_search_background.png');
     background-repeat: no-repeat;
     font-family: sans-serif;
-    font-size: 0pt;
-}
-
-div#masthead div.tools div.search input.query:focus{
-    background-image: none;
-    font-size:10pt;
+    font-size: 10pt;
 }
 
 div#masthead div.tools div.search div.query{
@@ -308,28 +302,27 @@ a {
 	text-decoration: none;
 }
 .byline{
-    font-family: Helvetica, Corbel, "Lucida Grande", "Lucida Sans Unicode", 
-                "Lucida Sans", "DejaVu Sans", "Bitstream Vera Sans", 
-                "Liberation Sans", Verdana, "Verdana Ref", sans-serif;
-	font-family: Georgia, Palatino Linotype, serif;
     font-size: 10px;
-    color: #000;
+    color: #333;
     line-height: normal;
     font-weight: bold;
 }
 .byline a{
-    font-family: Helvetica, Corbel, "Lucida Grande", "Lucida Sans Unicode", 
-                "Lucida Sans", "DejaVu Sans", "Bitstream Vera Sans", 
-                "Liberation Sans", Verdana, "Verdana Ref", sans-serif;
-	font-family: Georgia, Palatino Linotype, serif;
     text-transform: uppercase;
     text-decoration: underline;
-    color: #000;
+    color: #333;
     line-height: normal;
 }
+
+
 .dateline {
-    font-size: 12px;
     color: #666;
+}
+
+.byline, .dateline,
+.byline a, .dateline a {
+    font-size: 11px;
+    font-family: sans-serif;
 }
 .byline a:hover{
     color: #666;
@@ -381,6 +374,7 @@ span.clear {
 div.ylabel_wrapper {
     display: inline;
 }
+
 div.ylabel_wrapper .clear {
     clear: both;
     height: 0px;
@@ -421,3 +415,53 @@ ol{
     padding-left: 20px;
 }
 
+.thclabel_red{
+    background-color: #ba0600;
+    border: 1px solid #ba0600;
+    color: white;
+}
+
+.thclabel_gray{
+     background-color: #fff;
+    border: 1px solid #bbb;
+    color: #bbb;
+}
+
+.thclabel_black{
+     background-color: #222;
+    border: 1px solid #E7E7E7;
+    color: #E7E7E7;
+}
+
+.thclabel_blacktive{
+     background-color: #E7E7E7;
+    border: 1px solid #222;
+    color: #222222;
+}
+
+span.thclabel {
+font-family: 'Trebuchet MS', Helvetica, sans-serif;
+    font-size: 11px;
+    font-weight:bold;
+
+}
+
+.thclabel {
+    display: inline-block;
+    padding: 0px 2px;
+    margin: 0;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+}
+.thclabel a {
+}
+div.filters span.button a:hover{
+    text-decoration: underline;
+}
+div.filters span.inverted {
+    background-color: white;
+}
+div.filters span.inverted a {
+    color: #aa2222;
+}
