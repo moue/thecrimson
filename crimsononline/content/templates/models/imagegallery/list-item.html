@@ -1,0 +1,22 @@
+{% load common %}
+{% load content_filters %}
+
+<li>
+    <div class="image_thumb">
+    {% for img in imagegallery.images.all|slice:":3" %}
+        {{ img|to_img_tag:"75,75,1,1" }}
+    {% endfor %}
+    </div>
+    <div style="float:right">{{imagegallery.section|yuhkilabel}}</div>
+    
+    <img src="{% static_url "images/icons/photo.gif" %}" alt="article">
+    <h3><a href="{{ imagegallery.get_absolute_url }}" class="red-text light-red-text-hover">{{ article.headline }}</a></h3>
+    <span class="byline">By {{imagegallery.generic.contributors.all|linkify|human_list}}</span>
+    <div class="dateline">{{imagegallery.issue.issue_date|date:"l, F j, Y"}}</div>
+    {% if article.web_only %}    
+    <span class="webonly">Web Only</span>
+    {% endif %}
+    <p class="teaser">{{ imagegallery.long_teaser }}</p>
+    <span class="clear"></span>
+</li>
+
