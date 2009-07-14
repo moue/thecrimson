@@ -98,7 +98,6 @@ def index(request, m=None, d=None, y=None):
     dict['rotate'] = stories.filter(
         rel_content__content_type=Image.content_type()).distinct()[:4]
     stories = stories.exclude(pk__in=[c.pk for c in dict['rotate']])
-    
     dict['past_issues'] = DateSelectWidget().render(name="past_issues", value=[m, d, y])
     dict['nav'] = 'index'
     dict['top_stories'] = stories[:4]
@@ -290,8 +289,15 @@ def section_sports(request):
 
 # IPHONE APP JSON FEEDS
 
-def iphone_news(request):
-    section = Section.cached('news')
+def iphone(request, s = None):
+    if(s == None):
+        raise Http404
+        
+    section = ""
+    try:
+        section = Section.cached(s)
+    except KeyError:
+        raise Http404
     stories = Article.objects.recent.filter(generic__section=section)[:15]
     
     objs = []
@@ -303,7 +309,7 @@ def iphone_news(request):
         curdict['article_text'] = story.text
         curdict['photoURL'] = ""
         if story.main_rel_content:
-            curdict['thumbnailURL']  = story.main_rel_content.display_url((68, 68, 1, 1))
+            curdict['thumbnailURL']  = story.main_rel_content.display_url((69, 69, 1, 1))
             curdict['photoURL']  = story.main_rel_content.display_url((280, 240, 1, 1))
         objs.append(curdict)
         
@@ -312,16 +318,11 @@ def iphone_news(request):
     
     return HttpResponse(io.getvalue(), mimetype='application/json')
     
- # TODO: OTHER SECTIONS   
-    
-    
-    
-    
 def photo(request):
     galleries = ImageGallery.objects.order_by('-created_on')[:10]
     nav, title = 'photo', 'Photo'
     return render_to_response('photo.html', locals())
-    
+
 def gallery(request, currentimg_id, gallery_id):
     currentimg_id = int(currentimg_id)
     gallery_id = int(gallery_id)
@@ -351,14 +352,12 @@ def ajax_get_img(request, pk):
     
     
 # =========== view helpers ============== #
-
 def filter_helper(qs, section_str, type_str, url_base):
     """
     returns a dictionary with elements necessary for the content_list
         filter interface
     """
     # TODO: refactor the fuck out of this
-    
     content = qs
     sects, types = {}, {}
     o_section_str = section_str

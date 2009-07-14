@@ -1,0 +1,1 @@
+Thanks for subscribing to The Harvard Crimson. To activate your subscription, please enter the code: '{{confirmation_code}}' on your other tab

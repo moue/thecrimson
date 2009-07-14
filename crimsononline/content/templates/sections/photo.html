@@ -3,7 +3,7 @@
 {% load common %}
 {% load content_filters %}
 
-{% block css %}{% static_css "photo.css" %}{% endblock %}
+{% block css %}{% static_css "photo.css" %}{% static_css "imagegallery.css" %}{% endblock %}
 {% block js %}
     {% static_js "jquery.js" %}
     {% static_js "media_viewer.js" %}
@@ -21,7 +21,7 @@
         {% include "ajax/media_viewer_page.html" %}
         </div>
     </div>
-    <span class="clear"></span>
+    <span class="clear" />
 </div>
 {% endblock %}
 

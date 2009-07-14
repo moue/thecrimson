@@ -23,7 +23,7 @@ div.article_previews .teaser {
 }
 
 div.article_headlines ul {
-    list-style-type: circle;
+    list-style-type: none;
 }
 div.article_headlines li {
     font-size: 13px;
