@@ -31,3 +31,6 @@ MEDIA_ROOT = path.join(path.split(path.abspath(__file__))[0], 'static')
 # URL that handles the media served from MEDIA_ROOT.
 # Example: "http://media.lawrence.com"
 MEDIA_URL = URL_BASE + 'site_media/'
+
+# If you want search to work with solr, specify the path of your solr installation
+SOLR_ROOT = 'c:\web\solr\'

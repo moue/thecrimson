@@ -1,5 +1,7 @@
 import sys
 import re
+import json
+from StringIO import StringIO
 from datetime import datetime, timedelta, date
 from django.shortcuts import \
     render_to_response, get_object_or_404, get_list_or_404
@@ -15,7 +17,6 @@ from crimsononline.common.utils.paginate import paginate
 from crimsononline.common.utils.strings import strip_commas
 from crimsononline.common.forms import DateSelectWidget
 from django.core.mail import send_mail
-
 
 def get_content(request, ctype, year, month, day, slug, content_group=None):
     """
@@ -287,6 +288,35 @@ def section_sports(request):
     stories = stories.exclude(pk__in=[r.pk for r in rotate])
     return render_to_response('sections/sports.html', locals())
 
+# IPHONE APP JSON FEEDS
+
+def iphone_news(request):
+    section = Section.cached('news')
+    stories = Article.objects.recent.filter(generic__section=section)[:15]
+    
+    objs = []
+    for story in stories:
+        curdict = {}
+        curdict['date_and_time'] = story.generic.issue.issue_date.strftime("%I:%M %p, %B %d, %Y").upper()
+        curdict['headline'] = story.headline
+        curdict['subhead'] = story.subheadline
+        curdict['article_text'] = story.text
+        curdict['photoURL'] = ""
+        if story.main_rel_content:
+            curdict['thumbnailURL']  = story.main_rel_content.display_url((68, 68, 1, 1))
+            curdict['photoURL']  = story.main_rel_content.display_url((280, 240, 1, 1))
+        objs.append(curdict)
+        
+    io = StringIO()
+    json.dump(objs, io)
+    
+    return HttpResponse(io.getvalue(), mimetype='application/json')
+    
+ # TODO: OTHER SECTIONS   
+    
+    
+    
+    
 def photo(request):
     galleries = ImageGallery.objects.order_by('-created_on')[:10]
     nav, title = 'photo', 'Photo'

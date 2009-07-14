@@ -302,12 +302,12 @@ a {
 	text-decoration: none;
 }
 .byline{
-    font-size: 10px;
     color: #333;
     line-height: normal;
     font-weight: bold;
 }
 .byline a{
+    font-weight: bold;
     text-transform: uppercase;
     text-decoration: underline;
     color: #333;
@@ -321,6 +321,7 @@ a {
 
 .byline, .dateline,
 .byline a, .dateline a {
+
     font-size: 11px;
     font-family: sans-serif;
 }

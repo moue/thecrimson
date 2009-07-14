@@ -28,6 +28,7 @@ urlpatterns = patterns('crimsononline.content.views',
     url(r'^issue/(\d+)/(\d+)/(\d+)/$', 'index', name='content_index'),    
     url(r'^subscribe/', include('crimsononline.subscriptions.urls')),
     url(r'^done$', 'subscribed'),
+    url(r'^iphone/', include('crimsononline.content.iphone_urls')),
 )
 
 urlpatterns += patterns('django.views.generic.simple',

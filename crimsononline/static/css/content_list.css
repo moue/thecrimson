@@ -103,9 +103,7 @@ h1, h2{
 .content_list li h3{
 }
 .content_list li span.byline {
-    font-size: 0.75em;
     display: block;
-    margin: 2px 0;
 }
 .teaser {
     font-size: 0.8em;
