@@ -12,7 +12,7 @@ function center_gallery_image(){
 
 $(document).ready(function(){
     // center image upon load
-    center_gallery_image();
+    //center_gallery_image();
 
     /* ========= the carousel stuff ============== */
     var num_items = $(".carousel_frame .carousel").children().length - 6;
@@ -38,17 +38,23 @@ $(document).ready(function(){
     
     $(".carousel_frame .carousel a").click(function(e){
         var url = $(this).attr('href');
-    
+        
         // destroy the old object in the viewer area and add the new item
         var inject_results = function(results){
+            var res = results.split("<!-- split -->");
 
-            $(".media_content").fadeOut('fast', function(){
-                $(this).empty().append($(results));
-                center_gallery_image();
-                $(this).fadeIn('fast');
+            $(".media_content .media").fadeOut('fast', function(){
+                $("media_content .media_info").fadeOut('fast', function(){
+                    /*$(".media_content .media").empty().append(res[0]);
+                    $(".media_content .media").fadeIn('fast');
+
+                    //center_gallery_image();
+                    $(".media_content .media_info").empty().append(res[1]);
+                    
+                    $(".media_content .media_info").fadeIn('fast');*/
+                });
             });
-        }
-                
+        }        
         // look for the object in the cache, fallback on ajax
         if(_photo_cache.hasOwnProperty(url)){
             inject_results(_photo_cache[url]);

@@ -5,9 +5,36 @@
 <div class="header">
     <h1><a href="{{ imagegallery.get_absolute_url }}">{{ imagegallery.title }}</a></h1>
 </div>
-<div class="media_content">
-{{ imagegallery.cover_image|render:"media_viewer_gallery" }}
+<div class="gallery_positioning">
+    <div class="gallery_control_new">
+        <div id="inside">test</div>
+    </div>
 </div>
+<div class="media_content">
+    <div class="media">
+        {{ imagegallery.cover_image.get_absolute_url }}
+    </div>
+     <div class="media_info" />
+<div>
+
+
+
+
+<script type="text/javascript">
+function load_image(url){
+    
+}
+
+$(document).ready(function(){
+    $(".gallery_positioning").hover(function (){
+            $(".gallery_control_new #inside").fadeIn("fast");
+    },function (){
+            $(".gallery_control_new #inside").fadeOut("fast");
+    });
+
+});
+</script>
+
 <div class="gallery_control">
     <span class="arrow" id="gal_left"> <img src="{% static_url "images/left_off.gif" %}"/></span>
     <div class="carousel_frame">
@@ -21,3 +48,4 @@
     </div>
     <span class="arrow" id="gal_right"> <img src="{% static_url "images/right_off.gif" %}"/></span>
 </div>
+
