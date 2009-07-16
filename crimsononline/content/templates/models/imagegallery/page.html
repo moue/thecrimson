@@ -25,16 +25,19 @@
        {{ imagegallery|render:"media_viewer" }}
     </div>
 </div>
-    <div id="tags">
+
+<div id="tags">
         {% with imagegallery.tags.all as a_tags %}
             {% if a_tags %}
                 {{"Tags"|yuhkilabel}} 
-            {% endif %}
+        {% endif %}
             {% for tag in a_tags %}
                 <a class="tag" href="{{ tag.get_absolute_url }}">{{ tag.text }}</a>{% ifnotequal forloop.last 1 %}, {% endifnotequal %}
             {% endfor %}
         {% endwith %}
-    </div>
+</div>
+
+
     {% comment %}
     <div id="disqus_thread"></div>
     <script type="text/javascript">

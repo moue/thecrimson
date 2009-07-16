@@ -7,6 +7,7 @@
 }
 
 #gallery_viewer {
+    float:left;
     margin: 0px;
     padding: 10px;
     width: 600px;
@@ -21,33 +22,27 @@
     text-transform:uppercase;
 }
 
-#media_viewer a{
+#media_viewer a, #gallery_viewer a{
     text-decoration: none;
-}
-
-#media_viewer > div {
-    float: left;
-}
-#media_viewer ul{
-    list-style: none;
 }
 
 #viewer_main {
     width: 602px;
-    margin: 0 12px 0 0;
-    position: relative;
+    margin: 0 0px 0 0;
+    float:left;
 }
 
-#viewer_main .header {
+#viewer_main .viewer_header {
     padding: 0 0 8px;
 }
 
-#viewer_main .header h1 {
+#viewer_main .viewer_header h1 {
     display: inline;
     font-size: 20px;
 }
-#viewer_main .media {
+#viewer_main .viewer_top {
     display: block;
+    position: relative;
     width: 600px;
     height: 450px;
     overflow: hidden;
@@ -56,42 +51,29 @@
     text-align: center;
 }
 
-#viewer_main div.media_info {
+#viewer_main .viewer_info {
     font-size: 13px;
 }
 
-#viewer_main div.media_info .header .right_info{
-    display: block;
-    float: right;
-    font-size: 13px;
-    letter-spacing: -1px;
-}
-#viewer_main div.media_info .left {
+#viewer_main .viewer_info .left {
     float: left;
     width: 370px;
 }
 
-#viewer_main div.media_info .left h3{
+#viewer_main .viewer_info .left h3{
     margin: 4px 1px 10px;
     font-size: 18px;
 }
 
 
 /* NEW ROTATOR */
-.gallery_positioning{
+.gallery_control{
     position: absolute;
-    margin: 1px 0 0 1px;
-    height: 450px;
-    width: 600px;
-}
-
-.gallery_control_new{
-    position: absolute;
-    margin: 450px 0 0;
+    margin-top: 424px;
     z-index: 100;
 }
 
-.gallery_control_new #inside{
+.gallery_control #inside{
    height: 26px;
     width: 600px;
     margin-top: -26px;
@@ -101,22 +83,25 @@
  
 }
 
+.viewer_image{
+    height: 450px;
+    position: relative;
+}
 
-
-#viewer_main div.media_info .gallery_control{
+#viewer_main .viewer_info .gallery_control2{
     bottom: 10px;
     left: 10px;
     width: 370px;
     height: 52px;
     margin: 10px 0 0;
 }
-div#viewer_main div.media_info .gallery_control .arrow{
+#viewer_main .viewer_info .gallery_control2 .arrow{
     width: 15px;
     line-height: 52px;
     display: block;
     float: left;
 }
-div#viewer_main div.media_info .gallery_control .carousel_frame{
+#viewer_main .viewer_info .gallery_control2 .carousel_frame{
     display: block;
     float: left;
     margin: 0 4px;
@@ -125,12 +110,12 @@ div#viewer_main div.media_info .gallery_control .carousel_frame{
     overflow: hidden;
     position: relative;
 }
-div#viewer_main div.media_info .gallery_control .carousel_frame .carousel{
+#viewer_main .viewer_info .gallery_control2 .carousel_frame .carousel{
     height: 54px;
     position: absolute;
     left: 0px;
 }
-div#viewer_main div.media_info .gallery_control .carousel_frame .carousel a {
+#viewer_main div.viewer_info .gallery_control2 .carousel_frame .carousel a {
     display: block;
     float: left;
     border-width: 1px;
@@ -139,15 +124,19 @@ div#viewer_main div.media_info .gallery_control .carousel_frame .carousel a {
     margin: 0 1px;
     height: 50px;
 }
-div#viewer_main div.media_info .gallery_control .carousel_frame .carousel a:hover {
+#viewer_main div.viewer_info .gallery_control2 .carousel_frame .carousel a:hover {
     border-color: #666;
 }
-#viewer_main div.media_info .right {
+
+
+/* INFO ISH */
+
+#viewer_main .viewer_info .right {
     float: right;
     width: 220px;
     margin-left: 14px;
 }
-#viewer_main div.media_info .right .byline {
+#viewer_main .viewer_info .right .byline {
     margin-bottom: 10px;
     float: right;
     text-align: right;

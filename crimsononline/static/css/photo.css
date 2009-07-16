@@ -1,57 +1,67 @@
+div#media_viewer {
+    padding: 10px;
+    width: 938px;
+    height: 704px;
+    position: relative;
+}
+div#media_viewer a{
+    text-decoration: none;
+}
+div#media_viewer ul{
+    list-style: none;
+}
+
 #viewer_sidebar {
+    list-style: none;
     float:right;
-    width: 300px;
+    width: 312px;
     border: 1px solid #666;
     border-radius: 5px;
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
 }
-#viewer_sidebar .filters {
+
+#viewer_sidebar .filters{
     font-family:arial;
     font-size:10px;
     font-weight:bold;
     text-transform:uppercase;
-}
-
-#viewer_sidebar .filters{
     display: block;
     padding: 2px 8px;
     border-bottom: 1px solid #666;
 }
 
-div#media_viewer div#viewer_sidebar li {
+#viewer_sidebar li {
     display: block;
     float: left;
-    width: 284px;
+    width: 296px;
     padding: 5px 8px;
     margin: 0;
     border-bottom: 1px solid #666;
 }
-
-div#media_viewer div#viewer_sidebar li.active {
+#viewer_sidebar li.active {
     background-color: #333333
 }
 
-div#media_viewer div#viewer_sidebar li .image_thumb {
+#viewer_sidebar .image_thumb {
     float: left;
     margin-right: 5px;
 }
-div#media_viewer div#viewer_sidebar li div.title {
+#viewer_sidebar .title {
     font-size: 18px;
     padding-top: 10px;
 }
-div#media_viewer div#viewer_sidebar li .dateline {
+#viewer_sidebar .dateline {
     font-size: 11px;
     color: #777;
 }
-div#media_viewer div#viewer_sidebar .pagination {
+#viewer_sidebar .pagination {
     display: block;
     font-size: 12px;
     text-align: center;
     color: #777777;
     margin-bottom: 20px;
 }
-
-div#viewer_sidebar .pagination a{
+#viewer_sidebar .pagination a{
     color: #777777;
 }

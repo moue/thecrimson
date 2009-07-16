@@ -291,7 +291,6 @@ div.blackground {
 }
 div.blackground a {
     color: #e7e7e7;
-    text-decoration: underline;
 }
 div.blackground a:hover {
     color: #aaa;

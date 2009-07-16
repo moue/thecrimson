@@ -4,11 +4,11 @@ $(document).ready(function(){
     var _page_cache = {};
     
     // pagination buttons
-    $("#media_viewer span.pagination a").live("click", function(e){
+    $(".pagination a").live("click", function(e){
         var page_num = $(this).attr("href").split("#")[1];
         
         var inject_results = function(results){
-            $("#media_viewer #viewer_sidebar > div").fadeOut('fast', function(){
+            $("#viewer_sidebar > div").fadeOut('fast', function(){
                 $(this).empty().append($(results)).fadeIn('fast');
             });
         }
@@ -26,7 +26,7 @@ $(document).ready(function(){
     });
     
     // loading media from the sidebar
-    $("#media_viewer #viewer_sidebar ul a").live("click", function(e){
+    $("#viewer_sidebar ul a").live("click", function(e){
         // where to load the resource from 
         var url = $(this).attr("href");
         
@@ -48,7 +48,7 @@ $(document).ready(function(){
         }
         
         // make active gallery highlight
-        $("#media_viewer #viewer_sidebar").find("li.active").removeClass("active");
+        $("#viewer_sidebar").find("li.active").removeClass("active");
         $(this).parent().parent().addClass("active");
         
         return false;

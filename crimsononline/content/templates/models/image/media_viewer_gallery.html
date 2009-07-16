@@ -2,16 +2,14 @@
 {% load content_filters %}
 {{ image|to_img_tag:"600,450" }}
 <!-- split -->
-<div class="media_info">
-    <div class="right">
-        <div class="byline">CRIMSON/ {{ image.contributors.all|linkify|human_list }}</div>
-        <div class="buyline"><img src="{% static_url "images/icons/shoppingcart.gif" %}" />Buy</div>
-        <p class="tags_heading">Photo {{ "Tags"|yuhkilabel:"black"}}</p>
-        <p class="tags">{{ image.tags.all|linkify|human_list}}</p>
-    </div>
-    <div class="left">
-        <h3>{{ image|linkify:image.kicker }}</h3>
-        <p>{{ image.caption }}</p>
-    </div>
-    <span class="clear" />
+<div class="right">
+    <div class="byline">CRIMSON/ {{ image.contributors.all|linkify|human_list }}</div>
+    <div class="buyline"><img src="{% static_url "images/icons/shoppingcart.gif" %}" />Buy</div>
+    <p class="tags_heading">Photo {{ "Tags"|yuhkilabel:"black"}}</p>
+    <p class="tags">{{ image.tags.all|linkify|human_list}}</p>
 </div>
+<div class="left">
+    <h3>{{ image|linkify:image.kicker }}</h3>
+    <p>{{ image.caption }}</p>
+</div>
+<span class="clear" />
