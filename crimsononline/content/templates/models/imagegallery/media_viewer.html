@@ -7,23 +7,27 @@
 </div>
 
 <div class="viewer_top">
+
     <div class="gallery_control"><div id="inside">
         <span class="arrow" id="gal_left"> <img src="{% static_url "images/left_off.gif" %}"/></span>
         <div class="carousel_frame">
         <div class="carousel">
         {% spaceless %}
         {% for img in imagegallery.images.all %}
-        <a href="{{ img.get_absolute_url }}">{{ img|to_img_tag:"50,50,1,1" }}</a>
+        <a href="{{ img.get_absolute_url }}">&bull;</a>
         {% endfor %}
         {% endspaceless %}
         </div>
         </div>
         <span class="arrow" id="gal_right"> <img src="{% static_url "images/right_off.gif" %}"/></span>
     </div></div>
-    <div class="viewer_image">{{imagegallery.cover_image|to_img_tag:"600,450,1,1"}}</div>
+
+    <div class="viewer_image">{{imagegallery.cover_image|to_img_tag:"600,450"}}</div>
 </div>
+
 <div class="viewer_info">
-<!-- TODO: Don't hardcode this render -->    <div class="right">
+<!-- TODO: Don't hardcode this render -->    
+    <div class="right">
         <div class="byline">CRIMSON/ {{ imagegallery.cover_image.contributors.all|linkify|human_list }}</div>
         <div class="buyline"><img src="{% static_url "images/icons/shoppingcart.gif" %}" />Buy</div>
         <p class="tags_heading">Photo {{ "Tags"|yuhkilabel:"black"}}</p>
@@ -34,11 +38,6 @@
         <p>{{ imagegallery.cover_image.caption }}</p>
     </div>
     <span class="clear" />    
-    
-    
-    
-    
-    
 </div>
 
 <script type="text/javascript">

@@ -1,16 +1,3 @@
-div#media_viewer {
-    padding: 10px;
-    width: 938px;
-    height: 704px;
-    position: relative;
-}
-div#media_viewer a{
-    text-decoration: none;
-}
-div#media_viewer ul{
-    list-style: none;
-}
-
 #viewer_sidebar {
     list-style: none;
     float:right;

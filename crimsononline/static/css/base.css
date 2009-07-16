@@ -140,7 +140,7 @@ div#masthead div.tools div.search button.submit{
     cursor:pointer;
 }
 
-div#masthead div.tools div.search button.submit span{
+#masthead div.tools div.search button.submit span{
     margin-top: -2px;
     font-family: arial, helvetica, sans-serif;
     font-weight: bold;
@@ -148,18 +148,19 @@ div#masthead div.tools div.search button.submit span{
 }
 
 
-div#main, div#footer, div#nav{
+#main, #footer, #nav{
     width: 972px;
     border-width: 0 1px;
     border-style: solid;
     border-color: #bbb;
     margin: 0 3px;
 }
-div#main {
+#main {
     width: 960px;
+    min-height: 900px;
     padding:6px;
 }
-div#footer {
+#footer {
 	text-align: center;
     padding: 0px 6px;
     width: 960px;
@@ -167,23 +168,22 @@ div#footer {
     padding-bottom: 15px;
 }
 
-div#footer .g{
+#footer .g{
     color: #bbb;
 }
-
-div#footer div.sep{
+#footer .sep{
     width:100%;
     height:1px;
     border-top:1px solid #CCCCCC;
     
 }
 
-div#nav {
+#nav {
     width: 972px;
 	height:21px;
 	padding:5px 0px;
 }
-div#nav ul{
+#nav ul{
 	height:21px;
 	border: 1px solid #bbb;
 	border-left:0px;
@@ -192,7 +192,7 @@ div#nav ul{
 	width:100%;
 }
 
-div#nav ul li{
+#nav li{
 	height:21px;
 	display: inline;
 	float:left;
@@ -200,19 +200,19 @@ div#nav ul li{
 	border-width: 0 1px 0 0;
 }
 
-div#nav ul li.spacer{
+#nav li.spacer{
 	width:10px;
 }
 
-div#nav ul li.spacer:hover{
+#nav li.spacer:hover{
     background-color: white;
 }
 
-div#nav ul li:hover, #nav ul li#nav_cur{
+#nav li:hover, #nav ul li#nav_cur{
 	background-color: #BA0600;
 }
 
-div#nav ul li a{
+#nav li a{
 	text-align: center;
 	font-size: 12px;
 	font-family: Arial, Helvetica, "Lucida Grande", "Lucida Sans Unicode", 
@@ -224,7 +224,7 @@ div#nav ul li a{
 	color: #666;
 }
 
-div#nav ul li:hover a, #nav ul li#nav_cur a{
+#nav li:hover a, #nav ul li#nav_cur a{
 	color:white;
 }
 
@@ -234,10 +234,8 @@ body {
 }
 
 /* tag cloud*/
-div.tag_cloud a{
+.tag_cloud a{
     line-height: 20px;
-}
-div.tag_cloud a{
     border-bottom: 1px dotted #ba0600;
     padding-bottom: -5px;
     display: block;
@@ -245,20 +243,11 @@ div.tag_cloud a{
     margin: 0 5px 6px 0;
     white-space: nowrap;
 }
-div.tag_cloud a.largest {
-    font-size: 24px;
-    font-weight: bolder;
-}
-div.tag_cloud a.large {
-	font-size: 21px;
-    font-weight: bold;
-}
-div.tag_cloud a.medium {
-	font-size: 18px;
-}
-div.tag_cloud a.small {
-	font-size: 15px;
-}
+
+.tag_cloud a.largest {font-size: 24px; font-weight: bolder;}
+.tag_cloud a.large{font-size: 21px; font-weight: bold;}
+.tag_cloud a.medium {font-size: 18px;}
+.tag_cloud a.small {font-size: 15px;}
 
 /* bordered */
 div.bordered {
@@ -281,7 +270,7 @@ div.bordered h2 {
 }
 
 /* blackground  */
-div.blackground {
+.blackground {
     color: #e7e7e7;
     background-color: #222;
     border: 1px solid #222;
@@ -289,10 +278,10 @@ div.blackground {
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
 }
-div.blackground a {
+.blackground a {
     color: #e7e7e7;
 }
-div.blackground a:hover {
+.blackground a:hover {
     color: #aaa;
 }
 
@@ -406,7 +395,7 @@ font-family: 'Trebuchet MS', Helvetica, sans-serif;
 
 .thclabel {
     display: inline-block;
-    padding: 1px 3px;
+    padding: 0px 3px;
     margin: 0;
     border-radius: 5px;
     -moz-border-radius: 5px;
