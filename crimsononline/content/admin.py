@@ -552,7 +552,7 @@ class ArticleAdmin(ContentGenericAdmin):
             'fields': ('slug', 'priority', 'web_only', 'tags',),
         }),
         ('Editing', {
-            'fields': ('proofer', 'sne',),
+            'fields': ('proofer', 'sne','pub_status'),
         }),
         ('Associated content', {
             'fields': ('rel_content',),

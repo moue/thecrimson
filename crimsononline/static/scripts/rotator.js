@@ -4,8 +4,8 @@ $(document).ready(function(){
 	    speed:  'slow',
 		timeout: 3000,
 	    pager:  '#preview_roll',
-		next: '.nextbutton',
-		prev: '.previousbutton',
+		//next: '.nextbutton',
+		//prev: '.previousbutton', // not needed?
 	    pagerAnchorBuilder: function(idx, slide) {
 	        return '<span class="pager_item"><a href="#">&bull;</a></span>';
         }
@@ -13,8 +13,10 @@ $(document).ready(function(){
 
     $(".rotator").hover(function (){
             $(".carousel").fadeIn("fast");
+            $('.preview_body').cycle('pause'); 
     },function (){
             $(".carousel").fadeOut("fast");
+            $('.preview_body').cycle('resume'); 
     });
     
 });

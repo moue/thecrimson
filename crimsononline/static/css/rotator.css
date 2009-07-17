@@ -95,7 +95,7 @@ div.carousel #preview_roll {
 div.rotator div.c_items{
     text-align:center;
     margin: 0 auto;
-    width: 128px;
+    width: 96px;
 }
 
 div.rotator div.carousel div.previousbutton{background-image:url('../images/arrows/left_off.png');}

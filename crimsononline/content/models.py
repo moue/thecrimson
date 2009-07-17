@@ -23,7 +23,6 @@ from crimsononline.common.storage import OverwriteStorage
 from crimsononline.common.utils.strings import \
     make_file_friendly, make_url_friendly
 
-
 class ContentGenericManager(models.Manager):
     def type(self, model):
         """takes a model and returns a queryset with all of the 
@@ -64,6 +63,7 @@ class ContentGeneric(models.Model):
     group = models.ForeignKey('ContentGroup', null=True, blank=True, 
         related_name='content')
     
+    
     objects = ContentGenericManager()
     
     class Meta:
@@ -71,6 +71,7 @@ class ContentGeneric(models.Model):
             ('content_type', 'object_id',),
             ('issue', 'slug'),
         )
+
     
     def get_absolute_url(self):
         return self.content_object.get_absolute_url()
@@ -89,7 +90,6 @@ class Content(models.Model):
     
     class Meta:
         abstract = True
-    
     def _get_slug(self):
         return self.generic.slug
     def _set_slug(self, value):
