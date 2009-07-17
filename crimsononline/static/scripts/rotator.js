@@ -1,4 +1,4 @@
-$(function(){
+$(document).ready(function(){
 	$('.preview_body').cycle({
 	    fx:     'fade',
 	    speed:  'slow',
@@ -10,4 +10,11 @@ $(function(){
 	        return '<span class="pager_item"><a href="#">&bull;</a></span>';
         }
 	});
+
+    $(".rotator").hover(function (){
+            $(".carousel").fadeIn("fast");
+    },function (){
+            $(".carousel").fadeOut("fast");
+    });
+    
 });

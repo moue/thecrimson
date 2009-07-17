@@ -1,6 +1,6 @@
 {% load content_filters %}
 
-<ul class="image_gallery_preview" id="preview_{% if images %}gal{% else %}img{% endif %}_{% firstof gal.pk image.pk %}">
+<ul class="gallery_preview" id="preview_{% if images %}gal{% else %}img{% endif %}_{% firstof gal.pk image.pk %}">
     <li>
         {% if images %}
             {{ gal.title|truncatewords:3 }}

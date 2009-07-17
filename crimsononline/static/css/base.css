@@ -290,7 +290,7 @@ a {
 	text-decoration: none;
 }
 .byline{
-    color: #333;
+    color: #000;
     line-height: normal;
     font-weight: bold;
 }
@@ -298,7 +298,7 @@ a {
     font-weight: bold;
     text-transform: uppercase;
     text-decoration: underline;
-    color: #333;
+    color: #000;
     line-height: normal;
 }
 

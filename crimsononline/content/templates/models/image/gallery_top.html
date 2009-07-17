@@ -1,0 +1,3 @@
+{% load common %}
+{% load content_filters %}
+<a href="{{ image.get_absolute_url}}">{{ image|to_img_tag:"600,450" }}</a>

@@ -18,7 +18,7 @@ div.article_previews .dateline {
     margin-bottom: 2px;
 }
 div.article_previews .teaser {
-    font-size: 14px;
+    font-size: 13px;
     clear: left;
 }
 
@@ -29,9 +29,9 @@ div.article_headlines li {
     font-size: 13px;
     margin: 0 0 6px;
 }
-div.article_headlines h3 {
+div.article_headlines h3 a{
     font-weight: normal;
-    font-size: 1em;
+    font-size: 13px;
 }
 
 

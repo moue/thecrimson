@@ -416,7 +416,7 @@ class ImageAdmin(ContentGenericAdmin):
 admin.site.register(Image, ImageAdmin)
 
 
-class ImageGalleryForm(ContentGenericModelForm):
+class GalleryForm(ContentGenericModelForm):
     images = SearchModelChoiceField(
         ajax_url='/admin/content/image/previews_by_date_tag/',
         multiple=True, model=Image, label='', clean_to_objs=True
@@ -430,19 +430,19 @@ class ImageGalleryForm(ContentGenericModelForm):
     )
         
     class Meta:
-        model = ImageGallery
+        model = Gallery
     
     def save(self, *args, **kwargs):
         imgs = self.cleaned_data.pop('images', [])
-        obj = super(ImageGalleryForm, self).save(*args, **kwargs)
+        obj = super(GalleryForm, self).save(*args, **kwargs)
         obj.images.clear()
         for i, img in enumerate(imgs):
-            x = GalleryMembership(order=i, image_gallery=obj, image=img)
+            x = GalleryMembership(order=i, gallery=obj, image=img)
             x.save()
         return obj
     
 
-class ImageGalleryAdmin(ContentGenericAdmin):
+class GalleryAdmin(ContentGenericAdmin):
     fieldsets = (
         (None, {
             'fields': ('title', 'description',),
@@ -461,7 +461,7 @@ class ImageGalleryAdmin(ContentGenericAdmin):
             'classes': ('collapse',),
         }),
     )
-    form = ImageGalleryForm
+    form = GalleryForm
     
     class Media:
         css = {'all': ('css/admin/ImageGallery.css',)}
@@ -469,7 +469,7 @@ class ImageGalleryAdmin(ContentGenericAdmin):
     
 
 
-admin.site.register(ImageGallery, ImageGalleryAdmin)
+admin.site.register(Gallery, GalleryAdmin)
 
 
 class ArticleForm(ContentGenericModelForm):
@@ -510,7 +510,7 @@ class ArticleForm(ContentGenericModelForm):
         url='/admin/content/contributor/search/', model=Contributor,
         labeler=(lambda obj: str(obj)))
     rel_content = RelatedContentField(label='New content', required=False,
-        admin_site=admin.site, rel_types=[Image, ImageGallery, Article, Map])
+        admin_site=admin.site, rel_types=[Image, Gallery, Article, Map])
     
     def clean_teaser(self):
         """Adds a teaser if one does not exist."""

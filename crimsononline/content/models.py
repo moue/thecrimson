@@ -859,9 +859,9 @@ class Image(Content):
     
 
 
-class ImageGallery(Content):
+class Gallery(Content):
     """
-    A collection of Images
+    A collection of displayed content (images, youtube, infographics, etc.)
     """
     
     title = models.CharField(blank=False, null=False, max_length=200)
@@ -884,7 +884,7 @@ class ImageGallery(Content):
 
 
 class GalleryMembership(models.Model):
-    image_gallery = models.ForeignKey(ImageGallery)
+    gallery = models.ForeignKey(Gallery)
     image = models.ForeignKey(Image)
     order = models.IntegerField()
     
@@ -998,7 +998,7 @@ class Article(Content):
     sne = models.ForeignKey(
         Contributor, related_name='sned_article_set',
         limit_choices_to={'is_active': True})
-    image_gallery = models.ForeignKey(ImageGallery, null=True, blank=True)
+    gallery = models.ForeignKey(Gallery, null=True, blank=True)
     is_published = models.BooleanField(default=True, null=False, blank=False)
     web_only = models.BooleanField(default=False, null=False, blank=False)
     

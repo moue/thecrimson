@@ -18,16 +18,12 @@ div.rotator h2{
 }
 
 div.rotator ul.preview_body{
-	height:360px;
+	height:310px;
 }
 
 div.rotator ul.preview_body li{
-	height:360px;
+	height:310px;
 	list-style-type: none;
-}
-
-div.rotator ul.preview_body li img{
-	margin-bottom: 5px;
 }
 
 div.rotator ul.preview_body li div.preview_text h3 {
@@ -37,11 +33,11 @@ div.rotator ul.preview_body li div.preview_text h3 {
 }
 
 div.rotator ul.preview_body li div.preview_text p.teaser {
-    font-size: 14px;
+    font-size: 13px;
 }
 
 div.rotator div.carousel {
-	margin-top: -146px;
+	margin-top: 214px;
 	z-index: 10000;
 	position:absolute;
     width: 300px;

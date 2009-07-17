@@ -24,7 +24,7 @@ class Command(NoArgsCommand):
         content_groups = list(ContentGroup.objects.all())
         
         # unlinks all generics and generates new ones
-        models = [Article, Image, ImageGallery]
+        models = [Article, Image, Gallery]
         
         # make some new articles
         try:
@@ -47,14 +47,14 @@ class Command(NoArgsCommand):
         images = list(Image.objects.all())
         # make some new image galleries
         for i in range(0, 10):
-            ig = ImageGallery(title=hashlib.md5(str(datetime.now())).hexdigest()[:10],
+            ig = Gallery(title=hashlib.md5(str(datetime.now())).hexdigest()[:10],
                 description=hashlib.md5(str(datetime.now())).hexdigest())
             ig.save()
             
             shuffle(images)
             
             for n, img in enumerate(images[:randrange(2,6)]):
-                GalleryMembership.objects.create(image_gallery=ig, image=img, order=n)
+                GalleryMembership.objects.create(gallery=ig, image=img, order=n)
         
         for model in models:
             for a in model.objects.all():

@@ -6,15 +6,9 @@
 {% static_js "jquery.cycle.all.min.js" %}
 {% static_js "rotator.js" %}
 
-
 <div class="rotator gray-bg">
     {% if title %}<h2>{{ title }}</h2>{% endif %}
-    <ul class="preview_body">
-		{% for c in contents %}
-            <li>{{ c|render:"rotator" }}</li>
-        {% endfor %}
-    </ul>
-    <div class="carousel">
+    <div class="carousel" style="display:none">
         <div class="c_items">
             <div class="previousbutton" style="width:14px; height:14px;"></div>
             <div id="preview_roll"></div>
@@ -22,4 +16,9 @@
             <div style="clear:both;"></div>
         </div>
     </div>
+    <ul class="preview_body">
+		{% for c in contents %}
+            <li>{{ c|render:"rotator" }}</li>
+        {% endfor %}
+    </ul>
 </div>

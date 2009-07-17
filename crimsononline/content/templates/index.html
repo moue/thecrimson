@@ -24,9 +24,12 @@
         {{ "Top Stories"|yuhkilabel }}
         <ul>
             {% for story in top_stories %}
+                {% if forloop.last %}
+                {% else %}
             <li>
                 {{story|render:"preview"}}
             </li>
+            {% endif %}
             {% endfor %}
         </ul>
     </div>
@@ -37,6 +40,9 @@
         {% contentmodule index.rotater %}
             {% rotator rotate "main_rotator" %}
         {% endcontentmodule %}
+    </div>
+    <div id="topstories" class="article_previews">
+    <ul><li>{{top_stories.4|render:"preview"}}</li></ul>
     </div>
     <div id="more_news" class="article_headlines">
         {% contentmodule index.morenews %}

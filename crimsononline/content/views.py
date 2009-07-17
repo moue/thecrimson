@@ -100,8 +100,8 @@ def index(request, m=None, d=None, y=None):
     stories = stories.exclude(pk__in=[c.pk for c in dict['rotate']])
     dict['past_issues'] = DateSelectWidget().render(name="past_issues", value=[m, d, y])
     dict['nav'] = 'index'
-    dict['top_stories'] = stories[:4]
-    dict['more_stories'] = stories[4:11]
+    dict['top_stories'] = stories[:5]
+    dict['more_stories'] = stories[4:8]
     dict['opeds'] = top_articles('Opinion', dt)[:4]
     dict['arts'] = top_articles('Arts', dt)[:4]
     dict['sports'] = top_articles('Sports', dt)[:4]
@@ -319,7 +319,7 @@ def iphone(request, s = None):
     return HttpResponse(io.getvalue(), mimetype='application/json')
     
 def photo(request):
-    galleries = ImageGallery.objects.order_by('-created_on')[:10]
+    galleries = Gallery.objects.order_by('-created_on')[:10]
     nav, title = 'photo', 'Photo'
     return render_to_response('photo.html', locals())
 
@@ -327,7 +327,7 @@ def gallery(request, currentimg_id, gallery_id):
     currentimg_id = int(currentimg_id)
     gallery_id = int(gallery_id)
     image = get_object_or_404(Image, pk=currentimg_id)
-    gallery = get_object_or_404(ImageGallery, pk=gallery_id)
+    gallery = get_object_or_404(Gallery, pk=gallery_id)
     return render_to_response('gallery.html', {'currentimg':image, 'gallery':gallery})
 
 def subscribe(request):

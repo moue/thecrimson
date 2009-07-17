@@ -6,11 +6,9 @@
 
 {% if article.main_rel_content %}
     {% block img %}
-        {{ article.main_rel_content|to_img_tag:"300,240,5,4" }}
+        <a href="{{article.get_absolute_url}}">{{ article.main_rel_content|to_img_tag:"300,240,5,4" }}</a>
     {% endblock %}
     {% block text %}
-        <h3>{{article|linkify}}</h3>
-        <p class="byline">By {{article.contributors.all|linkify|human_list}}</p>
         <p class="teaser">{{article.teaser}}</p>
     {% endblock %}
 {% endif %}

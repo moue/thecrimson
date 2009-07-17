@@ -42,20 +42,20 @@ def get_imgs(request, page=None, pk=None):
 
 
 MAX_IMGS_PER_GAL = 5
-def get_img_gallery(request, type, pk):
+def get_gallery(request, type, pk):
     """
     Returns some JSON corresponding to an image gallery
     """
     if type == "img":
         dict = {'image': get_object_or_404(Image, pk=int(pk))}
     else:
-        gal = get_object_or_404(ImageGallery, pk=int(pk))
+        gal = get_object_or_404(Gallery, pk=int(pk))
         dict = {'images': gal.images.all()[:MAX_IMGS_PER_GAL],
                 'gal': gal}
     return render_to_response('image_gal_fragment.html', dict)
 
 # don't think this is used anymore
-def get_img_galleries(request, st_yr, st_mnth, end_yr, 
+def get_galleries(request, st_yr, st_mnth, end_yr, 
                         end_mnth, tags, page=None):
     """
     Returns some JSON corresponding to a list of image galleries and images.
@@ -76,12 +76,12 @@ def get_img_galleries(request, st_yr, st_mnth, end_yr,
     for tag in tags:
         q = q & Q(tags__text=tag)
     # TODO: loading all the objects at once is REALLY inefficient; fix it
-    imgs = list(Image.objects.filter(q)) + list(ImageGallery.objects.filter(q))
+    imgs = list(Image.objects.filter(q)) + list(Gallery.objects.filter(q))
     p = Paginator(imgs, IMG_GALS_PER_REQ).page(page)
     
     galleries = {}
     for obj in p.object_list:
-        if obj.__class__ == ImageGallery:
+        if obj.__class__ == Gallery:
             galleries['gal_%d' % obj.pk] = render_to_string('image_gal_fragment.html', {
                 'images': obj.images.all()[:MAX_IMGS_PER_GAL],
                 'more': max(obj.images.count() - MAX_IMGS_PER_GAL, 0),

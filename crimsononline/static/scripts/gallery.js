@@ -61,6 +61,9 @@ $(document).ready(function(){
                 },'html');
             },'html');
         }
+        else{
+            inject_results(_photo_cache[url], _des_cache[url]);
+        }
         return false;
     });
 });
