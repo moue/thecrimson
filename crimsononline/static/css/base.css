@@ -26,7 +26,7 @@
 
 a{color:#BA0600;}
 a:hover{color:#EA0600;}
-
+/*FF crap*/a:focus{outline-style: none;}
 div#wrapper {
 	width: 980px;
 	margin: 0px auto 0px auto;
@@ -356,7 +356,7 @@ div.ad span{
 }
 span.clear {
     display: block;
-    clear: left;
+    clear: both;
 }
 ol{
     padding-left: 20px;
@@ -382,7 +382,7 @@ ol{
 
 .thclabel_blacktive{
      background-color: #E7E7E7;
-    border: 1px solid #222;
+    border: 1px solid #e7e7e7;
     color: #222222;
 }
 
@@ -397,9 +397,9 @@ font-family: 'Trebuchet MS', Helvetica, sans-serif;
     display: inline-block;
     padding: 0px 3px;
     margin: 0;
-    border-radius: 5px;
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
 }
 .thclabel a {
 }

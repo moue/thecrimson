@@ -2,7 +2,6 @@
     margin: 0px;
     padding: 10px;
     width: 938px;
-    height: 604px;
     position: relative;
 }
 
@@ -11,7 +10,6 @@
     margin: 0px;
     padding: 10px;
     width: 600px;
-    height: 604px;
     position: relative;
 }
 
@@ -54,10 +52,6 @@
 #viewer_main .viewer_info {
     font-size: 13px;
 }
-
-
-
-
 
 /* INFO ISH */
 #viewer_main .media_details{
@@ -131,14 +125,26 @@
     width: 15px;
     display: block;
     float:left;
+    display:none;
 }
  .gallery_control .carousel_frame{
     display: block;
-    margin: 0 4px;
-    float:left;
+    margin: 0 auto;
+    width: 500px;
 }
 
-.gallery_control .carousel_frame .carousel a {
+.carousel_frame ul{
+    margin: 0 auto;
+    text-align:center;
+    
+}
+
+.carousel_frame li{
+    list-style:none;
+    display:inline;
+}
+
+.carousel_frame li a {
     display: inline-block;
     margin: 0;
     width: 20px;
@@ -146,7 +152,9 @@
     line-height: 26px;
     color: #999;
 }
-.gallery_control .carousel_frame .carousel a:hover {
+.gallery_control .carousel_frame a:hover {
     color: white;
 }
+
+
 

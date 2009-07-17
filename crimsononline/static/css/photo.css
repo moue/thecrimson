@@ -21,8 +21,9 @@
 #viewer_sidebar li {
     display: block;
     float: left;
-    width: 296px;
-    padding: 5px 8px;
+    height: 75px;
+    width: 302px;
+    padding: 5px;
     margin: 0;
     border-bottom: 1px solid #666;
 }
@@ -32,7 +33,7 @@
 
 #viewer_sidebar .image_thumb {
     float: left;
-    margin-right: 5px;
+    margin-right: 6px;
 }
 #viewer_sidebar .title {
     font-size: 18px;

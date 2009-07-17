@@ -7,7 +7,7 @@ $(function(){
 		next: '.nextbutton',
 		prev: '.previousbutton',
 	    pagerAnchorBuilder: function(idx, slide) {
-	        return '<span class="pager_item"><a href="#">' + (idx + 1) + '</a></span>';
+	        return '<span class="pager_item"><a href="#">&bull;</a></span>';
         }
 	});
 });

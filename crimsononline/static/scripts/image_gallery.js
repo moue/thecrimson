@@ -15,8 +15,7 @@ $(document).ready(function(){
     center_gallery_image();
 
     /* ========= the carousel stuff ============== */
-    var num_items = $(".carousel_frame .carousel").children().length - 6;
-    $(".carousel_frame .carousel").css("width", (num_items + 6) * 54);
+    var num_items = $(".carousel_frame").children().length - 6;
     var cur_item = 0;
     // returns false if the slide was unsuccessful
     var slide_carousel = function(dir){
@@ -24,8 +23,8 @@ $(document).ready(function(){
             return false;
         }
 
-        var p = parseInt($(".carousel_frame .carousel").css("left"))
-        $(".carousel_frame .carousel").animate({left: p - 54 * dir}, "normal");
+        var p = parseInt($(".carousel_frame").css("left"))
+        $(".carousel_frame").animate({left: p - 54 * dir}, "normal");
         cur_item += dir;
         return true;
     }
@@ -36,7 +35,7 @@ $(document).ready(function(){
     /* ========== changing photos in the gallery ============ */
     var _photo_cache = {};
     
-    $(".carousel_frame .carousel a").click(function(e){
+    $(".carousel_frame a").click(function(e){
         var url = $(this).attr('href');
         
         // destroy the old object in the viewer area and add the new item
