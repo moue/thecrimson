@@ -4,12 +4,12 @@
 {% load common %}
 
 {% block title %}
-	{{ imagegallery.headline }}
+	{{ gallery.headline }}
 {% endblock %}
 
 {% block css %}
-    {% static_css "imagegallery.css" %}
-    {% static_css "imagegallery.css" %}    
+    {% static_css "gallery.css" %}
+    {% static_css "gallery.css" %}    
 {% endblock %}
 {% block js %}
     {% static_js "jquery.js" %}
@@ -22,12 +22,12 @@
 {% block content %}
  <div id="gallery_viewer" class="blackground">
     <div id="viewer_main">
-       {{ imagegallery|render:"media_viewer" }}
+       {{ gallery|render:"media_viewer" }}
     </div>
 </div>
 
 <div id="tags">
-        {% with imagegallery.tags.all as a_tags %}
+        {% with gallery.tags.all as a_tags %}
             {% if a_tags %}
                 {{"Tags"|yuhkilabel}} 
         {% endif %}

@@ -1,12 +1,12 @@
 {% load common %}
 {% load content_filters %}
 
-{% if imagegallery.cover_image %}
-<div class="image_thumb">{{imagegallery.cover_image|to_img_tag:"TINY"}}</div>
+{% if gallery.cover_image %}
+<div class="image_thumb">{{gallery.cover_image|to_img_tag:"TINY"}}</div>
 {% endif %}
-<div class="title">{{ imagegallery|linkify }}</div>
+<div class="title">{{ gallery|linkify }}</div>
 <div class="dateline">
     <img src="{% static_url "images/icons/photo.gif" %}" alt="image gallery" />
-    Added: {{ imagegallery.issue.issue_date|date:"F j, Y" }}
-    ({{ imagegallery.images.count }} photos)
+    Added: {{ gallery.issue.issue_date|date:"F j, Y" }}
+    ({{ gallery.images.count }} photos)
 </div>

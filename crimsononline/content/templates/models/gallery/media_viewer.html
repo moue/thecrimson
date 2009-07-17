@@ -1,9 +1,9 @@
 {% load common %}
 {% load content_filters %}
-{% static_js "image_gallery.js" %}
+{% static_js "gallery.js" %}
 
 <div class="viewer_header">
-    <h1><a href="{{ imagegallery.get_absolute_url }}">{{ imagegallery.title }}</a></h1>
+    <h1><a href="{{ gallery.get_absolute_url }}">{{ gallery.title }}</a></h1>
 </div>
 
 <div class="viewer_top">
@@ -13,7 +13,7 @@
         <div class="carousel_frame">
         {% spaceless %}
         <ul>
-        {% for img in imagegallery.images.all %}
+        {% for img in gallery.images.all %}
             <li><a href="{{ img.get_absolute_url }}">&bull;</a></li>
         {% endfor %}
         {% endspaceless %}
@@ -22,22 +22,12 @@
         <span class="arrow" id="gal_right"> <img src="{% static_url "images/right_off.gif" %}"/></span>
     </div></div>
 
-    <div class="viewer_image">{{imagegallery.cover_image|to_img_tag:"600,450"}}</div>
+    <div class="viewer_image">{{gallery.cover_image|render:"gallery_top"}}
+    </div>
 </div>
 
 <div class="viewer_info">
-<!-- TODO: Don't hardcode this render -->    
-    <div class="right">
-        <div class="byline">CRIMSON/ {{ imagegallery.cover_image.contributors.all|linkify|human_list }}</div>
-        <div class="buyline"><img src="{% static_url "images/icons/shoppingcart.gif" %}" />Buy</div>
-        <p class="tags_heading">Photo {{ "Tags"|yuhkilabel:"black"}}</p>
-        <p class="tags">{{ imagegallery.cover_image.tags.all|linkify|human_list}}</p>
-    </div>
-    <div class="left">
-        <h3>{{ imagegallery.cover_image.kicker }}</h3>
-        <p>{{ imagegallery.cover_image.caption }}</p>
-    </div>
-    <span class="clear" />    
+ {{gallery.cover_image|render:"gallery_bottom"}}
 </div>
 
 <script type="text/javascript">
@@ -45,14 +35,6 @@ function load_image(url){
     
 }
 
-$(document).ready(function(){
-    $(".viewer_top").hover(function (){
-            $(".gallery_control #inside").fadeIn("fast");
-    },function (){
-            $(".gallery_control #inside").fadeOut("fast");
-    });
-
-});
 </script>
 
 

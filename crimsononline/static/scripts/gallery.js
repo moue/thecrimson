@@ -14,6 +14,13 @@ $(document).ready(function(){
     // center image upon load
     center_gallery_image();
 
+    $(".viewer_top").hover(function (){
+            $(".gallery_control #inside").fadeIn("fast");
+    },function (){
+            $(".gallery_control #inside").fadeOut("fast");
+    });
+
+
     /* ========= the carousel stuff ============== */
     var num_items = $(".carousel_frame").children().length - 6;
     var cur_item = 0;

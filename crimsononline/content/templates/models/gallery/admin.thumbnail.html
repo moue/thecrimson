@@ -1,7 +1,7 @@
 {% load content_filters %}
 
-{% for img in imagegallery.images.all|slice:":3" %}
+{% for img in gallery.images.all|slice:":3" %}
     {{ img|to_thumb_tag }}
 {% endfor %}
-<p>{{ imagegallery.title }}</p>
-<p>{{ imagegallery.created_on|date:"m/d/Y" }}</p>
+<p>{{ gallery.title }}</p>
+<p>{{ gallery.created_on|date:"m/d/Y" }}</p>
