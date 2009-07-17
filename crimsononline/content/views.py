@@ -100,7 +100,7 @@ def index(request, m=None, d=None, y=None):
     stories = stories.exclude(pk__in=[c.pk for c in dict['rotate']])
     dict['past_issues'] = DateSelectWidget().render(name="past_issues", value=[m, d, y])
     dict['nav'] = 'index'
-    dict['top_stories'] = stories[:5]
+    dict['top_stories'] = stories[:4]
     dict['more_stories'] = stories[4:9]
     dict['opeds'] = top_articles('Opinion', dt)[:4]
     dict['arts'] = top_articles('Arts', dt)[:4]
