@@ -130,11 +130,14 @@ def writer(request, pk, f_name, m_name, l_name,
     f = filter_helper(w.content.all(), section_str, type_str, 
         w.get_absolute_url())
     
-    d = paginate(f.pop('content'), page, 10)
+    d = paginate(f.pop('content'), page, 5)
     d.update({'writer': w, 'url': REMOVE_P_RE.sub(request.path, '')})
     d.update(f)
     
-    return render_to_response('writer.html', d)
+    t = 'writer.html'
+    if request.GET.has_key('ajax'):
+        t = 'ajax/content_list_page.html'
+    return render_to_response(t, d)
 
 def tag(request, tag, section_str='', type_str='', page=1):
     tag = get_object_or_404(Tag, text=tag.replace('_', ' '))
@@ -198,7 +201,10 @@ def tag(request, tag, section_str='', type_str='', page=1):
         'featured': featured_articles, 'top_contributors': writers,})
     d.update(f)
     
-    return render_to_response('tag.html', d)
+    t = 'tag.html'
+    if request.GET.has_key('ajax'):
+        t = 'ajax/content_list_page.html'
+    return render_to_response(t, d)
 
 
 def section_news(request):

@@ -310,8 +310,8 @@ a {
 .byline, .dateline,
 .byline a, .dateline a {
 
-    font-size: 11px;
-    font-family: sans-serif;
+    font-size: 12px;
+    font-family: serif;
 }
 .byline a:hover{
     color: #666;

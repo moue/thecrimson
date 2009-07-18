@@ -14,12 +14,13 @@ div.article_previews h3 {
     line-height: 1.1;
 }
 
-div.article_previews .dateline {
-    margin-bottom: 2px;
-}
 div.article_previews .teaser {
     font-size: 13px;
     clear: left;
+}
+
+.article_headlines .byline, .article_headlines .byline a{
+    color: #666;
 }
 
 div.article_headlines ul {
