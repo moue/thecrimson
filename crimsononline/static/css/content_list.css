@@ -1,10 +1,10 @@
 .column_left {
-    width: 160px;
+    width: 170px;
     margin: 0px 10px 0px 0px;
     float: left;
 }
 .content_list{
-    width: 460px;
+    width: 450px;
     margin: 0px 10px 0px 0px;
     float: left;
 }
@@ -60,7 +60,7 @@ div.image_thumb {
 
 /* pagination */
 span.pagination {
-    text-align:right;
+    text-align:center;
     width: 100%;
     font-size: .8em;
     display: inline-block;

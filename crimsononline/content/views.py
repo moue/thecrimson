@@ -219,7 +219,6 @@ def section_news(request):
         .annotate(c_count=Count('content')).filter(c_count__gte=3) \
         .annotate(latest=Max('content__issue__issue_date')) \
         .order_by('-latest')[:2]
-    print series
     
     return render_to_response('sections/news.html', locals())
     

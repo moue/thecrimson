@@ -91,7 +91,7 @@ class ContentGenericModelForm(ModelForm):
         widget=AutoGenSlugWidget(attrs={'size': '40'})
     )
     section = forms.ModelChoiceField(Section.all(), required=True)
-    priority = forms.IntegerField(required=False, initial=0,
+    priority = forms.ChoiceField([[i,i] for i in range(1,11)], required=False, initial=0,
         help_text='Higher priority articles are displayed first.' \
         'Priority may be positive or negative.')
     group = FbModelChoiceField(required=False, multiple=False,
@@ -99,6 +99,7 @@ class ContentGenericModelForm(ModelForm):
         labeler=(lambda obj: str(obj)), admin_site=admin.site,
         add_rel=ContentGeneric._meta.get_field('group').rel
     )    
+    rotatable = forms.BooleanField(required = True, label = "Place in rotators?", initial = False)
     
     def __init__(self, *args, **kwargs):
         instance = kwargs.get('instance', None)
@@ -142,6 +143,7 @@ class ContentGenericAdmin(admin.ModelAdmin):
     Parent class for ContentGeneric ModelAdmin classes.
     Doesn't actually work by itself.
     """
+
     def get_urls(self):
         return  patterns('',
             (r'^previews_by_date_tag/$',
@@ -549,7 +551,7 @@ class ArticleAdmin(ContentGenericAdmin):
             'fields': ('issue', 'section', 'page',),
         }),
         ('Web', {
-            'fields': ('slug', 'priority', 'web_only', 'tags',),
+            'fields': ('slug', 'priority', 'rotatable', 'web_only', 'tags',),
         }),
         ('Editing', {
             'fields': ('proofer', 'sne',),
@@ -654,8 +656,6 @@ class ArticleAdmin(ContentGenericAdmin):
         json_dict['prev_page'] = p.previous_page_number() \
             if p.has_previous() else 0
         
-        print json_dict
-       
         return HttpResponse(simplejson.dumps(json_dict))
         
     def suggest_rel_content(self, request, tags, page):
@@ -678,7 +678,6 @@ class ArticleAdmin(ContentGenericAdmin):
         tagarticles = []
         newerthan = date.today() + timedelta(days=-365)
         for tag in tags:
-            print "TAG EQUALZ " + tag
             tagarticles.append(ContentGeneric.objects.filter(issue__issue_date__gte = newerthan).filter(tags__pk = tag))
 
         objstemp = []

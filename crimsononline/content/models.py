@@ -62,7 +62,7 @@ class ContentGeneric(models.Model):
     priority = models.IntegerField(default=0)
     group = models.ForeignKey('ContentGroup', null=True, blank=True, 
         related_name='content')
-    
+    rotatable = models.BooleanField(null = False, default = False)
     
     objects = ContentGenericManager()
     
