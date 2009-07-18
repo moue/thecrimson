@@ -364,8 +364,9 @@ def filter_helper(qs, section_str, type_str, url_base):
         filter interface
     """
     # TODO: refactor the fuck out of this
+    unfilteredcontent = qs
     content = qs
-    sects, types = {}, {}
+    sects, tps = {}, {}
     o_section_str = section_str
     
     # parses the comma delimited section_str
@@ -387,27 +388,37 @@ def filter_helper(qs, section_str, type_str, url_base):
         url = url_base 
         url += ('sections/%s/' % s_str if s_str else '')
         url += ('types/%s/' % type_str if type_str else '')
-        sects[section.name] = {'selected': a, 'url': url} 
+
+        # TODO: cache this shit
+        ct = len(unfilteredcontent.filter(section=section))
+        sects[section.name] = {'selected': a, 'url': url, 'count': ct} 
         
     if type_str:
         type_str = type_str.replace('-', ' ') # convert from url
         type_str = [t.lower() for t in type_str.split(',') if t]
-        content = content.filter(content_type__name__in=type_str)
+
+        types = [t for t in Content.types() if t.name.lower() in type_str]
+        content = content.filter(content_type__in=types)
     else:
         type_str = [t.name.lower() for t in Content.types()]
-    for type in [t.name.lower() for t in Content.types()]:
-        a = type in type_str
+        types = Content.types()
+    for type in Content.types():
+        tname = type.name.lower()
+        a = type in types
         if a:
-            t_str = ','.join([t for t in type_str if t != type])
+            t_str = ','.join([t for t in type_str if t != tname])
         else:
-            t_str = ','.join(type_str + [type])
+            t_str = ','.join(type_str + [tname])
         
         url = url_base
         url += ('sections/%s/' % o_section_str if o_section_str else '')
         url += ('types/%s/' % t_str if t_str else '')
-        types[type.title()] = {'selected': a, 'url': url}
+
+        ct = len(unfilteredcontent.filter(content_type=type))
+
+        tps[tname.title()] = {'selected': a, 'url': url, 'count':ct}
     
-    return {'content': content, 'sections': sects, 'types': types}
+    return {'content': content, 'sections': sects, 'types': tps}
     
 
 def top_articles(section, dt = None):

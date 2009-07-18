@@ -33,7 +33,7 @@
                         <a class="section" href="{{d.url}}">{{section|yuhkilabel}}</a>
                     {% else %}
                         <a class="section"href="{{d.url}}">{{section|yuhkilabel:"gray"}}</a>
-                    {% endif %}
+                    {% endif %}<span class="reg_text">({{d.count}})</span>
                 {% endfor %}</span></td></tr>
                 <tr>
                 <form>
@@ -42,7 +42,7 @@
                 {% for type, d in types.items %}    
                 <input type="checkbox" onclick="window.location = '{{ d.url }}'" 
                         {% if d.selected %}checked{% endif %}
-                /><span class="reg_text">{{type}}s</span>
+                /><span class="reg_text">{{type}}s ({{d.count}})</span>
                 {% endfor %}
                 </td></tr>
                 </form>
