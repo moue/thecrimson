@@ -2,6 +2,7 @@ from datetime import datetime, timedelta, date
 from re import compile
 from time import strptime
 from itertools import *
+import copy
 from django import forms
 from django.core.mail import send_mail
 from django.conf import settings
@@ -539,6 +540,14 @@ class ArticleForm(ContentGenericModelForm):
 
 
 class ArticleAdmin(ContentGenericAdmin):
+    def get_fieldsets(self, request, obj=None):
+        if request.user.is_superuser:
+            print "SUPER"
+            return self.fieldsets_admin
+        else:
+            print "NORMAL"
+            return self.fieldsets
+
     list_display = ('headline', 'section', 'issue',)
     search_fields = ('headline', 'text',)
 
@@ -556,7 +565,7 @@ class ArticleAdmin(ContentGenericAdmin):
             'fields': ('issue', 'section', 'page',),
         }),
         ('Web', {
-            'fields': ('slug', 'priority', 'pub_status','rotatable', 'web_only', 'tags',),
+            'fields': ('slug', 'priority','rotatable', 'web_only', 'tags',),
         }),
         ('Editing', {
             'fields': ('proofer', 'sne',),
@@ -569,6 +578,9 @@ class ArticleAdmin(ContentGenericAdmin):
             'classes': ('collapse',),
         })
     )
+    
+    fieldsets_admin = copy.deepcopy(fieldsets)
+    fieldsets_admin[4][1]['fields'] = ('slug', 'priority', 'pub_status','rotatable', 'web_only', 'tags',)
     form = ArticleForm
     
     class Media:
