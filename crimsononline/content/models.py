@@ -23,7 +23,6 @@ from crimsononline.common.storage import OverwriteStorage
 from crimsononline.common.utils.strings import \
     make_file_friendly, make_url_friendly
 
-PUB_STATUSES = {"Draft":0,"Published":1,"Unpublished":-1}
 
 class ContentGenericManager(models.Manager):
     def type(self, model):
@@ -46,6 +45,12 @@ class ContentGeneric(models.Model):
     Facilitates generic relationships between content.
     Only add attributes on which you would want to do cross content queries.
     """
+    PUB_CHOICES = (
+        (0, 'Draft'),
+        (1, 'Published'),
+        (-1, 'Unpublished'),
+    )
+	
     content_type = models.ForeignKey(ContentType)
     object_id = models.PositiveIntegerField()
     content_object = generic.GenericForeignKey('content_type', 'object_id')
@@ -63,8 +68,9 @@ class ContentGeneric(models.Model):
     priority = models.IntegerField(default=0)
     group = models.ForeignKey('ContentGroup', null=True, blank=True, 
         related_name='content')
-    rotatable = models.BooleanField(null = False, default = False)
-    pub_status = models.IntegerField(null = False, default = PUB_STATUSES["Draft"])
+    rotatable = models.BooleanField(null=False, default=False)
+    pub_status = models.IntegerField(null=False, choices=PUB_CHOICES, 
+        default=0)
     
     objects = ContentGenericManager()
     
@@ -143,6 +149,12 @@ class Content(models.Model):
     def _set_hits(self, value):
         self.generic.hits = value
     hits = property(_get_hits, _set_hits)
+    
+    def _get_pub_status(self):
+        return self.generic.pub_status
+    def _set_pub_status(self, value):
+        self.generic.pub_status = value
+    pub_status = property(_get_pub_status, _set_pub_status)
     
     generic = models.ForeignKey(ContentGeneric, null=True,
         related_name="%(class)s_generic_related")

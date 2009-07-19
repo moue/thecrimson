@@ -1,6 +1,6 @@
 import sys
 import re
-import json
+from django.utils import simplejson
 from StringIO import StringIO
 from datetime import datetime, timedelta, date
 from django.shortcuts import \
@@ -319,7 +319,7 @@ def iphone(request, s = None):
         objs.append(curdict)
         
     io = StringIO()
-    json.dump(objs, io)
+    simplejson.dump(objs, io)
     
     return HttpResponse(io.getvalue(), mimetype='application/json')
     

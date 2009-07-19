@@ -7,6 +7,7 @@ from django.db import models
 from django.core.urlresolvers import reverse
 from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
+from content import models as content
 
 def new_conf_code():
     return hashlib.md5(str(datetime.now()) + str(random())).hexdigest()

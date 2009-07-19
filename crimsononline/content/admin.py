@@ -91,18 +91,18 @@ class ContentGenericModelForm(ModelForm):
         widget=AutoGenSlugWidget(attrs={'size': '40'})
     )
     section = forms.ModelChoiceField(Section.all(), required=True)
-    priority = forms.ChoiceField([[i,i] for i in range(1,11)], required=False, initial=0,
-        help_text='Higher priority articles are displayed first.' \
+    priority = forms.ChoiceField([[i,i] for i in range(1,11)], required=False, 
+        initial=0, help_text='Higher priority articles are displayed first.' \
         'Priority may be positive or negative.')
     group = FbModelChoiceField(required=False, multiple=False,
         url='/admin/content/contentgroup/search/', model=ContentGroup,
         labeler=(lambda obj: str(obj)), admin_site=admin.site,
         add_rel=ContentGeneric._meta.get_field('group').rel
     )    
-    rotatable = forms.BooleanField(required = True, label = "Place in rotators?", initial = False)
-
-    p_choices = [[y, x] for x,y in list(PUB_STATUSES.items())[1:3]] # list for pub_status choices    
-    pub_status = forms.ChoiceField(p_choices,required = True, label = "Published Status")
+    rotatable = forms.BooleanField(required=True, label="Place in rotators?", 
+        initial=False)
+    pub_status = forms.ChoiceField(ContentGeneric.PUB_CHOICES,required=True, 
+        label="Published Status")
     
     def __init__(self, *args, **kwargs):
         instance = kwargs.get('instance', None)
@@ -118,6 +118,7 @@ class ContentGenericModelForm(ModelForm):
                 'priority': instance.priority,
                 'group': None,
                 'slug': instance.slug,
+                'pub_status': instance.pub_status,
             }
             if instance.group:
                 initial['group'] = instance.group.pk
@@ -138,6 +139,7 @@ class ContentGenericModelForm(ModelForm):
         # can't overwrite slugs
         if not obj.slug:
             obj.slug = self.cleaned_data['slug']
+        obj.pub_status = self.cleaned_data['pub_status']
         return obj
     
 class ContentGenericModelForm2(ContentGenericModelForm):
