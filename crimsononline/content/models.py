@@ -23,6 +23,8 @@ from crimsononline.common.storage import OverwriteStorage
 from crimsononline.common.utils.strings import \
     make_file_friendly, make_url_friendly
 
+PUB_STATUSES = {"Draft":0,"Published":1,"Unpublished":-1}
+
 class ContentGenericManager(models.Manager):
     def type(self, model):
         """takes a model and returns a queryset with all of the 
@@ -36,7 +38,6 @@ class ContentGenericManager(models.Manager):
         return self.get_query_set() \
             .exclude(issue__web_publish_date__gt=datetime.now()) \
             .order_by('-issue__issue_date', '-priority')
-
 
 class ContentGeneric(models.Model):
     """
@@ -63,6 +64,7 @@ class ContentGeneric(models.Model):
     group = models.ForeignKey('ContentGroup', null=True, blank=True, 
         related_name='content')
     rotatable = models.BooleanField(null = False, default = False)
+    pub_status = models.IntegerField(null = False, default = PUB_STATUSES["Draft"])
     
     objects = ContentGenericManager()
     
@@ -90,6 +92,10 @@ class Content(models.Model):
     
     class Meta:
         abstract = True
+        permissions = (
+            ('content.can_publish', 
+                'Can publish content',),
+        )
     def _get_slug(self):
         return self.generic.slug
     def _set_slug(self, value):

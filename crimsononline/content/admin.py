@@ -100,6 +100,9 @@ class ContentGenericModelForm(ModelForm):
         add_rel=ContentGeneric._meta.get_field('group').rel
     )    
     rotatable = forms.BooleanField(required = True, label = "Place in rotators?", initial = False)
+
+    p_choices = [[y, x] for x,y in list(PUB_STATUSES.items())[1:3]] # list for pub_status choices    
+    pub_status = forms.ChoiceField(p_choices,required = True, label = "Published Status")
     
     def __init__(self, *args, **kwargs):
         instance = kwargs.get('instance', None)
@@ -137,13 +140,14 @@ class ContentGenericModelForm(ModelForm):
             obj.slug = self.cleaned_data['slug']
         return obj
     
-
+class ContentGenericModelForm2(ContentGenericModelForm):
+    pub_status = forms.ChoiceField([[1,1]],required = True, label = "Published Status")
+    
 class ContentGenericAdmin(admin.ModelAdmin):
     """
     Parent class for ContentGeneric ModelAdmin classes.
     Doesn't actually work by itself.
-    """
-
+    """            
     def get_urls(self):
         return  patterns('',
             (r'^previews_by_date_tag/$',
@@ -473,7 +477,6 @@ class GalleryAdmin(ContentGenericAdmin):
 
 admin.site.register(Gallery, GalleryAdmin)
 
-
 class ArticleForm(ContentGenericModelForm):
     teaser = forms.fields.CharField(
         widget=forms.Textarea(attrs={'rows':'5', 'cols':'67'}),
@@ -536,7 +539,7 @@ class ArticleForm(ContentGenericModelForm):
 class ArticleAdmin(ContentGenericAdmin):
     list_display = ('headline', 'section', 'issue',)
     search_fields = ('headline', 'text',)
-    exclude = ['is_published']
+
     fieldsets = (
         ('Headline', {
             'fields': ('headline', 'subheadline',),
@@ -551,7 +554,7 @@ class ArticleAdmin(ContentGenericAdmin):
             'fields': ('issue', 'section', 'page',),
         }),
         ('Web', {
-            'fields': ('slug', 'priority', 'rotatable', 'web_only', 'tags',),
+            'fields': ('slug', 'priority', 'pub_status','rotatable', 'web_only', 'tags',),
         }),
         ('Editing', {
             'fields': ('proofer', 'sne',),
@@ -604,7 +607,7 @@ class ArticleAdmin(ContentGenericAdmin):
                 self.admin_site.admin_view(self.get_rel_content)),
             (r'^rel_content/get/(?P<ct_name>\w+)/(?P<obj_id>\d+)/$',
                 self.admin_site.admin_view(self.get_rel_content)),
-            (r'^rel_content/find/(\d+)/(\d\d/\d\d/\d{4})/(\d\d/\d\d/\d{4})/([\w\-,]*)/(\d+)/$',
+            (r'^rel_content/find/kw(\d+)/(\d\d/\d\d/\d{4})/(\d\d/\d\d/\d{4})/([\w\-,]*)/(\d+)/$',
                 self.admin_site.admin_view(self.find_rel_content)),
             (r'^rel_content/suggest/([\w\-,]*)/(\d+)/$',
                 self.admin_site.admin_view(self.suggest_rel_content)),

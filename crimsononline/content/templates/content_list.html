@@ -40,9 +40,11 @@
                 <td><span class="filter_label">TYPE:</span></td>
                 <td>
                 {% for type, d in types.items %}    
-                <input type="checkbox" onclick="window.location = '{{ d.url }}'" 
-                        {% if d.selected %}checked{% endif %}
-                /><span class="reg_text">{{type}}s ({{d.count}})</span>
+                {% if d.selected %}
+                    <a class="section" href="{{d.url}}">{{type|yuhkilabel}}</a>
+                {% else %}
+                    <a class="section"href="{{d.url}}">{{type|yuhkilabel:"gray"}}</a>
+                {% endif %}<span class="reg_text">({{d.count}})</span>
                 {% endfor %}
                 </td></tr>
                 </form>
