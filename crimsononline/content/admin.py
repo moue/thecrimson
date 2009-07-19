@@ -143,14 +143,20 @@ class ContentGenericModelForm(ModelForm):
         obj.pub_status = self.cleaned_data['pub_status']
         return obj
     
-class ContentGenericModelForm2(ContentGenericModelForm):
-    pub_status = forms.ChoiceField([[1,1]],required = True, label = "Published Status")
-    
+
 class ContentGenericAdmin(admin.ModelAdmin):
     """
     Parent class for ContentGeneric ModelAdmin classes.
     Doesn't actually work by itself.
-    """            
+    """
+    
+    def get_form(self, request, obj=None):
+        f = super(ContentGenericAdmin, self).get_form(request, obj)
+        print "omg"
+        if not request.user.is_superuser:
+            f.base_fields['pub_status'].widget.choices = ((0, 'Draft'),)
+        return f
+         
     def get_urls(self):
         return  patterns('',
             (r'^previews_by_date_tag/$',
@@ -214,6 +220,7 @@ class ContentGenericAdmin(admin.ModelAdmin):
             if p.has_previous() else 0
         
         return HttpResponse(simplejson.dumps(json_dict))
+    
 
 class TagForm(forms.ModelForm):
     ALLOWED_REGEXP = compile(r'[A-Za-z\s]+$')
@@ -225,6 +232,7 @@ class TagForm(forms.ModelForm):
             raise forms.ValidationError(
                 'Tags can only contain letters and spaces')
         return text.lower()
+    
 
 class TagAdmin(admin.ModelAdmin):
     form = TagForm
@@ -239,7 +247,7 @@ class ContributorForm(forms.ModelForm):
         widget=MaskedValueTextInput(sentinel="********"))
     profile_pic = forms.fields.ImageField(widget=admin.widgets.AdminFileWidget,
         required=False, label='Profile Picture')
-
+    
     def clean_huid(self):
         h = self.cleaned_data['huid']
         if h and len(h) != 8:
@@ -540,14 +548,6 @@ class ArticleForm(ContentGenericModelForm):
 
 
 class ArticleAdmin(ContentGenericAdmin):
-    def get_fieldsets(self, request, obj=None):
-        if request.user.is_superuser:
-            print "SUPER"
-            return self.fieldsets_admin
-        else:
-            print "NORMAL"
-            return self.fieldsets
-
     list_display = ('headline', 'section', 'issue',)
     search_fields = ('headline', 'text',)
 
@@ -565,7 +565,7 @@ class ArticleAdmin(ContentGenericAdmin):
             'fields': ('issue', 'section', 'page',),
         }),
         ('Web', {
-            'fields': ('slug', 'priority','rotatable', 'web_only', 'tags',),
+            'fields': ('slug', 'priority', 'rotatable', 'web_only', 'tags', 'pub_status'),
         }),
         ('Editing', {
             'fields': ('proofer', 'sne',),
