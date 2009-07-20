@@ -24,19 +24,27 @@ from crimsononline.common.utils.strings import \
     make_file_friendly, make_url_friendly
 
 
-class ContentGenericManager(models.Manager):
+class ContentGenericAllManager(models.Manager):
     def type(self, model):
         """takes a model and returns a queryset with all of the 
         ContentGenerics of that contenttype"""
         return self.get_query_set().filter(
             content_type=ContentType.objects.get_for_model(model)
         )
-        
+    
     @property
     def recent(self):
         return self.get_query_set() \
             .exclude(issue__web_publish_date__gt=datetime.now()) \
             .order_by('-issue__issue_date', '-priority')
+    
+
+class ContentGenericManager(ContentGenericAllManager):
+    # don't grab deleted (pub_status = -1) content
+    def get_query_set(self):
+        return super(ContentGenericManager, self).get_query_set() \
+            .exclude(pub_status=-1)
+    
 
 class ContentGeneric(models.Model):
     """
@@ -48,7 +56,19 @@ class ContentGeneric(models.Model):
     PUB_CHOICES = (
         (0, 'Draft'),
         (1, 'Published'),
-        (-1, 'Unpublished'),
+        (-1, 'Deleted'),
+    )
+    PRIORITY_CHOICES = (
+        (1, '1 | one off articles'),
+        (2, '2 |'),
+        (4, '3 | a normal article'),
+        (5, '4 |'),
+        (6, '5 |'),
+        (7, '6 | kind of a big deal'),
+        (9, '7 | lasts ~2 days'),
+        (13, '8 |'),
+        (17, '9 | ~ 4 days'),
+        (21, '10 | OMG, It\'s Faust!'),
     )
 	
     content_type = models.ForeignKey(ContentType)
@@ -58,28 +78,29 @@ class ContentGeneric(models.Model):
         'Contributor', null=True, related_name='content')
     tags = models.ManyToManyField('Tag', null=True, related_name='content')
     issue = models.ForeignKey('Issue', null=True, related_name='content')
-    slug = models.SlugField(max_length=70, 
-        help_text="""
+    slug = models.SlugField(max_length=70, help_text="""
         The text that will be displayed in the URL of this article.
         Can only contain letters, numbers, and dashes (-).
         """
     )
     section = models.ForeignKey('Section', null=True, related_name='content')
-    priority = models.IntegerField(default=0)
+    priority = models.IntegerField(default=3, choices=PRIORITY_CHOICES)
     group = models.ForeignKey('ContentGroup', null=True, blank=True, 
         related_name='content')
     rotatable = models.BooleanField(null=False, default=False)
     pub_status = models.IntegerField(null=False, choices=PUB_CHOICES, 
         default=0)
     
+    # excludes deleted objects
     objects = ContentGenericManager()
+    # includes deleted objects
+    all_objects = ContentGenericAllManager()
     
     class Meta:
         unique_together = (
             ('content_type', 'object_id',),
             ('issue', 'slug'),
         )
-
     
     def get_absolute_url(self):
         return self.content_object.get_absolute_url()
@@ -88,6 +109,37 @@ class ContentGeneric(models.Model):
         return str(self.content_object)
     
 
+class ContentAllManager(models.Manager):
+    """
+    Base class for all objs managers of Content derived objects
+    
+    includes deleted items
+    """
+    @property
+    def recent(self):
+        return self.get_query_set() \
+            .exclude(generic__issue__web_publish_date__gt=datetime.now()) \
+            .order_by('-generic__issue__issue_date', 'generic__priority')
+    
+    @property
+    def prioritized(self):
+        """
+        TODO: order by f(priority, days_old)
+        """
+        pass
+    
+
+class ContentManager(ContentAllManager):
+    """ 
+    Base class for managers of Content derived objects
+    
+    excludes deleted items
+    """
+    
+    def get_query_set(self):
+        return super(ContentManager, self).get_query_set() \
+            .exclude(generic__pub_status=-1)
+    
 
 class Content(models.Model):
     """
@@ -99,9 +151,9 @@ class Content(models.Model):
     class Meta:
         abstract = True
         permissions = (
-            ('content.can_publish', 
-                'Can publish content',),
+            ('content.can_publish', 'Can publish content',),
         )
+    
     def _get_slug(self):
         return self.generic.slug
     def _set_slug(self, value):
@@ -159,6 +211,9 @@ class Content(models.Model):
     generic = models.ForeignKey(ContentGeneric, null=True,
         related_name="%(class)s_generic_related")
     
+    objects = ContentManager()
+    all_objects = ContentAllManager()
+    
     def _render(self, method, context={}):
         """
         renders in different ways, depending on method
@@ -189,6 +244,10 @@ class Content(models.Model):
             models.Model.__setattr__(self, attr, value)
     """
     
+    def delete(self):
+        self.generic.pub_status = -1
+        self.generic.save()
+    
     def store_hit(self):
         # (Eventual) minimum amount of time to wait between stores to the database
         MIN_DB_STORE_INTERVAL = 1
@@ -196,11 +255,14 @@ class Content(models.Model):
         BASE_THRESHOLD = 4
         # Amount to increase the threshold by each time
         THRESHOLD_JUMP = 5
-        # Amount of time to keep number of hits in cache -- we don't want to lose hits, so make this long
-        # Note that hits are actually lost anyway if the threshold still isn't hit in this interval, but if that happens, the article
-        # is so unpopular that either we don't care at all because it won't be ranked or The Crimson has no readership left
+        # Amount of time to keep number of hits in cache -- we don't want to 
+        # lose hits, so make this long.  Note that hits are actually lost 
+        # anyway if the threshold still isn't hit in this interval, but if 
+        # that happens, the article is so unpopular that either we don't care
+        # at all b/c it won't be ranked or The Crimson has no readership left
         HITS_STORE_TIME = 99999
-        # The strings we use as cache keys -- should be unique for a given PK for a given content type on a given day
+        # The strings we use as cache keys -- should be unique for a given PK
+        #  for a given content type on a given day
         thres_str = str(self.pk) + str(self.generic.content_type) + str(date.today()) + 'thres'
         time_str = str(self.pk) + str(self.generic.content_type) + str(date.today()) + 'time'
         hits_str = str(self.pk) + str(self.generic.content_type) + str(date.today()) + 'hits'
@@ -210,7 +272,8 @@ class Content(models.Model):
         if not cache.add(thres_str, BASE_THRESHOLD, MIN_DB_STORE_INTERVAL * 3):
             cur_threshold = cache.get(thres_str)
             last_storetime = cache.get(time_str)
-        # Add the time value to the cache, using the base threshold (previous add already added threshold to cache)
+        # Add the time value to the cache, using the base threshold (previous 
+        #  add already added threshold to cache)
         else:
             cache.add(time_str, now, MIN_DB_STORE_INTERVAL * 3)
             cur_threshold = BASE_THRESHOLD
@@ -224,7 +287,8 @@ class Content(models.Model):
         
         if cur_threshold <= cached_hits:
             # We hit the threshold
-            # First check whether the interval between the last time the threshold was hit and now is less than the minimum
+            # First check whether the interval between the last time the 
+            # threshold was hit and now is less than the minimum
             interval = now - last_storetime
             if interval and interval.seconds < MIN_DB_STORE_INTERVAL:
                 # It was, so increase the interval
@@ -240,13 +304,14 @@ class Content(models.Model):
             # Reset a things
             cache.set(time_str, now, MIN_DB_STORE_INTERVAL * 3)
             cache.delete(hits_str)
+        
     
     @staticmethod
     def types():
         # returns all ContentType objects whose 
         #    contenttype has parent class Content
         # TODO: needs MAD caching
-
+        
         cts = ContentType.objects.filter(app_label='content')
         # HACK: i'm not sure how to grab the parent class (super doesn't work)
         return [ct for ct in cts if hasattr(ct.model_class(), 'generic')]
@@ -804,7 +869,7 @@ def get_save_path(instance, filename):
     return datetime.now().strftime("photos/%Y/%m/%d/%H%M%S_") + \
         filtered_capt + ext
 
-class ImageManager(models.Manager):
+class ImageManager(ContentManager):
     use_for_related_fields = True  
     def get_query_set(self):
         s =  super(ImageManager, self).get_query_set()
@@ -948,27 +1013,11 @@ class Marker(models.Model):
     
 
 
-class ArticlesManager(models.Manager):
-    
-    # by default, only get published (undeleted) articles
-    def get_query_set(self):
-        return super(ArticlesManager, self).get_query_set() \
-            .filter(is_published=True)
-    
-    @property
-    def recent(self):
-        return self.get_query_set() \
-            .exclude(generic__issue__web_publish_date__gt=datetime.now()) \
-            .order_by('-generic__issue__issue_date', 'generic__priority')
+class ArticlesManager(ContentManager):
     
     @property
     def web_only(self):
         return self.get_query_set().filter(web_only=True)
-    
-    @property
-    def deleted(self):
-        return super(ArticlesManager, self).get_query_set() \
-            .filter(is_published=False)
     
 
 class Article(Content):
@@ -1042,12 +1091,6 @@ class Article(Content):
         r = self.rel_content.all()[:1]
         r = r[0].content_object if r else None
         return r
-    
-    
-    def delete(self, *args, **kwargs):
-        """don't delete articles, just unpublish them"""
-        self.is_published = False
-        self.save(*args, **kwargs)
     
     def __unicode__(self):
         return self.headline

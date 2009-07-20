@@ -92,15 +92,16 @@ class ContentGenericModelForm(ModelForm):
         widget=AutoGenSlugWidget(attrs={'size': '40'})
     )
     section = forms.ModelChoiceField(Section.all(), required=True)
-    priority = forms.ChoiceField([[i,i] for i in range(1,11)], required=False, 
-        initial=0, help_text='Higher priority articles are displayed first.' \
-        'Priority may be positive or negative.')
+    priority = forms.ChoiceField(choices=ContentGeneric.PRIORITY_CHOICES, 
+        required=False, initial=4, help_text='Higher priority articles are '
+        'displayed first. Priority may be positive or negative.'
+    )
     group = FbModelChoiceField(required=False, multiple=False,
         url='/admin/content/contentgroup/search/', model=ContentGroup,
         labeler=(lambda obj: str(obj)), admin_site=admin.site,
         add_rel=ContentGeneric._meta.get_field('group').rel
     )    
-    rotatable = forms.BooleanField(required=True, label="Place in rotators?", 
+    rotatable = forms.BooleanField(required=False, label="Place in rotators?", 
         initial=False)
     pub_status = forms.ChoiceField(ContentGeneric.PUB_CHOICES,required=True, 
         label="Published Status")
@@ -152,13 +153,12 @@ class ContentGenericAdmin(admin.ModelAdmin):
     
     def get_form(self, request, obj=None):
         f = super(ContentGenericAdmin, self).get_form(request, obj)
-        print "omg"
         if not request.user.is_superuser:
             f.base_fields['pub_status'].widget.choices = ((0, 'Draft'),)
         return f
          
     def get_urls(self):
-        return  patterns('',
+        return patterns('',
             (r'^previews_by_date_tag/$',
                 self.admin_site.admin_view(self.previews_by_date_tag)),
             (r'^gen_slug/$', self.admin_site.admin_view(self.gen_slug)),
@@ -517,8 +517,8 @@ class ArticleForm(ContentGenericModelForm):
     contributors = FbModelChoiceField(required=True, multiple=True,
         url='/admin/content/contributor/search/', model=Contributor,
         labeler=(lambda obj: str(obj)), admin_site=admin.site,
-        #add_rel=Article._meta.get_field('contributors').rel)
-        )
+        add_rel=ContentGeneric._meta.get_field('contributors').rel
+    )
     proofer = FbModelChoiceField(required=True, multiple=False,
         url='/admin/content/contributor/search/', model=Contributor,
         labeler=(lambda obj: str(obj)))
@@ -684,8 +684,8 @@ class ArticleAdmin(ContentGenericAdmin):
         # intersection between multiple lists using reduce
         def intersect(lists):
             return list(reduce(set.intersection, (set(l) for l in lists)))
-
-            # can't really suggest if they don't give you any tags
+        
+        # can't really suggest if they don't give you any tags
         if tags == "":
             json_dict = {}
             json_dict['objs'] = []
@@ -716,7 +716,6 @@ class ArticleAdmin(ContentGenericAdmin):
         json_dict = {}
         json_dict['objs'] = []
         for obj in p.object_list:
-            #html = '<li>%s</li>' % obj._render("admin.thumbnail")
             html = render_to_string('content_thumbnail.html', {'objs': [obj]})
             json_dict['objs'].append([obj.generic.content_type.pk, obj.pk, html])
         json_dict['next_page'] = p.next_page_number() if p.has_next() else 0
@@ -755,9 +754,7 @@ class MapAdmin(ContentGenericAdmin):
     search_fields = ('title','caption',)
     form = MapForm
     
-    inlines = [
-        MarkerInline,
-    ]
+    inlines = [MarkerInline,]
     
     fieldsets = (
         ('Map Setup', {
