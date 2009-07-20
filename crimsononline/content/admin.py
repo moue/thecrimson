@@ -156,7 +156,12 @@ class ContentGenericAdmin(admin.ModelAdmin):
         if not request.user.is_superuser:
             f.base_fields['pub_status'].widget.choices = ((0, 'Draft'),)
         return f
-         
+    
+    def queryset(self, request):
+        if request.user.is_superuser:
+            return self.model.all_objects.all()
+        return self.model.all_objects.current
+    
     def get_urls(self):
         return patterns('',
             (r'^previews_by_date_tag/$',

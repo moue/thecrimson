@@ -128,6 +128,11 @@ class ContentAllManager(models.Manager):
         """
         pass
     
+    @property
+    def current(self):
+        """ Draft and published """
+        return self.get_query_set().exclude(generic__pub_status=-1)
+    
 
 class ContentManager(ContentAllManager):
     """ 
@@ -138,7 +143,7 @@ class ContentManager(ContentAllManager):
     
     def get_query_set(self):
         return super(ContentManager, self).get_query_set() \
-            .exclude(generic__pub_status=-1)
+            .filter(generic__pub_status=1)
     
 
 class Content(models.Model):
