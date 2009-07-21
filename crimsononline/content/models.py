@@ -13,6 +13,7 @@ from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.localflavor.us.models import PhoneNumberField
 from django.core.cache import cache
+from django.db import connection
 from django.template.defaultfilters import slugify, truncatewords
 from django.template.loader import render_to_string
 from django.utils.safestring import mark_safe
@@ -44,6 +45,37 @@ class ContentGenericManager(ContentGenericAllManager):
     def get_query_set(self):
         return super(ContentGenericManager, self).get_query_set() \
             .exclude(pub_status=-1)
+    
+    @property
+    def rotated(self, section=None, limit=20):
+        """
+        order by f(Priority, Days_old) = P / d
+        returns a list of objects, not a queryset
+        
+        articles are excluded
+        """
+        cursor = connection.cursor()
+        section_str = ''
+        if section:
+            section_str = 'AND c.section_id = %i' % section.pk
+        article_ctype = Article.content_type().pk
+        cursor.execute("""
+            SELECT 
+                c.*, 
+                c.priority / round(julianday('now') - julianday(i.issue_date))
+                    as ord 
+                FROM content_contentgeneric as c, content_issue as i 
+                WHERE 
+                    c.issue_id = i.id AND
+                    c.rotatable = 1 AND
+                    c.content_type != %i
+                    %s
+                ORDER BY ord DESC LIMIT %i;
+        """ % (article_ctype, SECTION_STR, limit))
+        for row in cursor.fetchall():
+            # TODO: turn the rows into objects
+            pass
+        return []
     
 
 class ContentGeneric(models.Model):
@@ -80,8 +112,7 @@ class ContentGeneric(models.Model):
     issue = models.ForeignKey('Issue', null=True, related_name='content')
     slug = models.SlugField(max_length=70, help_text="""
         The text that will be displayed in the URL of this article.
-        Can only contain letters, numbers, and dashes (-).
-        """
+        Can only contain letters, numbers, and dashes (-)."""
     )
     section = models.ForeignKey('Section', null=True, related_name='content')
     priority = models.IntegerField(default=3, choices=PRIORITY_CHOICES)
@@ -115,18 +146,13 @@ class ContentAllManager(models.Manager):
     
     includes deleted items
     """
+    use_for_related_fields = True
+    
     @property
     def recent(self):
         return self.get_query_set() \
             .exclude(generic__issue__web_publish_date__gt=datetime.now()) \
             .order_by('-generic__issue__issue_date', 'generic__priority')
-    
-    @property
-    def prioritized(self):
-        """
-        TODO: order by f(priority, days_old)
-        """
-        pass
     
     @property
     def current(self):
@@ -338,6 +364,14 @@ class Content(models.Model):
             q[lookup + '__lte'] = end.date()
         return cls.objects.filter(**q).order_by('-' + lookup)
     
+    def _gen_generic(self):
+        # generate a generic, if you don't already have one
+        if not self.generic:
+            r = ContentGeneric(content_object=self)
+            r.save()
+            self.generic_pk = r.pk
+        return self.generic
+    """
     def save(self, *args, **kwargs):
         # generate a pk if self doesn't have one
         if not self.pk:
@@ -350,7 +384,7 @@ class Content(models.Model):
             self.generic = r
         else:
             self.generic.save()
-        return super(Content, self).save(*args, **kwargs)
+        return super(Content, self).save(*args, **kwargs)"""
     
     def identifier(self):
         """
@@ -518,8 +552,8 @@ def contrib_pic_path(instance, filename):
     name = '%s_%s_%s' % \
         (instance.first_name, instance.middle_name, instance.last_name)
     return 'photos/contrib_pics/' + name + ext
-    
-    
+
+
 class Contributor(models.Model):
     """
     Someone who contributes to the Crimson, 
@@ -875,7 +909,7 @@ def get_save_path(instance, filename):
         filtered_capt + ext
 
 class ImageManager(ContentManager):
-    use_for_related_fields = True  
+    #use_for_related_fields = True  
     def get_query_set(self):
         s =  super(ImageManager, self).get_query_set()
         # this is a hella ghetto way to make sure image galleries always return
@@ -1019,6 +1053,10 @@ class Marker(models.Model):
 
 
 class ArticlesManager(ContentManager):
+    
+    @property
+    def prioritized(self, section):
+        pass
     
     @property
     def web_only(self):
