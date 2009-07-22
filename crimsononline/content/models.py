@@ -91,10 +91,10 @@ class ContentGeneric(models.Model):
     pub_status = models.IntegerField(null=False, choices=PUB_CHOICES, 
         default=0)
     
-    # excludes deleted objects
-    objects = ContentGenericManager()
     # includes deleted objects
     all_objects = ContentGenericAllManager()
+    # excludes deleted objects
+    objects = ContentGenericManager()
     
     class Meta:
         unique_together = (
@@ -225,8 +225,8 @@ class Content(models.Model):
     generic = models.ForeignKey(ContentGeneric, null=True,
         related_name="%(class)s_generic_related")
     
-    objects = ContentManager()
     all_objects = ContentAllManager()
+    objects = ContentManager()
     
     def _render(self, method, context={}):
         """
@@ -883,6 +883,15 @@ def get_save_path(instance, filename):
     return datetime.now().strftime("photos/%Y/%m/%d/%H%M%S_") + \
         filtered_capt + ext
 
+class ImageAllManager(ContentAllManager):
+    def get_query_set(self):
+        s =  super(ImageAllManager, self).get_query_set()
+        # this is a hella ghetto way to make sure image galleries always return
+        # images in the right order.  this is probably really inefficient
+        if self.__class__.__name__ == 'ManyRelatedManager':
+            s = s.order_by('gallerymembership__order')
+        return s
+
 class ImageManager(ContentManager):
     def get_query_set(self):
         s =  super(ImageManager, self).get_query_set()
@@ -917,6 +926,7 @@ class Image(Content):
     #  attribute is processed first, all the instance attributes will be blank
     pic = SuperImageField('File', max_width=960, upload_to=get_save_path)
     
+    all_objects = ImageAllManager()
     objects = ImageManager()
     
     @property
@@ -1025,12 +1035,6 @@ class Marker(models.Model):
         return str(self.map) + ' (' + str(self.lat) + ',' + str(self.lng) + ')'
     
 
-
-class ArticlesManager(ContentManager):
-    
-    @property
-    def web_only(self):
-        return self.get_query_set().filter(web_only=True)
     
 
 class Article(Content):
@@ -1085,7 +1089,6 @@ class Article(Content):
     rel_content = models.ManyToManyField(ContentGeneric,
         through='ArticleContentRelation', null=True, blank=True)
     
-    objects = ArticlesManager()
     
     class Meta:
         permissions = (

@@ -156,12 +156,15 @@ class ContentGenericAdmin(admin.ModelAdmin):
         if not request.user.is_superuser:
             f.base_fields['pub_status'].widget.choices = ((0, 'Draft'),)
         return f
-    
+
     def queryset(self, request):
         if request.user.is_superuser:
-            return self.model.all_objects.all()
-        return self.model.all_objects.current
-    
+            qs = self.model.all_objects.get_query_set()
+        else:
+            qs = self.model.objects.get_query_set()
+        
+        return qs
+
     def get_urls(self):
         return patterns('',
             (r'^previews_by_date_tag/$',
@@ -420,7 +423,7 @@ class ImageAdminForm(ContentGenericModelForm):
 
 class ImageAdmin(ContentGenericAdmin):
     fields = ('pic', 'thumbnail', 'caption', 'kicker', 'section', 'issue',
-        'slug', 'priority', 'contributors', 'tags', 'group',)
+        'slug', 'priority', 'pub_status', 'contributors', 'tags', 'group',)
     
     form = ImageAdminForm
     
@@ -584,8 +587,6 @@ class ArticleAdmin(ContentGenericAdmin):
         })
     )
     
-    fieldsets_admin = copy.deepcopy(fieldsets)
-    fieldsets_admin[4][1]['fields'] = ('slug', 'priority', 'pub_status','rotatable', 'web_only', 'tags',)
     form = ArticleForm
     
     class Media:
@@ -604,13 +605,12 @@ class ArticleAdmin(ContentGenericAdmin):
         elif obj and not u.has_perm('content.article.can_change_after_timeout'):
             return (datetime.now() - obj.created_on).seconds < (60 * 60)
         return super(ArticleAdmin, self).has_change_permission(request, obj)
-    
+
     def queryset(self, request):
         u = request.user
         qs = super(ArticleAdmin,self).queryset(request)
         if u.is_superuser:
             return qs
-       
         # restrict editing of articles uploaded before 60 min ago
         if not u.has_perm('content.article.can_change_after_timeout'):
             t = datetime.now() - timedelta(seconds=(60*60))
@@ -618,6 +618,7 @@ class ArticleAdmin(ContentGenericAdmin):
             u.message_set.create(message='Note: you can only change articles' \
                                             ' uploaded in the last hour.')
         return qs
+
     
     def get_urls(self):
         urls = super(ArticleAdmin, self).get_urls()
@@ -774,7 +775,7 @@ class MapAdmin(ContentGenericAdmin):
             'fields': ('contributors',),
         }),
         ('Organization', {
-            'fields': ('section', 'issue', 'slug', 'tags', 'priority',),
+            'fields': ('section', 'pub_status', 'issue', 'slug', 'tags', 'priority',),
         }),
         ('Grouping', {
             'fields': ('group',),
