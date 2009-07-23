@@ -159,9 +159,9 @@ class ContentGenericAdmin(admin.ModelAdmin):
 
     def queryset(self, request):
         if request.user.is_superuser:
-            qs = self.model.all_objects.get_query_set()
+            qs = self.model._default_manager.all_objects()
         else:
-            qs = self.model.objects.get_query_set()
+            qs = self.model._default_manager.draft_objects()
         
         return qs
 
@@ -422,6 +422,14 @@ class ImageAdminForm(ContentGenericModelForm):
         return i
 
 class ImageAdmin(ContentGenericAdmin):
+    def pub_status_text(self, obj):
+        return ContentGeneric.PUB_CHOICES[obj.generic.pub_status][1]
+    pub_status_text.short_description = 'Status'
+
+    list_display = ('kicker', 'caption', 'section','issue', 'pub_status_text')
+    search_fields = ('kicker', 'caption',)
+    ordering = ('-id',)
+    
     fields = ('pic', 'thumbnail', 'caption', 'kicker', 'section', 'issue',
         'slug', 'priority', 'pub_status', 'contributors', 'tags', 'group',)
     
@@ -460,6 +468,8 @@ class GalleryForm(ContentGenericModelForm):
     def save(self, *args, **kwargs):
         imgs = self.cleaned_data.pop('images', [])
         obj = super(GalleryForm, self).save(*args, **kwargs)
+        print(len(obj.images.all()))
+        print ("IS THE NUMBER OF IMAGES")
         obj.images.clear()
         for i, img in enumerate(imgs):
             x = GalleryMembership(order=i, gallery=obj, image=img)
@@ -543,8 +553,10 @@ class ArticleForm(ContentGenericModelForm):
         return truncatewords(self.cleaned_data['text'], 20)
     
     def save(self, *args, **kwargs):
+        print "SAVING ARTICLE"
         rel = self.cleaned_data.pop('rel_content', [])
         obj = super(ArticleForm, self).save(*args, **kwargs)
+        print(len(obj.rel_content.all()))
         obj.rel_content.clear()
         for i, r in enumerate(rel):
             x = ArticleContentRelation(order=i, article=obj, related_content=r)
@@ -556,7 +568,12 @@ class ArticleForm(ContentGenericModelForm):
 
 
 class ArticleAdmin(ContentGenericAdmin):
-    list_display = ('headline', 'section', 'issue',)
+
+    def pub_status_text(self, obj):
+        return ContentGeneric.PUB_CHOICES[obj.generic.pub_status][1]
+    pub_status_text.short_description = 'Status'
+
+    list_display = ('headline', 'section', 'issue','pub_status_text')
     search_fields = ('headline', 'text',)
 
     fieldsets = (
@@ -618,7 +635,6 @@ class ArticleAdmin(ContentGenericAdmin):
             u.message_set.create(message='Note: you can only change articles' \
                                             ' uploaded in the last hour.')
         return qs
-
     
     def get_urls(self):
         urls = super(ArticleAdmin, self).get_urls()
@@ -627,7 +643,7 @@ class ArticleAdmin(ContentGenericAdmin):
                 self.admin_site.admin_view(self.get_rel_content)),
             (r'^rel_content/get/(?P<ct_name>\w+)/(?P<obj_id>\d+)/$',
                 self.admin_site.admin_view(self.get_rel_content)),
-            (r'^rel_content/find/kw(\d+)/(\d\d/\d\d/\d{4})/(\d\d/\d\d/\d{4})/([\w\-,]*)/(\d+)/$',
+            (r'^rel_content/find/(\d+)/(\d\d/\d\d/\d{4})/(\d\d/\d\d/\d{4})/([\w\-,]*)/(\d+)/$',
                 self.admin_site.admin_view(self.find_rel_content)),
             (r'^rel_content/suggest/([\w\-,]*)/(\d+)/$',
                 self.admin_site.admin_view(self.suggest_rel_content)),

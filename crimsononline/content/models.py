@@ -23,28 +23,35 @@ from crimsononline.common.storage import OverwriteStorage
 from crimsononline.common.utils.strings import \
     make_file_friendly, make_url_friendly
 
-
-class ContentGenericAllManager(models.Manager):
+class SoftDeleteManager(models.Manager):
+    ''' Use this manager to get objects that have a deleted field '''
+    def all_objects(self):
+        return super(SoftDeleteManager, self).get_query_set()
+    def get(self, *args, **kwargs):
+        ''' if a specific record was requested, return it even if it's deleted '''
+        return self.all_objects().get(*args, **kwargs)
+    def filter(self, *args, **kwargs):
+        ''' if pk was specified as a kwarg, return even if it's deleted '''
+        if 'pk' in kwargs:
+            return self.all_objects().filter(*args, **kwargs)
+        return self.get_query_set().filter(*args, **kwargs)
+            
+class ContentGenericManager(SoftDeleteManager):
+    def get_query_set(self):
+        return super(SoftDeleteManager, self).get_query_set().filter(pub_status=1)
+    def draft_objects(self):
+        return super(SoftDeleteManager, self).get_query_set().filter(pub_status=0)
+    @property
     def type(self, model):
         """takes a model and returns a queryset with all of the 
         ContentGenerics of that contenttype"""
-        return self.get_query_set().filter(
-            content_type=ContentType.objects.get_for_model(model)
-        )
-    
+        return self.get_query_set().filter(content_type=ContentType.objects.get_for_model(model))
     @property
     def recent(self):
         return self.get_query_set() \
             .exclude(issue__web_publish_date__gt=datetime.now()) \
             .order_by('-issue__issue_date', '-priority')
-    
 
-class ContentGenericManager(ContentGenericAllManager):
-    # don't grab deleted (pub_status = -1) content
-    def get_query_set(self):
-        return super(ContentGenericManager, self).get_query_set() \
-            .exclude(pub_status=-1)
-    
 
 class ContentGeneric(models.Model):
     """
@@ -91,8 +98,6 @@ class ContentGeneric(models.Model):
     pub_status = models.IntegerField(null=False, choices=PUB_CHOICES, 
         default=0)
     
-    # includes deleted objects
-    all_objects = ContentGenericAllManager()
     # excludes deleted objects
     objects = ContentGenericManager()
     
@@ -101,6 +106,8 @@ class ContentGeneric(models.Model):
             ('content_type', 'object_id',),
             ('issue', 'slug'),
         )
+        permissions = (
+            ('content.can_publish', 'Can publish content',),)
     
     def get_absolute_url(self):
         return self.content_object.get_absolute_url()
@@ -111,49 +118,33 @@ class ContentGeneric(models.Model):
     def save(self, force_insert = False, force_update = False):
         cls = self.__class__
         default = cls._default_manager
-        cls._default_manager = ContentGenericAllManager
+        cls._default_manager = ContentGenericManager
         try:
                 super(ContentGeneric, self).save(force_insert=force_insert, force_update=force_update)
         finally:
-                cls._default_manager = default
-    
+                cls._default_manager = default    
 
-class ContentAllManager(models.Manager):
-    """
-    Base class for all objs managers of Content derived objects
+class ContentManager(SoftDeleteManager):
+    """ 
+    Base class for managers of Content derived objects
     
-    includes deleted items
+    excludes deleted items
     """
+    def get_query_set(self):
+        return super(SoftDeleteManager, self).get_query_set().filter(generic__pub_status=1)
+    def draft_objects(self):
+        return super(SoftDeleteManager, self).get_query_set().filter(generic__pub_status=0)
     @property
     def recent(self):
         return self.get_query_set() \
             .exclude(generic__issue__web_publish_date__gt=datetime.now()) \
             .order_by('-generic__issue__issue_date', 'generic__priority')
-    
     @property
     def prioritized(self):
         """
         TODO: order by f(priority, days_old)
         """
         pass
-    
-    @property
-    def current(self):
-        """ Draft and published """
-        return self.get_query_set().exclude(generic__pub_status=-1)
-    
-
-class ContentManager(ContentAllManager):
-    """ 
-    Base class for managers of Content derived objects
-    
-    excludes deleted items
-    """
-    
-    def get_query_set(self):
-        return super(ContentManager, self).get_query_set() \
-            .filter(generic__pub_status=1)
-    
 
 class Content(models.Model):
     """
@@ -164,9 +155,6 @@ class Content(models.Model):
     
     class Meta:
         abstract = True
-        permissions = (
-            ('content.can_publish', 'Can publish content',),
-        )
     
     def _get_slug(self):
         return self.generic.slug
@@ -225,7 +213,6 @@ class Content(models.Model):
     generic = models.ForeignKey(ContentGeneric, null=True,
         related_name="%(class)s_generic_related")
     
-    all_objects = ContentAllManager()
     objects = ContentManager()
     
     def _render(self, method, context={}):
@@ -781,7 +768,7 @@ class Issue(models.Model):
         return cache.set('current_issue', self, timeout)
     
     def __unicode__(self):
-        return self.issue_date.strftime('%c')
+        return self.issue_date.strftime('%A, %B %d, %Y')
 
 
 class ImageSpec():
@@ -883,14 +870,6 @@ def get_save_path(instance, filename):
     return datetime.now().strftime("photos/%Y/%m/%d/%H%M%S_") + \
         filtered_capt + ext
 
-class ImageAllManager(ContentAllManager):
-    def get_query_set(self):
-        s =  super(ImageAllManager, self).get_query_set()
-        # this is a hella ghetto way to make sure image galleries always return
-        # images in the right order.  this is probably really inefficient
-        if self.__class__.__name__ == 'ManyRelatedManager':
-            s = s.order_by('gallerymembership__order')
-        return s
 
 class ImageManager(ContentManager):
     def get_query_set(self):
@@ -925,8 +904,7 @@ class Image(Content):
     # make sure pic is last: get_save_path needs an instance, and if this
     #  attribute is processed first, all the instance attributes will be blank
     pic = SuperImageField('File', max_width=960, upload_to=get_save_path)
-    
-    all_objects = ImageAllManager()
+
     objects = ImageManager()
     
     @property
@@ -1094,8 +1072,7 @@ class Article(Content):
         permissions = (
             ('article.can_change_after_timeout', 
                 'Can change articles at any time',),
-        )
-        #ordering = ['-priority',]
+            )
         get_latest_by = 'created_on'
     
     @property
@@ -1113,8 +1090,6 @@ class Article(Content):
     
     def identifier(self):
         return self.headline
-    
-
 
 class ArticleContentRelation(models.Model):
     article = models.ForeignKey(Article)
@@ -1124,6 +1099,7 @@ class ArticleContentRelation(models.Model):
     class Meta:
         ordering = ('order',)
     
+
     """
     class Meta:
         unique_together = (

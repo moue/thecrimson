@@ -44,7 +44,7 @@ class Command(NoArgsCommand):
         except:
             print "couldn't download new articles from project gutenburg"
         
-        images = list(Image.all_objects.all())
+        images = list(Image._default_manager.all_objects())
         # make some new image galleries
         for i in range(0, 10):
             ig = Gallery(title=hashlib.md5(str(datetime.now())).hexdigest()[:10],
@@ -57,7 +57,7 @@ class Command(NoArgsCommand):
                 GalleryMembership.objects.create(gallery=ig, image=img, order=n)
         
         for model in models:
-            for a in model.all_objects.all():
+            for a in model._default_manager.all_objects():
                 # trigger generation of a generic object
                 a.save()
                 
@@ -99,11 +99,11 @@ class Command(NoArgsCommand):
                     a.slug = hashlib.md5(str(datetime.now())).hexdigest()
                     a.save()
         
-        images = list(Image.all_objects.all())
+        images = list(Image._default_manager.all_objects())
         
         # generate some random Image - Article associations
         
-        for a in Article.all_objects.all():
+        for a in Article._default_manager.all_objects():
             shuffle(images)
             imgs = images[:randrange(0,4)]
             for i, img in enumerate(imgs):

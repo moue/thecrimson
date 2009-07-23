@@ -95,9 +95,10 @@ def index(request, m=None, d=None, y=None):
 
     dict = {}
     
+    # right now, this includes deleted stuff. this query already needed to be reworked, but now tha'ts even more important
     dict['rotate'] = stories.filter(
         rel_content__content_type=Image.content_type()).distinct()[:4]
-    stories = stories.exclude(pk__in=[c.pk for c in dict['rotate']])
+    
     dict['past_issues'] = DateSelectWidget().render(name="past_issues", value=[m, d, y])
     dict['nav'] = 'index'
     dict['top_stories'] = stories[:4]
