@@ -7,9 +7,7 @@ from crimsononline.content.models import *
 
 class Command(NoArgsCommand):
     option_list = NoArgsCommand.option_list
-    help = "Fixes broken Content Generics due to content types having new pks"
-
-    requires_model_validation = False
+    help = "Generates some initial conten"
 
     def handle_noargs(self, **options):
         from random import shuffle, randrange, choice
@@ -23,7 +21,7 @@ class Command(NoArgsCommand):
         news_section = Section.objects.get(name="News")
         content_groups = list(ContentGroup.objects.all())
         
-        # unlinks all generics and generates new ones
+        # unlinks all and generates new ones
         models = [Article, Image, Gallery]
         
         # make some new articles
@@ -39,12 +37,12 @@ class Command(NoArgsCommand):
                 r = randrange(0,n-100)
                 t = ''.join(text[r:r+100])
                 a = Article(headline=h, text=t, sne_id=1, proofer_id=1, 
-                    teaser=t[:140])
+                    teaser=t[:140], pub_status = 1)
                 a.save()
         except:
             print "couldn't download new articles from project gutenburg"
         
-        images = list(Image._default_manager.all_objects())
+        images = list(Image.objects.all())
         # make some new image galleries
         for i in range(0, 10):
             ig = Gallery(title=hashlib.md5(str(datetime.now())).hexdigest()[:10],
@@ -53,14 +51,11 @@ class Command(NoArgsCommand):
             
             shuffle(images)
             
-            for n, img in enumerate(images[:randrange(2,6)]):
+            for n, img in enumerate(images[:randrange(1,3)]):
                 GalleryMembership.objects.create(gallery=ig, image=img, order=n)
         
         for model in models:
-            for a in model._default_manager.all_objects():
-                # trigger generation of a generic object
-                a.save()
-                
+            for a in model.objects.all():
                 shuffle(contributors)
                 shuffle(tags)
                 shuffle(sections)
@@ -99,15 +94,14 @@ class Command(NoArgsCommand):
                     a.slug = hashlib.md5(str(datetime.now())).hexdigest()
                     a.save()
         
-        images = list(Image._default_manager.all_objects())
-        
+        images = list(Image.objects.all())
         # generate some random Image - Article associations
         
-        for a in Article._default_manager.all_objects():
+        for a in Article.objects.all():
             shuffle(images)
             imgs = images[:randrange(0,4)]
             for i, img in enumerate(imgs):
-                rel = ArticleContentRelation(order=i, article=a, related_content=img.generic)
+                rel = ArticleContentRelation(order=i, article=a, related_content=img)
                 rel.save()
     
     

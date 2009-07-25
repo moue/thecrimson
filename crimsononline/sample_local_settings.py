@@ -33,4 +33,4 @@ MEDIA_ROOT = path.join(path.split(path.abspath(__file__))[0], 'static')
 MEDIA_URL = URL_BASE + 'site_media/'
 
 # If you want search to work with solr, specify the path of your solr installation
-SOLR_ROOT = 'c:\web\solr\'
+SOLR_ROOT = 'c:/web/solr/'

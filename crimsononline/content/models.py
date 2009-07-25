@@ -17,49 +17,68 @@ from django.template.defaultfilters import slugify, truncatewords
 from django.template.loader import render_to_string
 from django.utils.safestring import mark_safe
 from django.forms import ModelForm
+from django.db.models.query import QuerySet
+from django.http import Http404
+
 from crimsononline.common.forms import \
     MaxSizeImageField, SuperImageField
 from crimsononline.common.storage import OverwriteStorage
 from crimsononline.common.utils.strings import \
     make_file_friendly, make_url_friendly
 
-class SoftDeleteManager(models.Manager):
-    ''' Use this manager to get objects that have a deleted field '''
-    def all_objects(self):
-        return super(SoftDeleteManager, self).get_query_set()
-    def get(self, *args, **kwargs):
-        ''' if a specific record was requested, return it even if it's deleted '''
-        return self.all_objects().get(*args, **kwargs)
-    def filter(self, *args, **kwargs):
-        ''' if pk was specified as a kwarg, return even if it's deleted '''
-        if 'pk' in kwargs:
-            return self.all_objects().filter(*args, **kwargs)
-        return self.get_query_set().filter(*args, **kwargs)
-            
-class ContentGenericManager(SoftDeleteManager):
+# Automatically returns items as their child class (which should be cached)
+class SubclassingQuerySet(QuerySet):
+    def __getitem__(self, k):
+        result = super(SubclassingQuerySet, self).__getitem__(k)
+        if isinstance(result, models.Model) :
+            return result.child
+        else :
+            return result
+    def __iter__(self):
+        for item in super(SubclassingQuerySet, self).__iter__():
+            yield item.child
+
+class ContentManager(models.Manager):
+    """ 
+    Base class for managers of Content derived objects
+    
+    excludes deleted items
+    """
+
     def get_query_set(self):
-        return super(SoftDeleteManager, self).get_query_set().filter(pub_status=1)
+        return SubclassingQuerySet(self.model).filter(pub_status=1)
+    def all_objects(self):
+        return SubclassingQuerySet(self.model).all()
     def draft_objects(self):
-        return super(SoftDeleteManager, self).get_query_set().filter(pub_status=0)
-    @property
-    def type(self, model):
-        """takes a model and returns a queryset with all of the 
-        ContentGenerics of that contenttype"""
-        return self.get_query_set().filter(content_type=ContentType.objects.get_for_model(model))
+        return SubclassingQuerySet(self.model).filter(pub_status=0)
+
     @property
     def recent(self):
         return self.get_query_set() \
-            .exclude(issue__web_publish_date__gt=datetime.now()) \
-            .order_by('-issue__issue_date', '-priority')
+            .order_by('-issue__issue_date', 'priority')
+            #.exclude(issue__web_publish_date__gt=datetime.now()) \
 
+    @property
+    def prioritized(self):
 
-class ContentGeneric(models.Model):
+        """
+        TODO: order by f(priority, days_old)
+        """
+        pass
+
+    def get(self, *args, **kwargs):
+        # return child
+        return self.all_objects().get(*args, **kwargs).child
+
+        
+
+class Content(models.Model):
     """
-    Class that contains generic properties.
+    Base class for all content.
     
-    Facilitates generic relationships between content.
-    Only add attributes on which you would want to do cross content queries.
+    Has some content rendering functions and property access methods.
     """
+    
     PUB_CHOICES = (
         (0, 'Draft'),
         (1, 'Published'),
@@ -77,12 +96,14 @@ class ContentGeneric(models.Model):
         (17, '9 | ~ 4 days'),
         (21, '10 | OMG, It\'s Faust!'),
     )
+    ROTATE_CHOICES = (
+        (0, 'Do not rotate'),
+        (1, 'Rotate on section pages only'),
+        (2, 'Rotate on front and section pages'),
+        (3, 'Rotate on front only')
+    )
 	
-    content_type = models.ForeignKey(ContentType)
-    object_id = models.PositiveIntegerField()
-    content_object = generic.GenericForeignKey('content_type', 'object_id')
-    contributors = models.ManyToManyField(
-        'Contributor', null=True, related_name='content')
+    contributors = models.ManyToManyField('Contributor', null=True, related_name='content')
     tags = models.ManyToManyField('Tag', null=True, related_name='content')
     issue = models.ForeignKey('Issue', null=True, related_name='content')
     slug = models.SlugField(max_length=70, help_text="""
@@ -94,160 +115,69 @@ class ContentGeneric(models.Model):
     priority = models.IntegerField(default=3, choices=PRIORITY_CHOICES)
     group = models.ForeignKey('ContentGroup', null=True, blank=True, 
         related_name='content')
-    rotatable = models.BooleanField(null=False, default=False)
+    rotatable = models.IntegerField(null=False, choices=ROTATE_CHOICES, default=0)
     pub_status = models.IntegerField(null=False, choices=PUB_CHOICES, 
         default=0)
     
-    # excludes deleted objects
-    objects = ContentGenericManager()
+    content_type = models.ForeignKey(ContentType, editable=False, null=True)
+
+    def save(self, *args, **kwargs):
+        if not self.content_type:
+            self.content_type = ContentType.objects.get_for_model(self.__class__)
+        super(Content, self).save(*args, **kwargs)
+
+    @property
+    def child(self):
+        return getattr(self, self.content_type.model_class().__name__.lower())
     
+
     class Meta:
         unique_together = (
-            ('content_type', 'object_id',),
             ('issue', 'slug'),
         )
         permissions = (
             ('content.can_publish', 'Can publish content',),)
     
+    @permalink
     def get_absolute_url(self):
-        return self.content_object.get_absolute_url()
-    
-    def __unicode__(self):
-        return str(self.content_object)
+        i = self.issue.issue_date
+        url_data = [self.content_type.name.replace(' ', '-'), i.year, 
+            i.month, i.day, self.slug]
+        if self.group:
+            url_data = [self.group.type.lower(), 
+                make_url_friendly(self.group.name)] + url_data
+            return ('content_grouped_content', url_data)
+        else:
+            return ('content_content', url_data)
 
-    def save(self, force_insert = False, force_update = False):
-        cls = self.__class__
-        default = cls._default_manager
-        cls._default_manager = ContentGenericManager
-        try:
-                super(ContentGeneric, self).save(force_insert=force_insert, force_update=force_update)
-        finally:
-                cls._default_manager = default    
-
-class ContentManager(SoftDeleteManager):
-    """ 
-    Base class for managers of Content derived objects
-    
-    excludes deleted items
-    """
-    def get_query_set(self):
-        return super(SoftDeleteManager, self).get_query_set().filter(generic__pub_status=1)
-    def draft_objects(self):
-        return super(SoftDeleteManager, self).get_query_set().filter(generic__pub_status=0)
-    @property
-    def recent(self):
-        return self.get_query_set() \
-            .exclude(generic__issue__web_publish_date__gt=datetime.now()) \
-            .order_by('-generic__issue__issue_date', 'generic__priority')
-    @property
-    def prioritized(self):
-        """
-        TODO: order by f(priority, days_old)
-        """
-        pass
-
-class Content(models.Model):
-    """
-    Base class for all content.
-    
-    Has some content rendering functions and generic property access methods.
-    """
-    
-    class Meta:
-        abstract = True
-    
-    def _get_slug(self):
-        return self.generic.slug
-    def _set_slug(self, value):
-        self.generic.slug = value
-    slug = property(_get_slug, _set_slug)
-    
-    def _get_group(self):
-        return self.generic.group
-    def _set_group(self, value):
-        self.generic.group = value
-    group = property(_get_group, _set_group)
-    
-    def _get_contributors(self):
-        return self.generic.contributors
-    def _set_contributors(self, value):
-        self.generic.contributors = value
-    contributors = property(_get_contributors, _set_contributors)
-    
-    def _get_tags(self):
-        return self.generic.tags
-    def _set_tags(self, value):
-        self.generic.tags = value
-    tags = property(_get_tags, _set_tags)
-    
-    def _get_issue(self):
-        return self.generic.issue
-    def _set_issue(self, value):
-        self.generic.issue = value
-    issue = property(_get_issue, _set_issue)
-    
-    def _get_section(self):
-        return self.generic.section
-    def _set_section(self, value):
-        self.generic.section = value
-    section = property(_get_section, _set_section)
-    
-    def _get_priority(self):
-        return self.generic.priority
-    def _set_priority(self, value):
-        self.generic.priority = value
-    priority = property(_get_priority, _set_priority)
-    
-    def _get_hits(self):
-        return self.generic.hits
-    def _set_hits(self, value):
-        self.generic.hits = value
-    hits = property(_get_hits, _set_hits)
-    
-    def _get_pub_status(self):
-        return self.generic.pub_status
-    def _set_pub_status(self, value):
-        self.generic.pub_status = value
-    pub_status = property(_get_pub_status, _set_pub_status)
-    
-    generic = models.ForeignKey(ContentGeneric, null=True,
-        related_name="%(class)s_generic_related")
-    
+    # TODO: excludes deleted objects
     objects = ContentManager()
     
     def _render(self, method, context={}):
         """
         renders in different ways, depending on method
+        casts objects as leaf class
         
         @method : could be something like, 'admin' or 'search'
         @context : gets injected into template (optional)
         """
-        name = self._meta.object_name.lower()
+        if self.pub_status != 1:
+            raise Http404
+            
+        name = self.content_type
         templ = 'models/%s/%s.html' % (name, method)
+
         # can access self with either the name of the class (ie, 'article')
         #   or 'content'
-        context.update({name: self, 'content': self, 'class': name})
+        context.update({name.name: self.child, 'content': self.child, 'class': name.name})
         if method == 'page':
             self.store_hit()
         return mark_safe(render_to_string(templ, context))
     
-    """  this shit does not work
-    # enable access to generic's properties directlys
-    def __getattr__(self, attr):
-        return getattr(self.generic, attr)
-    
-    def __setattr__(self, attr, value):
-        if hasattr(self, attr):
-            models.Model.__setattr__(self, attr, value)
-        elif hasattr(self.generic, attr):
-            self.generic.__setattr__(self, attr, value)
-        else:
-            models.Model.__setattr__(self, attr, value)
-    """
-    
+
     def delete(self):
-        self.generic.pub_status = -1
-        self.generic.save()
+        self.pub_status = -1
+        self.save()
     
     def store_hit(self):
         # (Eventual) minimum amount of time to wait between stores to the database
@@ -264,9 +194,9 @@ class Content(models.Model):
         HITS_STORE_TIME = 99999
         # The strings we use as cache keys -- should be unique for a given PK
         #  for a given content type on a given day
-        thres_str = str(self.pk) + str(self.generic.content_type) + str(date.today()) + 'thres'
-        time_str = str(self.pk) + str(self.generic.content_type) + str(date.today()) + 'time'
-        hits_str = str(self.pk) + str(self.generic.content_type) + str(date.today()) + 'hits'
+        thres_str = str(self.pk) + str(self.content_type) + str(date.today()) + 'thres'
+        time_str = str(self.pk) + str(self.content_type) + str(date.today()) + 'time'
+        hits_str = str(self.pk) + str(self.content_type) + str(date.today()) + 'hits'
         # Now (we want it only once or else the time the code takes to execute will mess things up)
         now = datetime.now()
         # If the value was already in the cache
@@ -295,11 +225,11 @@ class Content(models.Model):
                 # It was, so increase the interval
                 cache.set(thres_str, cur_threshold + THRESHOLD_JUMP, MIN_DB_STORE_INTERVAL * 3)
             try:
-                ch = ContentHits.objects.get(content_generic = self.generic, date = date.today())
+                ch = ContentHits.objects.get(content = self, date = date.today())
                 ch.hits += cached_hits
                 ch.save()
             except ContentHits.DoesNotExist:
-                ch = ContentHits(content_generic = self.generic)
+                ch = ContentHits(content = self)
                 ch.hits = cached_hits
                 ch.save()
             # Reset a things
@@ -311,64 +241,31 @@ class Content(models.Model):
     def types():
         # returns all ContentType objects whose 
         #    contenttype has parent class Content
-        # TODO: needs MAD caching
-        
-        cts = ContentType.objects.filter(app_label='content')
+        # TODO: refactor this shit        
+        classes = Content.__subclasses__()
+        ctypes = []
+        for clas in classes:
+            ctypes.append(ContentType.objects.get_for_model(clas))
         # HACK: i'm not sure how to grab the parent class (super doesn't work)
-        return [ct for ct in cts if hasattr(ct.model_class(), 'generic')]
-    
-    @classmethod
-    def content_type(cls):
-        return ContentType.objects.get_for_model(cls)
-    
+        #return [ct for ct in cts if hasattr(ct.model_class(), 'content')]
+        return ctypes
+
     @classmethod
     def find_by_date(cls, start, end):
         """
         returns a queryset
         """
+
         lookup = cls._meta.get_latest_by
         q = {}
         if start:
             q[lookup + '__gte'] = start.date()
         if end:
             q[lookup + '__lte'] = end.date()
-        return cls.objects.filter(**q).order_by('-' + lookup)
-    
-    def save(self, *args, **kwargs):
-        # generate a pk if self doesn't have one
-        if not self.pk:
-            super(Content, self).save(*args, **kwargs)
-            kwargs['force_insert'] = False
-        # create a ContentGeneric obj
-        if not self.generic:
-            r = ContentGeneric(content_object=self)
-            r.save()
-            self.generic = r
-        else:
-            self.generic.save()
-        return super(Content, self).save(*args, **kwargs)
-    
-    def identifier(self):
-        """
-        not used anymore (?)
-        """
-        return str(self.pk)
-    
-    @permalink
-    def get_absolute_url(self):
-        i = self.issue.issue_date
-        url_data = [self.content_type().name.replace(' ', '-'), i.year, 
-            i.month, i.day, self.slug]
-        if self.group:
-            url_data = [self.group.type.lower(), 
-                make_url_friendly(self.group.name)] + url_data
-            return ('content_grouped_content', url_data)
-        else:
-            return ('content_content', url_data)
-    
+        return cls.objects.filter(**q).order_by('-' + lookup)    
 
 class ContentHits(models.Model):
-    content_generic = models.ForeignKey(ContentGeneric)
+    content = models.ForeignKey(Content)
     date = models.DateField(auto_now_add=True)
     hits = models.PositiveIntegerField(default=1)
     
@@ -655,8 +552,6 @@ class IssueManager(models.Manager):
     @property
     def live_special(self):
         return self.special.filter(IssueManager.LIVE)
-    
-
 
 class Issue(models.Model):
     """
@@ -732,8 +627,8 @@ class Issue(models.Model):
         if not self.fm_name:
             return None
         s = Section.cached('fm')
-        a = Article.objects.recent.filter(generic__issue=self,
-            rel_content__content_type=Image.content_type(), generic__section=s) \
+        a = Article.objects.recent.filter(issue=self,
+            rel_content__content_type=Image.content_type(), section=s) \
             .distinct()[:1]
         if a: return a[0].main_rel_content
         else: return None
@@ -743,8 +638,8 @@ class Issue(models.Model):
         if not self.arts_name:
             return None
         s = Section.cached('arts')
-        a = Article.objects.recent.filter(generic__issue=self,
-            rel_content__content_type=Image.content_type(), generic__section=s) \
+        a = Article.objects.recent.filter(issue=self,
+            rel_content__content_type=Image.content_type(), section=s) \
             .distinct()[:1]
         if a: return a[0].main_rel_content
         else: return None
@@ -872,16 +767,17 @@ def get_save_path(instance, filename):
 
 
 class ImageManager(ContentManager):
+
     def get_query_set(self):
         s =  super(ImageManager, self).get_query_set()
         # this is a hella ghetto way to make sure image galleries always return
         # images in the right order.  this is probably really inefficient
         if self.__class__.__name__ == 'ManyRelatedManager':
             s = s.order_by('gallerymembership__order')
-        return s
-    
+        return s  
 
 class Image(Content):
+
     """
     An image. Handles attributes about image. Handling of image resizing and
     cropping is done by display() and ImageSpec objects
@@ -904,7 +800,7 @@ class Image(Content):
     # make sure pic is last: get_save_path needs an instance, and if this
     #  attribute is processed first, all the instance attributes will be blank
     pic = SuperImageField('File', max_width=960, upload_to=get_save_path)
-
+    
     objects = ImageManager()
     
     @property
@@ -957,6 +853,8 @@ class Gallery(Content):
         get_latest_by = 'created_on'
         ordering = ['-created_on']
     
+    objects = ContentManager()
+
     @property
     def cover_image(self):
         if not self.images:
@@ -1035,23 +933,25 @@ class Article(Content):
     'omg. lolz.'
     
     """
-    
+        
     BYLINE_TYPE_CHOICES = (
         ('cstaff', 'Crimson Staff Writer'),
     )
+    
+    objects = ContentManager()    
     
     headline = models.CharField(blank=False, max_length=70)
     subheadline = models.CharField(blank=True, null=True, max_length=150)
     byline_type = models.CharField(
         blank=True, null=True, max_length=70, choices=BYLINE_TYPE_CHOICES)
-    text = models.TextField(blank=False)
+    text = models.TextField(blank=False, null = False)
     teaser = models.CharField(
         blank=True, max_length=1000,
         help_text='If left blank, this will be the first sentence ' \
                     'of the article text.'
     )
-    created_on = models.DateTimeField(auto_now_add=True)
-    modified_on = models.DateTimeField(auto_now=True)
+    created_on = models.DateTimeField()
+    modified_on = models.DateTimeField()
     page = models.CharField(blank=True, null=True, max_length=10,
         help_text='Page in the print edition.')
     proofer = models.ForeignKey(
@@ -1060,12 +960,9 @@ class Article(Content):
     sne = models.ForeignKey(
         Contributor, related_name='sned_article_set',
         limit_choices_to={'is_active': True})
-    gallery = models.ForeignKey(Gallery, null=True, blank=True)
-    is_published = models.BooleanField(default=True, null=False, blank=False)
     web_only = models.BooleanField(default=False, null=False, blank=False)
     
-    rel_content = models.ManyToManyField(ContentGeneric,
-        through='ArticleContentRelation', null=True, blank=True)
+    rel_content = models.ManyToManyField(Content, through='ArticleContentRelation', null=True, blank=True, related_name = "rel_content")
     
     
     class Meta:
@@ -1074,6 +971,12 @@ class Article(Content):
                 'Can change articles at any time',),
             )
         get_latest_by = 'created_on'
+
+    def save(self, *args, **kwargs):
+        if not self.id:
+            self.created_on = datetime.today()
+            self.modified_on = datetime.today()
+        super(Article, self).save(*args, **kwargs)
     
     @property
     def long_teaser(self):
@@ -1082,7 +985,7 @@ class Article(Content):
     @property
     def main_rel_content(self):
         r = self.rel_content.all()[:1]
-        r = r[0].content_object if r else None
+        r = r[0] if r else None
         return r
     
     def __unicode__(self):
@@ -1092,8 +995,8 @@ class Article(Content):
         return self.headline
 
 class ArticleContentRelation(models.Model):
-    article = models.ForeignKey(Article)
-    related_content = models.ForeignKey(ContentGeneric)
+    article = models.ForeignKey(Article, related_name = "ar")
+    related_content = models.ForeignKey(Content)
     order = models.IntegerField(blank=True, null=True)
     
     class Meta:

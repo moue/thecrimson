@@ -389,6 +389,7 @@ ol{
 span.thclabel {
 font-family: 'Trebuchet MS', Helvetica, sans-serif;
     font-size: 11px;
+    line-height: normal;
     font-weight:normal;
 
 }

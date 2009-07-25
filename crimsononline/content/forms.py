@@ -11,7 +11,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.contenttypes.models import ContentType
 from django.template.loader import render_to_string
 from django.utils.safestring import mark_safe
-from crimsononline.content.models import Image, Issue, ContentGeneric
+from crimsononline.content.models import Image, Issue, Content
 from crimsononline.common.utils.misc import static_content
 
 class AutoGenSlugWidget(forms.widgets.TextInput):
@@ -174,20 +174,21 @@ class RelatedContentWidget(forms.widgets.HiddenInput):
                 t_url = '../../../%s/%s/' % (t._meta.app_label, t_name.lower())
                 t_id = ContentType.objects.get_for_model(t).pk
                 self.c_types.append({'url': t_url, 'name': t_name, 'id': t_id})
-        
+
         if value:
             # grab all related content objects AND PRESERVE ORDER !!
             objs = []
             for v in value:
-                objs.append(ContentGeneric.objects.get(pk=v))
+                objs.append(Content.objects.get(pk=v))
             
             # construct related content identifiers
-            value = ['%d,%d' % (o.content_type.pk, o.object_id) \
+            value = ['%d' % (o.pk) \
                 for o in objs if o]
             value = ';'.join(value) + ';'
         else:
             # make sure value isn't '', [], or some other fail
             value = None
+
         hidden = super(RelatedContentWidget, self).render(name, value, attrs)
         # account for closeouts before midnight
         today, yesterday = datetime.now() + timedelta(days=1), datetime.now() + timedelta(days=-2)
@@ -200,6 +201,7 @@ class RelatedContentField(forms.CharField):
     """
     The interface for adding / editing related content.
     """
+
     def __init__(self, *args, **kwargs):
         kwargs['widget'] = RelatedContentWidget(
             rel_types=kwargs.pop('rel_types', []),
@@ -209,25 +211,23 @@ class RelatedContentField(forms.CharField):
     
     def clean(self, value):
         """
-        Turns value into a list of ContentGeneric objects
+        Turns value into a list of Content objects
         value is received as a ; delimited set of , delimited pairs
         """
         if not value:
             return []
-        
-        ids = [tuple(v.split(',')) for v in value.split(';') if v]
-        
-        # retrieving ContentGeneric objs MUST preserve their order!!!
+        ids = value.split(';')
+        # retrieving Content objs MUST preserve their order!!!
         objs = []
+        
         for p in ids:
-            objs.append(ContentGeneric.objects.get(
-                content_type__pk=p[0], object_id=p[1]))
-         
+            try:
+                objs.append(Content.objects.get(pk=p[0]))
+            except:
+                pass
         # this is faster? but doesn't work because it doesn't preserve order       
         #q = [Q(content_type__pk=p[0], object_id=p[1]) for p in ids]
         #q = reduce(lambda x, y: x | y, q)
-        #objs = list(ContentGeneric.objects.filter(q))
-        
-        if len(objs) != len(ids):
-            raise Exception('Unexpected ContentGeneric identifiers.')
+        #objs = list(Content.objects.filter(q))
+
         return objs

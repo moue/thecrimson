@@ -2,21 +2,23 @@
 Form things that would be useful across apps and models.  
 This probably means only widgets and fields.
 """
-import datetime
+
 from os.path import split, exists, splitext
 from PIL import Image as pilImage
+from datetime import date
 from django import forms
 from django.contrib import admin
 from django.db.models import ImageField
 from django.db.models.fields.files import ImageFieldFile
 from django.http import Http404
 from django.template.loader import render_to_string
+from crimsononline.content.models import *
 from crimsononline.common.utils.numbers import reduce_fraction
 from crimsononline.common.utils.misc import static_content
 
-MONTHS = [(i, datetime.date(2008, i, 1).strftime('%B')) for i in range(1,13)]
+MONTHS = [(i, date(2009, i, 1).strftime('%B')) for i in range(1,13)]
 DAYS = [(str(i), str(i)) for i in range(1, 32)]
-YEARS = [(str(i), str(i)) for i in range(1900, (datetime.date.today().year) + 1)]
+YEARS = [(str(i), str(i)) for i in range(1900, (date.today().year) + 1)]
 YEARS.reverse()
 
 class DateSelectWidget(forms.widgets.MultiWidget):
@@ -299,6 +301,7 @@ class FbModelChoiceField(forms.CharField):
     @admin_site: the admin site instance.  Required if @add_rel is defined.  
         None by default.
     """
+    
     def __init__(self, *args, **kwargs):
         self.model = kwargs.pop('model')
         # we use 1 and 0, since these get passed into JS, which doesn't

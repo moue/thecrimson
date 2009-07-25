@@ -68,42 +68,49 @@ class ContentGroupAdmin(admin.ModelAdmin):
 admin.site.register(ContentGroup, ContentGroupAdmin)
 
 
-class ContentGenericModelForm(ModelForm):
+class ContentModelForm(ModelForm):
     """
-    Parent class for ContentGeneric model forms.
+    Parent class for Content model forms.
     Doesn't actually work by itself.
     """
+
     tags = forms.ModelMultipleChoiceField(Tag.objects.all(), required=True,
         widget=admin.widgets.RelatedFieldWidgetWrapper(
             admin.widgets.FilteredSelectMultiple('Tags', False),
-            ContentGeneric._meta.get_field('tags').rel,
+            Content._meta.get_field('tags').rel,
             admin.site
         )
     )
     contributors = FbModelChoiceField(required=True, multiple=True,
         url='/admin/content/contributor/search/', model=Contributor,
         labeler=(lambda obj: str(obj)), admin_site=admin.site,
-        add_rel=ContentGeneric._meta.get_field('contributors').rel
+        add_rel=Content._meta.get_field('contributors').rel
     )
+    
     issue = IssuePickerField(label='Issue Date', required=True)
-    slug = forms.SlugField(
-        help_text="This is the text that goes in the URL.  Only letters," \
-        "numbers, _, and - are allowed",
-        widget=AutoGenSlugWidget(attrs={'size': '40'})
+
+    slug = forms.fields.SlugField(widget=AutoGenSlugWidget(
+            url='/admin/content/article/gen_slug/',
+            date_field='#id_issue_input', text_field='#id_text',
+            attrs={'size': '40'},
+        ), help_text="This is the text that goes in the URL.  Only letters," \
+        "numbers, _, and - are allowed"
     )
     section = forms.ModelChoiceField(Section.all(), required=True)
-    priority = forms.ChoiceField(choices=ContentGeneric.PRIORITY_CHOICES, 
+    priority = forms.ChoiceField(choices=Content.PRIORITY_CHOICES, 
         required=False, initial=4, help_text='Higher priority articles are '
         'displayed first. Priority may be positive or negative.'
     )
+    """
     group = FbModelChoiceField(required=False, multiple=False,
         url='/admin/content/contentgroup/search/', model=ContentGroup,
         labeler=(lambda obj: str(obj)), admin_site=admin.site,
-        add_rel=ContentGeneric._meta.get_field('group').rel
-    )    
-    rotatable = forms.BooleanField(required=False, label="Place in rotators?", 
-        initial=False)
-    pub_status = forms.ChoiceField(ContentGeneric.PUB_CHOICES,required=True, 
+        add_rel=Content._meta.get_field('group').rel
+    )   
+    """ 
+    rotatable = forms.ChoiceField(Content.ROTATE_CHOICES, required=True,
+        label="Place in rotators?")
+    pub_status = forms.ChoiceField(Content.PUB_CHOICES,required=True, 
         label="Published Status")
     
     def __init__(self, *args, **kwargs):
@@ -115,62 +122,45 @@ class ContentGenericModelForm(ModelForm):
             initial = {
                 'tags': [t.pk for t in instance.tags.all()],
                 'contributors': [c.pk for c in instance.contributors.all()],
-                'issue': instance.issue.pk,
-                'section': instance.section.pk,
-                'priority': instance.priority,
-                'group': None,
-                'slug': instance.slug,
-                'pub_status': instance.pub_status,
             }
-            if instance.group:
-                initial['group'] = instance.group.pk
             if not kwargs.get('initial', None):
                 kwargs['initial'] = {}
             kwargs['initial'].update(initial)
-        return super(ContentGenericModelForm, self).__init__(*args, **kwargs)
+        return super(ContentModelForm, self).__init__(*args, **kwargs)
     
     def save(self, *args, **kwargs):
-        obj = super(ContentGenericModelForm, self).save(*args, **kwargs)
+        obj = super(ContentModelForm, self).save(*args, **kwargs)
         obj.save()
         obj.tags = self.cleaned_data['tags']
         obj.contributors = self.cleaned_data['contributors']
-        obj.section = self.cleaned_data['section']
-        obj.issue = self.cleaned_data['issue']
-        obj.priority = self.cleaned_data['priority']
-        obj.group = self.cleaned_data['group']
         # can't overwrite slugs
         if not obj.slug:
             obj.slug = self.cleaned_data['slug']
-        obj.pub_status = self.cleaned_data['pub_status']
         return obj
-    
+         
+    model = Content
+  
 
-class ContentGenericAdmin(admin.ModelAdmin):
+class ContentAdmin(admin.ModelAdmin):
+
     """
-    Parent class for ContentGeneric ModelAdmin classes.
+    Parent class for Content ModelAdmin classes.
     Doesn't actually work by itself.
     """
     
+    
     def get_form(self, request, obj=None):
-        f = super(ContentGenericAdmin, self).get_form(request, obj)
+        f = super(ContentAdmin, self).get_form(request, obj)
         if not request.user.is_superuser:
             f.base_fields['pub_status'].widget.choices = ((0, 'Draft'),)
         return f
-
-    def queryset(self, request):
-        if request.user.is_superuser:
-            qs = self.model._default_manager.all_objects()
-        else:
-            qs = self.model._default_manager.draft_objects()
-        
-        return qs
-
+    
     def get_urls(self):
         return patterns('',
             (r'^previews_by_date_tag/$',
                 self.admin_site.admin_view(self.previews_by_date_tag)),
             (r'^gen_slug/$', self.admin_site.admin_view(self.gen_slug)),
-        ) + super(ContentGenericAdmin, self).get_urls()
+        ) + super(ContentAdmin, self).get_urls()
     
     def gen_slug(self, request):
         """
@@ -194,7 +184,7 @@ class ContentGenericAdmin(admin.ModelAdmin):
                     words[wrd] = 1
         words = words.items()
         words.sort(lambda x, y: cmp(y[1], x[1]))
-        words = [w[0] for w in words[:3]]
+        words = [w[0] for w in words[:4]]
         # TODO: make sure the slug is valid
         return HttpResponse('-'.join(words))
     
@@ -212,7 +202,7 @@ class ContentGenericAdmin(admin.ModelAdmin):
         if tags:
             tags = [t for t in tags.split(',') if t]
             q = reduce(lambda x,y: x and y, 
-                [Q(generic__tags__text__icontains=t) for t in tags])
+                [Q(tags__text__icontains=t) for t in tags])
             objs = objs.filter(q)
         p = Paginator(objs, OBJS_PER_REQ).page(page if page else 1)
         
@@ -228,7 +218,13 @@ class ContentGenericAdmin(admin.ModelAdmin):
             if p.has_previous() else 0
         
         return HttpResponse(simplejson.dumps(json_dict))
-    
+
+    def queryset(self, request):
+        if request.user.is_superuser:
+            qs = self.model._default_manager.all_objects()
+        else:
+            qs = self.model._default_manager.draft_objects()
+        return qs
 
 class TagForm(forms.ModelForm):
     ALLOWED_REGEXP = compile(r'[A-Za-z\s]+$')
@@ -382,7 +378,7 @@ class IssueAdmin(admin.ModelAdmin):
 admin.site.register(Issue, IssueAdmin)
 
 
-class ImageAdminForm(ContentGenericModelForm):
+class ImageAdminForm(ContentModelForm):
     class Meta:
         model = Image
     
@@ -394,13 +390,6 @@ class ImageAdminForm(ContentGenericModelForm):
     )
     thumbnail = CropField(required=False, crop_size=Image.SIZE_THUMB,
         display_size=Image.SIZE_STAND
-    )
-    slug = forms.fields.SlugField(widget=AutoGenSlugWidget(
-            url='/admin/content/image/gen_slug/',
-            date_field='#id_issue', text_field='#id_caption',
-            attrs={'size': '40'},
-        ), help_text="This is the text that goes in the URL.  Only letters," \
-        "numbers, _, and - are allowed"
     )
     
     def save(self, *args, **kwargs):
@@ -421,9 +410,9 @@ class ImageAdminForm(ContentGenericModelForm):
                 i.crop_thumb(size, crop_data)
         return i
 
-class ImageAdmin(ContentGenericAdmin):
+class ImageAdmin(ContentAdmin):
     def pub_status_text(self, obj):
-        return ContentGeneric.PUB_CHOICES[obj.generic.pub_status][1]
+        return Content.PUB_CHOICES[obj.pub_status][1]
     pub_status_text.short_description = 'Status'
 
     list_display = ('kicker', 'caption', 'section','issue', 'pub_status_text')
@@ -444,12 +433,11 @@ class ImageAdmin(ContentGenericAdmin):
         f = super(ImageAdmin, self).get_form(request, obj)
         f.base_fields['thumbnail'].widget.image = obj    
         return f
-    
 
 admin.site.register(Image, ImageAdmin)
 
 
-class GalleryForm(ContentGenericModelForm):
+class GalleryForm(ContentModelForm):
     images = SearchModelChoiceField(
         ajax_url='/admin/content/image/previews_by_date_tag/',
         multiple=True, model=Image, label='', clean_to_objs=True
@@ -468,8 +456,6 @@ class GalleryForm(ContentGenericModelForm):
     def save(self, *args, **kwargs):
         imgs = self.cleaned_data.pop('images', [])
         obj = super(GalleryForm, self).save(*args, **kwargs)
-        print(len(obj.images.all()))
-        print ("IS THE NUMBER OF IMAGES")
         obj.images.clear()
         for i, img in enumerate(imgs):
             x = GalleryMembership(order=i, gallery=obj, image=img)
@@ -477,7 +463,7 @@ class GalleryForm(ContentGenericModelForm):
         return obj
     
 
-class GalleryAdmin(ContentGenericAdmin):
+class GalleryAdmin(ContentAdmin):
     fieldsets = (
         (None, {
             'fields': ('title', 'description',),
@@ -489,7 +475,7 @@ class GalleryAdmin(ContentGenericAdmin):
             'fields': ('contributors',),
         }),
         ('Organization', {
-            'fields': ('section', 'issue', 'slug', 'tags', 'priority',),
+            'fields': ('section', 'issue', 'slug', 'tags', 'priority','pub_status'),
         }),
         ('Grouping', {
             'fields': ('group',),
@@ -501,12 +487,10 @@ class GalleryAdmin(ContentGenericAdmin):
     class Media:
         css = {'all': ('css/admin/ImageGallery.css',)}
         js = ('scripts/jquery.js',)
-    
-
 
 admin.site.register(Gallery, GalleryAdmin)
 
-class ArticleForm(ContentGenericModelForm):
+class ArticleForm(ContentModelForm):
     teaser = forms.fields.CharField(
         widget=forms.Textarea(attrs={'rows':'5', 'cols':'67'}),
         required=False, help_text="""
@@ -525,18 +509,6 @@ class ArticleForm(ContentGenericModelForm):
     text = forms.fields.CharField(
         widget=forms.Textarea(attrs={'rows':'50', 'cols':'67'})
     )
-    slug = forms.fields.SlugField(widget=AutoGenSlugWidget(
-            url='/admin/content/article/gen_slug/',
-            date_field='#id_issue', text_field='#id_text',
-            attrs={'size': '40'},
-        ), help_text="This is the text that goes in the URL.  Only letters," \
-        "numbers, _, and - are allowed"
-    )
-    contributors = FbModelChoiceField(required=True, multiple=True,
-        url='/admin/content/contributor/search/', model=Contributor,
-        labeler=(lambda obj: str(obj)), admin_site=admin.site,
-        add_rel=ContentGeneric._meta.get_field('contributors').rel
-    )
     proofer = FbModelChoiceField(required=True, multiple=False,
         url='/admin/content/contributor/search/', model=Contributor,
         labeler=(lambda obj: str(obj)))
@@ -551,26 +523,25 @@ class ArticleForm(ContentGenericModelForm):
         if self.cleaned_data['teaser']:
             return self.cleaned_data['teaser']
         return truncatewords(self.cleaned_data['text'], 20)
-    
+        
     def save(self, *args, **kwargs):
-        print "SAVING ARTICLE"
-        rel = self.cleaned_data.pop('rel_content', [])
+        rel = self.cleaned_data.pop('rel_content',[])
+
         obj = super(ArticleForm, self).save(*args, **kwargs)
-        print(len(obj.rel_content.all()))
         obj.rel_content.clear()
         for i, r in enumerate(rel):
             x = ArticleContentRelation(order=i, article=obj, related_content=r)
             x.save()
         return obj
-    
+
     class Meta:
         model = Article
 
 
-class ArticleAdmin(ContentGenericAdmin):
+class ArticleAdmin(ContentAdmin):
 
     def pub_status_text(self, obj):
-        return ContentGeneric.PUB_CHOICES[obj.generic.pub_status][1]
+        return Content.PUB_CHOICES[obj.pub_status][1]
     pub_status_text.short_description = 'Status'
 
     list_display = ('headline', 'section', 'issue','pub_status_text')
@@ -613,7 +584,7 @@ class ArticleAdmin(ContentGenericAdmin):
             'scripts/framework/jquery.sprintf.js',
         )
     
-    
+    """
     def has_change_permission(self, request, obj=None):
         u = request.user
         if u.is_superuser:
@@ -622,7 +593,8 @@ class ArticleAdmin(ContentGenericAdmin):
         elif obj and not u.has_perm('content.article.can_change_after_timeout'):
             return (datetime.now() - obj.created_on).seconds < (60 * 60)
         return super(ArticleAdmin, self).has_change_permission(request, obj)
-
+    """
+    
     def queryset(self, request):
         u = request.user
         qs = super(ArticleAdmin,self).queryset(request)
@@ -639,9 +611,9 @@ class ArticleAdmin(ContentGenericAdmin):
     def get_urls(self):
         urls = super(ArticleAdmin, self).get_urls()
         urls = patterns('',
-            (r'^rel_content/get/(?P<ct_id>\d+)/(?P<obj_id>\d+)/$',
+            (r'^rel_content/get/(?P<obj_id>\d+)/$',
                 self.admin_site.admin_view(self.get_rel_content)),
-            (r'^rel_content/get/(?P<ct_name>\w+)/(?P<obj_id>\d+)/$',
+            (r'^rel_content/get/(?P<obj_id>\d+)/$',
                 self.admin_site.admin_view(self.get_rel_content)),
             (r'^rel_content/find/(\d+)/(\d\d/\d\d/\d{4})/(\d\d/\d\d/\d{4})/([\w\-,]*)/(\d+)/$',
                 self.admin_site.admin_view(self.find_rel_content)),
@@ -650,25 +622,15 @@ class ArticleAdmin(ContentGenericAdmin):
         ) + urls
         return urls
     
-    def get_rel_content(self, request, obj_id, ct_id=0, ct_name=None):
+    def get_rel_content(self, request, obj_id):
         """
         returns HTML with a Content obj rendered as 'admin.line_item'
-        @ct_id : ContentType pk
         @obj_id : Content pk
-        @ct_name : Name of the ContentType. This overrides @ct_id.
         """
-        if not ct_id:
-            if not ct_name:
-                raise Http404
-            ct = ContentType.objects.get(
-                app_label='content', model=ct_name.lower())
-            ct_id = ct.pk
-        r = get_object_or_404(
-            ContentGeneric, content_type__pk=int(ct_id), object_id=int(obj_id)
-        )
+
+        r = get_object_or_404(Content, pk=int(obj_id))
         json_dict = {
-            'html': mark_safe(r.content_object._render('admin.line_item')),
-            'ct_id': ct_id,
+            'html': mark_safe(r._render('admin.line_item')),
         }
         return HttpResponse(simplejson.dumps(json_dict))
     
@@ -677,12 +639,11 @@ class ArticleAdmin(ContentGenericAdmin):
         returns JSON containing Content objects and pg numbers
         """
         OBJS_PER_REQ = 3
-        
-        cls = get_object_or_404(ContentType, pk=int(ct_id))
-        cls = cls.model_class()
+        cls = ContentType.objects.get(pk=ct_id).model_class()
         st_dt = datetime.strptime(st_dt, '%m/%d/%Y')
         end_dt = datetime.strptime(end_dt, '%m/%d/%Y')
         objs = cls.find_by_date(start=st_dt, end=end_dt)
+        
         p = Paginator(objs, OBJS_PER_REQ).page(page)
         
         json_dict = {}
@@ -690,7 +651,7 @@ class ArticleAdmin(ContentGenericAdmin):
         for obj in p.object_list:
             html = '<li>%s</li>' % obj._render("admin.thumbnail")
             html = render_to_string('content_thumbnail.html', {'objs': [obj]})
-            json_dict['objs'].append([ct_id, obj.pk, html])
+            json_dict['objs'].append([obj.pk, html])
         json_dict['next_page'] = p.next_page_number() if p.has_next() else 0
         json_dict['prev_page'] = p.previous_page_number() \
             if p.has_previous() else 0
@@ -717,7 +678,7 @@ class ArticleAdmin(ContentGenericAdmin):
         tagarticles = []
         newerthan = date.today() + timedelta(days=-365)
         for tag in tags:
-            tagarticles.append(ContentGeneric.objects.filter(issue__issue_date__gte = newerthan).filter(tags__pk = tag))
+            tagarticles.append(Content.objects.filter(issue__issue_date__gte = newerthan).filter(tags__pk = tag))
 
         objstemp = []
         # Iterate through from most to least matches on tags
@@ -739,7 +700,7 @@ class ArticleAdmin(ContentGenericAdmin):
         json_dict['objs'] = []
         for obj in p.object_list:
             html = render_to_string('content_thumbnail.html', {'objs': [obj]})
-            json_dict['objs'].append([obj.generic.content_type.pk, obj.pk, html])
+            json_dict['objs'].append([obj.content_type.pk, obj.pk, html])
         json_dict['next_page'] = p.next_page_number() if p.has_next() else 0
         json_dict['prev_page'] = p.previous_page_number() \
             if p.has_previous() else 0
@@ -762,7 +723,7 @@ class MarkerInline(admin.TabularInline):
     extra = 3
     fields = ('popup_text','lat','lng')
 
-class MapForm(ContentGenericModelForm):
+class MapForm(ContentModelForm):
     map_preview = MapBuilderField(label='Map Preview', required=False)
     
     def __init__(self, *args, **kwargs):
@@ -772,7 +733,7 @@ class MapForm(ContentGenericModelForm):
         model = Map
     
 
-class MapAdmin(ContentGenericAdmin):
+class MapAdmin(ContentAdmin):
     search_fields = ('title','caption',)
     form = MapForm
     

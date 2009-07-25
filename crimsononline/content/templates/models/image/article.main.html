@@ -11,9 +11,9 @@
         {% ifequal image.orientation "tall" %}
             {{image|to_img_tag:"300,"}}
         {% else %}
-            {{image|to_img_tag:"630,"}}
+            {{image|to_img_tag:"STAND"}}
         {% endifequal %}
     </a>
-    <p class="byline">CRIMSON/ {{image.generic.contributors.all|linkify|human_list}}</p>
+    <p class="byline">CRIMSON/ {{image.contributors.all|linkify|human_list}}</p>
     <p class="caption">{{image.caption}}</p>
 {% endblock %}

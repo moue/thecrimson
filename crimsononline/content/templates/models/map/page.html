@@ -39,27 +39,7 @@
         Published: {{ map.issue.issue_date|date:"F d, Y" }}
     </div>
     <p>{{ map.caption }}</p>
-    <div id="tags">
-        {% with map.tags.all as a_tags %}
-            {% if a_tags %}
-                Tags: 
-            {% endif %}
-            {% for tag in a_tags %}
-                <a class="tag" href="{{ tag.get_absolute_url }}">{{ tag.text }}</a>{% ifnotequal forloop.last 1 %}, {% endifnotequal %}
-            {% endfor %}
-        {% endwith %}
-    </div>
-    {% comment %}
-    <div id="disqus_thread"></div>
-    <script type="text/javascript">
-        var disqus_developer = 1;
-    </script>
-    <script type="text/javascript" src="http://disqus.com/forums/crimson-alpha/embed.js"></script>
-    <noscript>
-    <a href="http://crimson-alpha.disqus.com/?url=ref">View the discussion thread.</a>
-    </noscript>
-    <a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
-    {% endcomment %}
+    {{block.super}}
 {% endblock %}
 
 {% block sidebar %}

@@ -16,15 +16,11 @@ var set_related_content = function(id_prefix, types){
             });
     };
     
-    var add_content = function(ct_id, pk, ct_name){
-        if(!ct_id){
-            ct_id = ct_name
-        }
-        var url = '/admin/content/article/rel_content/get/' + ct_id + '/' + pk + '/';
+    var add_content = function(pk){
+        var url = '/admin/content/article/rel_content/get/' + pk + '/';
         $.getJSON(url, function(json){
             // append value to field
-            ct_id = json.ct_id;
-            $(hidden).val($(hidden).val() + ct_id + ',' + pk + ';');
+            $(hidden).val($(hidden).val() + (pk + ';'));
             // inject into DOM
             json.html = '<li>' + json.html + '</li>';
             var target = $(p + '_wrapper .rel_objs');
@@ -32,7 +28,6 @@ var set_related_content = function(id_prefix, types){
                 $(json.html)
                     .appendTo(target)
                     .hide()
-                    .data('rel_ct_id', ct_id)
                     .data('rel_pk', pk)
                     .slideDown('normal')
             );
@@ -40,7 +35,7 @@ var set_related_content = function(id_prefix, types){
     };
     
     var choose_content = function(){
-        add_content($(this).data('rel_ct_id'), $(this).data('rel_pk'));
+        add_content($(this).data('rel_pk'));
         $(this)
             .css('cursor', '')
             .css('background-color', '')
@@ -50,7 +45,7 @@ var set_related_content = function(id_prefix, types){
     
     var remove_content = function(ele){
         // remove it from the field
-        var id = $(ele).data('rel_ct_id') + ',' + $(ele).data('rel_pk');
+        var id = $(ele).data('rel_pk');
         var vals = $(hidden).val().split(';');
         var str = '';
         for(var i = 0; i < vals.length; i++){
@@ -67,7 +62,7 @@ var set_related_content = function(id_prefix, types){
         
         // unfade it in the choices area
         $(p + '_wrapper .ajax_search .results li').each(function(){
-            if(id == $(this).data('rel_ct_id') + ',' + $(this).data('rel_pk')){
+            if(id == $(this).data('rel_pk')){
                 $(this)
                     .fadeTo('normal', 1)
                     .css('cursor', 'pointer')
@@ -82,8 +77,8 @@ var set_related_content = function(id_prefix, types){
     };
     
     // returns true if the content has already been selected
-    var already_related = function(ct_id, pk){
-        var id = ct_id + ',' + pk
+    var already_related = function(pk){
+        var id = pk
         var arr = $(hidden).val().split(';')
         for(var i = 0; i < arr.length; i++){
             if(arr[i] && id == arr[i]) return true;
@@ -96,11 +91,10 @@ var set_related_content = function(id_prefix, types){
         var target = $(p + '_wrapper .ajax_search .results');
         $(target).empty();
         $.each(data.objs, function(){
-            var ele = $(this[2]);
+            var ele = $(this[1]);
             $(ele)
                 .appendTo(target)
-                .data('rel_ct_id', this[0])
-                .data('rel_pk', this[1])
+                .data('rel_pk', this[0])
                 .one('click', choose_content)
                 .css('cursor', 'pointer')
                 .hover(function(){
@@ -108,7 +102,7 @@ var set_related_content = function(id_prefix, types){
                 }, function(){
                     $(this).css('background-color', '');
                 });
-            if(already_related(this[0], this[1])){ 
+            if(already_related(this[0])){ 
                 $(ele)
                     .css('cursor', '')
                     .unbind()
@@ -157,7 +151,7 @@ var set_related_content = function(id_prefix, types){
             }
         }
         if(matched){
-            add_content(0, newId, matched);
+            add_content(newId);
             win.close();
         } else {
             return originalDismissAddAnotherPopup(win, newId, newRepr);
@@ -169,7 +163,7 @@ var set_related_content = function(id_prefix, types){
         // reset value of hidden on sort
         $(hidden).val('');
         $(p + '_wrapper .rel_objs li').each(function(){
-            var str = $(this).data('rel_ct_id')+','+$(this).data('rel_pk')+';';
+            var str = $(this).data('rel_pk')+';';
             $(hidden).val($(hidden).val() + str);
         });
     }});
@@ -179,8 +173,7 @@ var set_related_content = function(id_prefix, types){
     $(p + '_wrapper .rel_objs li').each(function(i){
         id = ids[i].split(',')
         $(this)
-            .data('rel_ct_id', id[0])
-            .data('rel_pk', id[1]);
+            .data('rel_pk', id[0]);
         bind_remove(this);
     });
     

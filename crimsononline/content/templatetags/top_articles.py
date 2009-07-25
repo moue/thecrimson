@@ -17,7 +17,7 @@ try:
     from googleanalytics import Connection
 except:
     Connection = None
-from crimsononline.content.models import Image, Article, Content, ContentGeneric, Section, Contributor, Tag
+from crimsononline.content.models import Image, Article, Content, Section, Contributor, Tag
 from crimsononline.urls import CONTENT_URL_RE, CGROUP_URL_RE
 
 D_USER_KEY = "vabqI2su93P1wVF3Ls9kXhXhRggV7y2ylokjq137yPAz47cY5dDMHgUA2QlZoWNE"
@@ -28,7 +28,7 @@ GA_LOGIN = "crimsonanalytics@gmail.com"
 GA_PASS = "andylei:male"
 GA_AID = "509545"
 
-# Below falues roughly based on values of 1/log(days + 1.5)
+# Below values roughly based on values of 1/log(days + 1.5)
 # Last day
 TP1_FACTOR = 3.6
 # Last week
@@ -69,7 +69,7 @@ def safe_resolve(url, resolver):
 def call_view(view, args):
     try:
         return view(*([None] + list(args)))
-    except ContentGeneric.DoesNotExist:
+    except Content.DoesNotExist:
         return None
     
 class TopArticlesNode(template.Node):
@@ -96,13 +96,13 @@ class TopArticlesNode(template.Node):
                 return ''
             if self.specifier.__class__ == Section:
                 tableStr = ""
-                limitStr = " AND content_contentgeneric.section_id = " + str(self.specifier.id)
+                limitStr = " AND content_section_id = " + str(self.specifier.id)
             elif self.specifier.__class__ == Contributor:
-                tableStr = ", content_contentgeneric_contributors"
-                limitStr = " AND content_contentgeneric_contributors.contributor_id = " + str(self.specifier.id) + " AND content_contentgeneric_contributors.contentgeneric_id = content_contentgeneric.id"
+                tableStr = ", content_contributors"
+                limitStr = " AND content_contributors.contributor_id = " + str(self.specifier.id) + " AND content_contributors.id = content.id"
             elif self.specifier.__class__ == Tag:
-                tableStr = ", content_contentgeneric_tags"
-                limitStr = " AND content_contentgeneric_tags.tag_id = " + str(self.specifier.id) + " AND content_contentgeneric_tags.contentgeneric_id = content_contentgeneric.id"
+                tableStr = ", content_tags"
+                limitStr = " AND content_tags.tag_id = " + str(self.specifier.id) + " AND content_tags.id = content.id"
             else:
                 raise template.TemplateSyntaxError, "The TopArticles tag can only take a section, contributor, or tag argument (%r passed)" % self.specifier.__class__
         else:
@@ -112,11 +112,13 @@ class TopArticlesNode(template.Node):
         # Oh, a real comment in case someone comes upon this later: We're selecting article ID, content type ID, and a computed field called "hitindex"
         # which will eventually use log() for a better curve.  This ages articles' hits to reduce freshness.  Then it sorts by hitindex and returns the top 5.
         # TODO: Fix this to use proper decay when we switch to a real SQL server
-        cursor.execute("SELECT DISTINCT content_article.id, content_contentgeneric.content_type_id, SUM(content_contenthits.hits) AS hitnum FROM content_article, " \
-                       "content_contentgeneric, content_contenthits" + tableStr + " WHERE content_contentgeneric.object_id = content_article.id AND content_contenthits.content_generic_id " \
-                       "= content_contentgeneric.id AND content_contenthits.date > date('now', '-7 days')" + limitStr + " GROUP BY content_contenthits.content_generic_id ORDER BY hitnum DESC LIMIT 5")
+        sqlstatement = "SELECT DISTINCT content_article.content_ptr_id, SUM(content_contenthits.hits) AS hitnum FROM content_article, " \
+                       "content_content, content_contenthits" + tableStr + " WHERE content_content.id = content_article.content_ptr_id AND content_contenthits.content_id " \
+                       "= content_content.id AND content_contenthits.date > date('now', '-7 days')" + limitStr + " GROUP BY content_contenthits.content_id ORDER BY hitnum DESC LIMIT 5"
+        print sqlstatement
+        cursor.execute(sqlstatement)
         mostreadarticles = cursor.fetchall()
-        mostreadarticles = [(ContentType.objects.get(pk=x[1])).get_object_for_this_type(pk=x[0]) for x in mostreadarticles]
+        mostreadarticles = [Content.objects.get(pk=x[0]) for x in mostreadarticles]
         
         # TODO: uncomment / fix this.  it calls disqus every time, which is annoying
         mostcommentedarticles = None # delete this when below is uncommented

@@ -1,7 +1,7 @@
 from django import template
 from django.template import defaultfilters as filter
 from django.utils.safestring import mark_safe
-from crimsononline.content.models import Image, Map, Article, Content, ContentGeneric, Marker
+from crimsononline.content.models import Image, Map, Article, Content, Marker
 from crimsononline.common.templatetags.common import linkify, human_list
 from crimsononline.common.forms import size_spec_to_size
 
@@ -13,8 +13,6 @@ def render(content, method):
     if not content:
         return ''
     try:
-        if isinstance(content, ContentGeneric):
-            content = content.content_object
         return mark_safe(content._render(method))
     except Exception, err:
         print err, content, method

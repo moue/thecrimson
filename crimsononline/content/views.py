@@ -36,10 +36,9 @@ def get_content_obj(request, ctype, year, month, day, slug, content_group=None):
     Retrieves a content object from the database (no validation of params)
     """
     ctype = ctype.replace('-', ' ') # convert from url
-    c = ContentGeneric.objects.get(content_type__name=ctype, 
-        issue__issue_date=date(int(year), int(month), int(day)), slug=slug
+    c = Content.objects.get(issue__issue_date=date(int(year), int(month), int(day)), slug=slug
     )
-    return c.content_object
+    return c
     
 def get_grouped_content(request, gtype, gname, ctype, year, month, day, slug):
     """
@@ -87,7 +86,7 @@ def index(request, m=None, d=None, y=None):
             
     # Filter stories if we have a past issue date
     if(dt != None):
-        stories = stories.filter(generic__issue__issue_date__lte = dt)
+        stories = stories.filter(issue__issue_date__lte = dt)
     else:
         m = date.today().month
         d = date.today().day
@@ -96,8 +95,8 @@ def index(request, m=None, d=None, y=None):
     dict = {}
     
     # right now, this includes deleted stuff. this query already needed to be reworked, but now tha'ts even more important
-    dict['rotate'] = stories.filter(
-        rel_content__content_type=Image.content_type()).distinct()[:4]
+    #dict['rotate'] = stories.filter(
+    #    rel_content__content_type=Image.content_type()).distinct()[:4]
     
     dict['past_issues'] = DateSelectWidget().render(name="past_issues", value=[m, d, y])
     dict['nav'] = 'index'
@@ -142,10 +141,11 @@ def writer(request, pk, f_name, m_name, l_name,
 
 def tag(request, tag, section_str='', type_str='', page=1):
     tag = get_object_or_404(Tag, text=tag.replace('_', ' '))
-    content = ContentGeneric.objects.filter(tags=tag)
+    content = Content.objects.filter(tags=tag)
     
     # top articles
-    articles = ContentGeneric.objects.type(Article).filter(tags=tag)
+    #articles = Content.objects.type(Article).filter(tags=tag)
+    articles = Article.objects.filter(tags=tag)
     featured_articles = list(articles.filter(
         issue__issue_date__gte=last_month()).order_by('-priority')[:5])
     if len(featured_articles) < 5:
@@ -156,19 +156,18 @@ def tag(request, tag, section_str='', type_str='', page=1):
         featured_articles += list(articles.filter( 
             issue__issue_date__lte=last_year()).order_by('-priority')[:5])
     featured_articles = featured_articles[:5]
-    
     f = filter_helper(content, section_str, type_str, 
         tag.get_absolute_url())
     
     # top writers (contributors that have the most content with this tag)
     cursor = connection.cursor()
-    cursor.execute("SELECT content_contentgeneric_contributors.contributor_id, " \
-       "count(content_contentgeneric.object_id) as objcount FROM content_contentgeneric, " \
-       "content_contentgeneric_contributors, content_contentgeneric_tags " \
-       "WHERE content_contentgeneric_contributors.contentgeneric_id = content_contentgeneric.id " \
-       "AND content_contentgeneric_tags.contentgeneric_id = content_contentgeneric.id " \
-       "AND content_contentgeneric_tags.tag_id = " + str(tag.pk) + " " \
-       "GROUP BY content_contentgeneric_contributors.contributor_id ORDER BY objcount DESC LIMIT 5")
+    cursor.execute("SELECT content_content_contributors.contributor_id, " \
+       "count(content_content.id) as objcount FROM content_content, " \
+       "content_content_contributors, content_content_tags " \
+       "WHERE content_content_contributors.content_id = content_content.id " \
+       "AND content_content_tags.content_id = content_content.id " \
+       "AND content_content_tags.tag_id = " + str(tag.pk) + " " \
+       "GROUP BY content_content_contributors.contributor_id ORDER BY objcount DESC LIMIT 5")
     rows = cursor.fetchall()
     writers = Contributor.objects.filter(pk__in=[r[0] for r in rows])
     contrib_count = dict(rows)
@@ -182,10 +181,10 @@ def tag(request, tag, section_str='', type_str='', page=1):
     #  select the tags for which there are the most objects that have both 
     #  this tag and that tag within some timeframe
     cursor.execute("""SELECT cgt2.tag_id, 
-        count(cgt2.contentgeneric_id) AS o_count  
-        FROM content_contentgeneric_tags AS cgt1 
-        JOIN content_contentgeneric_tags AS cgt2
-        ON cgt1.contentgeneric_id=cgt2.contentgeneric_id 
+        count(cgt2.content_id) AS o_count  
+        FROM content_content_tags AS cgt1 
+        JOIN content_content_tags AS cgt2
+        ON cgt1.content_id=cgt2.content_id 
         WHERE cgt1.tag_id = %(pk)i AND cgt2.tag_id != %(pk)i 
         GROUP BY cgt2.tag_id ORDER BY o_count DESC LIMIT 15;""" % {'pk': tag.pk}
     )
@@ -199,7 +198,7 @@ def tag(request, tag, section_str='', type_str='', page=1):
     
     d = paginate(f.pop('content'), page, 5)
     d.update({'tag': tag, 'url': tag.get_absolute_url(), 'tags': tags,
-        'featured': featured_articles, 'top_contributors': writers,})
+        'featured': [], 'top_contributors': writers,})
     d.update(f)
     
     t = 'tag.html'
@@ -211,9 +210,9 @@ def tag(request, tag, section_str='', type_str='', page=1):
 def section_news(request):
     nav = 'news'
     section = Section.cached(nav)
-    stories = Article.objects.recent.filter(generic__section=section)
-    rotate = stories.filter(
-        rel_content__content_type=Image.content_type()).distinct()[:4]
+    stories = Article.objects.recent.filter(section=section)
+    rotate = []#stories.filter(
+    #rel_content__content_type=Image.content_type()).distinct()[:4]
     stories = stories.exclude(pk__in=[c.pk for c in rotate])[:15]
     
     series = ContentGroup.objects.filter(section=section) \
@@ -226,10 +225,10 @@ def section_news(request):
 def section_opinion(request):
     nav = 'opinion'
     section = Section.cached(nav)
-    stories = Article.objects.recent.filter(generic__section=section)
-    rotate = ContentGeneric.objects.recent \
-        .filter(content_type=Image.content_type()) \
-        .filter(section=section)[:4]
+    stories = Article.objects.recent.filter(section=section)
+    rotate = []#Content.objects.recent \
+    #.filter(content_type=Image.content_type()) \
+    #.filter(section=section)[:4]
     columns = ContentGroup.objects.filter(section=section, active=True,
         type='column').annotate(recent=Max('content__issue__issue_date'))
     return render_to_response('sections/opinion.html', locals())
@@ -237,14 +236,22 @@ def section_opinion(request):
 def section_fm(request):
     nav = 'fm'
     section = Section.cached(nav)
-    stories = Article.objects.recent.filter(generic__section=section)
-    scrutiny = stories.filter(generic__tags__text='scrutiny')[0]
-    endpaper = stories.filter(generic__tags__text='endpaper')[0]
-    ex = [scrutiny.pk, endpaper.pk]
-    rotate = stories.filter(rel_content__content_type=Image.content_type()) \
-        .distinct()[:4]
-    itm = stories.filter(generic__tags__text='itm')[:3]
-    ftm = stories.filter(generic__tags__text='ftm')[:9]
+    stories = Article.objects.recent.filter(section=section)
+    scrutiny_key = None
+    endpaper_key = None
+    try:
+        scrutiny_key = stories.filter(tags__text='scrutiny')[0].pk
+    except:
+        pass
+    try:
+        endpaper_key = stories.filter(tags__text='endpaper')[0].pk
+    except:
+        pass
+    ex = [scrutiny_key, endpaper_key]
+    rotate = []#stories.filter(rel_content__content_type=Image.content_type()) \
+    #.distinct()[:4]
+    itm = stories.filter(tags__text='itm')[:3]
+    ftm = stories.filter(tags__text='ftm')[:9]
     issues = Issue.objects.exclude(fm_name=None).exclude(fm_name='')[:3]
     columns = ContentGroup.objects.filter(section=section, active=True,
         type='column').annotate(recent=Max('content__issue__issue_date'))
@@ -253,14 +260,14 @@ def section_fm(request):
 def section_arts(request):
     nav = 'arts'
     section = Section.cached(nav)
-    stories = Article.objects.recent.filter(generic__section=section)
-    rotate = stories.filter(rel_content__content_type=Image.content_type()) \
-        .distinct()[:4]
+    stories = Article.objects.recent.filter(section=section)
+    rotate = []#stories.filter(rel_content__content_type=Image.content_type()) \
+    #    .distinct()[:4]
     stories = stories.exclude(pk__in=[s.pk for s in rotate])
-    books = stories.filter(generic__tags__text='books')[:4]
-    oncampus = stories.filter(generic__tags__text='on campus')[:6]
-    music = stories.filter(generic__tags__text='music')[:2]
-    visualarts = stories.filter(generic__tags__text='visual arts')[:2]
+    books = stories.filter(tags__text='books')[:4]
+    oncampus = stories.filter(tags__text='on campus')[:6]
+    music = stories.filter(tags__text='music')[:2]
+    visualarts = stories.filter(tags__text='visual arts')[:2]
     issues = Issue.objects.exclude(arts_name=None).exclude(arts_name='')[:3]
     reviews = {}
     for t in ['movie', 'music', 'book']:
@@ -272,10 +279,8 @@ def section_photo(request):
         page = request.GET.get('page', 1)
     else: raise Http404
     nav = 'photo'
-    content = ContentGeneric.objects.recent.exclude(
-        content_type=Image.content_type()).exclude(
-        content_type=Article.content_type())[:8]
-    
+    content = Gallery.objects.recent
+        
     d = paginate(content, page, 6)
     d.update({'nav': nav})
     
@@ -287,9 +292,9 @@ def section_photo(request):
 def section_sports(request):
     nav = 'sports'
     section = Section.cached(nav)
-    stories = Article.objects.recent.filter(generic__section=section)
-    rotate = stories.filter(rel_content__content_type=Image.content_type()) \
-        .distinct()[:4]
+    stories = Article.objects.filter(section=section)
+    rotate = []#stories.filter(rel_content__content_type=Image.content_type()) \
+    #    .distinct()[:4]
     stories = stories.exclude(pk__in=[r.pk for r in rotate])
     return render_to_response('sections/sports.html', locals())
 
@@ -304,12 +309,12 @@ def iphone(request, s = None):
         section = Section.cached(s)
     except KeyError:
         raise Http404
-    stories = Article.objects.recent.filter(generic__section=section)[:15]
+    stories = Article.objects.recent.filter(section=section)[:15]
     
     objs = []
     for story in stories:
         curdict = {}
-        curdict['date_and_time'] = story.generic.issue.issue_date.strftime("%I:%M %p, %B %d, %Y").upper()
+        curdict['date_and_time'] = story.issue.issue_date.strftime("%I:%M %p, %B %d, %Y").upper()
         curdict['headline'] = story.headline
         curdict['subhead'] = story.subheadline
         curdict['article_text'] = story.text
@@ -423,9 +428,10 @@ def filter_helper(qs, section_str, type_str, url_base):
 
 def top_articles(section, dt = None):
     """returns the most recent articles from @section"""
-    stories = Article.objects.recent.filter(generic__section__name=section)
+    stories = Article.objects.filter(section__name=section)
+
     if(dt != None):
-        stories = stories.filter(generic__issue__issue_date__lte = dt)
+        stories = stories.filter(issue__issue_date__lte = dt)
     return stories
 
 def last_month():
