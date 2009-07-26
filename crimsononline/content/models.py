@@ -26,17 +26,6 @@ from crimsononline.common.storage import OverwriteStorage
 from crimsononline.common.utils.strings import \
     make_file_friendly, make_url_friendly
 
-# Automatically returns items as their child class (which should be cached)
-class SubclassingQuerySet(QuerySet):
-    def __getitem__(self, k):
-        result = super(SubclassingQuerySet, self).__getitem__(k)
-        if isinstance(result, models.Model) :
-            return result.child
-        else :
-            return result
-    def __iter__(self):
-        for item in super(SubclassingQuerySet, self).__iter__():
-            yield item.child
 
 class ContentManager(models.Manager):
     """ 
@@ -46,11 +35,13 @@ class ContentManager(models.Manager):
     """
 
     def get_query_set(self):
-        return SubclassingQuerySet(self.model).filter(pub_status=1)
+        return QuerySet(self.model).filter(pub_status=1)
     def all_objects(self):
-        return SubclassingQuerySet(self.model).all()
+        return QuerySet(self.model).all()
     def draft_objects(self):
-        return SubclassingQuerySet(self.model).filter(pub_status=0)
+        return QuerySet(self.model).filter(pub_status=0)
+    def deleted_objects(self):
+        return QuerySet(self.model).filter(pub_status=-1)
 
     @property
     def recent(self):
@@ -65,10 +56,6 @@ class ContentManager(models.Manager):
         TODO: order by f(priority, days_old)
         """
         pass
-
-    def get(self, *args, **kwargs):
-        # return child
-        return self.all_objects().get(*args, **kwargs).child
 
         
 
@@ -986,7 +973,8 @@ class Article(Content):
     def main_rel_content(self):
         r = self.rel_content.all()[:1]
         r = r[0] if r else None
-        return r
+        # need to return child, so that subclass methods can be called
+        return r.child
     
     def __unicode__(self):
         return self.headline

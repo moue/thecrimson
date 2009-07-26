@@ -51,6 +51,7 @@ def to_img_tag(img, size_spec):
     empty or omitted constraints are not binding
     any empty or zero crop parameter = no cropping
     """
+    
     disp_url = img_url(img, size_spec)
     if hasattr(img, 'kicker'):
         k = filter.force_escape(img.kicker)
