@@ -5,6 +5,7 @@ from datetime import datetime, time, date
 from re import compile, match
 from string import letters, digits
 from PIL import Image as pilImage
+
 from django.conf import settings
 from django.db import models
 from django.db.models import permalink, Q
@@ -20,6 +21,7 @@ from django.forms import ModelForm
 from django.db.models.query import QuerySet
 from django.http import Http404
 
+from crimsononline.common.caching import funcache
 from crimsononline.common.forms import \
     MaxSizeImageField, SuperImageField
 from crimsononline.common.storage import OverwriteStorage
@@ -35,33 +37,33 @@ class ContentManager(models.Manager):
     """
 
     def get_query_set(self):
-        return QuerySet(self.model).filter(pub_status=1)
+        return self.all_objects().filter(pub_status=1)
+    
     def all_objects(self):
-        return QuerySet(self.model).all()
+        return super(ContentManager, self).get_query_set()
+    
+    def admin_objects(self):
+        return self.all_objects().exclude(pub_status=-1)
+    
     def draft_objects(self):
-        return QuerySet(self.model).filter(pub_status=0)
+        return self.all_objects().filter(pub_status=0)
+    
     def deleted_objects(self):
-        return QuerySet(self.model).filter(pub_status=-1)
-
+        return self.all_objects().filter(pub_status=-1)
+    
     @property
     def recent(self):
-        return self.get_query_set() \
-            .order_by('-issue__issue_date', 'priority')
-            #.exclude(issue__web_publish_date__gt=datetime.now()) \
-
+        return self.get_query_set().order_by('-issue__issue_date', 'priority')
+    
     @property
     def prioritized(self):
-
-        """
-        TODO: order by f(priority, days_old)
-        """
+        """TODO: order by f(priority, days_old)"""
         pass
+    
 
-        
 
 class Content(models.Model):
-    """
-    Base class for all content.
+    """Base class for all content.
     
     Has some content rendering functions and property access methods.
     """
@@ -90,7 +92,8 @@ class Content(models.Model):
         (3, 'Rotate on front only')
     )
 	
-    contributors = models.ManyToManyField('Contributor', null=True, related_name='content')
+    contributors = models.ManyToManyField('Contributor', null=True, 
+        related_name='content')
     tags = models.ManyToManyField('Tag', null=True, related_name='content')
     issue = models.ForeignKey('Issue', null=True, related_name='content')
     slug = models.SlugField(max_length=70, help_text="""
@@ -115,9 +118,13 @@ class Content(models.Model):
 
     @property
     def child(self):
+        """Return the instance of the child class.
+        
+        If c (an instance of Content) was an article, c.child would be
+        equivalent to c.article
+        """
         return getattr(self, self.content_type.model_class().__name__.lower())
     
-
     class Meta:
         unique_together = (
             ('issue', 'slug'),
@@ -136,24 +143,21 @@ class Content(models.Model):
             return ('content_grouped_content', url_data)
         else:
             return ('content_content', url_data)
-
-    # TODO: excludes deleted objects
+    
     objects = ContentManager()
     
     def _render(self, method, context={}):
-        """
-        renders in different ways, depending on method
-        casts objects as leaf class
+        """Render to some kind of string (usually HTML), depending on method
         
-        @method : could be something like, 'admin' or 'search'
-        @context : gets injected into template (optional)
+        Always uses the child class
+        
+        method -- Specification for the render; it could be something like, 
+            'admin' or 'search'
+        context -- gets injected into template (optional)
         """
-        if self.pub_status != 1:
-            raise Http404
-            
         name = self.content_type
         templ = 'models/%s/%s.html' % (name, method)
-
+        
         # can access self with either the name of the class (ie, 'article')
         #   or 'content'
         context.update({name.name: self.child, 'content': self.child, 'class': name.name})
@@ -161,12 +165,17 @@ class Content(models.Model):
             self.store_hit()
         return mark_safe(render_to_string(templ, context))
     
-
     def delete(self):
         self.pub_status = -1
         self.save()
     
+    # TODO: refactor / simplify store_hit
     def store_hit(self):
+        """Store a pageview for this item using lazy storage.
+        
+        Don't store every hit, just a random sampling of the hits, and only
+        hit the database in batches.
+        """
         # (Eventual) minimum amount of time to wait between stores to the database
         MIN_DB_STORE_INTERVAL = 1
         # Base number of hits to wait for before storing to the DB
@@ -222,34 +231,27 @@ class Content(models.Model):
             # Reset a things
             cache.set(time_str, now, MIN_DB_STORE_INTERVAL * 3)
             cache.delete(hits_str)
-        
     
     @staticmethod
+    @funcache(3600)
     def types():
-        # returns all ContentType objects whose 
-        #    contenttype has parent class Content
-        # TODO: refactor this shit        
-        classes = Content.__subclasses__()
-        ctypes = []
-        for clas in classes:
-            ctypes.append(ContentType.objects.get_for_model(clas))
-        # HACK: i'm not sure how to grab the parent class (super doesn't work)
-        #return [ct for ct in cts if hasattr(ct.model_class(), 'content')]
-        return ctypes
-
+        """Return all ContentType objects with parent Content"""
+        return [ContentType.objects.get_for_model(cls) 
+                for cls in Content.__subclasses__()]
+    
     @classmethod
     def find_by_date(cls, start, end):
-        """
-        returns a queryset
-        """
-
+        """Return a queryset between the two dates"""
+        
         lookup = cls._meta.get_latest_by
         q = {}
         if start:
             q[lookup + '__gte'] = start.date()
         if end:
             q[lookup + '__lte'] = end.date()
-        return cls.objects.filter(**q).order_by('-' + lookup)    
+        return cls.objects.filter(**q).order_by('-' + lookup)
+    
+
 
 class ContentHits(models.Model):
     content = models.ForeignKey(Content)

@@ -26,6 +26,7 @@ class Command(NoArgsCommand):
         
         # make some new articles
         try:
+            raise Exception
             u = urllib.urlopen('http://www.gutenberg.org/files/61/61.txt')
             text = u.readlines()
             text = [t for t in text if t]

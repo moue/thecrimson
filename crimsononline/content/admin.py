@@ -108,36 +108,16 @@ class ContentModelForm(ModelForm):
         add_rel=Content._meta.get_field('group').rel
     )   
     """ 
-    rotatable = forms.ChoiceField(Content.ROTATE_CHOICES, required=True,
-        label="Place in rotators?")
-    pub_status = forms.ChoiceField(Content.PUB_CHOICES,required=True, 
-        label="Published Status")
-    
-    def __init__(self, *args, **kwargs):
-        instance = kwargs.get('instance', None)
-        # since tags and contributor aren't normal Django fields, admin
-        #  won't load their values by default. override that behavior
-        #  by sticking the values into the 'initial' arg
-        if instance:
-            initial = {
-                'tags': [t.pk for t in instance.tags.all()],
-                'contributors': [c.pk for c in instance.contributors.all()],
-            }
-            if not kwargs.get('initial', None):
-                kwargs['initial'] = {}
-            kwargs['initial'].update(initial)
-        return super(ContentModelForm, self).__init__(*args, **kwargs)
+    #rotatable = forms.ChoiceField(Content.ROTATE_CHOICES, required=True,
+    #    label="Place in rotators?")
+    #pub_status = forms.ChoiceField(Content.PUB_CHOICES,required=True, 
+    #    label="Published Status")
     
     def save(self, *args, **kwargs):
-        obj = super(ContentModelForm, self).save(*args, **kwargs)
-        obj.save()
-        obj.tags = self.cleaned_data['tags']
-        obj.contributors = self.cleaned_data['contributors']
-        # can't overwrite slugs
-        if not obj.slug:
-            obj.slug = self.cleaned_data['slug']
-        return obj
-         
+        # TODO: protect existing slugs from being overwritten.  This is 
+        # already enforced in the UI, but additional enforcement would be good
+        return super(ContentModelForm, self).save(*args, **kwargs)
+    
     model = Content
   
 
@@ -221,10 +201,10 @@ class ContentAdmin(admin.ModelAdmin):
 
     def queryset(self, request):
         if request.user.is_superuser:
-            qs = self.model._default_manager.all_objects()
+            return self.model._default_manager.all_objects()
         else:
-            qs = self.model._default_manager.draft_objects()
-        return qs
+            return self.model._default_manager.admin_objects()
+    
 
 class TagForm(forms.ModelForm):
     ALLOWED_REGEXP = compile(r'[A-Za-z\s]+$')
@@ -409,13 +389,15 @@ class ImageAdminForm(ContentModelForm):
                 crop_data = [int(x * scale_ratio) for x in data]
                 i.crop_thumb(size, crop_data)
         return i
+    
 
 class ImageAdmin(ContentAdmin):
     def pub_status_text(self, obj):
         return Content.PUB_CHOICES[obj.pub_status][1]
+    
     pub_status_text.short_description = 'Status'
-
-    list_display = ('kicker', 'caption', 'section','issue', 'pub_status_text')
+    
+    list_display = ('kicker', 'section', 'issue', 'pub_status_text',)
     search_fields = ('kicker', 'caption',)
     ordering = ('-id',)
     
@@ -433,6 +415,7 @@ class ImageAdmin(ContentAdmin):
         f = super(ImageAdmin, self).get_form(request, obj)
         f.base_fields['thumbnail'].widget.image = obj    
         return f
+    
 
 admin.site.register(Image, ImageAdmin)
 
@@ -487,6 +470,7 @@ class GalleryAdmin(ContentAdmin):
     class Media:
         css = {'all': ('css/admin/ImageGallery.css',)}
         js = ('scripts/jquery.js',)
+    
 
 admin.site.register(Gallery, GalleryAdmin)
 
@@ -523,7 +507,7 @@ class ArticleForm(ContentModelForm):
         if self.cleaned_data['teaser']:
             return self.cleaned_data['teaser']
         return truncatewords(self.cleaned_data['text'], 20)
-        
+    
     def save(self, *args, **kwargs):
         rel = self.cleaned_data.pop('rel_content',[])
 
@@ -533,7 +517,7 @@ class ArticleForm(ContentModelForm):
             x = ArticleContentRelation(order=i, article=obj, related_content=r)
             x.save()
         return obj
-
+    
     class Meta:
         model = Article
 
@@ -561,7 +545,8 @@ class ArticleAdmin(ContentAdmin):
             'fields': ('issue', 'section', 'page',),
         }),
         ('Web', {
-            'fields': ('slug', 'priority', 'rotatable', 'web_only', 'tags', 'pub_status'),
+            'fields': ('slug', 'priority', 'rotatable', 'web_only', 'tags', 
+                        'pub_status'),
         }),
         ('Editing', {
             'fields': ('proofer', 'sne',),

@@ -161,14 +161,23 @@ def tag(request, tag, section_str='', type_str='', page=1):
     
     # top writers (contributors that have the most content with this tag)
     cursor = connection.cursor()
-    cursor.execute("SELECT content_content_contributors.contributor_id, " \
-       "count(content_content.id) as objcount FROM content_content, " \
-       "content_content_contributors, content_content_tags " \
-       "WHERE content_content_contributors.content_id = content_content.id " \
-       "AND content_content_tags.content_id = content_content.id " \
-       "AND content_content_tags.tag_id = " + str(tag.pk) + " " \
-       "GROUP BY content_content_contributors.contributor_id ORDER BY objcount DESC LIMIT 5")
-    rows = cursor.fetchall()
+    cursor.execute("""SELECT
+            content_contributors.contributor_id, 
+            count(content.id) AS objcount
+        FROM 
+            content_content AS content,
+            content_content_contributors AS content_contributors,
+            content_content_tags AS content_tags
+        WHERE
+            content_contributors.content_id = content.id AND
+            content_tags.content_id = content.id AND
+            content_tags.tag_id = %i AND
+            content.pub_status = 1
+        GROUP BY content_contributors.contributor_id 
+        ORDER BY objcount DESC 
+        LIMIT 5
+    """ % tag.pk) # TODO: should actually do this with sqlite3 replacement, not python
+    rows = [r for r in cursor.fetchall() if r[1] > 0]
     writers = Contributor.objects.filter(pk__in=[r[0] for r in rows])
     contrib_count = dict(rows)
     for w in writers:
