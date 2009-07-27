@@ -123,7 +123,7 @@ class Content(models.Model):
         If c (an instance of Content) was an article, c.child would be
         equivalent to c.article
         """
-        return getattr(self, self.content_type.model_class().__name__.lower())
+        return getattr(self, self.content_type.name)
     
     class Meta:
         unique_together = (
