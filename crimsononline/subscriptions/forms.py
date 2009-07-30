@@ -45,11 +45,10 @@ class SubscribeForm(UserCreationForm):
 
         
 class SubscribeManageForm(forms.Form):
+    sub = forms.IntegerField(widget=forms.HiddenInput, required=True)
     contributors = FbModelChoiceField(required=False, multiple=True, 
         model=Contributor, url='/subscribe/email/ajax/fb_find/contributor/', 
         no_duplicates=True)
-
-
     tags = FbModelChoiceField(required=False, multiple=True, model=Tag,
         url='/subscribe/email/ajax/fb_find/tag/', no_duplicates=True)
     sections = forms.ModelMultipleChoiceField(Section.all(), 
@@ -62,11 +61,15 @@ class SubscribeManageForm(forms.Form):
     
     class Meta:
         model = Subscriber
-        fields = ('sections', 'contributors', 'tags',)
+        fields = ('sub','sections', 'contributors', 'tags',)
         
-        
-        
-        
+    def save(self):
+        sub = Subscriber.objects.get(pk=self.cleaned_data["sub"])
+        sub.contributors = self.cleaned_data["contributors"]
+        sub.tags = self.cleaned_data["tags"]
+        sub.sections = self.cleaned_data["sections"]
+        sub.save()
+        return sub
         
 class SubscribeLoginForm(AuthenticationForm):
     pass

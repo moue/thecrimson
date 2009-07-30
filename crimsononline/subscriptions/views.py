@@ -1,6 +1,7 @@
 from django.db.models import Q
 from django.http import HttpResponseRedirect
 from django.contrib.auth import *
+from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.views import login as d_login, logout as d_logout
 from django.views.generic.simple import direct_to_template
 from crimsononline.subscriptions.forms import SubscribeForm, SubscribeManageForm, SubscribeConfirmForm
@@ -33,8 +34,16 @@ def confirm(request):
     return direct_to_template(request,'email/confirm.html', {'form': f})
 
 def manage(request):
-    print "managing"
-    f = SubscribeManageForm()
+    if request.method == 'POST':
+        f = SubscribeManageForm(request.POST)
+        if f.is_valid():
+            f.save()
+    sub = request.user.subscriber
+    tags = [t.pk for t in sub.tags.all()]
+    contributors = [c.pk for c in sub.contributors.all()]
+    sections = [s.pk for s in sub.sections.all()]
+
+    f = SubscribeManageForm(initial={'sub':sub.pk, 'tags':tags, 'contributors':contributors, 'sections':sections})
     return direct_to_template(request, 'email/signup.html', {'form':f})
     
 def register(request):
@@ -74,7 +83,28 @@ def register(request):
 def login(request):
     if request.user and not request.user.is_anonymous():
         return HttpResponseRedirect("../../")
-    return d_login(request)
+
+    username = request.POST.get("username",None)
+    password = request.POST.get("password",None)
+    
+    # modified from django.contrib.auth.views
+    if request.method == "POST":
+        form = AuthenticationForm(data=request.POST)
+        if form.is_valid():
+            try:
+                # make sure the user is a subscriber, not an admin or something
+                Subscriber.objects.get(pk=form.get_user().pk)
+                from django.contrib.auth import login
+                login(request, form.get_user())
+                return HttpResponseRedirect("/")
+            except:
+                pass
+    else:
+        form = AuthenticationForm()
+    return direct_to_template(request, "registration/login.html", {
+            'form': form,
+    })
+
     
 def logout(request):
     d_logout(request)
