@@ -30,8 +30,9 @@ TIME_ZONE = 'America/Chicago'
 # *********** THIS IS BROKEN RIGHT NOW *************
 AUTH_PROFILE_MODULE = 'content.UserData'
 
-AUTHENTICATION_BACKENDS = ('django.contrib.auth.backends.ModelBackend',
-                           'crimsononline.content.admin.HUIDBackend',)
+AUTHENTICATION_BACKENDS = ('crimsononline.content.admin.HUIDBackend',
+                           #'crimsononline.subscriptions.admin.SubscriberBackend',
+                           'django.contrib.auth.backends.ModelBackend',)
 
 # Language code for this installation. All choices can be found here:
 # http://www.w3.org/TR/REC-html40/struct/dirlang.html#langcodes
@@ -69,6 +70,10 @@ TEMPLATE_LOADERS = (
 #defaults.TEMPLATE_CONTEXT_PROCESSORS += (
 #    'crimsononline.content_module.context_processors.cm_processor',
 #)
+
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.core.context_processors.auth',
+)
 
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',

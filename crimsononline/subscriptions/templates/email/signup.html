@@ -12,25 +12,10 @@
         <h3>Fill out the form below to receive emails of daily news from the Harvard Crimson</h3>
     </div>
     <div>
-        <form action="." method="POST">
-            <div class="fieldWrapper">
-                {{ form.email.errors }}
-                {{ form.email.label_tag }}: {{ form.email }}
-            </div>
-            <div>
-                <h3>What would you like to receive in your emails?</h3>
-            </div>
-            {% for field in form %}
-                {% ifequal field.name "email" %}
-                {% else %}
-                <div class="fieldWrapper">
-                    <span class="fieldError">{{ field.errors }}</span>
-                    {{ field.label_tag }}: {{ field }}
-                </div>
-                {% endifequal %}
-            {% endfor %}
-        <input type="submit" value="submit" />
-        </form>
-    </div>
+<form action="." method="post">
+{{ form.as_p }}
+<input type="submit" value="Submit" />
+</form>
+</div>
     
 {% endblock %}

@@ -12,6 +12,12 @@
 	{% block inhead %}{% endblock %}
 </head>
 <body>
+{% if user.is_authenticated %}
+    <span>Logged in as {{ user.username }} | <a href="{% url crimsononline.subscriptions.views.logout %}">Logout</a></span>
+{% else %}
+    <span><a href="{% url crimsononline.subscriptions.views.login %}">Login</a> | <a href="{% url crimsononline.subscriptions.views.register%}">Register</a></span>
+{% endif %}
+
 	<div id="wrapper">
 		<div id="masthead">
             <div id="banner"></div>

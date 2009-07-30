@@ -3,20 +3,21 @@ import re
 from django.utils import simplejson
 from StringIO import StringIO
 from datetime import datetime, timedelta, date
-from django.shortcuts import \
-    render_to_response, get_object_or_404, get_list_or_404
+from django.shortcuts import get_object_or_404, get_list_or_404
 from django.http import Http404, HttpResponse, HttpResponseRedirect
-from django.template import Context, RequestContext, loader
+from django.template import Context, loader
 from django.contrib.flatpages.models import FlatPage
 from django.contrib.contenttypes.models import ContentType
+from django.core.mail import send_mail
 from django.db import connection
 from django.db.models import Count, Max
+from django.views.generic.simple import direct_to_template
 from crimsononline.content.models import *
 from crimsononline.content_module.models import ContentModule
 from crimsononline.common.utils.paginate import paginate
 from crimsononline.common.utils.strings import strip_commas
 from crimsononline.common.forms import DateSelectWidget
-from django.core.mail import send_mail
+from crimsononline.common.templatetags.common import human_list
 
 def get_content(request, ctype, year, month, day, slug, content_group=None):
     """
@@ -28,7 +29,7 @@ def get_content(request, ctype, year, month, day, slug, content_group=None):
     if request.path != c.get_absolute_url():
         return HttpResponseRedirect(c.get_absolute_url())
     if request.method == 'GET':
-        return HttpResponse(c._render(request.GET.get('render','page')))
+        return HttpResponse(c._render(request.GET.get('render','page'), request=request))
     return Http404
 
 def get_content_obj(request, ctype, year, month, day, slug, content_group=None):
@@ -66,7 +67,7 @@ def get_content_group(request, gtype, gname):
     if not cg:
         raise Http404
     c = cg.content.all()
-    return render_to_response('contentgroup.html', {'cg': cg, 'content': c})
+    return direct_to_template(request,'contentgroup.html', {'cg': cg, 'content': c})
 
 def get_content_group_obj(request, gtype, gname):
     cg = ContentGroup.by_name(gtype, gname)
@@ -109,14 +110,14 @@ def index(request, m=None, d=None, y=None):
     dict['issue'] = Issue.get_current()
     #dict['markers'] = Marker.objects.filter(map__in = Map.objects.filter(article__in = stories.values('pk').query).values('pk').query)
     
-    return render_to_response('index.html', dict)
+    return direct_to_template(request,'index.html', dict)
 
 def bigmap(request):
     stories = top_articles('News')[:20] # how many articles to show markers from...we will have to play with this
     dict = {}
     dict['markers'] = Marker.objects.distinct().filter(map__in = Map.objects.filter(article__in = stories.values('pk').query).values('pk').query)
     
-    return render_to_response('bigmap.html', dict)
+    return direct_to_template(request, 'bigmap.html', dict)
     
 REMOVE_P_RE = re.compile(r'page/\d+/$')
 def writer(request, pk, f_name, m_name, l_name, 
@@ -137,7 +138,7 @@ def writer(request, pk, f_name, m_name, l_name,
     t = 'writer.html'
     if request.GET.has_key('ajax'):
         t = 'ajax/content_list_page.html'
-    return render_to_response(t, d)
+    return direct_to_template(request, t, d)
 
 def tag(request, tag, section_str='', type_str='', page=1):
     tag = get_object_or_404(Tag, text=tag.replace('_', ' '))
@@ -213,7 +214,7 @@ def tag(request, tag, section_str='', type_str='', page=1):
     t = 'tag.html'
     if request.GET.has_key('ajax'):
         t = 'ajax/content_list_page.html'
-    return render_to_response(t, d)
+    return direct_to_template(request, t, d)
 
 
 def section_news(request):
@@ -229,7 +230,7 @@ def section_news(request):
         .annotate(latest=Max('content__issue__issue_date')) \
         .order_by('-latest')[:2]
     
-    return render_to_response('sections/news.html', locals())
+    return direct_to_template(request,'sections/news.html', locals())
     
 def section_opinion(request):
     nav = 'opinion'
@@ -240,7 +241,7 @@ def section_opinion(request):
     #.filter(section=section)[:4]
     columns = ContentGroup.objects.filter(section=section, active=True,
         type='column').annotate(recent=Max('content__issue__issue_date'))
-    return render_to_response('sections/opinion.html', locals())
+    return direct_to_template(request,'sections/opinion.html', locals())
     
 def section_fm(request):
     nav = 'fm'
@@ -264,7 +265,7 @@ def section_fm(request):
     issues = Issue.objects.exclude(fm_name=None).exclude(fm_name='')[:3]
     columns = ContentGroup.objects.filter(section=section, active=True,
         type='column').annotate(recent=Max('content__issue__issue_date'))
-    return render_to_response('sections/fm.html', locals())
+    return direct_to_template(request,'sections/fm.html', locals())
     
 def section_arts(request):
     nav = 'arts'
@@ -281,7 +282,7 @@ def section_arts(request):
     reviews = {}
     for t in ['movie', 'music', 'book']:
         reviews[t] = Review.objects.filter(type=t)[:4]
-    return render_to_response('sections/arts.html', locals())
+    return direct_to_template(request,'sections/arts.html', locals())
     
 def section_photo(request):
     if request.method == 'GET':
@@ -296,7 +297,7 @@ def section_photo(request):
     t = 'sections/photo.html'
     if request.GET.has_key('ajax'):
         t = 'ajax/media_viewer_page.html'
-    return render_to_response(t, d)
+    return direct_to_template(request, t, d)
     
 def section_sports(request):
     nav = 'sports'
@@ -305,7 +306,7 @@ def section_sports(request):
     rotate = []#stories.filter(rel_content__content_type=Image.content_type()) \
     #    .distinct()[:4]
     stories = stories.exclude(pk__in=[r.pk for r in rotate])
-    return render_to_response('sections/sports.html', locals())
+    return direct_to_template(request, 'sections/sports.html', locals())
 
 # IPHONE APP JSON FEEDS
 
@@ -323,14 +324,17 @@ def iphone(request, s = None):
     objs = []
     for story in stories:
         curdict = {}
+        curdict['id'] = story.pk
         curdict['date_and_time'] = story.issue.issue_date.strftime("%I:%M %p, %B %d, %Y").upper()
         curdict['headline'] = story.headline
         curdict['subhead'] = story.subheadline
+        curdict['byline'] = human_list(story.contributors.all())
         curdict['article_text'] = story.text
         curdict['photoURL'] = ""
         if story.main_rel_content:
             curdict['thumbnailURL']  = story.main_rel_content.display_url((69, 69, 1, 1))
             curdict['photoURL']  = story.main_rel_content.display_url((280, 240, 1, 1))
+            curdict['photo_byline'] = human_list(story.main_rel_content.contributors.all())
         objs.append(curdict)
         
     io = StringIO()
@@ -341,34 +345,20 @@ def iphone(request, s = None):
 def photo(request):
     galleries = Gallery.objects.order_by('-created_on')[:10]
     nav, title = 'photo', 'Photo'
-    return render_to_response('photo.html', locals())
+    return direct_to_template(request, 'photo.html', locals())
 
 def gallery(request, currentimg_id, gallery_id):
     currentimg_id = int(currentimg_id)
     gallery_id = int(gallery_id)
     image = get_object_or_404(Image, pk=currentimg_id)
     gallery = get_object_or_404(Gallery, pk=gallery_id)
-    return render_to_response('gallery.html', {'currentimg':image, 'gallery':gallery})
-
-def subscribe(request):
-	if request.method == 'POST':
-		form = SubscriptionForm(request.POST)
-		if form.is_valid():
-			form.save()
-			#send_mail('Your Harvard Crimson Subscription', 'yay!', 'subscriptions@thecrimson.com', [form.cleaned_data['email']], fail_silently=False)
-			return HttpResponseRedirect('/done')
-	else:
-		form = SubscriptionForm()
-	return render_to_response('subscription.html', {'form': form,})
-
-def subscribed(request):
-	return render_to_response('done.html')
+    return direct_to_template(request,'gallery.html', {'currentimg':image, 'gallery':gallery})
 
 #====== ajax stuff ==========#
 def ajax_get_img(request, pk):
     image = get_object_or_404(Image, pk=pk)
     url = image.display(500, 500).url
-    return render_to_response('ajax/get_image.html', locals())
+    return direct_to_template(request,'ajax/get_image.html', locals())
     
     
 # =========== view helpers ============== #

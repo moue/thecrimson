@@ -5,6 +5,7 @@ from django.contrib import admin
 from django.conf.urls.defaults import *
 from crimsononline.content.views import *
 from crimsononline.admin_cust.views import login_user
+from django.contrib.auth.views import login, logout
 
 admin.autodiscover()
 
@@ -27,13 +28,21 @@ urlpatterns = patterns('crimsononline.content.views',
     url(r'^$', 'index', name='content_index'),
     url(r'^issue/(\d+)/(\d+)/(\d+)/$', 'index', name='content_index'),    
     url(r'^subscribe/', include('crimsononline.subscriptions.urls')),
-    url(r'^done$', 'subscribed'),
     url(r'^iphone/(?P<s>\w+)/$', 'iphone'),
 )
 
+"""
 urlpatterns += patterns('django.views.generic.simple',
     (r'login/$', 'redirect_to', { 'url': 'http://www.alondite.com/welp/crimlogin.html'}),
     (r'login_return/$', login_user),
+)
+"""
+
+# logging in and out
+urlpatterns += patterns('',
+    # existing patterns here...
+    (r'accounts/login/$',  login),
+    (r'accounts/logout/$', logout)
 )
 
 urlpatterns += patterns('',
@@ -57,3 +66,4 @@ generic_patterns = patterns('crimsononline.content.views',
 )
 
 urlpatterns += generic_patterns
+

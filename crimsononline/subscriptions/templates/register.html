@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% load common %}
+
+{% block body %}
+    <div>
+    {% for field in form %}
+        <div class="fieldWrapper">
+            <span class="fieldError">{{ field.errors }}</span>
+            {{ field.label_tag }}: {{ field }}
+        </div>
+    {% endfor %}
+    </div>
+{% endblock %}

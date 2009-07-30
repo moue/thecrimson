@@ -20,7 +20,7 @@ from django.utils.safestring import mark_safe
 from django.forms import ModelForm
 from django.db.models.query import QuerySet
 from django.http import Http404
-
+from django.template import RequestContext
 from crimsononline.common.caching import funcache
 from crimsononline.common.forms import \
     MaxSizeImageField, SuperImageField
@@ -146,7 +146,7 @@ class Content(models.Model):
     
     objects = ContentManager()
     
-    def _render(self, method, context={}):
+    def _render(self, method, context={}, request=None):
         """Render to some kind of string (usually HTML), depending on method
         
         Always uses the child class
@@ -163,7 +163,7 @@ class Content(models.Model):
         context.update({name.name: self.child, 'content': self.child, 'class': name.name})
         if method == 'page':
             self.store_hit()
-        return mark_safe(render_to_string(templ, context))
+        return mark_safe(render_to_string(templ, context, context_instance = RequestContext(request)))
     
     def delete(self):
         self.pub_status = -1
@@ -974,9 +974,9 @@ class Article(Content):
     @property
     def main_rel_content(self):
         r = self.rel_content.all()[:1]
-        r = r[0] if r else None
+        r = r[0].child if r else None
         # need to return child, so that subclass methods can be called
-        return r.child
+        return r
     
     def __unicode__(self):
         return self.headline
