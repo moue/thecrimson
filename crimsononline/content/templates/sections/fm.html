@@ -6,85 +6,93 @@
 {% load content_module %}
 {% load tag_cloud %}
 {% load top_articles %}
+{% load module %}
 
 {% block css %}
 
 {% endblock %}
 
-{% block lefttopcolumn %}
-    {{ "Scrutiny"|yuhkilabel }}
-    <div class="article_previews" id="scrutiny" >
-        <ul>
-        <li>{{ scrutiny|render:"preview" }}</li>
-        </ul>
-    </div>
-    <span class="clear"></span>
-    <div class="article_previews" id="itm">
-    {{ "In The Meantime"|yuhkilabel }}
-        <ul>
-        {% for s in itm %}
-            <li>{{ s|render:"preview" }}</li>
-        {% endfor %}
-        </ul>
-    </div>
-    <span class="clear"></span>
-    <div class="img_list bordered" id="past_issues">
-        <h2>Past Issues</h2>
-        <ul>
-        {% for i in issues %}
-        <li>
-            {% if i.fm_cover %}{{ i.fm_cover|to_img_tag:"60,60,1,1"}}
-            {% else %}{% endif %}
-            <h3><a href="">{{ i.fm_name }}</a></h3>
-            <p class="dateline">{{ i.issue_date }}</p>
-        </li>
-        {% endfor %}
-        </ul>
+{% block leftcolumn %}
+    {% module 4 scrutiny red %}
+        <div class="article_previews" id="scrutiny" >
+            <ul>
+                <li>{{ scrutiny|render:"preview" }}</li>
+            </ul>
+        </div>
         <span class="clear"></span>
-    </div>
+    {% endmodule %}
+
+    {% module 4 "in the meantime" %}
+        <div class="article_previews" id="itm">
+            <ul>
+                {% for s in itm %}
+                    <li>{{ s|render:"preview" }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endmodule %}
+
+    {% module 4 "past issues" %}
+        <div class="img_list" id="past_issues">
+            <ul>
+                {% for i in issues %}
+                    <li>
+                        {% if i.fm_cover %}{{ i.fm_cover|to_img_tag:"60,60,1,1"}}
+                        {% else %}{% endif %}
+                        <h3><a href="">{{ i.fm_name }}</a></h3>
+                        <p class="dateline">{{ i.issue_date }}</p>
+                    </li>
+                {% endfor %}
+            </ul>
+            <span class="clear"></span>
+        </div>
+    {% endmodule %}
 {% endblock %}
 
-{% block middletopcolumn %}
+{% block middlecolumn %}
     {% rotator rotate "news_rotator" %}
-    {{ "For The Moment"|yuhkilabel }}
-    <div class="article_headlines" id="ftm">
-        <ul>
-            {% for s in ftm %}
-            <li>
-                <h3><a href="{{s.get_absolute_url}}">{{s}}</a></h3>
-                <span class="byline">By {{s.contributors.all|linkify|human_list}}</span>
-            </li>
-            {% endfor %}
-        </ul>
-    </div>
-    <span class="clear"></span>
-    <div class="article_previews" id="endpaper">
-        {{ "Endpaper"|yuhkilabel }}
-        <ul>
-            <li>{{ endpaper|render:"preview" }}
-        </ul>
-    </div>
+    
+    {% module 4 "for the moment" %}
+        <div class="article_headlines" id="ftm">
+            <ul>
+                {% for s in ftm %}
+                    <li>
+                        <h3><a href="{{s.get_absolute_url}}">{{s}}</a></h3>
+                        <span class="byline">By {{s.contributors.all|linkify|human_list}}</span>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endmodule %}
+    
+    {% module 4 endpaper %}
+        <div class="article_previews" id="endpaper">
+            <ul>
+                <li>{{ endpaper|render:"preview" }}
+            </ul>
+        </div>
+    {% endmodule %}
 {% endblock %}
 
-{% block righttopcolumn %}
+{% block rightcolumn %}
     {% tag_cloud 20 "tags" %}
     {% most_read_articles %}
-    <div class="ad bordered">
-        <span>advertisement</span>
+    {% module 4 "" ad %}
         <img src="/site_media/images/medium_rectangle.gif" />
-    </div>
-    <span class="clear"></span>
-    <div class="img_list bordered" id="columnists">
-        <h2>Columnists</h2>
+    {% endmodule %}
+
+    {% module 4 columnists %}
+    <div class="img_list" id="columnists">
         {% for column in columns %}
-        <li>
-            {% if column.image %}{{ column.image|to_img_tag:"60,60,1,1" }}
-            {% else %}{% endif %}
-            <h3>{{ column|linkify:column.name }}</h3>
-            <p>{{ column.subname }}</p>
-            <p class="dateline">Updated {{ column.recent|date }}</p>
-        </li>
+            <li>
+                {% if column.image %}{{ column.image|to_img_tag:"60,60,1,1" }}
+                {% else %}{% endif %}
+                <h3>{{ column|linkify:column.name }}</h3>
+                <p>{{ column.subname }}</p>
+                <p class="dateline">Updated {{ column.recent|date }}</p>
+            </li>
         {% endfor %}
         <span class="clear"></span>
     </div>
+    {% endmodule %}
 {% endblock %}

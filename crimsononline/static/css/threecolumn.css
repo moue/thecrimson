@@ -1,17 +1,16 @@
+
 div.article_previews li {
     display: block; 
     float: left;
-    margin-bottom: 14px;
+    padding-bottom: 8px;
+    margin-bottom: 8px;
+    border-bottom: 1px dotted #d1d1d1;
 }
 div.article_previews div.image_thumb {
     float: left;
     margin: 0 8px 1px 0;
 }
-div.article_previews h3, .article_previews h3 a{
-    font-weight: normal;
-    font-size: 20px;
-    line-height: 100%;
-}
+
 
 div.article_previews .teaser {
     font-size: 13px;
@@ -45,8 +44,8 @@ div.article_feature {
 div.article_feature h3, div.article_feature p {
     text-align: left;
 }
-div.article_feature h3 {
-    font-weight: normal;
+div.article_feature h3, .article_feature h3 a {
+    font-weight: bold;
     font-size: 16px;
 }
 div.article_feature .byline {
@@ -57,12 +56,6 @@ div.article_feature .teaser {
     font-size: 14px;
 }
 
-.column {
-    width: 308px;
-	padding: 0px 6px 6px 6px;
-    float: left;
-	overflow:hidden;
-}
 div#the_fold{
 	clear:both;
 	margin:5px 0px;

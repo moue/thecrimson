@@ -1,13 +1,8 @@
-#rotator{
-    margin-bottom: 5px;
-}
 div.rotator {
-    border-radius: 5px;
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
     width: 300px;
     padding: 5px;
     overflow: hidden;
+    margin-bottom: 10px;
 }
 div.rotator h2{
     font-family: Arial;
@@ -17,26 +12,26 @@ div.rotator h2{
     font-weight: normal;
 }
 
-div.rotator ul.preview_body{
+div.rotator ul.rotator_preview{
 	height:310px;
 }
 
-div.rotator ul.preview_body li{
+div.rotator ul.rotator_preview li{
 	height:310px;
 	list-style-type: none;
 }
 
-div.rotator ul.preview_body li div.preview_text h3 {
+div.rotator ul.rotator_preview li div.preview_text h3 {
     font-size: 17px;
     font-weight: bold;
     line-height: .9;
 }
 
-div.rotator ul.preview_body li div.preview_text p.teaser {
+div.rotator .rotator_preview li div.preview_text p.teaser {
     font-size: 13px;
 }
 
-div.rotator div.carousel {
+div.rotator div.rotator_carousel {
 	margin-top: 214px;
 	z-index: 10000;
 	position:absolute;
@@ -46,17 +41,17 @@ div.rotator div.carousel {
     text-align: center;
 }
 
-div.rotator div#preview_roll{
+div.rotator div.rotator_carousel_contents{
 	float:left;
-	width: 100px;
+	width: 100%;
 	text-align:center;
+	margin: 0 auto;
     border: 0;
     padding: 0;
     height: 26px;
-    margin: 0;
 }
 
-div.rotator div.carousel #preview_roll span{
+.rotator_carousel .rotator_carousel_contents span{
     display:inline-block;
     margin: 0 4px;
     vertical-align: top;
@@ -66,7 +61,7 @@ div.rotator div.carousel #preview_roll span{
 
 }
 
-div.rotator div.carousel #preview_roll span a{
+.rotator_carousel .rotator_carousel_contents span a{
     display: block;
     height: 26px;
     width: 16px;
@@ -76,18 +71,16 @@ div.rotator div.carousel #preview_roll span a{
     color: #999;
 }
 
-div.rotator div.carousel #preview_roll span a.activeSlide{
+.rotator_carousel .rotator_carousel_contents span a.activeSlide{
     color: #fff;
 }
 
-div.rotator div.carousel #preview_roll span a:hover{
+.rotator_carousel .rotator_carousel_contents span a:hover{
     color: #fff;
 
 }
 
-div.rotator div.carousel div.previousbutton, 
-div.nextbutton,
-div.carousel #preview_roll {
+div.carousel .rotator_carousel_contents {
 	float:left;
     margin-top: 5px;
 }
@@ -97,9 +90,3 @@ div.rotator div.c_items{
     margin: 0 auto;
     width: 96px;
 }
-
-div.rotator div.carousel div.previousbutton{background-image:url('../images/arrows/left_off.png');}
-div.rotator div.carousel div.previousbutton:hover{background-image:url('../images/arrows/left_on.png');}
-div.rotator div.carousel div.nextbutton{background-image:url('../images/arrows/right_off.png');}
-div.rotator div.carousel div.nextbutton:hover{background-image:url('../images/arrows/right_on.png');}
-

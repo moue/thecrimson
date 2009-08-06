@@ -1,10 +1,12 @@
 {% load common %}
+{% load module %}
 {% load tag_cloud %}
 
-<div class="bordered tag_cloud">
-<h2>{{ title|yuhkilabel }}</h2>
+{% module 4 tags blue %}
+<div class="tag_cloud">
 {% for tag in tags %}
 <a class="{{ tag|get_size:levels }}" href="{{ tag.get_absolute_url }}">{{ tag }}</a>
 {% endfor %}
 <span class="clear"></span>
 </div>
+{% endmodule %}

@@ -118,7 +118,7 @@ class TopArticlesNode(template.Node):
         print sqlstatement
         cursor.execute(sqlstatement)
         mostreadarticles = cursor.fetchall()
-        mostreadarticles = [Content.objects.get(pk=x[0]) for x in mostreadarticles]
+        mostreadarticles = [Content.objects.get(pk=x[0]).child for x in mostreadarticles]
         
         # TODO: uncomment / fix this.  it calls disqus every time, which is annoying
         mostcommentedarticles = None # delete this when below is uncommented

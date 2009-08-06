@@ -3,6 +3,7 @@
 {% load common %}
 {% load content_filters %}
 {% load tag_cloud %}
+{% load module %}
 {% load top_articles %}
 
 {% block css %}
@@ -14,8 +15,8 @@
 {% endblock %}
 
 {% block left %}
-    <div id="featured_articles" class="bordered">
-        <h2>Top Related Articles</h2>
+    {% module 2 "top related articles" gray %}
+    <div id="featured_articles">
         {% for c in featured %}
         <p>
             {{c.content_object|linkify}} 
@@ -23,8 +24,11 @@
         </p>
         {% endfor %}
     </div>
-    <div id="top_contributors" class="bordered">
-        <h2>TOP CONTRIBUTORS</h2>
+    {% endmodule %}
+    
+    {% module 2 "top contributors" gray %}
+
+    <div id="top_contributors">
         <ul>
         {% for c in top_contributors %}<li>
         {% if c.profile_pic %}
@@ -32,12 +36,13 @@
         {% else %}
             <img src="{% static_url "images/noface_50x50.jpg" %}" alt="face"/>
         {% endif %}
-        <h3>{{c|linkify}} ({{c.c_count}})</h3>
+        <span>{{c|linkify}} ({{c.c_count}})</span>
         <p class="dateline">{{c.rece|date}}</p>
         {% endfor %}</li>
         </ul>
         <span class="clear"></span>
     </div>
+    {% endmodule %}
 {% endblock %}
 
 {% block before_content %}
@@ -45,10 +50,9 @@
 {% endblock %}
 
 {% block right %}
-{% tag_cloud 15 "RELATED TAGS" tags %}
-<div class="ad bordered">
-    <span>advertisement</span>
-    <img src="/site_media/images/medium_rectangle.gif" />
-</div>
-{% most_read_articles %}
+    {% most_read_articles %}
+    {% module 4 "" ad %}
+        <img src="/site_media/images/medium_rectangle.gif" />
+        {% endmodule %}
+    {% tag_cloud 15 "RELATED TAGS" tags %}
 {% endblock %}

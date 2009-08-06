@@ -4,6 +4,7 @@
 {% load common %}
 {% load tag_cloud %}
 {% load top_articles %}
+{% load module %}
 
 {% block inhead %}
     {% static_css "content_list.css" %}
@@ -12,11 +13,14 @@
 {% endblock %}
 
 {% block body %}
-    <div class="column_left">
+    <div class="col-2">
         {% block left %}
         {% endblock %}
     </div>
-    <div class="content_list">
+    <div class="gutter"></div>
+
+    <div class="col-6 content_list">
+        {% module 6 "" red %}
         {% block before_content %}
         {% endblock %}
         {% block content_filters %}
@@ -58,17 +62,19 @@
         {% endblock %}
         {% block after_content %}
         {% endblock %}
+        {% endmodule %}
         
     </div>
-    <div class="column_right">
+    
+    <div class="gutter"></div>    
+    <div class="col-3">
         {% block right %}
         {% tag_cloud 15 "RELATED TAGS" tags %}
-        <div class="ad bordered">
-            <span>advertisement</span>
+        {% module 4 "" ad %}
             <img src="/site_media/images/medium_rectangle.gif" />
-        </div>
+        {% endmodule %}
         {% most_read_articles %}
         {% endblock %}
     </div>
-	<div style="clear:both"></div>
+	<div style="clear:left"></div>
 {% endblock %}

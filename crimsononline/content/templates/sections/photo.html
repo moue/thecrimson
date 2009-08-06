@@ -1,6 +1,7 @@
-{% extends "threecolumn.html" %}
+{% extends "base.html" %}
 
 {% load common %}
+{% load module %}
 {% load content_filters %}
 
 {% block css %}{% static_css "photo.css" %}{% static_css "gallery.css" %}{% endblock %}
@@ -9,20 +10,25 @@
     {% static_js "media_viewer.js" %}
 {% endblock %}
 
-{% block above_the_fold %}
-<div id="media_viewer" class="blackground">
-    <div id="viewer_main">
+{% block body %}
+<div class="blackground">
+<div class="col-8">
+    <div id="viewer_main" class="">
         {{ content.0|render:"media_viewer" }}
     </div>
-    
-    <div id="viewer_sidebar">
+</div>
+<div class="gutter"></div>
+<div class="col-4">
+    <div id="viewer_sidebar"class="">
         <span class="filters">MOST {{"viewed"|yuhkilabel:"blacktive"}} {{"Recent"|yuhkilabel:"blacktive"}} {{"videos"|yuhkilabel:"black"}} {{"photos"|yuhkilabel:"blacktive"}} </span>
         <div>
         {% include "ajax/media_viewer_page.html" %}
         </div>
     </div>
-    <span class="clear" />
 </div>
+<span class="clear"></span>
+</div>
+
 {% endblock %}
 
 {% block leftbottomcolumn %}

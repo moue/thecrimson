@@ -3,19 +3,22 @@
 {% load common %}
 {% load content_filters %}
 {% load rotator %}
+{% load module %}
 {% load content_module %}
 {% load tag_cloud %}
 {% load top_articles %}
 
-{% block lefttopcolumn %}
-    <div class="article_previews">
-        <ul id="top_news">
-        {% for s in stories|slice:":5" %}
-            <li>{{ s|render:"preview" }}</li>
-        {% endfor %}
-        </ul>
-    </div>
-    <span class="clear"></span>
+{% block leftcolumn %}
+    {% module 4 "top news" red %}
+        <div class="article_previews">
+            <ul id="top_news">
+                {% for s in stories|slice:":5" %}
+                    <li>{{ s|render:"preview" }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endmodule %}
+    
     {% contentmodule news_bottom_left %}
         {% if series.0 %}
         <div class="bordered series">
@@ -34,18 +37,22 @@
     {% endcontentmodule %}
 {% endblock %}
 
-{% block middletopcolumn %}
+{% block middlecolumn %}
     {% rotator rotate "news_rotator" %}
-    <div id="more_news" class="article_headlines">
-        <ul>
-            {% for s in stories|slice:"5:10" %}
-            <li>
-                <h3><a href="{{s.get_absolute_url}}">{{s}}</a></h3>
-                <p class="byline">By {{s.contributors.all|linkify|human_list}}</p>
-            </li>
-            {% endfor %}
-        </ul>
-    </div>
+
+    {% module 4 "more news" %}
+        <div id="more_news" class="article_headlines">
+            <ul>
+                {% for s in stories|slice:"5:10" %}
+                    <li>
+                        <h3><a href="{{s.get_absolute_url}}">{{s}}</a></h3>
+                        <p class="byline">By {{s.contributors.all|linkify|human_list}}</p>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endmodule %}
+
     {% contentmodule news_bottom_mid %}
         {% if series.1 %}
         <div class="bordered series">
@@ -62,17 +69,18 @@
         </div>
         {% endif %}
     {% endcontentmodule %}
+
+
 {% endblock %}
 
-{% block righttopcolumn %}
+{% block rightcolumn %}
     {% tag_cloud 20 "tags" %}
     {% most_read_articles %}
-    <div class="ad bordered">
-        <span>advertisement</span>
+    
+    {% module 4 "" ad %}
         <img src="/site_media/images/medium_rectangle.gif" alt="some ad" />
-    </div>
-    <div class="ad bordered">
-        <span>advertisement</span>
+    {% endmodule %}
+    {% module 4 "" ad %}
         <img src="/site_media/images/medium_rectangle.gif" alt="some ad" />
-    </div>
+    {% endmodule %}
 {% endblock %}

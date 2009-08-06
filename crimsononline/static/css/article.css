@@ -72,16 +72,16 @@ div.related_content span.title{
 }
 .image > .byline {
     padding-right:5px;
-    color: #999;
+    color: #000;
     text-align: right;
     text-transform: uppercase;
 }
 .image > .byline a{
-    color: #999;
+    color: #000;
     text-decoration: none;
 }
 .image > .byline > a:hover{
-    text-decoration: none;
+    text-decoration: underline;
     color: black;
 }
 .tall > .caption {
@@ -92,8 +92,8 @@ div.related_content span.title{
 }
 .image > .caption{
     padding-right:5px;
-    font-family:times,serif;
-    font-size: .85em;
+    font-family: helvetica, arial, sans-serif;
+    font-size: 12px;
     line-height: 1.4em;
     color: #777;
 }

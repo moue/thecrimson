@@ -1,4 +1,5 @@
 {% load common %}
+{% load module %}
 {% load cache %}
 
 {% static_css "mostread.css" %}
@@ -24,11 +25,13 @@ function mca(){
 }
 
 </script>
-<div id="mostxdarticles" class="bordered">
-    <h2> MOST
+
+{% module 4 "" blue %}
+<div id="mostxdarticles">
+    <span class="title"> MOST
         <a id="mra" onclick="mra();" style="cursor:pointer;">{{"read"|yuhkilabel:"red"}}</a>
         <a id="mca" onclick="mca();" style="cursor:pointer;">{{"commented"|yuhkilabel:"gray"}}</a>
-    </h2>
+    </span>
     {% cache 500 mostreadarticles %}
     <div id="mostreadarticles">
         <ol>
@@ -46,3 +49,4 @@ function mca(){
         </ol>
     </div>
 </div>
+{% endmodule %}

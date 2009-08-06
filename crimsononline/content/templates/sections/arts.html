@@ -3,37 +3,44 @@
 {% load common %}
 {% load content_filters %}
 {% load rotator %}
+{% load module %}
 {% load content_module %}
 {% load tag_cloud %}
 {% load top_articles %}
 
-{% block lefttopcolumn %}
-    <div class="article_previews">
-        <ul>
-        {% for s in stories|slice:":4" %}
-            <li>{{ s|render:"preview" }}</li>
-        {% endfor %}
-        </ul>
-    </div>
+{% block leftcolumn %}
+    {% module 4 "top arts" red %}
+        <div class="article_previews">
+            <ul>
+                {% for s in stories|slice:":4" %}
+                    <li>{{ s|render:"preview" }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endmodule %}
 {% endblock %}
 
-{% block middletopcolumn %}
+{% block middlecolumn %}
     {% rotator rotate "news_rotator" %}
-    <div class="article_headlines">
-        <ul>
-            {% for s in stories|slice:"4:14" %}
-            <li>
-                <h3><a href="{{s.get_absolute_url}}">{{s}}</a></h3>
-                <span class="byline">By {{s.contributors.all|linkify|human_list}}</span>
-            </li>
-            {% endfor %}
-        </ul>
-    </div>
+    
+    {% module 4 "more stories" %}
+        <div class="article_headlines">
+            <ul>
+                {% for s in stories|slice:"4:14" %}
+                    <li>
+                        <h3><a href="{{s.get_absolute_url}}">{{s}}</a></h3>
+                        <span class="byline">By {{s.contributors.all|linkify|human_list}}</span>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endmodule %}
 {% endblock %}
 
-{% block righttopcolumn %}
-    <div id="reviews" class="bordered reviews">
-        <h2>Movie Reviews</h2>
+{% block rightcolumn %}
+    {% module 4 "" %}
+    <div id="reviews" class="reviews">
+        <span class="title">MOVIE REVIEWS</span>
         <ul>
         {% for r in reviews.movie %}
             <li>
@@ -44,7 +51,7 @@
             </li>
         {% endfor %}
         </ul>
-        <h2>Book Reviews</h2>
+        <span class="title">BOOK REVIEWS</span>
         <ul>
         {% for r in reviews.book %}
             <li>
@@ -55,7 +62,7 @@
             </li>
         {% endfor %}
         </ul>
-        <h2>Music Reviews</h2>
+        <span class="title">MUSIC REVIEWS</span>
         <ul>
         {% for r in reviews.music %}
             <li>
@@ -68,27 +75,30 @@
         </ul>
         <span class="clear"></span>
     </div>
-    <span class="clear"></span>
-    <div id="columnists" class="bordered img_list">
-        <h2>Columns</h2>
-        <ul>
-        {% for column in columns %}
-            <li>
-                {% if column.image %}{{ column.image|to_img_tag:"60,60,1,1" }}
-                {% else %}{% endif %}
-                <h3>{{ column|linkify:column.name }}</h3>
-                <p>{{ column.subname }}</p>
-                <p class="dateline">Updated {{ column.recent|date }}</p>
-            </li>
-        {% endfor %}
-        </ul>
-    </div>
-    <div class="ad bordered">
-        <span>advertisement</span>
+    {% endmodule %}
+    
+    {% module 4 columns %}
+        <div id="columnists" class="img_list">
+            <ul>
+                {% for column in columns %}
+                    <li>
+                        {% if column.image %}{{ column.image|to_img_tag:"60,60,1,1" }}
+                        {% else %}{% endif %}
+                        <h3>{{ column|linkify:column.name }}</h3>
+                        <p>{{ column.subname }}</p>
+                        <p class="dateline">Updated {{ column.recent|date }}</p>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endmodule %}
+
+    {% module 4 "" ad %}
         <img src="/site_media/images/medium_rectangle.gif" />
-    </div>
-    <div id="issues" class="bordered img_list">
-        <h2>Past Issues</h2>
+    {% endmodule %}
+
+    {% module 4 "past issues" %}
+    <div id="issues" class="img_list">
                 <ul>
         {% for issue in issues %}
         <li>
@@ -101,4 +111,5 @@
         </ul>
         <span class="clear"></span>
     </div>
+    {% endmodule %}
 {% endblock %}

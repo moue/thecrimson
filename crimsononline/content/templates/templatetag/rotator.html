@@ -8,13 +8,10 @@
 
 <div class="rotator gray-bg">
     {% if title %}<h2>{{ title }}</h2>{% endif %}
-    <div class="carousel" style="display:none">
-        <div class="c_items">
-            <div id="preview_roll"></div>
-            <div style="clear:both;"></div>
-        </div>
+    <div class="rotator_carousel" style="display:none">
+        <div class="rotator_carousel_contents"></div>
     </div>
-    <ul class="preview_body">
+    <ul class="rotator_preview">
 		{% for c in contents %}
             <li>{{ c|render:"rotator" }}</li>
         {% endfor %}

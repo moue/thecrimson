@@ -10,79 +10,83 @@
 	 <link rel="icon" type="image/vnd.microsoft.icon" href="/site_media/images/favicon.ico" />
 	{% static_css "base.css" %}
 	{% block inhead %}{% endblock %}
+	{% block css %}{% endblock %}
+	{% block js %}{% endblock %}	
 </head>
 <body>
+{% comment %}
 {% if user.is_authenticated %}
     <span>Logged in as <a href="{% url crimsononline.subscriptions.views.register %}">{{ user.username }}</a> | <a href="{% url crimsononline.subscriptions.views.logout %}">Logout</a></span>
 {% else %}
     <span><a href="{% url crimsononline.subscriptions.views.login %}">Login</a> | <a href="{% url crimsononline.subscriptions.views.register%}">Register</a></span>
 {% endif %}
+{%endcomment%}
 
-	<div id="wrapper">
-		<div id="masthead">
-            <div id="banner"></div>
-            <div id="masthead_center">
-            {% block masthead_center %}
-            {% endblock %}
+<div id="masthead_container">
+<div id="masthead_contents">
+    <div id="masthead_banner"></div>
+    <div class="tools">
+        <div class="top">
+            {% spaceless %}
+            <span class="cover"><img src="{% static_url "images/banner_right_cover.png" %}" alt="cover" /></span>
+            <span class="issues"><img src="{% static_url "images/banner_right_past.png" %}" alt="past issues" /></span>
+            <span class="weather"><img src="{% static_url "images/banner_right_weather.png" %}" alt="weather" /></span>
+            {% endspaceless %}
+        </div>
+        <div class="line"></div>
+        <div class="descriptions">
+            {% spaceless %}
+            <span class="cover">TODAY</span>
+            <span class="issues">ISSUES</span>
+            <span class="weather">WEATHER</span>
+            {% endspaceless %}
+        </div>
+        <div class="search">
+            <form action="/search/">
+            <div>
+                <input class="query" type="text" name="q" />
+                <button class="submit" type="submit" value="SEARCH"><span>SEARCH</span></button>
             </div>
-            <div class="tools">
-                <div class="top">
-                    {% spaceless %}
-                    <span class="cover"><img src="{% static_url "images/banner_right_cover.png" %}" alt="cover" /></span>
-                    <span class="issues"><img src="{% static_url "images/banner_right_past.png" %}" alt="past issues" /></span>
-                    <span class="weather"><img src="{% static_url "images/banner_right_weather.png" %}" alt="weather" /></span>
-                    {% endspaceless %}
-                </div>
-                <div class="line"></div>
-                <div class="descriptions">
-                    {% spaceless %}
-                    <span class="cover">TODAY</span>
-                    <span class="issues">ISSUES</span>
-                    <span class="weather">WEATHER</span>
-                    {% endspaceless %}
-                </div>
-                <div class="search">
-                    <form action="/search/">
-                    <div>
-                        <input class="query" type="text" name="q" />
-                        <button class="submit" type="submit" value="SEARCH"><span>SEARCH</span></button>
-                    </div>
-                    </form>
-                </div>
-            </div>
-		</div>
-		<div id="nav">
-			<ul>
-			    <li class="spacer">&nbsp;</li>
-				<li {{ nav|is_nav_cur:"index" }}><a href="/">HOME</a></li>
-				<li {{ nav|is_nav_cur:"news" }}><a href="/section/news">NEWS</a></li>
-				<li {{ nav|is_nav_cur:"opinion" }}><a href="/section/opinion">OPINION</a></li>
-				<li {{ nav|is_nav_cur:"fm" }}><a href="/section/fm">MAGAZINE</a></li>
-				<li {{ nav|is_nav_cur:"sports" }}><a href="/section/sports">SPORTS</a></li>
-				<li {{ nav|is_nav_cur:"arts" }}><a href="/section/arts">ARTS</a></li>
-				<li {{ nav|is_nav_cur:"blogs" }}><a href="/section/blogs">BLOGS</a></li>
-				<li {{ nav|is_nav_cur:"photo" }}><a href="/section/photo">MULTIMEDIA</a></li>
-				<li {{ nav|is_nav_cur:"feeds" }}><a href="/feeds">"FEEDS"</a></li>
-				<li {{ nav|is_nav_cur:"about" }}><a href="/about">ABOUT</a></li>
-			</ul>
-		</div>
-		<div class="submenu">
-			{% block submenu %}{% endblock %}
-		</div>
-		<div id="main">
-			{% block pre_body %}
-            <div id="top_leaderboard" class="ad">
-            <span>Advertisement</span>
-            <img src="{% static_url "images/sample_leaderboard.jpg" %}" alt="ad" />
-            </div>
-            {% endblock %}
-			{% block body %}{% endblock %}
-			{% block post_body %}{% endblock %}
-		</div>
-		<div id="footer"><div class="sep"></div>
-        <span class="g">Privary Policy | Terms and Conditions | Archives | Contact Us | Corrections | Subscriptions | <img src="{% static_url "images/icons/rss.png" %}" /> RSS</span><br />
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+
+<div id="nav_wrapper">
+<div id="nav_contents">
+	<ul>
+		<li {{ nav|is_nav_cur:"index" }}><a href="/">HOME</a></li>
+		<li {{ nav|is_nav_cur:"news" }}><a href="/section/news">NEWS</a></li>
+		<li {{ nav|is_nav_cur:"opinion" }}><a href="/section/opinion">OPINION</a></li>
+		<li {{ nav|is_nav_cur:"fm" }}><a href="/section/fm">MAGAZINE</a></li>
+		<li {{ nav|is_nav_cur:"sports" }}><a href="/section/sports">SPORTS</a></li>
+		<li {{ nav|is_nav_cur:"arts" }}><a href="/section/arts">ARTS</a></li>
+		<li {{ nav|is_nav_cur:"blogs" }}><a href="/section/blogs">BLOGS</a></li>
+		<li {{ nav|is_nav_cur:"photo" }}><a href="/section/photo">MULTIMEDIA</a></li>
+		<li {{ nav|is_nav_cur:"feeds" }}><a href="/feeds">"FEEDS"</a></li>
+		<li {{ nav|is_nav_cur:"about" }}><a href="/about">ABOUT</a></li>
+	</ul>
+</div>
+</div>
+
+<div id="content_wrapper">
+    {% block pre_body %}
+    <div class="top_leaderboard">
+        <img src="{% static_url "images/sample_leaderboard.jpg" %}" alt="ad" />
+    </div>
+    {% endblock %}
+
+	{% block body %}{% endblock %}
+	{% block post_body %}{% endblock %}
+</div>
+
+<div id="footer_wrapper">
+		<div id="footer_contents">
+        <span class="g">Privary Policy | Terms and Conditions | Archives | Contact Us | Corrections | Subscriptions | RSS</span><br />
         <span class="red-text">Copyright &copy; 2009, The Harvard Crimson, Inc.</span>
 		</div>
-	</div>
+</div>
+
 </body>
 </html>

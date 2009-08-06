@@ -1,22 +1,20 @@
 $(document).ready(function(){
-	$('.preview_body').cycle({
+	$('.rotator_preview').cycle({
 	    fx:     'fade',
 	    speed:  'slow',
-		timeout: 3000,
-	    pager:  '#preview_roll',
-		//next: '.nextbutton',
-		//prev: '.previousbutton', // not needed?
+		timeout: 4000,
+	    pager:  '.rotator_carousel_contents',
 	    pagerAnchorBuilder: function(idx, slide) {
 	        return '<span class="pager_item"><a href="#">&bull;</a></span>';
         }
 	});
 
     $(".rotator").hover(function (){
-            $(".carousel").fadeIn("fast");
-            $('.preview_body').cycle('pause'); 
+            $(".rotator_carousel").fadeIn("fast");
+            $('.rotator_preview').cycle('pause'); 
     },function (){
-            $(".carousel").fadeOut("fast");
-            $('.preview_body').cycle('resume'); 
+            $(".rotator_carousel").fadeOut("fast");
+            $('.rotator_preview').cycle('resume'); 
     });
     
 });
