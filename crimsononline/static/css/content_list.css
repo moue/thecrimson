@@ -62,10 +62,8 @@ div.filters span.inverted a {
 }
 
 /* thumbnails */
-div.image_thumb {
-    float: left;
-    margin-right: 6px;
-}
+div.image_thumb{float:left;}
+div.image_thumb img{margin-right: 6px;}
 
 /* pagination */
 span.pagination {

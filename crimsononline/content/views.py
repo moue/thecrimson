@@ -130,7 +130,7 @@ def writer(request, pk, f_name, m_name, l_name,
     f = filter_helper(w.content.all(), section_str, type_str, 
         w.get_absolute_url())
     
-    d = paginate(f.pop('content'), page, 5)
+    d = paginate(f.pop('content'), page, 10)
     d.update({'writer': w, 'url': REMOVE_P_RE.sub(request.path, '')})
     d.update(f)
     
@@ -205,7 +205,7 @@ def tag(request, tag, section_str='', type_str='', page=1):
     tags = list(tags)
     tags.sort(lambda x,y: cmp(y.content_count, x.content_count))
     
-    d = paginate(f.pop('content'), page, 5)
+    d = paginate(f.pop('content'), page, 10)
     d.update({'tag': tag, 'url': tag.get_absolute_url(), 'tags': tags,
         'featured': [], 'top_contributors': writers,})
     d.update(f)

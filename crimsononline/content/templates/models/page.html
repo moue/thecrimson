@@ -44,6 +44,16 @@
             {% endblock %}
 
         {% block content %}
+        {% endblock %}
+        {% endmodule %}
+
+        <!-- for stuff that can't be in a module, like viewers -->
+        {% module 8 "" ad %}
+        {% block outside_content %}
+        {% endblock %}
+        {% endmodule %}
+
+        {% module 8 "" ad %}
         <div id="tags">
             {% with content.tags.all as a_tags %}
                 {% if a_tags %}
@@ -54,9 +64,8 @@
                 {% endfor %}
             {% endwith %}
         </div>
-        
-        {% endblock %}
         {% endmodule %}
+        
 
         {% module 8 comment %}
             {% block post_content %}
@@ -77,14 +86,14 @@
     <div class="gutter"></div>
     
     <div id="sidebar" class="col-4">
-        {% most_read_articles %}
-
-        {% module 4 "" ad %}
-            <img src="/site_media/images/medium_rectangle.gif" alt="some ad" />
-        {% endmodule %}
-
-        {% tag_cloud 20 "Popular Tags" %}
         {% block sidebar %}
+            {% most_read_articles %}
+
+            {% module 4 "" ad %}
+                <img src="/site_media/images/medium_rectangle.gif" alt="some ad" />
+            {% endmodule %}
+
+            {% tag_cloud 20 "Popular Tags" %}
         {% endblock %}
     </div>
 	<div style="clear:both"></div>

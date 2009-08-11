@@ -198,6 +198,7 @@ h3, h3 a{
     border-collapse: collapse;
     float:left;
     border: 1px solid #d1d1d1;
+    border-right: none;
     padding: 2px;
     width:150px;
     height:14px;
@@ -214,6 +215,7 @@ h3, h3 a{
     float:left;
     background-color:#BA0600;
     border:1px solid #d1d1d1;
+    border-left: none;
     text-decoration:none;
     padding: 0px 4px;
     color:#fff;
@@ -270,8 +272,6 @@ h3, h3 a{
 	color: #666;
 }
 
-
-
 /* END NAV */
 
 /* MAIN */
@@ -279,6 +279,7 @@ h3, h3 a{
 #content_wrapper{
     width: 973px;
     margin: 0 auto;
+    min-height: 800px;
     /*background-image: url("../images/finalgrid.png");*/
 }
 

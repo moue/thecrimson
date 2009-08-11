@@ -1,3 +1,11 @@
+#gallery_viewer{
+    margin-bottom: 10px;
+}
+
+#viewer_main{
+    margin: 0 10px;
+    padding: 10px 0;
+}
 #viewer_main .tags_heading {
     font-family:arial;
     font-size:10px;
@@ -21,7 +29,7 @@
 #viewer_main .viewer_top {
     display: block;
     position: relative;
-    width: 600px;
+    width: 619px;
     height: 450px;
     overflow: hidden;
     background-color: #333;
@@ -45,23 +53,20 @@
     width: 30px;
 }
 
-#viewer_main .viewer_info .left {
-    float: left;
-    width: 350px;
-}
-
-#viewer_main .viewer_info .left h3{
-    margin: 4px 1px 10px;
+.viewer_info .left{padding-top:4px;}
+.viewer_info .left h3{
+    margin: 0 1px 10px;
     font-size: 18px;
 }
 
-#viewer_main .viewer_info .right {
+.viewer_info .right {
     float: right;
     width: 240px;
     margin-left: 10px;
+    margin-bottom: 10px;
 }
 #viewer_main .viewer_info .right .byline {
-    margin-bottom: 10px;
+    margin-bottom: 5px;
     float: right;
     text-align: right;
     width: 180px;
@@ -69,11 +74,15 @@
 
 
 #viewer_main .buyline {
-    font-size: 10px;
-    font-family: helvetica;
-    margin-bottom: 10px;
     float: left;
     width: 40px;
+}
+#viewer_main .buyline span{
+    font-size: 10px;
+    font-family: helvetica;
+}
+#viewer_main .buyline img{
+    vertical-align: bottom;
 }
 
 #viewer_main .tags_heading{
@@ -87,11 +96,12 @@
     position: absolute;
     margin-top: 450px;
     z-index: 100;
+    width: 100%;
 }
 
 .gallery_control #inside{
    height: 26px;
-    width: 600px;
+    width: 100%;
     margin-top: -26px;
 	background-image: url('../images/semitransparent.png'); 
 }

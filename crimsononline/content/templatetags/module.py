@@ -34,7 +34,6 @@ def do_module(parser, token):
     title = tokens[2] if tokens[2][0] not in ("'",'"') else tokens[2][1:len(tokens[2])-1]
     color = tokens[3] if len(tokens) == 4 else "blue"
     nodelist = parser.parse(('endmodule',))
-    print nodelist
     parser.delete_first_token()
     return ModuleNode(nodelist, title, width, color)
 

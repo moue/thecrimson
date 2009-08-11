@@ -8,7 +8,6 @@
 {% endblock %}
 
 {% block css %}
-    {% static_css "gallery.css" %}
     {% static_css "gallery.css" %}    
 {% endblock %}
 {% block js %}
@@ -16,19 +15,21 @@
     {% static_js "media_viewer.js" %}
 {% endblock %}
 
-{% block pre_content %}
-{% endblock %}
 
 {% block content %}
+{{block.super}}
+{% endblock %}
+
+{% block outside_content %}
  <div id="gallery_viewer" class="blackground">
     <div id="viewer_main">
        {{ gallery|render:"media_viewer" }}
     </div>
 </div>
 
-{{block.super}}
 {% endblock %}
 
 {% block sidebar %}
+    {{block.super}}
     text in the sidebar
 {% endblock %}
