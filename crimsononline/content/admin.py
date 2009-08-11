@@ -116,18 +116,17 @@ class ContentModelForm(ModelForm):
     def save(self, *args, **kwargs):
         # TODO: protect existing slugs from being overwritten.  This is 
         # already enforced in the UI, but additional enforcement would be good
-        return super(ContentModelForm, self).save(*args, **kwargs)
+        c = super(ContentModelForm, self).save(*args, **kwargs)
+        return c
     
     model = Content
   
 
 class ContentAdmin(admin.ModelAdmin):
-
-    """
-    Parent class for Content ModelAdmin classes.
+    """Parent class for Content ModelAdmin classes.
+    
     Doesn't actually work by itself.
     """
-    
     
     def get_form(self, request, obj=None):
         f = super(ContentAdmin, self).get_form(request, obj)
@@ -198,7 +197,7 @@ class ContentAdmin(admin.ModelAdmin):
             if p.has_previous() else 0
         
         return HttpResponse(simplejson.dumps(json_dict))
-
+    
     def queryset(self, request):
         if request.user.is_superuser:
             return self.model._default_manager.all_objects()
@@ -436,14 +435,6 @@ class GalleryForm(ContentModelForm):
     class Meta:
         model = Gallery
     
-    def save(self, *args, **kwargs):
-        imgs = self.cleaned_data.pop('images', [])
-        obj = super(GalleryForm, self).save(*args, **kwargs)
-        obj.images.clear()
-        for i, img in enumerate(imgs):
-            x = GalleryMembership(order=i, gallery=obj, image=img)
-            x.save()
-        return obj
     
 
 class GalleryAdmin(ContentAdmin):
@@ -470,6 +461,15 @@ class GalleryAdmin(ContentAdmin):
     class Media:
         css = {'all': ('css/admin/ImageGallery.css',)}
         js = ('scripts/jquery.js',)
+    
+    def save_model(self, request, obj, form, change):
+        imgs = form.cleaned_data.pop('images', [])
+        super(GalleryAdmin, self).save_model(request, obj, form, change)
+        obj.images.clear()
+        for i, img in enumerate(imgs):
+            x = GalleryMembership(order=i, gallery=obj, image=img)
+            x.save()
+        return obj
     
 
 admin.site.register(Gallery, GalleryAdmin)
