@@ -30,7 +30,7 @@
                 <tbody>
                 <tr><td><span class="filter_text filter_label">FILTER BY:</span></td></tr>
                 <tr>
-                <td><span class="filter_label">SECTION:</td>
+                <td><span class="filter_label">SECTION:</span></td>
                 <td>
                 {% for section, d in sections.items %}
                     {% if d.selected %}
@@ -38,9 +38,8 @@
                     {% else %}
                         <a class="section"href="{{d.url}}">{{section|yuhkilabel:"gray"}}</a>
                     {% endif %}<span class="reg_text">({{d.count}})</span>
-                {% endfor %}</span></td></tr>
+                {% endfor %}</td></tr>
                 <tr>
-                <form>
                 <td><span class="filter_label">TYPE:</span></td>
                 <td>
                 {% for type, d in types.items %}    
@@ -51,7 +50,7 @@
                 {% endif %}<span class="reg_text">({{d.count}})</span>
                 {% endfor %}
                 </td></tr>
-                </form>
+                </tbody>
                 </table>
             </div>
         {% endblock %}
@@ -67,11 +66,11 @@
     </div>
     
     <div class="gutter"></div>    
-    <div class="col-3">
+    <div class="col-4">
         {% block right %}
         {% tag_cloud 15 "RELATED TAGS" tags %}
         {% module 4 "" ad %}
-            <img src="/site_media/images/medium_rectangle.gif" />
+            <img src="/site_media/images/sample_ads/box.gif" alt="advertisement" />
         {% endmodule %}
         {% most_read_articles %}
         {% endblock %}

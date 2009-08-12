@@ -99,10 +99,11 @@ span.pagination a {
 }
 
 .filters .filter_label{
+	font-size: 11px;
+	font-family: Helvetica, Arial, sans-serif;
     font-family: arial;
-    font-size: 11px;
-    color: #888;
-    font-weight: bold;
+    color: #666;
+    font-weight: normal;
 }
 
 .filters span.filter_text{

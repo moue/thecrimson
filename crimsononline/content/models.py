@@ -114,7 +114,7 @@ class Content(models.Model):
     def save(self, *args, **kwargs):
         if not self.content_type:
             self.content_type = ContentType.objects.get_for_model(self.__class__)
-        super(Content, self).save(*args, **kwargs)
+        return super(Content, self).save(*args, **kwargs)
 
     @property
     def child(self):

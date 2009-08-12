@@ -48,12 +48,12 @@
         {% endmodule %}
 
         <!-- for stuff that can't be in a module, like viewers -->
-        {% module 8 "" ad %}
+        {% module 8 "" none %}
         {% block outside_content %}
         {% endblock %}
         {% endmodule %}
 
-        {% module 8 "" ad %}
+        {% module 8 "" none %}
         <div id="tags">
             {% with content.tags.all as a_tags %}
                 {% if a_tags %}
@@ -90,7 +90,7 @@
             {% most_read_articles %}
 
             {% module 4 "" ad %}
-                <img src="/site_media/images/medium_rectangle.gif" alt="some ad" />
+                <img src="/site_media/images/sample_ads/box.gif" alt="some ad" />
             {% endmodule %}
 
             {% tag_cloud 20 "Popular Tags" %}

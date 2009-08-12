@@ -135,9 +135,9 @@ repeat = register.tag(repeat)
 
 
 FULL_IMG = """<img src="%s" alt="star_full" />""" \
-    % misc.static_content('images/star_full.png')
+    % misc.static_content('images/icons/star_full.png')
 EMPTY_IMG = """<img src="%s" alt="star_empty" />""" \
-    % misc.static_content('images/star_empty.png')
+    % misc.static_content('images/icons/star_empty.png')
 class RatingNode(template.Node):
     def __init__(self, rating, rating_max):
         self.r = template.Variable(rating)

@@ -28,25 +28,22 @@
     <div class="tools">
         <div class="top">
             {% spaceless %}
-            <span class="cover"><img src="{% static_url "images/banner_right_cover.png" %}" alt="cover" /></span>
-            <span class="issues"><img src="{% static_url "images/banner_right_past.png" %}" alt="past issues" /></span>
-            <span class="weather"><img src="{% static_url "images/banner_right_weather.png" %}" alt="weather" /></span>
+            <img src="{% static_url "images/banner/right/weather.png" %}" alt="weather" />
+            <img src="{% static_url "images/banner/right/past.png" %}" alt="past issues" />
+            <img src="{% static_url "images/banner/right/cover.png" %}" alt="cover" />
             {% endspaceless %}
         </div>
-        <div class="line"></div>
         <div class="descriptions">
             {% spaceless %}
-            <span class="cover">TODAY</span>
-            <span class="issues">ISSUES</span>
             <span class="weather">WEATHER</span>
+            <span class="issues">ISSUES</span>
+            <span class="cover">TODAY</span>
             {% endspaceless %}
         </div>
         <div class="search">
             <form action="/search/">
-            <div>
                 <input class="query" type="text" name="q" />
                 <button class="submit" type="submit" value="SEARCH"><span>Search</span></button>
-            </div>
             </form>
         </div>
     </div>
@@ -73,7 +70,7 @@
 <div id="content_wrapper">
     {% block pre_body %}
     <div class="top_leaderboard">
-        <img src="{% static_url "images/sample_leaderboard.jpg" %}" alt="ad" />
+        <img src="{% static_url "images/sample_ads/leaderboard.jpg" %}" alt="ad" />
     </div>
     {% endblock %}
 

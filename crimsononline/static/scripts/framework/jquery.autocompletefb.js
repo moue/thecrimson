@@ -73,7 +73,7 @@ jQuery.fn.autoCompletefb = function(options)
             }            
             label = label+" ";
             var c = settings.foundClass.replace(/\./,'');
-    		var v = '<li class="'+c+'"><span class="label">'+label+'</span><span class="pk" style="display:none">'+pk+'</span><img class="p" src="/site_media/images/delete.gif"/></li>';
+    		var v = '<li class="'+c+'"><span class="label">'+label+'</span><span class="pk" style="display:none">'+pk+'</span><img class="p" src="/site_media/images/icons/delete.gif"/></li>';
     		var x = $(settings.inputClass,tmp).parent().before(v);
     		$('.p',x[0].previousSibling).click(function(){
     			acfb.removeFind(this);

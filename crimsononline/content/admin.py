@@ -401,7 +401,7 @@ class ImageAdmin(ContentAdmin):
     ordering = ('-id',)
     
     fields = ('pic', 'thumbnail', 'caption', 'kicker', 'section', 'issue',
-        'slug', 'priority', 'pub_status', 'contributors', 'tags', 'group',)
+        'slug', 'priority', 'pub_status', 'rotatable', 'contributors', 'tags', 'group',)
     
     form = ImageAdminForm
     
@@ -507,17 +507,7 @@ class ArticleForm(ContentModelForm):
         if self.cleaned_data['teaser']:
             return self.cleaned_data['teaser']
         return truncatewords(self.cleaned_data['text'], 20)
-    
-    def save(self, *args, **kwargs):
-        rel = self.cleaned_data.pop('rel_content',[])
 
-        obj = super(ArticleForm, self).save(*args, **kwargs)
-        obj.rel_content.clear()
-        for i, r in enumerate(rel):
-            x = ArticleContentRelation(order=i, article=obj, related_content=r)
-            x.save()
-        return obj
-    
     class Meta:
         model = Article
 
@@ -579,6 +569,16 @@ class ArticleAdmin(ContentAdmin):
             return (datetime.now() - obj.created_on).seconds < (60 * 60)
         return super(ArticleAdmin, self).has_change_permission(request, obj)
     """
+
+    def save_model(self, request, obj, form, change):
+        rel = form.cleaned_data.pop('rel_content',[])
+
+        super(ArticleAdmin, self).save_model(request, obj, form, change)
+        obj.rel_content.clear()
+        for i, r in enumerate(rel):
+            x = ArticleContentRelation(order=i, article=obj, related_content=r)
+            x.save()
+        return obj
     
     def queryset(self, request):
         u = request.user

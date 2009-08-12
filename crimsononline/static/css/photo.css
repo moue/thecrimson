@@ -1,6 +1,8 @@
 #viewer_sidebar {
+    margin: 10px 10px;
     list-style: none;
     min-height: 500px;
+    border: 1px solid #666;
 }
 
 #viewer_sidebar .filters{
@@ -17,7 +19,7 @@
     display: block;
     float: left;
     height: 75px;
-    width: 299px;
+    width: 277px;
     padding: 5px;
     margin: 0;
     border-bottom: 1px solid #666;

@@ -63,7 +63,7 @@ h3, h3 a{
     float:left;
 }
 
-.col-2, .col-3, .col-4, .col-5, .col-6, .col-8{float:left;}
+.col-2, .col-3, .col-4, .col-5, .col-6, .col-8{float:left; min-height: 1px;}
 
 .col-2{width: 143px;}
 .col-3{width: 226px;}
@@ -95,122 +95,84 @@ h3, h3 a{
 	color: #666;    
 }
 
-
-.mod-blue{
-    border-top: 5px solid #c3d4e8;
-}
-
-.mod-gray{
-    border-top: 5px solid #d1d1d1;
-}
-
-.mod-ad{
+.mod-blue{border-top: 5px solid #c3d4e8;}
+.mod-gray{border-top: 5px solid #d1d1d1;}
+.mod-ad{text-align: center;}
+.mod-ad, .mod-none{
     border: none;
     padding: 0;
     width: 100%;
 }
 
-.mod-ad div, .mod-ad img{
-    margin: 0 auto;
-}
 /* === END IMPORTANT STUFF === */
 
 
 
 /*  ==== MASTHEAD ==== */
+#masthead_container, #masthead_contents, #masthead_banner{height: 101px;}
 
 #masthead_container {
-	width: 100%;
-	height: 101px;
-    background-image: url('../images/banner_gradient.png');
+    background-image: url('../images/banner/gradient.png');
     color: white;
 }
 
 #masthead_contents{
     margin: 0 auto;
-    height:101px;
     width:973px;
-    background: url('../images/banner_seal.png');
-    background-position: center;
-    background-repeat: no-repeat;
+    background: url('../images/banner/seal.png') no-repeat center center;
 }
 
 #masthead_banner{
     float:left;
-    height:101px;
     width: 473px;
-    background: url('../images/banner_text.png');
-    background-position: center;
-    background-repeat: no-repeat;
+    background: url('../images/banner/text.png') no-repeat center center;
 }
 
 #masthead_contents .tools{
     float:right;
-    width:253px;
-    height:97px;
+    width:210px;
 }
 
 #masthead_contents .tools .top{
     height: 48px;
-    margin-right: 20px;
-    text-align: right;
+    text-align: center;
+    border-bottom: 1px solid #c97475;
+    margin-bottom: 2px;
 }
 
-#masthead_contents .tools .line{
-    height: 1px;
-    background-image: url('../images/banner_right_divider.png');
-    width: 240px;
-    float: left;  
-}
+#masthead_contents .tools .descriptions{height: 10px;}
 
-#masthead_contents .tools .descriptions{
-    height: 17px;
-    margin-right: 20px;
-}
 #masthead_contents .tools .descriptions span {
     font-size: 10px;
-    font-family: sans-serif;
-}
-#masthead_contents div.tools span {
-    float: right;
-    display: block;
+    font-family: helvetica, arial, sans-serif;
+    float: left;
     text-align:center;
 }
 
-#masthead_contents .tools  .weather {
-    width: 60px;
-}
-#masthead_contents .tools  .issues {
-    width: 70px;
-}
-#masthead_contents .tools .descriptions .cover {
-    width: 80px;
-}
+#masthead_contents .weather{width: 60px;}
+#masthead_contents .issues {width: 60px;}
+#masthead_contents .cover {width: 90px;}
 
 #masthead_contents .tools .search {
-    text-align:center;
     height: 20px;
-    margin-left: 20px;
-    margin-top: 5px;
+    margin-top: 10px;
 }
 
 #masthead_contents .tools .search input.query{
-    border-collapse: collapse;
     float:left;
     border: 1px solid #d1d1d1;
     border-right: none;
     padding: 2px;
-    width:150px;
+    width:157px;
     height:14px;
-    line-height: 18px;
-    background-repeat: no-repeat;
-    font-family: sans-serif;
+    font-family: helvetica, arial, sans-serif;
     font-size: 12px;
 }
 
 
 #masthead_contents .tools .search button.submit{
     display:block;
+    width: 48px;
     height:20px;
     float:left;
     background-color:#BA0600;
