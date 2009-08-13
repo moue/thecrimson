@@ -130,7 +130,8 @@ class Content(models.Model):
             ('issue', 'slug'),
         )
         permissions = (
-            ('content.can_publish', 'Can publish content',),)
+            ('content.can_publish', 'Can publish content',),
+        )
     
     @permalink
     def get_absolute_url(self):
