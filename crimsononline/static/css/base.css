@@ -85,7 +85,8 @@ h3, h3 a{
     border-top: 5px solid #b00600;
 }
 
-.mod .title{
+/* for mostxed, allow double inheritance */
+.mod > .title, .mod > * > .title{
 	font-size: 11px;
 	font-family: Helvetica, Arial, sans-serif;
 	padding: 5px 0 7px;
@@ -133,16 +134,16 @@ h3, h3 a{
     width:210px;
 }
 
-#masthead_contents .tools .top{
+#masthead_contents .top{
     height: 48px;
     text-align: center;
     border-bottom: 1px solid #c97475;
     margin-bottom: 2px;
 }
 
-#masthead_contents .tools .descriptions{height: 10px;}
+#masthead_contents .descriptions{height: 10px;}
 
-#masthead_contents .tools .descriptions span {
+#masthead_contents .descriptions > span {
     font-size: 10px;
     font-family: helvetica, arial, sans-serif;
     float: left;
@@ -153,12 +154,12 @@ h3, h3 a{
 #masthead_contents .issues {width: 60px;}
 #masthead_contents .cover {width: 90px;}
 
-#masthead_contents .tools .search {
+#masthead_contents .search {
     height: 20px;
     margin-top: 10px;
 }
 
-#masthead_contents .tools .search input.query{
+#masthead_contents .query{
     float:left;
     border: 1px solid #d1d1d1;
     border-right: none;
@@ -170,7 +171,7 @@ h3, h3 a{
 }
 
 
-#masthead_contents .tools .search button.submit{
+#masthead_contents .submit{
     display:block;
     width: 48px;
     height:20px;
@@ -184,7 +185,7 @@ h3, h3 a{
     cursor:pointer;
 }
 
-#masthead_contents .tools .search button.submit span{
+#masthead_contents .submit > span{
     font-family: helvetica, arial, sans-serif;
     font-size:11px;
     line-height: 18px;
@@ -212,24 +213,29 @@ h3, h3 a{
     text-align: center;
 }
 
-#nav_contents li{
+#nav_contents > ul > li{
 	display: inline-block;
 	height: 24px;
-	border: 1px solid #d1d1d1;
-	border-width: 0 1px 0 0;
+    border-right: 1px solid #d1d1d1;
 }
 
-#nav_contents li:hover, #nav_contents ul li#nav_cur{
-    /* TODO: STYLE THIS */
+#nav_contents > ul > li.l{
+    border-left: 1px solid #d1d1d1;
+}
+
+#nav_contents a:hover, li#nav_cur{
 	background-color: #fff;
 }
+#nav_contents a:hover, li#nav_cur > a{
+	color: #000;    
+}
 
-#nav_contents li a{
+#nav_contents a{
 	line-height: 24px;
 	display: inline-block;
 	font-size: 12px;
 	font-family: Helvetica, Arial, sans-serif;
-	padding:0px 24px;
+	padding:0px 20px;
 	text-decoration: none;
 	color: #666;
 }
@@ -292,7 +298,7 @@ h3, h3 a{
 .tag_cloud a.small {font-size: 15px;}
 
 /* bordered */
-div.bordered {
+.bordered {
     border: 1px solid #bbb;
     border-radius: 5px;
     -moz-border-radius: 5px;
@@ -301,7 +307,7 @@ div.bordered {
     margin-bottom: 5px;
     overflow: none;
 }
-div.bordered h2 {
+.bordered h2 {
     font-size: 10px;
     color: #666;
     margin: 0 0 3px 3px;
@@ -370,7 +376,7 @@ div.top_leaderboard{
     text-align: center;
 }
 
-div.ad span{
+.ad span{
     padding: 0px 4px 0px 4px;
     text-transform: uppercase;
     font-size: 10px;
@@ -431,13 +437,4 @@ font-family: 'Trebuchet MS', Helvetica, sans-serif;
     -webkit-border-radius: 3px;
 }
 .thclabel a {
-}
-div.filters span.button a:hover{
-    text-decoration: underline;
-}
-div.filters span.inverted {
-    background-color: white;
-}
-div.filters span.inverted a {
-    color: #aa2222;
 }

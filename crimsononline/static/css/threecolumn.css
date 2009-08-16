@@ -1,68 +1,61 @@
 
-div.article_previews li {
+.article_previews li {
     display: block; 
     float: left;
     padding-bottom: 8px;
     margin-bottom: 8px;
     border-bottom: 1px dotted #d1d1d1;
 }
-div.article_previews div.image_thumb {
+.article_previews .image_thumb {
     float: left;
     margin: 0 8px 1px 0;
 }
 
 
-div.article_previews .teaser {
+.article_previews .teaser {
     font-size: 13px;
     clear: left;
 }
 
-.article_headlines .byline, .article_headlines .byline a{
+.article_headlines .byline, .article_headlines .byline > a{
     color: #666;
 }
 
-div.article_headlines ul {
+.article_headlines ul {
     list-style-type: none;
 }
-div.article_headlines li {
+.article_headlines li {
     font-size: 13px;
     margin: 0 0 6px;
 }
-div.article_headlines h3 a{
+.article_headlines h3 > a{
     font-weight: normal;
     font-size: 13px;
 }
 
-
-div.article_feature {
+.article_feature {
     text-align: center;
     padding: 5px;
     border-radius: 5px;
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
 }
-div.article_feature h3, div.article_feature p {
+.article_feature h3, .article_feature p {
     text-align: left;
 }
-div.article_feature h3, .article_feature h3 a {
+.article_feature h3, .article_feature h3 > a {
     font-weight: bold;
     font-size: 16px;
 }
-div.article_feature .byline {
+.article_feature .byline {
     font-size: 12px;
     margin: 4px 0 3px;
 }
-div.article_feature .teaser {
+.article_feature .teaser {
     font-size: 14px;
 }
 
-div#the_fold{
-	clear:both;
-	margin:5px 0px;
-    border-bottom: 1px solid #ccc;
-}
-
-div.img_list li {
+.img_list li {
     font-size: 12px;
     width: 296px;
     height: 60px;
@@ -70,44 +63,40 @@ div.img_list li {
     display: block;
     float: left;
 }
-div.img_list li img {
+.img_list li > img {
     float: left;
     margin-right: 4px;
 }
 
-div.series img {
+.series img {
     margin-bottom: 8px;
 }
-div.series ul{
+.series ul{
     list-style: disc outside;
 }
-div.series ul li {
+.series li {
     display: list-item;
     margin: 0 0 5px 20px;
     width: 276px;
 }
-div.series ul li h3{
+.series li > h3{
     font-size: 13px;
     font-weight: normal;
 }
 
-div.reviews h2 {
+.reviews h2 {
     border-bottom: 1px solid #bbb;
 }
-div.reviews ul {
+.reviews ul {
     margin-bottom: 6px;
     list-style: none;
 }
-div.reviews li * {
-    font-size: 13px;
-    font-weight: normal;
-}
-div.reviews li h3 span {
+.reviews li > h3 > span {
     display: inline-block;
 }
-div.reviews li h3 span.link{
+.reviews li > h3 > span.link{
     width: 196px;
 }
-div.reviews li span.rating{
+.reviews li > span.rating{
     width: 90px;
 }

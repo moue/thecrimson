@@ -1,23 +1,23 @@
-div#featured_articles p {
+#featured_articles p {
     line-height: 1.1;
     margin: 0 0 7px 5px;
     font-size: 13px;
 }
 
-div#featured_articles .date {
+#featured_articles .date {
     font-size: 12px;
     color: #666;
 }
-div#top_contributors ul li {
+#top_contributors li {
     float: left;
     display: block;
     width: 148px;
     margin-bottom: 8px;
 }
-div#top_contributors ul * {
+#top_contributors .dateline, #top_contributors a, #top_contributors{
     font-size: 12px;
 }
-div#top_contributors ul img {
+#top_contributors img {
     float: left;
     clear: left;
     margin-right: 4px;

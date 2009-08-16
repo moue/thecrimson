@@ -19,12 +19,12 @@
     </div>
     <div class="gutter"></div>
 
-    <div class="col-6 content_list">
+    <div class="col-6">
         {% module 6 "" red %}
         {% block before_content %}
         {% endblock %}
         {% block content_filters %}
-            <div class="filters">
+            <div class="content_list_filters">
                 
                 <table>
                 <tbody>
@@ -55,7 +55,7 @@
             </div>
         {% endblock %}
         {% block content_list %}
-        <div class="content">
+        <div class="content_list_content">
             {% include "ajax/content_list_page.html" %}
         </div>
         {% endblock %}

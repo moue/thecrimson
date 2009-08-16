@@ -53,7 +53,9 @@
 <div id="nav_wrapper">
 <div id="nav_contents">
 	<ul>
-		<li {{ nav|is_nav_cur:"index" }}><a href="/">HOME</a></li>
+		<!-- no whitespace to prevent nbsps -->
+        {% spaceless %}
+		<li {{ nav|is_nav_cur:"index" }} class="l"><a href="/">HOME</a></li>
 		<li {{ nav|is_nav_cur:"news" }}><a href="/section/news">NEWS</a></li>
 		<li {{ nav|is_nav_cur:"opinion" }}><a href="/section/opinion">OPINION</a></li>
 		<li {{ nav|is_nav_cur:"fm" }}><a href="/section/fm">MAGAZINE</a></li>
@@ -63,6 +65,7 @@
 		<li {{ nav|is_nav_cur:"photo" }}><a href="/section/photo">MULTIMEDIA</a></li>
 		<li {{ nav|is_nav_cur:"feeds" }}><a href="/feeds">"FEEDS"</a></li>
 		<li {{ nav|is_nav_cur:"about" }}><a href="/about">ABOUT</a></li>
+    {% endspaceless %}
 	</ul>
 </div>
 </div>

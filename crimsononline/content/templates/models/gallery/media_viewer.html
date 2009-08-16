@@ -14,7 +14,7 @@
         {% spaceless %}
         <ul>
         {% for img in gallery.images.all %}
-            <li><a href="{{ img.get_absolute_url }}">&bull;</a></li>
+            <li><a {% if forloop.first %}class="active"{%endif%}href="{{ img.get_absolute_url }}">&bull;</a></li>
         {% endfor %}
         {% endspaceless %}
         </ul>
@@ -29,13 +29,5 @@
 <div class="viewer_info">
  {{gallery.cover_image|render:"gallery_bottom"}}
 </div>
-
-<script type="text/javascript">
-function load_image(url){
-    
-}
-
-</script>
-
 
 

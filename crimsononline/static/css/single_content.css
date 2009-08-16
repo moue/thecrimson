@@ -21,24 +21,24 @@ div#pre_content {
     float: left;
 }
 
-#articletools a span{
+#articletools > a > span{
     font-family: arial, sans-serif;
     float: left;
     padding: 1px 0 0;
 }
 
-#articletools span{
+#articletools > span{
     float: left;
     padding: 0px 3px;
     line-height: 11px;
 }
 
-#articletools img{
+#articletools > a > img{
     border: 0;
     margin: 0 3px 0 0 ;
     float: left;
 }
-#articletools a:hover {
+#articletools > a:hover {
     color: black;
 }
 

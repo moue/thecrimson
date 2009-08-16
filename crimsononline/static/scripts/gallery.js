@@ -44,6 +44,10 @@ $(document).ready(function(){
     var _des_cache = new Array();
     
     $(".carousel_frame a").click(function(e){
+        // add active class to new photo, remove from previous active
+        $(".carousel_frame a").removeClass("active")
+        $(this).addClass("active")
+        
         var url = $(this).attr('href');
         
         // destroy the old object in the viewer area and add the new item

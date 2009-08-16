@@ -8,7 +8,7 @@ p {
 
 /* related content stuff */
 
-div#related_contents {
+#related_contents {
     width: 180px;
     float: left;
     margin: 0 10px 0 0;
@@ -17,24 +17,24 @@ div#related_contents {
     border-width: 3px 0 0 0;
     padding: 5px 0 0 0;
 }
-div#related_contents div.ylabel_wrapper {
+#related_contents div.ylabel_wrapper {
     float: left;
     width: 150px;
 }
 
-div.related_content a img {
+.related_content > a > img {
     border-width: 0;
 }
-div.related_content > a {
+.related_content > a {
     margin: 0;
     display: block;
     line-height: 0;
 }
-div.related_content span {
+.related_content span {
     margin: 0;
     line-height: normal;
 }
-div.related_content span.ctype {
+.related_content .ctype {
     margin: 0 0 2px 0;
     font-family: Helvetica, Arial, sans-serif;
     line-height: normal;
@@ -43,7 +43,7 @@ div.related_content span.ctype {
     color: gray;
     font-weight: bold;
 }
-div.related_content span.title{
+.related_content .title{
     font-weight: bold;
     margin-top: 3px;
 }

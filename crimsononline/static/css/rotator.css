@@ -1,10 +1,10 @@
-div.rotator {
+.rotator {
     width: 300px;
     padding: 5px;
     overflow: hidden;
     margin-bottom: 10px;
 }
-div.rotator h2{
+.rotator h2{
     font-family: Arial;
     font-size: 15px;
     color: #ba0600;
@@ -12,26 +12,19 @@ div.rotator h2{
     font-weight: normal;
 }
 
-div.rotator ul.rotator_preview{
+.rotator_preview{
 	height:310px;
 }
-
-div.rotator ul.rotator_preview li{
+.rotator_preview li{
 	height:310px;
 	list-style-type: none;
 }
 
-div.rotator ul.rotator_preview li div.preview_text h3 {
-    font-size: 17px;
-    font-weight: bold;
-    line-height: .9;
-}
-
-div.rotator .rotator_preview li div.preview_text p.teaser {
+.preview_text > .teaser {
     font-size: 13px;
 }
 
-div.rotator div.rotator_carousel {
+.rotator_carousel {
 	margin-top: 214px;
 	z-index: 10000;
 	position:absolute;
@@ -41,7 +34,7 @@ div.rotator div.rotator_carousel {
     text-align: center;
 }
 
-div.rotator div.rotator_carousel_contents{
+.rotator_carousel_contents{
 	float:left;
 	width: 100%;
 	text-align:center;
@@ -51,7 +44,7 @@ div.rotator div.rotator_carousel_contents{
     height: 26px;
 }
 
-.rotator_carousel .rotator_carousel_contents span{
+.rotator_carousel_contents > span{
     display:inline-block;
     margin: 0 4px;
     vertical-align: top;
@@ -61,7 +54,7 @@ div.rotator div.rotator_carousel_contents{
 
 }
 
-.rotator_carousel .rotator_carousel_contents span a{
+.rotator_carousel_contents > span > a{
     display: block;
     height: 26px;
     width: 16px;
@@ -71,21 +64,16 @@ div.rotator div.rotator_carousel_contents{
     color: #999;
 }
 
-.rotator_carousel .rotator_carousel_contents span a.activeSlide{
+.rotator_carousel_contents > span > .activeSlide{
     color: #fff;
 }
 
-.rotator_carousel .rotator_carousel_contents span a:hover{
+.rotator_carousel_contents > span > a:hover{
     color: #fff;
 
 }
 
-div.carousel .rotator_carousel_contents {
-	float:left;
-    margin-top: 5px;
-}
-
-div.rotator div.c_items{
+.c_items{
     text-align:center;
     margin: 0 auto;
     width: 96px;

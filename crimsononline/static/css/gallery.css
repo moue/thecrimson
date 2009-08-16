@@ -41,12 +41,6 @@
     font-size: 13px;
 }
 
-/* INFO ISH */
-#viewer_main .media_details{
-    height: 150px;
-}
-
-
 #viewer_main .byline, #viewer_main .byline a, #viewer_main .buyline{
     color: #666;
     font-weight: normal;
@@ -142,7 +136,8 @@
     line-height: 26px;
     color: #999;
 }
-.gallery_control .carousel_frame a:hover {
+.gallery_control .carousel_frame a:hover,
+.gallery_control .carousel_frame a.active {
     color: white;
 }
 
