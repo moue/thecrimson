@@ -864,6 +864,23 @@ class GalleryMembership(models.Model):
     class Meta:
         ordering = ('order',)
 
+class YouTubeVideo(Content):
+    """
+    Embeddable YouTube video
+    """
+    
+    key = models.CharField(blank=False, null=False, max_length=100)
+    title = models.CharField(blank=False, null=False, max_length=200)
+    description = models.TextField(blank=False, null=False)
+
+    created_on = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        get_latest_by = 'created_on'
+        ordering = ['-created_on']
+
+    objects = ContentManager()
+
 def get_flash_save_path(instance, filename):
     ext = splitext(filename)[1]
     filtered_title = make_file_friendly(instance.title)

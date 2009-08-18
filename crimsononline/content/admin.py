@@ -505,7 +505,7 @@ class ArticleForm(ContentModelForm):
         url='/admin/content/contributor/search/', model=Contributor,
         labeler=(lambda obj: str(obj)))
     rel_content = RelatedContentField(label='New content', required=False,
-        admin_site=admin.site, rel_types=[Image, Gallery, Article, Map, FlashGraphic])
+        admin_site=admin.site, rel_types=[Image, Gallery, Article, Map, FlashGraphic, YouTubeVideo])
     
     def clean_teaser(self):
         """Adds a teaser if one does not exist."""
@@ -703,6 +703,43 @@ class ReviewAdmin(admin.ModelAdmin):
 
 admin.site.register(Review, ReviewAdmin)
 
+class YouTubeVideoForm(ContentModelForm):
+    pub_status = forms.ChoiceField(Content.PUB_CHOICES,required=True, 
+        label="Published Status")
+
+    def __init__(self, *args, **kwargs):
+        s = super(YouTubeVideoForm, self).__init__(*args, **kwargs)
+
+    class Meta:
+        model = YouTubeVideo
+    
+class YouTubeVideoAdmin(ContentAdmin):
+    form = YouTubeVideoForm
+
+    fieldsets = (
+        ('Basic Information', {
+            'fields': ('title', 'description', 'key',),
+        }),
+        ('Byline', {
+            'fields': ('contributors',),
+        }),
+        ('Publishing', {
+            'fields': ('issue', 'section', 'pub_status', 'priority', 'slug', 'tags', 'rotatable'),
+        }),
+        ('Grouping', {
+            'fields': ('group',),
+            'classes': ('collapse',),
+        })
+    )
+
+    class Media:
+        js = (
+            'scripts/jquery.js',
+        )
+
+admin.site.register(YouTubeVideo, YouTubeVideoAdmin)
+
+
 class FlashGraphicForm(ContentModelForm):
     def __init__(self, *args, **kwargs):
         s = super(FlashGraphicForm, self).__init__(*args, **kwargs)
@@ -729,6 +766,10 @@ class FlashGraphicAdmin(ContentAdmin):
         })
     )
 
+    class Media:
+        js = (
+            'scripts/jquery.js',
+        )
     
 admin.site.register(FlashGraphic, FlashGraphicAdmin)
 

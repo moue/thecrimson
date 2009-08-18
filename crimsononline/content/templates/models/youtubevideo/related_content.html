@@ -1,0 +1,12 @@
+{% extends "models/related_content.html" %}
+
+{% load content_filters %}
+{% load common %}
+
+{% block rc %}
+    <span class="ctype">Video</span><br />
+    <a href="{{ youtubevideo.get_absolute_url }}">
+    <img src="http://img.youtube.com/vi/{{youtubevideo.key}}/0.jpg" width=180 height=135/>
+    <span class="title">{{ youtubevideo.title }}</span>
+    </a>
+{% endblock %}

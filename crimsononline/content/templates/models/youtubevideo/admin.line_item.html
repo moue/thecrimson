@@ -1,0 +1,7 @@
+{% load content_filters %}
+{% load common %}
+
+<span>YouTube Video</span>
+<span>{{ youtubevideo.title }}</span>
+<span class="contributors">{{ youtubevideo.contributors.all|human_list }}</span>
+<span>{{ youtubevideo.created_on|date:"m/d/y" }}</span>

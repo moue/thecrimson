@@ -1,0 +1,39 @@
+{% extends "models/page.html" %}
+
+{% load content_filters %}
+{% load common %}
+
+{% block title %}
+	{{ youtubevideo.title }}
+{% endblock %}
+
+{% block css %}
+{% endblock %}
+
+{% block content %}
+    <h1>{{ youtubevideo.title }}</h1>
+{% endblock %}
+
+{% block outside_content %}
+    <div class="video" style="margin: 0 auto; width:640px;">
+
+<object width="640" height="385"><param name="movie" value="http://www.youtube.com/v/{{youtubevideo.key}}&hl=en&fs=1&hd=1"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/{{youtubevideo.key}}&hl=en&fs=1&hd=1" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="640" height="385"></embed></object>
+
+    </div>
+    <div style="margin-left: 5px">
+    <div class="byline">
+        By {{ youtubevideo.contributors.all|linkify|human_list }}
+    </div>
+    <div class="dateline">
+        Published: {{ youtubevideo.issue.issue_date|date:"F d, Y" }}
+    </div>
+    <div class="caption">
+        {{ youtubevideo.description }}
+    </div>
+    </div>
+    {{block.super}}
+{% endblock %}
+
+{% block sidebar %}
+    text in the sidebar
+{% endblock %}
