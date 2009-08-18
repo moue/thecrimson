@@ -217,12 +217,13 @@ class RelatedContentField(forms.CharField):
         if not value:
             return []
         ids = value.split(';')
+        print ids
         # retrieving Content objs MUST preserve their order!!!
         objs = []
         
         for p in ids:
             try:
-                objs.append(Content.objects.get(pk=p[0]))
+                objs.append(Content.objects.get(pk=p))
             except:
                 pass
         # this is faster? but doesn't work because it doesn't preserve order       

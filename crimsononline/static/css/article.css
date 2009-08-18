@@ -41,7 +41,7 @@ p {
     font-size: 12px;
     text-transform: uppercase;
     color: gray;
-    font-weight: bold;
+    font-weight: normal;
 }
 .related_content .title{
     font-weight: bold;

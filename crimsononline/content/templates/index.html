@@ -57,6 +57,29 @@
         {% rotator rotate "main_rotator" %}
     {% endcontentmodule %}
     
+    {% module 4 opinion %}
+        {% contentmodule index.opinion %}
+	        <div id="top_opinion" class="article_previews">
+                <ul>
+                    <li>
+                        {{ opeds|first|render:"preview"}}
+                    </li>
+                </ul>
+                <span class="clear" />
+            </div>
+            <div id="top_opinions" class="article_headlines">
+                <ul>
+                    {% for oped in opeds|notfirst %}
+                        <li>
+                            <h3><a href="{{ oped.get_absolute_url }}">{{ oped.headline }}</a></h3>
+                            <p class="byline">By {{ oped.contributors.all|linkify|human_list }}</p>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endcontentmodule %}
+    {% endmodule %}
+
     {% module 4 "more news" %}
         {% contentmodule index.morenews %}
             <div id="more_news" class="article_headlines">
@@ -95,28 +118,6 @@
 	    </div>
 	{% endmodule %}
 
-    {% module 4 opinion %}
-        {% contentmodule index.opinion %}
-	        <div id="top_opinion" class="article_previews">
-                <ul>
-                    <li>
-                        {{ opeds|first|render:"preview"}}
-                    </li>
-                </ul>
-                <span class="clear" />
-            </div>
-            <div id="top_opinions" class="article_headlines">
-                <ul>
-                    {% for oped in opeds|notfirst %}
-                        <li>
-                            <h3><a href="{{ oped.get_absolute_url }}">{{ oped.headline }}</a></h3>
-                            <p class="byline">By {{ oped.contributors.all|linkify|human_list }}</p>
-                        </li>
-                    {% endfor %}
-                </ul>
-            </div>
-        {% endcontentmodule %}
-    {% endmodule %}
     
     {% module 4 "" ad %}
         <img src="/site_media/images/sample_ads/box.gif" alt="ad" />

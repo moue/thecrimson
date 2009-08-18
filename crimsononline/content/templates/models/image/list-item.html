@@ -8,6 +8,7 @@
     <img src="{% static_url "images/icons/photo.gif" %}" alt="image" />
     <h3><a href="{{ image.get_absolute_url }}">{{ image.kicker }}</a></h3>
     <span class="byline"> By {{ image.contributors.all|linkify|human_list}}</span>
+    <div class="dateline">{{image.issue.issue_date|date:"l, F j, Y"}}</div>
     <p class="teaser">{{ image.caption|truncatewords:"10" }}</p>
     <span class="clear"></span>
 </li>

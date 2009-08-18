@@ -108,10 +108,10 @@ class ContentModelForm(ModelForm):
         add_rel=Content._meta.get_field('group').rel
     )   
     """ 
-    #rotatable = forms.ChoiceField(Content.ROTATE_CHOICES, required=True,
-    #    label="Place in rotators?")
-    #pub_status = forms.ChoiceField(Content.PUB_CHOICES,required=True, 
-    #    label="Published Status")
+    rotatable = forms.ChoiceField(Content.ROTATE_CHOICES, required=True,
+        label="Place in rotators?")
+    pub_status = forms.ChoiceField(Content.PUB_CHOICES,required=True, 
+        label="Published Status")
     
     model = Content
   
@@ -505,7 +505,7 @@ class ArticleForm(ContentModelForm):
         url='/admin/content/contributor/search/', model=Contributor,
         labeler=(lambda obj: str(obj)))
     rel_content = RelatedContentField(label='New content', required=False,
-        admin_site=admin.site, rel_types=[Image, Gallery, Article, Map])
+        admin_site=admin.site, rel_types=[Image, Gallery, Article, Map, FlashGraphic])
     
     def clean_teaser(self):
         """Adds a teaser if one does not exist."""
@@ -540,8 +540,7 @@ class ArticleAdmin(ContentAdmin):
             'fields': ('issue', 'section', 'page',),
         }),
         ('Web', {
-            'fields': ('slug', 'priority', 'rotatable', 'web_only', 'tags', 
-                        'pub_status'),
+            'fields': ('pub_status', 'priority', 'slug', 'tags', 'rotatable', 'web_only'),
         }),
         ('Editing', {
             'fields': ('proofer', 'sne',),
@@ -577,7 +576,7 @@ class ArticleAdmin(ContentAdmin):
 
     def save_model(self, request, obj, form, change):
         rel = form.cleaned_data.pop('rel_content',[])
-
+        
         super(ArticleAdmin, self).save_model(request, obj, form, change)
         obj.rel_content.clear()
         for i, r in enumerate(rel):
@@ -704,6 +703,34 @@ class ReviewAdmin(admin.ModelAdmin):
 
 admin.site.register(Review, ReviewAdmin)
 
+class FlashGraphicForm(ContentModelForm):
+    def __init__(self, *args, **kwargs):
+        s = super(FlashGraphicForm, self).__init__(*args, **kwargs)
+
+    class Meta:
+        model = FlashGraphic
+    
+class FlashGraphicAdmin(ContentAdmin):
+    form = FlashGraphicForm
+
+    fieldsets = (
+        ('Basic Information', {
+            'fields': ('title', 'graphic', 'width', 'height'),
+        }),
+        ('Byline', {
+            'fields': ('contributors',),
+        }),
+        ('Publishing', {
+            'fields': ('issue', 'section', 'pub_status', 'priority', 'slug', 'tags', 'rotatable'),
+        }),
+        ('Grouping', {
+            'fields': ('group',),
+            'classes': ('collapse',),
+        })
+    )
+
+    
+admin.site.register(FlashGraphic, FlashGraphicAdmin)
 
 admin.site.register(Score)
 

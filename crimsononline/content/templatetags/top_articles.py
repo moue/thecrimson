@@ -115,7 +115,6 @@ class TopArticlesNode(template.Node):
         sqlstatement = "SELECT DISTINCT content_article.content_ptr_id, SUM(content_contenthits.hits) AS hitnum FROM content_article, " \
                        "content_content, content_contenthits" + tableStr + " WHERE content_content.id = content_article.content_ptr_id AND content_contenthits.content_id " \
                        "= content_content.id AND content_contenthits.date > date('now', '-7 days')" + limitStr + " GROUP BY content_contenthits.content_id ORDER BY hitnum DESC LIMIT 5"
-        print sqlstatement
         cursor.execute(sqlstatement)
         mostreadarticles = cursor.fetchall()
         mostreadarticles = [Content.objects.get(pk=x[0]).child for x in mostreadarticles]

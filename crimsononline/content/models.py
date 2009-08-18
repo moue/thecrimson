@@ -123,7 +123,8 @@ class Content(models.Model):
         If c (an instance of Content) was an article, c.child would be
         equivalent to c.article
         """
-        return getattr(self, self.content_type.name)
+        child_name = self.content_type.name.replace(" ", "")
+        return getattr(self, child_name)
     
     class Meta:
         unique_together = (
@@ -156,12 +157,13 @@ class Content(models.Model):
             'admin' or 'search'
         context -- gets injected into template (optional)
         """
-        name = self.content_type
+        
+        name = self.content_type.name.replace(" ","")
         templ = 'models/%s/%s.html' % (name, method)
         
         # can access self with either the name of the class (ie, 'article')
         #   or 'content'
-        context.update({name.name: self.child, 'content': self.child, 'class': name.name})
+        context.update({name: self.child, 'content': self.child, 'class': name})
         if method == 'page':
             self.store_hit()
         return mark_safe(render_to_string(templ, context, context_instance = RequestContext(request)))
@@ -243,7 +245,6 @@ class Content(models.Model):
     @classmethod
     def find_by_date(cls, start, end):
         """Return a queryset between the two dates"""
-        
         lookup = cls._meta.get_latest_by
         q = {}
         if start:
@@ -863,11 +864,41 @@ class GalleryMembership(models.Model):
     class Meta:
         ordering = ('order',)
 
+def get_flash_save_path(instance, filename):
+    ext = splitext(filename)[1]
+    filtered_title = make_file_friendly(instance.title)
+    return datetime.now().strftime("graphics/%Y/%m/%d/%H%M%S_") + \
+        filtered_title + ext
+
+class FlashGraphic(Content):
+    """
+    A Flash Graphic
+    """
+    
+    graphic = models.FileField(upload_to=get_flash_save_path)
+
+    width = models.IntegerField(default='640')
+    height = models.IntegerField(default='480')
+
+    title = models.CharField(blank=False, null=False, max_length=200)
+    description = models.TextField(blank=False, null=False)
+
+    created_on = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        get_latest_by = 'created_on'
+        ordering = ['-created_on']
+
+    def __unicode__(self):
+        return self.title
+        
+    objects = ContentManager()
 
 class Map(Content):
     """
     A Google Map Object
     """
+
     title = models.CharField(blank=False, max_length=50) #for internal use, doesn't appear on page
     # values used by Google Maps API
     zoom_level = models.PositiveSmallIntegerField(default=15)
@@ -887,6 +918,7 @@ class Map(Content):
     def __unicode__(self):
         return self.title    
 
+    objects = ContentManager()
 
 class Marker(models.Model):
     """

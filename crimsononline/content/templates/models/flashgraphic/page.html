@@ -1,0 +1,38 @@
+{% extends "models/page.html" %}
+
+{% load content_filters %}
+{% load common %}
+
+{% block title %}
+	{{ flashgraphic.title }}
+{% endblock %}
+
+{% block css %}
+{% endblock %}
+
+{% block content %}
+    <h1>{{ flashgraphic.title }}</h1>
+    <div class="graphic" style="margin: 0 auto; width:{{flashgraphic.width}}px;">
+        <object width="{{flashgraphic.width}}" height="{{flashgraphic.height}}">
+        <param name="movie" value="{% static_url "" %}{{flashgraphic.graphic}}">
+        <embed src="{% static_url "" %}{{flashgraphic.graphic}}" width="{{flashgraphic.width}}" height="{{flashgraphic.height}}">
+        </embed>
+        </object>
+                
+        
+    </div>
+    <div class="byline">
+        By {{ flashgraphic.contributors.all|linkify|human_list }}
+    </div>
+    <div class="dateline">
+        Published: {{ flashgraphic.issue.issue_date|date:"F d, Y" }}
+    </div>
+    <div class="caption">
+        {{ flashgraphic.description }}
+    </div>
+    {{block.super}}
+{% endblock %}
+
+{% block sidebar %}
+    text in the sidebar
+{% endblock %}
