@@ -1,0 +1,37 @@
+{% extends 'content_list.html' %}
+{% load content_filters %}
+
+{% block content_filters %}
+    <h1>Search</h1>
+    <div class="content_list_filters">
+        <form method="get" action=".">
+            <table>
+                    <tr>
+                        <td><span class="filter_label">QUERY: </span></td>
+                        <td>{{form.q}}</td>
+                    </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td>
+                        <input type="submit" value="Search">
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    
+{% endblock %}
+
+{% block content_list %}
+    <div class="content_list_content">
+        {% if page.object_list %}
+            <ul>
+            {% for result in page.object_list %}
+                    {{ result.object.article|render:"list-item" }}
+            {% endfor %}
+            </ul>
+        {% else %}
+            <p>No results found.</p>
+        {% endif %}
+    </div>
+{% endblock %}

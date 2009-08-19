@@ -1,0 +1,7 @@
+{% load common %}
+{% load content_filters %}
+
+ {{object.headline}}
+ 
+ {{ object.contributors.all|linkify|human_list}}
+ {{ object.long_teaser }}
