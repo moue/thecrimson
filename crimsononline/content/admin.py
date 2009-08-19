@@ -3,6 +3,7 @@ from re import compile
 from time import strptime
 from itertools import *
 import copy
+import re
 from django import forms
 from django.core.mail import send_mail
 from django.conf import settings
@@ -533,9 +534,12 @@ class ArticleForm(ContentModelForm):
     
     def clean_teaser(self):
         """Adds a teaser if one does not exist."""
+        teaser_re = re.compile(r"<\s*\w.*?>")
         if self.cleaned_data['teaser']:
             return self.cleaned_data['teaser']
-        return truncatewords(self.cleaned_data['text'], 20)
+        else:
+            teaser = teaser_re.sub("",self.cleaned_data['text'])
+            return truncatewords(teaser, 20)
 
     class Meta:
         model = Article
