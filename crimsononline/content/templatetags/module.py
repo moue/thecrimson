@@ -14,16 +14,21 @@ class ModuleNode(template.Node):
         @title => a title (displayed at the top)
     """
     def __init__(self, nodelist, title, width, color):
-        self.nodelist, self.title, self.width, self.color = nodelist, title.upper(), width, color
+        self.nodelist, self.width, self.color = nodelist, width, color
+        self.title = template.Variable(title)
     
     def __iter__(self):
         for node in self.nodelist:
             yield node
     
     def render(self, context):
+        try:
+            real_title = self.title.resolve(context).upper()
+        except:
+            real_title = str(self.title).upper()
         cont = mark_safe(self.nodelist.render(context))
         return render_to_string("templatetag/module.html",
-            {'c':cont, 'title':self.title, 'width':self.width,'color':self.color})
+            {'c':cont, 'title':real_title, 'width':self.width,'color':self.color})
 
 def do_module(parser, token):
     tokens = token.split_contents()

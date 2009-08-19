@@ -1,5 +1,6 @@
 from re import compile
 from django import template
+from django.contrib.flatpages.models import FlatPage
 from django.template import defaultfilters as filter
 from django.template.loader import render_to_string
 from django.utils.safestring import mark_safe
@@ -95,6 +96,29 @@ def human_list(list, connector='and'):
             s += t % filter.escape(item)
         return mark_safe(s)
 
+class FlatpageNavNode(template.Node):
+    def __init__(self, prefix):
+        self.prefix = prefix
+    
+    def render(self, context):
+        pages = FlatPage.objects.filter(url__startswith = "/" + self.prefix)
+        return mark_safe(render_to_string('templatetag/flatpagenav.html', locals()))
+
+
+def flatpage_nav(parser, token):
+    """
+    Builds a navigation menu for flatpages by pulling all articles with a given prefix
+    """
+
+    bits = token.split_contents()
+
+    if len(bits) != 2:
+        raise template.TemplateSyntaxError('%r tag requires 1 argument.' % bits[0])
+
+    prefix = bits[1]
+    return FlatpageNavNode(prefix)
+
+flatpage_nav = register.tag(flatpage_nav)
 
 class RepeatNode(template.Node):
     def __init__(self, nodelist, count):

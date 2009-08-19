@@ -1,0 +1,18 @@
+.left_navigation {
+    margin-top: -10px;
+    float: left;
+    width: 100%;
+}
+.left_navigation li{
+    list-style-type: none;
+    padding: 3px;
+    margin-bottom: 3px;
+    background-color: #eee;
+}
+.left_navigation a{
+    font-family: helvetica, arial, sans-serif;
+    font-size: 12px;
+    list-style-type: none;
+    color: #666;
+    width: 100%;
+}

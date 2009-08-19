@@ -1,9 +1,31 @@
 {% extends "base.html" %}
+{% load common %}
+{% load module %}
 
 {% block title %}
     {{ flatpage.title }}
 {% endblock %}
 
+{% block css %}
+{% static_css "flatpages.css" %}
+{% endblock %}
+
 {% block body %}
-    {{ flatpage.content }}
+    <div class="col-3">
+    {% module 3 navigation %}
+    {% endmodule %}
+        <ul class="left_navigation">
+            {% flatpage_nav about %}
+        </ul>
+    </div>
+
+    <div class="gutter"></div>
+    
+    <div class="col-9">
+    {% module 9 flatpage.title red %}
+        {{ flatpage.content }}
+    {% endmodule %}
+    </div>
+    
+    <span class="clear" />
 {% endblock %}
