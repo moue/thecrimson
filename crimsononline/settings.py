@@ -110,6 +110,7 @@ INSTALLED_APPS = (
     'crimsononline.common',
     'crimsononline.subscriptions',
     'solango',
+    'haystack',
 )
 
 MEDIA_LOC = MEDIA_ROOT
@@ -131,3 +132,7 @@ SEARCH_SORT_PARAMS = {
     "score desc": "Relevance",
     "date desc" : "Date" # Added date
 }
+
+HAYSTACK_SITECONF = 'crimsononline.search_sites'
+HAYSTACK_SEARCH_ENGINE = 'solr'
+HAYSTACK_SOLR_URL = 'http://127.0.0.1:8983/solr'
