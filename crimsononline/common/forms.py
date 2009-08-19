@@ -462,9 +462,12 @@ class TinyMCEWidget(forms.widgets.Textarea):
     """
     def __init__(self, *args, **kwargs):
         csdict, csstring = kwargs.pop('custom_settings', None), ""
-        for k, v in csdict.items():
-            csstring = csstring + k + ':"' + v + '", \n'
-        print csstring
+        try:
+            for k, v in csdict.items():
+                csstring = csstring + k + ':"' + v + '", \n'
+            print csstring
+        except:
+            pass
         self.custom_settings = csstring
         return super(TinyMCEWidget, self).__init__(*args, **kwargs)
 

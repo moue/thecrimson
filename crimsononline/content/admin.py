@@ -520,8 +520,7 @@ class ArticleForm(ContentModelForm):
         widget=forms.TextInput(attrs={'size':'70'})
     )
     text = forms.fields.CharField(
-        widget=TinyMCEWidget(attrs={'rows':'50', 'cols':'67'},
-            custom_settings={'theme_advanced_buttons2':'italic'})
+        widget=TinyMCEWidget(attrs={'rows':'50', 'cols':'67'},)
     )
     proofer = FbModelChoiceField(required=True, multiple=False,
         url='/admin/content/contributor/search/', model=Contributor,
