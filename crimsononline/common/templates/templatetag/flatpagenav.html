@@ -1,5 +1,4 @@
+{% load common %}
 {% for page in pages %}
-    <a href="{{page.url}}">
-    <li>{{page.title}}</li>
-    </a>
+    <li><a {% ifequal cur_url page.url %}class="active" {%endifequal%}href="{{page.url}}">{{page.title}}</a></li>
 {% endfor %}

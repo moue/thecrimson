@@ -15,8 +15,10 @@ class ModuleNode(template.Node):
     """
     def __init__(self, nodelist, title, width, color):
         self.nodelist, self.width, self.color = nodelist, width, color
-        self.title = template.Variable(title)
-    
+        try:
+            self.title = template.Variable(title)
+        except:
+            self.title = title
     def __iter__(self):
         for node in self.nodelist:
             yield node

@@ -97,11 +97,13 @@ def human_list(list, connector='and'):
         return mark_safe(s)
 
 class FlatpageNavNode(template.Node):
-    def __init__(self, prefix):
+    def __init__(self, prefix, cur_url):
         self.prefix = prefix
+        self.cur_url = template.Variable(cur_url)
     
     def render(self, context):
         pages = FlatPage.objects.filter(url__startswith = "/" + self.prefix)
+        cur_url = self.cur_url.resolve(context)
         return mark_safe(render_to_string('templatetag/flatpagenav.html', locals()))
 
 
@@ -112,11 +114,12 @@ def flatpage_nav(parser, token):
 
     bits = token.split_contents()
 
-    if len(bits) != 2:
-        raise template.TemplateSyntaxError('%r tag requires 1 argument.' % bits[0])
+    if len(bits) != 3:
+        raise template.TemplateSyntaxError('%r tag requires 2 arguments.' % bits[0])
 
     prefix = bits[1]
-    return FlatpageNavNode(prefix)
+    cur_url = bits[2]
+    return FlatpageNavNode(prefix, cur_url)
 
 flatpage_nav = register.tag(flatpage_nav)
 
