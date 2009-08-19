@@ -19,9 +19,6 @@ class ModuleNode(template.Node):
             self.title = template.Variable(title)
         except:
             self.title = title
-    def __iter__(self):
-        for node in self.nodelist:
-            yield node
     
     def render(self, context):
         try:

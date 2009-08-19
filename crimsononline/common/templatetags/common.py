@@ -1,4 +1,5 @@
-from re import compile
+from re import compile, search
+import operator
 from django import template
 from django.contrib.flatpages.models import FlatPage
 from django.template import defaultfilters as filter
@@ -97,19 +98,37 @@ def human_list(list, connector='and'):
         return mark_safe(s)
 
 class FlatpageNavNode(template.Node):
-    def __init__(self, prefix, cur_url):
+    def __init__(self, nodelist, prefix, cur_url):
         self.prefix = prefix
         self.cur_url = template.Variable(cur_url)
+        self.nodelist = nodelist
     
     def render(self, context):
+        linkre = compile(r'href=\"(.+)\"')
+        textre = compile(r'>(.+)<')
+
+        links = []
+
+        hardlinks = [x + "</a>" for x in self.nodelist[0].render(context).split("</a>")]
+        hardlinks = hardlinks[0:len(hardlinks)-1]
+
+        for link in hardlinks:
+            links.append((search(textre, link).group(1), search(linkre, link).group(1)))
+
         pages = FlatPage.objects.filter(url__startswith = "/" + self.prefix)
+        for page in pages:
+            links.append((page.title, page.url))
+
+        links.sort()
         cur_url = self.cur_url.resolve(context)
         return mark_safe(render_to_string('templatetag/flatpagenav.html', locals()))
 
 
-def flatpage_nav(parser, token):
+def do_flatpage_nav(parser, token):
     """
     Builds a navigation menu for flatpages by pulling all articles with a given prefix
+    
+    inside of the flatpage_nav and endflatpage_nav templatetags, it's possible to put static links, which will be sorted and added to the navigation
     """
 
     bits = token.split_contents()
@@ -119,9 +138,12 @@ def flatpage_nav(parser, token):
 
     prefix = bits[1]
     cur_url = bits[2]
-    return FlatpageNavNode(prefix, cur_url)
+    nodelist = parser.parse(('endflatpage_nav',))
+    parser.delete_first_token()
 
-flatpage_nav = register.tag(flatpage_nav)
+    return FlatpageNavNode(nodelist, prefix, cur_url)
+
+register.tag('flatpage_nav', do_flatpage_nav)
 
 class RepeatNode(template.Node):
     def __init__(self, nodelist, count):
