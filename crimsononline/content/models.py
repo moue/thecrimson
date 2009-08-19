@@ -1,7 +1,7 @@
 from hashlib import md5
 from random import randint
 from os.path import splitext, exists, split, join
-from datetime import datetime, time, date
+from datetime import datetime, time, date, timedelta
 from re import compile, match
 from string import letters, digits
 from PIL import Image as pilImage
@@ -21,6 +21,7 @@ from django.forms import ModelForm
 from django.db.models.query import QuerySet
 from django.http import Http404
 from django.template import RequestContext
+
 from crimsononline.common.caching import funcache
 from crimsononline.common.forms import \
     MaxSizeImageField, SuperImageField
@@ -55,10 +56,28 @@ class ContentManager(models.Manager):
     def recent(self):
         return self.get_query_set().order_by('-issue__issue_date', 'priority')
     
-    @property
-    def prioritized(self):
-        """TODO: order by f(priority, days_old)"""
-        pass
+    def prioritized(self, recents=7):
+        """Order by (priority / days_old).
+        
+        Arguments:
+            recents => only return stuff from the past _ issues. this should make
+                the query have a reasonable run time.
+        """
+        # TODO: this sql only? works on sqlite3
+        # also, round(x - 0.5) == floor(x)
+        qs = self.get_query_set().extra(
+            tables=['content_issue'], 
+            where=['content_issue.id = content_content.issue_id',
+                'content_issue.id in (SELECT id FROM content_issue '
+                'ORDER BY issue_date DESC LIMIT %s)'
+            ],
+            params=[recents],
+            select={'decayed_priority':
+            "content_content.priority / "
+            "(round(julianday('now', 'localtime') - "
+            "julianday(content_issue.issue_date) - 0.5) + 1)"
+        })
+        return qs.extra(order_by=['-decayed_priority',])
     
 
 
@@ -166,7 +185,7 @@ class Content(models.Model):
         context.update({name: self.child, 'content': self.child, 'class': name})
         if method == 'page':
             self.store_hit()
-        return mark_safe(render_to_string(templ, context, context_instance = RequestContext(request)))
+        return mark_safe(render_to_string(templ, context, context_instance=RequestContext(request)))
     
     def delete(self):
         self.pub_status = -1
@@ -196,7 +215,7 @@ class Content(models.Model):
         thres_str = str(self.pk) + str(self.content_type) + str(date.today()) + 'thres'
         time_str = str(self.pk) + str(self.content_type) + str(date.today()) + 'time'
         hits_str = str(self.pk) + str(self.content_type) + str(date.today()) + 'hits'
-        # Now (we want it only once or else the time the code takes to execute will mess things up)
+        # we want it only once or else the time the code takes to execute will mess things up
         now = datetime.now()
         # If the value was already in the cache
         if not cache.add(thres_str, BASE_THRESHOLD, MIN_DB_STORE_INTERVAL * 3):
@@ -869,7 +888,8 @@ class YouTubeVideo(Content):
     Embeddable YouTube video
     """
     
-    key = models.CharField(blank=False, null=False, max_length=100, help_text = "http://www.youtube.com/v=(XXXXXX)&... part of the YouTube URL")
+    key = models.CharField(blank=False, null=False, max_length=100, 
+        help_text="http://www.youtube.com/v=(XXXXXX)&... part of the YouTube URL")
     title = models.CharField(blank=False, null=False, max_length=200)
     description = models.TextField(blank=False, null=False)
 
@@ -947,7 +967,8 @@ class Marker(models.Model):
     map = models.ForeignKey(Map,related_name='markers')
     lat = models.FloatField(blank=False)
     lng = models.FloatField(blank=False)
-    popup_text = models.CharField(blank=True, max_length = 1000) #text that appears when the user clicks the marker
+    popup_text = models.CharField(blank=True, max_length = 1000,
+        help_text="text that appears when the user clicks the marker")
     
     def __unicode__(self):
         return str(self.map) + ' (' + str(self.lat) + ',' + str(self.lng) + ')'
@@ -1004,7 +1025,8 @@ class Article(Content):
         limit_choices_to={'is_active': True})
     web_only = models.BooleanField(default=False, null=False, blank=False)
     
-    rel_content = models.ManyToManyField(Content, through='ArticleContentRelation', null=True, blank=True, related_name = "rel_content")
+    rel_content = models.ManyToManyField(Content, through='ArticleContentRelation', 
+        null=True, blank=True, related_name = "rel_content")
     
     
     class Meta:

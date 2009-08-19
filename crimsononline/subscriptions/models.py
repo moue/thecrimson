@@ -19,8 +19,6 @@ class Subscriber(User):
     contributors = models.ManyToManyField('content.Contributor', blank=True)
     sections = models.ManyToManyField('content.Section', blank=True)
     tags = models.ManyToManyField('content.Tag', blank=True)
-
-
     
     def send_confirmation(self):
         domain = settings.URL_BASE
