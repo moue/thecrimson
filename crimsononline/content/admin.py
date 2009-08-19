@@ -23,7 +23,8 @@ from crimsononline.content.forms import *
 from crimsononline.common.utils.strings import alphanum_only
 from crimsononline.common.forms import \
     FbModelChoiceField, CropField, SearchModelChoiceField, \
-    MaskedValueTextInput, RatingWidget, fbmc_search_helper
+    MaskedValueTextInput, RatingWidget, fbmc_search_helper, \
+    TinyMCEWidget
     
 
 STOP_WORDS = ['a', 'able', 'about', 'across', 'after', 'all', 'almost', 'also', 
@@ -403,11 +404,27 @@ class ImageAdmin(ContentAdmin):
     
     list_display = ('kicker', 'section', 'issue', 'pub_status_text',)
     search_fields = ('kicker', 'caption',)
-    ordering = ('-id',)
-    
-    fields = ('pic', 'thumbnail', 'caption', 'kicker', 'section', 'issue',
-        'slug', 'priority', 'pub_status', 'rotatable', 'contributors', 'tags', 'group',)
-    
+    ordering = ('-id',)    
+
+    fieldsets = (
+        ('Image Setup', {
+            'fields': ('pic', 'thumbnail','caption','kicker'),
+        }),
+        ('Byline', {
+            'fields': ('contributors',),
+        }),
+        ('Print', {
+            'fields': ('issue', 'section',),
+        }),
+        ('Web', {
+            'fields': ('pub_status', 'priority', 'slug', 'tags', 'rotatable',),
+        }),
+        ('Grouping', {
+            'fields': ('group',),
+            'classes': ('collapse',),
+        })
+    )    
+
     form = ImageAdminForm
     
     class Media:
@@ -425,9 +442,12 @@ admin.site.register(Image, ImageAdmin)
 
 
 class GalleryForm(ContentModelForm):
+    rel_content = RelatedContentField(label='New content', required=False,
+        admin_site=admin.site, rel_types=[Image, Gallery, Article, Map, FlashGraphic, YouTubeVideo])
+
     images = SearchModelChoiceField(
         ajax_url='/admin/content/image/previews_by_date_tag/',
-        multiple=True, model=Image, label='', clean_to_objs=True
+        multiple=True, model=Image, label='Images', clean_to_objs=True
     )
     slug = forms.fields.SlugField(widget=AutoGenSlugWidget(
             url='/admin/content/article/gen_slug/',
@@ -444,23 +464,27 @@ class GalleryForm(ContentModelForm):
 
 class GalleryAdmin(ContentAdmin):
     fieldsets = (
-        (None, {
-            'fields': ('title', 'description',),
+        ('Gallery Setup', {
+            'fields': ('title','description'),
         }),
         ('Images', {
-            'fields': ('images',),
+            'fields': ('images','rel_content')
         }),
-        ('Contributors', {
+        ('Byline', {
             'fields': ('contributors',),
         }),
-        ('Organization', {
-            'fields': ('section', 'issue', 'slug', 'tags', 'priority','pub_status'),
+        ('Print', {
+            'fields': ('issue', 'section',),
+        }),
+        ('Web', {
+            'fields': ('pub_status', 'priority', 'slug', 'tags', 'rotatable',),
         }),
         ('Grouping', {
             'fields': ('group',),
             'classes': ('collapse',),
-        }),
+        })
     )
+
     form = GalleryForm
     
     class Media:
@@ -496,7 +520,8 @@ class ArticleForm(ContentModelForm):
         widget=forms.TextInput(attrs={'size':'70'})
     )
     text = forms.fields.CharField(
-        widget=forms.Textarea(attrs={'rows':'50', 'cols':'67'})
+        widget=TinyMCEWidget(attrs={'rows':'50', 'cols':'67'},
+            custom_settings={'theme_advanced_buttons2':'italic'})
     )
     proofer = FbModelChoiceField(required=True, multiple=False,
         url='/admin/content/contributor/search/', model=Contributor,
@@ -561,6 +586,8 @@ class ArticleAdmin(ContentAdmin):
             'scripts/jquery.js',
             'scripts/admin/Article.js',
             'scripts/framework/jquery.sprintf.js',
+            'scripts/tiny_mce/tiny_mce.js',
+            'scripts/textarea.js',
         )
     
     """
@@ -717,7 +744,7 @@ class YouTubeVideoAdmin(ContentAdmin):
     form = YouTubeVideoForm
 
     fieldsets = (
-        ('Basic Information', {
+        ('Video Setup', {
             'fields': ('title', 'description', 'key',),
         }),
         ('Byline', {
@@ -751,8 +778,8 @@ class FlashGraphicAdmin(ContentAdmin):
     form = FlashGraphicForm
 
     fieldsets = (
-        ('Basic Information', {
-            'fields': ('title', 'graphic', 'width', 'height'),
+        ('Graphic Setup', {
+            'fields': ('graphic', 'title', 'description', 'width', 'height'),
         }),
         ('Byline', {
             'fields': ('contributors',),

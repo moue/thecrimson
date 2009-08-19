@@ -34,19 +34,19 @@ def yuhkilabel(s, type="red"):
     """
     return mark_safe(render_to_string('templatetag/yuhkilabel.html', locals()))
 
+paragraph_re = compile(r'</p>\s+<p')
 @register.filter
 def paragraphs(str):
     """
     Breaks str into paragraphs using linebreak filter, then splits by <p>.
     Keeps the <p> tags in the output.
     """
-    str = filter.force_escape(str)
-    str = filter.linebreaks(str)
+
     # remove whitespace between adjacent tags, replace with sentinel value
-    r = compile(r'>\s+<')
-    str = r.sub('>,,,<', str)
+    str = paragraph_re.sub('</p>,,,<p', str)
     # split by sentinel value
     l = str.split(',,,')
+    print [mark_safe(x) for x in l]
     return [mark_safe(x) for x in l]
 
 @register.filter

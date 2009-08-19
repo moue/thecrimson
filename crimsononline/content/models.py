@@ -869,7 +869,7 @@ class YouTubeVideo(Content):
     Embeddable YouTube video
     """
     
-    key = models.CharField(blank=False, null=False, max_length=100)
+    key = models.CharField(blank=False, null=False, max_length=100, help_text = "http://www.youtube.com/v=(XXXXXX)&... part of the YouTube URL")
     title = models.CharField(blank=False, null=False, max_length=200)
     description = models.TextField(blank=False, null=False)
 
@@ -880,6 +880,9 @@ class YouTubeVideo(Content):
         ordering = ['-created_on']
 
     objects = ContentManager()
+
+    def __unicode__(self):
+        return self.title
 
 def get_flash_save_path(instance, filename):
     ext = splitext(filename)[1]
@@ -894,8 +897,8 @@ class FlashGraphic(Content):
     
     graphic = models.FileField(upload_to=get_flash_save_path)
 
-    width = models.IntegerField(default='640')
-    height = models.IntegerField(default='480')
+    width = models.PositiveIntegerField(help_text="Positive integer less than 640")
+    height = models.PositiveIntegerField(help_text="Positive integer")
 
     title = models.CharField(blank=False, null=False, max_length=200)
     description = models.TextField(blank=False, null=False)

@@ -456,8 +456,25 @@ class SearchModelChoiceField(forms.CharField):
             # wouldn't be helpful.
             raise forms.ValidationError("Something terrible happened!")
         
+class TinyMCEWidget(forms.widgets.Textarea):
+    """
+    Widget that uses TinyMCE editor with custom settings
+    """
+    def __init__(self, *args, **kwargs):
+        csdict, csstring = kwargs.pop('custom_settings', None), ""
+        for k, v in csdict.items():
+            csstring = csstring + k + ':"' + v + '", \n'
+        print csstring
+        self.custom_settings = csstring
+        return super(TinyMCEWidget, self).__init__(*args, **kwargs)
 
+    class Media:
+        js = (static_content('scripts/framework/jquery.Jcrop.js'),)
 
+    def render(self, name, value, attrs=None):
+        ta = super(TinyMCEWidget, self).render(name, value, attrs)
+        custom_settings = mark_safe(self.custom_settings)
+        return render_to_string("forms/tinymce_widget.html", locals())
 
 class CropWidget(forms.widgets.HiddenInput):
     """
