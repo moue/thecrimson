@@ -856,7 +856,7 @@ class Gallery(Content):
     
     title = models.CharField(blank=False, null=False, max_length=200)
     description = models.TextField(blank=False, null=False)
-    images = models.ManyToManyField(Image, through='GalleryMembership')
+    contents = models.ManyToManyField(Content, through='GalleryMembership',related_name="contents_set")
     created_on = models.DateTimeField(auto_now_add=True)
     
     class Meta:
@@ -867,17 +867,17 @@ class Gallery(Content):
 
     @property
     def cover_image(self):
-        if not self.images:
+        if not self.contents:
             return None
-        return self.images.all()[0]
+        return self.contents.all()[0].child
     
     def __unicode__(self):
         return self.title
 
 
 class GalleryMembership(models.Model):
-    gallery = models.ForeignKey(Gallery)
-    image = models.ForeignKey(Image)
+    gallery = models.ForeignKey(Gallery, related_name="gallery_set")
+    content = models.ForeignKey(Content, related_name="content_set")
     order = models.IntegerField()
     
     class Meta:

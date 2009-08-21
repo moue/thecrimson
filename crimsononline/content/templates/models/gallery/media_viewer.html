@@ -13,8 +13,8 @@
         <div class="carousel_frame">
         {% spaceless %}
         <ul>
-        {% for img in gallery.images.all %}
-            <li><a {% if forloop.first %}class="active"{%endif%}href="{{ img.get_absolute_url }}">&bull;</a></li>
+        {% for cont in gallery.contents.all %}
+            <li><a {% if forloop.first %}class="active"{%endif%}href="{{ cont.get_absolute_url }}">&bull;</a></li>
         {% endfor %}
         {% endspaceless %}
         </ul>

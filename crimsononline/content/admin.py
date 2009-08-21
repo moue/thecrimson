@@ -443,13 +443,9 @@ admin.site.register(Image, ImageAdmin)
 
 
 class GalleryForm(ContentModelForm):
-    rel_content = RelatedContentField(label='New content', required=False,
-        admin_site=admin.site, rel_types=[Image, Gallery, Article, Map, FlashGraphic, YouTubeVideo])
+    contents = RelatedContentField(label='Contents', required=False,
+        admin_site=admin.site, rel_types=[Image, YouTubeVideo])
 
-    images = SearchModelChoiceField(
-        ajax_url='/admin/content/image/previews_by_date_tag/',
-        multiple=True, model=Image, label='Images', clean_to_objs=True
-    )
     slug = forms.fields.SlugField(widget=AutoGenSlugWidget(
             url='/admin/content/article/gen_slug/',
             date_field='#id_issue', text_field='#id_description',
@@ -469,7 +465,7 @@ class GalleryAdmin(ContentAdmin):
             'fields': ('title','description'),
         }),
         ('Images', {
-            'fields': ('images','rel_content')
+            'fields': ('contents',)
         }),
         ('Byline', {
             'fields': ('contributors',),
@@ -493,11 +489,11 @@ class GalleryAdmin(ContentAdmin):
         js = ('scripts/jquery.js',)
     
     def save_model(self, request, obj, form, change):
-        imgs = form.cleaned_data.pop('images', [])
+        contents = form.cleaned_data.pop('contents', [])
         super(GalleryAdmin, self).save_model(request, obj, form, change)
-        obj.images.clear()
-        for i, img in enumerate(imgs):
-            x = GalleryMembership(order=i, gallery=obj, image=img)
+        obj.contents.clear()
+        for i, content in enumerate(contents):
+            x = GalleryMembership(order=i, gallery=obj, content=content)
             x.save()
         return obj
     

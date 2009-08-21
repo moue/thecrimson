@@ -39,6 +39,26 @@ def to_img_layout(img, dimensions):
     return mark_safe(tag)
 
 @register.filter
+def flash_gallery_margin(img):
+    """Gets the margin needed for a flash graphic in a gallery (height 450px)"""
+    if float(content.height)/content.width >= float(450)/619 and content.height >= 450:
+        return 0
+    else:
+        ren_height = float(content.height)/content.width*619
+        print ren_height
+        return (450-ren_height)/2
+
+@register.filter
+def img_gallery_margin(img):
+    """Gets the margin needed for an image in a gallery (height 450px)"""
+    if float(img.pic.height)/img.pic.width >= float(450)/619 and img.pic.height >=450:
+        return 0
+    else:
+        ren_height = float(img.pic.height)/img.pic.width*619
+        print ren_height
+        return (450-ren_height)/2
+
+@register.filter
 def to_img_tag(img, size_spec):
     """Turns an Image into an img tag (html).
     

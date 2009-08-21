@@ -2510,7 +2510,7 @@
     "pk": 1,
     "model": "content.gallerymembership",
     "fields": {
-        "image": 1,
+        "content": 1,
         "gallery": 3,
         "order": 0
     }

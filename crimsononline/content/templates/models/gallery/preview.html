@@ -8,5 +8,5 @@
 <div class="dateline">
     <img src="{% static_url "images/icons/photo.gif" %}" alt="image gallery" />
     Added: {{ gallery.issue.issue_date|date:"F j, Y" }}
-    ({{ gallery.images.count }} photos)
+    ({{ gallery.contents.count }} photos)
 </div>

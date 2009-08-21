@@ -109,7 +109,7 @@ INSTALLED_APPS = (
     'crimsononline.search',
     'crimsononline.common',
     'crimsononline.subscriptions',
-    #'haystack',
+    'haystack',
 )
 
 MEDIA_LOC = MEDIA_ROOT

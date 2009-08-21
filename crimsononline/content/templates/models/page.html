@@ -42,11 +42,13 @@
             {% endspaceless %}{% endif %}
             </div>
             {% endblock %}
+        <span class="clear" />
 
         {% block content %}
         {% endblock %}
         {% endmodule %}
 
+        <span class="clear" />
         <!-- for stuff that can't be in a module, like viewers -->
         {% block outside_content %}
         {% endblock %}

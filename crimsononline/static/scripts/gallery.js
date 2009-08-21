@@ -58,7 +58,7 @@ $(document).ready(function(){
                     $(".viewer_image").fadeIn('fast');
                     $(".viewer_info").empty().append(bottom);
                     $(".viewer_info").fadeIn('fast');
-                    center_gallery_image();
+                    //center_gallery_image();
                 });
             });
         }        
