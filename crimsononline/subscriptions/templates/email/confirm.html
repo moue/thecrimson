@@ -5,22 +5,27 @@
 {% block inhead %}
     {% static_js "jquery.js" %}
     {{ form.media }}
+    {% if submit %}
+        <script>
+            // autosubmit the form.
+            $(document).ready(function(){
+                $('form#confirm').submit();
+            });
+        </script>
+    {% endif %}
 {% endblock %}
 
 {% block body %}
+{% if error %}
+    <p>Sorry, there was an error.</p>
+{% else %}{% if success %}
+    <p>Your email subscription is now active!</p>
+{% else %}{% if submit %}
     <div>
-    <p>{% firstof status "You've just been emailed a confirmation code. Enter it in the box below to activate your subscription!" %}</p><br />
+    <form action="." method="POST" id="confirm">
+        {{ form.as_p }}
+        <input type="submit" value="Confirm Your Subscription!">
+    </form>
     </div>
-    <div>
-        <form action="." method="POST">
-            {% for field in form %}
-                <div class="fieldWrapper">
-                    <span class="fieldError">{{ field.errors }}</span>
-                    {{ field.label_tag }}: {{ field }}
-                </div>
-            {% endfor %}
-        <input type="submit" value="submit" />
-        </form>
-    </div>
-    
+{% endif %}{% endif %}{% endif %}
 {% endblock %}

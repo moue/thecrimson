@@ -6,12 +6,15 @@ This probably means only widgets and fields.
 from os.path import split, exists, splitext
 from PIL import Image as pilImage
 from datetime import date
+
 from django import forms
 from django.contrib import admin
 from django.db.models import ImageField
 from django.db.models.fields.files import ImageFieldFile
 from django.http import Http404
 from django.template.loader import render_to_string
+from django.utils.safestring import mark_safe
+
 from crimsononline.content.models import *
 from crimsononline.common.utils.numbers import reduce_fraction
 from crimsononline.common.utils.misc import static_content
@@ -233,6 +236,7 @@ class FbSelectWidget(forms.widgets.HiddenInput):
     def render(self, name, value, attrs=None):
         if value:
             if isinstance(value, unicode) or isinstance(value, str):
+                value = value.replace('[', '').replace(']', '')
                 value = [int(v) for v in value.split(',') if v]
             if getattr(value, '__iter__', None):
                 obj_list = self.model.objects.filter(pk__in=value)
@@ -242,6 +246,8 @@ class FbSelectWidget(forms.widgets.HiddenInput):
             objs = {}
             for obj in obj_list:
                 objs[obj.pk] = self.labeler(obj)
+        else:
+            value = ''
         hidden = super(FbSelectWidget, self).render(name, value, attrs)
         url, is_multiple, no_dupes = self.url, self.is_multiple, self.no_duplicates
         return render_to_string("forms/fb_select_widget.html", locals())
@@ -324,8 +330,8 @@ class FbModelChoiceField(forms.CharField):
         # just in case admin_site is still on there
         kwargs.pop('admin_site', None)
         s = super(FbModelChoiceField, self).__init__(*args, **kwargs)
-        self.help_text = "Start typing; we'll provide suggestions.<br>%s" \
-            % self.help_text
+        self.help_text = mark_safe("Start typing; we'll provide suggestions."
+            + ("<br>%s" % self.help_text if self.help_text else ''))
         return s
     
     def clean(self, value):
@@ -348,7 +354,7 @@ class FbModelChoiceField(forms.CharField):
             # manually put values in, so a real validation error
             # wouldn't be helpful.
             raise forms.ValidationError("Something terrible happened!")
-
+    
 
 class SearchChoiceWidget(forms.widgets.HiddenInput):
     class Media:

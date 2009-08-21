@@ -4,6 +4,8 @@ from django.db.models import ImageField
 from django.db.models.fields.files import ImageFieldFile
 from crimsononline.common.utils.numbers import reduce_fraction
 
+"""These are model fields."""
+
 class MaxSizeImageField(ImageField):
     """
     Image field with:

@@ -980,267 +980,6 @@
     }
 },
 {
-    "pk": 23,
-    "model": "contenttypes.contenttype",
-    "fields": {
-        "model": "article",
-        "name": "article",
-        "app_label": "content"
-    }
-},
-{
-    "pk": 24,
-    "model": "contenttypes.contenttype",
-    "fields": {
-        "model": "articlecontentrelation",
-        "name": "article content relation",
-        "app_label": "content"
-    }
-},
-{
-    "pk": 14,
-    "model": "contenttypes.contenttype",
-    "fields": {
-        "model": "board",
-        "name": "board",
-        "app_label": "content"
-    }
-},
-{
-    "pk": 10,
-    "model": "contenttypes.contenttype",
-    "fields": {
-        "model": "content",
-        "name": "content",
-        "app_label": "content"
-    }
-},
-{
-    "pk": 12,
-    "model": "contenttypes.contenttype",
-    "fields": {
-        "model": "contentgroup",
-        "name": "content group",
-        "app_label": "content"
-    }
-},
-{
-    "pk": 11,
-    "model": "contenttypes.contenttype",
-    "fields": {
-        "model": "contenthits",
-        "name": "content hits",
-        "app_label": "content"
-    }
-},
-{
-    "pk": 28,
-    "model": "contenttypes.contenttype",
-    "fields": {
-        "model": "contentmodule",
-        "name": "content module",
-        "app_label": "content_module"
-    }
-},
-{
-    "pk": 5,
-    "model": "contenttypes.contenttype",
-    "fields": {
-        "model": "contenttype",
-        "name": "content type",
-        "app_label": "contenttypes"
-    }
-},
-{
-    "pk": 15,
-    "model": "contenttypes.contenttype",
-    "fields": {
-        "model": "contributor",
-        "name": "contributor",
-        "app_label": "content"
-    }
-},
-{
-    "pk": 9,
-    "model": "contenttypes.contenttype",
-    "fields": {
-        "model": "flatpage",
-        "name": "flat page",
-        "app_label": "flatpages"
-    }
-},
-{
-    "pk": 19,
-    "model": "contenttypes.contenttype",
-    "fields": {
-        "model": "gallery",
-        "name": "gallery",
-        "app_label": "content"
-    }
-},
-{
-    "pk": 20,
-    "model": "contenttypes.contenttype",
-    "fields": {
-        "model": "gallerymembership",
-        "name": "gallery membership",
-        "app_label": "content"
-    }
-},
-{
-    "pk": 2,
-    "model": "contenttypes.contenttype",
-    "fields": {
-        "model": "group",
-        "name": "group",
-        "app_label": "auth"
-    }
-},
-{
-    "pk": 18,
-    "model": "contenttypes.contenttype",
-    "fields": {
-        "model": "image",
-        "name": "image",
-        "app_label": "content"
-    }
-},
-{
-    "pk": 17,
-    "model": "contenttypes.contenttype",
-    "fields": {
-        "model": "issue",
-        "name": "issue",
-        "app_label": "content"
-    }
-},
-{
-    "pk": 7,
-    "model": "contenttypes.contenttype",
-    "fields": {
-        "model": "logentry",
-        "name": "log entry",
-        "app_label": "admin"
-    }
-},
-{
-    "pk": 21,
-    "model": "contenttypes.contenttype",
-    "fields": {
-        "model": "map",
-        "name": "map",
-        "app_label": "content"
-    }
-},
-{
-    "pk": 22,
-    "model": "contenttypes.contenttype",
-    "fields": {
-        "model": "marker",
-        "name": "marker",
-        "app_label": "content"
-    }
-},
-{
-    "pk": 4,
-    "model": "contenttypes.contenttype",
-    "fields": {
-        "model": "message",
-        "name": "message",
-        "app_label": "auth"
-    }
-},
-{
-    "pk": 1,
-    "model": "contenttypes.contenttype",
-    "fields": {
-        "model": "permission",
-        "name": "permission",
-        "app_label": "auth"
-    }
-},
-{
-    "pk": 25,
-    "model": "contenttypes.contenttype",
-    "fields": {
-        "model": "review",
-        "name": "review",
-        "app_label": "content"
-    }
-},
-{
-    "pk": 26,
-    "model": "contenttypes.contenttype",
-    "fields": {
-        "model": "score",
-        "name": "score",
-        "app_label": "content"
-    }
-},
-{
-    "pk": 16,
-    "model": "contenttypes.contenttype",
-    "fields": {
-        "model": "section",
-        "name": "section",
-        "app_label": "content"
-    }
-},
-{
-    "pk": 6,
-    "model": "contenttypes.contenttype",
-    "fields": {
-        "model": "session",
-        "name": "session",
-        "app_label": "sessions"
-    }
-},
-{
-    "pk": 8,
-    "model": "contenttypes.contenttype",
-    "fields": {
-        "model": "site",
-        "name": "site",
-        "app_label": "sites"
-    }
-},
-{
-    "pk": 29,
-    "model": "contenttypes.contenttype",
-    "fields": {
-        "model": "subscription",
-        "name": "subscription",
-        "app_label": "subscriptions"
-    }
-},
-{
-    "pk": 13,
-    "model": "contenttypes.contenttype",
-    "fields": {
-        "model": "tag",
-        "name": "tag",
-        "app_label": "content"
-    }
-},
-{
-    "pk": 3,
-    "model": "contenttypes.contenttype",
-    "fields": {
-        "model": "user",
-        "name": "user",
-        "app_label": "auth"
-    }
-},
-{
-    "pk": 27,
-    "model": "contenttypes.contenttype",
-    "fields": {
-        "model": "userdata",
-        "name": "user data",
-        "app_label": "content"
-    }
-},
-{
     "pk": "32ec5746a77d06d9f9732fddac4adf6d",
     "model": "sessions.session",
     "fields": {
@@ -2125,7 +1864,6 @@
         "section": 4,
         "priority": 4,
         "pub_status": 1,
-        "content_type": 18,
         "issue": 1,
         "slug": "skip-gates"
     }
@@ -2141,7 +1879,6 @@
         "section": 4,
         "priority": 4,
         "pub_status": 1,
-        "content_type": 19,
         "issue": 1,
         "slug": "picture-gates-gallery"
     }
@@ -2157,7 +1894,6 @@
         "section": 4,
         "priority": 4,
         "pub_status": 1,
-        "content_type": 18,
         "issue": 1,
         "slug": "police-officer"
     }
@@ -2173,7 +1909,6 @@
         "section": 4,
         "priority": 4,
         "pub_status": 1,
-        "content_type": 23,
         "issue": 1,
         "slug": "gates-haas-department"
     }
@@ -2189,7 +1924,6 @@
         "section": 4,
         "priority": 4,
         "pub_status": 1,
-        "content_type": 23,
         "issue": 1,
         "slug": "gates-police-cambridge"
     }
@@ -2205,7 +1939,6 @@
         "section": 4,
         "priority": 4,
         "pub_status": 1,
-        "content_type": 23,
         "issue": 1,
         "slug": "shooting-copney-carney"
     }
@@ -2221,7 +1954,6 @@
         "section": 4,
         "priority": 4,
         "pub_status": 1,
-        "content_type": 23,
         "issue": 1,
         "slug": "police-professor-gates"
     }
@@ -2237,7 +1969,6 @@
         "section": 4,
         "priority": 4,
         "pub_status": 1,
-        "content_type": 23,
         "issue": 1,
         "slug": "gates-police-cambridge-2"
     }
@@ -2253,7 +1984,6 @@
         "section": 5,
         "priority": 4,
         "pub_status": 1,
-        "content_type": 23,
         "issue": 1,
         "slug": "leblanc-hockey-nhl"
     }
@@ -2269,7 +1999,6 @@
         "section": 4,
         "priority": 4,
         "pub_status": 1,
-        "content_type": 23,
         "issue": 1,
         "slug": "care-primary-hms"
     }
@@ -2285,7 +2014,6 @@
         "section": 4,
         "priority": 4,
         "pub_status": 1,
-        "content_type": 23,
         "issue": 1,
         "slug": "credit-line-harvard"
     }
@@ -2301,7 +2029,6 @@
         "section": 4,
         "priority": 4,
         "pub_status": 1,
-        "content_type": 23,
         "issue": 1,
         "slug": "hup-scribd-display"
     }
@@ -2317,7 +2044,6 @@
         "section": 4,
         "priority": 1,
         "pub_status": 1,
-        "content_type": 23,
         "issue": 1,
         "slug": "mother-group-missing"
     }
@@ -2333,7 +2059,6 @@
         "section": 2,
         "priority": 4,
         "pub_status": 1,
-        "content_type": 23,
         "issue": 8,
         "slug": "gates-police-racial"
     }

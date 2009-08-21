@@ -6,39 +6,44 @@
     {% static_js "jquery.js" %}
     {{ form.media }}
     <style>
-        form.signup {
+        form.manage {
             padding: 10px;
         }
-        form.signup * {
+        form.manage * {
             font-size: 24px;
         }
-        form .errorlist {
+        form.manage .errorlist {
             color: red;
         }
-        form.signup h3, form.signup h3 * {
+        form.manage span.help_text {
+            color: #888;
+            font-size: 16px;
+            display: block;
+        }
+        form.manage h3, form.manage h3 * {
             font-weight: normal; 
             font-size: 32px;
             margin: 50px 0 0;
         }
-        form.signup div.fieldWrapper input {
+        form.manage div.fieldWrapper input {
             border: 1px solid #dddddd;
         }
-        form.signup div.fieldWrapper {
+        form.manage div.fieldWrapper {
             margin: 25px 0 0;
         }
-        form.signup li {
+        form.manage li {
             list-style-type: none;
             display: inline;
             margin: 0 10px;
         }
-        form.signup button {
+        form.manage button {
             margin: 40px 0 10px;
             padding: 10px;
         }
-        form.signup div.fieldWrapper input.acfb-input {
+        form.manage div.fieldWrapper input.acfb-input {
             border: none;
         }
-        form.signup ul.acfb-holder {
+        form.manage ul.acfb-holder {
             width: 600px;
         }
         p.success {
@@ -49,40 +54,47 @@
 {% endblock %}
 
 {% block body %}
-{% if success %}
-    <p class="success">We've sent a confirmation email to {{ email }}.
-        To activate your email alerts, open the email we've sent you and 
-        follow the instructions inside.</p>
-{% else %}
+{% if fail %}
+    <p class="notice">Something went wrong.  Try pasting the entire URL
+        into your browser.</p>
+{% else %}{% if success %}
+    <p>Your email subscription has been successfully edited.</p>
+{% endif %}
     <div>
-        <h3>Fill out the form below to receive emails of daily news from the Harvard Crimson</h3>
+        <h3>Manage your email subscription.</h3>
     </div>
     <div>
-        <form class="signup" action="." method="post">
+        <form class="manage" action="." method="post">
             <h3>{{ form.non_field_errors }}</h3>
             <h3><label for="id_email">What's your email address?</label></h3>
             <div class="fieldWrapper">
                 {{ form.email.errors }}
                 {{ form.email }}
+                <span class="help_text">{{ form.email.help_text }}</span>
             </div>
             <h3>What are you interested in?</h3>
             <div class="fieldWrapper">
                 {{ form.top_stories.errors }}
                 {{ form.top_stories.label_tag }}: {{ form.top_stories }}
+                <span class="help_text">{{ form.top_stories.help_text }}</span>
             </div>
             <div class="fieldWrapper">
                 {{ form.sections.errors }}
                 {{ form.sections.label }}: {{ form.sections }}
+                <span class="help_text">{{ form.sections.help_text }}</span>
             </div>
             <div class="fieldWrapper">
                 {{ form.contributors.errors }}
                 {{ form.contributors.label_tag }}: {{ form.contributors }}
+                <span class="help_text">{{ form.contributors.help_text }}</span>
             </div>
             <div class="fieldWrapper">
                 {{ form.tags.errors }}
                 {{ form.tags.label_tag }}: {{ form.tags }}
+                <span class="help_text">{{ form.tags.help_text }}</span>
             </div>
-        <button type="submit">Sign up!</button>
+            {{ form.id }} {{ form.passcode }}
+        <button type="submit">Change</button>
         </form>
     </div>
 {% endif %}
