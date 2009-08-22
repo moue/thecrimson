@@ -1,18 +1,4 @@
-function center_gallery_image(){
-    // center the image vertically
-    var img_url = $(".viewer_image").find("img").attr("src");
-    img_url = img_url.split('_');
-    img_url = img_url[img_url.length - 1];
-    var img_ht = parseInt(img_url.substring(img_url.indexOf('x') + 1, img_url.indexOf('.')));
-    var mar = (450 - img_ht) / 2;
-    if( mar ){
-        $(".viewer_image").find("img").css("margin", mar + "px 0");
-    }
-}
-
 $(document).ready(function(){
-    // center image upon load
-    center_gallery_image();
 
     $(".viewer_top").hover(function (){
             $(".gallery_control #inside").fadeIn("fast");
@@ -58,7 +44,6 @@ $(document).ready(function(){
                     $(".viewer_image").fadeIn('fast');
                     $(".viewer_info").empty().append(bottom);
                     $(".viewer_info").fadeIn('fast');
-                    //center_gallery_image();
                 });
             });
         }        
