@@ -89,7 +89,6 @@ class Command(NoArgsCommand):
                 newtag.save()
                 sports[str(row["ID"])] = newtag
 
-        """
 
         # import contributors -- working nearly perfectly, except for capitalization
         cur.execute("SELECT ID, FirstName, MiddleName, LastName, CreatedOn FROM Contributors")
@@ -160,6 +159,7 @@ class Command(NoArgsCommand):
             except:
                 pass
 
+        """
         
         # Photos ... this is so ghetto
         cur.execute("SELECT ID, createdOn, modifiedOn, Caption, articleID, file500px, webwidth, webheight, kicker, issueDate, ContributorID, Section FROM Pictures")

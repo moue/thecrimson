@@ -48,7 +48,6 @@ def paragraphs(str):
     str = paragraph_re.sub('</p>,,,<p', str)
     # split by sentinel value
     l = str.split(',,,')
-    print [mark_safe(x) for x in l]
     return [mark_safe(x) for x in l]
 
 @register.filter

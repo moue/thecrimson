@@ -1,4 +1,3 @@
-from haystack import site
-from crimsononline.content.models import *
+import haystack
 
-site.register(Article)
+haystack.autodiscover()

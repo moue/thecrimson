@@ -64,5 +64,10 @@ generic_patterns = patterns('crimsononline.content.views',
         name='content_contentgroup'),
 )
 
+# old website urls intact
+urlpatterns += patterns('',
+    (r'^article\.aspx', 'content.views.get_article_old_website')
+)
+
 urlpatterns += generic_patterns
 

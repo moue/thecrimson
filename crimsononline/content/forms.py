@@ -217,7 +217,6 @@ class RelatedContentField(forms.CharField):
         if not value:
             return []
         ids = value.split(';')
-        print ids
         # retrieving Content objs MUST preserve their order!!!
         objs = []
         

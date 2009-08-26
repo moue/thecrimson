@@ -45,7 +45,6 @@ def flash_gallery_margin(img):
         return 0
     else:
         ren_height = float(content.height)/content.width*619
-        print ren_height
         return (450-ren_height)/2
 
 @register.filter
@@ -55,7 +54,6 @@ def img_gallery_margin(img):
         return 0
     else:
         ren_height = float(img.pic.height)/img.pic.width*619
-        print ren_height
         return (450-ren_height)/2
 
 @register.filter

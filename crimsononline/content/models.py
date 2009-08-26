@@ -183,6 +183,11 @@ class Content(models.Model):
         # can access self with either the name of the class (ie, 'article')
         #   or 'content'
         context.update({name: self.child, 'content': self.child, 'class': name})
+        
+        
+        if method == 'page' and request.GET.get('print',""):
+            return mark_safe(render_to_string('models/%s/print.html'%(name), context, context_instance=RequestContext(request)))
+        
         if method == 'page':
             self.store_hit()
         return mark_safe(render_to_string(templ, context, context_instance=RequestContext(request)))

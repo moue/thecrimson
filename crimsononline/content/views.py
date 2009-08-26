@@ -73,6 +73,14 @@ def get_content_group_obj(request, gtype, gname):
     cg = ContentGroup.by_name(gtype, gname)
     return cg
 
+def get_article_old_website(request):
+    try:
+        id = request.GET.get("ref")
+        a = Article.objects.get(pk=id)
+        return HttpResponse(a._render("page",request=request))
+    except:
+        raise Http404
+
 def index(request, m=None, d=None, y=None):
     stories = top_articles('News')
     
