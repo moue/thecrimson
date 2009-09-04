@@ -1,0 +1,48 @@
+{% load content_filters %}
+The Crimson Online Daily Email Subscription
+
+{% if top_stories %}
+=====  TOP STORIES =====
+
+    {% for story in top_stories %}
+{{ story|render:"preview.txt" }}
+    {% endfor %}
+{% endif %}
+
+{% if sections %}
+    {% for section, stories in sections.items %}
+===== {{ section|upper }} =====
+        {% for story in stories %}
+{{ story|render:"preview.txt" }}
+
+        {% empty %}
+No articles today.
+        {% endfor %}
+    {% endfor %}
+{% endif %}
+
+{% if tags %}
+    {% for tag, stories in tags.items %}
+===== {{ tag|upper }} =====
+        {% for story in stories %}
+{{ story|render:"preview.txt" }}
+
+        {% empty %}
+No articles today.
+        {% endfor %}
+    {% endfor %}
+{% endif %}
+
+{% if contributors %}
+    {% for contributor, stories in contributors.items %}
+===== {{ contributor|upper }} =====
+        {% for story in stories %}
+{{ story|render:"preview.txt" }}
+
+        {% empty %}
+No articles today.
+        {% endfor %}
+    {% endfor %}
+{% endif %}
+
+To change or cancel your email subscription, go here: http://www.thecrimson.com/subscribe/email/manage?id={{subscription.pk}}&passcode={{subscription.passcode}}

@@ -49,24 +49,35 @@ def email_confirm(request):
 
 def email_manage(request):
     if request.method == 'POST' or request.method == 'GET':
+        context = {'manage': True}
         d = getattr(request, request.method)
         pk = int(d.get('id', 0))
         passcode = d.get('passcode', '')
         try:
             s = EmailSubscription.objects.get(pk=pk, passcode=passcode)
         except:
-            return render_to_response('email/manage.html', {'fail': True})
+            context['status'] = 'fail'
+            return render_to_response('email/manage.html', context)
         
         if request.method == 'POST':
-            f = EmailSubscriptionManageForm(request.POST, instance=s)
-            if f.is_valid():
-                f.save()
-                success = True
+            if request.POST.get('submit', None) == 'unsubscribe':
+                s.delete()
+                context['status'] = 'unsubscribed'
+                f = None
+            else:
+                f = EmailSubscriptionManageForm(request.POST, instance=s)
+                if f.is_valid():
+                    # change email = you need to reconfirm
+                    if s.email != f.instance.email:
+                        f.instance.new_code()
+                        f.instance.is_active = False
+                        f.instance.send_confirmation()
+                    f.save()
+                    context['status'] = 'edited'
         else: # request.method == 'GET'
             f = EmailSubscriptionManageForm(instance=s)
-            success = False
-        return render_to_response('email/manage.html', 
-                                  {'form': f, 'success': success})
+        context['form'] = f
+        return render_to_response('email/manage.html', context)
     else:
         raise Http404
 
@@ -76,8 +87,8 @@ def email_signup(request):
         f = EmailSubscribeForm(request.POST)
         if f.is_valid():
             f.save()
-            return render_to_response('email/signup.html', 
-                {'success': 1, 'email': f.cleaned_data['email']})
+            return render_to_response('email/manage.html', 
+                {'signup_success': 1, 'email': f.cleaned_data['email']})
     else:
         tags = request.GET.get('tags', None)
         contributors = request.GET.get('contributors', None)
@@ -96,7 +107,8 @@ def email_signup(request):
             sections = None
         f = EmailSubscribeForm(initial={'tags': tags, 
             'contributors': contributors, 'sections': sections})
-    return render_to_response('email/signup.html', {'form': f})
+    return render_to_response('email/manage.html', 
+                              {'form': f, 'signup': True})
 
 def fbmc_search(request, type):
     """

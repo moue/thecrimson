@@ -54,15 +54,34 @@
 {% endblock %}
 
 {% block body %}
-{% if fail %}
-    <p class="notice">Something went wrong.  Try pasting the entire URL
-        into your browser.</p>
-{% else %}{% if success %}
-    <p>Your email subscription has been successfully edited.</p>
-{% endif %}
+{% if signup %}
+    {% ifequal status "success" %}
+        <p class="success">We've sent a confirmation email to {{ email }}.
+            To activate your email alerts, open the email we've sent you and 
+            follow the instructions inside.</p>
+    {% endifequal %}
+    {% ifequal status "fail" %}
+        <p class="notice">Something went wrong.  Try pasting the entire URL
+            into your browser.</p>
+    {% endifequal %}
+{% else %}
+    {% ifequal status "fail" %}
+        <p class="notice">Something went wrong.  Try pasting the entire URL
+            into your browser.</p>
+    {% endifequal %}
+    {% ifequal status "edited" %}
+        <p>Your email subscription has been successfully edited.</p>
+    {% endifequal %}
+    {% ifequal status "unsubscribed" %}
+        <p>You are now unsubscribed.</p>
+    {% endifequal %}
+    {% ifnotequal status "unsubscribed" %}
     <div>
         <h3>Manage your email subscription.</h3>
     </div>
+    {% endifnotequal %}
+{% endif %}
+{% ifnotequal status "unsubscribed" %}
     <div>
         <form class="manage" action="." method="post">
             <h3>{{ form.non_field_errors }}</h3>
@@ -94,8 +113,12 @@
                 <span class="help_text">{{ form.tags.help_text }}</span>
             </div>
             {{ form.id }} {{ form.passcode }}
-        <button type="submit">Change</button>
+        {% if manage %}
+            <button type="submit" value="change" name="submit">Change</button> <button type="submit" value="unsubscribe" name="submit">Unsubscribe</button>
+        {% else %}
+            <button type="submit">Sign up!</button>
+        {% endif %}
         </form>
     </div>
-{% endif %}
+{% endifnotequal %}
 {% endblock %}

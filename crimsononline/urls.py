@@ -11,7 +11,8 @@ admin.autodiscover()
 
 FILTER_URL_RE = r'(?:sections/(?P<section_str>[A-Za-z,]+)/)?' \
     r'(?:types/(?P<type_str>[A-Za-z,\s]+)/)?' \
-    r'(?:page/(?P<page>\d+)/)?' 
+    r'(?:page/(?P<page>\d+)/)?'
+
 urlpatterns = patterns('crimsononline.content.views',
     url(r'writer/(?P<pk>\d+)/(?P<f_name>[A-Za-z\s]+)_' \
         r'(?P<m_name>[A-Za-z\-\'\.]*)_(?P<l_name>[A-Za-z\-\']+)/%s$' % FILTER_URL_RE,
@@ -22,13 +23,17 @@ urlpatterns = patterns('crimsononline.content.views',
     url(r'^gallery/(\d+)/(\d+)/$',
         'gallery', name='content_gallery'),
     url(r'^gallery/get_img/(\d+)/$', 'ajax_get_img'),
-    #url(r'^search/', include('haystack.urls')),
     url(r'^map/$', 'bigmap'),
     url(r'^$', 'index', name='content_index'),
     url(r'^issue/(\d+)/(\d+)/(\d+)/$', 'index', name='content_index'),    
     url(r'^subscribe/', include('crimsononline.subscriptions.urls')),
     url(r'^iphone/(?P<s>\w+)/$', 'iphone'),
 )
+
+if settings.HAYSTACK:
+    urlpatterns += patterns('',
+        url(r'^search/', include('haystack.urls')),
+    )
 
 """
 urlpatterns += patterns('django.views.generic.simple',
@@ -70,4 +75,3 @@ urlpatterns += patterns('',
 )
 
 urlpatterns += generic_patterns
-

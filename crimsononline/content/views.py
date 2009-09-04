@@ -90,24 +90,19 @@ def index(request, m=None, d=None, y=None):
     
     dt = None
     # if viewing an issue, try to form date, if not successful, 404
-    if(m != None):
-        try:
-            dt = datetime(int(y), int(m), int(d))
-        except:
-            raise Http404
-
-            
-    # Filter stories if we have a past issue date
-    if(dt != None):
-        stories = stories.filter(issue__issue_date__lte = dt)
-    else:
+    if m is None or d is None or y is None:        
         m = date.today().month
         d = date.today().day
         y = date.today().year
+    else:
+        try:
+            dt = datetime(int(y), int(m), int(d))
+            stories = stories.filter(issue__issue_date__lte = dt)
+        except:
+            # TODO: remove this 404, just say issue not found
+            raise Http404
 
     dict = {}
-    
-    # right now, this includes deleted stuff. this query already needed to be reworked, but now tha'ts even more important
     dict['rotate'] = stories.filter(rotatable=3)[:4]
     
     dict['past_issues'] = DateSelectWidget().render(name="past_issues", value=[m, d, y])
@@ -119,7 +114,6 @@ def index(request, m=None, d=None, y=None):
     dict['sports'] = top_articles('Sports', dt)[:4]
     dict['fms'] = top_articles('FM', dt)[:4]
     dict['issue'] = Issue.get_current()
-    #dict['markers'] = Marker.objects.filter(map__in = Map.objects.filter(article__in = stories.values('pk').query).values('pk').query)
     
     return direct_to_template(request,'index.html', dict)
 
@@ -301,7 +295,7 @@ def section_photo(request):
     else: raise Http404
     nav = 'photo'
     content = Gallery.objects.recent
-        
+    
     d = paginate(content, page, 6)
     d.update({'nav': nav})
     
@@ -352,7 +346,7 @@ def iphone(request, s = None):
     simplejson.dump(objs, io)
     
     return HttpResponse(io.getvalue(), mimetype='application/json')
-    
+
 def photo(request):
     galleries = Gallery.objects.order_by('-created_on')[:10]
     nav, title = 'photo', 'Photo'
@@ -370,8 +364,7 @@ def ajax_get_img(request, pk):
     image = get_object_or_404(Image, pk=pk)
     url = image.display(500, 500).url
     return direct_to_template(request,'ajax/get_image.html', locals())
-    
-    
+
 # =========== view helpers ============== #
 def filter_helper(qs, section_str, type_str, url_base):
     """
@@ -436,12 +429,12 @@ def filter_helper(qs, section_str, type_str, url_base):
     return {'content': content, 'sections': sects, 'types': tps}
     
 
-def top_articles(section, dt = None):
+def top_articles(section, dt=None):
     """returns the most recent articles from @section"""
     stories = Article.objects.filter(section__name=section)
 
     if(dt != None):
-        stories = stories.filter(issue__issue_date__lte = dt)
+        stories = stories.filter(issue__issue_date__lte=dt)
     return stories
 
 def last_month():

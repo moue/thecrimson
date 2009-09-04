@@ -1,0 +1,48 @@
+{% load content_filters %}
+<h1 style="color: #BA0600;">The Crimson Online Daily Email Subscription</h1>
+<p>{{ issue_date|date }}</p>
+<hr></hr>
+{% if top_stories %}
+<h2 style="color: #BA0600;">TOP STORIES</h2>
+
+    {% for story in top_stories %}
+{{ story|render:"preview.email" }}
+    {% endfor %}
+{% endif %}
+
+{% if sections %}
+    {% for section, stories in sections.items %}
+<h2 style="color: #BA0600;">{{ section|upper }}</h2>
+        {% for story in stories %}
+<div style="border-bottom: solid 1px #999999;">{{ story|render:"preview.email" }}</div>
+        {% empty %}
+<p>No articles today.</p>
+        {% endfor %}
+    {% endfor %}
+{% endif %}
+
+{% if tags %}
+    {% for tag, stories in tags.items %}
+<h2 style="color: #BA0600;">{{ tag|upper }}</h2>
+        {% for story in stories %}
+<div style="border-bottom: solid 1px #999999;">{{ story|render:"preview.email" }}</div>
+        {% empty %}
+<p>No articles today.</p>
+        {% endfor %}
+    {% endfor %}
+{% endif %}
+
+{% if contributors %}
+    {% for contributor, stories in contributors.items %}
+<h2 style="color: #BA0600;">{{ contributor|upper }}</h2>
+        {% for story in stories %}
+<div style="border-bottom: solid 1px #999999;">{{ story|render:"preview.email" }}</div>
+        {% empty %}
+<p>No articles today.</p>
+        {% endfor %}
+    {% endfor %}
+{% endif %}
+
+<div style="margin-top: 10px;">
+    To change or cancel your email subscription, go to the <a href="http://www.thecrimson.com/subscribe/email/manage?id={{subscription.pk}}&passcode={{subscription.passcode}}">Email Subscription Management Page</a>.
+</div>

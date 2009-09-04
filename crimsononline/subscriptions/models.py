@@ -1,12 +1,12 @@
 import hashlib
 from random import random
-from datetime import datetime
+from datetime import datetime, date
 
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.db import models
 from django.core.urlresolvers import reverse
-from django.core.mail import send_mail
+from django.core.mail import send_mail, EmailMultiAlternatives
 from django.template.loader import render_to_string
 
 from content import models as content
@@ -57,12 +57,41 @@ class EmailSubscription(models.Model):
         }
         
         subject = "Subscription Confirmation for The Harvard Crimson"
-        body = render_to_string("email/email_body.txt", context)
+        body = render_to_string("email/confirm_email.txt", context)
         
         if send:
             send_mail(subject, body, "subscriptions@thecrimson.com", 
             [self.email], fail_silently=False)
+    
+    def send(self, issue_date=None):
+        """Send out this particular email subscription.
         
+        Should fail if this subscription is inactive
+        """
+        if not self.is_active:
+            return False
+        if issue_date is None:
+            issue_date = date.today()
+        d = {'issue_date': issue_date, 'subscription': self}
+        articles = content.Article.objects.filter(issue__issue_date=issue_date)
+        d['top_stories'] = articles.filter(priority__gt=5) \
+                           if self.top_stories else None
+        d['sections'] = dict([(s.name, articles.filter(section=s)) \
+                              for s in self.sections.all()])
+        d['tags'] = dict([(t.text, articles.filter(tags=s)) \
+                          for t in self.tags.all()])
+        d['contributors'] = dict([(str(c), articles.filter(tags=c)) \
+                                  for c in self.contributors.all()])
+        msg = EmailMultiAlternatives("The Crimson's Daily", 
+            render_to_string('email/email.txt', d), 
+            'subscriptions@thecrimson.com', [self.email])
+        msg.attach_alternative(render_to_string('email/email.html', d), 
+            'text/html')
+        msg.send()
+    
+    def new_code(self):
+        """Give self a new passcode."""
+        self.passcode = new_conf_code()
     
     def confirm(self, code):
         if code == self.passcode:

@@ -96,7 +96,7 @@ TEMPLATE_DIRS = (
     os.path.join(PROJECT_PATH, 'templates'),
 )
 
-INSTALLED_APPS = (
+INSTALLED_APPS = [
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -109,16 +109,18 @@ INSTALLED_APPS = (
     'crimsononline.search',
     'crimsononline.common',
     'crimsononline.subscriptions',
-    #'haystack',
-)
+]
+try:
+    import haystack
+    INSTALLED_APPS.append('haystack')
+    HAYSTACK = True
+except:
+    HAYSTACK = False
+finally:
+    INSTALLED_APPS = tuple(INSTALLED_APPS)
+
 
 MEDIA_LOC = MEDIA_ROOT
-
-try:
-    import tagging
-    FORCE_LOWERCASE_TAGS = True
-except:
-    pass
     
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'crimsononlinemailer'
