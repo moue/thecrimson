@@ -110,7 +110,7 @@ class Content(models.Model):
         (2, 'Rotate on front and section pages'),
         (3, 'Rotate on front only')
     )
-	
+    
     contributors = models.ManyToManyField('Contributor', null=True, 
         related_name='content')
     tags = models.ManyToManyField('Tag', null=True, related_name='content')
@@ -178,18 +178,24 @@ class Content(models.Model):
         """
         
         name = self.content_type.name.replace(" ","")
-        templ = 'models/%s/%s.html' % (name, method)
         
+        templ = 'models/%s/%s.html' % (name, method)
         # can access self with either the name of the class (ie, 'article')
         #   or 'content'
         context.update({name: self.child, 'content': self.child, 'class': name})
         
-        
+        # print view
         if method == 'page' and request.GET.get('print',""):
             return mark_safe(render_to_string('models/%s/print.html'%(name), context, context_instance=RequestContext(request)))
         
         if method == 'page':
             self.store_hit()
+
+        # flyby content
+        if method == 'page' and self.group == ContentGroup.objects.get(name='FlyBy', type='blog'):
+            return mark_safe(render_to_string('models/%s/flyby.html'%(name), context, context_instance=RequestContext(request)))
+        
+
         return mark_safe(render_to_string(templ, context, context_instance=RequestContext(request)))
     
     def delete(self):

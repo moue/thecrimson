@@ -1,0 +1,13 @@
+{% extends "flyby/base.html" %}
+
+{% load common %}
+{% load content_filters %}
+
+
+{% block body %}
+    <ul class="blog_entries">
+    {% for c in content %}
+        <li>{{ c|render:"blog_entry" }}</li>
+    {% endfor %}
+    </ul>
+{% endblock %}

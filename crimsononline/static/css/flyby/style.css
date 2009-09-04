@@ -1,0 +1,148 @@
+a,a:link {
+color:#000;
+outline:none;
+text-decoration:none;
+}
+
+body{
+    color:#000;
+    background-image:url(../../images/flyby/background.png);
+    background-repeat:repeat-x;
+    background-color:#6b0000;
+    background-attachment:fixed;
+    line-height:133%;
+    margin:0;
+    padding:0;
+    font-size:12px;
+    font-family: georgia;
+}
+
+body div#container {
+float: left;
+width:610px;
+padding:0 20px 0 20px;
+border-width: 0px 2px 0px 0px;
+}
+
+body div#wrapper {
+width:900px;
+background-color:#fff;
+margin:0 auto;
+padding:0;
+background-image: url(../../images/flyby/banner_back.jpg);
+background-repeat: no-repeat;
+}
+
+body div#shadow {
+width:950px;
+background:none;
+background-image:url(../../images/flyby/shadow.png);
+background-repeat:repeat-y;
+margin:0 auto;
+}
+
+body div.sidebar {
+overflow:hidden;
+padding: 0 20px 20px 20px;
+text-align:left;
+width:207px;
+float: right;
+margin:0;
+}
+
+div.nav-next{
+	float:left;
+}
+
+div.nav-previous{
+	float:right;
+}
+
+
+ul.blog_entries{
+    list-style-type: none;
+    margin: 10px;
+    padding: 0;
+}
+
+ul.blog_entries div.image{
+    float: left;
+}
+
+h1, h3 {
+margin:0;
+}
+
+h1, h3 {
+font-size:1.5em;
+font-weight:700;
+letter-spacing:normal;
+line-height:normal;
+color:#900000;
+}
+
+
+
+h3 a, h3 a:visited{
+color:#900000;
+}
+
+h1 a:hover{
+text-decoration:underline;
+}
+
+div#header div#blog-description {
+border-top:1px solid #000;
+line-height:200%;
+}
+
+div#header h1#blog-title {
+font-size:3.5em;
+font-weight:400;
+margin:0;
+padding:0;
+}
+
+
+
+div.sidebar ul li form {
+margin:.2em 0 1.5em;
+}
+
+div.sidebar ul li h3 {
+border-bottom: 1px solid black;
+margin-bottom: 10px;
+font-size:1.2em;
+color:#900000;
+}
+
+div.sidebar ul li h3 a, div.sidebar ul li h3 a:visited{
+color:#900000;
+}
+
+div.sidebar ul li h3 a:hover{
+text-decoration:underline;
+}
+
+div.sidebar ul li ul li ul {
+margin:0 0 .2em;
+}
+
+img{
+border:none;
+}
+
+
+.publishedline, .publishedline a{
+    font-style:italic;
+    border:none;
+    margin:.3em 0 .3em;
+    color:#999;
+    font-size:11px;
+    font-family: georgia, times, sans-serif;
+}
+
+.text{
+    font-size: 14px;
+    line-height: 133%;
+}

@@ -1,0 +1,54 @@
+{% extends "flyby/base.html" %}
+
+{% load common %}
+{% load content_filters %}
+{% load top_articles %}
+{% load tag_cloud %}
+{% load module %}
+{% block inhead %}
+    {% static_css "single_content.css" %}
+    {% block css %}
+    {% endblock %}
+    {% static_js "jquery.js" %}
+    {% block js %}
+        
+    {% endblock %}
+{% endblock %}
+
+{% block body %}
+        <span class="clear" />
+        <!-- for stuff that can't be in a module, like viewers -->
+        {% block outside_content %}
+        {% endblock %}
+
+
+        {% block content %}
+        {% endblock %}
+
+        <div id="tags">
+            {% with content.tags.all as a_tags %}
+                {% if a_tags %}
+                    {{"Tags"|yuhkilabel}} 
+                {% endif %}
+                {% for tag in a_tags %}
+                    <a class="tag" href="{{ tag.get_absolute_url }}">{{ tag.text }}</a>{% ifnotequal forloop.last 1 %}, {% endifnotequal %}
+                {% endfor %}
+            {% endwith %}
+        </div>
+        
+        {% module 8 comment %}
+            {% block post_content %}
+                <div id="disqus_thread"></div>
+                <script type="text/javascript">
+                    var disqus_developer = 1;
+                </script>
+                <script type="text/javascript" src="http://disqus.com/forums/crimson-alpha/embed.js"></script>
+                <noscript>
+                    <a href="http://crimson-alpha.disqus.com/?url=ref">View the discussion thread.</a>
+                </noscript>
+                <a href="http://disqus.com" class="dsq-brlink">blog comments powered by 
+                    <span class="logo-disqus">Disqus</span></a>
+            {% endblock %}
+        {% endmodule %}
+
+{% endblock %}

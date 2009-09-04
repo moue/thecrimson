@@ -67,7 +67,11 @@ def get_content_group(request, gtype, gname):
     if not cg:
         raise Http404
     c = cg.content.all()
-    return direct_to_template(request,'contentgroup.html', {'cg': cg, 'content': c})
+    
+    templ = "contentgroup.html"
+    if(cg == ContentGroup.objects.get(name="FlyBy")):
+        templ = "flyby/content_list.html"
+    return direct_to_template(request, templ, {'cg': cg, 'content': c})
 
 def get_content_group_obj(request, gtype, gname):
     cg = ContentGroup.by_name(gtype, gname)

@@ -1,0 +1,147 @@
+{% load content_filters %}
+{% load common %}
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>FlyByBlog &rsaquo; Harvard Life. To Go.</title>
+    {% static_css "flyby/style.css" %}
+    {% static_css "flyby/print.css" %}
+
+</head>
+
+<body>
+<div id="shadow">
+<div id="wrapper">
+
+    <div id="header">
+
+<a href="http://www.flybyblog.com"><img src = "{% static_url 'images/flyby/banner_top.jpg' %}" style="width:900px;" alt="topbanner" /></a>
+    </div><!-- #header -->
+
+    <div id="container">
+        <div id="content" class="hfeed">
+            {% block body %}
+            {% endblock %}
+        </div><!-- #content .hfeed -->
+    </div><!-- #container -->
+
+		<div id="primary" class="sidebar">
+			<ul>
+
+				<li id="contact-us">
+					<h3>Contact Us</h3>
+					<p>Send us tips, comments, etc. at <a href="mailto:flyby@thecrimson.com">flyby@thecrimson.com</a></p>
+
+				</li>
+
+				<li id="about-us">
+					<h3>About Us</h3>
+					<p>The editors of <a href="http://www.thecrimson.com" style="color:#990000;" target="_blank">The Harvard Crimson</a> present FlyByBlog, your more-than-daily source for Harvard news, gossip, and oddities. Follow us by subscribing to our <a href="http://www.flybyblog.com/feed/" style="color:#990000;">RSS Feed</a>.</p>
+				</li>
+
+				<li id="linkcat-19" class="linkcat"><h3>Quick Links</h3>
+	<ul class='xoxo blogroll'>
+<li><a href="http://www.weather.com/weather/local/02138?lswe=02138&amp;lwsa=WeatherLocalUndeclared" target="_blank">Cambridge Weather</a></li>
+<li><a href="http://q.fas.harvard.edu/harvardQ/qguide.jsp" target="_blank">CUE (Q&#8230;) Guide</a></li>
+<li><a href="http://lms01.harvard.edu/F/L72N3A41VM1VK8HGDVX4133UMFFPS1NF4KVQVAU51JQ2KM5J48-42881?RN=421962194" target="_blank">HOLLIS Catalog</a></li>
+<li><a href="http://www.foodpro.huds.harvard.edu/foodpro/locationresidential.asp" target="_blank">HUDS Menu</a></li>
+<li><a href="http://www.my.harvard.edu" target="_blank">My.Harvard</a></li>
+
+<li><a href="http://shuttleboy.com/" target="_blank">Shuttleboy</a></li>
+<li><a href="http://www.thecrimson.com" target="_blank">The Harvard Crimson</a></li>
+
+	</ul>
+</li>
+				<li id="tag-cloud">
+					<h3>Tags</h3>
+					<p><a href='http://www.flybyblog.com/tag/adams/' class='tag-link-17' title='8 topics' rel="tag" style='font-size: 10pt;'>Adams</a>
+<a href='http://www.flybyblog.com/tag/cambridge/' class='tag-link-175' title='9 topics' rel="tag" style='font-size: 11pt;'>Cambridge</a>
+
+<a href='http://www.flybyblog.com/tag/d-town/' class='tag-link-18' title='8 topics' rel="tag" style='font-size: 10pt;'>D-town</a>
+<a href='http://www.flybyblog.com/tag/events/' class='tag-link-32' title='15 topics' rel="tag" style='font-size: 17pt;'>Events</a>
+<a href='http://www.flybyblog.com/tag/events-you-wish-youd-go-to-but-never-do/' class='tag-link-49' title='12 topics' rel="tag" style='font-size: 14pt;'>events you wish you'd go to but never do</a>
+<a href='http://www.flybyblog.com/tag/housing-day/' class='tag-link-4' title='19 topics' rel="tag" style='font-size: 21pt;'>Housing Day</a>
+<a href='http://www.flybyblog.com/tag/leverett/' class='tag-link-73' title='8 topics' rel="tag" style='font-size: 10pt;'>Leverett</a>
+<a href='http://www.flybyblog.com/tag/prefrosh-weekend/' class='tag-link-183' title='7 topics' rel="tag" style='font-size: 9pt;'>prefrosh weekend</a>
+<a href='http://www.flybyblog.com/tag/sadness/' class='tag-link-29' title='12 topics' rel="tag" style='font-size: 14pt;'>sadness</a>
+<a href='http://www.flybyblog.com/tag/shameless-pretension/' class='tag-link-163' title='7 topics' rel="tag" style='font-size: 9pt;'>shameless pretension</a>
+<a href='http://www.flybyblog.com/tag/sports/' class='tag-link-42' title='11 topics' rel="tag" style='font-size: 13pt;'>Sports</a>
+
+<a href='http://www.flybyblog.com/tag/the-administration-hates-you/' class='tag-link-66' title='7 topics' rel="tag" style='font-size: 9pt;'>The Administration hates you</a>
+<a href='http://www.flybyblog.com/tag/the-arts/' class='tag-link-45' title='6 topics' rel="tag" style='font-size: 8pt;'>The Arts</a>
+<a href='http://www.flybyblog.com/tag/the-housing-crisis/' class='tag-link-108' title='12 topics' rel="tag" style='font-size: 14pt;'>The Housing Crisis</a>
+<a href='http://www.flybyblog.com/tag/things-people-should-know-about/' class='tag-link-16' title='20 topics' rel="tag" style='font-size: 22pt;'>things people should know about</a>
+<a href='http://www.flybyblog.com/tag/today-in-financial-armageddon/' class='tag-link-55' title='19 topics' rel="tag" style='font-size: 21pt;'>today in financial armageddon</a>
+<a href='http://www.flybyblog.com/tag/void/' class='tag-link-88' title='16 topics' rel="tag" style='font-size: 18pt;'>VOID</a>
+<a href='http://www.flybyblog.com/tag/wtf/' class='tag-link-60' title='18 topics' rel="tag" style='font-size: 20pt;'>wtf?</a>
+<a href='http://www.flybyblog.com/tag/yardfest/' class='tag-link-92' title='8 topics' rel="tag" style='font-size: 10pt;'>Yardfest</a>
+<a href='http://www.flybyblog.com/tag/you-go-to-school-with-that/' class='tag-link-12' title='13 topics' rel="tag" style='font-size: 15pt;'>you go to school with that</a></p>
+
+				</li>
+
+
+<li id="linkcat-2" class="linkcat"><h3>Harvard Blogs</h3>
+	<ul class='xoxo blogroll'>
+<li><a href="http://www.harvarddems.com/blog" target="_blank">Dem Apples</a></li>
+<li><a href="http://www.harvardarts.wordpress.com" target="_blank">Harvard Arts Blog</a></li>
+<li><a href="http://harvardhooligans.com" target="_blank">Harvard Hooligans</a></li>
+<li><a href="http://harvarddining.blogspot.com/" target="_blank">HUDS Blog</a></li>
+<li><a href="http://gregmankiw.blogspot.com/" target="_blank">Mankiw&#8217;s Blog</a></li>
+
+<li><a href="http://sexandtheivy.com/" target="_blank">Sex and the Ivy</a></li>
+<li><a href="http://theelwordblog.blogspot.com/" target="_blank">The El Word</a></li>
+<li><a href="http://thequadrangle.wordpress.com/" target="_blank">The Quadrangle</a></li>
+
+	</ul>
+</li>
+
+<li id="linkcat-39" class="linkcat"><h3>College Blogs</h3>
+	<ul class='xoxo blogroll'>
+<li><a href="http://www.bwog.net/" target="_top">Bwog (Columbia)</a></li>
+
+<li><a href="http://www.ivygateblog.com/" target="_blank">IvyGate (All Ivy)</a></li>
+<li><a href="http://www.madsvassarblog.com/" target="_blank">MadsVassar (Vassar)</a></li>
+<li><a href="http://midd-blog.com/" target="_blank">MiddBlog (Middlebury)</a></li>
+<li><a href="http://onwardstate.com/" target="_blank">Onward State (Penn State)</a></li>
+<li><a href="http://saxaspeak.blogspot.com/" target="_blank">SaxaSpeak (Georgetown)</a></li>
+<li><a href="http://clog.dailycal.org/" target="_blank">The Daily Clog (UC-Berkeley)</a></li>
+<li><a href="http://tusb.stanford.edu/" target="_blank">The Unofficial Stanford Blog (Stanford)</a></li>
+<li><a href="http://underthebutton.com/" target="_blank">Under the Button (Penn)</a></li>
+<li><a href="http://wesleying.blogspot.com/" target="_blank">Wesleying (Wesleyan)</a></li>
+
+	</ul>
+</li>
+
+
+				<li id="archives">
+					<h3>Archives</h3>
+					<ul>
+	<li><a href='http://www.flybyblog.com/2009/09/' title='September 2009'>September 2009</a>&nbsp;(12)</li>
+
+	<li><a href='http://www.flybyblog.com/2009/08/' title='August 2009'>August 2009</a>&nbsp;(6)</li>
+	<li><a href='http://www.flybyblog.com/2009/07/' title='July 2009'>July 2009</a>&nbsp;(4)</li>
+	<li><a href='http://www.flybyblog.com/2009/06/' title='June 2009'>June 2009</a>&nbsp;(4)</li>
+	<li><a href='http://www.flybyblog.com/2009/05/' title='May 2009'>May 2009</a>&nbsp;(51)</li>
+	<li><a href='http://www.flybyblog.com/2009/04/' title='April 2009'>April 2009</a>&nbsp;(116)</li>
+
+	<li><a href='http://www.flybyblog.com/2009/03/' title='March 2009'>March 2009</a>&nbsp;(100)</li>
+	<li><a href='http://www.flybyblog.com/2009/02/' title='February 2009'>February 2009</a>&nbsp;(30)</li>
+
+					</ul>
+				</li>
+
+			</ul>
+		</div><!-- #primary .sidebar -->	<div id="footer">
+
+        
+        <span style="clear: both;"><span>
+		<span id="copyright">&copy; 2009 <a href="http://www.thecrimson.com" target="_blank"> The Harvard Crimson </a> </span>
+		</div><!-- #footer -->
+
+
+</div><!-- #wrapper -->
+</div><!-- #shadow -->
+</body>
+</html>
