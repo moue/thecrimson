@@ -1,10 +1,34 @@
 {% extends 'content_list.html' %}
 {% load content_filters %}
+{% load module %}
+
+{% block body %}
+<form method="get" action=".">
+    {{block.super}}
+</form>
+{% endblock %}
+
+{% block left %}
+    {% module 2 "filter" %}
+    
+    <span class="filter_label">SORT BY:</span><br />
+    {{form.order_by}}<br />
+
+    <span class="filter_label">START DATE:</span>
+    {{form.start_date}}
+
+    <span class="filter_label">END DATE:</span>
+    {{form.end_date}}
+
+    <span class="filter_label">SECTIONS:</span><br />
+    {{form.content_sections}}<br />
+
+    {% endmodule %}
+{% endblock %}
 
 {% block content_filters %}
     <h1>Search</h1>
     <div class="content_list_filters">
-        <form method="get" action=".">
             <table>
                     <tr>
                         <td><span class="filter_label">QUERY: </span></td>
@@ -13,7 +37,7 @@
                 <tr>
                     <td>&nbsp;</td>
                     <td>
-                        <input type="submit" value="Search">
+                        <button class="submit" value="Search"><span>Search</span></input>
                     </td>
                 </tr>
             </table>

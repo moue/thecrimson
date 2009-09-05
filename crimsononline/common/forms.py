@@ -461,7 +461,7 @@ class SearchModelChoiceField(forms.CharField):
             # manually put values in, so a real validation error
             # wouldn't be helpful.
             raise forms.ValidationError("Something terrible happened!")
-        
+ 
 class TinyMCEWidget(forms.widgets.Textarea):
     """
     Widget that uses TinyMCE editor with custom settings

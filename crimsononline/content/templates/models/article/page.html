@@ -13,7 +13,7 @@
 
 {% block content %}
     <h1>{{ article.headline }}</h1>
-    <h2>{{ article.subheadline }}</h2>
+    {% if article.subheadline %}<h2>{{ article.subheadline }}</h2>{% endif %}
     {% if article.main_rel_content %}
         {{ article.main_rel_content|render:"article.main" }}
     {% endif %}

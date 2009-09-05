@@ -54,6 +54,24 @@ h3, h3 a{
 }
 
 
+.submit{
+    display:block;
+    height:20px;
+    float:left;
+    background-color:#BA0600;
+    border:1px solid #d1d1d1;
+    border-left: none;
+    text-decoration:none;
+    padding: 0px 4px;
+    color:#fff;
+    cursor:pointer;
+}
+
+.submit > span{
+    font-family: helvetica, arial, sans-serif;
+    font-size:11px;
+    line-height: 18px;
+}
 
 
 /* === IMPORTANT STUFF === */
@@ -76,6 +94,7 @@ h3, h3 a{
 .mod-2{width: 133px;}
 .mod-3{width: 216px;}
 .mod-4{width: 299px;}
+.mod-6{width: 465px;}
 .mod-8{width: 631px;}
 .mod-9{width: 714px;}
 
@@ -84,7 +103,7 @@ h3, h3 a{
     margin-bottom: 10px; 
     float:left; 
     text-align: left;
-    border-top: 5px solid #b00600;
+    border-top: 4px solid #b00600;
 }
 
 /* for mostxed, allow double inheritance */
@@ -98,8 +117,8 @@ h3, h3 a{
 	color: #666;    
 }
 
-.mod-blue{border-top: 5px solid #c3d4e8;}
-.mod-gray{border-top: 5px solid #d1d1d1;}
+.mod-blue{border-top: 4px solid #d1d1d1;}
+.mod-gray{border-top: 4px solid #d1d1d1;}
 .mod-ad{text-align: center;}
 .mod-ad, .mod-none{
     border: none;

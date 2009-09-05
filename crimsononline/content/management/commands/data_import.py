@@ -89,7 +89,7 @@ class Command(NoArgsCommand):
                 newtag.save()
                 sports[str(row["ID"])] = newtag
 
-
+        """
         # import contributors -- working nearly perfectly, except for capitalization
         cur.execute("SELECT ID, FirstName, MiddleName, LastName, CreatedOn FROM Contributors")
         rows = cur.fetchall()
@@ -103,8 +103,6 @@ class Command(NoArgsCommand):
             
             c.created_on = row["CreatedOn"] if row["CreatedOn"] is not None else datetime.now()
             c.save()
-
-
 
         # import articles
         cur.execute("SELECT ID, Headline, PublishedOn, Subheadline, Byline, SectionID, SubsectionID, SubCategory, Text, CreatedOn, ModifiedOn, Proofer, SNE FROM Articles")
@@ -147,6 +145,7 @@ class Command(NoArgsCommand):
                     a.tags.add(sports[str(row["SubCategory"])])
                 else:
                     a.tags.add(subcategories[str(row["SubCategory"])])
+        """
 
         # link contributors and articles
         cur.execute("SELECT ArticleID, ContributorID FROM ArticleWriters")
@@ -158,7 +157,6 @@ class Command(NoArgsCommand):
                 a.contributors.add(Contributor.objects.get(pk=row["ContributorID"]))
             except:
                 pass
-
         """
         
         # Photos ... this is so ghetto
@@ -217,7 +215,6 @@ class Command(NoArgsCommand):
                 a.rel_content.add(i)
             except:
                 continue
-            """
                 
         # blogs
         cur.execute("SELECT ID, SectionID, BlogName, Description FROM Blogs")
@@ -280,4 +277,6 @@ class Command(NoArgsCommand):
             except:
                 print "Couldn't find contributor for blog entry"
                 continue
+    
+        """
 

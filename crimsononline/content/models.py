@@ -2,7 +2,7 @@ from hashlib import md5
 from random import randint
 from os.path import splitext, exists, split, join
 from datetime import datetime, time, date, timedelta
-from re import compile, match
+from re import compile, match, sub
 from string import letters, digits
 from PIL import Image as pilImage
 
@@ -1055,7 +1055,7 @@ class Article(Content):
     
     @property
     def long_teaser(self):
-        return truncatewords(self.text, 50)
+        return sub(r'<[^>]*?>', '', truncatewords(self.title,50)) 
     
     @property
     def main_rel_content(self):

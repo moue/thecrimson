@@ -52,7 +52,7 @@
     color: #aa2222;
 }
 
-.content_list_filters .filter_label{
+.filter_label{
 	font-size: 11px;
 	font-family: Helvetica, Arial, sans-serif;
     font-family: arial;
@@ -70,8 +70,12 @@
     color: black;
     font-weight: normal;
 }
-.content_list_filters input{
+.content_list_filters button{
     margin-right: 2px;
+    width:100%;
+}
+.content_list_filters td{
+    padding-right: 10px;
 }
 
 /* thumbnails */

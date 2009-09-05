@@ -517,7 +517,7 @@ class ArticleForm(ContentModelForm):
         widget=forms.TextInput(attrs={'size':'70'})
     )
     text = forms.fields.CharField(
-        widget=TinyMCEWidget(attrs={'rows':'50', 'cols':'67'},)
+        widget=TinyMCEWidget(attrs={'cols':'67','rows':'40'})
     )
     proofer = FbModelChoiceField(required=True, multiple=False,
         url='/admin/content/contributor/search/', model=Contributor,
@@ -585,8 +585,7 @@ class ArticleAdmin(ContentAdmin):
             'scripts/jquery.js',
             'scripts/admin/Article.js',
             'scripts/framework/jquery.sprintf.js',
-            'scripts/tiny_mce/tiny_mce.js',
-            'scripts/textarea.js',
+            'scripts/tiny_mce/tiny_mce.js'
         )
     
     """

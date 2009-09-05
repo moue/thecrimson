@@ -6,7 +6,7 @@
 {% block content %}
     <h1>{{ article.headline }}</h1>
     <div class="publishedline">
-        By {{ article.contributors.all|linkify|human_list }} and Published: {{ article.issue.issue_date|date:"F d, Y" }}
+        Written by {{ article.contributors.all|linkify|human_list }} on {{ article.issue.issue_date|date:"F d, Y" }}
     </div>
     <div class="text">
         {{ article.text|safe|paragraphs|join:"" }}
