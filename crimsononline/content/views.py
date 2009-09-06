@@ -11,7 +11,6 @@ from django.contrib.contenttypes.models import ContentType
 from django.core.mail import send_mail
 from django.db import connection
 from django.db.models import Count, Max
-from django.views.generic.simple import direct_to_template
 from crimsononline.content.models import *
 from crimsononline.content_module.models import ContentModule
 from crimsononline.common.utils.paginate import paginate
@@ -71,7 +70,7 @@ def get_content_group(request, gtype, gname):
     templ = "contentgroup.html"
     if(cg == ContentGroup.objects.get(name="FlyBy")):
         templ = "flyby/content_list.html"
-    return direct_to_template(request, templ, {'cg': cg, 'content': c})
+    return render_to_response(templ, {'cg': cg, 'content': c})
 
 def get_content_group_obj(request, gtype, gname):
     cg = ContentGroup.by_name(gtype, gname)
@@ -115,14 +114,14 @@ def index(request, m=None, d=None, y=None):
     dict['fms'] = top_articles('FM', dt)[:4]
     dict['issue'] = Issue.get_current()
     
-    return direct_to_template(request,'index.html', dict)
+    return render_to_response('index.html', dict)
 
 def bigmap(request):
     stories = top_articles('News')[:20] # how many articles to show markers from...we will have to play with this
     dict = {}
     dict['markers'] = Marker.objects.distinct().filter(map__in = Map.objects.filter(article__in = stories.values('pk').query).values('pk').query)
     
-    return direct_to_template(request, 'bigmap.html', dict)
+    return render_to_response('bigmap.html', dict)
     
 REMOVE_P_RE = re.compile(r'page/\d+/$')
 def writer(request, pk, f_name, m_name, l_name, 
@@ -143,7 +142,7 @@ def writer(request, pk, f_name, m_name, l_name,
     t = 'writer.html'
     if request.GET.has_key('ajax'):
         t = 'ajax/content_list_page.html'
-    return direct_to_template(request, t, d)
+    return render_to_response(t, d)
 
 def tag(request, tag, section_str='', type_str='', page=1):
     tag = get_object_or_404(Tag, text=tag.replace('_', ' '))
@@ -219,7 +218,7 @@ def tag(request, tag, section_str='', type_str='', page=1):
     t = 'tag.html'
     if request.GET.has_key('ajax'):
         t = 'ajax/content_list_page.html'
-    return direct_to_template(request, t, d)
+    return render_to_response(t, d)
 
 
 def section_news(request):
@@ -235,7 +234,7 @@ def section_news(request):
         .annotate(latest=Max('content__issue__issue_date')) \
         .order_by('-latest')[:2]
     
-    return direct_to_template(request,'sections/news.html', locals())
+    return render_to_response('sections/news.html', locals())
     
 def section_opinion(request):
     nav = 'opinion'
@@ -246,7 +245,7 @@ def section_opinion(request):
     #.filter(section=section)[:4]
     columns = ContentGroup.objects.filter(section=section, active=True,
         type='column').annotate(recent=Max('content__issue__issue_date'))
-    return direct_to_template(request,'sections/opinion.html', locals())
+    return render_to_response('sections/opinion.html', locals())
     
 def section_fm(request):
     nav = 'fm'
@@ -270,7 +269,7 @@ def section_fm(request):
     issues = Issue.objects.exclude(fm_name=None).exclude(fm_name='')[:3]
     columns = ContentGroup.objects.filter(section=section, active=True,
         type='column').annotate(recent=Max('content__issue__issue_date'))
-    return direct_to_template(request,'sections/fm.html', locals())
+    return render_to_response('sections/fm.html', locals())
     
 def section_arts(request):
     nav = 'arts'
@@ -287,7 +286,7 @@ def section_arts(request):
     reviews = {}
     for t in ['movie', 'music', 'book']:
         reviews[t] = Review.objects.filter(type=t)[:4]
-    return direct_to_template(request,'sections/arts.html', locals())
+    return render_to_response('sections/arts.html', locals())
     
 def section_photo(request):
     if request.method == 'GET':
@@ -302,7 +301,7 @@ def section_photo(request):
     t = 'sections/photo.html'
     if request.GET.has_key('ajax'):
         t = 'ajax/media_viewer_page.html'
-    return direct_to_template(request, t, d)
+    return render_to_response(t, d)
     
 def section_sports(request):
     nav = 'sports'
@@ -311,7 +310,7 @@ def section_sports(request):
     rotate = []#stories.filter(rel_content__content_type=Image.content_type()) \
     #    .distinct()[:4]
     stories = stories.exclude(pk__in=[r.pk for r in rotate])
-    return direct_to_template(request, 'sections/sports.html', locals())
+    return render_to_response('sections/sports.html', locals())
 
 # IPHONE APP JSON FEEDS
 
@@ -350,20 +349,20 @@ def iphone(request, s = None):
 def photo(request):
     galleries = Gallery.objects.order_by('-created_on')[:10]
     nav, title = 'photo', 'Photo'
-    return direct_to_template(request, 'photo.html', locals())
+    return render_to_response('photo.html', locals())
 
 def gallery(request, currentimg_id, gallery_id):
     currentimg_id = int(currentimg_id)
     gallery_id = int(gallery_id)
     image = get_object_or_404(Image, pk=currentimg_id)
     gallery = get_object_or_404(Gallery, pk=gallery_id)
-    return direct_to_template(request,'gallery.html', {'currentimg':image, 'gallery':gallery})
+    return render_to_response('gallery.html', {'currentimg':image, 'gallery':gallery})
 
 #====== ajax stuff ==========#
 def ajax_get_img(request, pk):
     image = get_object_or_404(Image, pk=pk)
     url = image.display(500, 500).url
-    return direct_to_template(request,'ajax/get_image.html', locals())
+    return render_to_response('ajax/get_image.html', locals())
 
 # =========== view helpers ============== #
 def filter_helper(qs, section_str, type_str, url_base):
