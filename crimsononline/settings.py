@@ -111,7 +111,7 @@ INSTALLED_APPS = [
     'crimsononline.subscriptions',
 ]
 try:
-    import haystack
+    import pysolr
     INSTALLED_APPS.append('haystack')
     HAYSTACK = True
 except:
