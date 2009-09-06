@@ -182,7 +182,8 @@ class Content(models.Model):
         templ = 'models/%s/%s.html' % (name, method)
         # can access self with either the name of the class (ie, 'article')
         #   or 'content'
-        context.update({name: self.child, 'content': self.child, 'class': name})
+        context.update({name: self.child, 'content': self.child, 'class': name,
+                        'disqus': settings.DISQUS})
         
         # print view
         if method == 'page' and request.GET.get('print',""):
@@ -190,12 +191,11 @@ class Content(models.Model):
         
         if method == 'page':
             self.store_hit()
-
+        
         # flyby content
-        if method == 'page' and self.group == ContentGroup.objects.get(name='FlyBy', type='blog'):
+        if method == 'page' and self.group == ContentGroup.flyby:
             return mark_safe(render_to_string('models/%s/flyby.html'%(name), context, context_instance=RequestContext(request)))
         
-
         return mark_safe(render_to_string(templ, context, context_instance=RequestContext(request)))
     
     def delete(self):
@@ -369,7 +369,14 @@ class ContentGroup(models.Model):
     @permalink
     def get_absolute_url(self):
         return ('content_contentgroup', [self.type, make_url_friendly(self.name)])
-
+    
+    @property
+    @classmethod
+    def flyby(cls):
+        try:
+            return cls.objects.get(name='FlyBy', type='blog')
+        except:
+            return cls.objects.create(name='FlyBy', type='blog')
 
 class Tag(models.Model):
     """
