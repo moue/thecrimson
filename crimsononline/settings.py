@@ -114,7 +114,7 @@ try:
     import pysolr
     INSTALLED_APPS.append('haystack')
     HAYSTACK = True
-except:
+except ImportError:
     HAYSTACK = False
 finally:
     INSTALLED_APPS = tuple(INSTALLED_APPS)
