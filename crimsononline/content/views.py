@@ -18,73 +18,10 @@ from crimsononline.common.utils.strings import strip_commas
 from crimsononline.common.forms import DateSelectWidget
 from crimsononline.common.templatetags.common import human_list
 
-def get_content(request, ctype, year, month, day, slug, content_group=None):
-    """
-    View for displaying a piece of content on a page
-    Validates the entire URL
-    """
-    c = get_content_obj(request, ctype, year, month, day, slug, content_group)
-    # redirect to canonical URL
-    if request.path != c.get_absolute_url():
-        return HttpResponseRedirect(c.get_absolute_url())
-    if request.method == 'GET':
-        return HttpResponse(c._render(request.GET.get('render','page'), request=request))
-    return Http404
-
-def get_content_obj(request, ctype, year, month, day, slug, content_group=None):
-    """
-    Retrieves a content object from the database (no validation of params)
-    """
-    ctype = ctype.replace('-', ' ') # convert from url
-    c = Content.objects.get(issue__issue_date=date(int(year), int(month), int(day)), slug=slug
-    )
-    return c
-    
-def get_grouped_content(request, gtype, gname, ctype, year, month, day, slug):
-    """
-    View for displaying a piece of grouped content on a page
-    Validates the entire url
-    """
-    # validate the contentgroup
-    cg = get_grouped_content_obj(request, gtype, gname, ctype, 
-        year, month, day, slug)
-    if cg:
-        return get_content(request, ctype, year, month, day, slug, cg)
-    else:
-        raise Http404
-
-def get_grouped_content_obj(request, gtype, gname, ctype, year, month, day, slug):
-    cg = ContentGroup.by_name(gtype, gname)
-    return cg
-        
-def get_content_group(request, gtype, gname):
-    """
-    View for a Content Group
-    """
-    # validate the contentgroup
-    cg = get_content_group_obj(request, gtype, gname)
-    if not cg:
-        raise Http404
-    c = cg.content.all()
-    
-    templ = "contentgroup.html"
-    if(cg == ContentGroup.objects.get(name="FlyBy")):
-        templ = "flyby/content_list.html"
-    return render_to_response(templ, {'cg': cg, 'content': c})
-
-def get_content_group_obj(request, gtype, gname):
-    cg = ContentGroup.by_name(gtype, gname)
-    return cg
-
-def get_article_old_website(request):
-    try:
-        id = request.GET.get("ref")
-        a = Article.objects.get(pk=id)
-        return HttpResponse(a._render("page",request=request))
-    except:
-        raise Http404
+# ============ ACTUAL VIEWS =====================
 
 def index(request, m=None, d=None, y=None):
+    """Show the view for the front page."""
     stories = top_articles('News')
     
     dt = None
@@ -116,16 +53,10 @@ def index(request, m=None, d=None, y=None):
     
     return render_to_response('index.html', dict)
 
-def bigmap(request):
-    stories = top_articles('News')[:20] # how many articles to show markers from...we will have to play with this
-    dict = {}
-    dict['markers'] = Marker.objects.distinct().filter(map__in = Map.objects.filter(article__in = stories.values('pk').query).values('pk').query)
-    
-    return render_to_response('bigmap.html', dict)
-    
 REMOVE_P_RE = re.compile(r'page/\d+/$')
 def writer(request, pk, f_name, m_name, l_name, 
     section_str='', type_str='', page=1):
+    """Show the view for a specific writer."""
     
     w = get_object_or_404(Contributor, pk=pk)
     # Validate the URL (we don't want /writer/281/Balls_Q_McTitties to be valid)
@@ -145,11 +76,11 @@ def writer(request, pk, f_name, m_name, l_name,
     return render_to_response(t, d)
 
 def tag(request, tag, section_str='', type_str='', page=1):
+    """Show the view for a specific tag."""
+    
     tag = get_object_or_404(Tag, text=tag.replace('_', ' '))
     content = Content.objects.filter(tags=tag)
     
-    # top articles
-    #articles = Content.objects.type(Article).filter(tags=tag)
     articles = Article.objects.filter(tags=tag)
     featured_articles = list(articles.filter(
         issue__issue_date__gte=last_month()).order_by('-priority')[:5])
@@ -220,8 +151,11 @@ def tag(request, tag, section_str='', type_str='', page=1):
         t = 'ajax/content_list_page.html'
     return render_to_response(t, d)
 
+# ============= Section Views ============
 
 def section_news(request):
+    """Show the view for the news section page."""
+    
     nav = 'news'
     section = Section.cached(nav)
     stories = Article.objects.recent.filter(section=section)
@@ -235,8 +169,10 @@ def section_news(request):
         .order_by('-latest')[:2]
     
     return render_to_response('sections/news.html', locals())
-    
+
 def section_opinion(request):
+    """Show the view for the opinion section page."""
+    
     nav = 'opinion'
     section = Section.cached(nav)
     stories = Article.objects.recent.filter(section=section)
@@ -246,8 +182,10 @@ def section_opinion(request):
     columns = ContentGroup.objects.filter(section=section, active=True,
         type='column').annotate(recent=Max('content__issue__issue_date'))
     return render_to_response('sections/opinion.html', locals())
-    
+
 def section_fm(request):
+    """Show the view for the FM section page."""
+    
     nav = 'fm'
     section = Section.cached(nav)
     stories = Article.objects.recent.filter(section=section)
@@ -270,8 +208,10 @@ def section_fm(request):
     columns = ContentGroup.objects.filter(section=section, active=True,
         type='column').annotate(recent=Max('content__issue__issue_date'))
     return render_to_response('sections/fm.html', locals())
-    
+
 def section_arts(request):
+    """Show the view for the arts section page."""
+    
     nav = 'arts'
     section = Section.cached(nav)
     stories = Article.objects.recent.filter(section=section)
@@ -287,8 +227,10 @@ def section_arts(request):
     for t in ['movie', 'music', 'book']:
         reviews[t] = Review.objects.filter(type=t)[:4]
     return render_to_response('sections/arts.html', locals())
-    
+
 def section_photo(request):
+    """Show the view for the media section page."""
+    
     if request.method == 'GET':
         page = request.GET.get('page', 1)
     else: raise Http404
@@ -302,8 +244,10 @@ def section_photo(request):
     if request.GET.has_key('ajax'):
         t = 'ajax/media_viewer_page.html'
     return render_to_response(t, d)
-    
+
 def section_sports(request):
+    """Show the view for the sports section page."""
+    
     nav = 'sports'
     section = Section.cached(nav)
     stories = Article.objects.filter(section=section)
@@ -346,30 +290,77 @@ def iphone(request, s = None):
     
     return HttpResponse(io.getvalue(), mimetype='application/json')
 
-def photo(request):
-    galleries = Gallery.objects.order_by('-created_on')[:10]
-    nav, title = 'photo', 'Photo'
-    return render_to_response('photo.html', locals())
-
-def gallery(request, currentimg_id, gallery_id):
-    currentimg_id = int(currentimg_id)
-    gallery_id = int(gallery_id)
-    image = get_object_or_404(Image, pk=currentimg_id)
-    gallery = get_object_or_404(Gallery, pk=gallery_id)
-    return render_to_response('gallery.html', {'currentimg':image, 'gallery':gallery})
-
-#====== ajax stuff ==========#
-def ajax_get_img(request, pk):
-    image = get_object_or_404(Image, pk=pk)
-    url = image.display(500, 500).url
-    return render_to_response('ajax/get_image.html', locals())
-
 # =========== view helpers ============== #
+
+def get_content(request, ctype, year, month, day, slug, content_group=None):
+    """
+    View for displaying a piece of content on a page
+    Validates the entire URL
+    """
+    c = get_content_obj(request, ctype, year, month, day, slug, content_group)
+    # redirect to canonical URL
+    if request.path != c.get_absolute_url():
+        return HttpResponseRedirect(c.get_absolute_url())
+    if request.method == 'GET':
+        return HttpResponse(c._render(request.GET.get('render','page'), request=request))
+    return Http404
+
+def get_content_obj(request, ctype, year, month, day, slug, content_group=None):
+    """
+    Retrieves a content object from the database (no validation of params)
+    """
+    ctype = ctype.replace('-', ' ') # convert from url
+    c = Content.objects.get(issue__issue_date=date(int(year), int(month), int(day)), slug=slug
+    )
+    return c
+    
+def get_grouped_content(request, gtype, gname, ctype, year, month, day, slug):
+    """
+    View for displaying a piece of grouped content on a page
+    Validates the entire url
+    """
+    # validate the contentgroup
+    cg = get_grouped_content_obj(request, gtype, gname, ctype, 
+        year, month, day, slug)
+    if cg:
+        return get_content(request, ctype, year, month, day, slug, cg)
+    else:
+        raise Http404
+
+def get_grouped_content_obj(request, gtype, gname, ctype, year, month, day, slug):
+    cg = ContentGroup.by_name(gtype, gname)
+    return cg
+        
+def get_content_group(request, gtype, gname):
+    """
+    View for a Content Group
+    """
+    # validate the contentgroup
+    cg = get_content_group_obj(request, gtype, gname)
+    if not cg:
+        raise Http404
+    c = cg.content.all()
+    
+    templ = "contentgroup.html"
+    if(cg == ContentGroup.objects.get(name="FlyBy")):
+        templ = "flyby/content_list.html"
+    return render_to_response(templ, {'cg': cg, 'content': c})
+
+def get_content_group_obj(request, gtype, gname):
+    cg = ContentGroup.by_name(gtype, gname)
+    return cg
+
+def get_article_old_website(request):
+    try:
+        id = request.GET.get("ref")
+        a = Article.objects.get(pk=id)
+        return HttpResponse(a._render("page",request=request))
+    except:
+        raise Http404
+
 def filter_helper(qs, section_str, type_str, url_base):
-    """
-    returns a dictionary with elements necessary for the content_list
-        filter interface
-    """
+    """Return a dictionary with components of content_list filter interface."""
+    
     # TODO: refactor the fuck out of this
     unfilteredcontent = qs
     content = qs
@@ -395,7 +386,7 @@ def filter_helper(qs, section_str, type_str, url_base):
         url = url_base 
         url += ('sections/%s/' % s_str if s_str else '')
         url += ('types/%s/' % type_str if type_str else '')
-
+        
         # TODO: cache this shit
         ct = len(unfilteredcontent.filter(section=section))
         sects[section.name] = {'selected': a, 'url': url, 'count': ct} 
@@ -403,7 +394,7 @@ def filter_helper(qs, section_str, type_str, url_base):
     if type_str:
         type_str = type_str.replace('-', ' ') # convert from url
         type_str = [t.lower() for t in type_str.split(',') if t]
-
+        
         types = [t for t in Content.types() if t.name.lower() in type_str]
         content = content.filter(content_type__in=types)
     else:
@@ -420,18 +411,17 @@ def filter_helper(qs, section_str, type_str, url_base):
         url = url_base
         url += ('sections/%s/' % o_section_str if o_section_str else '')
         url += ('types/%s/' % t_str if t_str else '')
-
+        
         ct = len(unfilteredcontent.filter(content_type=type))
-
+        
         tps[tname.title()] = {'selected': a, 'url': url, 'count':ct}
     
     return {'content': content, 'sections': sects, 'types': tps}
-    
 
 def top_articles(section, dt=None):
-    """returns the most recent articles from @section"""
-    stories = Article.objects.filter(section__name=section)
-
+    """Return prioritized articles from @section"""
+    stories = Article.objects.prioritized().filter(section__name=section)
+    
     if(dt != None):
         stories = stories.filter(issue__issue_date__lte=dt)
     return stories
