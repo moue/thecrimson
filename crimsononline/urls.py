@@ -13,6 +13,9 @@ FILTER_URL_RE = r'(?:sections/(?P<section_str>[A-Za-z,]+)/)?' \
     r'(?:types/(?P<type_str>[A-Za-z,\s]+)/)?' \
     r'(?:page/(?P<page>\d+)/)?'
 
+from crimsononline.content import feeds
+  
+   
 urlpatterns = patterns('crimsononline.content.views',
     url(r'writer/(?P<pk>\d+)/(?P<f_name>[A-Za-z\s]+)_' \
         r'(?P<m_name>[A-Za-z\-\'\.]*)_(?P<l_name>[A-Za-z\-\']+)/%s$' % FILTER_URL_RE,
@@ -25,6 +28,18 @@ urlpatterns = patterns('crimsononline.content.views',
     url(r'^subscribe/', include('crimsononline.subscriptions.urls')),
     url(r'^iphone/(?P<s>\w+)/$', 'iphone'),
 )
+
+feeds = {
+    'latest': feeds.Latest,
+    'section': feeds.BySection,
+    'author': feeds.ByAuthor,
+    'tag': feeds.ByTag,
+}
+
+urlpatterns +=patterns('',
+    url(r'^feeds/(?P<url>.*)/$', 'django.contrib.syndication.views.feed', {'feed_dict': feeds}),
+)
+
 
 if settings.HAYSTACK:
     urlpatterns += patterns('',
