@@ -3,7 +3,7 @@
 }
 
 #viewer_main{
-    margin: 0 10px;
+    margin-left: 10px;
     padding: 10px 0;
 }
 #viewer_main .tags_heading {
@@ -29,7 +29,7 @@
 #viewer_main .viewer_top {
     display: block;
     position: relative;
-    width: 619px;
+    width: 629px;
     height: 450px;
     overflow: hidden;
     background-color: #333;

@@ -1,5 +1,5 @@
 #viewer_sidebar {
-    margin: 10px 10px;
+    margin: 10px 10px 10px 0;
     list-style: none;
     min-height: 500px;
     border: 1px solid #666;
@@ -11,7 +11,7 @@
     font-weight:bold;
     text-transform:uppercase;
     display: block;
-    padding: 2px 8px;
+    padding: 4px 8px;
     border-bottom: 1px solid #666;
 }
 
@@ -19,7 +19,7 @@
     display: block;
     float: left;
     height: 75px;
-    width: 277px;
+    width: 287px;
     padding: 5px;
     margin: 0;
     border-bottom: 1px solid #666;
