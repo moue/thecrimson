@@ -83,6 +83,9 @@
     clear:both;
     width:220px;
 }
+#viewer_main .tags a{
+    text-decoration: underline;
+}
 
 
 /* carousel */
