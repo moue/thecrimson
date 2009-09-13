@@ -803,6 +803,7 @@ class ImageManager(ContentManager):
         if self.__class__.__name__ == 'ManyRelatedManager':
             s = s.order_by('gallerymembership__order')
         return s  
+    
 
 class Image(Content):
 
