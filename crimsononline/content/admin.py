@@ -19,6 +19,7 @@ from django.template.defaultfilters import truncatewords
 from django.utils import simplejson, html
 from django.utils.safestring import mark_safe
 from django.utils.hashcompat import md5_constructor
+from crimsononline.admin_cust.models import UserData
 from crimsononline.content.models import *
 from crimsononline.content.forms import *
 from crimsononline.common.utils.strings import alphanum_only

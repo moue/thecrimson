@@ -2139,7 +2139,7 @@
 },
 {
     "pk": 1,
-    "model": "content.board",
+    "model": "admin_cust.board",
     "fields": {
         "group": 1,
         "name": "Arts"
@@ -2147,7 +2147,7 @@
 },
 {
     "pk": 2,
-    "model": "content.board",
+    "model": "admin_cust.board",
     "fields": {
         "group": 2,
         "name": "Biz"
@@ -2155,7 +2155,7 @@
 },
 {
     "pk": 3,
-    "model": "content.board",
+    "model": "admin_cust.board",
     "fields": {
         "group": 3,
         "name": "Design"
@@ -2163,7 +2163,7 @@
 },
 {
     "pk": 4,
-    "model": "content.board",
+    "model": "admin_cust.board",
     "fields": {
         "group": 4,
         "name": "Ed"
@@ -2171,7 +2171,7 @@
 },
 {
     "pk": 5,
-    "model": "content.board",
+    "model": "admin_cust.board",
     "fields": {
         "group": 5,
         "name": "FM"
@@ -2179,7 +2179,7 @@
 },
 {
     "pk": 6,
-    "model": "content.board",
+    "model": "admin_cust.board",
     "fields": {
         "group": 6,
         "name": "IT"
@@ -2187,7 +2187,7 @@
 },
 {
     "pk": 7,
-    "model": "content.board",
+    "model": "admin_cust.board",
     "fields": {
         "group": 7,
         "name": "News"
@@ -2195,7 +2195,7 @@
 },
 {
     "pk": 8,
-    "model": "content.board",
+    "model": "admin_cust.board",
     "fields": {
         "group": 8,
         "name": "Photo"
@@ -2203,7 +2203,7 @@
 },
 {
     "pk": 9,
-    "model": "content.board",
+    "model": "admin_cust.board",
     "fields": {
         "group": 9,
         "name": "Sports"

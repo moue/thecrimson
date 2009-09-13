@@ -28,7 +28,7 @@ TIME_ZONE = 'America/Chicago'
 
 # Auth Profile (Contributor)
 # *********** THIS IS BROKEN RIGHT NOW *************
-AUTH_PROFILE_MODULE = 'content.UserData'
+AUTH_PROFILE_MODULE = 'admin_cust.UserData'
 
 AUTHENTICATION_BACKENDS = ('crimsononline.content.admin.HUIDBackend',
                            #'crimsononline.subscriptions.admin.SubscriberBackend',
