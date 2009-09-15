@@ -32,11 +32,17 @@ class AutoGenSlugWidget(forms.widgets.TextInput):
         self.date_field = kwargs.pop('date_field', None)
         self.text_field = kwargs.pop('text_field', None)
         self.a, self.kw = args, kwargs
+        
+        # This is set in admin.ContentAdmin.get_form
+        # Will be True if the article's been published, false otherwise
+        self.editable = True
+        
+        
         super(AutoGenSlugWidget, self).__init__(*args, **kwargs)
     
     def render(self, name, value, attrs={}):
         input = super(AutoGenSlugWidget, self).render(name, value, attrs)
-        if value:
+        if self.editable == False:
             # render a disabled input, but we still need a hidden input to
             #  make sure the form validates (slugs are required)
             fakeinput = mark_safe(input.replace('id="id_slug"', 'disabled="1"'))
@@ -85,6 +91,11 @@ class IssuePickerWidget(forms.widgets.HiddenInput):
         css = {'all': (static_content('css/framework/jquery.ui.css'),
             static_content('css/admin/IssuePickerWidget.css'),)}
     
+    def __init__(self, *args, **kwargs):
+        self.editable = True
+        super(IssuePickerWidget, self).__init__(*args, **kwargs)
+    
+    
     def render(self, name, value, attrs=None):
         meta_select = "daily"
         if value:
@@ -112,6 +123,7 @@ class IssuePickerWidget(forms.widgets.HiddenInput):
             {'issues': Issue.objects.special.filter(issue_date__year=year), 
             'blank': "----", 'choice': value}
         )
+        is_editable = self.editable
         hidden = super(IssuePickerWidget, self).render(name, value, attrs)
         return render_to_string("forms/issue_picker_widget.html", locals())
     

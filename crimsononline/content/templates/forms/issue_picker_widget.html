@@ -1,10 +1,10 @@
 <p id="issue_picker_meta">
-    <input type="radio" name="issue_picker_meta" value="daily" /> Daily / Web Issue<br />
-    <input type="radio" name="issue_picker_meta" value="special" /> Special Issue (like Commencement, Election, etc.)
+    <input type="radio" name="issue_picker_meta" value="daily" {% if not is_editable %}DISABLED{% endif %}/> Daily / Web Issue<br />
+    <input type="radio" name="issue_picker_meta" value="special" {% if not is_editable %}DISABLED{% endif %}/> Special Issue (like Commencement, Election, etc.)
 </p>
 
 <p id="issue_picker_daily">
-    <input type="text" class="issue_picker" id="{{attrs.id}}_input" value="{{issue_date|date:"m/d/Y"}}" />
+    <input type="text" class="issue_picker" id="{{attrs.id}}_input" value="{{issue_date|date:"m/d/Y"}}" {% if not is_editable %}DISABLED{% endif %}/>
 </p>
 <p id="issue_picker_special">
     Special issues from the year <input type="text" size="4" value="{{year}}"/>
@@ -13,13 +13,17 @@
     </select>
 </p>
 {{hidden}}
+{% if is_editable %}
 <script type="text/javascript">
     $(document).ready(function(){
         set_issue_picker("#{{attrs.id}}_input", 
             "#{{attrs.id}}", 
             "/admin/content/issue/special_issue_list/");
+        
         $("#issue_picker_meta input[value={{meta_select}}]").trigger('click');
+        
     });
 </script>
+{% endif %}
 
 

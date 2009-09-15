@@ -127,6 +127,16 @@ class ContentAdmin(admin.ModelAdmin):
     
     def get_form(self, request, obj=None):
         f = super(ContentAdmin, self).get_form(request, obj)
+        
+        slug = f.base_fields['slug'].widget
+        issue = f.base_fields['issue'].widget
+        if obj is not None and obj.pub_status == 1:
+            slug.editable = False
+            issue.editable = False
+        else:
+            slug.editable = True
+            issue.editable = True
+        
         if not (request.user.has_perm('content.content.can_publish') \
                 or request.user.is_superuser):
             f.base_fields['pub_status'].widget.choices = ((0, 'Draft'),)
@@ -136,7 +146,7 @@ class ContentAdmin(admin.ModelAdmin):
         # don't let normally permissioned users change issue / slug on 
         # published content.  
         # TODO: users can't change for something that was every published
-        if change and obj and obj.pub_status != 0:
+        if change and obj and obj.pub_status == 1:
             old_obj = self.model.objects.admin_objects().get(pk=obj.pk)
             obj.issue = old_obj.issue
             obj.slug = old_obj.slug
