@@ -50,7 +50,7 @@ USE_I18N = False
 try:
     MEDIA_ROOT
 except:
-    MEDIA_ROOT = path.join(path.split(path.abspath(__file__))[0], 'static')
+    MEDIA_ROOT = os.path.join(os.path.split(os.path.abspath(__file__))[0], 'static')
 
 # URL that handles the media served from MEDIA_ROOT.
 # Example: "http://media.lawrence.com"
