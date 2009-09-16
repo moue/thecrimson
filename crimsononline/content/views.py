@@ -80,6 +80,8 @@ def tag(request, tag, section_str='', type_str='', page=1):
     
     tag = get_object_or_404(Tag, text=tag.replace('_', ' '))
     content = Content.objects.filter(tags=tag)
+    f = filter_helper(content, section_str, type_str, 
+        tag.get_absolute_url())
     
     articles = Article.objects.filter(tags=tag)
     featured_articles = list(articles.filter(
@@ -92,8 +94,6 @@ def tag(request, tag, section_str='', type_str='', page=1):
         featured_articles += list(articles.filter( 
             issue__issue_date__lte=last_year()).order_by('-priority')[:5])
     featured_articles = featured_articles[:5]
-    f = filter_helper(content, section_str, type_str, 
-        tag.get_absolute_url())
     
     # top writers (contributors that have the most content with this tag)
     cursor = connection.cursor()
@@ -143,7 +143,7 @@ def tag(request, tag, section_str='', type_str='', page=1):
     
     d = paginate(f.pop('content'), page, 10)
     d.update({'tag': tag, 'url': tag.get_absolute_url(), 'tags': tags,
-        'featured': [], 'top_contributors': writers,})
+        'featured': featured_articles, 'top_contributors': writers,})
     d.update(f)
     
     t = 'tag.html'

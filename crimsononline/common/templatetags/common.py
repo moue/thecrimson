@@ -10,15 +10,25 @@ from crimsononline.common.utils import misc
 register = template.Library()
 
 @register.filter
+def capchars(str, n):
+    """Make str have at most n chars, broken at a space."""
+    try:
+        n = int(n)
+        if len(str) < n:
+            return str
+        return str[:n].rsplit(' ', 1)[0] + ' ...'
+    except:
+        return str
+
+@register.filter
 def notfirst(seq):
-    """returns a list of everything but the first"""
+    """Return a list of everything but the first"""
     return seq[1:]
 
 PML_RE = compile(r'\[([^\[^\]]+)\]')
 @register.filter
 def profileml(s):
-    """
-    Turns [str] into <b>str</b>
+    """Turn [str] into <b>str</b>
     TODO: not quite safe
     """
     return mark_safe(PML_RE.sub(r'<b>\1</b>', s))
@@ -43,7 +53,7 @@ def paragraphs(str):
     Breaks str into paragraphs using linebreak filter, then splits by <p>.
     Keeps the <p> tags in the output.
     """
-
+    
     # remove whitespace between adjacent tags, replace with sentinel value
     str = paragraph_re.sub('</p>,,,<p', str)
     # split by sentinel value
