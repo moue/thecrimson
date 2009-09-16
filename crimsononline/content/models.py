@@ -454,14 +454,13 @@ class Contributor(models.Model):
         blank=True, null=True, help_text='Eg: 136')
     boards = models.ManyToManyField(Board, blank=True, null=True)
     class_of = models.IntegerField(blank=True, null=True)
-    concentration = models.CharField(blank = True, null = True, max_length = 50)
     is_active = models.BooleanField(default=True,
         help_text='This should be true for anyone who could possibly still ' \
                     'write for The Crimson, including guest writers.')
     profile_text = models.TextField(blank=True, null=True,
         help_text="""<b>Text enclosed in [square brackets] 
         will be bold and red</b>""")
-    profile_pic = SuperImageField(blank=True, null=True, max_width=150,
+    profile_pic = SuperImageField(blank=True, null=True, max_width=135,
         upload_to=contrib_pic_path, storage=OverwriteStorage())
     
     @property

@@ -26,11 +26,16 @@ def notfirst(seq):
     return seq[1:]
 
 PML_RE = compile(r'\[([^\[^\]]+)\]')
+N_RE = compile(r'\n\s+\n')
 @register.filter
 def profileml(s):
-    """Turn [str] into <b>str</b>
+    """Turn [s] into <b>s</b>, and \n paragraphs into <p> paragraphs.
     TODO: not quite safe
     """
+    print s
+    print N_RE.findall(s)
+    
+    s  = '<p>' + N_RE.sub('</p><p>', s) + '</p>'
     return mark_safe(PML_RE.sub(r'<b>\1</b>', s))
 
 @register.filter
@@ -46,16 +51,16 @@ def yuhkilabel(s, type="red"):
     """
     return mark_safe(render_to_string('templatetag/yuhkilabel.html', locals()))
 
-paragraph_re = compile(r'</p>\s+<p')
+PARA_RE = compile(r'</p>\s+<p')
 @register.filter
 def paragraphs(str):
     """
-    Breaks str into paragraphs using linebreak filter, then splits by <p>.
-    Keeps the <p> tags in the output.
+    Break str into paragraphs using linebreak filter, then splits by <p>.
+    Keep the <p> tags in the output.
     """
     
     # remove whitespace between adjacent tags, replace with sentinel value
-    str = paragraph_re.sub('</p>,,,<p', str)
+    str = PARA_RE.sub('</p>,,,<p', str)
     # split by sentinel value
     l = str.split(',,,')
     return [mark_safe(x) for x in l]
@@ -231,7 +236,6 @@ rating = register.tag(rating)
 @register.simple_tag
 def static_url(link):
     return mark_safe(misc.static_content(link))
-
 
 @register.simple_tag
 def static_css(link_to_css):

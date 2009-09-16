@@ -1,12 +1,18 @@
-
+div#profile_corner {
+    font-family: Georgia,Palatino Linotype,serif;
+    font-size: 12px;
+}
 
 div#profile_corner p{
-    font-size: 11px;
-    margin: 0 0 15px;
+    margin: 0 0 4px 4px;
+}
+
+div#profile_corner p b{
+    color: #a32222
 }
 
 div#profile_corner h3{
     font-size: 12px;
-    font-family: Georgia,Palatino Linotype,serif;
     color: #a32222;
+    margin-bottom: 2px;
 }
