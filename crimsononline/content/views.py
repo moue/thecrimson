@@ -6,13 +6,16 @@ from datetime import datetime, timedelta, date
 from django.shortcuts import get_object_or_404, get_list_or_404, render_to_response
 from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.template import Context, loader
+from django.conf import settings
 from django.contrib.flatpages.models import FlatPage
 from django.contrib.contenttypes.models import ContentType
 from django.core.mail import send_mail
 from django.db import connection
 from django.db.models import Count, Max
+from django.views.decorators.cache import cache_page
 from crimsononline.content.models import *
 from crimsononline.content_module.models import ContentModule
+from crimsononline.common.caching import funcache as cache
 from crimsononline.common.utils.paginate import paginate
 from crimsononline.common.utils.strings import strip_commas
 from crimsononline.common.forms import DateSelectWidget
@@ -20,6 +23,7 @@ from crimsononline.common.templatetags.common import human_list
 
 # ============ ACTUAL VIEWS =====================
 
+@cache_page(settings.CACHE_STANDARD)
 def index(request, m=None, d=None, y=None):
     """Show the view for the front page."""
     stories = top_articles('News')
@@ -54,6 +58,7 @@ def index(request, m=None, d=None, y=None):
     return render_to_response('index.html', dict)
 
 REMOVE_P_RE = re.compile(r'page/\d+/$')
+@cache_page(settings.CACHE_LONG)
 def writer(request, pk, f_name, m_name, l_name, 
     section_str='', type_str='', page=1):
     """Show the view for a specific writer."""
@@ -75,6 +80,7 @@ def writer(request, pk, f_name, m_name, l_name,
         t = 'ajax/content_list_page.html'
     return render_to_response(t, d)
 
+@cache_page(settings.CACHE_LONG)
 def tag(request, tag, section_str='', type_str='', page=1):
     """Show the view for a specific tag."""
     
@@ -153,6 +159,7 @@ def tag(request, tag, section_str='', type_str='', page=1):
 
 # ============= Section Views ============
 
+@cache_page(settings.CACHE_SHORT)
 def section_news(request):
     """Show the view for the news section page."""
     
@@ -170,6 +177,7 @@ def section_news(request):
     
     return render_to_response('sections/news.html', locals())
 
+@cache_page(settings.CACHE_SHORT)
 def section_opinion(request):
     """Show the view for the opinion section page."""
     
@@ -183,6 +191,7 @@ def section_opinion(request):
         type='column').annotate(recent=Max('content__issue__issue_date'))
     return render_to_response('sections/opinion.html', locals())
 
+@cache_page(settings.CACHE_SHORT)
 def section_fm(request):
     """Show the view for the FM section page."""
     
@@ -209,6 +218,7 @@ def section_fm(request):
         type='column').annotate(recent=Max('content__issue__issue_date'))
     return render_to_response('sections/fm.html', locals())
 
+@cache_page(settings.CACHE_SHORT)
 def section_arts(request):
     """Show the view for the arts section page."""
     
@@ -228,6 +238,7 @@ def section_arts(request):
         reviews[t] = Review.objects.filter(type=t)[:4]
     return render_to_response('sections/arts.html', locals())
 
+@cache_page(settings.CACHE_SHORT)
 def section_photo(request):
     """Show the view for the media section page."""
     
@@ -245,6 +256,7 @@ def section_photo(request):
         t = 'ajax/media_viewer_page.html'
     return render_to_response(t, d)
 
+@cache_page(settings.CACHE_SHORT)
 def section_sports(request):
     """Show the view for the sports section page."""
     
@@ -292,6 +304,7 @@ def iphone(request, s = None):
 
 # =========== view helpers ============== #
 
+@cache(settings.CACHE_LONG, "general_content")
 def get_content(request, ctype, year, month, day, slug, content_group=None):
     """
     View for displaying a piece of content on a page
@@ -304,6 +317,8 @@ def get_content(request, ctype, year, month, day, slug, content_group=None):
     if request.method == 'GET':
         return HttpResponse(c._render(request.GET.get('render','page'), request=request))
     return Http404
+
+# no need to cache these two i don't think, since they all go through get_content in the end
 
 def get_content_obj(request, ctype, year, month, day, slug, content_group=None):
     """
@@ -331,6 +346,7 @@ def get_grouped_content_obj(request, gtype, gname, ctype, year, month, day, slug
     cg = ContentGroup.by_name(gtype, gname)
     return cg
         
+@cache(settings.CACHE_STANDARD, "general_contentgroup")
 def get_content_group(request, gtype, gname):
     """
     View for a Content Group
@@ -350,6 +366,7 @@ def get_content_group_obj(request, gtype, gname):
     cg = ContentGroup.by_name(gtype, gname)
     return cg
 
+@cache(settings.CACHE_LONG, "general_content_article")
 def get_article_old_website(request):
     try:
         id = request.GET.get("ref")
@@ -358,6 +375,8 @@ def get_article_old_website(request):
     except:
         raise Http404
 
+# sure looks cacheworthy
+@cache(settings.CACHE_STANDARD, "helper")
 def filter_helper(qs, section_str, type_str, url_base):
     """Return a dictionary with components of content_list filter interface."""
     
@@ -418,6 +437,7 @@ def filter_helper(qs, section_str, type_str, url_base):
     
     return {'content': content, 'sections': sects, 'types': tps}
 
+@cache(settings.CACHE_SHORT, "general_generated_toparticles")
 def top_articles(section, dt=None):
     """Return prioritized articles from @section"""
     stories = Article.objects.prioritized().filter(section__name=section)

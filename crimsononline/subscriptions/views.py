@@ -4,6 +4,7 @@ from django.contrib.auth import *
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.views import login as d_login, logout as d_logout
 from django.shortcuts import render_to_response
+from django.views.decorators.cache import cache_page
 
 from crimsononline.subscriptions.forms import \
     EmailSubscribeForm, EmailSubscribeConfirmForm, EmailSubscriptionManageForm
@@ -81,6 +82,7 @@ def email_manage(request):
     else:
         raise Http404
 
+@cache_page(CACHE_EONS)
 def email_signup(request):
     if request.method == 'POST':
         # process a submitted form

@@ -139,3 +139,11 @@ HAYSTACK_SEARCH_ENGINE = 'solr'
 HAYSTACK_SOLR_URL = 'http://127.0.0.1:8983/solr'
 
 DISQUS = not DEBUG # you can override this in localsettings.py
+
+# caching durations in sec
+CACHE_SHORT = 2 * 60 * 60
+CACHE_STANDARD = 12 * 60 * 60
+CACHE_LONG = 24 * 60 * 60
+CACHE_EONS = 7 * 24 * 60 * 60
+# debug purposes until expiry works
+CACHE_SHORT = CACHE_STANDARD = CACHE_LONG = CACHE_EONS = 0
