@@ -1,7 +1,7 @@
 from hashlib import sha1
 from django.core.cache import cache as _djcache
 
-def funcache(seconds=1800, prefix=None):
+def funcache(seconds=1800, prefix=""):
     """Cache the result of a function call for the specified number of seconds,
 	using the specified prefix in the cache key for easy expiry
     TODO: Prefixes should probably be structured hierarchically, e.g.
