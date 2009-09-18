@@ -1,4 +1,5 @@
 from django.db.models import Q
+from django.conf import settings
 from django.http import HttpResponseRedirect, Http404
 from django.contrib.auth import *
 from django.contrib.auth.forms import AuthenticationForm
@@ -82,7 +83,7 @@ def email_manage(request):
     else:
         raise Http404
 
-@cache_page(CACHE_EONS)
+@cache_page(settings.CACHE_EONS)
 def email_signup(request):
     if request.method == 'POST':
         # process a submitted form

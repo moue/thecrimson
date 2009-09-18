@@ -22,7 +22,7 @@ from django.db.models.query import QuerySet
 from django.http import Http404
 from django.template import RequestContext
 
-from crimsononline.common.caching import funcache
+from crimsononline.common.caching import funcache, expire_page
 from crimsononline.common.forms import \
     MaxSizeImageField, SuperImageField
 from crimsononline.common.storage import OverwriteStorage
@@ -132,6 +132,7 @@ class Content(models.Model):
     content_type = models.ForeignKey(ContentType, editable=False, null=True)
     
     def save(self, *args, **kwargs):
+        expire_stuff(get_absolute_url(self))
         if not self.content_type:
             self.content_type = ContentType.objects.get_for_model(self.__class__)
         return super(Content, self).save(*args, **kwargs)
