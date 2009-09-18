@@ -99,12 +99,12 @@
 
     {% module 4 "past issues" %}
     <div id="issues" class="img_list">
-                <ul>
+        <ul>
         {% for issue in issues %}
-        <li>
+        <li><a href="">
             {% if issue.arts_cover %}{{ issue.arts_cover|to_img_tag:"60,60,1,1"}}
             {% else %}{% endif %}
-            <h3><a href="">{{ issue.arts_name }}</a></h3>
+            <h3>{{ issue.arts_name }}</h3></a>
             <p class="dateline">{{ issue.issue_date }}</p>
         </li>
         {% endfor %}

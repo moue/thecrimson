@@ -6,7 +6,7 @@
 
 {% if article.main_rel_content %}
     {% block img %}
-        <a href="{{article.get_absolute_url}}">{{ article.main_rel_content|to_img_tag:"300,240,5,4" }}</a>
+        <a href="{{article.get_absolute_url}}">{{ article.main_rel_content|to_img_tag:"300,240" }}</a>
     {% endblock %}
     {% block text %}
         <p class="teaser">{{article.teaser}}</p>

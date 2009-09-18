@@ -112,12 +112,13 @@ class ContentModelForm(ModelForm):
     )   
     """ 
     rotatable = forms.ChoiceField(Content.ROTATE_CHOICES, required=True,
-        label="Place in rotators?")
+        label="Place in rotators?", help_text="<b>Make sure this is / has an "
+        "image before you set this to rotate!</b>")
     pub_status = forms.ChoiceField(Content.PUB_CHOICES,required=True, 
         label="Published Status")
     
     model = Content
-  
+
 
 class ContentAdmin(admin.ModelAdmin):
     """Parent class for Content ModelAdmin classes.

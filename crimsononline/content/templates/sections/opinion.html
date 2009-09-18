@@ -35,17 +35,20 @@
     {% rotator rotate "editorial_cartoons" "EDITORIAL CARTOONS" %}
     
     {% module 4 columnists %}
+        <div id="columnists" class="img_list">
         <ul>
         {% for column in columns %}
             <li>
+                <a href="{{ column.get_absolute_url }}" class="img">
                 {% if column.image %}{{ column.image|to_img_tag:"60,60,1,1" }}
-                {% else %}<img src="{% static_url "images/noface_60x60.jpg" %}" />{% endif %}
+                {% else %}<img src="{% static_url "images/noface_60x60.jpg" %}" />{% endif %}</a>
                 <h3>{{ column|linkify:column.name }}</h3>
                 <p>{{ column.subname }}</p>
                 <p class="dateline">Updated {{ column.recent|date }}</p>
             </li>
         {% endfor %}
         </ul>
+        </div>
     {% endmodule %}
 {% endblock %}
 

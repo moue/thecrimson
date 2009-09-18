@@ -9,9 +9,8 @@ from django.template import Context, loader
 from django.conf import settings
 from django.contrib.flatpages.models import FlatPage
 from django.contrib.contenttypes.models import ContentType
-from django.core.mail import send_mail
 from django.db import connection
-from django.db.models import Count, Max
+from django.db.models import Count, Max, Q
 from django.views.decorators.cache import cache_page
 from crimsononline.content.models import *
 from crimsononline.content_module.models import ContentModule
@@ -31,9 +30,7 @@ def index(request, m=None, d=None, y=None):
     dt = None
     # if viewing an issue, try to form date, if not successful, 404
     if m is None or d is None or y is None:        
-        m = date.today().month
-        d = date.today().day
-        y = date.today().year
+        y, m, d = date.today().timetuple()[:3]
     else:
         try:
             dt = datetime(int(y), int(m), int(d))
@@ -41,7 +38,7 @@ def index(request, m=None, d=None, y=None):
         except:
             # TODO: remove this 404, just say issue not found
             raise Http404
-
+    
     dict = {}
     dict['rotate'] = stories.filter(rotatable=3)[:4]
     
@@ -184,9 +181,8 @@ def section_opinion(request):
     nav = 'opinion'
     section = Section.cached(nav)
     stories = Article.objects.recent.filter(section=section)
-    rotate = []#Content.objects.recent \
-    #.filter(content_type=Image.content_type()) \
-    #.filter(section=section)[:4]
+    rotate = Content.objects.prioritized().filter(section=section) \
+        .filter(Q(rotatable=1) | Q(rotatable=2))[:4]
     columns = ContentGroup.objects.filter(section=section, active=True,
         type='column').annotate(recent=Max('content__issue__issue_date'))
     return render_to_response('sections/opinion.html', locals())
@@ -321,17 +317,14 @@ def get_content(request, ctype, year, month, day, slug, content_group=None):
 # no need to cache these two i don't think, since they all go through get_content in the end
 
 def get_content_obj(request, ctype, year, month, day, slug, content_group=None):
-    """
-    Retrieves a content object from the database (no validation of params)
-    """
+    """Retrieve a content object from the database (no validation of params)"""
     ctype = ctype.replace('-', ' ') # convert from url
     c = Content.objects.get(issue__issue_date=date(int(year), int(month), int(day)), slug=slug
     )
     return c
     
 def get_grouped_content(request, gtype, gname, ctype, year, month, day, slug):
-    """
-    View for displaying a piece of grouped content on a page
+    """View for displaying a piece of grouped content on a page
     Validates the entire url
     """
     # validate the contentgroup
@@ -345,7 +338,11 @@ def get_grouped_content(request, gtype, gname, ctype, year, month, day, slug):
 def get_grouped_content_obj(request, gtype, gname, ctype, year, month, day, slug):
     cg = ContentGroup.by_name(gtype, gname)
     return cg
-        
+
+try:
+    FLYBY = ContentGroup.objects.get(name="FlyBy", type="blog")
+except:
+    FLYBY = ContentGroup.objects.create(name="FlyBy", type="blog")
 @cache(settings.CACHE_STANDARD, "general_contentgroup")
 def get_content_group(request, gtype, gname):
     """
@@ -358,7 +355,7 @@ def get_content_group(request, gtype, gname):
     c = cg.content.all()
     
     templ = "contentgroup.html"
-    if(cg == ContentGroup.objects.get(name="FlyBy")):
+    if(cg == FLYBY):
         templ = "flyby/content_list.html"
     return render_to_response(templ, {'cg': cg, 'content': c})
 

@@ -63,7 +63,8 @@
     display: block;
     float: left;
 }
-.img_list li > img {
+.img_list li > a.img {
+    display: block;
     float: left;
     margin-right: 4px;
 }

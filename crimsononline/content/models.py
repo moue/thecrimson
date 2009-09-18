@@ -61,8 +61,8 @@ class ContentManager(models.Manager):
         """Order by (priority / days_old).
         
         Arguments:
-            recents => only return stuff from the past _ issues. this should make
-                the query have a reasonable run time.
+            recents => only return stuff from the past _ issues. this should 
+                make the query have a reasonable run time.
         """
         # TODO: this sql only? works on sqlite3
         # also, round(x - 0.5) == floor(x)
@@ -74,10 +74,10 @@ class ContentManager(models.Manager):
             ],
             params=[recents],
             select={'decayed_priority':
-            "content_content.priority / "
-            "(round(julianday('now', 'localtime') - "
-            "julianday(content_issue.issue_date) - 0.5) + 1)"
-        })
+                "content_content.priority / "
+                "(round(julianday('now', 'localtime') - "
+                "julianday(content_issue.issue_date) - 0.5) + 1)"}
+        )
         return qs.extra(order_by=['-decayed_priority',])
     
 
