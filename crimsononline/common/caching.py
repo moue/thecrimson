@@ -53,4 +53,9 @@ def expire_page(path):
     # EXPIRE ALL OF IT
     # always want to expire index
     # obviously always expire the path passed
-    # we should expire the section pag 
+    # we should expire the section pag for the content type if it has one
+	# writer page for the contributor of the content
+	# issue for the content
+	# contentgroup page? I DON'T EVEN KNOW
+	# all the tag pages woo
+    # after this, put this in the save function of practically everything
