@@ -6,6 +6,7 @@ from django.template import defaultfilters as filter
 from django.template.loader import render_to_string
 from django.utils.safestring import mark_safe
 from crimsononline.common.utils import misc
+from crimsononline.common.utils.html import para_list
 
 register = template.Library()
 
@@ -32,9 +33,6 @@ def profileml(s):
     """Turn [s] into <b>s</b>, and \n paragraphs into <p> paragraphs.
     TODO: not quite safe
     """
-    print s
-    print N_RE.findall(s)
-    
     s  = '<p>' + N_RE.sub('</p><p>', s) + '</p>'
     return mark_safe(PML_RE.sub(r'<b>\1</b>', s))
 
@@ -51,19 +49,13 @@ def yuhkilabel(s, type="red"):
     """
     return mark_safe(render_to_string('templatetag/yuhkilabel.html', locals()))
 
-PARA_RE = compile(r'</p>\s+<p')
 @register.filter
 def paragraphs(str):
-    """
-    Break str into paragraphs using linebreak filter, then splits by <p>.
+    """Split str on <p> tags, mark output as save.
+    
     Keep the <p> tags in the output.
     """
-    
-    # remove whitespace between adjacent tags, replace with sentinel value
-    str = PARA_RE.sub('</p>,,,<p', str)
-    # split by sentinel value
-    l = str.split(',,,')
-    return [mark_safe(x) for x in l]
+    return [mark_safe(x) for x in para_list(str)]
 
 @register.filter
 def is_nav_cur(current, check):

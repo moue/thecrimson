@@ -125,14 +125,15 @@ class Content(models.Model):
     priority = models.IntegerField(default=3, choices=PRIORITY_CHOICES)
     group = models.ForeignKey('ContentGroup', null=True, blank=True, 
         related_name='content')
-    rotatable = models.IntegerField(null=False, choices=ROTATE_CHOICES, default=0)
+    rotatable = models.IntegerField(null=False, choices=ROTATE_CHOICES, 
+        default=0)
     pub_status = models.IntegerField(null=False, choices=PUB_CHOICES, 
         default=0)
     
     content_type = models.ForeignKey(ContentType, editable=False, null=True)
     
     def save(self, *args, **kwargs):
-        expire_stuff(get_absolute_url(self))
+        #expire_stuff(get_absolute_url(self))
         if not self.content_type:
             self.content_type = ContentType.objects.get_for_model(self.__class__)
         return super(Content, self).save(*args, **kwargs)

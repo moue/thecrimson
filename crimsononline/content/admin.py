@@ -23,11 +23,12 @@ from crimsononline.admin_cust.models import UserData
 from crimsononline.content.models import *
 from crimsononline.content.forms import *
 from crimsononline.common.utils.strings import alphanum_only
+from crimsononline.common.utils.html import para_list
 from crimsononline.common.forms import \
     FbModelChoiceField, CropField, SearchModelChoiceField, \
     MaskedValueTextInput, RatingWidget, fbmc_search_helper, \
     TinyMCEWidget
-    
+
 
 STOP_WORDS = ['a', 'able', 'about', 'across', 'after', 'all', 'almost', 'also', 
     'am', 'among', 'an', 'and', 'any', 'are', 'as', 'at', 'be', 'because', 
@@ -512,6 +513,7 @@ class GalleryAdmin(ContentAdmin):
 
 admin.site.register(Gallery, GalleryAdmin)
 
+TEASER_RE = re.compile(r"<\s*\/?\w.*?>") # tags
 class ArticleForm(ContentModelForm):
     teaser = forms.fields.CharField(
         widget=forms.Textarea(attrs={'rows':'5', 'cols':'67'}),
@@ -541,12 +543,13 @@ class ArticleForm(ContentModelForm):
         admin_site=admin.site, rel_types=[Image, Gallery, Article, Map, FlashGraphic, YouTubeVideo])
     
     def clean_teaser(self):
-        """Adds a teaser if one does not exist."""
-        teaser_re = re.compile(r"<\s*\w.*?>")
+        """Add a teaser if one does not exist."""
         if self.cleaned_data['teaser']:
             return self.cleaned_data['teaser']
         else:
-            teaser = teaser_re.sub("",self.cleaned_data['text'])
+            # split article by paragraphs, return first 20 words of first para
+            teaser = para_list(self.cleaned_data['text'])[0]
+            teaser = TEASER_RE.sub("",teaser)
             return truncatewords(teaser, 20)
 
     class Meta:
