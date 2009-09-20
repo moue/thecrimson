@@ -622,6 +622,7 @@ class ArticleAdmin(ContentAdmin):
         for i, r in enumerate(rel):
             x = ArticleContentRelation(order=i, article=obj, related_content=r)
             x.save()
+            
         return obj
     
     def queryset(self, request):
@@ -810,7 +811,7 @@ class FlashGraphicAdmin(ContentAdmin):
         js = (
             'scripts/jquery.js',
         )
-    
+
 admin.site.register(FlashGraphic, FlashGraphicAdmin)
 
 admin.site.register(Score)

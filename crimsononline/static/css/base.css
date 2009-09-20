@@ -30,7 +30,7 @@ body {
 }
 
 a{color:#BA0600;}
-a:hover{color:#EA0600;}
+a:hover{color:#EA0600;text-decoration: underline;}
 /*FF crap*/a:focus{outline-style: none;}
 
 
@@ -290,12 +290,13 @@ h3, h3 a{
     padding-bottom: 10px;
 }
 
-#footer_contents span{
+#footer_contents span, #footer_contents span a{
     font-family: Helvetica, Arial, sans-serif;
     font-size: 12px;
 }
 
-#footer_contents .g{
+
+#footer_contents .g, #footer_contents .g a{
     color: #666;
 }
 

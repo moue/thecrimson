@@ -6,15 +6,18 @@ from django.conf.urls.defaults import *
 from crimsononline.content.views import *
 from crimsononline.admin_cust.views import login_user
 from django.contrib.auth.views import login, logout
+from django.contrib.sitemaps import FlatPageSitemap
+from crimsononline.content.sitemaps import ArticleSitemap
 
 admin.autodiscover()
+
 
 FILTER_URL_RE = r'(?:sections/(?P<section_str>[A-Za-z,]+)/)?' \
     r'(?:types/(?P<type_str>[A-Za-z,\s]+)/)?' \
     r'(?:page/(?P<page>\d+)/)?'
 
 from crimsononline.content import feeds
-  
+
    
 urlpatterns = patterns('crimsononline.content.views',
     url(r'writer/(?P<pk>\d+)/(?P<f_name>[A-Za-z\s]+)_' \
@@ -36,8 +39,16 @@ feeds = {
     'tag': feeds.ByTag,
 }
 
+
+sitemaps = {
+    'flatpages': FlatPageSitemap,
+    'articles': ArticleSitemap,
+}
+
 urlpatterns +=patterns('',
     url(r'^feeds/(?P<url>.*)/$', 'django.contrib.syndication.views.feed', {'feed_dict': feeds}),
+    url(r'^sitemap.xml$', 'django.contrib.sitemaps.views.index', {'sitemaps': sitemaps}),
+    url(r'^sitemap-(?P<section>.+)\.xml$', 'django.contrib.sitemaps.views.sitemap', {'sitemaps': sitemaps}),
 )
 
 
