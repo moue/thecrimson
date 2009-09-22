@@ -168,6 +168,8 @@ class ContentAdmin(admin.ModelAdmin):
         if request.method != 'POST':
             raise Http404
         dt, text = request.POST.get('date', 0), request.POST.get('text', 0)
+        print dt + ' '
+        print text
         if not (dt and text):
             raise Http404
         dt = date(*(strptime(str(dt), r"%m/%d/%Y")[:3]))

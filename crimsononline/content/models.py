@@ -22,7 +22,7 @@ from django.db.models.query import QuerySet
 from django.http import Http404
 from django.template import RequestContext
 
-from crimsononline.common.caching import funcache, expire_page
+from crimsononline.common.caching import funcache, expire_page, expire_stuff
 from crimsononline.common.forms import \
     MaxSizeImageField, SuperImageField
 from crimsononline.common.storage import OverwriteStorage
@@ -133,10 +133,27 @@ class Content(models.Model):
     content_type = models.ForeignKey(ContentType, editable=False, null=True)
     
     def save(self, *args, **kwargs):
-        #expire_stuff(get_absolute_url(self))
+        expire_stuff()
         if not self.content_type:
             self.content_type = ContentType.objects.get_for_model(self.__class__)
-        return super(Content, self).save(*args, **kwargs)
+        retval = super(Content, self).save(*args, **kwargs)
+        # expire own page
+        expire_page(self.get_absolute_url())
+        # we should expire the section pag for the content type if it has one
+        expire_page(self.section.get_absolute_url())
+        # writer page for the contributor of the content
+        for contributor in self.contributors.all():
+            expire_page(contributor.get_absolute_url())
+        # issue for the content
+        expire_page(self.issue.get_absolute_url())
+        # contentgroup page? I DON'T EVEN KNOW
+        if self.group is not None:
+            expire_page(self.group.get_absolute_url())
+        # all the tag pages woo
+        tags = self.tags.all()
+        for tag in tags:
+            expire_page(tag.get_absolute_url())
+        return retval
 
     @property
     def child(self):
@@ -366,7 +383,10 @@ class ContentGroup(models.Model):
         When Content Groups change, we need to update the cache
         """
         s = super(ContentGroup, self).save(*args, **kwargs)
-        
+        # expire own page
+        expire_page(self.get_absolute_url())
+        # we should expire the section pag for the content type if it has one
+        expire_page(self.section.get_absolute_url())
         return s
     
     @permalink
@@ -533,6 +553,9 @@ class Section(models.Model):
         if section_name:
             return a[section_name]
         return a
+        
+    def get_absolute_url(self):
+        return ('content_section', [make_url_friendly(self.name)])
     
     def __unicode__(self):
         return self.name
@@ -653,6 +676,9 @@ class Issue(models.Model):
             .distinct()[:1]
         if a: return a[0].main_rel_content
         else: return None
+    
+    def get_absolute_url(self):
+        return ('content_index', [self.issue_date.year, self.issue_date.month, self.issue_date.day])
     
     @staticmethod
     def get_current():
