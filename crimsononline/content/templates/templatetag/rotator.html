@@ -11,7 +11,7 @@
     <div class="rotator_carousel" style="display:none">
         <div class="rotator_carousel_contents"></div>
     </div>
-    <ul class="rotator_preview">
+    <ul class="rotator_preview{% if nopreview %} notext{% endif %}">
 		{% for c in contents %}
             <li>{{ c|render:"rotator" }}</li>
         {% endfor %}

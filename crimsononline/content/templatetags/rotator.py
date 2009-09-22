@@ -12,8 +12,9 @@ class RotatorNode(template.Node):
     Optional:
         @title => a title (displayed at the top)
     """
-    def __init__(self, contents, id, title=None):
+    def __init__(self, contents, id, title, nopreview):
         self.contents, self.id, self.title = contents, id, title
+        self.nopreview = nopreview
     
     def render(self, context):
         try:
@@ -25,10 +26,11 @@ class RotatorNode(template.Node):
         except:
             self.title = ''
         return render_to_string('templatetag/rotator.html', 
-            {'contents': self.contents, 'title': self.title})
+            {'contents': self.contents, 'title': self.title, 
+             'nopreview': self.nopreview})
     
 
-def do_rotator(parser, token):
+def do_rotator(parser, token, nopreview=False):
     tokens = token.split_contents()
     if len(tokens) < 3:
         raise template.TemplateSyntaxError, \
@@ -40,6 +42,10 @@ def do_rotator(parser, token):
     else:
         title = ''
     
-    return RotatorNode(contents, id, title)
+    return RotatorNode(contents, id, title, nopreview)
+
+def do_rotator2(parser, token):
+    return do_rotator(parser, token, True)
 
 register.tag('rotator', do_rotator)
+register.tag('rotatornopreview', do_rotator2)

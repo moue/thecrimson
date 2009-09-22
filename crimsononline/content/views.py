@@ -25,8 +25,6 @@ from crimsononline.common.templatetags.common import human_list
 @cache_page(settings.CACHE_STANDARD)
 def index(request, m=None, d=None, y=None):
     """Show the view for the front page."""
-    stories = top_articles('News')
-    
     dt = None
     # if viewing an issue, try to form date, if not successful, 404
     if m is None or d is None or y is None:        
@@ -38,6 +36,7 @@ def index(request, m=None, d=None, y=None):
         except:
             # TODO: remove this 404, just say issue not found
             raise Http404
+    stories = top_articles('News', dt)
     
     dict = {}
     dict['rotate'] = rotatables(None, 4)

@@ -15,11 +15,17 @@
 .rotator_preview{
 	height:310px;
 }
+ul.notext {
+    height: 240px;
+}
 .rotator_preview li{
 	height:310px;
 	list-style-type: none;
 }
 
+ul.notext div.preview_text {
+    display: none;
+}
 .preview_text > .teaser {
     font-size: 13px;
 }
