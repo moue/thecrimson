@@ -89,7 +89,6 @@ class Command(NoArgsCommand):
                 newtag.save()
                 sports[str(row["ID"])] = newtag
 
-        """
         # import contributors -- working nearly perfectly, except for capitalization
         cur.execute("SELECT ID, FirstName, MiddleName, LastName, CreatedOn FROM Contributors")
         rows = cur.fetchall()
@@ -106,7 +105,7 @@ class Command(NoArgsCommand):
 
         # import articles
         cur.execute("SELECT ID, Headline, PublishedOn, Subheadline, Byline, SectionID, SubsectionID, SubCategory, Text, CreatedOn, ModifiedOn, Proofer, SNE FROM Articles")
-        rows = cur.fetchmany(size=40000)
+        rows = cur.fetchmany(size=10000)
         print "Importing " + str(len(rows)) + " Articles"
         for row in rows:
             a = Article()
@@ -145,7 +144,6 @@ class Command(NoArgsCommand):
                     a.tags.add(sports[str(row["SubCategory"])])
                 else:
                     a.tags.add(subcategories[str(row["SubCategory"])])
-        """
 
         # link contributors and articles
         cur.execute("SELECT ArticleID, ContributorID FROM ArticleWriters")
