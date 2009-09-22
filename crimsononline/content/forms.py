@@ -37,7 +37,6 @@ class AutoGenSlugWidget(forms.widgets.TextInput):
         # Will be True if the article's been published, false otherwise
         self.editable = True
         
-        
         super(AutoGenSlugWidget, self).__init__(*args, **kwargs)
     
     def render(self, name, value, attrs={}):

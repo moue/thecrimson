@@ -40,9 +40,10 @@ def index(request, m=None, d=None, y=None):
             raise Http404
     
     dict = {}
-    dict['rotate'] = stories.filter(rotatable=3)[:4]
+    dict['rotate'] = rotatables(None, 4)
     
-    dict['past_issues'] = DateSelectWidget().render(name="past_issues", value=[m, d, y])
+    dict['past_issues'] = DateSelectWidget().render(name="past_issues", 
+                                                    value=[m, d, y])
     dict['nav'] = 'index'
     dict['top_stories'] = stories[:4]
     dict['more_stories'] = stories[4:9]
@@ -162,9 +163,10 @@ def section_news(request):
     
     nav = 'news'
     section = Section.cached(nav)
-    stories = Article.objects.recent.filter(section=section)
-    rotate = []#stories.filter(
-    #rel_content__content_type=Image.content_type()).distinct()[:4]
+    stories = top_articles(section)
+    r = Content.objects.prioritized().filter(section=section)
+    rotate = list(r.filter(rotatable=2)[:4])
+    rotate += list(r.filter(rotatable=1)[:4])
     stories = stories.exclude(pk__in=[c.pk for c in rotate])[:15]
     
     series = ContentGroup.objects.filter(section=section) \
@@ -437,11 +439,28 @@ def filter_helper(qs, section_str, type_str, url_base):
 @cache(settings.CACHE_SHORT, "general_generated_toparticles")
 def top_articles(section, dt=None):
     """Return prioritized articles from @section"""
-    stories = Article.objects.prioritized().filter(section__name=section)
+    if isinstance(section, basestring):
+        key = 'section__name'
+    else:
+        key = 'section'
+    stories = Article.objects.prioritized().filter(**{key: section})
     
     if(dt != None):
         stories = stories.filter(issue__issue_date__lte=dt)
     return stories
+
+def rotatables(section=None, limit=4):
+    """Return the rotatable content for a section (or the front)."""
+    c = Content.objects.prioritized()
+    if section is not None:
+        c = c.filter(section=section)
+    #For some reason, Q(rotatable=2) | Q(rotatable=3) doesn't work.
+    # It probably has something to do with .extra() in .prioritized()
+    b = list(c.filter(rotatable=2)[:limit]) #stuff on front and sections
+    if len(b) == limit:
+        return b
+    r = 3 if section is None else 1
+    return (b + list(c.filter(rotatable=r))[:limit])[:limit]
 
 def last_month():
     return date.today() + timedelta(days=-30)

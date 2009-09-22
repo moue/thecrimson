@@ -7,7 +7,7 @@ from crimsononline.content.views import *
 from crimsononline.admin_cust.views import login_user
 from django.contrib.auth.views import login, logout
 from django.contrib.sitemaps import FlatPageSitemap
-from crimsononline.content.sitemaps import ArticleSitemap
+#from crimsononline.content.sitemaps import ArticleSitemap
 
 admin.autodiscover()
 
@@ -41,8 +41,8 @@ feeds = {
 
 
 sitemaps = {
-    'flatpages': FlatPageSitemap,
-    'articles': ArticleSitemap,
+    #'flatpages': FlatPageSitemap,
+    #'articles': ArticleSitemap,
 }
 
 urlpatterns +=patterns('',
