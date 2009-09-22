@@ -181,9 +181,8 @@ def section_opinion(request):
     
     nav = 'opinion'
     section = Section.cached(nav)
-    stories = Article.objects.recent.filter(section=section)
-    rotate = Content.objects.prioritized().filter(section=section) \
-        .filter(Q(rotatable=1) | Q(rotatable=2))[:4]
+    stories = top_articles(section)[:10]
+    rotate = rotatables(section, 4)
     columns = ContentGroup.objects.filter(section=section, active=True,
         type='column').annotate(recent=Max('content__issue__issue_date'))
     return render_to_response('sections/opinion.html', locals())
