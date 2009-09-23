@@ -26,6 +26,14 @@ def notfirst(seq):
     """Return a list of everything but the first"""
     return seq[1:]
 
+@register.filter
+def first(seq):
+    """Return the first item in the list"""
+    try:
+        return seq[0]
+    except IndexError, TypeError:
+        return ''
+
 PML_RE = compile(r'\[([^\[^\]]+)\]')
 N_RE = compile(r'\n\s+\n')
 @register.filter

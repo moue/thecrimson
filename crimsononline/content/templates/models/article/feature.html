@@ -2,7 +2,7 @@
 {% load common %}
 
 {% if article.main_rel_content %}
-    {{ article.main_rel_content|to_img_tag:"296,300" }}
+    {{ article.main_rel_content|to_img_tag:"289, 289" }}
 {% endif %}
 <h3>{{ article|linkify }}</h3>
 <p class="byline">By {{ article.contributors.all|linkify|human_list }}</p>

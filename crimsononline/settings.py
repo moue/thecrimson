@@ -146,5 +146,6 @@ CACHE_SHORT = 2 * 60 * 60
 CACHE_STANDARD = 12 * 60 * 60
 CACHE_LONG = 24 * 60 * 60
 CACHE_EONS = 7 * 24 * 60 * 60
-# debug purposes until expiry works
-# CACHE_SHORT = CACHE_STANDARD = CACHE_LONG = CACHE_EONS = 0
+
+if DEBUG:
+    CACHE_BACKEND = 'dummy:///'
