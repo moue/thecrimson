@@ -19,11 +19,13 @@
         </div>
     {% endmodule %}
     
+    <span class="clear"></span>
+    
     {% contentmodule news_bottom_left %}
         {% if series.0 %}
         <div class="bordered series">
             <a href="{{series.0.get_absolute_url}}">
-            {% if series.0.image %}{{ series.10.image|to_img_tag:"290," }}
+            {% if series.0.image %}{{ series.0.image|to_img_tag:"297," }}
             {% else %}<h2>{{series.0.name}}</h2>{% endif %}
             </a>
             <ul>
@@ -57,7 +59,7 @@
         {% if series.1 %}
         <div class="bordered series">
             <a href="{{series.1.get_absolute_url}}">
-            {% if series.1.image %}{{ series.1.image|to_img_tag:"290," }}
+            {% if series.1.image %}{{ series.1.image|to_img_tag:"297," }}
             {% else %}<h2>{{series.1.name}}</h2>{% endif %}
             </a>
             <ul>

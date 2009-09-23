@@ -163,10 +163,7 @@ def section_news(request):
     nav = 'news'
     section = Section.cached(nav)
     stories = top_articles(section)
-    r = Content.objects.prioritized().filter(section=section)
-    rotate = list(r.filter(rotatable=2)[:4])
-    rotate += list(r.filter(rotatable=1)[:4])
-    stories = stories.exclude(pk__in=[c.pk for c in rotate])[:15]
+    rotate = rotatables(section, 4)
     
     series = ContentGroup.objects.filter(section=section) \
         .annotate(c_count=Count('content')).filter(c_count__gte=3) \
@@ -205,8 +202,7 @@ def section_fm(request):
     except:
         pass
     ex = [scrutiny_key, endpaper_key]
-    rotate = []#stories.filter(rel_content__content_type=Image.content_type()) \
-    #.distinct()[:4]
+    rotate = rotatables(section, 4)
     itm = stories.filter(tags__text='itm')[:3]
     ftm = stories.filter(tags__text='ftm')[:9]
     issues = Issue.objects.exclude(fm_name=None).exclude(fm_name='')[:3]

@@ -80,8 +80,8 @@
     margin: 0 0 5px 20px;
     width: 276px;
 }
-.series li > h3{
-    font-size: 13px;
+.series li > h3 > a{
+    font-size: 14px;
     font-weight: normal;
 }
 

@@ -321,10 +321,7 @@ h3, h3 a{
 /* bordered */
 .bordered {
     border: 1px solid #bbb;
-    border-radius: 5px;
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
-    padding: 3px;
+    padding: 5px;
     margin-bottom: 5px;
     overflow: none;
 }

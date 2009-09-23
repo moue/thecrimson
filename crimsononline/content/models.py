@@ -185,6 +185,9 @@ class Content(models.Model):
         else:
             return ('content_content', url_data)
     
+    def __unicode__(self):
+        return self.child.__unicode__()
+    
     objects = ContentManager()
     
     def _render(self, method, context={}, request=None):
