@@ -221,15 +221,13 @@ def section_arts(request):
     
     nav = 'arts'
     section = Section.cached(nav)
-    stories = Article.objects.recent.filter(section=section)
-    rotate = []#stories.filter(rel_content__content_type=Image.content_type()) \
-    #    .distinct()[:4]
-    stories = stories.exclude(pk__in=[s.pk for s in rotate])
+    stories = top_articles(section)
+    rotate = rotatables(section)
     books = stories.filter(tags__text='books')[:4]
     oncampus = stories.filter(tags__text='on campus')[:6]
     music = stories.filter(tags__text='music')[:2]
     visualarts = stories.filter(tags__text='visual arts')[:2]
-    issues = Issue.objects.exclude(arts_name=None).exclude(arts_name='')[:3]
+    issues = Issue.objects.exclude(Q(arts_name=None)|Q(arts_name=''))[:3]
     reviews = {}
     for t in ['movie', 'music', 'book']:
         reviews[t] = Review.objects.filter(type=t)[:4]
@@ -281,7 +279,7 @@ def section_sports(request):
     rotate = rotatables(section)
     latest = Article.objects.filter(section=section).order_by('-modified_on')
     blog = stories.filter(group__type='blog')
-    athlete = first_or_none(stories.filter(tags__text='athlete of the week'))    
+    athlete = first_or_none(stories.filter(tags__text='athlete of the week')) 
     return render_to_response('sections/sports.html', locals())
 
 # IPHONE APP JSON FEEDS
@@ -461,7 +459,7 @@ def top_articles(section, dt=None):
         key = 'section'
     stories = Article.objects.prioritized().filter(**{key: section})
     
-    if(dt != None):
+    if(dt is not None):
         stories = stories.filter(issue__issue_date__lte=dt)
     return stories
 

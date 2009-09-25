@@ -3,55 +3,59 @@
 {% load common %}
 {% load content_filters %}
 {% load rotator %}
+{% load module %}
 {% load content_module %}
 {% load tag_cloud %}
 {% load top_articles %}
 
 {% block leftcolumn %}
     {% rotator rotate "sports_rotator" %}
-    <div id="updates" class="article_previews">
-        <h2>Latest Updates</h2>
+    
+    {% module 4 "latest updates" gray %}
+        <div class="article_headlines">
         <ul>
-        {% for s in updates %}
+        {% for s in latest %}
             <li><h3><a href="{{s.get_absolute_url}}">{{s}}</a></h3></li>
         {% endfor %}
         </ul>
-    </div>
+        </div>
+    {% endmodule %}
     <span class="clear"></span>
-    <div id="blogs" class="bordered series">
-        <h2>Sports Blogs</h2>
+    {% module 4 "sports blog" gray %}
+        <div class="series">
         <ul>
-            {% for s in blog_posts %}
+            {% for s in blog %}
             <li>
                 <h3><a href="{{s.get_absolute_url}}">{{s}}</a></h3>
                 <p class="byline">By {{s.contributors.all|linkify|human_list}}</p>
             </li>
             {% endfor %}
         </ul>
-    </div>
+        </div>
+    {% endmodule %}
 {% endblock %}
 
 {% block middlecolumn %}
-    <div id="top_stories" class="article_previews">
-        <h2>Top Stories</h2>
+    {% module 4 "top stories" red %}
+        <div id="top_stories" class="article_previews">
         <ul>
-        {% for s in top_stories %}
+        {% for s in stories %}
             <li>{{ s|render:"preview" }}</li>
         {% endfor %}
         </ul>
-    </div>
+        </div>
+    {% endmodule %}
+    
     {% if athlete %}
-    <span class="clear"></span>
-    <div id="athlete_o_week" class="img_list">
-        <h2>Athlete of the Week {{ athlete.subheadline }}</h2>
-        <ul>
-            <li>
-                {{ athlete.main_rel_content|to_img_tag:"60,60" }}
-                <h3>{{ athlete|linkify }}</h3>
-                <p class="teaser">{{ athlete.teaser }}</p>
-            </li>
-        </ul>
-    </div>
+        <span class="clear"></span>
+        {% module 4 "athlete of the week" red %}
+        <div id="athlete_o_week" class="img_list">
+            {{ athlete.main_rel_content|to_img_tag:"60,60" }}
+            <h3>{{ athlete|linkify }}</h3>
+            <p class="teaser">{{ athlete.teaser }}</p>
+        </div>
+        {% endmodule %}
+        <span class="clear"></span>
     {% endif %}
 {% endblock %}
 

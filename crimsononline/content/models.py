@@ -428,9 +428,14 @@ class Tag(models.Model):
     'potato'
     """
     
+    CATEGORY_CHOICES = (
+        ('sports', 'Sports'),
+    )
+    
     # validates in the admin
     text = models.CharField(blank=False, max_length=25, unique=True,
         help_text='Tags can contain letters and spaces')
+    #category = models.CharField(blank=True, max_length=25, choices=CATEGORY_CHOICES)
     
     def __unicode__(self):
         return self.text
