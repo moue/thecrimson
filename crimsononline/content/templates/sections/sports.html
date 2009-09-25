@@ -7,7 +7,7 @@
 {% load tag_cloud %}
 {% load top_articles %}
 
-{% block lefttopcolumn %}
+{% block leftcolumn %}
     {% rotator rotate "sports_rotator" %}
     <div id="updates" class="article_previews">
         <h2>Latest Updates</h2>
@@ -31,7 +31,7 @@
     </div>
 {% endblock %}
 
-{% block middletopcolumn %}
+{% block middlecolumn %}
     <div id="top_stories" class="article_previews">
         <h2>Top Stories</h2>
         <ul>
@@ -40,6 +40,7 @@
         {% endfor %}
         </ul>
     </div>
+    {% if athlete %}
     <span class="clear"></span>
     <div id="athlete_o_week" class="img_list">
         <h2>Athlete of the Week {{ athlete.subheadline }}</h2>
@@ -51,9 +52,10 @@
             </li>
         </ul>
     </div>
+    {% endif %}
 {% endblock %}
 
-{% block righttopcolumn %}
+{% block right %}
     <div class="bordered" id="tags">
         <h2>Tags</h2>
         <p> some mysterious tag interface here </p>

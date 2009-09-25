@@ -17,6 +17,7 @@ from crimsononline.content_module.models import ContentModule
 from crimsononline.common.caching import funcache as cache
 from crimsononline.common.utils.paginate import paginate
 from crimsononline.common.utils.strings import strip_commas
+from crimsononline.common.utils.lists import first_or_none
 from crimsononline.common.forms import DateSelectWidget
 from crimsononline.common.templatetags.common import human_list
 
@@ -254,14 +255,33 @@ def section_photo(request):
 
 @cache_page(settings.CACHE_SHORT)
 def section_sports(request):
-    """Show the view for the sports section page."""
+    """Show the view for the sports section page.
+    
+    ** There's tons of crap on this page: **
+    Latest updates
+        Articles listed by most recently updated (great for live coverage)
+    Sports blogs
+        Blog content.  Don't worry about articles showing up in two places.
+    Athlete of the Week
+        An article tagged 'athlete of the week'.  Probably higher priority,
+        so, exclude this from top stories
+    2 sports features
+        TODO: not quite sure how to decide which sports to feature
+    Sports tags
+        unless we add extra data on tags, we'll have to keep a manual list.
+    Latest video
+        Bam
+    Latest scores
+        idk yet
+    """
     
     nav = 'sports'
     section = Section.cached(nav)
-    stories = Article.objects.filter(section=section)
-    rotate = []#stories.filter(rel_content__content_type=Image.content_type()) \
-    #    .distinct()[:4]
-    stories = stories.exclude(pk__in=[r.pk for r in rotate])
+    stories = top_articles(section)
+    rotate = rotatables(section)
+    latest = Article.objects.filter(section=section).order_by('-modified_on')
+    blog = stories.filter(group__type='blog')
+    athlete = first_or_none(stories.filter(tags__text='athlete of the week'))    
     return render_to_response('sections/sports.html', locals())
 
 # IPHONE APP JSON FEEDS
@@ -345,9 +365,7 @@ except:
     FLYBY = ContentGroup.objects.create(name="FlyBy", type="blog")
 @cache(settings.CACHE_STANDARD, "general_contentgroup")
 def get_content_group(request, gtype, gname):
-    """
-    View for a Content Group
-    """
+    """Render a Content Group."""
     # validate the contentgroup
     cg = get_content_group_obj(request, gtype, gname)
     if not cg:

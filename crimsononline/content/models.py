@@ -1043,8 +1043,9 @@ class Article(Content):
         help_text='If left blank, this will be the first sentence ' \
                     'of the article text.'
     )
-    created_on = models.DateTimeField()
-    modified_on = models.DateTimeField()
+    # TODO: move these 2 attributes to Content
+    created_on = models.DateTimeField(auto_now_add=True)
+    modified_on = models.DateTimeField(auto_now=True)
     page = models.CharField(blank=True, null=True, max_length=10,
         help_text='Page in the print edition.')
     proofer = models.ForeignKey(
@@ -1065,7 +1066,7 @@ class Article(Content):
                 'Can change articles at any time',),
             )
         get_latest_by = 'created_on'
-
+    
     def save(self, *args, **kwargs):
         if not self.id:
             self.created_on = datetime.today()
