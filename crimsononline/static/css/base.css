@@ -130,23 +130,22 @@ h3, h3 a{
 
 
 /*  ==== MASTHEAD ==== */
-#masthead_container, #masthead_contents, #masthead_banner{height: 101px;}
+#masthead_container, #masthead_contents, #masthead_banner{height: 50px;}
 
 #masthead_container {
-    background-image: url('../images/banner/gradient.png');
     color: white;
+	background-color: #ba0600;
 }
 
 #masthead_contents{
     margin: 0 auto;
     width:973px;
-    background: url('../images/banner/seal.png') no-repeat center center;
+    background: url('../images/banner/seal_background.png') no-repeat left center;
 }
 
 #masthead_banner{
     float:left;
-    width: 473px;
-    background: url('../images/banner/text.png') no-repeat center center;
+    width: 333px;
 }
 
 #masthead_contents .tools{
@@ -161,22 +160,9 @@ h3, h3 a{
     margin-bottom: 2px;
 }
 
-#masthead_contents .descriptions{height: 10px;}
-
-#masthead_contents .descriptions > span {
-    font-size: 10px;
-    font-family: helvetica, arial, sans-serif;
-    float: left;
-    text-align:center;
-}
-
-#masthead_contents .weather{width: 60px;}
-#masthead_contents .issues {width: 60px;}
-#masthead_contents .cover {width: 90px;}
-
 #masthead_contents .search {
     height: 20px;
-    margin-top: 10px;
+    margin-top: 15px;
 }
 
 #masthead_contents .query{
@@ -214,18 +200,11 @@ h3, h3 a{
 /* END MASTHEAD */
 
 /* NAV */
-#nav_wrapper {
-    width: 100%;
-    background-color: white;
-	border-bottom: 5px solid #d1d1d1;
-	padding:2px 0px;
-	margin-bottom: 10px;
-}
 
 #nav_contents{
-    width: 100%;
-    display: block;
-    margin: 0 auto;
+	margin-top: 15px;
+    width: 420px;
+	float: left;
 }
 
 
@@ -235,29 +214,39 @@ h3, h3 a{
 
 #nav_contents > ul > li{
 	display: inline-block;
-	height: 24px;
-    border-right: 1px solid #d1d1d1;
+	float: left;
+	height: 20px;
 }
 
-#nav_contents > ul > li.l{
-    border-left: 1px solid #d1d1d1;
-}
-
-#nav_contents a:hover, li#nav_cur{
-	background-color: #fff;
-}
-#nav_contents a:hover, li#nav_cur > a{
-	color: #000;    
-}
 
 #nav_contents a{
-	line-height: 24px;
+	line-height: 20px;
 	display: inline-block;
 	font-size: 12px;
 	font-family: Helvetica, Arial, sans-serif;
-	padding:0px 20px;
+	padding:0px 6px;
 	text-decoration: none;
-	color: #666;
+	color: white;
+}
+#nav_contents a:hover, #nav_contents #nav_cur a{
+	text-decoration: underline;
+}
+
+#submenu{
+	width: 100%;
+	height: 22px;
+	background-color: #eee;
+	margin-bottom: 10px;
+}
+
+#submenu_contents{
+	width: 973px;
+	margin: 0 auto;
+	font-size: 10px;
+	line-height: 10px;
+	padding-top: 6px;
+	font-family: Helvetica, Arial, sans-serif;
+	color: #454545;
 }
 
 /* END NAV */
