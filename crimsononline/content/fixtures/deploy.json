@@ -1,0 +1,1277 @@
+[{
+    "pk": 19,
+    "model": "auth.permission",
+    "fields": {
+        "codename": "add_logentry",
+        "name": "Can add log entry",
+        "content_type": 7
+    }
+},
+{
+    "pk": 20,
+    "model": "auth.permission",
+    "fields": {
+        "codename": "change_logentry",
+        "name": "Can change log entry",
+        "content_type": 7
+    }
+},
+{
+    "pk": 21,
+    "model": "auth.permission",
+    "fields": {
+        "codename": "delete_logentry",
+        "name": "Can delete log entry",
+        "content_type": 7
+    }
+},
+{
+    "pk": 4,
+    "model": "auth.permission",
+    "fields": {
+        "codename": "add_group",
+        "name": "Can add group",
+        "content_type": 2
+    }
+},
+{
+    "pk": 10,
+    "model": "auth.permission",
+    "fields": {
+        "codename": "add_message",
+        "name": "Can add message",
+        "content_type": 4
+    }
+},
+{
+    "pk": 1,
+    "model": "auth.permission",
+    "fields": {
+        "codename": "add_permission",
+        "name": "Can add permission",
+        "content_type": 1
+    }
+},
+{
+    "pk": 7,
+    "model": "auth.permission",
+    "fields": {
+        "codename": "add_user",
+        "name": "Can add user",
+        "content_type": 3
+    }
+},
+{
+    "pk": 5,
+    "model": "auth.permission",
+    "fields": {
+        "codename": "change_group",
+        "name": "Can change group",
+        "content_type": 2
+    }
+},
+{
+    "pk": 11,
+    "model": "auth.permission",
+    "fields": {
+        "codename": "change_message",
+        "name": "Can change message",
+        "content_type": 4
+    }
+},
+{
+    "pk": 2,
+    "model": "auth.permission",
+    "fields": {
+        "codename": "change_permission",
+        "name": "Can change permission",
+        "content_type": 1
+    }
+},
+{
+    "pk": 8,
+    "model": "auth.permission",
+    "fields": {
+        "codename": "change_user",
+        "name": "Can change user",
+        "content_type": 3
+    }
+},
+{
+    "pk": 6,
+    "model": "auth.permission",
+    "fields": {
+        "codename": "delete_group",
+        "name": "Can delete group",
+        "content_type": 2
+    }
+},
+{
+    "pk": 12,
+    "model": "auth.permission",
+    "fields": {
+        "codename": "delete_message",
+        "name": "Can delete message",
+        "content_type": 4
+    }
+},
+{
+    "pk": 3,
+    "model": "auth.permission",
+    "fields": {
+        "codename": "delete_permission",
+        "name": "Can delete permission",
+        "content_type": 1
+    }
+},
+{
+    "pk": 9,
+    "model": "auth.permission",
+    "fields": {
+        "codename": "delete_user",
+        "name": "Can delete user",
+        "content_type": 3
+    }
+},
+{
+    "pk": 68,
+    "model": "auth.permission",
+    "fields": {
+        "codename": "add_article",
+        "name": "Can add article",
+        "content_type": 23
+    }
+},
+{
+    "pk": 72,
+    "model": "auth.permission",
+    "fields": {
+        "codename": "add_articlecontentrelation",
+        "name": "Can add article content relation",
+        "content_type": 24
+    }
+},
+{
+    "pk": 41,
+    "model": "auth.permission",
+    "fields": {
+        "codename": "add_board",
+        "name": "Can add board",
+        "content_type": 14
+    }
+},
+{
+    "pk": 28,
+    "model": "auth.permission",
+    "fields": {
+        "codename": "add_content",
+        "name": "Can add content",
+        "content_type": 10
+    }
+},
+{
+    "pk": 35,
+    "model": "auth.permission",
+    "fields": {
+        "codename": "add_contentgroup",
+        "name": "Can add content group",
+        "content_type": 12
+    }
+},
+{
+    "pk": 32,
+    "model": "auth.permission",
+    "fields": {
+        "codename": "add_contenthits",
+        "name": "Can add content hits",
+        "content_type": 11
+    }
+},
+{
+    "pk": 44,
+    "model": "auth.permission",
+    "fields": {
+        "codename": "add_contributor",
+        "name": "Can add contributor",
+        "content_type": 15
+    }
+},
+{
+    "pk": 56,
+    "model": "auth.permission",
+    "fields": {
+        "codename": "add_gallery",
+        "name": "Can add gallery",
+        "content_type": 19
+    }
+},
+{
+    "pk": 59,
+    "model": "auth.permission",
+    "fields": {
+        "codename": "add_gallerymembership",
+        "name": "Can add gallery membership",
+        "content_type": 20
+    }
+},
+{
+    "pk": 53,
+    "model": "auth.permission",
+    "fields": {
+        "codename": "add_image",
+        "name": "Can add image",
+        "content_type": 18
+    }
+},
+{
+    "pk": 50,
+    "model": "auth.permission",
+    "fields": {
+        "codename": "add_issue",
+        "name": "Can add issue",
+        "content_type": 17
+    }
+},
+{
+    "pk": 62,
+    "model": "auth.permission",
+    "fields": {
+        "codename": "add_map",
+        "name": "Can add map",
+        "content_type": 21
+    }
+},
+{
+    "pk": 65,
+    "model": "auth.permission",
+    "fields": {
+        "codename": "add_marker",
+        "name": "Can add marker",
+        "content_type": 22
+    }
+},
+{
+    "pk": 75,
+    "model": "auth.permission",
+    "fields": {
+        "codename": "add_review",
+        "name": "Can add review",
+        "content_type": 25
+    }
+},
+{
+    "pk": 78,
+    "model": "auth.permission",
+    "fields": {
+        "codename": "add_score",
+        "name": "Can add score",
+        "content_type": 26
+    }
+},
+{
+    "pk": 47,
+    "model": "auth.permission",
+    "fields": {
+        "codename": "add_section",
+        "name": "Can add section",
+        "content_type": 16
+    }
+},
+{
+    "pk": 38,
+    "model": "auth.permission",
+    "fields": {
+        "codename": "add_tag",
+        "name": "Can add tag",
+        "content_type": 13
+    }
+},
+{
+    "pk": 81,
+    "model": "auth.permission",
+    "fields": {
+        "codename": "add_userdata",
+        "name": "Can add user data",
+        "content_type": 27
+    }
+},
+{
+    "pk": 71,
+    "model": "auth.permission",
+    "fields": {
+        "codename": "article.can_change_after_timeout",
+        "name": "Can change articles at any time",
+        "content_type": 23
+    }
+},
+{
+    "pk": 69,
+    "model": "auth.permission",
+    "fields": {
+        "codename": "change_article",
+        "name": "Can change article",
+        "content_type": 23
+    }
+},
+{
+    "pk": 73,
+    "model": "auth.permission",
+    "fields": {
+        "codename": "change_articlecontentrelation",
+        "name": "Can change article content relation",
+        "content_type": 24
+    }
+},
+{
+    "pk": 42,
+    "model": "auth.permission",
+    "fields": {
+        "codename": "change_board",
+        "name": "Can change board",
+        "content_type": 14
+    }
+},
+{
+    "pk": 29,
+    "model": "auth.permission",
+    "fields": {
+        "codename": "change_content",
+        "name": "Can change content",
+        "content_type": 10
+    }
+},
+{
+    "pk": 36,
+    "model": "auth.permission",
+    "fields": {
+        "codename": "change_contentgroup",
+        "name": "Can change content group",
+        "content_type": 12
+    }
+},
+{
+    "pk": 33,
+    "model": "auth.permission",
+    "fields": {
+        "codename": "change_contenthits",
+        "name": "Can change content hits",
+        "content_type": 11
+    }
+},
+{
+    "pk": 45,
+    "model": "auth.permission",
+    "fields": {
+        "codename": "change_contributor",
+        "name": "Can change contributor",
+        "content_type": 15
+    }
+},
+{
+    "pk": 57,
+    "model": "auth.permission",
+    "fields": {
+        "codename": "change_gallery",
+        "name": "Can change gallery",
+        "content_type": 19
+    }
+},
+{
+    "pk": 60,
+    "model": "auth.permission",
+    "fields": {
+        "codename": "change_gallerymembership",
+        "name": "Can change gallery membership",
+        "content_type": 20
+    }
+},
+{
+    "pk": 54,
+    "model": "auth.permission",
+    "fields": {
+        "codename": "change_image",
+        "name": "Can change image",
+        "content_type": 18
+    }
+},
+{
+    "pk": 51,
+    "model": "auth.permission",
+    "fields": {
+        "codename": "change_issue",
+        "name": "Can change issue",
+        "content_type": 17
+    }
+},
+{
+    "pk": 63,
+    "model": "auth.permission",
+    "fields": {
+        "codename": "change_map",
+        "name": "Can change map",
+        "content_type": 21
+    }
+},
+{
+    "pk": 66,
+    "model": "auth.permission",
+    "fields": {
+        "codename": "change_marker",
+        "name": "Can change marker",
+        "content_type": 22
+    }
+},
+{
+    "pk": 76,
+    "model": "auth.permission",
+    "fields": {
+        "codename": "change_review",
+        "name": "Can change review",
+        "content_type": 25
+    }
+},
+{
+    "pk": 79,
+    "model": "auth.permission",
+    "fields": {
+        "codename": "change_score",
+        "name": "Can change score",
+        "content_type": 26
+    }
+},
+{
+    "pk": 48,
+    "model": "auth.permission",
+    "fields": {
+        "codename": "change_section",
+        "name": "Can change section",
+        "content_type": 16
+    }
+},
+{
+    "pk": 39,
+    "model": "auth.permission",
+    "fields": {
+        "codename": "change_tag",
+        "name": "Can change tag",
+        "content_type": 13
+    }
+},
+{
+    "pk": 82,
+    "model": "auth.permission",
+    "fields": {
+        "codename": "change_userdata",
+        "name": "Can change user data",
+        "content_type": 27
+    }
+},
+{
+    "pk": 31,
+    "model": "auth.permission",
+    "fields": {
+        "codename": "content.can_publish",
+        "name": "Can publish content",
+        "content_type": 10
+    }
+},
+{
+    "pk": 70,
+    "model": "auth.permission",
+    "fields": {
+        "codename": "delete_article",
+        "name": "Can delete article",
+        "content_type": 23
+    }
+},
+{
+    "pk": 74,
+    "model": "auth.permission",
+    "fields": {
+        "codename": "delete_articlecontentrelation",
+        "name": "Can delete article content relation",
+        "content_type": 24
+    }
+},
+{
+    "pk": 43,
+    "model": "auth.permission",
+    "fields": {
+        "codename": "delete_board",
+        "name": "Can delete board",
+        "content_type": 14
+    }
+},
+{
+    "pk": 30,
+    "model": "auth.permission",
+    "fields": {
+        "codename": "delete_content",
+        "name": "Can delete content",
+        "content_type": 10
+    }
+},
+{
+    "pk": 37,
+    "model": "auth.permission",
+    "fields": {
+        "codename": "delete_contentgroup",
+        "name": "Can delete content group",
+        "content_type": 12
+    }
+},
+{
+    "pk": 34,
+    "model": "auth.permission",
+    "fields": {
+        "codename": "delete_contenthits",
+        "name": "Can delete content hits",
+        "content_type": 11
+    }
+},
+{
+    "pk": 46,
+    "model": "auth.permission",
+    "fields": {
+        "codename": "delete_contributor",
+        "name": "Can delete contributor",
+        "content_type": 15
+    }
+},
+{
+    "pk": 58,
+    "model": "auth.permission",
+    "fields": {
+        "codename": "delete_gallery",
+        "name": "Can delete gallery",
+        "content_type": 19
+    }
+},
+{
+    "pk": 61,
+    "model": "auth.permission",
+    "fields": {
+        "codename": "delete_gallerymembership",
+        "name": "Can delete gallery membership",
+        "content_type": 20
+    }
+},
+{
+    "pk": 55,
+    "model": "auth.permission",
+    "fields": {
+        "codename": "delete_image",
+        "name": "Can delete image",
+        "content_type": 18
+    }
+},
+{
+    "pk": 52,
+    "model": "auth.permission",
+    "fields": {
+        "codename": "delete_issue",
+        "name": "Can delete issue",
+        "content_type": 17
+    }
+},
+{
+    "pk": 64,
+    "model": "auth.permission",
+    "fields": {
+        "codename": "delete_map",
+        "name": "Can delete map",
+        "content_type": 21
+    }
+},
+{
+    "pk": 67,
+    "model": "auth.permission",
+    "fields": {
+        "codename": "delete_marker",
+        "name": "Can delete marker",
+        "content_type": 22
+    }
+},
+{
+    "pk": 77,
+    "model": "auth.permission",
+    "fields": {
+        "codename": "delete_review",
+        "name": "Can delete review",
+        "content_type": 25
+    }
+},
+{
+    "pk": 80,
+    "model": "auth.permission",
+    "fields": {
+        "codename": "delete_score",
+        "name": "Can delete score",
+        "content_type": 26
+    }
+},
+{
+    "pk": 49,
+    "model": "auth.permission",
+    "fields": {
+        "codename": "delete_section",
+        "name": "Can delete section",
+        "content_type": 16
+    }
+},
+{
+    "pk": 40,
+    "model": "auth.permission",
+    "fields": {
+        "codename": "delete_tag",
+        "name": "Can delete tag",
+        "content_type": 13
+    }
+},
+{
+    "pk": 83,
+    "model": "auth.permission",
+    "fields": {
+        "codename": "delete_userdata",
+        "name": "Can delete user data",
+        "content_type": 27
+    }
+},
+{
+    "pk": 84,
+    "model": "auth.permission",
+    "fields": {
+        "codename": "add_contentmodule",
+        "name": "Can add content module",
+        "content_type": 28
+    }
+},
+{
+    "pk": 85,
+    "model": "auth.permission",
+    "fields": {
+        "codename": "change_contentmodule",
+        "name": "Can change content module",
+        "content_type": 28
+    }
+},
+{
+    "pk": 86,
+    "model": "auth.permission",
+    "fields": {
+        "codename": "delete_contentmodule",
+        "name": "Can delete content module",
+        "content_type": 28
+    }
+},
+{
+    "pk": 13,
+    "model": "auth.permission",
+    "fields": {
+        "codename": "add_contenttype",
+        "name": "Can add content type",
+        "content_type": 5
+    }
+},
+{
+    "pk": 14,
+    "model": "auth.permission",
+    "fields": {
+        "codename": "change_contenttype",
+        "name": "Can change content type",
+        "content_type": 5
+    }
+},
+{
+    "pk": 15,
+    "model": "auth.permission",
+    "fields": {
+        "codename": "delete_contenttype",
+        "name": "Can delete content type",
+        "content_type": 5
+    }
+},
+{
+    "pk": 25,
+    "model": "auth.permission",
+    "fields": {
+        "codename": "add_flatpage",
+        "name": "Can add flat page",
+        "content_type": 9
+    }
+},
+{
+    "pk": 26,
+    "model": "auth.permission",
+    "fields": {
+        "codename": "change_flatpage",
+        "name": "Can change flat page",
+        "content_type": 9
+    }
+},
+{
+    "pk": 27,
+    "model": "auth.permission",
+    "fields": {
+        "codename": "delete_flatpage",
+        "name": "Can delete flat page",
+        "content_type": 9
+    }
+},
+{
+    "pk": 16,
+    "model": "auth.permission",
+    "fields": {
+        "codename": "add_session",
+        "name": "Can add session",
+        "content_type": 6
+    }
+},
+{
+    "pk": 17,
+    "model": "auth.permission",
+    "fields": {
+        "codename": "change_session",
+        "name": "Can change session",
+        "content_type": 6
+    }
+},
+{
+    "pk": 18,
+    "model": "auth.permission",
+    "fields": {
+        "codename": "delete_session",
+        "name": "Can delete session",
+        "content_type": 6
+    }
+},
+{
+    "pk": 22,
+    "model": "auth.permission",
+    "fields": {
+        "codename": "add_site",
+        "name": "Can add site",
+        "content_type": 8
+    }
+},
+{
+    "pk": 23,
+    "model": "auth.permission",
+    "fields": {
+        "codename": "change_site",
+        "name": "Can change site",
+        "content_type": 8
+    }
+},
+{
+    "pk": 24,
+    "model": "auth.permission",
+    "fields": {
+        "codename": "delete_site",
+        "name": "Can delete site",
+        "content_type": 8
+    }
+},
+{
+    "pk": 87,
+    "model": "auth.permission",
+    "fields": {
+        "codename": "add_subscription",
+        "name": "Can add subscription",
+        "content_type": 29
+    }
+},
+{
+    "pk": 88,
+    "model": "auth.permission",
+    "fields": {
+        "codename": "change_subscription",
+        "name": "Can change subscription",
+        "content_type": 29
+    }
+},
+{
+    "pk": 89,
+    "model": "auth.permission",
+    "fields": {
+        "codename": "delete_subscription",
+        "name": "Can delete subscription",
+        "content_type": 29
+    }
+},
+{
+    "pk": 1,
+    "model": "auth.group",
+    "fields": {
+        "name": "Arts Board",
+        "permissions": []
+    }
+},
+{
+    "pk": 2,
+    "model": "auth.group",
+    "fields": {
+        "name": "Biz Board",
+        "permissions": []
+    }
+},
+{
+    "pk": 3,
+    "model": "auth.group",
+    "fields": {
+        "name": "Design Board",
+        "permissions": []
+    }
+},
+{
+    "pk": 4,
+    "model": "auth.group",
+    "fields": {
+        "name": "Ed Board",
+        "permissions": []
+    }
+},
+{
+    "pk": 5,
+    "model": "auth.group",
+    "fields": {
+        "name": "FM Board",
+        "permissions": []
+    }
+},
+{
+    "pk": 6,
+    "model": "auth.group",
+    "fields": {
+        "name": "IT Board",
+        "permissions": []
+    }
+},
+{
+    "pk": 7,
+    "model": "auth.group",
+    "fields": {
+        "name": "News Board",
+        "permissions": []
+    }
+},
+{
+    "pk": 8,
+    "model": "auth.group",
+    "fields": {
+        "name": "Photo Board",
+        "permissions": []
+    }
+},
+{
+    "pk": 9,
+    "model": "auth.group",
+    "fields": {
+        "name": "Sports Board",
+        "permissions": []
+    }
+},
+{
+    "pk": 10,
+    "model": "auth.group",
+    "fields": {
+        "name": "Arts Exec",
+        "permissions": []
+    }
+},
+{
+    "pk": 11,
+    "model": "auth.group",
+    "fields": {
+        "name": "Biz Exec",
+        "permissions": []
+    }
+},
+{
+    "pk": 12,
+    "model": "auth.group",
+    "fields": {
+        "name": "Design Exec",
+        "permissions": []
+    }
+},
+{
+    "pk": 13,
+    "model": "auth.group",
+    "fields": {
+        "name": "Ed Exec",
+        "permissions": []
+    }
+},
+{
+    "pk": 14,
+    "model": "auth.group",
+    "fields": {
+        "name": "FM Exec",
+        "permissions": []
+    }
+},
+{
+    "pk": 15,
+    "model": "auth.group",
+    "fields": {
+        "name": "IT Exec",
+        "permissions": []
+    }
+},
+{
+    "pk": 16,
+    "model": "auth.group",
+    "fields": {
+        "name": "News Exec",
+        "permissions": []
+    }
+},
+{
+    "pk": 17,
+    "model": "auth.group",
+    "fields": {
+        "name": "Photo Exec",
+        "permissions": []
+    }
+},
+{
+    "pk": 18,
+    "model": "auth.group",
+    "fields": {
+        "name": "Sports Exec",
+        "permissions": []
+    }
+},
+{
+    "pk": 1,
+    "model": "auth.user",
+    "fields": {
+        "username": "root",
+        "first_name": "",
+        "last_name": "",
+        "is_active": true,
+        "is_superuser": true,
+        "is_staff": true,
+        "last_login": "2009-07-25 08:45:37",
+        "groups": [6],
+        "user_permissions": [],
+        "password": "sha1$79fbe$f91c04c41ea3f61ba9266cbee9373e96cdb059fc",
+        "email": "andylei@gmail.com",
+        "date_joined": "2008-09-24 16:47:56"
+    }
+},
+{
+    "pk": 1,
+    "model": "sites.site",
+    "fields": {
+        "domain": "www.thecrimson.com",
+        "name": "www.thecrimson.com"
+    }
+},
+{
+    "pk": 1,
+    "model": "flatpages.flatpage",
+    "fields": {
+        "registration_required": false,
+        "title": "About",
+        "url": "/about/",
+        "template_name": "",
+        "sites": [1],
+        "content": "<h1>About Us</h1>\r\n<table id=\"table1\" width=\"100%\" border=\"0\" cellpadding=\"4\" cellspacing=\"4\"> \r\n<tbody> \r\n<tr> \r\n<td valign=\"top\" width=\"40%\"><strong><font size=\"2\" color=\"#660000\" face=\"Arial\">HISTORY OF THE CRIMSON</font></strong><br><font class=\"text\">The Harvard Crimson, the nation's oldest continuously published daily college newspaper, was founded in 1873 and incorporated in 1967. The newspaper traces its history to the first issue of \"The Magenta,\" published January 24, 1873, and changed its name to \"The Crimson\" to reflect the new color of the college on May 21, 1875. The Crimson has a rich tradition of journalistic integrity and counts among its ranks of editorship some of America's greatest journalists. The faces of Pulitzer Prize-winning Crimson editors line the walls of The Crimson. Past editors include John F. Kennedy '40. The name of Franklin D. Roosevelt, Class of 1904, is proudly engraved upon The Crimson's president's chair. One hundred and thirty-five years after its founding, having grown from a fortnightly newspaper to a daily, The Harvard Crimson continues to flourish with a strong body of undergraduate staff volunteers. </font><br><br><strong><font size=\"2\" color=\"#660000\" face=\"Arial\">WHAT WE PRINT</font></strong><br><font class=\"text\">The Harvard Crimson is the only breakfast-table daily newspaper in Cambridge, MA. The Crimson publishes every morning, Monday through Friday, except on federal and University holidays. In addition to the daily newspaper, The Crimson publishes an extended sports section on Mondays; Fifteen Minutes, the weekend magazine of The Crimson on Thursdays; and an arts section on Fridays. Our presses are also available for third-party contract printing. Call 617-576-6600 for more information. <br></font><br><strong><font size=\"2\" color=\"#660000\" face=\"Arial\">JOINING THE CRIMSON</font></strong><br><font class=\"text\">If you are a Harvard College student you are eligible to join The Crimson. Please click <a href=\"/info/comp.aspx\"><u>here</u></a> to learn more about our comp process.<br><br></font><strong><font size=\"2\" color=\"#660000\" face=\"Arial\">WHAT SHOULD I DO IF THE CRIMSON MAKES A MISTAKE IN A STORY?</font></strong><font class=\"text\"><br>In the event that we run something that is factually inaccurate, we are eager to correct the error. When a correction is necessary, it will run in a corrections box on page two. Please e-mail Managing Editor&nbsp;Paras D. Bhayani&nbsp;(pbhayani@fas.harvard.edu) about corrections.<br></font></td> \r\n<td valign=\"top\" width=\"60%\"> \r\n<div class=\"almond_box\"> \r\n<table id=\"table3\" width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\"> \r\n<tbody> \r\n<tr> \r\n<td width=\"50%\"> \r\n<div align=\"right\"><strong><font size=\"2\">President</font></strong></div></td> \r\n<td width=\"2%\"> \r\n<p align=\"right\">&nbsp;</p></td> \r\n<td width=\"48%\"><font size=\"2\">Malcom&nbsp;A.&nbsp;Glenn '09<br></font></td></tr> \r\n<tr> \r\n<td width=\"50%\">&nbsp;</td> \r\n<td width=\"2%\">&nbsp;</td> \r\n<td width=\"48%\">&nbsp;</td></tr> \r\n<tr> \r\n<td width=\"50%\"> \r\n<div align=\"right\"><strong><font size=\"2\">Managing Editor</font></strong></div></td> \r\n<td width=\"2%\">&nbsp;</td> \r\n<td width=\"48%\"><font size=\"2\">Paras&nbsp;D.&nbsp;Bhayani '09<br></font></td></tr> \r\n<tr> \r\n<td width=\"50%\">&nbsp;</td> \r\n<td width=\"2%\">&nbsp;</td> \r\n<td width=\"48%\">&nbsp;</td></tr> \r\n<tr> \r\n<td width=\"50%\"> \r\n<div align=\"right\"><strong><font size=\"2\">Business Manager</font></strong></div></td> \r\n<td width=\"2%\">&nbsp;</td> \r\n<td width=\"48%\"><font size=\"2\">Gideon&nbsp;L. Lowin '09</font><br></td></tr> \r\n<tr> \r\n<td width=\"50%\">&nbsp;</td> \r\n<td width=\"2%\">&nbsp;</td> \r\n<td width=\"48%\">&nbsp;</td></tr></tbody></table> \r\n<table id=\"table2\" style=\"width: 100%;\" border=\"0\" cellpadding=\"2\" cellspacing=\"0\"> \r\n<tbody> \r\n<tr valign=\"top\"> \r\n<td class=\"board\" colspan=\"3\"> \r\n<div align=\"center\"><strong><br>NEWS</strong></div></td></tr> \r\n<tr valign=\"top\"> \r\n<td class=\"title\" width=\"50%\"> \r\n<div align=\"right\"><strong><font size=\"2\">Associate Managing Editors</font></strong><strong><font size=\"2\"><br><br>News Executives<br>&nbsp;<br>&nbsp;<br><br><br>Senior Story Editors<br><br></font></strong></div></td> \r\n<td class=\"name\">&nbsp;</td> \r\n<td class=\"\"><font size=\"2\">Laurence H. M. Holland&nbsp;'09</font><br><font size=\"2\">Samuel&nbsp;P.&nbsp;Jacobs '09<br></font><span class=\"\"><font size=\"2\">Johannah S. Cornblatt&nbsp;'09</font></span><br><font size=\"2\">Claire&nbsp;M.&nbsp;Guehenno '09<br>Victoria&nbsp;B.&nbsp;Kabak '09<br>Madeline W. Lissner '09<br>Laura A. Moore&nbsp;'09<br></font><span class=\"\"><font size=\"2\">Noah S. Bloom '09</font></span><br><p class=\"MsoNormal\"></p><span class=\"\"> \r\n<p class=\"MsoNormal\" style=\"font-family: Times New Roman;\"><font size=\"2\"></font></p><span> \r\n<p style=\"font-family: Times New Roman;\"><font size=\"2\"></font></p><span> \r\n<p style=\"font-family: Times New Roman;\"></p><span><span style=\"font-family: Times New Roman;\"></span></span></span></span> \r\n<p class=\"MsoNormal\"><font style=\"font-family: Times New Roman;\" size=\"2\"></font><o:p></o:p></p><span><span></span> \r\n<p style=\"font-family: Times New Roman;\"><font size=\"2\"></font></p></span> \r\n<p class=\"MsoNormal\" style=\"font-family: Times New Roman;\"><font size=\"2\"></font></p></span> \r\n<p class=\"MsoNormal\"><o:p></o:p></p> \r\n<p class=\"MsoNormal\"><o:p></o:p></p></td></tr> \r\n<tr> \r\n<td colspan=\"3\"> \r\n<div style=\"text-align: center;\">&nbsp;<br><strong>EDITORIAL</strong> \r\n<table id=\"table2\" style=\"width: 100%;\" border=\"0\" cellpadding=\"2\" cellspacing=\"0\"> \r\n<tbody> \r\n<tr valign=\"top\"> \r\n<td class=\"title\" width=\"50%\"> \r\n<div align=\"right\"><strong><font size=\"2\">Editorial Chairs<br>&nbsp;<br>Associate Editorial Editors<br><br><br><br><br></font></strong></div></td> \r\n<td class=\"name\">&nbsp;</td> \r\n \r\n \r\n<td class=\"\"><font style=\"font-family: Times New Roman;\" size=\"5\"><span><span style=\"font-size: 5pt;\"><span style=\"color: rgb(0, 0, 0);\"></span></span></span></font><font style=\"font-family: Times New Roman;\" size=\"2\"><span><span style=\"font-size: 5pt;\"><span style=\"color: rgb(0, 0, 0);\"></span></span></span><span><span style=\"font-size: 5pt;\"></span><span><span><span><span></span><span></span></span></span></span></span></font><font size=\"2\">Emma&nbsp;M.&nbsp;Lind '09<br>Ramya Parthasarathy '09<br>Daniel E. Herz-Roiphe '10<br>Ronald K. Kamdem '10<br>Robert G. King '09-'10<br>J. Maxwell Larkin '10<br>Noah M. Silver '10<font size=\"3\">&nbsp;</font><br>James M. Wilsterman '10</font></td></tr></tbody></table><strong><br>ARTS</strong></div> \r\n<table id=\"table2\" style=\"width: 100%;\" border=\"0\" cellpadding=\"2\" cellspacing=\"0\"> \r\n<tbody> \r\n<tr valign=\"top\"> \r\n<td class=\"title\" width=\"50%\"> \r\n<div align=\"right\"><strong><font size=\"2\">Arts Chairs<br><br>Associate Arts </font></strong><strong><font size=\"2\">Editors</font></strong><br><strong><font size=\"2\"><br><br><br><br><br><br></font></strong></div></td> \r\n<td class=\"name\">&nbsp;</td> \r\n<td class=\"name\"><font size=\"2\">Patrick R. Chesnut '09<br>Jake G. Cohen '09</font><br><font size=\"2\">Anna K. Barnet&nbsp;'10<br>Sanders I. Bernstein&nbsp;'10<br>Joshua Kearney&nbsp;'10<br>Beryl C. D. Lipton&nbsp;'10<br>Nayeli E. Rodriguez&nbsp;'10<br>Claire J. Saffitz&nbsp;'09<br>John D. Selig '10<br></font></td></tr></tbody></table></td></tr> \r\n<tr align=\"center\"> \r\n<td colspan=\"3\">&nbsp;<span style=\"font-weight: bold;\"><br>DESIGN</span> \r\n<table id=\"table2\" style=\"width: 100%;\" border=\"0\" cellpadding=\"2\" cellspacing=\"0\"> \r\n<tbody> \r\n<tr valign=\"top\"> \r\n<td class=\"title\" width=\"50%\"> \r\n<div align=\"right\"><strong><font size=\"2\">Design Chairs<br>&nbsp;<br>Associate Design </font></strong><strong><font size=\"2\">Editors</font></strong></div></td> \r\n<td class=\"name\">&nbsp;</td> \r\n<td class=\"\"><font style=\"font-family: Times New Roman;\" size=\"5\"><span><span style=\"font-size: 5pt;\"><span style=\"color: rgb(0, 0, 0);\"></span></span></span></font><font style=\"font-family: Times New Roman;\" size=\"2\"><span><span style=\"font-size: 5pt;\"><span style=\"color: rgb(0, 0, 0);\"></span></span></span><span><span style=\"font-size: 5pt;\"></span><span><span><span><span></span><span></span></span></span></span></span></font><font size=\"2\">Aditi Banga&nbsp;'09<br></font><font size=\"2\">Samantha P. Krug&nbsp;'10</font><br><font size=\"2\">Sarah B. Joselow&nbsp;'10</font><font size=\"2\"><br>Julia V. Guren&nbsp;'10<br>Devon L. Hein&nbsp;'09<br>Alee Lockman&nbsp;'10<br>Elisa M. Orr '10<br>Katharine E. Lauderdale '11<br></font></td></tr></tbody></table></td></tr> \r\n<tr valign=\"top\"> \r\n<td class=\"board\" colspan=\"3\"> \r\n<div align=\"center\"><strong><br>INFORMATION TECHNOLOGY</strong> \r\n<table id=\"table2\" style=\"width: 100%;\" border=\"0\" cellpadding=\"2\" cellspacing=\"0\"> \r\n<tbody> \r\n<tr valign=\"top\"> \r\n<td class=\"title\" width=\"50%\"> \r\n<div align=\"right\"><strong><font size=\"2\">IT Chair<br>Associate IT </font></strong><strong><font size=\"2\">Editors</font></strong><br><strong><font size=\"2\">&nbsp;<br><br></font></strong></div></td> \r\n<td class=\"name\">&nbsp;</td> \r\n<td class=\"\"><font style=\"font-family: Times New Roman;\" size=\"5\"><span><span style=\"font-size: 5pt;\"><span style=\"color: rgb(0, 0, 0);\"></span></span></span></font><font style=\"font-family: Times New Roman;\" size=\"2\"><span><span style=\"font-size: 5pt;\"><span style=\"color: rgb(0, 0, 0);\"></span></span></span><span><span style=\"font-size: 5pt;\"></span><span><span><span><span></span><span></span></span></span></span></span></font><font size=\"2\">Daniel C. Carroll&nbsp;'09&nbsp;<br>Cindy C. Cheng '10<br>Andy Y. Lei '10<br>Cary Y. Lin '10</font></td></tr></tbody></table><strong></strong></div></td></tr> \r\n<tr valign=\"top\"> \r\n<td class=\"board\" colspan=\"3\"> \r\n<div align=\"center\"><strong><br>MAGAZINE</strong></div></td></tr> \r\n<tr valign=\"top\"> \r\n<td class=\"title\" width=\"50%\"> \r\n<div align=\"right\"><strong><font size=\"2\">Magazine Chairs<br>&nbsp;<br>Associate Magazine Editors</font></strong></div></td> \r\n<td class=\"name\">&nbsp;</td> \r\n<td class=\"name\"><font size=\"2\">Nicola C. Perlman&nbsp;'09<br>Nicole G. White&nbsp;'09<br>Asli A. Bashir '10<br>Kate E. Cetrulo&nbsp;'09<br>Gracye Y. Cheng '10<br>Jessica L. Fleischer '10<br>Emily C. Graff '10<br>Jun Li '10<br>Charles R. Melvoin '10<br>Mark A. Pacult '10</font><br><br><font size=\"2\"></font></td></tr> \r\n<tr valign=\"top\"> \r\n<td class=\"board\" colspan=\"3\"> \r\n<div align=\"center\"><strong><br>PHOTOGRAPHY</strong></div></td></tr> \r\n<tr valign=\"top\"> \r\n<td class=\"title\" width=\"50%\"> \r\n<div align=\"right\"><strong><font size=\"2\">Photography Chairs<br><br>Associate Photography </font></strong><strong><font size=\"2\">Editors</font></strong><br><strong><font size=\"2\">&nbsp;</font></strong></div></td> \r\n<td class=\"name\">&nbsp;</td> \r\n<td class=\"name\"><font size=\"2\">Hillary W Berkowitz '09</font><br><font size=\"2\">Meghan T. Purdy '09</font><font size=\"2\"><br>Alan C. Chiu '10<br>Natasha L. Coleman '09<br></font><font size=\"2\">Rachel M. Douglas '09<br>Jessica S. Lin '09<br></font><font size=\"2\">Peter R. Raymond '09</font><br><font size=\"2\">Sarah M. Roberts '09<br>Raquel Rodriguez '09<br>Adam D. Sidman '10<br>Terrell Woods '11<br></font></td></tr> \r\n<tr align=\"center\"> \r\n<td colspan=\"3\"><strong><br>SPORTS</strong> \r\n<table id=\"table2\" style=\"width: 100%;\" border=\"0\" cellpadding=\"2\" cellspacing=\"0\"> \r\n<tbody> \r\n<tr valign=\"top\"> \r\n<td class=\"title\" width=\"50%\"> \r\n<div align=\"right\"><strong><font size=\"2\">Sports Chairs<br><br>Associate Sports </font></strong><strong><font size=\"2\">Editors</font></strong><br><strong><font size=\"2\">&nbsp;</font></strong></div></td> \r\n<td class=\"name\">&nbsp;</td> \r\n<td class=\"name\"><font size=\"2\">Brad Hinshelwood '09<br></font><font size=\"2\">Madeleine I. Shapiro&nbsp;'09</font><font size=\"2\"><br></font><font size=\"2\">Loren Amor '10<br>Robert T. Hamlin '10<br>Dixon McPhillips&nbsp;'10<br>Julia R. Senior '10<br></font><font size=\"2\">Courtney D. Skinner '10<br></font><font size=\"2\">Walter E. Howell '09<br>Ted Kirby&nbsp;'09<br><br></font></td></tr></tbody></table></td></tr> \r\n<tr valign=\"top\"> \r\n<td class=\"board\" colspan=\"3\"> \r\n<div align=\"center\"><strong><br>BUSINESS</strong></div></td></tr> \r\n<tr valign=\"top\"> \r\n<td class=\"title\" width=\"50%\"> \r\n<div align=\"right\"><strong><font size=\"2\">Associate Business Manager<br>Director of Business Development<br>Director of Staff Development<br>Advertising Managers<br>&nbsp;<br>&nbsp;<br>Circulation Managers<br>&nbsp;<br>Contract Printing Managers<br><br>Operations Managers<br>&nbsp;<br>Sales Managers<br>&nbsp;</font></strong></div></td> \r\n<td class=\"name\">&nbsp;</td> \r\n<td class=\"name\"><font size=\"2\">Tyler W. Bosmeny '09<br></font><font size=\"2\">Katherine R. Hill '09<br></font><font size=\"2\"><br>Robert J. Prior '09<br>Katherine A. Petti '10<br>Jessica H. Roe '09<br>Amartya Sengupta '10<br>Aparicio J. Davis '10<br>Jesse Ge '10<br>Philip J. Daniel '10<br>Thomas J. Lawless '10<br>Maxwell L. Child '10<br>Steven J. Stelmach '10<br>Wenna Jia '10<br>Bohao D. Pan '10<br>Xin Pan '10<br>John C. Zhou '10<br></font></td></tr> \r\n<tr valign=\"top\" align=\"center\"> \r\n<td class=\"board\" colspan=\"3\"><br></td></tr> \r\n<tr> \r\n<td style=\"text-align: left;\"><br></td> \r\n<td><br></td> \r\n<td><br></td></tr></tbody></table></div></td></tr> \r\n<tr> \r\n<td>&nbsp;</td> \r\n<td>&nbsp;</td></tr></tbody></table>",
+        "enable_comments": false
+    }
+},
+{
+    "pk": 1,
+    "model": "content.tag",
+    "fields": {
+        "text": "athlete of the week"
+    }
+},
+{
+    "pk": 2,
+    "model": "content.tag",
+    "fields": {
+        "text": "itm"
+    }
+},
+{
+    "pk": 3,
+    "model": "content.tag",
+    "fields": {
+        "text": "ftm"
+    }
+},
+{
+    "pk": 4,
+    "model": "content.tag",
+    "fields": {
+        "text": "endpaper"
+    }
+},
+{
+    "pk": 5,
+    "model": "content.tag",
+    "fields": {
+        "text": "scrutiny"
+    }
+},
+{
+    "pk": 6,
+    "model": "content.tag",
+    "fields": {
+        "text": "books"
+    }
+},
+{
+    "pk": 7,
+    "model": "content.tag",
+    "fields": {
+        "text": "on campus"
+    }
+},
+{
+    "pk": 8,
+    "model": "content.tag",
+    "fields": {
+        "text": "music"
+    }
+},
+{
+    "pk": 9,
+    "model": "content.tag",
+    "fields": {
+        "text": "visual arts"
+    }
+},
+{
+    "pk": 1,
+    "model": "admin_cust.board",
+    "fields": {
+        "group": 1,
+        "name": "Arts"
+    }
+},
+{
+    "pk": 2,
+    "model": "admin_cust.board",
+    "fields": {
+        "group": 2,
+        "name": "Biz"
+    }
+},
+{
+    "pk": 3,
+    "model": "admin_cust.board",
+    "fields": {
+        "group": 3,
+        "name": "Design"
+    }
+},
+{
+    "pk": 4,
+    "model": "admin_cust.board",
+    "fields": {
+        "group": 4,
+        "name": "Ed"
+    }
+},
+{
+    "pk": 5,
+    "model": "admin_cust.board",
+    "fields": {
+        "group": 5,
+        "name": "FM"
+    }
+},
+{
+    "pk": 6,
+    "model": "admin_cust.board",
+    "fields": {
+        "group": 6,
+        "name": "IT"
+    }
+},
+{
+    "pk": 7,
+    "model": "admin_cust.board",
+    "fields": {
+        "group": 7,
+        "name": "News"
+    }
+},
+{
+    "pk": 8,
+    "model": "admin_cust.board",
+    "fields": {
+        "group": 8,
+        "name": "Photo"
+    }
+},
+{
+    "pk": 9,
+    "model": "admin_cust.board",
+    "fields": {
+        "group": 9,
+        "name": "Sports"
+    }
+},
+{
+    "pk": 1,
+    "model": "content.section",
+    "fields": {
+        "audiodizer_id": null,
+        "name": "Arts"
+    }
+},
+{
+    "pk": 2,
+    "model": "content.section",
+    "fields": {
+        "audiodizer_id": null,
+        "name": "Opinion"
+    }
+},
+{
+    "pk": 3,
+    "model": "content.section",
+    "fields": {
+        "audiodizer_id": null,
+        "name": "FM"
+    }
+},
+{
+    "pk": 4,
+    "model": "content.section",
+    "fields": {
+        "audiodizer_id": null,
+        "name": "News"
+    }
+},
+{
+    "pk": 5,
+    "model": "content.section",
+    "fields": {
+        "audiodizer_id": null,
+        "name": "Sports"
+    }
+},
+{
+    "pk": 6,
+    "model": "content.section",
+    "fields": {
+        "audiodizer_id": null,
+        "name": "Flyby"
+    }
+}, 
+{
+    "pk": 1,
+    "model": "content_module.contentmodule",
+    "fields": {
+        "content": null,
+        "comment": null,
+        "default_content": null,
+        "name": "index.topstories",
+        "expiration": "2008-12-05 01:53:05"
+    }
+},
+{
+    "pk": 2,
+    "model": "content_module.contentmodule",
+    "fields": {
+        "content": null,
+        "comment": null,
+        "default_content": null,
+        "name": "index.rotater",
+        "expiration": "2008-12-05 01:53:05"
+    }
+},
+{
+    "pk": 3,
+    "model": "content_module.contentmodule",
+    "fields": {
+        "content": null,
+        "comment": null,
+        "default_content": null,
+        "name": "index.morenews",
+        "expiration": "2008-12-05 01:53:05"
+    }
+},
+{
+    "pk": 4,
+    "model": "content_module.contentmodule",
+    "fields": {
+        "content": null,
+        "comment": null,
+        "default_content": null,
+        "name": "index.opinion",
+        "expiration": "2008-12-05 01:53:05"
+    }
+},
+{
+    "pk": 5,
+    "model": "content_module.contentmodule",
+    "fields": {
+        "content": null,
+        "comment": "",
+        "default_content": "",
+        "name": "index.featured",
+        "expiration": "2008-12-05 01:53:05"
+    }
+},
+{
+    "pk": 6,
+    "model": "content_module.contentmodule",
+    "fields": {
+        "content": null,
+        "comment": null,
+        "default_content": null,
+        "name": "index.arts",
+        "expiration": "2008-12-05 01:53:05"
+    }
+},
+{
+    "pk": 7,
+    "model": "content_module.contentmodule",
+    "fields": {
+        "content": null,
+        "comment": null,
+        "default_content": null,
+        "name": "index.sports",
+        "expiration": "2008-12-05 01:53:05"
+    }
+},
+{
+    "pk": 8,
+    "model": "content_module.contentmodule",
+    "fields": {
+        "content": null,
+        "comment": null,
+        "default_content": null,
+        "name": "index.fm",
+        "expiration": "2008-12-05 01:53:05"
+    }
+},
+{
+    "pk": 9,
+    "model": "content_module.contentmodule",
+    "fields": {
+        "content": null,
+        "comment": null,
+        "default_content": null,
+        "name": "news_bottom_left",
+        "expiration": "2009-07-27 09:06:59"
+    }
+},
+{
+    "pk": 10,
+    "model": "content_module.contentmodule",
+    "fields": {
+        "content": null,
+        "comment": null,
+        "default_content": null,
+        "name": "news_bottom_mid",
+        "expiration": "2009-07-27 09:06:59"
+    }
+}]
