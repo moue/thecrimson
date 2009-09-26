@@ -8,6 +8,16 @@ from django.core.management.base import NoArgsCommand
 from crimsononline.content.models import *
 from crimsononline.settings import *
 
+def clean_teaser(self):
+    """Add a teaser if one does not exist."""
+    if self.cleaned_data['teaser']:
+        return self.cleaned_data['teaser']
+    else:
+        # split article by paragraphs, return first 20 words of first para
+        teaser = para_list(self.cleaned_data['text'])[0]
+        teaser = TEASER_RE.sub("",teaser)
+        return truncatewords(teaser, 20)
+
 def sqldec(str):
     return str.decode("cp1252", "replace")
 
@@ -41,7 +51,7 @@ class Command(NoArgsCommand):
         except:
             print "Could not import pymssql"
 
-        conn = pymssql.connect(as_dict=True, host='crimson', user='sa',password='131Cr!mIt131', database='CrimsonWebsite')
+        conn = pymssql.connect(as_dict=True, host='crimson-sql1', user='sa',password='131Cr!mIt131', database='CrimsonWebsite')
         cur = conn.cursor()
         
         # link SectionIDs to Section objects in the new database
@@ -55,7 +65,9 @@ class Command(NoArgsCommand):
                     sections[str(row["ID"])] = Section.objects.get(name=row["Name"])
             except:
                 sections[str(row["ID"])] = Section.objects.get(name="News")
-        
+        print sections
+		
+		
         # link SubCategories to Tag objects in the new database
         subcategories = {}
         cur.execute("SELECT id, Name FROM SubCategories")
@@ -89,23 +101,35 @@ class Command(NoArgsCommand):
                 newtag.save()
                 sports[str(row["ID"])] = newtag
 
-        # import contributors -- working nearly perfectly, except for capitalization
+				
+		# Create No Contributor if it doesn't exist
+		try:
+			no_contrib = Contributor.objects.get(last_name="Attributed")
+		except:
+			no_contrib = Contributor()
+			no_contrib.first_name = "No"
+			no_contrib.middle_name = "Writer"
+			no_contrib.last_name = "Attributed"
+			no_contrib.save()
+		
+		"""
+		# import contributors -- working nearly perfectly, except for capitalization
         cur.execute("SELECT ID, FirstName, MiddleName, LastName, CreatedOn FROM Contributors")
         rows = cur.fetchall()
         print "Importing " + str(len(rows)) + " Contributors"
         for row in rows:
             c = Contributor()
             c.first_name = sqldec(row["FirstName"]).capitalize()
-            c.middle_name = sqldec(row["MiddleName"]) if row["MiddleName"] is not None else ""
+            c.middle_name = sqldec(row["MiddleName"]) if row["MiddleName"]  not in [None," "] else ""
             c.last_name = sqldec(row["LastName"]).capitalize()
             c.id = row["ID"]
             
             c.created_on = row["CreatedOn"] if row["CreatedOn"] is not None else datetime.now()
             c.save()
-
+			
         # import articles
-        cur.execute("SELECT ID, Headline, PublishedOn, Subheadline, Byline, SectionID, SubsectionID, SubCategory, Text, CreatedOn, ModifiedOn, Proofer, SNE FROM Articles")
-        rows = cur.fetchmany(size=10000)
+        cur.execute("SELECT ID, Headline, PublishedOn, Subheadline, Byline, SectionID, SubsectionID, SubCategory, Text, CreatedOn, ModifiedOn, Proofer, SNE FROM Articles WHERE SectionID = 4")
+        rows = cur.fetchmany(size=1000)
         print "Importing " + str(len(rows)) + " Articles"
         for row in rows:
             a = Article()
@@ -115,6 +139,8 @@ class Command(NoArgsCommand):
             a.byline_type = row["Byline"]
             a.section = sections[str(row["SectionID"])]
             a.text = sqldec(row["Text"])
+            a.teaser = clean_teaser(a.text)
+            
             #!!!!!
             a.created_on = row["CreatedOn"] if row["CreatedOn"] not in ["", None] else datetime.now()
             a.modified_on = row["ModifiedOn"] if row["ModifiedOn"] not in ["", None] else datetime.now()
@@ -130,7 +156,7 @@ class Command(NoArgsCommand):
             try:
                 a.save()
             except:
-                print "Couldn't save article with headline: " + a.headline
+                print "Couldn't save article with id: " + str(a.id)
                 #print row
                 continue
                 
@@ -155,6 +181,12 @@ class Command(NoArgsCommand):
                 a.contributors.add(Contributor.objects.get(pk=row["ContributorID"]))
             except:
                 pass
+				
+		# handle articles with no contributors
+		articles_no_contribs = Article.objects.filter(contributors=None)
+		for a in articles_no_contribs:
+			a.contributors.add(Contributor.objects.get(last_name="WRITER ATTRIBUTED"))
+			
         """
         
         # Photos ... this is so ghetto
@@ -212,7 +244,9 @@ class Command(NoArgsCommand):
                 a = Article.objects.get(pk=row["articleID"])
                 a.rel_content.add(i)
             except:
+                print "couldn't find linked article"
                 continue
+        """
                 
         # blogs
         cur.execute("SELECT ID, SectionID, BlogName, Description FROM Blogs")

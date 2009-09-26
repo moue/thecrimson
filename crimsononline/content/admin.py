@@ -418,7 +418,7 @@ class ImageAdmin(ContentAdmin):
     
     pub_status_text.short_description = 'Status'
     
-    list_display = ('kicker', 'section', 'issue', 'pub_status_text',)
+    list_display = ('pk', 'kicker', 'section', 'issue', 'pub_status_text',)
     search_fields = ('kicker', 'caption',)
     ordering = ('-id',)    
 
