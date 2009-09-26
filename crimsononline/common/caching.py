@@ -40,4 +40,3 @@ def expire_stuff():
     # EXPIRE ALL OF IT
     # always want to expire index
     expire_page('/')  
-    print "Index expired"
