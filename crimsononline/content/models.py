@@ -69,7 +69,7 @@ class ContentManager(models.Manager):
         # this sql only? works on sqlite3
         # also, round(x - 0.5) == floor(x)
         if settings.DATABASE_ENGINE == 'sqlite3':
-            days_old_expr = "(round(julianday('now', 'localtime') - "
+            days_old_expr = "(round(julianday('now', 'localtime') - " \
                 "julianday(content_issue.issue_date) - 0.5) + 1)"
         elif settings.DATABASE_ENGINE == 'mysql':
             days_old_expr = '(DATEDIFF(NOW(), content_issue.issue_date) + 1)'
