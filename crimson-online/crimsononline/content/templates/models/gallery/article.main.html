@@ -1,0 +1,23 @@
+{% extends "models/wrapper.html" %}
+
+{% load content_filters %}
+{% load common %}
+
+{% with gallery.cover_image as image %}
+
+    {% block wrapper_classes %}{{image.orientation}} image{% endblock %}
+
+    {% block wrapper_contents %}
+        <p class="kicker">{{image.kicker}}</p>
+        <a href="{{gallery.get_absolute_url}}">
+            {% ifequal image.orientation "tall" %}
+                {{image|to_img_tag:"240,"}}
+            {% else %}
+                {{image|to_img_tag:"390,"}}
+            {% endifequal %}
+        </a>
+        <p class="byline">{{image.contributors.all|linkify|human_list}}</p>
+        <p class="caption">{{image.caption}}</p>
+    {% endblock %}
+
+{% endwith %}

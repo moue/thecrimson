@@ -1,0 +1,107 @@
+p {
+	margin: 0px 0px 18px 0px;
+}
+.text {
+	font-size: 15px;
+	line-height: 22px;
+}
+
+/* related content stuff */
+
+#related_contents {
+    width: 180px;
+    float: left;
+    margin: 0 10px 0 0;
+    border-style: solid;
+    border-color: #ccc;
+    border-width: 3px 0 0 0;
+    padding: 5px 0 0 0;
+}
+#related_contents div.ylabel_wrapper {
+    float: left;
+    width: 150px;
+}
+
+.related_content > a > img {
+    border-width: 0;
+}
+.related_content > a {
+    margin: 0;
+    display: block;
+    line-height: 0;
+}
+.related_content span {
+    margin: 0;
+    line-height: normal;
+}
+.related_content .ctype {
+    margin: 0 0 2px 0;
+    font-family: Helvetica, Arial, sans-serif;
+    line-height: normal;
+    font-size: 12px;
+    text-transform: uppercase;
+    color: gray;
+    font-weight: normal;
+}
+.related_content .title{
+    font-weight: bold;
+    margin-top: 3px;
+}
+
+/* article photo stuff */
+.tall{
+    width: 300px;
+    float: left;
+    padding: 0 0 3px 0;
+    border-style: solid;
+    border-color: #c4c5c7;
+    border-width: 1px;
+	margin-top: 4px;
+	margin-right: 10px;
+	margin-bottom: 4px;
+    /* -moz-border-radius: 0 0 8px 8px;
+    -webkit-border-bottom-left-radius: 8px;
+    -webkit-border-bottom-right-radius: 8px;*/
+}
+.wide{
+    width: 630px;
+}
+.image {
+
+}
+.image img {
+    border-width: 0;
+}
+.image > .byline {
+	font-size: 10px;
+    padding-right:5px;
+    color: #000;
+    text-align: right;
+    text-transform: uppercase;
+}
+.image > .byline a{
+	font-size: 10px;
+    color: #000;
+    text-decoration: none;
+}
+.image > .byline > a:hover{
+    text-decoration: underline;
+    color: black;
+}
+.tall > .caption {
+    margin: 4px 4px 2px;
+}
+.wide > .caption {
+    margin: 0 0 10px 0;
+}
+.image > .caption{
+    padding-right:5px;
+    font-family: helvetica, arial, sans-serif;
+    font-size: 11px;
+    line-height: 1.4em;
+    color: #777;
+}
+.image > p{
+    padding: 0;
+    margin: 0;
+}

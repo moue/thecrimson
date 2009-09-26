@@ -1,0 +1,52 @@
+{% load common %}
+{% load module %}
+{% load cache %}
+
+{% static_css "mostread.css" %}
+<script type="text/javascript">
+function mra(){
+    $('#mostreadarticles').show();
+    $('#mra').find('span').addClass("thclabel_red");
+    $('#mra').find('span').removeClass("thclabel_gray");
+    
+    $('#mostcommentedarticles').hide();
+    $('#mca').find('span').addClass("thclabel_gray");
+    $('#mca').find('span').removeClass("thclabel_red");
+}
+
+function mca(){
+    $('#mostreadarticles').hide();
+    $('#mra').find('span').removeClass("thclabel_red");
+    $('#mra').find('span').addClass("thclabel_gray");
+    
+    $('#mostcommentedarticles').show();
+    $('#mca').find('span').removeClass("thclabel_gray");
+    $('#mca').find('span').addClass("thclabel_red");
+}
+
+</script>
+
+{% module 4 "" box %}
+<div id="mostxdarticles">
+    <span class="title"> MOST
+        <a id="mra" onclick="mra();" style="cursor:pointer;">{{"read"|yuhkilabel:"red"}}</a>
+        <a id="mca" onclick="mca();" style="cursor:pointer;">{{"commented"|yuhkilabel:"gray"}}</a>
+    </span>
+    {% cache 500 mostreadarticles %}
+    <div id="mostreadarticles">
+        <ol>
+        {% for article in mostreadarticles %}
+            <li>{{article|linkify}}</li>
+        {% endfor %}
+        </ol>
+    </div>
+    {% endcache %}
+    <div id="mostcommentedarticles" style="display: none">
+        <ol>
+        {% for article in mostcommentedarticles %}
+            <li>{{article|linkify}}</li>
+        {% endfor %}
+        </ol>
+    </div>
+</div>
+{% endmodule %}

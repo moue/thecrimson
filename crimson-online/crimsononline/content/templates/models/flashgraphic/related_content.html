@@ -1,0 +1,9 @@
+{% extends "models/related_content.html" %}
+
+{% load content_filters %}
+{% load common %}
+
+{% block rc %}
+    <span class="ctype">Flash Graphic</span>
+    <span class="title"><a href="{{ flashgraphic.get_absolute_url }}">{{ flashgraphic.title }}</a></span>
+{% endblock %}

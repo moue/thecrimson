@@ -1,0 +1,80 @@
+{% load content_filters %}
+{% load common %}
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>{% block title %}{{ title }}{% endblock %} | The Harvard Crimson</title>
+	 <link rel="icon" type="image/vnd.microsoft.icon" href="/site_media/images/favicon.ico" />
+	{% static_css "base.css" %}
+	{% block css %}{% endblock %}
+	{% block js %}{% endblock %}
+	{% block inhead %}{% endblock %}
+</head>
+<body>
+{% comment %}
+{% if user.is_authenticated %}
+    <span>Logged in as <a href="{% url crimsononline.subscriptions.views.register %}">{{ user.username }}</a> | <a href="{% url crimsononline.subscriptions.views.logout %}">Logout</a></span>
+{% else %}
+    <span><a href="{% url crimsononline.subscriptions.views.login %}">Login</a> | <a href="{% url crimsononline.subscriptions.views.register%}">Register</a></span>
+{% endif %}
+{%endcomment%}
+
+<div id="masthead_container">
+<div id="masthead_contents">
+    <div id="masthead_banner">
+		<a href="/"><img src="{% static_url "images/banner/logo.png" %}" alt="banner" /></a>
+	</div>
+	
+<div id="nav_contents">
+	<ul>
+		<!-- no whitespace to prevent nbsps -->
+        {% spaceless %}
+		<li {{ nav|is_nav_cur:"news" }}><a href="/section/news">NEWS</a></li>
+		<li {{ nav|is_nav_cur:"opinion" }}><a href="/section/opinion">OPINION</a></li>
+		<li {{ nav|is_nav_cur:"fm" }}><a href="/section/fm">MAGAZINE</a></li>
+		<li {{ nav|is_nav_cur:"sports" }}><a href="/section/sports">SPORTS</a></li>
+		<li {{ nav|is_nav_cur:"arts" }}><a href="/section/arts">ARTS</a></li>
+		<li {{ nav|is_nav_cur:"blogs" }}><a href="/section/photo">MEDIA</a></li>
+		<li {{ nav|is_nav_cur:"blogs" }}><a href="http://www.flybyblog.com">FLYBY</a></li>
+    {% endspaceless %}
+	</ul>
+</div>
+
+    <div class="tools">
+        <div class="search">
+            <form action="/search/">
+                <input class="query" type="text" name="q" />
+                <button class="submit" type="submit" value="SEARCH"><span>Search</span></button>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+<div id="submenu">
+<div id="submenu_contents">LOOK AT ALL THIS SHIT!</div>
+</div>
+
+
+<div id="content_wrapper">
+    {% block pre_body %}
+    <div class="top_leaderboard">
+        <img src="{% static_url "images/sample_ads/leaderboard.jpg" %}" alt="ad" />
+    </div>
+    {% endblock %}
+
+	{% block body %}{% endblock %}
+	{% block post_body %}{% endblock %}
+</div>
+
+<div id="footer_wrapper">
+		<div id="footer_contents">
+        <span class="g">Privacy Policy | Rights and Permissions | Archives | Contact Us | Corrections | Subscriptions | RSS</span><br />
+        <span class="red-text">Copyright &copy; 2009, The Harvard Crimson, Inc.</span>
+		</div>
+</div>
+
+</body>
+</html>

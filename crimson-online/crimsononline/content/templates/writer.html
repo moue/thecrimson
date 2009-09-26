@@ -1,0 +1,44 @@
+{% extends "content_list.html" %}
+
+{% load content_filters %}
+{% load common %}
+{% load tag_cloud %}
+{% load top_articles %}
+
+{% block title %}
+	{{ writer }} | Writer Profile
+{% endblock %}
+
+{% block inhead %}
+    {{block.super}}
+    {% static_css "writer-profile.css" %}
+{% endblock %}
+
+{% block before_content %}
+    <h1>{{ writer }}</h1>
+{% endblock %}
+
+{% block left %}
+    <div class="bordered" id="profile_corner">
+        <h2>ABOUT THE WRITER</h2>
+        {% if writer.profile_pic %}
+            <img src="{{ writer.profile_pic.url}}" /><br/>
+        {% else %}
+            <img src="{% static_url "images/noface_133x133.jpg" %}" /><br/>
+        {% endif %}
+        {% if writer.class_of %}
+            <h3>Class:</h3><p>{{ writer.class_of }}</p>
+        {% endif %}
+
+        {% if writer.email %}
+            <h3>Contact Info:</h3><p>{{ writer.email }}</p>
+        {% endif %}
+
+        {% if writer.profile_text %}
+            <h3>Additional Info:</h3>
+            {% for para in writer.profile_text|paragraphs %}
+                {{ para|profileml }}
+            {% endfor %}
+        {% endif %}
+    </div>
+{% endblock %}

@@ -1,0 +1,4 @@
+{% load content_filters %}
+
+<img src="http://img.youtube.com/vi/{{youtubevideo.key}}/2.jpg" /><p>{{youtubevideo.title}}</p>
+<p>{{youtubevideo.created_on|date:"m/d/y"}}</p>

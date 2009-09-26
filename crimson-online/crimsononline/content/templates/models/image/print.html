@@ -1,0 +1,25 @@
+{% extends "models/print.html" %}
+
+{% load content_filters %}
+{% load common %}
+
+{% block title %}
+	{{ image.kicker }}
+{% endblock %}
+
+
+{% block content %}
+<img src="{% static_url "images/print_view_banner.png" %}" />
+<hr />
+<div class="dateline">
+    {{ image.issue.issue_date|date:"F d, Y" }}
+</div>
+
+    <h1>{{ image.kicker }}</h1>
+    <div class="byline">
+        CRIMSON/ {{ image.contributors.all|human_list }}
+    </div>
+    <div class="image">{{ image|to_img_tag:"STAND" }}</div>
+    {{ block.super }}
+    <div class="text">{{image.caption}}</div>
+{% endblock %}

@@ -1,0 +1,7 @@
+{% load content_filters %}
+{% load common %}
+
+<span>Flash Graphic</span>
+<span>{{ flashgraphic.title }}</span>
+<span class="contributors">{{ flashgraphic.contributors.all|human_list }}</span>
+<span>{{ flashgraphic.created_on|date:"m/d/y" }}</span>

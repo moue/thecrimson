@@ -1,0 +1,58 @@
+{% extends "content_list.html" %}
+
+{% load common %}
+{% load content_filters %}
+{% load tag_cloud %}
+{% load module %}
+{% load top_articles %}
+
+{% block css %}
+    {% static_css "tag.css" %}
+{% endblock %}
+
+{% block title %}
+    Content tagged {{ tag }}
+{% endblock %}
+
+{% block left %}
+    {% module 2 "featured articles" gray %}
+    <div id="featured_articles">
+        {% for c in featured %}
+        <p>
+            <a href="{{ c.get_absolute_url }}">{{c.headline|capchars:"36"}}</a>
+            <span class="date">{{c.issue.issue_date|date:"m/d/y"}}</span>
+        </p>
+        {% endfor %}
+    </div>
+    {% endmodule %}
+    
+    {% module 2 "top contributors" gray %}
+
+    <div id="top_contributors">
+        <ul>
+        {% for c in top_contributors %}<li>
+        {% if c.profile_pic %}
+            {{c.profile_pic|to_img_tag:"50,50,1,1"}}
+        {% else %}
+            <img src="{% static_url "images/noface_50x50.jpg" %}" alt="face"/>
+        {% endif %}
+        <span>{{c|linkify}} ({{c.c_count}})</span>
+        <p class="dateline">{{c.rece|date}}</p>
+        {% endfor %}</li>
+        </ul>
+        <span class="clear"></span>
+    </div>
+    {% endmodule %}
+{% endblock %}
+
+{% block before_content %}
+    <h1>Content tagged "{{ tag }}"</h1>
+{% endblock %}
+
+{% block right %}
+    {% most_read_articles %}
+    {% module 4 "" ad %}
+        <img src="/site_media/images/sample_ads/box.gif" />
+    {% endmodule %}
+    {% tag_cloud 15 "RELATED TAGS" tags %}
+{% endblock %}

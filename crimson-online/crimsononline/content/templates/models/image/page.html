@@ -1,0 +1,31 @@
+{% extends "models/page.html" %}
+
+{% load content_filters %}
+{% load common %}
+
+{% block title %}
+	{{ image.kicker }}
+{% endblock %}
+
+{% block css %}
+    {% static_css "image.css" %}
+{% endblock %}
+
+{% block content %}
+    <h1>{{ image.kicker }}</h1>
+    <div class="image">{{ image|to_img_tag:"STAND" }}</div>
+    <div class="byline">
+        By {{ image.contributors.all|linkify|human_list }}
+    </div>
+    <div class="dateline">
+        Published: {{ image.issue.issue_date|date:"F d, Y" }}
+    </div>
+    <div class="caption">
+        {{ image.caption }}
+    </div>
+    {{block.super}}
+{% endblock %}
+
+{% block sidebar %}
+    text in the sidebar
+{% endblock %}

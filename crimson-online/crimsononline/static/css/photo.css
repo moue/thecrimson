@@ -1,0 +1,52 @@
+#viewer_sidebar {
+    margin: 10px 10px 10px 0;
+    list-style: none;
+    min-height: 500px;
+    border: 1px solid #666;
+}
+
+#viewer_sidebar .filters{
+    font-family:arial;
+    font-size:10px;
+    font-weight:bold;
+    text-transform:uppercase;
+    display: block;
+    padding: 4px 8px;
+    border-bottom: 1px solid #666;
+}
+
+#viewer_sidebar li {
+    display: block;
+    float: left;
+    height: 75px;
+    width: 287px;
+    padding: 5px;
+    margin: 0;
+    border-bottom: 1px solid #666;
+}
+#viewer_sidebar li.active {
+    background-color: #333333
+}
+
+#viewer_sidebar .image_thumb {
+    float: left;
+    margin-right: 6px;
+}
+#viewer_sidebar .title {
+    font-size: 18px;
+    padding-top: 10px;
+}
+#viewer_sidebar .dateline {
+    font-size: 11px;
+    color: #777;
+}
+#viewer_sidebar .pagination {
+    display: block;
+    font-size: 12px;
+    text-align: center;
+    color: #777777;
+    margin-bottom: 20px;
+}
+#viewer_sidebar .pagination a{
+    color: #777777;
+}

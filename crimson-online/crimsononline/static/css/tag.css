@@ -1,0 +1,26 @@
+#featured_articles p {
+    line-height: 1.1;
+    margin: 0 0 7px 5px;
+    font-size: 13px;
+}
+
+#featured_articles .date {
+    font-size: 12px;
+    color: #666;
+}
+
+#top_contributors li {
+    float: left;
+    display: block;
+    width: 148px;
+    margin-bottom: 8px;
+}
+#top_contributors .dateline, #top_contributors a, #top_contributors{
+    font-size: 12px;
+}
+
+#top_contributors img {
+    float: left;
+    clear: left;
+    margin-right: 4px;
+}

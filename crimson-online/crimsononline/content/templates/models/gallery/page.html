@@ -1,0 +1,35 @@
+{% extends "models/page.html" %}
+
+{% load content_filters %}
+{% load common %}
+
+{% block title %}
+	{{ gallery.headline }}
+{% endblock %}
+
+{% block css %}
+    {% static_css "gallery.css" %}    
+{% endblock %}
+{% block js %}
+    {% static_js "jquery.js" %}
+    {% static_js "media_viewer.js" %}
+{% endblock %}
+
+
+{% block content %}
+{{block.super}}
+{% endblock %}
+
+{% block outside_content %}
+ <div id="gallery_viewer" class="blackground">
+    <div id="viewer_main">
+       {{ gallery|render:"media_viewer" }}
+    </div>
+</div>
+
+{% endblock %}
+
+{% block sidebar %}
+    {{block.super}}
+    text in the sidebar
+{% endblock %}

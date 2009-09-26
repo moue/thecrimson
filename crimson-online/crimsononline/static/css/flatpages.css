@@ -1,0 +1,23 @@
+.left_navigation {
+    margin-top: -10px;
+    float: left;
+    width: 100%;
+}
+.left_navigation > li{
+    list-style-type: none;
+}
+.left_navigation > li > a{
+    display: block;
+    font-family: helvetica, arial, sans-serif;
+    font-size: 12px;
+    list-style-type: none;
+    color: #666;
+    width: 220px;
+    padding: 3px;
+    margin-bottom: 3px;
+    background-color: #eee;
+}
+.left_navigation a:hover, .left_navigation > li > a.active{
+    color: black;
+    background-color: #d1d1d1;
+}
