@@ -5,6 +5,7 @@
 {% load content_module %}
 {% load rotator %}
 {% load module %}
+{% load tag_cloud %}
 
 {% block title %}
 	Harvard News
@@ -113,14 +114,22 @@
 {% endblock %}
 
 {% block rightcolumn %}
+	{% comment %}
     {% module 4 "view past issues" %}
         <div id="past_issue">
 	        {{ past_issues }}<button id="past_issues_button">Search</button>
 	    </div>
 	{% endmodule %}
-    
+    {% endcomment %}
+
+     {% tag_cloud 20 "Popular Tags" %}
+
+
+
     {% module 4 "" ad %}
-        <img src="/site_media/images/sample_ads/box.gif" alt="ad" />
+		<div style="width:300px; margin: 0 auto;">
+		<script src="http://www.paperg.com/jsfb/embed.php?pid=18&bid=15&width=300&height=250" type="text/javascript"></script>
+		</div>
     {% endmodule %}
         
     {% module 4 arts %}

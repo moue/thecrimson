@@ -7,8 +7,8 @@
     border-bottom: 1px dotted #d1d1d1;
 }
 .article_previews .image_thumb {
-    float: left;
-    margin: 0 8px 1px 0;
+    float: right;
+    margin-left: 5px;
 }
 
 

@@ -377,10 +377,16 @@ img {
 /* ads */
 
 .top_leaderboard{
-    width:100%;
+    width:971px;
     margin:0 auto;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
+	padding: 3px 0;
     text-align: center;
+	border: 1px solid #eee;
+}
+.top_leaderboard img{
+	margin: 0px;
+	padding: 0px;
 }
 
 .ad span{
