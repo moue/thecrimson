@@ -105,18 +105,18 @@ class ContentModelForm(ModelForm):
         required=False, initial=4, help_text='Higher priority articles are '
         'displayed first. Priority may be positive or negative.'
     )
-    """
     group = FbModelChoiceField(required=False, multiple=False,
         url='/admin/content/contentgroup/search/', model=ContentGroup,
         labeler=(lambda obj: str(obj)), admin_site=admin.site,
         add_rel=Content._meta.get_field('group').rel
-    )   
-    """ 
+    )
     rotatable = forms.ChoiceField(Content.ROTATE_CHOICES, required=True,
         label="Place in rotators?", help_text="<b>Make sure this is / has an "
-        "image before you set this to rotate!</b>")
+        "image before you set this to rotate!</b>"
+    )
     pub_status = forms.ChoiceField(Content.PUB_CHOICES,required=True, 
-        label="Published Status")
+        label="Published Status"
+    )
     
     model = Content
 
@@ -132,7 +132,7 @@ class ContentAdmin(admin.ModelAdmin):
         
         slug = f.base_fields['slug'].widget
         issue = f.base_fields['issue'].widget
-        if obj is not None and obj.pub_status == 1:
+        if obj is not None and obj.pub_status is 1:
             slug.editable = False
             issue.editable = False
         else:

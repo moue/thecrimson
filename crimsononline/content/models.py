@@ -340,6 +340,7 @@ class ContentGroup(models.Model):
         ('series', 'Series'),
         ('blog', 'Blog'),
     )
+    
     type = models.CharField(max_length=25, choices=TYPE_CHOICES)
     name = models.CharField(max_length=35)
     subname = models.CharField(max_length=40, blank=True, null=True)

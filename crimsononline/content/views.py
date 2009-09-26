@@ -42,8 +42,8 @@ def index(request, m=None, d=None, y=None):
     dict = {}
     dict['rotate'] = rotatables(None, 4)
     
-    dict['past_issues'] = DateSelectWidget().render(name="past_issues", 
-                                                    value=[m, d, y])
+    #dict['past_issues'] = DateSelectWidget().render(name="past_issues", 
+    #                                                value=[m, d, y])
     dict['nav'] = 'index'
     dict['top_stories'] = stories[:4]
     dict['more_stories'] = stories[4:9]

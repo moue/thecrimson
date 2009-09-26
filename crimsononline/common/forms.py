@@ -12,6 +12,7 @@ from django.contrib import admin
 from django.db.models import ImageField
 from django.db.models.fields.files import ImageFieldFile
 from django.http import Http404
+from django.template import defaultfilters as filter
 from django.template.loader import render_to_string
 from django.utils.safestring import mark_safe
 
@@ -30,12 +31,14 @@ class DateSelectWidget(forms.widgets.MultiWidget):
             forms.widgets.Select(choices=(DAYS)), \
             forms.widgets.Select(choices=(YEARS)))
         super(DateSelectWidget, self).__init__(widgets, attrs)
+    
 
 class RatingWidget(forms.widgets.RadioSelect):
     def __init__(self, *args, **kwargs):
         rr = kwargs.pop('ratings_range')
         kwargs['choices'] = [(str(r), str(r)) for r in rr]
         super(RatingWidget, self).__init__(*args, **kwargs)
+    
 
 class MaskedValueTextInput(forms.widgets.TextInput):
     def __init__(self, *args, **kwargs):
@@ -69,7 +72,7 @@ class MaxSizeImageField(ImageField):
             img.thumbnail((width, height), pilImage.ANTIALIAS)
             img.save(file.path)
         return file
-
+    
 
 def size_spec_to_size(size_spec, img_width, img_height):
     """
@@ -461,7 +464,14 @@ class SearchModelChoiceField(forms.CharField):
             # manually put values in, so a real validation error
             # wouldn't be helpful.
             raise forms.ValidationError("Something terrible happened!")
- 
+
+class CKEditorWidget(forms.widgets.Textarea):
+    """Widget that uses CKEditor with custom settings."""
+    def render(self, name, value, attrs=None):
+        return render_to_string("forms/ckeditor_widget.html", {'field':
+            super(CKEditorWidget, self).render(name, value, attrs)})
+    
+
 class TinyMCEWidget(forms.widgets.Textarea):
     """
     Widget that uses TinyMCE editor with custom settings
@@ -478,17 +488,18 @@ class TinyMCEWidget(forms.widgets.Textarea):
         return super(TinyMCEWidget, self).__init__(*args, **kwargs)
 
     class Media:
-        js = (static_content('scripts/framework/jquery.Jcrop.js'),)
+        pass
 
     def render(self, name, value, attrs=None):
+        value = filter.escape(value)
         ta = super(TinyMCEWidget, self).render(name, value, attrs)
         custom_settings = mark_safe(self.custom_settings)
         return render_to_string("forms/tinymce_widget.html", locals())
+    
 
 class CropWidget(forms.widgets.HiddenInput):
-    """
-    Widget for CropField
-    """
+    """Widget for CropField."""
+    
     def __init__(self, *args, **kwargs):
         c = kwargs.pop('crop_size', None)
         self.crop_size = c
