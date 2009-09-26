@@ -43,7 +43,8 @@ h1, h1 a {
 h2, h2 a{
     font-weight: bold;
     margin-bottom: 2px;
-    font-size: 25px;
+    font-size: 20px;
+    font-size: 20px;
     line-height: 110%;
 }
 h3, h3 a{
@@ -102,22 +103,27 @@ h3, h3 a{
     margin-bottom: 10px; 
     float:left; 
     text-align: left;
-    border-top: 4px solid #b00600;
+    border-top: 2px solid #b00600;
 }
 
 /* for mostxed, allow double inheritance */
 .mod > .title, .mod > * > .title{
 	font-size: 11px;
-	font-family: Helvetica, Arial, sans-serif;
+	font-family: Helvetica, Tahoma, Arial, sans-serif;
 	padding: 5px 0 7px;
-	margin-left: -5px;
+	margin-left: 0px;
 	display: block;
     width: 100%;
 	color: #666;    
 }
 
-.mod-blue{border-top: 4px solid #d1d1d1;}
-.mod-gray{border-top: 4px solid #d1d1d1;}
+.mod-blue{border-top: 2px solid #d1d1d1;}
+.mod-gray{border-top: 2px solid #d1d1d1;}
+.mod-box{
+	border:1px solid #EEEEEE;
+
+}
+
 .mod-ad{text-align: center;}
 .mod-ad, .mod-none{
     border: none;
@@ -203,7 +209,7 @@ h3, h3 a{
 /* NAV */
 
 #nav_contents{
-	margin-top: 15px;
+	margin-top: 0px;
     width: 420px;
 	float: left;
 }
@@ -216,12 +222,12 @@ h3, h3 a{
 #nav_contents > ul > li{
 	display: inline-block;
 	float: left;
-	height: 20px;
+	height: 50px;
 }
 
 
 #nav_contents a{
-	line-height: 20px;
+	line-height: 50px;
 	display: inline-block;
 	font-size: 12px;
 	font-family: Helvetica, Arial, sans-serif;
@@ -230,7 +236,7 @@ h3, h3 a{
 	color: white;
 }
 #nav_contents a:hover, #nav_contents #nav_cur a{
-	text-decoration: underline;
+	background: url('../images/arrows/triangle.gif') no-repeat center bottom;
 }
 
 #submenu{
@@ -267,7 +273,7 @@ h3, h3 a{
 
 #footer_wrapper{
     width: 100%;
-    border-top: 5px solid #d1d1d1;
+    border-top: 2px solid #d1d1d1;
     background-color: #eee;
     padding-top: 5px;
 }
@@ -342,27 +348,27 @@ a {
 	text-decoration: none;
 }
 .byline{
-    color: #000;
+    color: #666;
     line-height: normal;
     font-weight: bold;
 }
 .byline a{
     font-weight: bold;
     text-transform: uppercase;
-    text-decoration: underline;
-    color: #000;
+    color: #666;
     line-height: normal;
 }
 
 
 .dateline {
     color: #999;
+	padding-bottom: 2px;
 }
 
 .byline, .dateline,
 .byline a, .dateline a {
     font-size: 11px;
-    font-family: serif;
+    font-family: Helvetica, Tahoma, Arials, sans-serif;
 }
 .byline a:hover{
     color: #666;

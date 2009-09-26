@@ -51,15 +51,17 @@ p {
 /* article photo stuff */
 .tall{
     width: 300px;
-    float: right;
+    float: left;
     padding: 0 0 3px 0;
     border-style: solid;
     border-color: #c4c5c7;
-    border-width: 0 1px 1px 1px;
-    margin: 4px;
-    -moz-border-radius: 0 0 8px 8px;
+    border-width: 1px;
+	margin-top: 4px;
+	margin-right: 10px;
+	margin-bottom: 4px;
+    /* -moz-border-radius: 0 0 8px 8px;
     -webkit-border-bottom-left-radius: 8px;
-    -webkit-border-bottom-right-radius: 8px;
+    -webkit-border-bottom-right-radius: 8px;*/
 }
 .wide{
     width: 630px;
@@ -71,12 +73,14 @@ p {
     border-width: 0;
 }
 .image > .byline {
+	font-size: 10px;
     padding-right:5px;
     color: #000;
     text-align: right;
     text-transform: uppercase;
 }
 .image > .byline a{
+	font-size: 10px;
     color: #000;
     text-decoration: none;
 }
@@ -85,7 +89,7 @@ p {
     color: black;
 }
 .tall > .caption {
-    margin: 10px 4px 2px;
+    margin: 4px 4px 2px;
 }
 .wide > .caption {
     margin: 0 0 10px 0;
@@ -93,7 +97,7 @@ p {
 .image > .caption{
     padding-right:5px;
     font-family: helvetica, arial, sans-serif;
-    font-size: 12px;
+    font-size: 11px;
     line-height: 1.4em;
     color: #777;
 }
