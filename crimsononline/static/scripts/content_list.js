@@ -7,14 +7,12 @@ $(document).ready(function(){
         var link = $(this).attr("href");
             
         var inject_results = function(results){
-            $(".content_list .content").fadeOut('fast', function(){
+            $(".content_list_content").fadeOut('fast', function(){
                 $(this).empty().append($(results)).fadeIn('fast');
             });
         }
         // TODO: cache like media viewer
-        $.get(link, {ajax:''}, inject_results, function(html){
-            inject_results(html);
-        }, 'html');
+        $.get(link, {ajax:''}, inject_results, 'html');
         return false;
     });
 
