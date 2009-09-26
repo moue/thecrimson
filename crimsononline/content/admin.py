@@ -165,11 +165,26 @@ class ContentAdmin(admin.ModelAdmin):
         """
         returns a few words corresponding to a unique slug for an issue date
         """
-        if request.method != 'POST':
-            raise Http404
+        #if request.method != 'POST':
+        #    raise Http404
         dt, text = request.POST.get('date', 0), request.POST.get('text', 0)
-        print dt + ' '
-        print text
+        #dt, text = request.POST['date'], request.POST['text']
+        #print 'ab' + request.POST.get('text')
+        a = request.POST.getlist('text')
+        text = a[0]
+		#import re
+        #p = re.compile(r"<.*?>").sub
+        #text = p(" ", a[0])
+        #subber = re.compile(r"[^A-Za-z0-9 ]").sub
+        #subber = re.compile(r"[^\x{21}-\x{7E}\s\t\n\r]").sub
+        #text = subber("", text)
+        #try:
+        #    print a[0]
+        #except Exception as e:
+        #    print e
+		#TODO TODO TODO FIX THIS CRAP
+        #print dt + ' and text is:'
+        #print text
         if not (dt and text):
             raise Http404
         dt = date(*(strptime(str(dt), r"%m/%d/%Y")[:3]))
