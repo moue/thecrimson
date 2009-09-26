@@ -66,17 +66,23 @@ class ContentManager(models.Manager):
                 make the query have a reasonable run time.
         """
         issue_pks = [str(i.pk) for i in Issue.last_n(recents)]
-        # TODO: this sql only? works on sqlite3
+        # this sql only? works on sqlite3
         # also, round(x - 0.5) == floor(x)
+        if settings.DATABASE_ENGINE == 'sqlite3':
+            days_old_expr = "(round(julianday('now', 'localtime') - "
+                "julianday(content_issue.issue_date) - 0.5) + 1)"
+        elif settings.DATABASE_ENGINE == 'mysql':
+            days_old_expr = '(DATEDIFF(NOW(), content_issue.issue_date) + 1)'
+        else:
+            raise Exception("Database not supported")
         qs = self.get_query_set().extra(
             tables=['content_issue'], 
             where=['content_issue.id = content_content.issue_id',
                 'content_issue.id in (%s)' % ', '.join(issue_pks)
             ],
             select={'decayed_priority':
-                "content_content.priority / "
-                "(round(julianday('now', 'localtime') - "
-                "julianday(content_issue.issue_date) - 0.5) + 1)"}
+                "content_content.priority / " + days_old_expr
+            }
         )
         return qs.extra(order_by=['-decayed_priority',])
     
