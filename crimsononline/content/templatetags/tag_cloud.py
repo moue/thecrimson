@@ -3,7 +3,7 @@ from django.db.models import Count
 from django import template
 from django.template.loader import render_to_string
 from django.utils.safestring import mark_safe
-from content.models import Tag
+from crimsononline.content.models import Tag
 
 # Number of days to consider content for tag cloud sizing
 WINDOWSIZE = 140

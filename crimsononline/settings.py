@@ -4,16 +4,7 @@
 #  you can use the 'sample_local_settings.py' to help you out
 
 import os
-try:
-    from local_settings import *
-except:
-    print """
-    ***********************************
-    You need a local_settings.py file. 
-    Check settings.py for more info.
-    ***********************************
-    """
-    raise ImportError
+
 import django.conf.global_settings as defaults
 
 DEBUG = True
@@ -41,23 +32,32 @@ LANGUAGE_CODE = 'en-us'
 
 SITE_ID = 1
 
+ADMINS = (
+    # ('Your Name', 'your_email@domain.com'),
+)
+
+MANAGERS = ADMINS
+
+DATABASE_ENGINE = 'sqlite3'           # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'ado_mssql'.
+DATABASE_NAME = 'db'             # Or path to database file if using sqlite3.
+DATABASE_USER = ''             # Not used with sqlite3.
+DATABASE_PASSWORD = ''         # Not used with sqlite3.
+DATABASE_HOST = ''             # Set to empty string for localhost. Not used with sqlite3.
+DATABASE_PORT = ''             # Set to empty string for default. Not used with sqlite3.
+
 # If you set this to False, Django will make some optimizations so as not
 # to load the internationalization machinery.
 USE_I18N = False
 
+URL_BASE = 'localhost:8000/'
+
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
-try:
-    MEDIA_ROOT
-except:
-    MEDIA_ROOT = os.path.join(os.path.split(os.path.abspath(__file__))[0], 'static')
+MEDIA_ROOT = os.path.join(os.path.split(os.path.abspath(__file__))[0], 'static')
 
 # URL that handles the media served from MEDIA_ROOT.
 # Example: "http://media.lawrence.com"
-try:
-    MEDIA_URL
-except:
-    MEDIA_URL = URL_BASE + 'site_media/'
+MEDIA_URL = URL_BASE + 'site_media/'
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
@@ -152,3 +152,9 @@ CACHE_EONS = 7 * 24 * 60 * 60
 
 if DEBUG:
     CACHE_BACKEND = 'dummy:///'
+
+try:
+    from local_settings import *
+except ImportError:
+    pass
+
