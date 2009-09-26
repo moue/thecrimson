@@ -65,15 +65,14 @@ class ContentManager(models.Manager):
             recents => only return stuff from the past _ issues. this should 
                 make the query have a reasonable run time.
         """
+        issue_pks = [str(i.pk) for i in Issue.last_n(recents)]
         # TODO: this sql only? works on sqlite3
         # also, round(x - 0.5) == floor(x)
         qs = self.get_query_set().extra(
             tables=['content_issue'], 
             where=['content_issue.id = content_content.issue_id',
-                'content_issue.id in (SELECT id FROM content_issue '
-                'ORDER BY issue_date DESC LIMIT %s)'
+                'content_issue.id in (%s)' % ', '.join(issue_pks)
             ],
-            params=[recents],
             select={'decayed_priority':
                 "content_content.priority / "
                 "(round(julianday('now', 'localtime') - "
@@ -202,7 +201,6 @@ class Content(models.Model):
         """
         
         name = self.content_type.name.replace(" ","")
-        
         templ = 'models/%s/%s.html' % (name, method)
         # can access self with either the name of the class (ie, 'article')
         #   or 'content'
@@ -696,6 +694,16 @@ class Issue(models.Model):
     
     def get_absolute_url(self):
         return ('content_index', [self.issue_date.year, self.issue_date.month, self.issue_date.day])
+    
+    #TODO: funcache this
+    @staticmethod
+    def last_n(n):
+        """Last n issue, by date."""
+        i = cache.get('last_%d_issues' % n)
+        if i is None:
+            i = Issue.objects.order_by('-issue_date')[:n]
+            cache.set('last_%d_issues' % n, i, 60*60*4)
+        return i
     
     @staticmethod
     def get_current():
