@@ -2,7 +2,7 @@
 {% load module %}
 {% load tag_cloud %}
 
-{% module 4 tags blue %}
+{% module 4 tags box %}
 <div class="tag_cloud">
 {% for tag in tags %}
 <a class="{{ tag|get_size:levels }}" href="{{ tag.get_absolute_url }}">{{ tag }}</a>

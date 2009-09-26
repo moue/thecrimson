@@ -14,15 +14,17 @@
 {% block content %}
     <h1>{{ article.headline }}</h1>
     {% if article.subheadline %}<h2>{{ article.subheadline }}</h2>{% endif %}
-    {% if article.main_rel_content %}
-        {{ article.main_rel_content|render:"article.main" }}
-    {% endif %}
+
     <div class="byline">
         By {{ article.contributors.all|linkify|human_list }}
     </div>
     <div class="dateline">
-        Published: {{ article.issue.issue_date|date:"F d, Y" }}
+        Published: {{ article.issue.issue_date|date:"l, F d, Y" }}
     </div>
+    {% if article.main_rel_content %}
+        {{ article.main_rel_content|render:"article.main" }}
+    {% endif %}
+
     <div class="text">
         {% with article.text|safe|paragraphs as paras %}
             {{ paras|slice:":5"|join:"" }}
