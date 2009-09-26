@@ -10,6 +10,8 @@ class UserData(models.Model):
                 'This number will be encrypted before it is stored.')
                 
     def __unicode__(self):
+        if self.huid_hash is None:
+            return str(self.pk)
         return self.huid_hash
     
     """
@@ -19,10 +21,14 @@ class UserData(models.Model):
         #    value = md5(value).digest()
         return super(UserData, self).__setattr__(name, value)
     """
-        
+    
     def parse_token(self):
         # a b c d
         return False
+    
+    def delete(self):
+        self.contributor.clear()
+        super(UserData, self).delete()
     
 
 class Board(models.Model):

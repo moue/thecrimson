@@ -327,14 +327,15 @@ class ContributorAdmin(admin.ModelAdmin):
             u.is_staff = True
             u.save()
             ud.save()
-            obj.user = u
+            obj.userdata = ud
         if obj.user is not None:
+            # set the groups
             groups = [board.group for board in boards]
             obj.user.groups = groups
             obj.user.save()
-            ud = obj.user.get_profile()
-            if ud is None:
-                ud = UserData(user=obj.user)
+            
+            # set the HUID
+            ud = obj.userdata
             h = form.cleaned_data['huid']
             if h != "********":
                 if h:

@@ -22,6 +22,7 @@ from django.db.models.query import QuerySet
 from django.http import Http404
 from django.template import RequestContext
 
+from crimsononline.admin_cust.models import UserData
 from crimsononline.common.caching import funcache, expire_page, expire_stuff
 from crimsononline.common.forms import \
     MaxSizeImageField, SuperImageField
@@ -470,9 +471,9 @@ class Contributor(models.Model):
     True
     """
     
-    user = models.OneToOneField(
-        User, verbose_name='web user', unique=True, blank=False, 
-        null=True,
+    userdata = models.OneToOneField(
+        UserData, verbose_name='web user', unique=True, blank=False, 
+        null=True, related_name='contributor',
     )
     first_name = models.CharField(blank=False, null=True, max_length=70)
     last_name = models.CharField(blank=False, null=True, max_length=100)
@@ -493,6 +494,13 @@ class Contributor(models.Model):
         will be bold and red</b>""")
     profile_pic = SuperImageField(blank=True, null=True, max_width=135,
         upload_to=contrib_pic_path, storage=OverwriteStorage())
+    
+    @property
+    def user(self):
+        if self.userdata is not None:
+            return self.userdata.user
+        else:
+            return None
     
     @property
     def profile(self):

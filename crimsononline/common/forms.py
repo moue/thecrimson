@@ -491,7 +491,8 @@ class TinyMCEWidget(forms.widgets.Textarea):
         pass
 
     def render(self, name, value, attrs=None):
-        value = filter.escape(value)
+        if value is not None:
+            value = filter.escape(value)
         ta = super(TinyMCEWidget, self).render(name, value, attrs)
         custom_settings = mark_safe(self.custom_settings)
         return render_to_string("forms/tinymce_widget.html", locals())

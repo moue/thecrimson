@@ -2223,7 +2223,7 @@
         "phone": "",
         "created_on": "2009-07-24",
         "profile_text": "",
-        "user": null,
+        "userdata": null,
         "board_number": null,
         "type": "",
         "email": ""
@@ -2243,7 +2243,7 @@
         "phone": "",
         "created_on": "2009-07-24",
         "profile_text": "",
-        "user": null,
+        "userdata": null,
         "board_number": null,
         "type": "",
         "email": ""
@@ -2263,7 +2263,7 @@
         "phone": "",
         "created_on": "2009-07-25",
         "profile_text": "",
-        "user": null,
+        "userdata": null,
         "board_number": null,
         "type": "",
         "email": ""
@@ -2283,7 +2283,7 @@
         "phone": "",
         "created_on": "2009-07-25",
         "profile_text": "",
-        "user": null,
+        "userdata": null,
         "board_number": null,
         "type": "",
         "email": ""
@@ -2303,7 +2303,7 @@
         "phone": "",
         "created_on": "2009-07-25",
         "profile_text": "",
-        "user": null,
+        "userdata": null,
         "board_number": null,
         "type": "",
         "email": ""
@@ -2323,7 +2323,7 @@
         "phone": "",
         "created_on": "2009-07-25",
         "profile_text": "",
-        "user": null,
+        "userdata": null,
         "board_number": null,
         "type": "",
         "email": ""
