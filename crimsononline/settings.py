@@ -49,7 +49,7 @@ DATABASE_PORT = ''             # Set to empty string for default. Not used with 
 # to load the internationalization machinery.
 USE_I18N = False
 
-URL_BASE = 'localhost:8000/'
+URL_BASE = 'http://localhost:8000/'
 
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
