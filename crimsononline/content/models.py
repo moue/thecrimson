@@ -135,6 +135,8 @@ class Content(models.Model):
         default=0)
     pub_status = models.IntegerField(null=False, choices=PUB_CHOICES, 
         default=0)
+    created_on = models.DateTimeField(auto_now_add=True)
+    modified_on = models.DateTimeField(auto_now=True)
     
     content_type = models.ForeignKey(ContentType, editable=False, null=True)
     
@@ -180,6 +182,8 @@ class Content(models.Model):
         permissions = (
             ('content.can_publish', 'Can publish content',),
         )
+        get_latest_by = 'created_on'
+        ordering = ['-created_on']
     
     @permalink
     def get_absolute_url(self):
@@ -877,7 +881,6 @@ class Image(Content):
     
     caption = models.CharField(blank=True, null=True, max_length=1000)
     kicker = models.CharField(blank=True, null=True, max_length=500)
-    created_on = models.DateTimeField(auto_now_add=True)
     # make sure pic is last: get_save_path needs an instance, and if this
     #  attribute is processed first, all the instance attributes will be blank
     pic = SuperImageField('File', max_width=960, upload_to=get_save_path)
@@ -899,10 +902,6 @@ class Image(Content):
             return self.display(*size)
         except:
             return getattr(super(Image, self), attr)
-    
-    class Meta:
-        get_latest_by = 'created_on'
-        ordering = ['-created_on']
     
     def display_url(self, size_spec):
         """ convenience method for the pic attribute's method of same name """
@@ -928,11 +927,6 @@ class Gallery(Content):
     title = models.CharField(blank=False, null=False, max_length=200)
     description = models.TextField(blank=False, null=False)
     contents = models.ManyToManyField(Content, through='GalleryMembership',related_name="contents_set")
-    created_on = models.DateTimeField(auto_now_add=True)
-    
-    class Meta:
-        get_latest_by = 'created_on'
-        ordering = ['-created_on']
     
     objects = ContentManager()
 
@@ -967,13 +961,7 @@ class YouTubeVideo(Content):
         help_text="http://www.youtube.com/v=(XXXXXX)&... part of the YouTube URL")
     title = models.CharField(blank=False, null=False, max_length=200)
     description = models.TextField(blank=False, null=False)
-
-    created_on = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        get_latest_by = 'created_on'
-        ordering = ['-created_on']
-
+    
     objects = ContentManager()
 
     def __unicode__(self):
@@ -997,13 +985,7 @@ class FlashGraphic(Content):
 
     title = models.CharField(blank=False, null=False, max_length=200)
     description = models.TextField(blank=False, null=False)
-
-    created_on = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        get_latest_by = 'created_on'
-        ordering = ['-created_on']
-
+    
     def __unicode__(self):
         return self.title
         
@@ -1024,11 +1006,6 @@ class Map(Content):
     height = models.IntegerField(default='300')
     # display stuff
     caption = models.CharField(blank=True, max_length=1000)
-    created_on = models.DateTimeField(auto_now_add=True)
-    
-    class Meta:
-        get_latest_by = 'created_on'
-        ordering = ['-created_on']
     
     def __unicode__(self):
         return self.title    
@@ -1088,9 +1065,6 @@ class Article(Content):
         help_text='If left blank, this will be the first sentence ' \
                     'of the article text.'
     )
-    # TODO: move these 2 attributes to Content
-    created_on = models.DateTimeField(auto_now_add=True)
-    modified_on = models.DateTimeField(auto_now=True)
     page = models.CharField(blank=True, null=True, max_length=10,
         help_text='Page in the print edition.')
     proofer = models.ForeignKey(
@@ -1110,7 +1084,6 @@ class Article(Content):
             ('article.can_change_after_timeout', 
                 'Can change articles at any time',),
             )
-        get_latest_by = 'created_on'
     
     def delete(self):
         self.rel_content.clear()
@@ -1162,10 +1135,6 @@ class Review(models.Model):
     name = models.CharField(max_length=100)
     rating = models.IntegerField(choices=RATINGS_CHOIES)
     article = models.ForeignKey(Article, null=True, blank=True)
-    created_on = models.DateField(auto_now_add=True)
-    
-    class Meta:
-        ordering = ('-created_on',)
 
 
 class Score(models.Model):
