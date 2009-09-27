@@ -1,6 +1,7 @@
 div#profile_corner {
     font-family: Georgia,Palatino Linotype,serif;
     font-size: 12px;
+    min-height: 300px;
 }
 
 div#profile_corner p{
