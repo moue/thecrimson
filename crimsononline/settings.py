@@ -76,6 +76,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 )
 
 MIDDLEWARE_CLASSES = (
+	'crimsononline.mware.supercrisismode.SuperCrisisMode',
     #'django.middleware.cache.UpdateCacheMiddleware',
     'django.middleware.common.CommonMiddleware',
     #'django.middleware.cache.FetchFromCacheMiddleware',
@@ -83,7 +84,6 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.middleware.doc.XViewMiddleware',
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
-	#'crimsononline.mware.supercrisismode.SuperCrisisMode',
     #'crimsononline.mware.linkscriptoptimizer.LinkScriptOptimizer',
 )
 
@@ -113,6 +113,7 @@ INSTALLED_APPS = [
     'crimsononline.search',
     'crimsononline.common',
     'crimsononline.subscriptions',
+	'crimsononline.mware',
 ]
 try:
     import pysolr
