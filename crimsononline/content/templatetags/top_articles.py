@@ -4,6 +4,7 @@ import time
 import urllib
 from urlparse import urlparse
 from django import template
+from django.confs import settings
 from django.conf.urls.defaults import patterns, url
 from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import RegexURLResolver, Resolver404
@@ -108,13 +109,17 @@ class TopArticlesNode(template.Node):
         else:
             tableStr = ""
             limitStr = ""
+        if settings.DATABASE_ENGINE == 'sqlite3':
+            seven_days_ago = " date('now', '-7 days') "
+        elif settings.DATABASE_ENGINE == 'mysql':
+            seven_days_ago = " ( NOW() - INTERVAL 7 day ) "
         # SO NON-SEXUALITY-NORMATIVE
         # Oh, a real comment in case someone comes upon this later: We're selecting article ID, content type ID, and a computed field called "hitindex"
         # which will eventually use log() for a better curve.  This ages articles' hits to reduce freshness.  Then it sorts by hitindex and returns the top 5.
         # TODO: Fix this to use proper decay when we switch to a real SQL server
         sqlstatement = "SELECT DISTINCT content_article.content_ptr_id, SUM(content_contenthits.hits) AS hitnum FROM content_article, " \
                        "content_content, content_contenthits" + tableStr + " WHERE content_content.id = content_article.content_ptr_id AND content_contenthits.content_id " \
-                       "= content_content.id AND content_contenthits.date > date('now', '-7 days')" + limitStr + " GROUP BY content_contenthits.content_id ORDER BY hitnum DESC LIMIT 5"
+                       "= content_content.id AND content_contenthits.date >" + seven_days_ago + limitStr + " GROUP BY content_contenthits.content_id ORDER BY hitnum DESC LIMIT 5"
         cursor.execute(sqlstatement)
         mostreadarticles = cursor.fetchall()
         mostreadarticles = [Content.objects.get(pk=x[0]).child for x in mostreadarticles]
