@@ -103,3 +103,68 @@ class EmailSubscription(models.Model):
         return self.email
     
 
+class Subscription(models.Model):
+    TYPE_CHOICES = (
+        ('1', 'Premium Plus'),
+        ('2', 'Premium'),
+        ('3', 'BiWeekly'),
+    )
+    MONTH_CHOICES = (
+        ('9', 'Sep.-Oct.'),
+        ('11', 'Nov.-Dec.'),
+        ('1', 'Jan.-Feb.'),
+        ('3', 'Mar.-Apr.'),
+        ('5', 'May'),
+    )
+    PRICE_CHOICES = (
+        ('1-9', '350.00'),
+        ('1-11', '300.00'), 
+        ('1-1', '250.00'),
+        ('1-3', '200.00'),
+        ('2-9', '250.00'),
+        ('2-11', '225.00'),
+        ('2-1', '175.00'),
+        ('2-3', '125.00'),
+        ('1-5', '75.00'),
+        ('3-f', '60.00'),
+        ('2-5', '50.00'),
+        ('3-s', '30.00'),
+    )
+    SEMESTER_CHOICES = (
+        ('f', 'Full Year'), 
+        ('s', 'Semester'),
+    )
+    sub_type = models.CharField(max_length=10, choices=TYPE_CHOICES)
+    start_date = models.CharField(max_length=10, choices=MONTH_CHOICES)
+    price = models.CharField(max_length=10, choices=PRICE_CHOICES)
+    semester = models.CharField(max_length=10, choices=SEMESTER_CHOICES)
+
+class PaperSubscription(Subscription):
+    # Subscription to hard copy of paper.
+    
+    promo = models.CharField(max_length=100, null=True, blank=True)
+    email = models.EmailField(blank=False, null=False)
+    is_active = models.BooleanField(default=False)
+    passcode = models.CharField(max_length=100, null=True)
+    created_on = models.DateTimeField(auto_now_add=True)
+    currentprice = models.CharField(max_length=100, null=True)
+    
+    #I put these in from email subscription in case something breaks without them
+    def save(self, force_insert=False, force_update=False):
+        if not self.pk:
+            self.passcode = new_conf_code()
+            super(PaperSubscription, self).save(force_insert, force_update)
+            self.send_confirmation()
+        else:
+            super(PaperSubscription, self).save(force_insert, force_update)    
+    def new_code(self):
+        """Give self a new passcode."""
+        self.passcode = new_conf_code()
+    
+    def confirm(self, code):
+        if code == self.passcode:
+            self.is_active = True
+            self.save()
+        return self.is_active
+    def __unicode__(self):
+        return self.email

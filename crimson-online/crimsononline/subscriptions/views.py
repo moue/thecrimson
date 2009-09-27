@@ -6,11 +6,16 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.views import login as d_login, logout as d_logout
 from django.shortcuts import render_to_response
 from django.views.decorators.cache import cache_page
+from django.utils import simplejson
 
 from crimsononline.subscriptions.forms import \
     EmailSubscribeForm, EmailSubscribeConfirmForm, EmailSubscriptionManageForm
+from crimsononline.subscriptions.forms import \
+    PaperSubscribeForm
 from crimsononline.content.models import Tag, Contributor
-from crimsononline.subscriptions.models import EmailSubscription
+from crimsononline.subscriptions.models import EmailSubscription, PaperSubscription
+from crimsononline.subscriptions.models import \
+    Subscription
 from crimsononline.common.forms import fbmc_search_helper
 
 def email_confirm(request):
@@ -126,3 +131,19 @@ def fbmc_search(request, type):
             is_active=True)
     objs = objs.exclude(pk__in=excludes).order_by('-pk')[:limit]
     return render_to_response('fbmc_result_list.txt', {'objs': objs})
+    
+def paper_signup(request):
+    if request.method == 'POST':
+        f = PaperSubscribeForm(request.POST)
+        if f.is_valid():
+            return HttpResponseRedirect('https://www.paypal.com/cgi-bin/webscr')
+    else:
+        price = request.GET.get('price', None)
+        sub_type = request.GET.get('sub_type', None)
+        start_date = request.GET.get('start_date', None)
+        promo = request.GET.get('promo', None)
+        f = PaperSubscribeForm(initial={'SubscriptionType': sub_type, 
+            'SubscriptionMonth': start_date})
+        priceslist = simplejson.dumps(dict(Subscription.PRICE_CHOICES))
+    return render_to_response('paper/paper_signup.html', 
+                              {'form': f, 'priceslist': priceslist, 'signup': True})

@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import *
 from crimsononline.common.forms import FbModelChoiceField, FbSelectWidget
 from crimsononline.content.models import Contributor, Tag, Section
-from crimsononline.subscriptions.models import EmailSubscription
+from crimsononline.subscriptions.models import EmailSubscription, PaperSubscription
 
 class EmailSubscribeForm(forms.ModelForm):
     contributors = FbModelChoiceField(required=False, multiple=True, 
@@ -59,4 +59,16 @@ class EmailSubscribeConfirmForm(forms.Form):
                 raise forms.ValidationError('Subscription could not be found.')
             cleaned['email_subscription'] = s
         return cleaned
+
+class PaperSubscribeForm(forms.ModelForm):
+    class Media:
+        css = FbSelectWidget.Media.css
+        js = FbSelectWidget.Media.js
     
+    class Meta:
+        model = PaperSubscription
+        fields = ('email', 'sub_type', 'start_date', 'promo', 'price')
+    
+    def clean(self):
+        d = self.cleaned_data
+        return self.cleaned_data
