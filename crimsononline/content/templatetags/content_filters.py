@@ -1,3 +1,4 @@
+from datetime import *
 from django import template
 from django.template import defaultfilters as filter
 from django.utils.safestring import mark_safe
@@ -17,6 +18,20 @@ def render(content, method):
     except Exception, err:
         print err, content, method
     return ''
+
+@register.filter
+def datify(cont):
+    issue = cont.issue.issue_date
+    if(date.today() == issue):
+        
+        return "THIS SHIT WAS PUBLISHED TODAY"
+    else:
+        daysold = (date.today() - issue)
+        if (daysold.days <= 5):
+            return str(daysold.days) + " days ago"
+        else:
+            return ""
+    return 1
 
 @register.filter
 def to_img_layout(img, dimensions):

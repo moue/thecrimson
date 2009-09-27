@@ -6,6 +6,8 @@
 {% load rotator %}
 {% load module %}
 {% load tag_cloud %}
+{% load top_articles %}
+{% load flyby_preview %}
 
 {% block title %}
 	Harvard News
@@ -37,19 +39,37 @@
         {% endcontentmodule %}
     {% endmodule %}
 
-    {% module 4 sports %}
-        {% contentmodule index.sports %}
-            <div id="top_sports" class="article_previews">
+
+    {% module 4 magazine %}
+        {% contentmodule index.fm %}
+        <div id="top_fm" class="article_feature gray-bg">
+            {{ fms|first|render:"feature" }}
+        </div>
+        <div id="top_fms" class="article_headlines">
+            <ul>
+                {% for story in fms|notfirst %}
+                <li>
+                    <h3><a href="{{ story.get_absolute_url }}">{{ story.headline }}</a></h3>
+                    <p class="byline">By {{ story.contributors.all|linkify|human_list }}</p>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endcontentmodule %}
+    {% endmodule %}
+
+    {% module 4 "more news" %}
+        {% contentmodule index.morenews %}
+            <div id="more_news" class="article_headlines">
                 <ul>
-                    {% for story in sports %}
-                        <li>{{ story|render:"preview" }}</li>
+                    {% for story in more_stories %}
+                        <li><h3><a href="{{ story.get_absolute_url }}">{{ story.headline }}</a></h3></li>
                     {% endfor %}
                 </ul>
             </div>
         {% endcontentmodule %}
     {% endmodule %}
-
-
+    
 {% endblock %}
 
 
@@ -82,56 +102,19 @@
         {% endcontentmodule %}
     {% endmodule %}
 
-    {% module 4 "more news" %}
-        {% contentmodule index.morenews %}
-            <div id="more_news" class="article_headlines">
+
+    {% module 4 sports %}
+        {% contentmodule index.sports %}
+            <div id="top_sports" class="article_previews">
                 <ul>
-                    {% for story in more_stories %}
-                        <li><h3><a href="{{ story.get_absolute_url }}">{{ story.headline }}</a></h3></li>
+                    {% for story in sports %}
+                        <li>{{ story|render:"preview" }}</li>
                     {% endfor %}
                 </ul>
             </div>
         {% endcontentmodule %}
     {% endmodule %}
 
-    {% module 4 magazine %}
-        {% contentmodule index.fm %}
-        <div id="top_fm" class="article_feature gray-bg">
-            {{ fms|first|render:"feature" }}
-        </div>
-        <div id="top_fms" class="article_headlines">
-            <ul>
-                {% for story in fms|notfirst %}
-                <li>
-                    <h3><a href="{{ story.get_absolute_url }}">{{ story.headline }}</a></h3>
-                    <p class="byline">By {{ story.contributors.all|linkify|human_list }}</p>
-                </li>
-                {% endfor %}
-            </ul>
-        </div>
-        {% endcontentmodule %}
-    {% endmodule %}
-{% endblock %}
-
-{% block rightcolumn %}
-	{% comment %}
-    {% module 4 "view past issues" %}
-        <div id="past_issue">
-	        {{ past_issues }}<button id="past_issues_button">Search</button>
-	    </div>
-	{% endmodule %}
-    {% endcomment %}
-
-     {% tag_cloud 20 "Popular Tags" %}
-
-
-
-    {% module 4 "" ad %}
-		<div style="width:300px; margin: 0 auto;">
-		<script src="http://www.paperg.com/jsfb/embed.php?pid=18&bid=15&width=300&height=250" type="text/javascript"></script>
-		</div>
-    {% endmodule %}
-        
     {% module 4 arts %}
         {% contentmodule index.arts %}
             <div id="top_art" class="article_feature gray-bg">
@@ -149,5 +132,29 @@
             </div>
         {% endcontentmodule %}
     {% endmodule %}
+
+{% endblock %}
+
+{% block rightcolumn %}
+	{% comment %}
+    {% module 4 "view past issues" %}
+        <div id="past_issue">
+	        {{ past_issues }}<button id="past_issues_button">Search</button>
+	    </div>
+	{% endmodule %}
+    {% endcomment %}
+    
+    {% flyby_preview %}
+    
+    {% most_read_articles %}
+
+    {% tag_cloud 20 "Popular Tags" %}
+
+    {% module 4 "" ad %}
+		<div style="width:300px; margin: 0 auto;">
+		<script src="http://www.paperg.com/jsfb/embed.php?pid=18&bid=15&width=300&height=250" type="text/javascript"></script>
+		</div>
+    {% endmodule %}
+        
     
 {% endblock %}
