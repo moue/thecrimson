@@ -4,7 +4,9 @@ from time import strptime
 from itertools import *
 import copy
 import re
+
 from django import forms
+from django.core import exceptions
 from django.core.mail import send_mail
 from django.conf import settings
 from django.conf.urls.defaults import patterns
@@ -19,6 +21,7 @@ from django.template.defaultfilters import truncatewords
 from django.utils import simplejson, html
 from django.utils.safestring import mark_safe
 from django.utils.hashcompat import md5_constructor
+
 from crimsononline.admin_cust.models import UserData
 from crimsononline.content.models import *
 from crimsononline.content.forms import *
@@ -115,7 +118,7 @@ class ContentModelForm(ModelForm):
         "image before you set this to rotate!</b>"
     )
     pub_status = forms.ChoiceField(Content.PUB_CHOICES, required=True, 
-        label="Published Status"
+        label="Published Status", help_text="Only execs can publish content."
     )
     
     model = Content
@@ -139,10 +142,9 @@ class ContentAdmin(admin.ModelAdmin):
             slug.editable = True
             issue.editable = True
         
-        if request.user.has_perm('content.content.can_delete') or \
-            request.user.is_superuser:
+        if request.user.has_perm('content.delete_content'):
             f.base_fields['pub_status'].widget.choices = Content.PUB_CHOICES
-        if request.user.has_perm('content.content.can_publish'):
+        elif request.user.has_perm('content.content.can_publish'):
             f.base_fields['pub_status'].widget.choices = \
                 ((0, 'Draft'), (1, 'Published'),)
         else:
@@ -150,12 +152,20 @@ class ContentAdmin(admin.ModelAdmin):
         return f
     
     def save_model(self, request, obj, form, change):
-        # don't let normally permissioned users change issue / slug on 
-        # published content.  
+        # don't let anyone change issue / slug on published content.  
         if change and obj and obj.pub_status == 1:
-            old_obj = self.model.objects.admin_objects().get(pk=obj.pk)
+            old_obj = self.model.objects.all_objects().get(pk=obj.pk)
             obj.issue = old_obj.issue
             obj.slug = old_obj.slug
+            # don't let nonpermissioned users publish articles
+            if old_obj.pub_status != 1 and not \
+                request.user.has_perm('content.content.can_publish'):
+                raise exceptions.SuspiciousOperation()
+        
+        # don't let unpermissioned users delete content
+        if not request.user.has_perm('content.content.can_delete') and \
+            form.cleaned_data['pub_status'] is -1:
+            raise exceptions.SuspiciousOperation()
         super(ContentAdmin, self).save_model(request, obj, form, change)
     
     def get_urls(self):
@@ -225,7 +235,7 @@ class ContentAdmin(admin.ModelAdmin):
         return HttpResponse(simplejson.dumps(json_dict))
     
     def queryset(self, request):
-        if request.user.is_superuser:
+        if request.user.has_perm('content.delete_content'):
             return self.model._default_manager.all_objects()
         else:
             return self.model._default_manager.admin_objects()
@@ -619,7 +629,7 @@ class ArticleAdmin(ContentAdmin):
         u = request.user
         if u.is_superuser:
             return True
-        # cannot make change to published stuff
+        # cannot make change to published stuff; must use corrections interface
         if obj and obj.pub_status != 0:
             return u.has_perm('content.content.can_publish')
         return super(ArticleAdmin, self).has_change_permission(request, obj)
