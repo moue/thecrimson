@@ -8,7 +8,9 @@
 <script type="text/javascript" charset="utf-8">
     $(document).ready(function(){
         $("#{{attrs.id}}_go").click(function(){
-            tinyMCE.activeEditor.save();
+            if (typeof(tinyMCE) != 'undefined'){
+                tinyMCE.activeEditor.save();
+            }
             var text = $("{{text_field}}").val();
             var date = $("{{date_field}}").val();
             $.post('{{url}}', {'text': text, 'date': date}, function(data){

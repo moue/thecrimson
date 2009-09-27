@@ -33,7 +33,6 @@ def index(request, m=None, d=None, y=None):
     else:
         try:
             dt = datetime(int(y), int(m), int(d))
-            stories = stories.filter(issue__issue_date__lte = dt)
         except:
             # TODO: remove this 404, just say issue not found
             raise Http404

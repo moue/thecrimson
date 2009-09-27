@@ -192,7 +192,7 @@ var set_related_content = function(id_prefix, types){
 
     // send ajax request for suggesting related content
     $(p + '_suggest').click(function(){
-    
+        var type = $(p + '_type').val();
         var tags = [];
         $('#id_tags_to').find("option").each(function(i){
         tags[i] = $(this).val();
@@ -204,7 +204,7 @@ var set_related_content = function(id_prefix, types){
             tagstr = tagstr + tags[i]
         }
       
-        var url = '/admin/content/article/rel_content/suggest/' + tagstr + '/1/';
+        var url = '/admin/content/article/rel_content/suggest/' + type + '/' + tagstr + '/1/';
         $.getJSON(url, function(data){
             process_ajax(url.substr(0, url.length - 2), data);
         });

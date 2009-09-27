@@ -164,26 +164,11 @@ class ContentAdmin(admin.ModelAdmin):
         """
         returns a few words corresponding to a unique slug for an issue date
         """
-        #if request.method != 'POST':
-        #    raise Http404
+        if request.method != 'POST':
+            raise Http404
         dt, text = request.POST.get('date', 0), request.POST.get('text', 0)
-        #dt, text = request.POST['date'], request.POST['text']
-        #print 'ab' + request.POST.get('text')
         a = request.POST.getlist('text')
         text = a[0]
-		#import re
-        #p = re.compile(r"<.*?>").sub
-        #text = p(" ", a[0])
-        #subber = re.compile(r"[^A-Za-z0-9 ]").sub
-        #subber = re.compile(r"[^\x{21}-\x{7E}\s\t\n\r]").sub
-        #text = subber("", text)
-        #try:
-        #    print a[0]
-        #except Exception as e:
-        #    print e
-		#TODO TODO TODO FIX THIS CRAP
-        #print dt + ' and text is:'
-        #print text
         if not (dt and text):
             raise Http404
         dt = date(*(strptime(str(dt), r"%m/%d/%Y")[:3]))
@@ -200,7 +185,7 @@ class ContentAdmin(admin.ModelAdmin):
         words = words.items()
         words.sort(lambda x, y: cmp(y[1], x[1]))
         words = [w[0] for w in words[:4]]
-        # TODO: make sure the slug is valid
+        # TODO: make sure the slug is valid (unique)
         return HttpResponse('-'.join(words))
     
     def previews_by_date_tag(self, request):
@@ -660,7 +645,7 @@ class ArticleAdmin(ContentAdmin):
                 self.admin_site.admin_view(self.get_rel_content)),
             (r'^rel_content/find/(\d+)/(\d\d/\d\d/\d{4})/(\d\d/\d\d/\d{4})/([\w\-,]*)/(\d+)/$',
                 self.admin_site.admin_view(self.find_rel_content)),
-            (r'^rel_content/suggest/([\w\-,]*)/(\d+)/$',
+            (r'^rel_content/suggest/(\d+)/([\d,]*)/(\d+)/$',
                 self.admin_site.admin_view(self.suggest_rel_content)),
         ) + urls
         return urls
@@ -682,10 +667,16 @@ class ArticleAdmin(ContentAdmin):
         returns JSON containing Content objects and pg numbers
         """
         OBJS_PER_REQ = 3
-        cls = ContentType.objects.get(pk=ct_id).model_class()
+        if ct_id is not 0:
+            cls = ContentType.objects.get(pk=ct_id).model_class()
+        else:
+            cls = None
         st_dt = datetime.strptime(st_dt, '%m/%d/%Y')
         end_dt = datetime.strptime(end_dt, '%m/%d/%Y')
-        objs = cls.find_by_date(start=st_dt, end=end_dt)
+        if cls:
+            objs = cls.find_by_date(start=st_dt, end=end_dt)
+        else:
+            objs = Content.objects.filter(created_on__range=(st_dt, end_dt))
         
         p = Paginator(objs, OBJS_PER_REQ).page(page)
         
@@ -701,7 +692,7 @@ class ArticleAdmin(ContentAdmin):
         
         return HttpResponse(simplejson.dumps(json_dict))
         
-    def suggest_rel_content(self, request, tags, page):
+    def suggest_rel_content(self, request, ct_id, tags, page):
         """
         returns JSON containing Content objects and pg numbers
         """
@@ -721,7 +712,11 @@ class ArticleAdmin(ContentAdmin):
         tagarticles = []
         newerthan = date.today() + timedelta(days=-365)
         for tag in tags:
-            tagarticles.append(Content.objects.filter(issue__issue_date__gte = newerthan).filter(tags__pk = tag))
+            # Filter by content type ID only if they didn't search for all types of content
+            if ct_id == "0":
+                tagarticles.append(Content.objects.filter(issue__issue_date__gte = newerthan).filter(tags__pk = tag))
+            else:
+                tagarticles.append(Content.objects.filter(issue__issue_date__gte = newerthan).filter(content_type__pk = ct_id).filter(tags__pk = tag))
 
         objstemp = []
         # Iterate through from most to least matches on tags
@@ -735,7 +730,7 @@ class ArticleAdmin(ContentAdmin):
         
         objs = []
         for o in objstemp:
-            objs.append(o.content_object)
+            objs.append(o)
 
         p = Paginator(objs, OBJS_PER_REQ).page(page)
 
@@ -743,7 +738,7 @@ class ArticleAdmin(ContentAdmin):
         json_dict['objs'] = []
         for obj in p.object_list:
             html = render_to_string('content_thumbnail.html', {'objs': [obj]})
-            json_dict['objs'].append([obj.content_type.pk, obj.pk, html])
+            json_dict['objs'].append([obj.pk, html])
         json_dict['next_page'] = p.next_page_number() if p.has_next() else 0
         json_dict['prev_page'] = p.previous_page_number() \
             if p.has_previous() else 0
