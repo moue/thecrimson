@@ -139,26 +139,28 @@ class Content(models.Model):
     content_type = models.ForeignKey(ContentType, editable=False, null=True)
     
     def save(self, *args, **kwargs):
-        expire_stuff()
         if not self.content_type:
             self.content_type = ContentType.objects.get_for_model(self.__class__)
         retval = super(Content, self).save(*args, **kwargs)
-        # expire own page
-        expire_page(self.get_absolute_url())
-        # we should expire the section pag for the content type if it has one
-        expire_page(self.section.get_absolute_url())
-        # writer page for the contributor of the content
-        for contributor in self.contributors.all():
-            expire_page(contributor.get_absolute_url())
-        # issue for the content
-        expire_page(self.issue.get_absolute_url())
-        # contentgroup page? I DON'T EVEN KNOW
-        if self.group is not None:
-            expire_page(self.group.get_absolute_url())
-        # all the tag pages woo
-        tags = self.tags.all()
-        for tag in tags:
-            expire_page(tag.get_absolute_url())
+        try:
+            expire_stuff()
+            # expire own page
+            expire_page(self.get_absolute_url())
+            # we should expire the section pag for the content type if it has one
+            expire_page(self.section.get_absolute_url())
+            # writer page for the contributor of the content
+            for contributor in self.contributors.all():
+                expire_page(contributor.get_absolute_url())
+            # issue for the content
+            expire_page(self.issue.get_absolute_url())
+            # contentgroup page? I DON'T EVEN KNOW
+            if self.group is not None:
+                expire_page(self.group.get_absolute_url())
+            # all the tag pages woo
+            for tag in self.tags.all():
+                expire_page(tag.get_absolute_url())
+        except:
+            pass
         return retval
 
     @property
@@ -398,7 +400,7 @@ class ContentGroup(models.Model):
             # we should expire the section pag for the content type if it has one
             expire_page(self.section.get_absolute_url())
         except:
-            pass
+            raise
         return s
     
     @permalink
