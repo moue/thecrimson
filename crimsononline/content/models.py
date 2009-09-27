@@ -1026,7 +1026,6 @@ class Marker(models.Model):
         return str(self.map) + ' (' + str(self.lat) + ',' + str(self.lng) + ')'
     
 
-    
 
 class Article(Content):
     """
@@ -1077,13 +1076,6 @@ class Article(Content):
     
     rel_content = models.ManyToManyField(Content, through='ArticleContentRelation', 
         null=True, blank=True, related_name = "rel_content")
-    
-    
-    class Meta:
-        permissions = (
-            ('article.can_change_after_timeout', 
-                'Can change articles at any time',),
-            )
     
     def delete(self):
         self.rel_content.clear()

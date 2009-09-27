@@ -46,3 +46,9 @@ class Board(models.Model):
     
     def __unicode__(self):
         return self.name
+    
+    def save(self, *args, **kwargs):
+        if self.group is None:
+            self.group = Group.objects.create(name=self.name)
+        super(Board, self).save()
+    

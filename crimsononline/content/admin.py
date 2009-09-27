@@ -147,7 +147,6 @@ class ContentAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
         # don't let normally permissioned users change issue / slug on 
         # published content.  
-        # TODO: users can't change for something that was every published
         if change and obj and obj.pub_status == 1:
             old_obj = self.model.objects.admin_objects().get(pk=obj.pk)
             obj.issue = old_obj.issue
@@ -621,16 +620,14 @@ class ArticleAdmin(ContentAdmin):
             'scripts/tiny_mce/tiny_mce.js'
         )
     
-    """
     def has_change_permission(self, request, obj=None):
         u = request.user
         if u.is_superuser:
             return True
-        # cannot make changes after 60 minutes from uploaded time
-        elif obj and not u.has_perm('content.article.can_change_after_timeout'):
-            return (datetime.now() - obj.created_on).seconds < (60 * 60)
+        # cannot make change to published stuff
+        if obj:
+            return u.has_perm('content.content.can_publish')
         return super(ArticleAdmin, self).has_change_permission(request, obj)
-    """
 
     def save_model(self, request, obj, form, change):
         rel = form.cleaned_data.pop('rel_content',[])
@@ -648,12 +645,10 @@ class ArticleAdmin(ContentAdmin):
         qs = super(ArticleAdmin,self).queryset(request)
         if u.is_superuser:
             return qs
-        # restrict editing of articles uploaded before 60 min ago
-        if not u.has_perm('content.article.can_change_after_timeout'):
-            t = datetime.now() - timedelta(seconds=(60*60))
-            qs = qs.filter(created_on__gt=t)
-            u.message_set.create(message='Note: you can only change articles' \
-                                            ' uploaded in the last hour.')
+        if not u.has_perm('content.content.can_publish'):
+            qs = qs.filter(published=0)
+            u.message_set.create(
+                message='Note: you can only edit unpublished articles')
         return qs
     
     def get_urls(self):
