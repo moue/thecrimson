@@ -365,6 +365,10 @@ class ContentGroup(models.Model):
     def __unicode__(self):
         return "%s/%s" % (self.type, self.name)
     
+    def delete(self):
+        self.content.clear()
+        super(ContentGroup, self).delete()
+    
     @staticmethod
     def by_name(type, name):
         """
@@ -940,6 +944,10 @@ class Gallery(Content):
     
     def __unicode__(self):
         return self.title
+    
+    def delete(self):
+        self.contents.clear()
+        super(Gallery, self).delete()
 
 
 class GalleryMembership(models.Model):
@@ -1087,10 +1095,10 @@ class Article(Content):
         help_text='Page in the print edition.')
     proofer = models.ForeignKey(
         Contributor, related_name='proofed_article_set',
-        limit_choices_to={'is_active': True})
+        limit_choices_to={'is_active': True}, blank=True, null=True)
     sne = models.ForeignKey(
         Contributor, related_name='sned_article_set',
-        limit_choices_to={'is_active': True})
+        limit_choices_to={'is_active': True}, blank=True, null=True)
     web_only = models.BooleanField(default=False, null=False, blank=False)
     
     rel_content = models.ManyToManyField(Content, through='ArticleContentRelation', 
@@ -1104,11 +1112,9 @@ class Article(Content):
             )
         get_latest_by = 'created_on'
     
-    def save(self, *args, **kwargs):
-        if not self.id:
-            self.created_on = datetime.today()
-            self.modified_on = datetime.today()
-        super(Article, self).save(*args, **kwargs)
+    def delete(self):
+        self.rel_content.clear()
+        super(Article, self).delete()
     
     @property
     def long_teaser(self):

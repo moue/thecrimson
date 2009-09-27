@@ -112,7 +112,6 @@ class Command(NoArgsCommand):
 			no_contrib.last_name = "Attributed"
 			no_contrib.save()
 		
-		"""
 		# import contributors -- working nearly perfectly, except for capitalization
         cur.execute("SELECT ID, FirstName, MiddleName, LastName, CreatedOn FROM Contributors")
         rows = cur.fetchall()
@@ -146,7 +145,7 @@ class Command(NoArgsCommand):
             a.modified_on = row["ModifiedOn"] if row["ModifiedOn"] not in ["", None] else datetime.now()
             slugtext = a.headline + " " + a.text
             a.slug = slugify("-".join(slugtext.split()[:6]))
-                
+            
             a.issue = get_issue(row["PublishedOn"])
             # TODO: Ehhhhh
             a.proofer_id = row["Proofer"] if row["Proofer"] not in ["", None] else 1
@@ -155,22 +154,23 @@ class Command(NoArgsCommand):
             a.id = row["ID"]
             try:
                 a.save()
-            except:
+            except Exception as e:
                 print "Couldn't save article with id: " + str(a.id)
-                #print row
+                print e.args
+                print e
                 continue
-                
+            
             # subsections and subcategories -> tags
             if row["SubsectionID"] > 0:
                 a.tags.add(subsections[str(row["SubsectionID"])])
-                
+            
             if row["SubCategory"] > 0:
                 # the old site is ghetto... sports use the sports table instead of subcategories
                 if row["SectionID"] == 3:
                     a.tags.add(sports[str(row["SubCategory"])])
                 else:
                     a.tags.add(subcategories[str(row["SubCategory"])])
-
+        
         # link contributors and articles
         cur.execute("SELECT ArticleID, ContributorID FROM ArticleWriters")
         rows = cur.fetchall()
@@ -186,8 +186,6 @@ class Command(NoArgsCommand):
 		articles_no_contribs = Article.objects.filter(contributors=None)
 		for a in articles_no_contribs:
 			a.contributors.add(Contributor.objects.get(last_name="WRITER ATTRIBUTED"))
-			
-        """
         
         # Photos ... this is so ghetto
         cur.execute("SELECT ID, createdOn, modifiedOn, Caption, articleID, file500px, webwidth, webheight, kicker, issueDate, ContributorID, Section FROM Pictures")
