@@ -695,8 +695,10 @@ class Issue(models.Model):
         a = Article.objects.recent.filter(issue=self,
             rel_content__content_type=Image.content_type(), section=s) \
             .distinct()[:1]
-        if a: return a[0].main_rel_content
-        else: return None
+        if a is not None: 
+            return a[0].main_rel_content
+        else: 
+            return None
     
     def get_absolute_url(self):
         return ('content_index', [self.issue_date.year, self.issue_date.month, self.issue_date.day])
@@ -709,6 +711,8 @@ class Issue(models.Model):
         if i is None:
             i = Issue.objects.order_by('-issue_date')[:n]
             cache.set('last_%d_issues' % n, i, 60*60*4)
+        if len(i) == 0:
+            raise Exception("There are no issues.")
         return i
     
     @staticmethod

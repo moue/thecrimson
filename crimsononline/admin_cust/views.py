@@ -28,7 +28,7 @@ def get_imgs(request, page=None, pk=None):
         imgs = p.object_list  
         for i in imgs:
             images[i.pk] = render_to_string('image_fragment.html', {'images': [i]})
-
+        
         json_dict['images'] = images
         json_dict['next_page'] = p.next_page_number() if p.has_next() else 0
         json_dict['prev_page'] = p.previous_page_number() if p.has_previous() else 0

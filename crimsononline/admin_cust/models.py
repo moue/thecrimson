@@ -32,8 +32,7 @@ class UserData(models.Model):
     
 
 class Board(models.Model):
-    """
-    Organizational unit of the Crimson
+    """Organizational unit of the Crimson
     
     # create a Board
     >>> b = Board.objects.create(name='biz')
@@ -47,4 +46,4 @@ class Board(models.Model):
     
     def __unicode__(self):
         return self.name
-
+    
