@@ -136,21 +136,23 @@ h3, h3 a{
 
 
 /*  ==== MASTHEAD ==== */
-#masthead_container, #masthead_contents, #masthead_banner{height: 50px;}
+#masthead_container, #masthead_contents, #masthead_banner{height: 60px;}
 
 #masthead_container {
     color: white;
-	background-color: #ba0600;
+	/*background-color: #ba0600;*/
+	background: url('../images/banner/grad.png') repeat-x; 
     min-width:973px;
 }
 
 #masthead_contents{
     margin: 0 auto;
     width:973px;
-    background: url('../images/banner/seal_background.png') no-repeat left center;
+    background: url('../images/banner/seal2.png') no-repeat left center;
 }
 
 #masthead_banner{
+	margin-top: 7px;
     float:left;
     width: 333px;
 }
@@ -169,7 +171,7 @@ h3, h3 a{
 
 #masthead_contents .search {
     height: 20px;
-    margin-top: 15px;
+    margin-top: 25px;
 }
 
 #masthead_contents .query{
@@ -209,7 +211,7 @@ h3, h3 a{
 /* NAV */
 
 #nav_contents{
-	margin-top: 0px;
+	margin-top: 20px;
     width: 420px;
 	float: left;
 }
@@ -222,27 +224,33 @@ h3, h3 a{
 #nav_contents > ul > li{
 	display: inline-block;
 	float: left;
-	height: 50px;
+	height: 40px;
 }
 
 
 #nav_contents a{
-	line-height: 50px;
+	line-height: 40px;
 	display: inline-block;
 	font-size: 12px;
-	font-family: Helvetica, Arial, sans-serif;
+	font-family: "Lucida Grande", Tahoma, sans-serif;
 	padding:0px 6px;
 	text-decoration: none;
 	color: white;
+	letter-spacing:1px;
 }
 #nav_contents a:hover, #nav_contents #nav_cur a{
 	background: url('../images/arrows/triangle.gif') no-repeat center bottom;
 }
 
+#nav_contents li:hover{
+	background: url('../images/banner/layover.png') repeat-x
+}
+
 #submenu{
 	min-width: 973px;
 	height: 18px;
-	background-color: #eee;
+	background-color: #fff;
+	border-bottom: 1px solid #eee;
 	margin-bottom: 10px;
 	border-bottom: 1px solid #ccc;
 	border-top: 1px solid #fafafa;
