@@ -119,10 +119,10 @@ def fbmc_search(request, type):
     """
     q_str, excludes, limit = fbmc_search_helper(request)
     if type == 'tag':
-        objs = Tag.objects.filter(text__contains=q_str)
+        objs = Tag.objects.filter(text__icontains=q_str)
     else:
         objs = Contributor.objects.filter(
-            Q(first_name__contains=q_str) | Q(last_name__contains=q_str),
+            Q(first_name__icontains=q_str) | Q(last_name__icontains=q_str),
             is_active=True)
     objs = objs.exclude(pk__in=excludes).order_by('-pk')[:limit]
     return render_to_response('fbmc_result_list.txt', {'objs': objs})

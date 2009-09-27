@@ -11,7 +11,6 @@ from crimsononline.content.sitemaps import ArticleSitemap
 
 admin.autodiscover()
 
-
 FILTER_URL_RE = r'(?:sections/(?P<section_str>[A-Za-z,]+)/)?' \
     r'(?:types/(?P<type_str>[A-Za-z,\s]+)/)?' \
     r'(?:page/(?P<page>\d+)/)?'

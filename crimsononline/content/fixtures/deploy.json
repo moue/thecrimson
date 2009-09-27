@@ -11,7 +11,18 @@
     "model": "auth.group", 
     "fields": {
         "name": "IT", 
-        "permissions": []
+        "permissions": [
+            89, 
+            90, 
+            25, 
+            26, 
+            95, 
+            96, 
+            97, 
+            92, 
+            93, 
+            94
+        ]
     }
 }, 
 {
@@ -83,7 +94,65 @@
     "model": "auth.group", 
     "fields": {
         "name": "Execs", 
-        "permissions": []
+        "permissions": [
+            83, 
+            84, 
+            85, 
+            71, 
+            74, 
+            28, 
+            35, 
+            32, 
+            41, 
+            62, 
+            53, 
+            56, 
+            50, 
+            47, 
+            65, 
+            77, 
+            80, 
+            44, 
+            38, 
+            59, 
+            72, 
+            75, 
+            29, 
+            36, 
+            33, 
+            42, 
+            63, 
+            54, 
+            57, 
+            51, 
+            48, 
+            66, 
+            78, 
+            81, 
+            45, 
+            39, 
+            60, 
+            31, 
+            73, 
+            76, 
+            30, 
+            37, 
+            34, 
+            43, 
+            64, 
+            55, 
+            58, 
+            52, 
+            49, 
+            67, 
+            79, 
+            82, 
+            46, 
+            40, 
+            61, 
+            90, 
+            26
+        ]
     }
 }, 
 {
@@ -91,97 +160,91 @@
     "model": "auth.group", 
     "fields": {
         "name": "Editors", 
-        "permissions": []
+        "permissions": [
+            71, 
+            74, 
+            28, 
+            62, 
+            53, 
+            56, 
+            50, 
+            65, 
+            77, 
+            80, 
+            59, 
+            72, 
+            75, 
+            29, 
+            42, 
+            63, 
+            54, 
+            57, 
+            51, 
+            66, 
+            78, 
+            81, 
+            60, 
+            76, 
+            58
+        ]
     }
 }, 
 {
     "pk": 1, 
-    "model": "admin_cust.board", 
+    "model": "auth.user", 
     "fields": {
-        "group": 16, 
-        "name": "IT"
+        "username": "root", 
+        "first_name": "", 
+        "last_name": "", 
+        "is_active": true, 
+        "is_superuser": true, 
+        "is_staff": true, 
+        "last_login": "2009-09-27 16:56:27", 
+        "groups": [], 
+        "user_permissions": [], 
+        "password": "sha1$f0be3$451149df38e748ccb9fae0273c78faffb7e8e5ba", 
+        "email": "itchair@thecrimson.com", 
+        "date_joined": "2008-09-24 16:47:56"
     }
 }, 
 {
     "pk": 2, 
-    "model": "admin_cust.board", 
+    "model": "auth.user", 
     "fields": {
-        "group": 17, 
-        "name": "News"
+        "username": "editor", 
+        "first_name": "", 
+        "last_name": "", 
+        "is_active": true, 
+        "is_superuser": false, 
+        "is_staff": true, 
+        "last_login": "2009-09-27 16:49:59", 
+        "groups": [
+            26
+        ], 
+        "user_permissions": [], 
+        "password": "sha1$ccebb$48c96eb1c6d2431fd737b4707dc43b8176ff5a21", 
+        "email": "", 
+        "date_joined": "2009-09-27 16:45:10"
     }
 }, 
 {
     "pk": 3, 
-    "model": "admin_cust.board", 
+    "model": "auth.user", 
     "fields": {
-        "group": 18, 
-        "name": "Photo"
-    }
-}, 
-{
-    "pk": 4, 
-    "model": "admin_cust.board", 
-    "fields": {
-        "group": 19, 
-        "name": "Arts"
-    }
-}, 
-{
-    "pk": 5, 
-    "model": "admin_cust.board", 
-    "fields": {
-        "group": 20, 
-        "name": "FM"
-    }
-}, 
-{
-    "pk": 6, 
-    "model": "admin_cust.board", 
-    "fields": {
-        "group": 21, 
-        "name": "Design"
-    }
-}, 
-{
-    "pk": 7, 
-    "model": "admin_cust.board", 
-    "fields": {
-        "group": 22, 
-        "name": "Sports"
-    }
-}, 
-{
-    "pk": 8, 
-    "model": "admin_cust.board", 
-    "fields": {
-        "group": 23, 
-        "name": "Biz"
-    }
-}, 
-{
-    "pk": 9, 
-    "model": "admin_cust.board", 
-    "fields": {
-        "group": 24, 
-        "name": "Ed"
-    }
-},
-{
-    "pk": 1,
-    "model": "auth.user",
-    "fields": {
-        "username": "root",
-        "first_name": "",
-        "last_name": "",
-        "is_active": true,
-        "is_superuser": true,
-        "is_staff": true,
-        "last_login": "2009-07-25 08:45:37",
-        "groups": [6],
-        "user_permissions": [],
-        "password": "sha1$79fbe$f91c04c41ea3f61ba9266cbee9373e96cdb059fc",
-        "email": "andylei@gmail.com",
-        "date_joined": "2008-09-24 16:47:56"
+        "username": "exec", 
+        "first_name": "", 
+        "last_name": "", 
+        "is_active": true, 
+        "is_superuser": false, 
+        "is_staff": true, 
+        "last_login": "2009-09-27 16:54:03", 
+        "groups": [
+            25
+        ], 
+        "user_permissions": [], 
+        "password": "sha1$4a405$be7e2577f94839f0f908e57ea8cc9938bf22ee05", 
+        "email": "", 
+        "date_joined": "2009-09-27 16:47:06"
     }
 },
 {

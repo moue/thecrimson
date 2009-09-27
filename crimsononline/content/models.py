@@ -857,6 +857,7 @@ class ImageManager(ContentManager):
         s =  super(ImageManager, self).get_query_set()
         # this is a hella ghetto way to make sure image galleries always return
         # images in the right order.  this is probably really inefficient
+        print self.__class__.__name__
         if self.__class__.__name__ == 'ManyRelatedManager':
             s = s.order_by('gallerymembership__order')
         return s  
@@ -1077,7 +1078,7 @@ class Article(Content):
     web_only = models.BooleanField(default=False, null=False, blank=False)
     
     rel_content = models.ManyToManyField(Content, through='ArticleContentRelation', 
-        null=True, blank=True, related_name = "rel_content")
+        null=True, blank=True, related_name="rel_content")
     
     def delete(self):
         self.rel_content.clear()

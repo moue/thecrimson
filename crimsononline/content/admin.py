@@ -65,7 +65,7 @@ class ContentGroupAdmin(admin.ModelAdmin):
         """
         q_str, excludes, limit = fbmc_search_helper(request)
         cg = ContentGroup.objects.filter(
-            Q(type__contains=q_str) | Q(name__contains=q_str)) \
+            Q(type__icontains=q_str) | Q(name__icontains=q_str)) \
             .exclude(pk__in=excludes).order_by('-pk')[:limit]
         return render_to_response('fbmc_result_list.txt', {'objs': cg})
 
@@ -114,7 +114,7 @@ class ContentModelForm(ModelForm):
         label="Place in rotators?", help_text="<b>Make sure this is / has an "
         "image before you set this to rotate!</b>"
     )
-    pub_status = forms.ChoiceField(Content.PUB_CHOICES,required=True, 
+    pub_status = forms.ChoiceField(Content.PUB_CHOICES, required=True, 
         label="Published Status"
     )
     
@@ -139,8 +139,13 @@ class ContentAdmin(admin.ModelAdmin):
             slug.editable = True
             issue.editable = True
         
-        if not (request.user.has_perm('content.content.can_publish') \
-                or request.user.is_superuser):
+        if request.user.has_perm('content.content.can_delete') or \
+            request.user.is_superuser:
+            f.base_fields['pub_status'].widget.choices = Content.PUB_CHOICES
+        if request.user.has_perm('content.content.can_publish'):
+            f.base_fields['pub_status'].widget.choices = \
+                ((0, 'Draft'), (1, 'Published'),)
+        else:
             f.base_fields['pub_status'].widget.choices = ((0, 'Draft'),)
         return f
     
@@ -538,10 +543,10 @@ class ArticleForm(ContentModelForm):
     text = forms.fields.CharField(
         widget=TinyMCEWidget(attrs={'cols':'67','rows':'40'})
     )
-    proofer = FbModelChoiceField(required=True, multiple=False,
+    proofer = FbModelChoiceField(required=False, multiple=False,
         url='/admin/content/contributor/search/', model=Contributor,
         labeler=(lambda obj: str(obj)))
-    sne = FbModelChoiceField(required=True, multiple=False,
+    sne = FbModelChoiceField(required=False, multiple=False,
         url='/admin/content/contributor/search/', model=Contributor,
         labeler=(lambda obj: str(obj)))
     rel_content = RelatedContentField(label='New content', required=False,
@@ -583,14 +588,16 @@ class ArticleAdmin(ContentAdmin):
         ('Print', {
             'fields': ('issue', 'section', 'page',),
         }),
+        ('Associated content', {
+            'fields': ('rel_content',),
+        }),
         ('Web', {
-            'fields': ('pub_status', 'priority', 'slug', 'tags', 'rotatable', 'web_only'),
+            'fields': ('pub_status', 'priority', 'slug', 'tags', 
+                        'rotatable', 'web_only'),
         }),
         ('Editing', {
             'fields': ('proofer', 'sne',),
-        }),
-        ('Associated content', {
-            'fields': ('rel_content',),
+            'classes': ('collapse',),
         }),
         ('Grouping', {
             'fields': ('group',),
@@ -613,10 +620,10 @@ class ArticleAdmin(ContentAdmin):
         if u.is_superuser:
             return True
         # cannot make change to published stuff
-        if obj:
+        if obj and obj.pub_status != 0:
             return u.has_perm('content.content.can_publish')
         return super(ArticleAdmin, self).has_change_permission(request, obj)
-
+    
     def save_model(self, request, obj, form, change):
         rel = form.cleaned_data.pop('rel_content',[])
         
@@ -634,7 +641,7 @@ class ArticleAdmin(ContentAdmin):
         if u.is_superuser:
             return qs
         if not u.has_perm('content.content.can_publish'):
-            qs = qs.filter(published=0)
+            qs = qs.filter(pub_status=0)
             u.message_set.create(
                 message='Note: you can only edit unpublished articles')
         return qs
