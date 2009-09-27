@@ -158,21 +158,22 @@ class Command(BaseCommand):
         
         # import articles
         
-        # there are tons of duplicate articles, and duplicate headline
-        #  articles get discarded, so start out with the articles that 
-        #  have photos, since those are probably the important ones
-        
-        sqlstr = "SELECT ID, Headline, PublishedOn, Subheadline, Byline, " \
-            "SectionID, SubsectionID, SubCategory, Text, CreatedOn, " \
-            "ModifiedOn, Proofer, SNE FROM dbo.Articles WHERE ID IN " \
-            "(SELECT DISTINCT(dbo.Articles.ID) FROM dbo.Articles, dbo.Pictures " \
-            "WHERE dbo.Articles.ID = dbo.Pictures.articleID)"
-        cur.execute(sqlstr)
-        rows = cur.fetchall()
-        
         start_str = ''
         if article_start_id is not 0:
             start_str = " WHERE ID <= %d " % article_start_id
+            rows = []
+        else:
+        # there are tons of duplicate articles, and duplicate headline
+        #  articles get discarded, so start out with the articles that 
+        #  have photos, since those are probably the important ones
+            sqlstr = "SELECT ID, Headline, PublishedOn, Subheadline, Byline, " \
+                "SectionID, SubsectionID, SubCategory, Text, CreatedOn, " \
+                "ModifiedOn, Proofer, SNE FROM dbo.Articles WHERE ID IN " \
+                "(SELECT DISTINCT(dbo.Articles.ID) FROM dbo.Articles, dbo.Pictures " \
+                "WHERE dbo.Articles.ID = dbo.Pictures.articleID)"
+            cur.execute(sqlstr)
+            rows = cur.fetchall()
+        
         sqlstr = str("SELECT ID, Headline, PublishedOn, Subheadline, Byline, "
                     "SectionID, SubsectionID, SubCategory, Text, CreatedOn, "
                     "ModifiedOn, Proofer, SNE FROM Articles %s ORDER BY ID "
