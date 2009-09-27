@@ -18,8 +18,10 @@ FILTER_URL_RE = r'(?:sections/(?P<section_str>[A-Za-z,]+)/)?' \
 
 from crimsononline.content import feeds
 
-   
-urlpatterns = patterns('crimsononline.content.views',
+urlpatterns = patterns('',
+)
+
+urlpatterns += patterns('crimsononline.content.views',
     url(r'writer/(?P<pk>\d+)/(?P<f_name>[A-Za-z\s\-\.]+)_' \
         r'(?P<m_name>[A-Za-z\-\'\.]*)_(?P<l_name>[A-Za-z\-\']+)/%s$' % FILTER_URL_RE,
         'writer', name='content_writer_profile'),
@@ -41,8 +43,8 @@ feeds = {
 
 
 sitemaps = {
-    #'flatpages': FlatPageSitemap,
-    #'articles': ArticleSitemap,
+    'flatpages': FlatPageSitemap,
+    'articles': ArticleSitemap,
 }
 
 urlpatterns +=patterns('',
@@ -50,7 +52,6 @@ urlpatterns +=patterns('',
     url(r'^sitemap.xml$', 'django.contrib.sitemaps.views.index', {'sitemaps': sitemaps}),
     url(r'^sitemap-(?P<section>.+)\.xml$', 'django.contrib.sitemaps.views.sitemap', {'sitemaps': sitemaps}),
 )
-
 
 if settings.HAYSTACK:
     urlpatterns += patterns('',
@@ -64,16 +65,12 @@ urlpatterns += patterns('django.views.generic.simple',
 )
 """
 
-# logging in and out
-urlpatterns += patterns('',
-    # existing patterns here...
-    (r'accounts/login/$',  login),
-    (r'accounts/logout/$', logout)
-)
+
 
 urlpatterns += patterns('',
     (r'^admin/', include('crimsononline.admin_cust.urls')),
 )
+
 
 urlpatterns += patterns('',
     (r'^site_media/(?P<path>.*)$', 'django.views.static.serve', 
@@ -92,8 +89,8 @@ generic_patterns = patterns('crimsononline.content.views',
 )
 
 # old website urls intact
-urlpatterns += patterns('',
-    (r'^article\.aspx', 'content.views.get_article_old_website')
+urlpatterns += patterns('crimsononline.content.views',
+    (r'^article\.aspx', 'get_article_old_website')
 )
 
 urlpatterns += generic_patterns
