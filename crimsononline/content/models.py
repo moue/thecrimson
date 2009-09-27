@@ -392,10 +392,13 @@ class ContentGroup(models.Model):
         When Content Groups change, we need to update the cache
         """
         s = super(ContentGroup, self).save(*args, **kwargs)
+        try:
         # expire own page
-        expire_page(self.get_absolute_url())
-        # we should expire the section pag for the content type if it has one
-        expire_page(self.section.get_absolute_url())
+            expire_page(self.get_absolute_url())
+            # we should expire the section pag for the content type if it has one
+            expire_page(self.section.get_absolute_url())
+        except:
+            pass
         return s
     
     @permalink
