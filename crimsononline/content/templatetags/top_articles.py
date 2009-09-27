@@ -4,7 +4,7 @@ import time
 import urllib
 from urlparse import urlparse
 from django import template
-from django.confs import settings
+from django.conf import settings
 from django.conf.urls.defaults import patterns, url
 from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import RegexURLResolver, Resolver404
