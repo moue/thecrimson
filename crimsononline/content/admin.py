@@ -843,14 +843,6 @@ class MapForm(ContentModelForm):
         "numbers, _, and - are allowed"
     )
     
-    def clean(self, *args, **kwargs):
-        print dir(self)
-        print self.errors
-        return self.cleaned_data
-    
-    def __init__(self, *args, **kwargs):
-        s = super(MapForm, self).__init__(*args, **kwargs)
-    
     class Meta:
         model = Map
     
@@ -860,11 +852,6 @@ class MapAdmin(ContentAdmin):
     form = MapForm
     
     inlines = [MarkerInline,]
-    
-    def save_model(self, request, obj, form, change):
-        print dir(form)
-        s = super(MapAdmin, self).save_model(request, obj, form, change)
-        print dir(form)
     
     fieldsets = (
         ('Map Setup', {
