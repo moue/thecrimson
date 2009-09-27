@@ -1,147 +1,171 @@
 [{
-    "pk": 1,
-    "model": "auth.group",
+    "pk": 15, 
+    "model": "auth.group", 
     "fields": {
-        "name": "Arts Board",
+        "name": "IT Exec", 
         "permissions": []
     }
-},
+}, 
 {
-    "pk": 2,
-    "model": "auth.group",
+    "pk": 16, 
+    "model": "auth.group", 
     "fields": {
-        "name": "Biz Board",
+        "name": "IT", 
         "permissions": []
     }
-},
+}, 
 {
-    "pk": 3,
-    "model": "auth.group",
+    "pk": 17, 
+    "model": "auth.group", 
     "fields": {
-        "name": "Design Board",
+        "name": "News", 
         "permissions": []
     }
-},
+}, 
 {
-    "pk": 4,
-    "model": "auth.group",
+    "pk": 18, 
+    "model": "auth.group", 
     "fields": {
-        "name": "Ed Board",
+        "name": "Photo", 
         "permissions": []
     }
-},
+}, 
 {
-    "pk": 5,
-    "model": "auth.group",
+    "pk": 19, 
+    "model": "auth.group", 
     "fields": {
-        "name": "FM Board",
+        "name": "Arts", 
         "permissions": []
     }
-},
+}, 
 {
-    "pk": 6,
-    "model": "auth.group",
+    "pk": 20, 
+    "model": "auth.group", 
     "fields": {
-        "name": "IT Board",
+        "name": "FM", 
         "permissions": []
     }
-},
+}, 
 {
-    "pk": 7,
-    "model": "auth.group",
+    "pk": 21, 
+    "model": "auth.group", 
     "fields": {
-        "name": "News Board",
+        "name": "Design", 
         "permissions": []
     }
-},
+}, 
 {
-    "pk": 8,
-    "model": "auth.group",
+    "pk": 22, 
+    "model": "auth.group", 
     "fields": {
-        "name": "Photo Board",
+        "name": "Sports", 
         "permissions": []
     }
-},
+}, 
 {
-    "pk": 9,
-    "model": "auth.group",
+    "pk": 23, 
+    "model": "auth.group", 
     "fields": {
-        "name": "Sports Board",
+        "name": "Biz", 
         "permissions": []
     }
-},
+}, 
 {
-    "pk": 10,
-    "model": "auth.group",
+    "pk": 24, 
+    "model": "auth.group", 
     "fields": {
-        "name": "Arts Exec",
+        "name": "Ed", 
         "permissions": []
     }
-},
+}, 
 {
-    "pk": 11,
-    "model": "auth.group",
+    "pk": 25, 
+    "model": "auth.group", 
     "fields": {
-        "name": "Biz Exec",
+        "name": "Execs", 
         "permissions": []
     }
-},
+}, 
 {
-    "pk": 12,
-    "model": "auth.group",
+    "pk": 26, 
+    "model": "auth.group", 
     "fields": {
-        "name": "Design Exec",
+        "name": "Editors", 
         "permissions": []
     }
-},
+}, 
 {
-    "pk": 13,
-    "model": "auth.group",
+    "pk": 1, 
+    "model": "admin_cust.board", 
     "fields": {
-        "name": "Ed Exec",
-        "permissions": []
+        "group": 16, 
+        "name": "IT"
     }
-},
+}, 
 {
-    "pk": 14,
-    "model": "auth.group",
+    "pk": 2, 
+    "model": "admin_cust.board", 
     "fields": {
-        "name": "FM Exec",
-        "permissions": []
+        "group": 17, 
+        "name": "News"
     }
-},
+}, 
 {
-    "pk": 15,
-    "model": "auth.group",
+    "pk": 3, 
+    "model": "admin_cust.board", 
     "fields": {
-        "name": "IT Exec",
-        "permissions": []
+        "group": 18, 
+        "name": "Photo"
     }
-},
+}, 
 {
-    "pk": 16,
-    "model": "auth.group",
+    "pk": 4, 
+    "model": "admin_cust.board", 
     "fields": {
-        "name": "News Exec",
-        "permissions": []
+        "group": 19, 
+        "name": "Arts"
     }
-},
+}, 
 {
-    "pk": 17,
-    "model": "auth.group",
+    "pk": 5, 
+    "model": "admin_cust.board", 
     "fields": {
-        "name": "Photo Exec",
-        "permissions": []
+        "group": 20, 
+        "name": "FM"
     }
-},
+}, 
 {
-    "pk": 18,
-    "model": "auth.group",
+    "pk": 6, 
+    "model": "admin_cust.board", 
     "fields": {
-        "name": "Sports Exec",
-        "permissions": []
+        "group": 21, 
+        "name": "Design"
     }
-},
+}, 
+{
+    "pk": 7, 
+    "model": "admin_cust.board", 
+    "fields": {
+        "group": 22, 
+        "name": "Sports"
+    }
+}, 
+{
+    "pk": 8, 
+    "model": "admin_cust.board", 
+    "fields": {
+        "group": 23, 
+        "name": "Biz"
+    }
+}, 
+{
+    "pk": 9, 
+    "model": "admin_cust.board", 
+    "fields": {
+        "group": 24, 
+        "name": "Ed"
+    }
+}
 {
     "pk": 1,
     "model": "auth.user",
@@ -242,78 +266,6 @@
     "model": "content.tag",
     "fields": {
         "text": "visual arts"
-    }
-},
-{
-    "pk": 1,
-    "model": "admin_cust.board",
-    "fields": {
-        "group": 1,
-        "name": "Arts"
-    }
-},
-{
-    "pk": 2,
-    "model": "admin_cust.board",
-    "fields": {
-        "group": 2,
-        "name": "Biz"
-    }
-},
-{
-    "pk": 3,
-    "model": "admin_cust.board",
-    "fields": {
-        "group": 3,
-        "name": "Design"
-    }
-},
-{
-    "pk": 4,
-    "model": "admin_cust.board",
-    "fields": {
-        "group": 4,
-        "name": "Ed"
-    }
-},
-{
-    "pk": 5,
-    "model": "admin_cust.board",
-    "fields": {
-        "group": 5,
-        "name": "FM"
-    }
-},
-{
-    "pk": 6,
-    "model": "admin_cust.board",
-    "fields": {
-        "group": 6,
-        "name": "IT"
-    }
-},
-{
-    "pk": 7,
-    "model": "admin_cust.board",
-    "fields": {
-        "group": 7,
-        "name": "News"
-    }
-},
-{
-    "pk": 8,
-    "model": "admin_cust.board",
-    "fields": {
-        "group": 8,
-        "name": "Photo"
-    }
-},
-{
-    "pk": 9,
-    "model": "admin_cust.board",
-    "fields": {
-        "group": 9,
-        "name": "Sports"
     }
 },
 {

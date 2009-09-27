@@ -247,6 +247,7 @@ admin.site.register(Tag, TagAdmin)
 class ContributorForm(forms.ModelForm):
     class Meta:
         model = Contributor
+        
     huid = forms.fields.CharField(label='HUID', required=False,
         widget=MaskedValueTextInput(sentinel="********"))
     profile_pic = forms.fields.ImageField(widget=admin.widgets.AdminFileWidget,
@@ -261,6 +262,8 @@ class ContributorForm(forms.ModelForm):
 
 class ContributorAdmin(admin.ModelAdmin):
     search_fields = ('first_name', 'last_name',)
+    list_display =  ('last_name', 'first_name', 'middle_name', 'class_of',
+                    'created_on', 'email', 'is_active')
     fieldsets = (
         (None, {
             'fields': (
@@ -341,7 +344,7 @@ class ContributorAdmin(admin.ModelAdmin):
     def get_contributors(self, request):
         q_str, excludes, limit = fbmc_search_helper(request)
         c = Contributor.objects.filter(
-            Q(first_name__contains=q_str) | Q(last_name__contains=q_str),
+            Q(first_name__icontains=q_str) | Q(last_name__icontains=q_str),
             is_active=True).exclude(pk__in=excludes)[:limit]
         return render_to_response('ajax/contributors.txt', {'contributors': c})
 

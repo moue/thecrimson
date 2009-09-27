@@ -454,7 +454,8 @@ class Tag(models.Model):
     # validates in the admin
     text = models.CharField(blank=False, max_length=25, unique=True,
         help_text='Tags can contain letters and spaces')
-    #category = models.CharField(blank=True, max_length=25, choices=CATEGORY_CHOICES)
+    category = models.CharField(blank=True, max_length=25, 
+                                choices=CATEGORY_CHOICES)
     
     def __unicode__(self):
         return self.text
@@ -1050,12 +1051,13 @@ class Article(Content):
         
     BYLINE_TYPE_CHOICES = (
         ('cstaff', 'Crimson Staff Writer'),
+        ('contrib', 'Contributing Writer'),
     )
     
     objects = ContentManager()    
     
-    headline = models.CharField(blank=False, max_length=70)
-    subheadline = models.CharField(blank=True, null=True, max_length=150)
+    headline = models.CharField(blank=False, max_length=127)
+    subheadline = models.CharField(blank=True, null=True, max_length=255)
     byline_type = models.CharField(
         blank=True, null=True, max_length=70, choices=BYLINE_TYPE_CHOICES)
     text = models.TextField(blank=False, null = False)
