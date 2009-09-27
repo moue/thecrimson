@@ -835,6 +835,18 @@ class MarkerInline(admin.TabularInline):
 
 class MapForm(ContentModelForm):
     map_preview = MapBuilderField(label='Map Preview', required=False)
+    slug = forms.fields.SlugField(widget=AutoGenSlugWidget(
+            url='/admin/content/article/gen_slug/',
+            date_field='#id_issue', text_field='#id_title',
+            attrs={'size': '40'},
+        ), help_text="This is the text that goes in the URL.  Only letters," \
+        "numbers, _, and - are allowed"
+    )
+    
+    def clean(self, *args, **kwargs):
+        print dir(self)
+        print self.errors
+        return self.cleaned_data
     
     def __init__(self, *args, **kwargs):
         s = super(MapForm, self).__init__(*args, **kwargs)
@@ -849,20 +861,24 @@ class MapAdmin(ContentAdmin):
     
     inlines = [MarkerInline,]
     
+    def save_model(self, request, obj, form, change):
+        print dir(form)
+        s = super(MapAdmin, self).save_model(request, obj, form, change)
+        print dir(form)
+    
     fieldsets = (
         ('Map Setup', {
             'fields': ('title', 'caption', 'map_preview'),
         }),
         ('Details', {
             'classes': ('frozen','collapse'),
-            'fields': ('zoom_level','center_lng','center_lat','display_mode',
-                'width','height',),
+            'fields': ('zoom_level','center_lng','center_lat','display_mode',),
         }),
         ('Contributors', {
             'fields': ('contributors',),
         }),
         ('Organization', {
-            'fields': ('section', 'pub_status', 'issue', 'slug', 'tags', 'priority',),
+            'fields': ('section', 'pub_status', 'issue', 'slug', 'tags', 'priority','rotatable'),
         }),
         ('Grouping', {
             'fields': ('group',),
