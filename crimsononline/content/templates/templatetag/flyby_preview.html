@@ -4,6 +4,9 @@
 
 {% module 4 "" box %}
 <div class="flyby_preview">
+
+    <img class="flyby_preview_header" src="{% static_url "images/flyby/flyby_preview.png" %}" alt="flyby_preview" />
+
 {% for article in posts %}
     {% if article.main_rel_content %}
         <div class="image_thumb" style="width: 40px; float: left; margin-right: 5px; text-align: right;">{{article.main_rel_content|to_img_tag:"40,40,1,1"}}</div>

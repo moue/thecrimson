@@ -2,6 +2,7 @@
 {% load common %}
 
 <span>Article</span>
+<img src="{% static_url "images/icons/article.gif" %}" alt="article" />
 <span>{{ article.headline }}</span>
 <span>{{ article.section }}</span>
 <span>By {{ article.contributors.all|human_list }}</span>

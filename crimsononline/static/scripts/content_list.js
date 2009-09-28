@@ -44,4 +44,15 @@ $(document).ready(function(){
         return false;
     });*/
 
+    /* Filter sliding effects */
+    $("#filter_toggle").click(function () {
+        if ($("#filter_contents").is(":hidden")) {
+                $("#filter_contents").slideDown("slow");
+                $(this).text("Hide Filters")
+              } else {
+                $("#filter_contents").slideUp("slow");
+                $(this).text("Show Filters")
+              }
+    });
+    
 });

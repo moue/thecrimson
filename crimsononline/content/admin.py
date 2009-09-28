@@ -714,7 +714,7 @@ class ArticleAdmin(ContentAdmin):
         returns JSON containing Content objects and pg numbers
         """
         OBJS_PER_REQ = 3
-        if ct_id is not 0:
+        if int(ct_id) != 0:
             cls = ContentType.objects.get(pk=ct_id).model_class()
         else:
             cls = None
@@ -723,7 +723,7 @@ class ArticleAdmin(ContentAdmin):
         if cls:
             objs = cls.find_by_date(start=st_dt, end=end_dt)
         else:
-            objs = Content.objects.filter(created_on__range=(st_dt, end_dt))
+            objs = Content.find_by_date(start=st_dt, end=end_dt)
         
         p = Paginator(objs, OBJS_PER_REQ).page(page)
         

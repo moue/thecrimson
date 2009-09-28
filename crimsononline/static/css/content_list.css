@@ -1,4 +1,5 @@
 /* content list */
+
 .content_list_content ul{
     list-style: none;
 }
@@ -23,6 +24,11 @@
     border-bottom: 1px dotted #d1d1d1;
     margin-bottom: 10px;
 }
+
+.content_list_filters tr{
+    height:20px;
+}
+
 .content_list_filters .title {
     color: #aa2222;
 }
@@ -52,7 +58,7 @@
     color: #aa2222;
 }
 
-.filter_label{
+.filter_label, a.filter_label{
 	font-size: 11px;
 	font-family: Helvetica, Arial, sans-serif;
     font-family: arial;
@@ -60,13 +66,18 @@
     font-weight: normal;
 }
 
-.content_list_filters span.filter_text{
+
+.content_list_filters a.filter_text{
     color: #BA0600
 }
 
+.content_list_filters .filter_check{
+    margin-right: 3px;
+}
 .content_list_filters span.reg_text{
-    font-family:Georgia,Palatino Linotype,serif;
-    font-size: 12px;
+	font-size: 11px;
+	font-family: Helvetica, Arial, sans-serif;
+    font-family: arial;
     color: black;
     font-weight: normal;
 }

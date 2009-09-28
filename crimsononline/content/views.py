@@ -421,32 +421,48 @@ def filter_helper(qs, section_str, type_str, url_base):
         # TODO: cache this shit
         ct = len(unfilteredcontent.filter(section=section))
         sects[section.name] = {'selected': a, 'url': url, 'count': ct} 
-        
+    
+    # models to show in the filter interface
+    content_choices = ["article", "image"]
     if type_str:
         type_str = type_str.replace('-', ' ') # convert from url
-        type_str = [t.lower() for t in type_str.split(',') if t]
+        type_str = [t.lower() for t in type_str.split(',') if t in content_choices + ["other"]]
         
-        types = [t for t in Content.types() if t.name.lower() in type_str]
-        content = content.filter(content_type__in=types)
-    else:
-        type_str = [t.name.lower() for t in Content.types()]
-        types = Content.types()
-    for type in Content.types():
-        tname = type.name.lower()
-        a = type in types
-        if a:
-            t_str = ','.join([t for t in type_str if t != tname])
+        if "other" in type_str:
+            othertypes = [t for t in Content.types() if t.name not in [a.lower() for a in content_choices]]
         else:
-            t_str = ','.join(type_str + [tname])
+            othertypes = []
+            
+        # Models to show
+        filter_types = [t for t in Content.types() if t.name.lower() in type_str] + othertypes
+        types = type_str
+        content = content.filter(content_type__in=filter_types)
+    # all content types
+    else:
+        types = content_choices + ["other"]
+    
+    print types
+    # Iterate over list choices and form URLs
+    for type in content_choices + ["other"]:
+        sel = type in types
+
+        t_str = ','.join([t for t in (types + [type]) if t != type or t not in types])
         
         url = url_base
         url += ('sections/%s/' % o_section_str if o_section_str else '')
         url += ('types/%s/' % t_str if t_str else '')
         
-        ct = len(unfilteredcontent.filter(content_type=type))
-        
-        tps[tname.title()] = {'selected': a, 'url': url, 'count':ct}
+        if type != "other":
+            curtype = [t for t in Content.types() if t.name.lower() == type][0]
+            ct = len(unfilteredcontent.filter(content_type=curtype))
+        else:
+            othertypes = [t for t in Content.types() if t.name not in [a.lower() for a in content_choices]]
+            ct = len(unfilteredcontent.filter(content_type__in=othertypes))
+
+        if(type in content_choices + ["other"]):
+            tps[type[0].upper() + type[1:]] = {'selected': sel, 'url': url, 'count':ct}
     
+    print tps
     return {'content': content, 'sections': sects, 'types': tps}
 
 @cache(settings.CACHE_SHORT, "general_generated_toparticles")

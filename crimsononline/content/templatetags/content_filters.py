@@ -22,9 +22,13 @@ def render(content, method):
 @register.filter
 def datify(cont):
     issue = cont.issue.issue_date
+    print date.today()
+    print issue
     if(date.today() == issue):
-        
-        return "THIS SHIT WAS PUBLISHED TODAY"
+        secs_ago = (datetime.today() - cont.created_on).seconds
+        if secs_ago < 3600:
+            return str(secs_ago/60) + " minutes ago"
+        return str(secs_ago/3600) + " hours ago"
     else:
         daysold = (date.today() - issue)
         if (daysold.days <= 5):

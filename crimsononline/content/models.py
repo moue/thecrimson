@@ -212,12 +212,13 @@ class Content(models.Model):
         context -- gets injected into template (optional)
         """
         
+        nav = self.section.name.lower()
         name = self.content_type.name.replace(" ","")
         templ = 'models/%s/%s.html' % (name, method)
         # can access self with either the name of the class (ie, 'article')
         #   or 'content'
         context.update({name: self.child, 'content': self.child, 'class': name,
-                        'disqus': settings.DISQUS})
+                        'disqus': settings.DISQUS, 'nav':nav})
         
         # print view
         if method == 'page' and request.GET.get('print',""):

@@ -25,32 +25,39 @@
         {% endblock %}
         {% block content_filters %}
             <div class="content_list_filters">
+                <a id="filter_toggle" class="filter_text filter_label">Show Filters</a>
+                <div id="filter_contents" style="display:none;">
                 <table>
                 <tbody>
-                <tr><td colspan=2><span class="filter_text filter_label">FILTER BY:</span></td></tr>
                 <tr>
                 <td><span class="filter_label">SECTION:</span></td>
                 <td>
+                <form>
                 {% for section, d in sections.items %}
-                    {% if d.selected %}
-                        <a class="section" href="{{d.url}}">{{section|yuhkilabel}}</a>
-                    {% else %}
-                        <a class="section"href="{{d.url}}">{{section|yuhkilabel:"gray"}}</a>
-                    {% endif %}<span class="reg_text">({{d.count}})</span>
-                {% endfor %}</td></tr>
+                        <input type="checkbox" class="filter_check" onclick="window.location='{{d.url}}'"
+                        {% if d.selected %}
+                        checked
+                        {% endif %}
+                        ><span class="reg_text">{{section}}</span></input>
+                        <span class="reg_text">({{d.count}})</span>
+                {% endfor %}
+                </form>
+                </td></tr>
                 <tr>
                 <td><span class="filter_label">TYPE:</span></td>
                 <td>
                 {% for type, d in types.items %}    
+                <input type="checkbox" class="filter_check" onclick="window.location='{{d.url}}'"
                 {% if d.selected %}
-                    <a class="section" href="{{d.url}}">{{type|yuhkilabel}}</a>
-                {% else %}
-                    <a class="section"href="{{d.url}}">{{type|yuhkilabel:"gray"}}</a>
-                {% endif %}<span class="reg_text">({{d.count}})</span>
+                checked
+                {% endif %}
+                ><span class="reg_text">{{type}}</span></input>
+                <span class="reg_text">({{d.count}})</span>
                 {% endfor %}
                 </td></tr>
                 </tbody>
                 </table>
+                </div>
             </div>
         {% endblock %}
         {% block content_list %}
@@ -68,7 +75,7 @@
         {% block right %}
         {% tag_cloud 15 "RELATED TAGS" tags %}
         {% module 4 "" ad %}
-            <img src="/site_media/images/sample_ads/box.gif" alt="advertisement" />
+        <iframe id='a8ed08bc' name='a8ed08bc' src='http://d1.openx.org/afr.php?zoneid=74816&amp;cb=987987' framespacing='0' frameborder='no' scrolling='no' width='300' height='250'><a href='http://d1.openx.org/ck.php?n=aaf60f27&amp;cb=987897' target='_blank'><img src='http://d1.openx.org/avw.php?zoneid=74816&amp;cb=77777&amp;n=aaf60f27' border='0' alt='' /></a></iframe>
         {% endmodule %}
         {% most_read_articles %}
         {% endblock %}

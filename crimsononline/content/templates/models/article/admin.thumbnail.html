@@ -5,3 +5,4 @@
 <p>{{ article.section }}</p>
 <p>By {{ article.contributors.all|human_list }}</p>
 <p>{{ article.issue.issue_date|date:"m/d/Y" }}</p>
+<img src="{% static_url "images/icons/article.gif" %}" alt="article" />

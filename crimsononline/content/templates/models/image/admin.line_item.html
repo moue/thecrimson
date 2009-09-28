@@ -2,6 +2,7 @@
 {% load common %}
 
 <span>Image</span>
+<img src="{% static_url "images/icons/photo.gif" %}" alt="image" />
 <span>{{ image|to_thumb_tag }}</span>
 <span>{{ image.kicker }}</span>
 <span class="contributors">{{ image.contributors.all|human_list }}</span>

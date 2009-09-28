@@ -2,6 +2,6 @@
 {% load content_filters %}
 
 <h2>{{article|linkify}}</h2>
-<div class="byline">By {{article.contributors.all|linkify|human_list}}</div>
-
+<span class="byline">By {{article.contributors.all|linkify|human_list}}</span>
+<span class="dateline">{{ article|datify }}</span>
 <p class="teaser">{{ article.teaser }}</p>
