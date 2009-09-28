@@ -27,7 +27,7 @@ class DateRangeSearchForm(SearchForm):
         if self.cleaned_data['order_by'] == 'date':
             sqs = sqs.order_by('pub_date')
         
-        print self.cleaned_data['content_sections']
+        #print self.cleaned_data['content_sections']
         if self.cleaned_data['content_sections'] != 'All':
             sc = self.cleaned_data['content_sections']
             sqs = sqs.filter(section=Section.objects.get(name=sc).pk)

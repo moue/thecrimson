@@ -22,8 +22,6 @@ def render(content, method):
 @register.filter
 def datify(cont):
     issue = cont.issue.issue_date
-    print date.today()
-    print issue
     if(date.today() == issue):
         secs_ago = (datetime.today() - cont.created_on).seconds
         if secs_ago < 3600:

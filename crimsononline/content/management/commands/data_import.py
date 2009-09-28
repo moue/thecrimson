@@ -43,6 +43,67 @@ def get_save_path_new(instance, filename):
     return instance.issue.issue_date.strftime("photos/%Y/%m/%d/%H%M%S_") + \
         filtered_capt + ext
 
+def fix_tags():
+    """A lot of the subsections were mapped incorrectly in the old db."""
+    wrong_tags = ['News', 'Breaking News', 'Editorials', 'Comments',
+                    'Op Eds', 'Columns', 'Letters', 'Sports', 'Columns',
+                    'Features', 'Theater']
+    wrong_tags = [None] + [Tag.objects.get(text=t) for t in wrong_tags]
+    
+    mapp = {
+        'FM': {
+            'Scrutiny': 1,
+            'In The Meantime': 2,
+            'For The Moment': 3,
+            'Endpaper': 4,
+            'Gadfly': 5,
+            'Food and Drink': 6,
+        },
+        'Opinion': {
+            'Focus': 5,
+            'Comments': 1,
+            'Op Eds': 2,
+            'Columns': 3,
+            'Letters': 4,
+        },
+        'Sports': {
+            'Columns': 2,
+            'Game Recaps': 3,
+            'Notebooks': 4,
+            'Sidebars': 5,
+            'Previews': 6,
+            'Features': 7,
+            'Supplement Stories': 9,
+            'Sports Briefs': 10,
+            'Commencement Stories': 11,
+        },
+        'Arts': {
+            'Theater': 1,
+            'Film': 2,
+            'Books': 3,
+            'Music': 4,
+            'Visual Arts': 5,
+        },
+    }
+    
+    right_tags = {}
+    for key, value in mapp.iteritems():
+        right_tags[key] = {}
+        for k, v in value.iteritems():
+            right_tags[key][wrong_tags[v]] = Tag.objects.get(text=k)
+    
+    for section_name, mappings in right_tags.iteritems():
+        s = Section.objects.get(name=section_name)
+        content = Content.objects.filter(section=s)
+        print mappings
+        for wrong, right in mappings.iteritems():
+            print wrong, right
+            for c in content.filter(tags=wrong):
+                c.tags.remove(wrong)
+                s = set(c.tags.all())
+                s.add(right)
+                c.tags = list(s)
+
 class Command(BaseCommand):
     option_list = BaseCommand.option_list
     help = "Imports data from the old website, hosted on crimson-sql1. Requires pymssql 1.0.2"
@@ -52,6 +113,10 @@ class Command(BaseCommand):
             import pymssql
         except:
             print "Could not import pymssql"
+        
+        if len(args) > 0 and args[0] == 'fix_tags':
+            fix_tags()
+            return
         
         # where to pick up importing articles
         if len(args) is 0:

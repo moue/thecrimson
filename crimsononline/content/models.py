@@ -858,7 +858,6 @@ class ImageManager(ContentManager):
         s =  super(ImageManager, self).get_query_set()
         # this is a hella ghetto way to make sure image galleries always return
         # images in the right order.  this is probably really inefficient
-        print self.__class__.__name__
         if self.__class__.__name__ == 'ManyRelatedManager':
             s = s.order_by('gallerymembership__order')
         return s  
@@ -1086,11 +1085,11 @@ class Article(Content):
         prev_article = Article.objects.get(pk=self.pk)
         print " and pub_status is " + str(prev_article.pub_status)
         if prev_article is not None and prev_article.pub_status is 1:
-            print "hi2"
+            #print "hi2"
             oldtext = prev_article.text
             # If the text has changed, make a new Correction for the old text
             if oldtext != self.text:
-                print "hi3"
+                #print "hi3"
                 corr = Correction(text = oldtext, article = self)
                 corr.save()
         retval = super(Article, self).save(*args, **kwargs)

@@ -130,6 +130,8 @@ class ContentAdmin(admin.ModelAdmin):
     Doesn't actually work by itself.
     """
     
+    ordering = ('-issue__issue_date',)
+    
     def get_form(self, request, obj=None):
         f = super(ContentAdmin, self).get_form(request, obj)
         
@@ -265,6 +267,7 @@ class TagForm(forms.ModelForm):
 class TagAdmin(admin.ModelAdmin):
     form = TagForm
     search_fields = ['text',]
+    ordering = ['text',]
 
 admin.site.register(Tag, TagAdmin)
 
@@ -606,6 +609,7 @@ class ArticleAdmin(ContentAdmin):
 
     list_display = ('headline', 'section', 'issue','pub_status_text')
     search_fields = ('headline', 'text',)
+    list_filter = ('section',)
 
     fieldsets = (
         ('Headline', {

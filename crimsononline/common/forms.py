@@ -481,7 +481,6 @@ class TinyMCEWidget(forms.widgets.Textarea):
         try:
             for k, v in csdict.items():
                 csstring = csstring + k + ':"' + v + '", \n'
-            print csstring
         except:
             pass
         self.custom_settings = csstring

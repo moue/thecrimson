@@ -199,16 +199,16 @@ def section_fm(request):
     section = Section.cached(nav)
     stories = Article.objects.recent.filter(section=section)
     try:
-        scrutiny = stories.filter(tags__text='scrutiny')[0]
+        scrutiny = stories.filter(tags__text='Scrutiny')[0]
     except IndexError:
         scrutiny = None
     try:
-        endpaper = stories.filter(tags__text='endpaper')[0]
+        endpaper = stories.filter(tags__text='Endpaper')[0]
     except IndexError:
         endpaper = None
     rotate = rotatables(section, 4)
-    itm = stories.filter(tags__text='itm')[:3]
-    ftm = stories.filter(tags__text='ftm')[:9]
+    itm = stories.filter(tags__text='In The Meantime')[:3]
+    ftm = stories.filter(tags__text='For The Moment')[:9]
     issues = Issue.objects.exclude(Q(fm_name=None)|Q(fm_name=''))[:3]
     columns = ContentGroup.objects.filter(section=section, active=True,
         type='column').annotate(recent=Max('content__issue__issue_date'))
