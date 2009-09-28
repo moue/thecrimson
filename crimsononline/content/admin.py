@@ -249,19 +249,22 @@ class ContentAdmin(admin.ModelAdmin):
     
 
 class TagForm(forms.ModelForm):
-    ALLOWED_REGEXP = compile(r'[A-Za-z\s]+$')
+    ALLOWED_REGEXP = compile(r'[A-Za-z\s\']+$')
+    
     class Meta:
         model = Tag
+    
     def clean_text(self):
         text = self.cleaned_data['text']
         if not TagForm.ALLOWED_REGEXP.match(text):
             raise forms.ValidationError(
                 'Tags can only contain letters and spaces')
-        return text.lower()
+        return text
     
 
 class TagAdmin(admin.ModelAdmin):
     form = TagForm
+    search_fields = ['text',]
 
 admin.site.register(Tag, TagAdmin)
 
