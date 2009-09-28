@@ -30,7 +30,7 @@ from crimsononline.common.utils.html import para_list
 from crimsononline.common.forms import \
     FbModelChoiceField, CropField, SearchModelChoiceField, \
     MaskedValueTextInput, RatingWidget, fbmc_search_helper, \
-    TinyMCEWidget
+    TinyMCEWidget, FbSelectWidget
 
 
 STOP_WORDS = ['a', 'able', 'about', 'across', 'after', 'all', 'almost', 'also', 
@@ -76,11 +76,11 @@ admin.site.register(ContentGroup, ContentGroupAdmin)
 
 
 class ContentModelForm(ModelForm):
-    """
-    Parent class for Content model forms.
+    """Parent class for Content model forms.
+    
     Doesn't actually work by itself.
     """
-
+    
     tags = forms.ModelMultipleChoiceField(Tag.objects.all(), required=True,
         widget=admin.widgets.RelatedFieldWidgetWrapper(
             admin.widgets.FilteredSelectMultiple('Tags', False),
@@ -95,7 +95,7 @@ class ContentModelForm(ModelForm):
     )
     
     issue = IssuePickerField(label='Issue Date', required=True)
-
+    
     slug = forms.fields.SlugField(widget=AutoGenSlugWidget(
             url='/admin/content/article/gen_slug/',
             date_field='#id_issue_input', text_field='#id_text',
@@ -141,6 +141,13 @@ class ContentAdmin(admin.ModelAdmin):
         else:
             slug.editable = True
             issue.editable = True
+        
+        # people that can't add contributors can't add them in the
+        #   article interface
+        if not request.user.has_perm('content.add_contributor'):
+            w = f.base_fields['contributors'].widget
+            if not isinstance(w, FbSelectWidget):
+                f.base_fields['contributors'].widget = w.widget
         
         if request.user.has_perm('content.delete_content'):
             f.base_fields['pub_status'].widget.choices = Content.PUB_CHOICES
@@ -652,8 +659,8 @@ class ArticleAdmin(ContentAdmin):
             return qs
         if not u.has_perm('content.content.can_publish'):
             qs = qs.filter(pub_status=0)
-            u.message_set.create(
-                message='Note: you can only edit unpublished articles')
+            #u.message_set.create(
+            #    message='Note: you can only edit unpublished articles')
         return qs
     
     def get_urls(self):
