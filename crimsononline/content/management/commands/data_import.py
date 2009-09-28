@@ -40,7 +40,9 @@ def ensure_dir(f):
 def get_save_path_new(instance, filename):
     ext = splitext(filename)[1]
     filtered_capt = make_file_friendly(instance.kicker)
-    return instance.issue.issue_date.strftime("photos/%Y/%m/%d/%H%M%S_") + \
+    if filtered_capt is None or filtered_capt == "":
+        filtered_capt = str(randrange(1,10000000))
+    return instance.issue.issue_date.strftime("photos/%Y/%m/%d/") + \
         filtered_capt + ext
 
 def fix_tags():
@@ -190,6 +192,7 @@ class Command(BaseCommand):
                 newtag = Tag(text=name, category='sports')
                 newtag.save()
                 sports[str(row["ID"])] = newtag
+
         
         # Create No Contributor if it doesn't exist
         try:
@@ -309,26 +312,38 @@ class Command(BaseCommand):
             rows = cur.fetchmany(size=10000)
         
         # link contributors and articles
-        cur.execute("SELECT ArticleID, ContributorID FROM ArticleWriters")
+        if len(args) > 1:
+            ac_relation_start = int(args[1])
+        else:
+            ac_relation_start = False
+        s = "WHERE ID < %d " % ac_relation_start if ac_relation_start else ""
+        cur.execute("SELECT ID, ArticleID, ContributorID FROM ArticleWriters "
+                    + s + "ORDER BY ID DESC")
         rows = cur.fetchall()
         print "Importing " + str(len(rows)) + " Article-Contributor Relations"
         for row in rows:
             try:
                 a = Article.objects.get(pk=row["ArticleID"])
+                a.contributors.clear()
                 a.contributors.add(Contributor.objects.get(pk=row["ContributorID"]))
-            except:
-                pass
-                
-        # handle articles with no contributors
-        articles_no_contribs = Article.objects.filter(contributors=None)
-        for a in articles_no_contribs:
-            a.contributors.add(Contributor.objects.get(last_name="ATTRIBUTED"))
+            except Exception as e:
+                print "Article Content relation %i failed" % row["ID"]
+                print e
+                continue
         
-        return
+        if ac_relation_start is not 1:
+            # handle articles with no contributors
+            print Content.objects.filter(contributors=None).count()
+            return 
+            articles_no_contribs = Content.objects.filter(contributors=None)
+            print "handling %d articles with no contributors" % len(articles_no_contribs)
+            for a in articles_no_contribs:
+                a.contributors.add(no_contrib)
         
         # Photos ... this is so ghetto
-        cur.execute("SELECT ID, createdOn, modifiedOn, Caption, articleID, file500px, webwidth, webheight, kicker, issueDate, ContributorID, Section FROM Pictures")
-        rows = cur.fetchmany(size=1000)
+        cur.execute("SELECT ID, createdOn, modifiedOn, Caption, articleID, file500px, webwidth, webheight, kicker, issueDate, " 
+            "ContributorID, Section FROM Pictures ORDER BY ID")
+        rows = cur.fetchall()
         print "Importing " + str(len(rows)) + " Images"
         opener = urllib2.build_opener()
         for row in rows:
@@ -336,7 +351,7 @@ class Command(BaseCommand):
 
             i.section = sections[str(row["Section"])]
             i.kicker = sqldec(row["kicker"]) if row["kicker"] not in ["", None] else "Unnamed photo"
-            i.caption = sqldec(row["Caption"]) if row["Caption"] not in ["", None] else "Uncaptioned photo"
+            i.caption = sqldec(row["Caption"]) if row["Caption"] not in ["", None] else "1Uncaptioned photo"
             i.created_on = row["createdOn"] if row["createdOn"] is not None else datetime.now()
             i.modified_on = row["modifiedOn"] if row["modifiedOn"] is not None else datetime.now()
             slugtext = i.kicker + i.caption + str(randrange(1,10000))
@@ -348,9 +363,16 @@ class Command(BaseCommand):
             i.id = row["ID"]
             
             # no leading zeroes
-            mo = int(row["issueDate"].strftime("%m"))
-            da = int(row["issueDate"].strftime("%d"))
-            datefolder = row["issueDate"].strftime(str(mo) + "-" + str(da) + "-%Y")
+            try:
+                mo = int(row["issueDate"].strftime("%m"))
+                da = int(row["issueDate"].strftime("%d"))
+                datefolder = row["issueDate"].strftime(str(mo) + "-" + str(da) + "-%Y")
+            except:
+                print "Date couldn't be parsed!"
+                continue
+            if datefolder is None or row["file500px"] is None:
+                print "Either date or filename was missing. Skipped it."
+                continue
             old_location = "http://media.thecrimson.com/" + datefolder + "/" + row["file500px"]
             
             # make sure pic is on the server
@@ -370,20 +392,22 @@ class Command(BaseCommand):
                 
             try:
                 i.save()
-            except:
-                print "Couldn't save image with kicker " + i.kicker + " and description " + i.caption + " from date " + str(i.issue.issue_date)
+            except Exception as e:
+                print e
+                print "Couldn't save image with id " + str(i.id)
             # dead contributor ids
             try:
-                i.contributors.add(Contributor.objects.get(pk=row["ContributorID"]))
+                if row["ContributorID"] is not None:
+                    i.contributors.add(Contributor.objects.get(pk=row["ContributorID"]))
             except:
                 print "Couldn't find contributor " + str(row["ContributorID"])
             # try to link photo and article, if article exists
             try:
-                a = Article.objects.get(pk=row["articleID"])
-                a.rel_content.add(i)
+                if row["articleID"] is not None:
+                    a = Article.objects.get(pk=int(row["articleID"]))
+                    x = ArticleContentRelation(order=0, article=a, related_content=i)
             except:
-                raise
-                print "couldn't find linked article"
+                print row["articleID"]
                 continue
         """
                 
