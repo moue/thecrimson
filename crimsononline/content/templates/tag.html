@@ -36,7 +36,7 @@
         {% else %}
             <img src="{% static_url "images/noface_50x50.jpg" %}" alt="face"/>
         {% endif %}
-        <span>{{c|linkify}} ({{c.c_count}})</span>
+        <p class="sub2">{{c|linkify}} ({{c.c_count}})</p>
         <p class="dateline">{{c.rece|date}}</p>
         {% endfor %}</li>
         </ul>
