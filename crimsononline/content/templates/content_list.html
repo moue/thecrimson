@@ -25,8 +25,20 @@
         {% endblock %}
         {% block content_filters %}
             <div class="content_list_filters">
-                <a id="filter_toggle" class="filter_text filter_label">Show Filters</a>
-                <div id="filter_contents" style="display:none;">
+                <a id="filter_toggle" class="filter_text filter_label">
+                {% if show_filter %}
+                Hide
+                {% else %}
+                Show
+                {% endif %}
+                Filters</a>
+                <div id="filter_toggle_contents" style="display:
+                {% if show_filter %}
+                block;
+                {% else %}
+                none;
+                {% endif %}
+                ">
                 <table>
                 <tbody>
                 <tr>

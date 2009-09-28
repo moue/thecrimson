@@ -65,7 +65,7 @@ def writer(request, pk, f_name, m_name, l_name,
     if (w.first_name, w.middle_name, w.last_name) != (f_name, m_name, l_name):
         return HttpResponseRedirect(w.get_absolute_url())
     
-    f = filter_helper(w.content.all(), section_str, type_str, 
+    f = filter_helper(request, w.content.all(), section_str, type_str, 
         w.get_absolute_url())
     
     d = paginate(f.pop('content'), page, 10)
@@ -83,7 +83,7 @@ def tag(request, tag, section_str='', type_str='', page=1):
     
     tag = get_object_or_404(Tag, text=tag.replace('_', ' '))
     content = Content.objects.filter(tags=tag)
-    f = filter_helper(content, section_str, type_str, 
+    f = filter_helper(request, content, section_str, type_str, 
         tag.get_absolute_url())
     
     articles = Article.objects.filter(tags=tag)
@@ -389,7 +389,7 @@ def get_article_old_website(request):
 
 # sure looks cacheworthy
 @cache(settings.CACHE_STANDARD, "helper")
-def filter_helper(qs, section_str, type_str, url_base):
+def filter_helper(req, qs, section_str, type_str, url_base):
     """Return a dictionary with components of content_list filter interface."""
     
     # TODO: refactor the fuck out of this
@@ -422,7 +422,7 @@ def filter_helper(qs, section_str, type_str, url_base):
         ct = len(unfilteredcontent.filter(section=section))
         sects[section.name] = {'selected': a, 'url': url, 'count': ct} 
     
-    # models to show in the filter interface
+    # models to show in the filter interface... so ghetto
     content_choices = ["article", "image"]
     if type_str:
         type_str = type_str.replace('-', ' ') # convert from url
@@ -437,11 +437,12 @@ def filter_helper(qs, section_str, type_str, url_base):
         filter_types = [t for t in Content.types() if t.name.lower() in type_str] + othertypes
         types = type_str
         content = content.filter(content_type__in=filter_types)
+        show_filter = True
     # all content types
     else:
         types = content_choices + ["other"]
+        show_filter = False
     
-    print types
     # Iterate over list choices and form URLs
     for type in content_choices + ["other"]:
         sel = type in types
@@ -462,8 +463,8 @@ def filter_helper(qs, section_str, type_str, url_base):
         if(type in content_choices + ["other"]):
             tps[type[0].upper() + type[1:]] = {'selected': sel, 'url': url, 'count':ct}
     
-    print tps
-    return {'content': content, 'sections': sects, 'types': tps}
+
+    return {'content': content, 'sections': sects, 'types': tps, 'show_filter':show_filter}
 
 @cache(settings.CACHE_SHORT, "general_generated_toparticles")
 def top_articles(section, dt=None):

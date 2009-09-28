@@ -6,7 +6,8 @@
 {% load module %}
 {% load top_articles %}
 
-{% block css %}
+{% block inhead %}
+    {{block.super}}
     {% static_css "tag.css" %}
 {% endblock %}
 

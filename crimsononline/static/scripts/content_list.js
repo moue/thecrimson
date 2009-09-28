@@ -45,13 +45,13 @@ $(document).ready(function(){
     });*/
 
     /* Filter sliding effects */
-    $("#filter_toggle").click(function () {
-        if ($("#filter_contents").is(":hidden")) {
-                $("#filter_contents").slideDown("slow");
-                $(this).text("Hide Filters")
+    $("a#filter_toggle").click(function () {
+        if ($("#filter_toggle_contents").is(":hidden")) {
+                $("#filter_toggle_contents").slideDown("slow");
+                $(this).text("Hide Filters");
               } else {
-                $("#filter_contents").slideUp("slow");
-                $(this).text("Show Filters")
+                $("#filter_toggle_contents").slideUp("slow");
+                $(this).text("Show Filters");
               }
     });
     
