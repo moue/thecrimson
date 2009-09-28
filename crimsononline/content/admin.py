@@ -246,6 +246,8 @@ class ContentAdmin(admin.ModelAdmin):
     def queryset(self, request):
         if request.user.has_perm('content.delete_content'):
             return self.model._default_manager.all_objects()
+        elif request.user.has_perm('content.content.can_publish'):
+            return self.model._default_manager.get_query_set()
         else:
             return self.model._default_manager.admin_objects()
     
@@ -678,17 +680,6 @@ class ArticleAdmin(ContentAdmin):
             x.save()
             
         return obj
-    
-    def queryset(self, request):
-        u = request.user
-        qs = super(ArticleAdmin,self).queryset(request)
-        if u.is_superuser:
-            return qs
-        if not u.has_perm('content.content.can_publish'):
-            qs = qs.filter(pub_status=0)
-            #u.message_set.create(
-            #    message='Note: you can only edit unpublished articles')
-        return qs
     
     def get_urls(self):
         urls = super(ArticleAdmin, self).get_urls()

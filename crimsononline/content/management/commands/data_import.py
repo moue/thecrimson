@@ -44,11 +44,8 @@ def get_save_path_new(instance, filename):
         filtered_capt = str(randrange(1,10000000))
     return instance.issue.issue_date.strftime("photos/%Y/%m/%d/") + \
         filtered_capt + ext
+    
 
-def fix_timestamps():
-    """Most things don't have timestamps."""
-    
-    
 def fix_tags():
     """A lot of the subsections were mapped incorrectly in the old db."""
     wrong_tags = ['News', 'Breaking News', 'Editorials', 'Comments',

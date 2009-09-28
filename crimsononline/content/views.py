@@ -65,8 +65,10 @@ def writer(request, pk, f_name, m_name, l_name,
     if (w.first_name, w.middle_name, w.last_name) != (f_name, m_name, l_name):
         return HttpResponseRedirect(w.get_absolute_url())
     
-    f = filter_helper(request, w.content.all(), section_str, type_str, 
-        w.get_absolute_url())
+    f = filter_helper(request, 
+        w.content.all().order_by('-issue__issue_date'), 
+        section_str, type_str, w.get_absolute_url()
+    )
     
     d = paginate(f.pop('content'), page, 10)
     d.update({'writer': w, 'url': REMOVE_P_RE.sub(request.path, '')})
@@ -162,7 +164,7 @@ def section_news(request):
     
     nav = 'news'
     section = Section.cached(nav)
-    stories = top_articles(section)
+    stories = top_articles(section)[:20]
     rotate = rotatables(section, 4)
     
     series = ContentGroup.objects.filter(section=section) \
@@ -178,7 +180,7 @@ def section_opinion(request):
     
     nav = 'opinion'
     section = Section.cached(nav)
-    stories = top_articles(section)[:10]
+    stories = top_articles(section)[:12]
     rotate = rotatables(section, 4)
     columns = ContentGroup.objects.filter(section=section, active=True,
         type='column').annotate(recent=Max('content__issue__issue_date'))
@@ -277,8 +279,10 @@ def section_sports(request):
     stories = top_articles(section)
     rotate = rotatables(section)
     latest = Article.objects.filter(section=section).order_by('-modified_on')
+    latest = latest[:8]
     blog = stories.filter(group__type='blog')
     athlete = first_or_none(stories.filter(tags__text='athlete of the week')) 
+    stories = stories[:10]
     return render_to_response('sections/sports.html', locals())
 
 # IPHONE APP JSON FEEDS

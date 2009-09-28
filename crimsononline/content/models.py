@@ -128,13 +128,14 @@ class Content(models.Model):
         """
     )
     section = models.ForeignKey('Section', null=True, related_name='content')
-    priority = models.IntegerField(default=3, choices=PRIORITY_CHOICES)
+    priority = models.IntegerField(default=3, choices=PRIORITY_CHOICES, 
+        db_index=True)
     group = models.ForeignKey('ContentGroup', null=True, blank=True, 
         related_name='content')
     rotatable = models.IntegerField(null=False, choices=ROTATE_CHOICES, 
-        default=0)
+        default=0, db_index=True)
     pub_status = models.IntegerField(null=False, choices=PUB_CHOICES, 
-        default=0)
+        default=0, db_index=True)
     created_on = models.DateTimeField(auto_now_add=True)
     modified_on = models.DateTimeField(auto_now=True)
     
@@ -322,7 +323,7 @@ class Content(models.Model):
 
 class ContentHits(models.Model):
     content = models.ForeignKey(Content)
-    date = models.DateField(auto_now_add=True)
+    date = models.DateField(auto_now_add=True, db_index=True)
     hits = models.PositiveIntegerField(default=1)
     
     def save(self, *args, **kwargs):
@@ -353,8 +354,8 @@ class ContentGroup(models.Model):
         ('blog', 'Blog'),
     )
     
-    type = models.CharField(max_length=25, choices=TYPE_CHOICES)
-    name = models.CharField(max_length=35)
+    type = models.CharField(max_length=25, choices=TYPE_CHOICES, db_index=True)
+    name = models.CharField(max_length=35, db_index=True)
     subname = models.CharField(max_length=40, blank=True, null=True)
     blurb = models.TextField(blank=True, null=True)
     section = models.ForeignKey('Section', blank=True, null=True)
@@ -362,7 +363,7 @@ class ContentGroup(models.Model):
         blank=True, null=True, storage=OverwriteStorage())
     active = models.BooleanField(default=True, help_text="ContentGroups that " \
         "could still have content posted to them are active.  Active "\
-        "blogs and columnists show up on section pages.")
+        "blogs and columnists show up on section pages.", db_index=True)
     
     class Meta:
         unique_together = (('type', 'name',),)
@@ -454,9 +455,9 @@ class Tag(models.Model):
     
     # validates in the admin
     text = models.CharField(blank=False, max_length=25, unique=True,
-        help_text='Tags can contain letters and spaces')
+        help_text='Tags can contain letters and spaces', db_index=True)
     category = models.CharField(blank=True, max_length=25, 
-                                choices=CATEGORY_CHOICES)
+                                choices=CATEGORY_CHOICES, db_index=True)
     
     def __unicode__(self):
         return self.text
@@ -505,7 +506,7 @@ class Contributor(models.Model):
         blank=True, null=True, help_text='Eg: 136')
     boards = models.ManyToManyField(Board, blank=True, null=True)
     class_of = models.IntegerField(blank=True, null=True)
-    is_active = models.BooleanField(default=True,
+    is_active = models.BooleanField(default=True, db_index=True,
         help_text='This should be true for anyone who could possibly still ' \
                     'write for The Crimson, including guest writers.')
     profile_text = models.TextField(blank=True, null=True,
@@ -567,7 +568,7 @@ class Section(models.Model):
     False
     """
     
-    name = models.CharField(blank=False, max_length=50)
+    name = models.CharField(blank=False, max_length=50, db_index=True)
     audiodizer_id = models.IntegerField(blank=True, null=True)
     
     @staticmethod
@@ -668,13 +669,15 @@ class Issue(models.Model):
     """
     
     special_issue_name = models.CharField(blank=True, null=True,
-        help_text="Leave this blank for daily issues!!!", max_length=100
+        help_text="Leave this blank for daily issues!!!", max_length=100,
+        db_index=True
     )
     web_publish_date = models.DateTimeField(null=True,
         blank=False, help_text='When this issue goes live (on the web).'
     )
     issue_date = models.DateField(
-        blank=False, help_text='Corresponds with date of print edition.'
+        blank=False, help_text='Corresponds with date of print edition.',
+        db_index=True
     )
     fm_name = models.CharField('FM name', blank=True, null=True, max_length=100,
         help_text="The name of the FM issue published on this issue date"
@@ -960,7 +963,8 @@ class YouTubeVideo(Content):
     """
     
     key = models.CharField(blank=False, null=False, max_length=100, 
-        help_text="http://www.youtube.com/v=(XXXXXX)&... part of the YouTube URL")
+        help_text="youtube.com/v=(XXXXXX)&... part of the YouTube URL", 
+        db_index=True)
     title = models.CharField(blank=False, null=False, max_length=200)
     description = models.TextField(blank=False, null=False)
     
@@ -1019,8 +1023,8 @@ class Marker(models.Model):
     Markers for a Google Map
     """
     map = models.ForeignKey(Map,related_name='markers')
-    lat = models.FloatField(blank=False)
-    lng = models.FloatField(blank=False)
+    lat = models.FloatField(blank=False, db_index=True)
+    lng = models.FloatField(blank=False, db_index=True)
     popup_text = models.CharField(blank=True, max_length = 1000,
         help_text="text that appears when the user clicks the marker")
     
@@ -1057,7 +1061,7 @@ class Article(Content):
     
     objects = ContentManager()    
     
-    headline = models.CharField(blank=False, max_length=127)
+    headline = models.CharField(blank=False, max_length=127, db_index=True)
     subheadline = models.CharField(blank=True, null=True, max_length=255)
     byline_type = models.CharField(
         blank=True, null=True, max_length=70, choices=BYLINE_TYPE_CHOICES)
@@ -1143,7 +1147,7 @@ class Review(models.Model):
     RATINGS_CHOIES = tuple([(i, str(i)) for i in range(1,6)])
     type = models.CharField(max_length=10, choices=TYPE_CHOICES)
     name = models.CharField(max_length=100)
-    rating = models.IntegerField(choices=RATINGS_CHOIES)
+    rating = models.IntegerField(choices=RATINGS_CHOIES, db_index=True)
     article = models.ForeignKey(Article, null=True, blank=True)
 
 
@@ -1156,8 +1160,8 @@ class Score(models.Model):
     event_date = models.DateField()
 
 class Correction(models.Model):
-    text = models.TextField(blank = False, null = False)
-    dt = models.DateTimeField(auto_now = True)
+    text = models.TextField(blank=False, null=False)
+    dt = models.DateTimeField(auto_now=True, db_index=True)
     article = models.ForeignKey(Article, null=False, blank=False)
     def save(self, *args, **kwargs):
         return super(Correction, self).save(*args, **kwargs)

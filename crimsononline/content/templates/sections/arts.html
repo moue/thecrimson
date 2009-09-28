@@ -12,7 +12,7 @@
     {% module 4 "top arts" red %}
         <div class="article_previews">
             <ul>
-                {% for s in stories|slice:":4" %}
+                {% for s in stories|slice:":7" %}
                     <li>{{ s|render:"preview" }}</li>
                 {% endfor %}
             </ul>
@@ -40,6 +40,7 @@
 {% block rightcolumn %}
     {% module 4 "" %}
     <div id="reviews" class="reviews">
+        {% if reviews.movie %}
         <span class="title">MOVIE REVIEWS</span>
         <ul>
         {% for r in reviews.movie %}
@@ -51,6 +52,8 @@
             </li>
         {% endfor %}
         </ul>
+        {% endif %}
+        {% if reviews.book %}
         <span class="title">BOOK REVIEWS</span>
         <ul>
         {% for r in reviews.book %}
@@ -62,6 +65,8 @@
             </li>
         {% endfor %}
         </ul>
+        {% endif %}
+        {% if reviews.movie %}
         <span class="title">MUSIC REVIEWS</span>
         <ul>
         {% for r in reviews.music %}
@@ -73,6 +78,7 @@
             </li>
         {% endfor %}
         </ul>
+        {% endif %}
         <span class="clear"></span>
     </div>
     {% endmodule %}

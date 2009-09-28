@@ -12,7 +12,7 @@
     {% module 4 "top opinion" red %}
         <div class="article_previews">
             <ul>
-                {% for s in stories|slice:":1" %}
+                {% for s in stories|slice:":5" %}
                     <li>{{ s|render:"preview" }}</li>
                 {% endfor %}
             </ul>
@@ -20,7 +20,7 @@
         <span class="clear"></span>
         <div class="article_headlines">
             <ul>
-                {% for s in stories|slice:"1:10" %}
+                {% for s in stories|slice:"5:" %}
                     <li>
                         <h3><a href="{{s.get_absolute_url}}">{{s}}</a></h3>
                         <p class="byline">By {{s.contributors.all|linkify|human_list}}</p>
