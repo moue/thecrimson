@@ -1,3 +1,0 @@
-Thanks for subscribing to The Harvard Crimson. 
-
-To activate your subscription, click go to {{ confirmation_url|safe }}.

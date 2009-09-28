@@ -1,3 +1,0 @@
-{% for o in objs %}
-{{ o.pk }}|{{ o }}
-{% endfor %}

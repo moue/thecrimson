@@ -68,6 +68,10 @@ ul.blog_entries{
     padding: 0;
 }
 
+ul.blog_entries span.teaser{
+    line-height: 133%;
+}
+
 ul.blog_entries div.image{
     float: left;
 }
