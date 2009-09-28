@@ -30,6 +30,10 @@
             <h3>Class:</h3><p>{{ writer.class_of }}</p>
         {% endif %}
 
+		{% if writer.board_number %}
+            <h3>Guard:</h3><p>{{ writer.board_number }}</p>
+        {% endif %}
+		
         {% if writer.email %}
             <h3>Contact Info:</h3><p>{{ writer.email }}</p>
         {% endif %}

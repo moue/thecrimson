@@ -327,6 +327,11 @@ h3, h3 a{
     white-space: nowrap;
 }
 
+.tag_cloud a:hover{
+	text-decoration: none;
+	background-color: #eee;
+}
+
 .tag_cloud .largest {font-size: 24px; font-weight: bolder;}
 .tag_cloud .large{font-size: 21px; font-weight: bold;}
 .tag_cloud .medium {font-size: 18px;}
