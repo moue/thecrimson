@@ -417,6 +417,13 @@ class ImageAdminForm(ContentModelForm):
     thumbnail = CropField(required=False, crop_size=Image.SIZE_THUMB,
         display_size=Image.SIZE_STAND
     )
+    slug = forms.fields.SlugField(widget=AutoGenSlugWidget(
+        url='/admin/content/article/gen_slug/',
+            date_field='#id_issue_input', text_field='#id_caption',
+            attrs={'size': '40'},
+        ), help_text="This is the text that goes in the URL.  Only letters," \
+        "numbers, _, and - are allowed"
+    )
     
     def save(self, *args, **kwargs):
         i = super(ImageAdminForm, self).save(*args, **kwargs)
@@ -560,6 +567,7 @@ class ArticleForm(ContentModelForm):
     text = forms.fields.CharField(
         widget=TinyMCEWidget(attrs={'cols':'67','rows':'40'})
     )
+    corrections = forms.ModelChoiceField(queryset = Section.all(), required=False)
     proofer = FbModelChoiceField(required=False, multiple=False,
         url='/admin/content/contributor/search/', model=Contributor,
         labeler=(lambda obj: str(obj)))
@@ -579,6 +587,10 @@ class ArticleForm(ContentModelForm):
             teaser = TEASER_RE.sub("",teaser)
             return truncatewords(teaser, 20)
 
+    def clean(self):
+        self.cleaned_data.pop('corrections')
+        return self.cleaned_data
+    
     class Meta:
         model = Article
 
@@ -597,7 +609,7 @@ class ArticleAdmin(ContentAdmin):
             'fields': ('headline', 'subheadline',),
         }),
         ('Text', {
-            'fields': ('text', 'teaser',),
+            'fields': ('text', 'teaser', 'corrections'),
         }),
         ('Byline', {
             'fields': ('contributors', 'byline_type',),
@@ -631,7 +643,15 @@ class ArticleAdmin(ContentAdmin):
             'scripts/framework/jquery.sprintf.js',
             'scripts/tiny_mce/tiny_mce.js'
         )
-    
+
+    def get_form(self, request, obj=None):
+        f = super(ArticleAdmin, self).get_form(request, obj)
+        if obj is not None:
+            f.base_fields['corrections'].widget.choices = tuple([(x, x.pk) for x in Correction.objects.filter(article = obj)])
+        else:
+            f.base_fields['corrections'].widget.choices = []
+        return f
+        
     def has_change_permission(self, request, obj=None):
         u = request.user
         if u.is_superuser:

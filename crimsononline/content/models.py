@@ -1080,6 +1080,21 @@ class Article(Content):
     rel_content = models.ManyToManyField(Content, through='ArticleContentRelation', 
         null=True, blank=True, related_name="rel_content")
     
+    # Override save to check whether we're modifying an existing article's text
+    def save(self, *args, **kwargs):
+        prev_article = Article.objects.get(pk=self.pk)
+        print " and pub_status is " + str(prev_article.pub_status)
+        if prev_article is not None and prev_article.pub_status is 1:
+            print "hi2"
+            oldtext = prev_article.text
+            # If the text has changed, make a new Correction for the old text
+            if oldtext != self.text:
+                print "hi3"
+                corr = Correction(text = oldtext, article = self)
+                corr.save()
+        retval = super(Article, self).save(*args, **kwargs)
+        return retval
+    
     def delete(self):
         self.rel_content.clear()
         super(Article, self).delete()
@@ -1140,3 +1155,11 @@ class Score(models.Model):
     comment = models.CharField(max_length=50, null=True, blank=True)
     event_date = models.DateField()
 
+class Correction(models.Model):
+    text = models.TextField(blank = False, null = False)
+    dt = models.DateTimeField(auto_now = True)
+    article = models.ForeignKey(Article, null=False, blank=False)
+    def save(self, *args, **kwargs):
+        return super(Correction, self).save(*args, **kwargs)
+    def __unicode__(self):
+        return str(self.id)
