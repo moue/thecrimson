@@ -268,10 +268,12 @@ h3, h3 a{
 	color: #666;
 	text-transform: uppercase;
 }
-#submenu_contents a{
+#submenu_contents a, #submenu_contents span{
 	font-family: Helvetica, Arial, sans-serif;
 	color: #666;
 	text-transform: uppercase;
+}
+#submenu_contents a{
     margin-right: 10px;
 }
 

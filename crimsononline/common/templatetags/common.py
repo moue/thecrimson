@@ -7,6 +7,8 @@ from django.template.loader import render_to_string
 from django.utils.safestring import mark_safe
 from crimsononline.common.utils import misc
 from crimsononline.common.utils.html import para_list
+from xml.dom.minidom import *
+from urllib import urlopen
 
 register = template.Library()
 
@@ -232,6 +234,26 @@ def rating(parser, token):
     return RatingNode(*(bits[1:3]))
 rating = register.tag(rating)
 
+class WeatherNode(template.Node):
+    def __init__(self):
+        pass
+    
+    def render(self, context):
+        datasource = urlopen('http://rss.accuweather.com/rss/liveweather_rss.asp?metric=0&locCode=02138').read()
+        wdom = parseString(datasource)
+        try:
+            cur_weather = wdom.getElementsByTagName("title")[2].childNodes[0].nodeValue
+            return str(cur_weather).split()[-1]
+        except:
+            return ""
+
+def weather(parser, token):
+    """
+    produces a nice little weather widget for the subnav
+    """
+    bits = token.split_contents()
+    return WeatherNode(*(bits[1:3]))
+weather = register.tag(weather)
 
 @register.simple_tag
 def static_url(link):

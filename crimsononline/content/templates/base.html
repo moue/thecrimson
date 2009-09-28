@@ -1,5 +1,6 @@
 {% load content_filters %}
 {% load common %}
+{% load cache %}
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
@@ -54,16 +55,20 @@
 </div>
 </div>
 <div id="submenu">
-<div id="submenu_contents">Quick Links >> <a>Subscribe</a> <a>Subscribe</a><a>Subscribe</a><a>Subscribe</a><a>Subscribe</a><a>Subscribe</a><a>Subscribe</a><a>Subscribe</a></div>
+<div id="submenu_contents">Quick Links >> 
+<a href="/subscribe/">Subscribe</a>
+<a href="/about/advertising/">Advertising</a>
+{% cache 3600 weather %}
+<span style="float: right">Current Cambridge, MA weather: {% weather %}</span>
+{% endcache %}
+</div>
 </div>
 
 
 <div id="content_wrapper">
     {% block pre_body %}
     <div class="top_leaderboard">
-
-        <iframe id='a8eae350' name='a8eae350' src='http://d1.openx.org/afr.php?zoneid=74815&amp;cb=1230129831' framespacing='0' frameborder='no' scrolling='no' width='728' height='90'><a href='http://d1.openx.org/ck.php?n=a292095d&amp;cb=0980980' target='_blank'><img src='http://d1.openx.org/avw.php?zoneid=74815&amp;cb=9898123198&amp;n=a292095d' border='0' alt='' /></a></iframe>
-
+        <iframe id='a6d30f99' name='a6d30f99' src='http://d1.openx.org/afr.php?zoneid=75195&amp;cb=321351531' framespacing='0' frameborder='no' scrolling='no' width='728' height='90'><a href='http://d1.openx.org/ck.php?n=a7bdfffe&amp;cb=546548732' target='_blank'><img src='http://d1.openx.org/avw.php?zoneid=75195&amp;cb=5648732413&amp;n=a7bdfffe' border='0' alt='' /></a></iframe>
     </div>
     {% endblock %}
 
@@ -73,7 +78,7 @@
 
 <div id="footer_wrapper">
 		<div id="footer_contents">
-        <span class="g">Privacy Policy | Rights and Permissions | Archives | Contact Us | Corrections | Subscriptions | RSS</span><br />
+        <span class="g"><a href="/about/privacy">Privacy Policy</a> | <a href="/about/permissions/">Rights and Permissions</a> | <a href="/search/">Archives</a> | <a href="/about/contact/">Contact Us</a> | <a href="/about/corrections/">Corrections</a> | <a href="/subscribe/">Subscriptions</a> | <a href="/subscribe/">RSS</a></span><br />
         <span class="red-text">Copyright &copy; 2009, The Harvard Crimson, Inc.</span>
 		</div>
 </div>

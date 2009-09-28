@@ -23,13 +23,18 @@ def render(content, method):
 def datify(cont):
     issue = cont.issue.issue_date
     if(date.today() == issue):
-        secs_ago = (datetime.today() - cont.created_on).seconds
+        secs_ago = (datetime.today() - cont.modified_on).seconds
         if secs_ago < 3600:
-            return str(secs_ago/60) + " minutes ago"
-        return str(secs_ago/3600) + " hours ago"
+            value = (secs_ago/60)
+            units = "minute"
+        else:
+            value = (secs_ago/3600)
+            units = "hour"
+        plural = "s" if int(value) > 1 else ""
+        return str(value) + " " + units + plural + " ago"
     else:
         daysold = (date.today() - issue)
-        if (daysold.days <= 5):
+        if (daysold.days <= 10):
             return str(daysold.days) + " days ago"
         else:
             return ""
