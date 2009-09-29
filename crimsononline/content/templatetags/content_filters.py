@@ -16,7 +16,8 @@ def render(content, method):
     try:
         return mark_safe(content._render(method))
     except Exception, err:
-        print err, content, method
+        #print err, content, method
+        pass
     return ''
 
 @register.filter
