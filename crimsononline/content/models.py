@@ -927,6 +927,10 @@ class Image(Content):
     def identifier(self):
         return make_url_friendly(self.kicker)
     
+    def admin_thumb(self):
+        """HTML for tiny thumbnail in the admin page."""
+        return """<img src="%s">""" % self.display_url(Image.SIZE_TINY)
+    admin_thumb.allow_tags = True
 
 
 class Gallery(Content):
