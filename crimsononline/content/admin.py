@@ -460,7 +460,7 @@ class ImageAdmin(ContentAdmin):
     pub_status_text.short_description = 'Status'
     
     list_display = ('pk', 'admin_thumb', 'kicker', 'section', 'issue', 'pub_status_text',)
-    list_display_links = ('pk', 'admin_thum', 'kicker',)
+    list_display_links = ('pk', 'admin_thumb', 'kicker',)
     list_per_page = 30
     search_fields = ('kicker', 'caption',)
     ordering = ('-id',)    
