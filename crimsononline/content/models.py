@@ -515,6 +515,9 @@ class Contributor(models.Model):
     profile_pic = SuperImageField(blank=True, null=True, max_width=135,
         upload_to=contrib_pic_path, storage=OverwriteStorage())
     
+    class Meta:
+        ordering = ('last_name',)
+    
     @property
     def user(self):
         if self.userdata is not None:
@@ -1086,16 +1089,19 @@ class Article(Content):
     
     # Override save to check whether we're modifying an existing article's text
     def save(self, *args, **kwargs):
-        prev_article = Article.objects.get(pk=self.pk)
-        print " and pub_status is " + str(prev_article.pub_status)
-        if prev_article is not None and prev_article.pub_status is 1:
-            #print "hi2"
-            oldtext = prev_article.text
-            # If the text has changed, make a new Correction for the old text
-            if oldtext != self.text:
-                #print "hi3"
-                corr = Correction(text = oldtext, article = self)
-                corr.save()
+        if self.pk:
+            try:
+                prev_article = Article.objects.get(pk=self.pk)
+            except Article.DoesNotExist:
+                prev_article = None
+            if prev_article is not None and prev_article.pub_status is 1:
+                #print "hi2"
+                oldtext = prev_article.text
+                # If the text has changed, make a new Correction for the old text
+                if oldtext != self.text:
+                    #print "hi3"
+                    corr = Correction(text = oldtext, article = self)
+                    corr.save()
         retval = super(Article, self).save(*args, **kwargs)
         return retval
     

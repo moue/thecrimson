@@ -106,7 +106,7 @@ class ContentModelForm(ModelForm):
     section = forms.ModelChoiceField(Section.all(), required=True)
     priority = forms.ChoiceField(choices=Content.PRIORITY_CHOICES, 
         required=False, initial=4, help_text='Higher priority articles are '
-        'displayed first. Priority may be positive or negative.'
+        'displayed first.'
     )
     group = FbModelChoiceField(required=False, multiple=False,
         url='/admin/content/contentgroup/search/', model=ContentGroup,
@@ -294,6 +294,7 @@ class ContributorAdmin(admin.ModelAdmin):
     search_fields = ('first_name', 'last_name',)
     list_display =  ('last_name', 'first_name', 'middle_name', 'class_of',
                     'created_on', 'email', 'is_active')
+    list_filter = ('is_active', 'board_number',)
     fieldsets = (
         (None, {
             'fields': (
@@ -573,7 +574,9 @@ class ArticleForm(ContentModelForm):
         widget=forms.TextInput(attrs={'size':'70'})
     )
     text = forms.fields.CharField(
-        widget=TinyMCEWidget(attrs={'cols':'67','rows':'40'})
+        widget=TinyMCEWidget(attrs={'cols':'67','rows':'40'}), help_text=""
+        "If you're copying and pasting from MS Word, please use the 'Paste "
+        "From Word' button (with a little 'W' on it)"
     )
     corrections = forms.ModelChoiceField(queryset = Section.all(), required=False)
     proofer = FbModelChoiceField(required=False, multiple=False,
@@ -618,7 +621,7 @@ class ArticleAdmin(ContentAdmin):
             'fields': ('headline', 'subheadline',),
         }),
         ('Text', {
-            'fields': ('text', 'teaser', 'corrections'),
+            'fields': ('text', 'teaser', ),#'corrections'),
         }),
         ('Byline', {
             'fields': ('contributors', 'byline_type',),
@@ -659,6 +662,16 @@ class ArticleAdmin(ContentAdmin):
             f.base_fields['corrections'].widget.choices = tuple([(x, x.pk) for x in Correction.objects.filter(article = obj)])
         else:
             f.base_fields['corrections'].widget.choices = []
+        
+        if not request.user.has_perm('content.add_contributor'):
+            w = f.base_fields['proofer'].widget
+            if not isinstance(w, FbSelectWidget):
+                f.base_fields['proofer'].widget = w.widget
+            
+            w = f.base_fields['sne'].widget
+            if not isinstance(w, FbSelectWidget):
+                f.base_fields['sne'].widget = w.widget
+        
         return f
         
     def has_change_permission(self, request, obj=None):

@@ -76,15 +76,15 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 )
 
 MIDDLEWARE_CLASSES = (
-	'crimsononline.mware.supercrisismode.SuperCrisisMode',
-    #'django.middleware.cache.UpdateCacheMiddleware',
+    'django.middleware.cache.UpdateCacheMiddleware',
+    #'crimsononline.mware.linkscriptoptimizer.LinkScriptOptimizer',
     'django.middleware.common.CommonMiddleware',
-    #'django.middleware.cache.FetchFromCacheMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.middleware.doc.XViewMiddleware',
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
-    #'crimsononline.mware.linkscriptoptimizer.LinkScriptOptimizer',
+	'crimsononline.mware.supercrisismode.SuperCrisisMode',
+    'django.middleware.cache.FetchFromCacheMiddleware',
 )
 
 ROOT_URLCONF = 'crimsononline.urls'
