@@ -183,9 +183,10 @@ var set_related_content = function(id_prefix, types){
         var start = $(p + '_start_date').val();
         var end = $(p + '_end_date').val();
         var type = $(p + '_type').val();
-        var url = '/admin/content/article/rel_content/find/' + type + '/' + start + '/' + end + '/' + tags + '/1/';
-        $.getJSON(url, function(data){
-            process_ajax(url.substr(0, url.length - 2), data);
+        var url = '/admin/content/article/rel_content/find/?ct_id=' + type + 
+            '&st_dt=' + start + '&end_dt=' + end + '&tags=' + tags;
+        $.getJSON(url + '&page=1', function(data){
+            process_ajax(url, data);
         });
         return false;
     });

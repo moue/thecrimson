@@ -247,9 +247,9 @@ class ContentAdmin(admin.ModelAdmin):
         if request.user.has_perm('content.delete_content'):
             return self.model._default_manager.all_objects()
         elif request.user.has_perm('content.content.can_publish'):
-            return self.model._default_manager.get_query_set()
-        else:
             return self.model._default_manager.admin_objects()
+        else:
+            return self.model._default_manager.get_query_set()
     
 
 class TagForm(forms.ModelForm):
@@ -701,7 +701,8 @@ class ArticleAdmin(ContentAdmin):
                 self.admin_site.admin_view(self.get_rel_content)),
             (r'^rel_content/get/(?P<obj_id>\d+)/$',
                 self.admin_site.admin_view(self.get_rel_content)),
-            (r'^rel_content/find/(\d+)/(\d\d/\d\d/\d{4})/(\d\d/\d\d/\d{4})/([\w\-,]*)/(\d+)/$',
+            #(r'^rel_content/find/(\d+)/(\d\d/\d\d/\d{4})/(\d\d/\d\d/\d{4})/([\w\-,]*)/(\d+)/$',
+            (r'^rel_content/find/',
                 self.admin_site.admin_view(self.find_rel_content)),
             (r'^rel_content/suggest/(\d+)/([\d,]*)/(\d+)/$',
                 self.admin_site.admin_view(self.suggest_rel_content)),
@@ -720,11 +721,20 @@ class ArticleAdmin(ContentAdmin):
         }
         return HttpResponse(simplejson.dumps(json_dict))
     
-    def find_rel_content(self, request, ct_id, st_dt, end_dt, tags, page):
+    def find_rel_content(self, request):
         """
         returns JSON containing Content objects and pg numbers
         """
-        OBJS_PER_REQ = 3
+        if request.method != 'GET':
+            return Http404
+        
+        ct_id = request.GET.get('ct_id', None)
+        st_dt = request.GET.get('st_dt', None)
+        end_dt = request.GET.get('end_dt', None)
+        tags = request.GET.get('tags', None)
+        page = request.GET.get('page', None)
+        
+        OBJS_PER_REQ = 10
         if int(ct_id) != 0:
             cls = ContentType.objects.get(pk=ct_id).model_class()
         else:
