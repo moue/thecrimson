@@ -410,6 +410,7 @@ class Command(BaseCommand):
                 if row["articleID"] is not None:
                     a = Article.objects.get(pk=int(row["articleID"]))
                     x = ArticleContentRelation(order=0, article=a, related_content=i)
+                    x.save()
             except:
                 print row["articleID"]
                 continue
