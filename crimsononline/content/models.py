@@ -281,6 +281,8 @@ class Content(models.Model):
             cached_hits = 1
             cache.add(hits_str, 1, HITS_STORE_TIME)
         
+        if last_storetime is None:
+            last_storetime = now
         if cur_threshold <= cached_hits:
             # We hit the threshold
             # First check whether the interval between the last time the 
