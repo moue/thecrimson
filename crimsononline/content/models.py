@@ -40,19 +40,19 @@ class ContentManager(models.Manager):
     """
 
     def get_query_set(self):
-        return self.all_objects().filter(pub_status=1)
+        return self.all_objects().select_related(depth=2).filter(pub_status=1)
     
     def all_objects(self):
         return super(ContentManager, self).get_query_set()
     
     def admin_objects(self):
-        return self.all_objects().exclude(pub_status=-1)
+        return self.all_objects().select_related(depth=2).exclude(pub_status=-1)
     
     def draft_objects(self):
-        return self.all_objects().filter(pub_status=0)
+        return self.all_objects().select_related(depth=2).filter(pub_status=0)
     
     def deleted_objects(self):
-        return self.all_objects().filter(pub_status=-1)
+        return self.all_objects().select_related(depth=2).filter(pub_status=-1)
     
     @property
     def recent(self):
@@ -235,8 +235,12 @@ class Content(models.Model):
         return mark_safe(render_to_string(templ, context, context_instance=RequestContext(request)))
     
     def delete(self):
-        self.pub_status = -1
-        self.save()
+        # anyone can delete drafts
+        if self.pub_status is 0:
+            super(Content, self).delete()
+        else:
+            self.pub_status = -1
+            self.save()
     
     # TODO: refactor / simplify store_hit
     def store_hit(self):
