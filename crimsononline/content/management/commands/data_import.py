@@ -290,7 +290,7 @@ class Command(BaseCommand):
                     if row["CreatedOn"] not in ("", None):
                         a.created_on = row["CreatedOn"] 
                         a.save()
-                except Exception as e:
+                except Exception, e: # should be Exception as e, but server is on Python 2.5
                     print "Couldn't save article with id: " + str(a.id)
                     print "    " + str(e)
                     continue
@@ -330,7 +330,7 @@ class Command(BaseCommand):
                 a = Article.objects.get(pk=row["ArticleID"])
                 a.contributors.clear()
                 a.contributors.add(Contributor.objects.get(pk=row["ContributorID"]))
-            except Exception as e:
+            except Exception, e:
                 print "Article Content relation %i failed" % row["ID"]
                 print e
                 continue
@@ -396,7 +396,7 @@ class Command(BaseCommand):
                 
             try:
                 i.save()
-            except Exception as e:
+            except Exception, e:
                 print e
                 print "Couldn't save image with id " + str(i.id)
             # dead contributor ids
