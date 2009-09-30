@@ -287,7 +287,7 @@ class Command(BaseCommand):
                     raise
                 try:
                     a.save()
-                    if row["CreatedOn"] not in ("", None)
+                    if row["CreatedOn"] not in ("", None):
                         a.created_on = row["CreatedOn"] 
                         a.save()
                 except Exception as e:
