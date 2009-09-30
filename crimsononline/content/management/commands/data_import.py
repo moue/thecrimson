@@ -112,14 +112,14 @@ class Command(BaseCommand):
     help = "Imports data from the old website, hosted on crimson-sql1. Requires pymssql 1.0.2"
 
     def handle(self, *args, **options):
+        if len(args) > 0 and args[0] == 'fix_tags':
+            fix_tags()
+            return
+        
         try:
             import pymssql
         except:
             print "Could not import pymssql"
-        
-        if len(args) > 0 and args[0] == 'fix_tags':
-            fix_tags()
-            return
         
         # where to pick up importing articles
         if len(args) is 0:
