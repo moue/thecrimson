@@ -249,7 +249,7 @@ class ContentAdmin(admin.ModelAdmin):
         elif request.user.has_perm('content.content.can_publish'):
             return self.model._default_manager.admin_objects()
         else:
-            return self.model._default_manager.get_query_set()
+            return self.model._default_manager.draft_objects()
     
 
 class TagForm(forms.ModelForm):
@@ -703,7 +703,6 @@ class ArticleAdmin(ContentAdmin):
                 self.admin_site.admin_view(self.get_rel_content)),
             (r'^rel_content/get/(?P<obj_id>\d+)/$',
                 self.admin_site.admin_view(self.get_rel_content)),
-            #(r'^rel_content/find/(\d+)/(\d\d/\d\d/\d{4})/(\d\d/\d\d/\d{4})/([\w\-,]*)/(\d+)/$',
             (r'^rel_content/find/',
                 self.admin_site.admin_view(self.find_rel_content)),
             (r'^rel_content/suggest/(\d+)/([\d,]*)/(\d+)/$',
@@ -736,7 +735,7 @@ class ArticleAdmin(ContentAdmin):
         tags = request.GET.get('tags', None)
         page = request.GET.get('page', None)
         
-        OBJS_PER_REQ = 10
+        OBJS_PER_REQ = 16
         if int(ct_id) != 0:
             cls = ContentType.objects.get(pk=ct_id).model_class()
         else:
