@@ -40,7 +40,7 @@ def datify(cont):
         if daysold.days == 1:
             return 'Yesterday'
         elif daysold.days <= 10:
-            value = int(daysold)
+            value = int(daysold.days)
             unit = 'day'
         else:
             return ''
