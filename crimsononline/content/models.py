@@ -66,8 +66,7 @@ class ContentManager(models.Manager):
                 make the query have a reasonable run time.
         """
         issue_pks = [str(i.pk) for i in Issue.last_n(recents)]
-        # this sql only? works on sqlite3
-        # also, round(x - 0.5) == floor(x)
+        # round(x - 0.5) == floor(x)
         if settings.DATABASE_ENGINE == 'sqlite3':
             days_old_expr = "(round(julianday('now', 'localtime') - " \
                 "julianday(content_issue.issue_date) - 0.5) + 1)"
@@ -121,13 +120,13 @@ class Content(models.Model):
     contributors = models.ManyToManyField('Contributor', null=True, 
         related_name='content')
     tags = models.ManyToManyField('Tag', null=True, related_name='content')
-    issue = models.ForeignKey('Issue', null=True, related_name='content')
+    issue = models.ForeignKey('Issue', null=False, related_name='content')
     slug = models.SlugField(max_length=70, help_text="""
         The text that will be displayed in the URL of this article.
         Can only contain letters, numbers, and dashes (-).
         """
     )
-    section = models.ForeignKey('Section', null=True, related_name='content')
+    section = models.ForeignKey('Section', null=False, related_name='content')
     priority = models.IntegerField(default=3, choices=PRIORITY_CHOICES, 
         db_index=True)
     group = models.ForeignKey('ContentGroup', null=True, blank=True, 
