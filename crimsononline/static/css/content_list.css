@@ -89,6 +89,10 @@
     padding-right: 10px;
 }
 
+#filter_toggle_contents form{
+    margin-left: 10px;
+}
+
 /* thumbnails */
 .image_thumb{float:left;}
 .image_thumb img{margin-right: 6px;}

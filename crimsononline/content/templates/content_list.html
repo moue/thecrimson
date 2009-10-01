@@ -39,11 +39,9 @@
                 none;
                 {% endif %}
                 ">
-                <table>
-                <tbody>
-                <tr>
-                <td><span class="filter_label">SECTION:</span></td>
-                <td>
+
+<span class="filter_label">SECTION:</span>
+
                 <form>
                 {% for section, d in sections.items %}
                         <input type="checkbox" class="filter_check" onclick="window.location='{{d.url}}'"
@@ -54,10 +52,10 @@
                         <span class="reg_text">({{d.count}})</span>
                 {% endfor %}
                 </form>
-                </td></tr>
-                <tr>
-                <td><span class="filter_label">TYPE:</span></td>
-                <td>
+
+<span class="filter_label">TYPE:</span>
+                
+                <form>
                 {% for type, d in types.items %}    
                 <input type="checkbox" class="filter_check" onclick="window.location='{{d.url}}'"
                 {% if d.selected %}
@@ -66,9 +64,8 @@
                 ><span class="reg_text">{{type}}</span></input>
                 <span class="reg_text">({{d.count}})</span>
                 {% endfor %}
-                </td></tr>
-                </tbody>
-                </table>
+                </form>
+
                 </div>
             </div>
         {% endblock %}
