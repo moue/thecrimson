@@ -76,7 +76,7 @@ ul.notext div.preview_text {
 
 .rotator_carousel_contents > span > a:hover{
     color: #fff;
-
+    text-decoration: none;
 }
 
 .c_items{
