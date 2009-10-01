@@ -154,6 +154,7 @@ CACHE_EONS = 7 * 24 * 60 * 60
 
 if DEBUG:
     CACHE_BACKEND = 'dummy:///'
+    CACHE_MIDDLEWARE_SECONDS = 5
 
 try:
     from local_settings import *
