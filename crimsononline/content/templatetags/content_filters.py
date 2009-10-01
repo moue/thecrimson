@@ -1,4 +1,4 @@
-from datetime import *
+from datetime import date
 from django import template
 from django.template import defaultfilters as filter
 from django.utils.safestring import mark_safe
@@ -22,24 +22,28 @@ def render(content, method):
 
 @register.filter
 def datify(cont):
+    """A more natural way to express dates on content.
+    
+    Uses the modified date if its recent, otherwise, uses issue_date
+    """
     issue = cont.issue.issue_date
     if(date.today() == issue):
         secs_ago = (datetime.today() - cont.modified_on).seconds
         if secs_ago < 3600:
             value = (secs_ago/60)
-            units = "minute"
+            unit = 'minute'
         else:
             value = (secs_ago/3600)
-            units = "hour"
-        plural = "s" if int(value) > 1 else ""
-        return str(value) + " " + units + plural + " ago"
+            unit = 'hour'
     else:
         daysold = (date.today() - issue)
         if (daysold.days <= 10):
-            return str(daysold.days) + " days ago"
+            value = int(daysold)
+            unit = 'day'
         else:
-            return ""
-    return 1
+            return ''
+    plural = 's' if value > 1 else ''
+    return '%d %s%s ago' % (value, unit, plural)
 
 @register.filter
 def to_img_layout(img, dimensions):
