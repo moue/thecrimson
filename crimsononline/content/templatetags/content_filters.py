@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, datetime
 from django import template
 from django.template import defaultfilters as filter
 from django.utils.safestring import mark_safe
@@ -36,11 +36,11 @@ def datify(cont):
             value = (secs_ago/3600)
             unit = 'hour'
     else:
-        daysold = (date.today() - issue)
-        if daysold.days == 1:
+        daysold = (date.today() - issue).days
+        if daysold == 1:
             return 'Yesterday'
-        elif daysold.days <= 10:
-            value = int(daysold.days)
+        elif daysold <= 10:
+            value = daysold
             unit = 'day'
         else:
             return ''
