@@ -121,7 +121,7 @@ var set_related_content = function(id_prefix, types){
             $(p_link)
                 .appendTo(target)
                 .click(function(){
-                    $.getJSON(url_base + data.prev_page + '/', function(data){
+                    $.getJSON(url_base + '&page=' + data.prev_page , function(data){
                         process_ajax(url_base, data);
                     })
                     return false;

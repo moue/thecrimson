@@ -889,7 +889,7 @@ class Image(Content):
     SIZE_TINY = (75, 75, 1, 1)
     SIZE_SMALL = (100, 100, 1, 1)
     SIZE_THUMB = (150, 150, 1, 1)
-    SIZE_STAND = (600, 600, 0, 0)
+    SIZE_STAND = (630, 630, 0, 0)
     SIZE_LARGE = (900, 900, 0, 0)
     
     caption = models.CharField(blank=True, null=True, max_length=1000)
