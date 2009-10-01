@@ -143,7 +143,8 @@ HAYSTACK_SITECONF = 'crimsononline.search_sites'
 HAYSTACK_SEARCH_ENGINE = 'solr'
 HAYSTACK_SOLR_URL = 'http://127.0.0.1:8983/solr'
 
-DISQUS = not DEBUG # you can override this in localsettings.py
+#DISQUS = not DEBUG # you can override this in localsettings.py
+DISQUS = True
 
 # caching durations in sec
 CACHE_SHORT = 2 * 60 * 60
