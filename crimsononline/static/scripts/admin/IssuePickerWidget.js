@@ -37,7 +37,7 @@ var set_issue_picker = function(ele, hidden_input, spec_url){
     $(ele).datepicker({
         showStatus: true,
         showOn: "both",
-        buttonImage: "/media/img/admin/icon_calendar.gif",
+        buttonImage: "/admin_media/img/admin/icon_calendar.gif",
         buttonImageOnly: true,
         mandatory: true,
         onSelect: function(dateText){
