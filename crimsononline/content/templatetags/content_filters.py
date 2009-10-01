@@ -37,7 +37,9 @@ def datify(cont):
             unit = 'hour'
     else:
         daysold = (date.today() - issue)
-        if (daysold.days <= 10):
+        if daysold.days == 1:
+            return 'Yesterday'
+        elif daysold.days <= 10:
             value = int(daysold)
             unit = 'day'
         else:
