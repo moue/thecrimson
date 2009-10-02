@@ -454,12 +454,17 @@ class ImageAdminForm(ContentModelForm):
     
 
 class ImageAdmin(ContentAdmin):
-    list_display = ('pk', 'admin_thumb', 'kicker', 'section', 'issue', 
-                    'pub_status', 'rotatable')
+    def pub_status_text(self, obj):
+        return Content.PUB_CHOICES[obj.pub_status][1]
+    
+    pub_status_text.short_description = 'Status'
+    
+    list_display = ('pk', 'admin_thumb', 'kicker', 'section', 'issue', 'pub_status_text',)
     list_display_links = ('pk', 'admin_thumb', 'kicker',)
     list_per_page = 30
     search_fields = ('kicker', 'caption',)
-    
+    ordering = ('-id',)    
+
     fieldsets = (
         ('Image Setup', {
             'fields': ('pic', 'thumbnail','caption','kicker'),
@@ -536,7 +541,6 @@ class GalleryAdmin(ContentAdmin):
     )
 
     form = GalleryForm
-    list_display = ('pk', 'title', 'section', 'pub_status', 'rotatable')
     
     class Media:
         css = {'all': ('css/admin/ImageGallery.css',)}
@@ -605,11 +609,15 @@ class ArticleForm(ContentModelForm):
 
 
 class ArticleAdmin(ContentAdmin):
-    
-    list_display = ('headline', 'section', 'issue','pub_status', 'rotatable')
+
+    def pub_status_text(self, obj):
+        return Content.PUB_CHOICES[obj.pub_status][1]
+    pub_status_text.short_description = 'Status'
+
+    list_display = ('headline', 'section', 'issue','pub_status_text')
     search_fields = ('headline', 'text',)
-    list_filter = ('section', )
-    
+    list_filter = ('section',)
+
     fieldsets = (
         ('Headline', {
             'fields': ('headline', 'subheadline',),
@@ -960,4 +968,3 @@ class HUIDBackend:
             return user
         except User.DoesNotExist:
             return None
-    
