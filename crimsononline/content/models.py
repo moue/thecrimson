@@ -111,7 +111,7 @@ class Content(models.Model):
         (21, '10 | OMG, It\'s Faust!'),
     )
     ROTATE_CHOICES = (
-        (0, 'Don\'t''),
+        (0, 'Don\'t'),
         (1, 'Section Only'),
         (2, 'Front and Section'),
         (3, 'Front Only')
