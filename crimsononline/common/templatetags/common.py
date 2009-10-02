@@ -26,7 +26,7 @@ def capchars(str, n):
 @register.filter
 def truncchars(str, n):
     """Truncate str at n chars, at a whole word."""
-    return str[:n].rsplit(' ', 1)[0]
+    return str[:int(n)].rsplit(' ', 1)[0]
 
 @register.filter
 def notfirst(seq):
