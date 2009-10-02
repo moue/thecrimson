@@ -140,6 +140,9 @@ class Content(models.Model):
     
     content_type = models.ForeignKey(ContentType, editable=False, null=True)
     
+    def pub_status_text(self):
+        return Content.PUB_CHOICES[self.pub_status][1]
+    
     def save(self, *args, **kwargs):
         if not self.content_type:
             self.content_type = ContentType.objects.get_for_model(self.__class__)

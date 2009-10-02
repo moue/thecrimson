@@ -131,6 +131,7 @@ class ContentAdmin(admin.ModelAdmin):
     """
     
     ordering = ('-issue__issue_date',)
+    date_hierarchy = ('issue__issue_date', )
     
     def get_form(self, request, obj=None):
         f = super(ContentAdmin, self).get_form(request, obj)
@@ -459,12 +460,12 @@ class ImageAdmin(ContentAdmin):
     
     pub_status_text.short_description = 'Status'
     
-    list_display = ('pk', 'admin_thumb', 'kicker', 'section', 'issue', 'pub_status_text',)
+    list_display = ('pk', 'admin_thumb', 'kicker', 'section', 'issue', 
+                    'pub_status_text', 'rotatable')
     list_display_links = ('pk', 'admin_thumb', 'kicker',)
     list_per_page = 30
     search_fields = ('kicker', 'caption',)
-    ordering = ('-id',)    
-
+    
     fieldsets = (
         ('Image Setup', {
             'fields': ('pic', 'thumbnail','caption','kicker'),
@@ -541,6 +542,7 @@ class GalleryAdmin(ContentAdmin):
     )
 
     form = GalleryForm
+    list_display = ('pk', 'title', 'section', 'pub_status_text', 'rotatable')
     
     class Media:
         css = {'all': ('css/admin/ImageGallery.css',)}
@@ -609,15 +611,11 @@ class ArticleForm(ContentModelForm):
 
 
 class ArticleAdmin(ContentAdmin):
-
-    def pub_status_text(self, obj):
-        return Content.PUB_CHOICES[obj.pub_status][1]
-    pub_status_text.short_description = 'Status'
-
-    list_display = ('headline', 'section', 'issue','pub_status_text')
+    
+    list_display = ('headline', 'section', 'issue','pub_status_text', 'rotatable')
     search_fields = ('headline', 'text',)
-    list_filter = ('section',)
-
+    list_filter = ('section', )
+    
     fieldsets = (
         ('Headline', {
             'fields': ('headline', 'subheadline',),
