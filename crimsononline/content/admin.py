@@ -131,7 +131,6 @@ class ContentAdmin(admin.ModelAdmin):
     """
     
     ordering = ('-issue__issue_date',)
-    date_hierarchy = ('issue__issue_date', )
     
     def get_form(self, request, obj=None):
         f = super(ContentAdmin, self).get_form(request, obj)
