@@ -454,17 +454,13 @@ class ImageAdminForm(ContentModelForm):
     
 
 class ImageAdmin(ContentAdmin):
-    def pub_status_text(self, obj):
-        return Content.PUB_CHOICES[obj.pub_status][1]
-    
-    pub_status_text.short_description = 'Status'
-    
-    list_display = ('pk', 'admin_thumb', 'kicker', 'section', 'issue', 'pub_status_text',)
+    list_display = ('pk', 'admin_thumb', 'kicker', 'section', 'issue', 
+                    'pub_status', 'rotatable')
     list_display_links = ('pk', 'admin_thumb', 'kicker',)
     list_per_page = 30
+    list_filter = ('section',)
     search_fields = ('kicker', 'caption',)
-    ordering = ('-id',)    
-
+    
     fieldsets = (
         ('Image Setup', {
             'fields': ('pic', 'thumbnail','caption','kicker'),
@@ -541,6 +537,8 @@ class GalleryAdmin(ContentAdmin):
     )
 
     form = GalleryForm
+    list_display = ('pk', 'title', 'section', 'pub_status', 'rotatable')
+    list_filter = ('section',)
     
     class Media:
         css = {'all': ('css/admin/ImageGallery.css',)}
@@ -609,15 +607,11 @@ class ArticleForm(ContentModelForm):
 
 
 class ArticleAdmin(ContentAdmin):
-
-    def pub_status_text(self, obj):
-        return Content.PUB_CHOICES[obj.pub_status][1]
-    pub_status_text.short_description = 'Status'
-
-    list_display = ('headline', 'section', 'issue','pub_status_text')
+    
+    list_display = ('headline', 'section', 'issue','pub_status', 'rotatable')
     search_fields = ('headline', 'text',)
-    list_filter = ('section',)
-
+    list_filter = ('section', )
+    
     fieldsets = (
         ('Headline', {
             'fields': ('headline', 'subheadline',),
@@ -657,7 +651,7 @@ class ArticleAdmin(ContentAdmin):
             'scripts/framework/jquery.sprintf.js',
             'scripts/tiny_mce/tiny_mce.js'
         )
-
+    
     def get_form(self, request, obj=None):
         f = super(ArticleAdmin, self).get_form(request, obj)
         if obj is not None:
@@ -675,7 +669,7 @@ class ArticleAdmin(ContentAdmin):
                 f.base_fields['sne'].widget = w.widget
         
         return f
-        
+    
     def has_change_permission(self, request, obj=None):
         u = request.user
         if u.is_superuser:
