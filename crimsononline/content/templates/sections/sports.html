@@ -59,7 +59,46 @@
     {% endif %}
 {% endblock %}
 
-{% block right %}
+{% block rightcolumn %}
+
+	<div class="bordered">
+		<h2>Latest Scores</h2>
+
+		<p id='sportsticker'> 
+			<div id='sportsticker_sport' class='thclabel thclabel_red'></div>
+		 	<div id='sportsticker_slug'></div>
+		</p>
+		<script type="text/javascript">
+			var ticker_sports = new Array();
+			var ticker_slugs = new Array();
+			var ticker_urls = new Array();
+			{% for story in stories %}
+				{% if story.sportsticker_sport %}
+					ticker_sports.push("{{ story.sportsticker_sport|pretty_sport_name }}");
+				 	ticker_slugs.push("{{ story.sportsticker_slug }}");
+					ticker_urls.push("{{ story.get_absolute_url }}");
+				{% endif %}
+			{% endfor %}
+
+			function rotateArray(arr){
+				cur_item = arr.shift();
+				arr.push(cur_item);
+				return cur_item;
+			}
+
+			function rotateTicker(){
+				cur_sport = rotateArray(ticker_sports);
+				cur_slug = rotateArray(ticker_slugs);
+				cur_url = rotateArray(ticker_urls);
+
+				document.getElementById('sportsticker_sport').innerHTML = "<a href='" + cur_url + "'>" + cur_sport + "</a>";
+				document.getElementById('sportsticker_slug').innerHTML = "<a href='" + cur_url + "'>" + cur_slug + " &raquo;</a>";
+				t=setTimeout("rotateTicker()",5000);
+			}
+			rotateTicker();
+		</script>
+	</div>
+
     <div class="bordered" id="tags">
         <h2>Tags</h2>
         <p> some mysterious tag interface here </p>

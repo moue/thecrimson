@@ -1071,6 +1071,40 @@ class Article(Content):
         ('contrib', 'Contributing Writer'),
     )
     
+    SPORTS_TYPE_CHOICES = (
+        ("baseball", "Baseball"),
+        ("basketball_mens", "Basketball (Men's)"),
+        ("basketball_womens", "Basketball (Women's)"),
+        ("crew_mens", "Crew (Men's)"),
+        ("crew_womens", "Crew (Women's)"),
+        ("field_hockey", "Field Hockey"),
+        ("fencing", "Fencing"),
+        ("football", "Football"),
+        ("golf_mens", "Golf (Men's)"),
+        ("golf_womens", "Golf (Women's)"),
+        ("hockey_mens", "Hockey (Men's)"),
+        ("hockey_womens", "Hockey (Women's)"),
+        ("lacrosse_mens", "Lacrosse (Men's)"),
+        ("lacrosse_womens", "Lacrosse (Women's)"),
+        ("sailing", "Sailing"),
+        ("skiing", "Skiing"),
+        ("soccer_mens", "Soccer (Men's)"),
+        ("soccer_womens", "Soccer (Women's)"),
+        ("squash_mens", "Squash (Men's)"),
+        ("squash_womens", "Squash (Women's)"),
+        ("swimming_mens", "Swimming (Men's)"),
+        ("swimming_womens", "Swimming (Women's)"),
+        ("tennis_mens", "Tennis (Men's)"),
+        ("tennis_womens", "Tennis (Women's)"),
+        ("track", "Track"),
+        ("water_polo_mens", "Water Polo (Men's)"),
+        ("water_polo_womens", "Water Polo (Women's)"),
+        ("wrestling", "Wrestling"),
+        ("volleyball_mens", "Volleyball (Men's)"),
+        ("volleyball_womens", "Volleyball (Women's)"),
+        ("other", "Other"),
+    )
+    
     objects = ContentManager()    
     
     headline = models.CharField(blank=False, max_length=127, db_index=True)
@@ -1095,6 +1129,10 @@ class Article(Content):
     
     rel_content = models.ManyToManyField(Content, through='ArticleContentRelation', 
         null=True, blank=True, related_name="rel_content")
+    
+    sportsticker_sport = models.CharField(blank=True, null=True, max_length=50,
+        choices=SPORTS_TYPE_CHOICES)
+    sportsticker_slug = models.CharField(blank=True, null=True, max_length=255)
     
     # Override save to check whether we're modifying an existing article's text
     def save(self, *args, **kwargs):

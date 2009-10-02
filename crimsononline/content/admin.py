@@ -587,6 +587,20 @@ class ArticleForm(ContentModelForm):
         labeler=(lambda obj: str(obj)))
     rel_content = RelatedContentField(label='New content', required=False,
         admin_site=admin.site, rel_types=[Image, Gallery, Article, Map, FlashGraphic, YouTubeVideo])
+
+    sportsticker_sport = forms.fields.ChoiceField(
+        widget=forms.Select(attrs={}),
+        choices=Article.SPORTS_TYPE_CHOICES,
+        label='Sport',
+        required=False,
+        help_text="Sport name to display before the headline."
+    )
+    sportsticker_slug = forms.fields.CharField(
+        widget=forms.TextInput(attrs={'size':'100'}),
+        label='Content',
+        required=False,
+        help_text="Text to display in the sports score ticker, eg \"Harvard 21 Yale 7\""
+    )
     
     def clean_teaser(self):
         """Add a teaser if one does not exist."""
@@ -631,6 +645,10 @@ class ArticleAdmin(ContentAdmin):
         ('Web', {
             'fields': ('pub_status', 'priority', 'slug', 'tags', 
                         'rotatable', 'web_only'),
+        }),
+        ('Sports Ticker', {
+            'fields': ('sportsticker_sport', 'sportsticker_slug',),
+            'classes': ('collapse',),
         }),
         ('Editing', {
             'fields': ('proofer', 'sne',),

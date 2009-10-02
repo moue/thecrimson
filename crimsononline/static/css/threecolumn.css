@@ -101,3 +101,19 @@
 .reviews li > span.rating{
     width: 90px;
 }
+
+div#sportsticker_sport a { 
+    color: white;
+    text-decoration: none;
+    font-size: 12px;
+}
+
+div#sportsticker_slug {
+    display: inline;
+    font-size: 14px;
+}
+
+div#sportsticker_slug a {
+    color: black;
+    text-decoration: none;
+}

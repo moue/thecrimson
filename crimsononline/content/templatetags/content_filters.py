@@ -154,4 +154,13 @@ def to_map_thumb(map, size):
     tag = '<img src="http://maps.google.com/staticmap?center=%s,%s&zoom=%s&size=%sx%s&maptype=mobile&key=%s&sensor=false&markers=%s" />' % \
         (map.center_lat, map.center_lng, map.zoom_level, size, size, GMaps_key, markerstr)
     return mark_safe(tag)
+
+@register.filter
+def pretty_sport_name(sport):
+    """ For use with the sports ticker - return the pretty name of the sport"""
+    tuples = Article.SPORTS_TYPE_CHOICES
+    for t in tuples:
+        if t[0] == sport:
+            return t[1]
+    return ""
     
