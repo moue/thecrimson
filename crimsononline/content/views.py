@@ -46,7 +46,7 @@ def index(request, m=None, d=None, y=None):
     dict['nav'] = 'index'
     dict['top_stories'] = stories[:4]
     dict['more_stories'] = stories[4:9]
-    dict['opeds'] = top_articles('Opinion', dt)[:4]
+    dict['opeds'] = top_articles(Section.cached('Opinion'), dt)[:4]
     dict['arts'] = top_articles('Arts', dt)[:4]
     dict['sports'] = top_articles('Sports', dt)[:4]
     dict['fms'] = top_articles('FM', dt)[:4]
@@ -84,7 +84,7 @@ def tag(request, tag, section_str='', type_str='', page=1):
     """Show the view for a specific tag."""
     
     tag = get_object_or_404(Tag, text=tag.replace('_', ' '))
-    content = Content.objects.filter(tags=tag)
+    content = Content.objects.recent.filter(tags=tag)
     f = filter_helper(request, content, section_str, type_str, 
         tag.get_absolute_url())
     
@@ -466,8 +466,8 @@ def filter_helper(req, qs, section_str, type_str, url_base):
 
         if(type in content_choices + ["other"]):
             tps[type[0].upper() + type[1:]] = {'selected': sel, 'url': url, 'count':ct}
+        
     
-
     return {'content': content, 'sections': sects, 'types': tps, 'show_filter':show_filter}
 
 @cache(settings.CACHE_SHORT, "general_generated_toparticles")

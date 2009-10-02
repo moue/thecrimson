@@ -9,7 +9,7 @@
         <a href="{{article.get_absolute_url}}">{{ article.main_rel_content|to_img_tag:"300,240,5,4" }}</a>
     {% endblock %}
     {% block text %}
-        <p class="teaser">{{article.teaser}}</p>
+        <p class="teaser">{{article.teaser|truncchars:"170"}}</p>
     {% endblock %}
 {% endif %}
 
