@@ -454,13 +454,8 @@ class ImageAdminForm(ContentModelForm):
     
 
 class ImageAdmin(ContentAdmin):
-    def pub_status_text(self, obj):
-        return Content.PUB_CHOICES[obj.pub_status][1]
-    
-    pub_status_text.short_description = 'Status'
-    
     list_display = ('pk', 'admin_thumb', 'kicker', 'section', 'issue', 
-                    'pub_status_text', 'rotatable')
+                    'pub_status', 'rotatable')
     list_display_links = ('pk', 'admin_thumb', 'kicker',)
     list_per_page = 30
     search_fields = ('kicker', 'caption',)
@@ -541,7 +536,7 @@ class GalleryAdmin(ContentAdmin):
     )
 
     form = GalleryForm
-    list_display = ('pk', 'title', 'section', 'pub_status_text', 'rotatable')
+    list_display = ('pk', 'title', 'section', 'pub_status', 'rotatable')
     
     class Media:
         css = {'all': ('css/admin/ImageGallery.css',)}
@@ -611,7 +606,7 @@ class ArticleForm(ContentModelForm):
 
 class ArticleAdmin(ContentAdmin):
     
-    list_display = ('headline', 'section', 'issue','pub_status_text', 'rotatable')
+    list_display = ('headline', 'section', 'issue','pub_status', 'rotatable')
     search_fields = ('headline', 'text',)
     list_filter = ('section', )
     

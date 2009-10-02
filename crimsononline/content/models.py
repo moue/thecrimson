@@ -111,10 +111,10 @@ class Content(models.Model):
         (21, '10 | OMG, It\'s Faust!'),
     )
     ROTATE_CHOICES = (
-        (0, 'Do not rotate'),
-        (1, 'Rotate on section pages only'),
-        (2, 'Rotate on front and section pages'),
-        (3, 'Rotate on front only')
+        (0, 'Don\'t''),
+        (1, 'Section Only'),
+        (2, 'Front and Section'),
+        (3, 'Front Only')
     )
     
     contributors = models.ManyToManyField('Contributor', null=True, 
@@ -139,9 +139,6 @@ class Content(models.Model):
     modified_on = models.DateTimeField(auto_now=True)
     
     content_type = models.ForeignKey(ContentType, editable=False, null=True)
-    
-    def pub_status_text(self):
-        return Content.PUB_CHOICES[self.pub_status][1]
     
     def save(self, *args, **kwargs):
         if not self.content_type:
