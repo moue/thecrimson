@@ -46,7 +46,7 @@ def index(request, m=None, d=None, y=None):
     dict['nav'] = 'index'
     dict['top_stories'] = stories[:4]
     dict['more_stories'] = stories[4:9]
-    dict['opeds'] = top_articles(Section.cached('Opinion'), dt)[:4]
+    dict['opeds'] = top_articles('Opinion', dt)[:4]
     dict['arts'] = top_articles('Arts', dt)[:4]
     dict['sports'] = top_articles('Sports', dt)[:4]
     dict['fms'] = top_articles('FM', dt)[:4]
