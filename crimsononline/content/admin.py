@@ -898,7 +898,6 @@ class YouTubeVideoAdmin(ContentAdmin):
         obj.pic.save(fpath, f)
         obj.save()      
         f.close()
-        print f.path
         os.remove(f.path)
         return obj
     
