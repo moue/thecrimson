@@ -5,6 +5,7 @@ from itertools import *
 import copy
 import re
 import urllib
+import os
 
 from django import forms
 from django.core import exceptions
@@ -648,10 +649,10 @@ class ArticleAdmin(ContentAdmin):
             'fields': ('pub_status', 'priority', 'slug', 'tags', 
                         'rotatable', 'web_only'),
         }),
-        ('Sports Ticker', {
-            'fields': ('sportsticker_sport', 'sportsticker_slug',),
-            'classes': ('collapse',),
-        }),
+        #('Sports Ticker', {
+        #    'fields': ('sportsticker_sport', 'sportsticker_slug',),
+        #    'classes': ('collapse',),
+        #}),
         ('Editing', {
             'fields': ('proofer', 'sne',),
             'classes': ('collapse',),
@@ -707,7 +708,7 @@ class ArticleAdmin(ContentAdmin):
         for i, r in enumerate(rel):
             x = ArticleContentRelation(order=i, article=obj, related_content=r)
             x.save()
-            
+        
         return obj
     
     def get_urls(self):
@@ -836,51 +837,67 @@ class ReviewAdmin(admin.ModelAdmin):
 admin.site.register(Review, ReviewAdmin)
 
 class YouTubeVideoForm(ContentModelForm):
-    pub_status = forms.ChoiceField(Content.PUB_CHOICES,required=True, 
-        label="Published Status")
-
-    def __init__(self, *args, **kwargs):
-        s = super(YouTubeVideoForm, self).__init__(*args, **kwargs)
-
+    pic = forms.fields.ImageField(widget=admin.widgets.AdminFileWidget,
+        required=False, help_text="If you leave this blank, we'll use "
+        "the default screenhshot genereated by Youtube.")
+    gen_pic = forms.fields.BooleanField(help_text="Check this box if "
+        "you changed the YouTube key and you want us to regenerate "
+        "the preview image.")
+    
     class Meta:
         model = YouTubeVideo
-
     
+
 class YouTubeVideoAdmin(ContentAdmin):
     form = YouTubeVideoForm
-
+    
     fieldsets = (
         ('Video Setup', {
-            'fields': ('title', 'description', 'key',),
+            'fields': ('title', 'description', 'key', 'pic', 'gen_pic'),
         }),
         ('Byline', {
             'fields': ('contributors',),
         }),
         ('Publishing', {
-            'fields': ('issue', 'section', 'pub_status', 'priority', 'slug', 'tags', 'rotatable'),
+            'fields': ('issue', 'section', 'pub_status', 'priority', 'slug', 
+                        'tags', 'rotatable'),
         }),
         ('Grouping', {
             'fields': ('group',),
             'classes': ('collapse',),
         })
     )
-
+    
     class Media:
         js = (
             'scripts/jquery.js',
         )
-
+    
     def save_model(self, request, obj, form, change):
+        if form.cleaned_data['gen_pic'] is False:
+            return super(YouTubeVideoAdmin, self).save_model(
+                request, obj, form, change)
         img_url = 'http://img.youtube.com/vi/'+obj.key+'/0.jpg'
-        img = urllib.urlretrieve(img_url)
-
         super(YouTubeVideoAdmin, self).save_model(request, obj, form, change)
+        try:
+            img = urllib.urlretrieve(img_url)
+        except:
+            request.user.message_set.create('There was a problem automatically'
+                ' downloading the preview image from Youtube (this may happen '
+                'if you just finished uploading the video to Youtube).  You '
+                'should add a preview image manually, or resave this video '
+                'later')
+            return obj
+        
+        f = File(open(img[0]))
         obj.pic.save(
-            get_yt_save_path(obj,(img_url.split("/")).pop()),
-            File(open(img[0]))
-            )
+            youtube_get_save_path(obj, img_url.rsplit('/', 1)[1]), f
+        )
         obj.save()      
+        f.close()
+        os.remove(f.path)
         return obj
+    
 
 admin.site.register(YouTubeVideo, YouTubeVideoAdmin)
 
@@ -888,10 +905,11 @@ admin.site.register(YouTubeVideo, YouTubeVideoAdmin)
 class FlashGraphicForm(ContentModelForm):
     def __init__(self, *args, **kwargs):
         s = super(FlashGraphicForm, self).__init__(*args, **kwargs)
-
+    
     class Meta:
         model = FlashGraphic
     
+
 class FlashGraphicAdmin(ContentAdmin):
     form = FlashGraphicForm
 
@@ -903,7 +921,8 @@ class FlashGraphicAdmin(ContentAdmin):
             'fields': ('contributors',),
         }),
         ('Publishing', {
-            'fields': ('issue', 'section', 'pub_status', 'priority', 'slug', 'tags', 'rotatable'),
+            'fields': ('issue', 'section', 'pub_status', 'priority', 'slug', 
+                        'tags', 'rotatable'),
         }),
         ('Grouping', {
             'fields': ('group',),
@@ -915,6 +934,7 @@ class FlashGraphicAdmin(ContentAdmin):
         js = (
             'scripts/jquery.js',
         )
+    
 
 admin.site.register(FlashGraphic, FlashGraphicAdmin)
 

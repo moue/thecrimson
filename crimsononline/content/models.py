@@ -854,14 +854,7 @@ class ImageSpec():
         url = '%s/%s' % (split(self.orig_file.url)[0], split(self.path)[1])
         self._url = url
         return url
-        
-
-def get_save_path(instance, filename):
-    ext = splitext(filename)[1]
-    filtered_capt = make_file_friendly(instance.kicker)
-    return datetime.now().strftime("photos/%Y/%m/%d/%H%M%S_") + \
-        filtered_capt + ext
-
+    
 
 class ImageManager(ContentManager):
 
@@ -873,6 +866,14 @@ class ImageManager(ContentManager):
             s = s.order_by('gallerymembership__order')
         return s  
     
+
+def image_get_save_path(instance, filename):
+    ext = splitext(filename)[1]
+    filtered_capt = make_file_friendly(instance.slug)
+    if filtered_capt == '':
+        filtered_capt = make_file_friendly(instance.kicker)
+    return datetime.now().strftime("photos/%Y/%m/%d/%H%M%S_") + \
+        filtered_capt + ext
 
 class Image(Content):
 
@@ -894,9 +895,9 @@ class Image(Content):
     
     caption = models.CharField(blank=True, null=True, max_length=1000)
     kicker = models.CharField(blank=True, null=True, max_length=500)
-    # make sure pic is last: get_save_path needs an instance, and if this
+    # make sure pic is last: photo_save_path needs an instance, and if this
     #  attribute is processed first, all the instance attributes will be blank
-    pic = SuperImageField('File', max_width=960, upload_to=get_save_path)
+    pic = SuperImageField('File', max_width=960, upload_to=image_get_save_path)
     
     objects = ImageManager()
     
@@ -968,10 +969,13 @@ class GalleryMembership(models.Model):
     
     class Meta:
         ordering = ('order',)
+    
 
-def get_yt_save_path(instance, filename):
+def youtube_get_save_path(instance, filename):
     ext = splitext(filename)[1]
-    filtered_capt = make_file_friendly(instance.title)
+    filtered_capt = make_file_friendly(instance.slug)
+    if filtered_capt == '':
+        filtered_capt = make_file_friendly(instance.title)
     return datetime.now().strftime("photos/%Y/%m/%d/%H%M%S_") + \
         filtered_capt + ext
 
@@ -985,36 +989,35 @@ class YouTubeVideo(Content):
         db_index=True)
     title = models.CharField(blank=False, null=False, max_length=200)
     description = models.TextField(blank=False, null=False)
-    pic = SuperImageField('File', max_width=960, upload_to=get_yt_save_path)
+    pic = SuperImageField('Preview Picture', max_width=960, 
+        upload_to=youtube_get_save_path, null=True)
     
     objects = ContentManager()
-
+    
     def __unicode__(self):
         return self.title
+    
 
-def get_flash_save_path(instance, filename):
+def flash_get_save_path(instance, filename):
     ext = splitext(filename)[1]
     filtered_title = make_file_friendly(instance.title)
     return datetime.now().strftime("graphics/%Y/%m/%d/%H%M%S_") + \
         filtered_title + ext
 
 class FlashGraphic(Content):
-    """
-    A Flash Graphic
-    """
+    """A Flash Graphic."""
     
-    graphic = models.FileField(upload_to=get_flash_save_path)
-
-    width = models.PositiveIntegerField(help_text="Positive integer less than 640")
-    height = models.PositiveIntegerField(help_text="Positive integer")
-
+    graphic = models.FileField(upload_to=flash_get_save_path)
+    width = models.PositiveIntegerField()
+    height = models.PositiveIntegerField()
     title = models.CharField(blank=False, null=False, max_length=200)
     description = models.TextField(blank=False, null=False)
     
     def __unicode__(self):
         return self.title
-        
+    
     objects = ContentManager()
+
 
 class Map(Content):
     """
@@ -1137,9 +1140,9 @@ class Article(Content):
     rel_content = models.ManyToManyField(Content, through='ArticleContentRelation', 
         null=True, blank=True, related_name="rel_content")
     
-    sportsticker_sport = models.CharField(blank=True, null=True, max_length=50,
-        choices=SPORTS_TYPE_CHOICES)
-    sportsticker_slug = models.CharField(blank=True, null=True, max_length=255)
+    #sportsticker_sport = models.CharField(blank=True, null=True, max_length=50,
+    #    choices=SPORTS_TYPE_CHOICES)
+    #sportsticker_slug = models.CharField(blank=True, null=True, max_length=255)
     
     # Override save to check whether we're modifying an existing article's text
     def save(self, *args, **kwargs):
