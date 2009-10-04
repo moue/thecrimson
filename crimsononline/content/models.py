@@ -969,6 +969,12 @@ class GalleryMembership(models.Model):
     class Meta:
         ordering = ('order',)
 
+def get_yt_save_path(instance, filename):
+    ext = splitext(filename)[1]
+    filtered_capt = make_file_friendly(instance.title)
+    return datetime.now().strftime("photos/%Y/%m/%d/%H%M%S_") + \
+        filtered_capt + ext
+
 class YouTubeVideo(Content):
     """
     Embeddable YouTube video
@@ -979,6 +985,7 @@ class YouTubeVideo(Content):
         db_index=True)
     title = models.CharField(blank=False, null=False, max_length=200)
     description = models.TextField(blank=False, null=False)
+    pic = SuperImageField('File', max_width=960, upload_to=get_yt_save_path)
     
     objects = ContentManager()
 

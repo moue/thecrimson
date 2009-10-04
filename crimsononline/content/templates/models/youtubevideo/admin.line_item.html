@@ -2,7 +2,7 @@
 {% load common %}
 
 <span>YouTube Video</span>
-<span><img src="http://img.youtube.com/vi/{{youtubevideo.key}}/2.jpg" /></span>
+<span>{{youtubevideo.pic|to_thumb_tag}}</span>
 <span>{{ youtubevideo.title }}</span>
 <span class="contributors">{{ youtubevideo.contributors.all|human_list }}</span>
 <span>{{ youtubevideo.created_on|date:"m/d/y" }}</span>

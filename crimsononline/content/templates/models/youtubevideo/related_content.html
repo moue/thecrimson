@@ -6,7 +6,7 @@
 {% block rc %}
     <span class="ctype">Video</span><br />
     <a href="{{ youtubevideo.get_absolute_url }}">
-    <img src="http://img.youtube.com/vi/{{youtubevideo.key}}/2.jpg" width=180 height=135/>
+    <img src="{{youtubevideo.pic|to_img_tag:"180,"}}"/>
     <span class="title">{{ youtubevideo.title }}</span>
     </a>
 {% endblock %}

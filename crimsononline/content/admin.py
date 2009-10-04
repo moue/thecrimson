@@ -4,6 +4,7 @@ from time import strptime
 from itertools import *
 import copy
 import re
+import urllib
 
 from django import forms
 from django.core import exceptions
@@ -13,6 +14,7 @@ from django.conf.urls.defaults import patterns
 from django.contrib import admin
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
+from django.core.files import File
 from django.db.models import Q
 from django.forms import ModelForm
 from django.http import Http404, HttpResponse
@@ -842,6 +844,7 @@ class YouTubeVideoForm(ContentModelForm):
 
     class Meta:
         model = YouTubeVideo
+
     
 class YouTubeVideoAdmin(ContentAdmin):
     form = YouTubeVideoForm
@@ -866,6 +869,18 @@ class YouTubeVideoAdmin(ContentAdmin):
         js = (
             'scripts/jquery.js',
         )
+
+    def save_model(self, request, obj, form, change):
+        img_url = 'http://img.youtube.com/vi/'+obj.key+'/0.jpg'
+        img = urllib.urlretrieve(img_url)
+
+        super(YouTubeVideoAdmin, self).save_model(request, obj, form, change)
+        obj.pic.save(
+            get_yt_save_path(obj,(img_url.split("/")).pop()),
+            File(open(img[0]))
+            )
+        obj.save()      
+        return obj
 
 admin.site.register(YouTubeVideo, YouTubeVideoAdmin)
 
