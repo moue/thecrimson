@@ -842,7 +842,7 @@ class YouTubeVideoForm(ContentModelForm):
         "the default screenhshot genereated by Youtube.")
     gen_pic = forms.fields.BooleanField(help_text="Check this box if "
         "you changed the YouTube key and you want us to regenerate "
-        "the preview image.")
+        "the preview image.", required=False)
     
     class Meta:
         model = YouTubeVideo
@@ -874,7 +874,8 @@ class YouTubeVideoAdmin(ContentAdmin):
         )
     
     def save_model(self, request, obj, form, change):
-        if form.cleaned_data['gen_pic'] is False:
+        # if gen_pic is set, or there is no picture on the obj / form
+        if form.cleaned_data['pic'] and not form.cleaned_data['gen_pic'] :
             return super(YouTubeVideoAdmin, self).save_model(
                 request, obj, form, change)
         img_url = 'http://img.youtube.com/vi/'+obj.key+'/0.jpg'
@@ -886,15 +887,18 @@ class YouTubeVideoAdmin(ContentAdmin):
                 ' downloading the preview image from Youtube (this may happen '
                 'if you just finished uploading the video to Youtube).  You '
                 'should add a preview image manually, or resave this video '
-                'later')
+                'later.')
             return obj
         
+        fpath = youtube_get_save_path(obj, img_url.rsplit('/', 1)[1])
+        dir = os.path.dirname(fpath)
+        if not os.path.exists(dir):
+            os.makedirs(dir)
         f = File(open(img[0]))
-        obj.pic.save(
-            youtube_get_save_path(obj, img_url.rsplit('/', 1)[1]), f
-        )
+        obj.pic.save(fpath, f)
         obj.save()      
         f.close()
+        print f.path
         os.remove(f.path)
         return obj
     

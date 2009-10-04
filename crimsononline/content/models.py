@@ -135,8 +135,8 @@ class Content(models.Model):
         default=0, db_index=True)
     pub_status = models.IntegerField(null=False, choices=PUB_CHOICES, 
         default=0, db_index=True)
-    created_on = models.DateTimeField(auto_now_add=True)
-    modified_on = models.DateTimeField(auto_now=True)
+    created_on = models.DateTimeField(auto_now_add=True, db_index=True)
+    modified_on = models.DateTimeField(auto_now=True, db_index=True)
     
     content_type = models.ForeignKey(ContentType, editable=False, null=True)
     
@@ -148,7 +148,7 @@ class Content(models.Model):
             expire_stuff()
             # expire own page
             expire_page(self.get_absolute_url())
-            # we should expire the section pag for the content type if it has one
+            # we should expire the section page for the content type if it has one
             expire_page(self.section.get_absolute_url())
             # writer page for the contributor of the content
             for contributor in self.contributors.all():
