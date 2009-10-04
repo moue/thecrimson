@@ -892,8 +892,8 @@ class YouTubeVideoAdmin(ContentAdmin):
         
         fpath = youtube_get_save_path(obj, img_url.rsplit('/', 1)[1])
         dir = os.path.dirname(fpath)
-        if not os.path.exists(dir):
-            os.makedirs(dir)
+        #if not os.path.exists(dir):
+        #    os.makedirs(dir)
         f = File(open(img[0]))
         obj.pic.save(fpath, f)
         obj.save()      
