@@ -44,9 +44,17 @@ h2, h2 a{
     font-weight: bold;
     margin-bottom: 2px;
     font-size: 20px;
-    font-size: 20px;
     line-height: 110%;
 }
+h2.flat{
+	font-weight: bold;
+	margin-bottom: 2px;
+	font-size: 16px;
+	line-height: 110%;
+	color: #ba0600;
+	margin-bottom: 10px;
+}
+
 h3, h3 a{
     font-weight: bold;
     margin-bottom: 2px;
@@ -121,7 +129,10 @@ h3, h3 a{
 .mod-gray{border-top: 2px solid #d1d1d1;}
 .mod-box{
 	border:1px solid #EEEEEE;
-
+}
+.mod-boxbkgrd{
+	border:1px solid #EEEEEE;
+	background: url('../images/sealbkbox.png') no-repeat right top;
 }
 
 .mod-ad{text-align: center;}
@@ -303,13 +314,13 @@ h3, h3 a{
     margin: 0 auto;
     text-align: center;
     width: 973px;
-    font-size: 14px;
+    font-size: 11px;
     padding-bottom: 10px;
 }
 
 #footer_contents span, #footer_contents span a{
-    font-family: Helvetica, Arial, sans-serif;
-    font-size: 12px;
+    font-family: Tahoma, Helvetica, Arial, sans-serif;
+    font-size: 11px;
 }
 
 

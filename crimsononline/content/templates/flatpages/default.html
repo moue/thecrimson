@@ -11,10 +11,19 @@
 {% endblock %}
 
 {% block body %}
-    <div class="col-3">
-    {% module 3 navigation %}
+   
+    <div class="col-8">
+    {% module 8 flatpage.title red %}
+        {{ flatpage.content }}
     {% endmodule %}
-        <ul class="left_navigation">
+    </div>
+    
+	<div class="gutter"></div>
+
+    <div class="col-4">
+    {% module 4 "" boxbkgrd %}
+		<span class="title">NAVIGATION</span>
+        <ul class="right_navigation">
         {% flatpage_nav about flatpage.url %}
             <a href="/search/">Archives</a>
             <a href="/classifieds/">Classifieds</a>
@@ -24,15 +33,11 @@
             <a href="/subscribe/">Subscriptions</a>
         {% endflatpage_nav %}
         </ul>
+		{% endmodule %}
+
     </div>
 
-    <div class="gutter"></div>
-    
-    <div class="col-9">
-    {% module 9 flatpage.title red %}
-        {{ flatpage.content }}
-    {% endmodule %}
-    </div>
-    
+
+	
     <span class="clear" />
 {% endblock %}

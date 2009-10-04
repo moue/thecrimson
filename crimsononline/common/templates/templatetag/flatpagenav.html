@@ -1,5 +1,5 @@
 {% load common %}
 {% for text, link in links %}
-    <li><a {% ifequal cur_url link %}class="active" {%endifequal%}href="{{link}}">{{text}}</a></li>
+    <li class="right_navigation-list"><a {% ifequal cur_url link %}class="active" {%endifequal%}href="{{link}}">{{text}}</a></li>
 {% endfor %}
 {{nodelist}}

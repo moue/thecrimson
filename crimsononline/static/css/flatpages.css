@@ -18,6 +18,41 @@
     background-color: #eee;
 }
 .left_navigation a:hover, .left_navigation > li > a.active{
-    color: black;
+	color:#ba0600;
     background-color: #d1d1d1;
 }
+
+.right_navigation {
+    float: right;
+    width: 100%;
+}
+
+.right_navigation-list{
+	color:#666;
+	list-style-type: none;
+	font-size: 15px;
+	width: 220px;
+	padding-left:12px;
+
+}
+
+
+.right_navigation a {
+	color:#666;
+	list-style-type: none;
+	font-size: 15px;
+	width: 220px;
+	margin-left:0px;
+
+}
+
+.right_navigation-list a:hover, .right_navigation-list  > a.active{
+	color:#ba0600;
+	text-decoration: none;
+	background:url('../images/icons/redarrow.png');
+	background-repeat: no-repeat;
+	background-position:left center;
+	margin-left:-14px;
+	padding-left:14px;
+}
+
