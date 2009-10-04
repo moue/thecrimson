@@ -2466,28 +2466,6 @@
     }
 },
 {
-    "pk": 4,
-    "model": "content.image",
-    "fields": {
-        "contributors": [1],
-        "tags": [1, 2],
-        "pic": "photos/2009/07/24/235930_robert-c-haas.jpg",
-        "caption": "Cambridge Police Department chief Robert C. Haas expresses regret at a press conference for the arrest of Harvard professor Henry Louis \"Skip\" Gates, Jr. Haas defended the actions of the officer involved, and outlined plans for a panel to review the incident.",
-        "kicker": "Robert C. Haas"
-    }
-},
-{
-    "pk": 1,
-    "model": "content.image",
-    "fields": {
-        "contributors": [1],
-        "tags": [1, 2],
-        "pic": "photos/2009/07/24/162449_skip-gates.jpg",
-        "caption": "Henry Louis Gates, Jr., pictured here in 2003, was arrested in his own home on charges of Disorderly Conduct. The charges were later dropped. ",
-        "kicker": "Skip Gates"
-    }
-},
-{
     "pk": 3,
     "model": "content.gallery",
     "fields": {
