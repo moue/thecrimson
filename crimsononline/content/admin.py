@@ -841,7 +841,7 @@ class YouTubeVideoForm(ContentModelForm):
     pic = forms.fields.ImageField(widget=admin.widgets.AdminFileWidget,
         required=False, help_text="If you leave this blank, we'll use "
         "the default screenhshot genereated by Youtube.")
-    gen_pic = forms.fields.BooleanField(help_text="Check this box if "
+    gen_pic = forms.fields.BooleanField(label="Check this box if "
         "you changed the YouTube key and you want us to regenerate "
         "the preview image.", required=False)
     
@@ -851,6 +851,7 @@ class YouTubeVideoForm(ContentModelForm):
 
 class YouTubeVideoAdmin(ContentAdmin):
     form = YouTubeVideoForm
+    list_fields = ('admin_thumb', 'title', 'key',)
     
     fieldsets = (
         ('Video Setup', {

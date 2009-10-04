@@ -997,6 +997,10 @@ class YouTubeVideo(Content):
     def __unicode__(self):
         return self.title
     
+    def admin_thumb(self):
+        """HTML for tiny thumbnail in the admin page."""
+        return """<img src="%s">""" % self.pic.display_url(Image.SIZE_TINY)
+    admin_thumb.allow_tags = True
 
 def flash_get_save_path(instance, filename):
     ext = splitext(filename)[1]
