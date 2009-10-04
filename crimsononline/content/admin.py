@@ -898,9 +898,8 @@ class YouTubeVideoAdmin(ContentAdmin):
         
         # auto-crop the image
         i = pilImage.open(img[0])
-        i.crop((124, 50, 464, 305))
+        i = i.crop((124, 50, 464, 305))
         i.save(img[0])
-        del i
         
         f = File(open(img[0]))
         obj.pic.save(fpath, f)
