@@ -6,6 +6,7 @@ import copy
 import re
 import urllib
 import os
+from PIL import Image as pilImage
 
 from django import forms
 from django.core import exceptions
@@ -894,6 +895,13 @@ class YouTubeVideoAdmin(ContentAdmin):
         #dir = os.path.dirname(fpath)
         #if not os.path.exists(dir):
         #    os.makedirs(dir)
+        
+        # auto-crop the image
+        i = pilImage.open(img[0])
+        i.crop((124, 50, 464, 305))
+        i.save(img[0])
+        del i
+        
         f = File(open(img[0]))
         obj.pic.save(fpath, f)
         obj.save()
