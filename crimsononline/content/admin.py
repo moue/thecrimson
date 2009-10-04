@@ -851,7 +851,7 @@ class YouTubeVideoForm(ContentModelForm):
 
 class YouTubeVideoAdmin(ContentAdmin):
     form = YouTubeVideoForm
-    list_fields = ('admin_thumb', 'title', 'key',)
+    list_display = ('admin_thumb', 'title', 'key',)
     
     fieldsets = (
         ('Video Setup', {
