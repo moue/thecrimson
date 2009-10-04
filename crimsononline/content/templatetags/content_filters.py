@@ -79,11 +79,14 @@ def flash_gallery_margin(img):
 @register.filter
 def img_gallery_margin(img):
     """Gets the margin needed for an image in a gallery (height 450px)"""
-    if float(img.pic.height)/img.pic.width >= float(450)/619 and img.pic.height >=450:
-        return 0
+    print img.pic.width
+    if float(img.pic.height)/img.pic.width >= float(450)/619:
+        if img.pic.height >=450:
+            return 0
+        return int(450-img.pic.height)/2
     else:
         ren_height = float(img.pic.height)/img.pic.width*619
-        return (450-ren_height)/2
+        return int(450-ren_height)/2
 
 @register.filter
 def to_img_tag(img, size_spec):

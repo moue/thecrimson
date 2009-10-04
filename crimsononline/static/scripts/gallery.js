@@ -2,28 +2,35 @@ $(document).ready(function(){
 
     $(".viewer_top").hover(function (){
             $(".gallery_control #inside").fadeIn("fast");
+            $(".a_left").fadeIn("fast");
+            $(".a_right").fadeIn("fast");
     },function (){
             $(".gallery_control #inside").fadeOut("fast");
+            $(".a_left").fadeOut("fast");
+            $(".a_right").fadeOut("fast");
     });
 
 
     /* ========= the carousel stuff ============== */
-    var num_items = $(".carousel_frame").children().length - 6;
+    var num_items = $(".carousel_frame ul").children().length;
     var cur_item = 0;
     // returns false if the slide was unsuccessful
     var slide_carousel = function(dir){
-        if(cur_item + dir > num_items || cur_item + dir < 0){
-            return false;
-        }
+        cur_item += dir;
 
+        if(cur_item < 0)
+            cur_item = num_items - 1;
+        if(cur_item == num_items)
+            cur_item = 0;
+        $(".carousel_frame ul").children().eq(cur_item).find("a").click();
+        //.click();
         var p = parseInt($(".carousel_frame").css("left"))
         $(".carousel_frame").animate({left: p - 54 * dir}, "normal");
-        cur_item += dir;
         return true;
     }
 
-    $("#gal_left").click(function(){slide_carousel(-1)});
-    $("#gal_right").click(function(){slide_carousel(1)});
+    $("#gal_prev").click(function(){slide_carousel(-1)});
+    $("#gal_next").click(function(){slide_carousel(1)});
     
     /* ========== changing photos in the gallery ============ */
     var _photo_cache = new Array();

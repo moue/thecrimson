@@ -96,6 +96,26 @@
     width: 100%;
 }
 
+.arrow{
+    margin-top: 205px;
+    width:40px;
+    height:40px;
+	background-image: url('../images/semitransparent.png'); 
+	border: 1px solid #666;
+    position: absolute;
+    z-index: 1000;
+    display: none;
+}
+.arrow img{
+    cursor: pointer;
+}
+.a_left{
+    margin-left: 10px;
+}
+.a_right{
+    margin-left: 577px;
+}
+
 .gallery_control #inside{
    height: 26px;
     width: 100%;
