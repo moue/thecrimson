@@ -228,8 +228,8 @@ class RelatedContentField(forms.CharField):
         """
         if not value:
             return []
-        ids = value.split(';')
-        q = reduce(lambda x, y: x | y, [Q(pk=p) for p in ids])
+        ids = [int(id) for id in value.split(';')]
+        q = reduce(lambda x, y: x | y, [Q(pk=intp) for p in ids])
         objs = list(Content.objects.filter(q))
         # retrieving Content objs MUST preserve their order!!!
         objs = dict([(obj.pk, obj) for obj in objs])
