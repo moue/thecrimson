@@ -9,6 +9,7 @@ from re import compile
 from django import forms
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.contenttypes.models import ContentType
+from django.db.models import Q
 from django.template.loader import render_to_string
 from django.utils.safestring import mark_safe
 from crimsononline.content.models import Image, Issue, Content, Section
