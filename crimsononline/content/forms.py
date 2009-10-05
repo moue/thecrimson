@@ -228,7 +228,7 @@ class RelatedContentField(forms.CharField):
         """
         if not value:
             return []
-        ids = [int(id) for id in value.split(';')]
+        ids = [int(id) for id in value.split(';') if id]
         q = reduce(lambda x, y: x | y, [Q(pk=intp) for p in ids])
         objs = list(Content.objects.filter(q))
         # retrieving Content objs MUST preserve their order!!!
