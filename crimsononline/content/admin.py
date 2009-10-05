@@ -702,7 +702,7 @@ class ArticleAdmin(ContentAdmin):
         return super(ArticleAdmin, self).has_change_permission(request, obj)
     
     def save_model(self, request, obj, form, change):
-        rel = form.cleaned_data.pop('rel_content',[])
+        rel = form.cleaned_data.pop('rel_content', [])
         
         super(ArticleAdmin, self).save_model(request, obj, form, change)
         obj.rel_content.clear()

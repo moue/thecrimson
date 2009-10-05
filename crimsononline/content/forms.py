@@ -176,8 +176,9 @@ class RelatedContentWidget(forms.widgets.HiddenInput):
         self.c_types = []
         
         return super(RelatedContentWidget, self).__init__(*args, **kwargs)
-        
+    
     def render(self, name, value, attrs=None):
+        # set up content types
         if not self.c_types:
             for t in self.rel_types:
                 if t not in self.admin_site._registry:
@@ -186,7 +187,7 @@ class RelatedContentWidget(forms.widgets.HiddenInput):
                 t_url = '../../../%s/%s/' % (t._meta.app_label, t_name.lower())
                 t_id = ContentType.objects.get_for_model(t).pk
                 self.c_types.append({'url': t_url, 'name': t_name, 'id': t_id})
-
+        
         if value:
             # grab all related content objects AND PRESERVE ORDER !!
             objs = []
@@ -200,7 +201,7 @@ class RelatedContentWidget(forms.widgets.HiddenInput):
         else:
             # make sure value isn't '', [], or some other fail
             value = None
-
+        
         hidden = super(RelatedContentWidget, self).render(name, value, attrs)
         # account for closeouts before midnight
         today, yesterday = datetime.now() + timedelta(days=1), datetime.now() + timedelta(days=-2)
@@ -210,9 +211,7 @@ class RelatedContentWidget(forms.widgets.HiddenInput):
 
 
 class RelatedContentField(forms.CharField):
-    """
-    The interface for adding / editing related content.
-    """
+    """The interface for adding / editing related content."""
 
     def __init__(self, *args, **kwargs):
         kwargs['widget'] = RelatedContentWidget(
@@ -222,25 +221,16 @@ class RelatedContentField(forms.CharField):
         return super(RelatedContentField, self).__init__(*args, **kwargs)
     
     def clean(self, value):
-        """
-        Turns value into a list of Content objects
-        value is received as a ; delimited set of , delimited pairs
+        """Turns value into a list of Content objects
+        
+        value is received as a ; delimited set of primary keys
         """
         if not value:
             return []
         ids = value.split(';')
+        q = reduce(lambda x, y: x | y, [Q(pk=p) for p in ids])
+        objs = list(Content.objects.filter(q))
         # retrieving Content objs MUST preserve their order!!!
-        objs = []
-        
-        for p in ids:
-            try:
-                objs.append(Content.objects.get(pk=p))
-            except:
-                pass
-        # this is faster? but doesn't work because it doesn't preserve order       
-        #q = [Q(content_type__pk=p[0], object_id=p[1]) for p in ids]
-        #q = reduce(lambda x, y: x | y, q)
-        #objs = list(Content.objects.filter(q))
-
-        return objs
-
+        objs = dict([(obj.pk, obj) for obj in objs])
+        return [objs[pk] for pk in ids]
+    

@@ -1195,7 +1195,6 @@ class ArticleContentRelation(models.Model):
     class Meta:
         ordering = ('order',)
     
-
     """
     class Meta:
         unique_together = (
