@@ -242,7 +242,7 @@ class Content(models.Model):
     
     def delete(self):
         # anyone can delete drafts
-        if self.pub_status is 0:
+        if int(self.pub_status) is 0:
             super(Content, self).delete()
         else:
             self.pub_status = -1
@@ -1168,7 +1168,7 @@ class Article(Content):
                 prev_article = Article.objects.get(pk=self.pk)
             except Article.DoesNotExist:
                 prev_article = None
-            if prev_article is not None and prev_article.pub_status is 1:
+            if prev_article is not None and int(prev_article.pub_status) is 1:
                 #print "hi2"
                 oldtext = prev_article.text
                 # If the text has changed, make a new Correction for the old text
@@ -1189,9 +1189,9 @@ class Article(Content):
     @property
     def main_rel_content(self):
         r = self.rel_content.all()[:1]
-        r = r[0].child if r else None
         # need to return child, so that subclass methods can be called
-        return r
+        r = r[0].child if r else None
+        return r if not isinstance(r, Article) else None
     
     def __unicode__(self):
         return self.headline
