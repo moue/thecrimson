@@ -158,7 +158,7 @@ class ContentAdmin(admin.ModelAdmin):
         
         slug = f.base_fields['slug'].widget
         issue = f.base_fields['issue'].widget
-        if obj is not None and obj.pub_status is 1:
+        if obj is not None and int(obj.pub_status) is 1:
             slug.editable = False
             issue.editable = False
         else:
@@ -182,13 +182,16 @@ class ContentAdmin(admin.ModelAdmin):
         return f
     
     def save_model(self, request, obj, form, change):
-        # don't let anyone change issue / slug on published content.  
-        if change and obj and obj.pub_status == 1:
+        # don't let anyone change issue / slug on published content.
+        if change and obj and int(obj.pub_status) == 1:
             old_obj = self.model.objects.all_objects().get(pk=obj.pk)
-            obj.issue = old_obj.issue
-            obj.slug = old_obj.slug
+            if obj.issue != old_obj.issue or obj.slug != old_obj.slug:
+                request.user.message_set.create(message='You can\'t change '
+                    'the issue or slug on published content.  Changes to '
+                    'those fields have been undone.')
+                obj.issue, obj.slug = old_obj.issue, old_obj.slug
             # don't let nonpermissioned users publish articles
-            if old_obj.pub_status != 1 and not \
+            if int(old_obj.pub_status) != 1 and not \
                 request.user.has_perm('content.content.can_publish'):
                 raise exceptions.SuspiciousOperation()
         
@@ -740,7 +743,7 @@ class ArticleAdmin(ContentAdmin):
         if u.is_superuser:
             return True
         # cannot make change to published stuff; must use corrections interface
-        if obj and obj.pub_status != 0:
+        if obj and int(obj.pub_status) != 0:
             return u.has_perm('content.content.can_publish')
         return super(ArticleAdmin, self).has_change_permission(request, obj)
     

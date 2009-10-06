@@ -42,7 +42,7 @@ class AutoGenSlugWidget(forms.widgets.TextInput):
     
     def render(self, name, value, attrs={}):
         input = super(AutoGenSlugWidget, self).render(name, value, attrs)
-        if self.editable == False:
+        if not self.editable:
             # render a disabled input, but we still need a hidden input to
             #  make sure the form validates (slugs are required)
             fakeinput = mark_safe(input.replace('id="id_slug"', 'disabled="1"'))
