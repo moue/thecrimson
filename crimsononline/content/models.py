@@ -333,7 +333,10 @@ class Content(models.Model):
         qs = cls.objects
         if manager_name is not None:
             qs = getattr(qs, manager_name)()
-        return qs.filter(**q).order_by('-' + lookup)
+        # okay, so this doesn't make any sense, but its kind of necessary
+        #  for a speedy query
+        return qs.filter(**q).order_by('-id')
+        #return qs.filter(**q).order_by('-' + lookup)
     
 
 
