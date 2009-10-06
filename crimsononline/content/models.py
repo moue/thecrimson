@@ -238,8 +238,7 @@ class Content(models.Model):
         # flyby content
         if method == 'page' and self.group == ContentGroup.flyby:
             return mark_safe(render_to_string('models/%s/flyby.html'%(name), context, context_instance=RequestContext(request)))
-        
-        return mark_safe(render_to_string(templ, context, context_instance=RequestContext(request)))
+        return mark_safe(render_to_string(templ, context))
     
     def delete(self):
         # anyone can delete drafts

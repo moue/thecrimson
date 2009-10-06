@@ -757,7 +757,7 @@ class ArticleAdmin(ContentAdmin):
         returns HTML with a Content obj rendered as 'admin.line_item'
         @obj_id : Content pk
         """
-
+        
         r = get_object_or_404(Content.objects.admin_objects(), pk=int(obj_id))
         json_dict = {
             'html': mark_safe(r._render('admin.line_item')),
@@ -785,7 +785,7 @@ class ArticleAdmin(ContentAdmin):
         st_dt = datetime.strptime(st_dt, '%m/%d/%Y')
         end_dt = datetime.strptime(end_dt, '%m/%d/%Y')
         
-        objs = cls.find_by_date(st_dt, end_dt, 'admin_objects')
+        objs = cls.find_by_date(st_dt, end_dt)
         p = Paginator(objs, OBJS_PER_REQ).page(page)
         
         json_dict = {}
@@ -825,7 +825,7 @@ class ArticleAdmin(ContentAdmin):
                 tagarticles.append(Content.objects.filter(issue__issue_date__gte = newerthan).filter(tags__pk = tag))
             else:
                 tagarticles.append(Content.objects.filter(issue__issue_date__gte = newerthan).filter(content_type__pk = ct_id).filter(tags__pk = tag))
-
+        
         objstemp = []
         # Iterate through from most to least matches on tags
         for i in range(len(tagarticles),0,-1):
@@ -839,9 +839,9 @@ class ArticleAdmin(ContentAdmin):
         objs = []
         for o in objstemp:
             objs.append(o)
-
+        
         p = Paginator(objs, OBJS_PER_REQ).page(page)
-
+        
         json_dict = {}
         json_dict['objs'] = []
         for obj in p.object_list:

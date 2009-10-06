@@ -22,27 +22,38 @@
         Published: {{ article.issue.issue_date|date:"l, F d, Y" }}
     </div>
     {% if article.main_rel_content %}
-        {{ article.main_rel_content|render:"article.main" }}
+        {% ifnotequal article.main_rel_content.content_type.model "article" %}
+            {{ article.main_rel_content|render:"article.main" }}
+        {% endifnotequal %}
     {% endif %}
 
     <div class="text">
         {% with article.text|safe|paragraphs as paras %}
-            {{ paras|slice:":5"|join:"" }}
-            {% with article.rel_content.all|slice:"1:" as rcs %}
-                {% if rcs %}
+            {{ paras|slice:":4"|join:"" }}
+            {% with article.rel_content.all|rel_no_articles|notfirst as rcs%}
+            {% if rcs %}
                 <div id="related_contents">
-                    {{ "Multimedia"|yuhkilabel }}
+                    <h3>Multimedia</h3>
                     {% for rc in rcs %}
-                        {% ifnotequal rc.content_type.model "article" %}
-                            {{ rc|render:"related_content" }}
-                        {% endifnotequal %}
+                        {{ rc|render:"related_content"}}
                     {% endfor %}
                 </div>
-                {% endif %}
+            {% endif %}
             {% endwith %}
-            {{ paras|slice:"5:"|join:"" }}
+            {{ paras|slice:"4:"|join:"" }}
         {% endwith %}
     </div>
-    {{ block.super }}
+    {% with article.rel_content.all|rel_articles as ras %}
+    {% if ras %}
+        <div id="related_articles">
+            <h3>Related Articles</h3>
+            <ul>
+            {% for ra in ras %}
+                {{ ra|render:"preview" }}
+            {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+    {% endwith %}
 {% endblock %}
 

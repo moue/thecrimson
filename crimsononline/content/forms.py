@@ -95,7 +95,6 @@ class IssuePickerWidget(forms.widgets.HiddenInput):
         self.editable = True
         super(IssuePickerWidget, self).__init__(*args, **kwargs)
     
-    
     def render(self, name, value, attrs=None):
         meta_select = "daily"
         if value:
@@ -193,7 +192,7 @@ class RelatedContentWidget(forms.widgets.HiddenInput):
             # grab all related content objects AND PRESERVE ORDER !!
             objs = []
             for v in value:
-                objs.append(Content.objects.get(pk=v))
+                objs.append(Content.objects.admin_objects().get(pk=v))
             
             # construct related content identifiers
             value = ['%d' % (o.pk) \

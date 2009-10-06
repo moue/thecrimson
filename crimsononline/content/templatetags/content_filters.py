@@ -79,7 +79,6 @@ def flash_gallery_margin(img):
 @register.filter
 def img_gallery_margin(img):
     """Gets the margin needed for an image in a gallery (height 450px)"""
-    print img.pic.width
     if float(img.pic.height)/img.pic.width >= float(450)/619:
         if img.pic.height >=450:
             return 0
@@ -166,4 +165,14 @@ def pretty_sport_name(sport):
         if t[0] == sport:
             return t[1]
     return ""
+
+@register.filter
+def rel_no_articles(rel_content):
+    """The non articles in a list of rel_content"""
+    return [c for c in rel_content if not isinstance(c.child, Article)]
+
+@register.filter
+def rel_articles(rel_content):
+    """Return the articles in a list of rel_content."""
+    return [c for c in rel_content if isinstance(c.child, Article)]
     
