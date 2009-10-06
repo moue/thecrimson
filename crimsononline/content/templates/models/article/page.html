@@ -49,7 +49,7 @@
             <h3>Related Articles</h3>
             <ul>
             {% for ra in ras %}
-                {{ ra|render:"preview" }}
+                <li>{{ ra|linkify }}</li>
             {% endfor %}
             </ul>
         </div>

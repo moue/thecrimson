@@ -126,6 +126,22 @@ class ContentModelForm(ModelForm):
     )
     
     model = Content
+    
+    def clean(self):
+        cd = self.cleaned_data
+        if not self.instance.pk:
+            return cd
+        try:
+            obj = Content.objects.admin_objects().get(
+                slug=cd['slug'], issue=cd['issue']
+            )
+        except Content.DoesNotExist:
+            return cd
+        if obj.pk == self.instance.pk:
+            return cd
+        raise forms.ValidationError('There is already content for this '
+            'issue date with this issue and slug.  You should probably '
+            'change the slug.')
 
 
 class ContentAdmin(admin.ModelAdmin):
@@ -638,10 +654,10 @@ class ArticleForm(ContentModelForm):
             teaser = para_list(self.cleaned_data['text'])[0]
             teaser = TEASER_RE.sub("",teaser)
             return truncatewords(teaser, 20)
-
+    
     def clean(self):
         self.cleaned_data.pop('corrections')
-        return self.cleaned_data
+        return super(ArticleForm, self).clean()
     
     class Meta:
         model = Article
