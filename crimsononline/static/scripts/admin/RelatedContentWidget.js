@@ -132,7 +132,7 @@ var set_related_content = function(id_prefix, types){
             $(n_link)
                 .appendTo(target)
                 .click(function(){
-                    $.getJSON(url_base + data.next_page + '/', function(data){
+                    $.getJSON(url_base + '&page=' + data.next_page, function(data){
                         process_ajax(url_base, data);
                     })
                     return false;

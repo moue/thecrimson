@@ -730,13 +730,11 @@ class ArticleAdmin(ContentAdmin):
     
     def save_model(self, request, obj, form, change):
         rel = form.cleaned_data.pop('rel_content', [])
-        print rel
         super(ArticleAdmin, self).save_model(request, obj, form, change)
         obj.rel_content.clear()
         for i, r in enumerate(rel):
             x = ArticleContentRelation(order=i, article=obj, related_content=r)
             x.save()
-            print x
         
         return obj
     
