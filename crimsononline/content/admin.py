@@ -135,6 +135,7 @@ class ContentAdmin(admin.ModelAdmin):
     """
     
     ordering = ('-issue__issue_date',)
+    actions = ['make_published', 'make_draft',]
     
     def get_form(self, request, obj=None):
         f = super(ContentAdmin, self).get_form(request, obj)
@@ -255,6 +256,28 @@ class ContentAdmin(admin.ModelAdmin):
         else:
             return self.model._default_manager.draft_objects()
     
+    # actions
+    def make_published(self, request, queryset):
+        if not request.user.has_perm('content.content.can_publish'):
+            raise exceptions.PermissionDenied
+        rows_updated = queryset.update(pub_status=1)
+        if rows_updated == 1:
+            message_bit = "1 object was"
+        else:
+            message_bit = "%s objects were" % rows_updated
+        self.message_user(request, "%s successfully marked as published." % message_bit)
+    make_published.short_description = 'Publish content'
+    
+    def make_draft(self, request, queryset):
+        if not request.user.has_perm('content.content.can_publish'):
+            raise exceptions.PermissionDenied
+        rows_updated = queryset.update(pub_status=0)
+        if rows_updated == 1:
+            message_bit = "1 object was"
+        else:
+            message_bit = "%s objects were" % rows_updated
+        self.message_user(request, "%s successfully marked as draft." % message_bit)
+    make_draft.short_description = 'Mark content as Draft'
 
 class TagForm(forms.ModelForm):
     ALLOWED_REGEXP = compile(r'[A-Za-z\s\']+$')
@@ -677,7 +700,11 @@ class ArticleAdmin(ContentAdmin):
     def get_form(self, request, obj=None):
         f = super(ArticleAdmin, self).get_form(request, obj)
         if obj is not None:
-            f.base_fields['corrections'].widget.choices = tuple([(x, x.pk) for x in Correction.objects.filter(article = obj)])
+            f.base_fields['corrections'].widget.choices = tuple([(x, x.pk) \
+                for x in Correction.objects.filter(article = obj)])
+            # edit the object's rel_content attribute to include draft content
+            #obj.rel_content = Content.objects.admin_objects().filter(
+            #    rel_content=obj).order_by('articlecontentrelation__order')
         else:
             f.base_fields['corrections'].widget.choices = []
         
@@ -689,7 +716,7 @@ class ArticleAdmin(ContentAdmin):
             w = f.base_fields['sne'].widget
             if not isinstance(w, FbSelectWidget):
                 f.base_fields['sne'].widget = w.widget
-        
+            
         return f
     
     def has_change_permission(self, request, obj=None):
@@ -703,12 +730,13 @@ class ArticleAdmin(ContentAdmin):
     
     def save_model(self, request, obj, form, change):
         rel = form.cleaned_data.pop('rel_content', [])
-        
+        print rel
         super(ArticleAdmin, self).save_model(request, obj, form, change)
         obj.rel_content.clear()
         for i, r in enumerate(rel):
             x = ArticleContentRelation(order=i, article=obj, related_content=r)
             x.save()
+            print x
         
         return obj
     
@@ -732,7 +760,7 @@ class ArticleAdmin(ContentAdmin):
         @obj_id : Content pk
         """
 
-        r = get_object_or_404(Content, pk=int(obj_id))
+        r = get_object_or_404(Content.objects.admin_objects(), pk=int(obj_id))
         json_dict = {
             'html': mark_safe(r._render('admin.line_item')),
         }
@@ -755,14 +783,11 @@ class ArticleAdmin(ContentAdmin):
         if int(ct_id) != 0:
             cls = ContentType.objects.get(pk=ct_id).model_class()
         else:
-            cls = None
+            cls = Content
         st_dt = datetime.strptime(st_dt, '%m/%d/%Y')
         end_dt = datetime.strptime(end_dt, '%m/%d/%Y')
-        if cls:
-            objs = cls.find_by_date(start=st_dt, end=end_dt)
-        else:
-            objs = Content.find_by_date(start=st_dt, end=end_dt)
         
+        objs = cls.find_by_date(st_dt, end_dt, 'admin_objects')
         p = Paginator(objs, OBJS_PER_REQ).page(page)
         
         json_dict = {}

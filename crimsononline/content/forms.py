@@ -213,7 +213,7 @@ class RelatedContentWidget(forms.widgets.HiddenInput):
 
 class RelatedContentField(forms.CharField):
     """The interface for adding / editing related content."""
-
+    
     def __init__(self, *args, **kwargs):
         kwargs['widget'] = RelatedContentWidget(
             rel_types=kwargs.pop('rel_types', []),
@@ -230,7 +230,7 @@ class RelatedContentField(forms.CharField):
             return []
         ids = [int(id) for id in value.split(';') if id]
         q = reduce(lambda x, y: x | y, [Q(pk=p) for p in ids])
-        objs = list(Content.objects.filter(q))
+        objs = list(Content.objects.admin_objects().filter(q))
         # retrieving Content objs MUST preserve their order!!!
         objs = dict([(obj.pk, obj) for obj in objs])
         return [objs[pk] for pk in ids]

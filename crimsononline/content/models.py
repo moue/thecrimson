@@ -33,13 +33,21 @@ from crimsononline.admin_cust.models import Board
 
 
 class ContentManager(models.Manager):
-    """ 
-    Base class for managers of Content derived objects
+    """Base class for managers of Content derived objects."""
     
-    excludes deleted items
-    """
-
+    def rel_content_ordered(self):
+        """Ordered for Article.rel_content.
+        
+        #TODO: this is a hack
+        """
+        return self.all_objects().filter(pub_status=1).order_by(
+            'articlecontentrelation__order'
+        )
+    
     def get_query_set(self):
+        # hack to ensure that related content gets ordered
+        if self.__class__.__name__ == 'ManyRelatedManager':
+            return self.rel_content_ordered()
         return self.all_objects().select_related(depth=2).filter(pub_status=1)
     
     def all_objects(self):
@@ -314,7 +322,7 @@ class Content(models.Model):
                 for cls in Content.__subclasses__()]
     
     @classmethod
-    def find_by_date(cls, start, end):
+    def find_by_date(cls, start, end, manager_name=None):
         """Return a queryset between the two dates"""
         lookup = cls._meta.get_latest_by
         q = {}
@@ -322,7 +330,10 @@ class Content(models.Model):
             q[lookup + '__gte'] = start.date()
         if end:
             q[lookup + '__lte'] = end.date()
-        return cls.objects.filter(**q).order_by('-' + lookup)
+        qs = cls.objects
+        if manager_name is not None:
+            qs = getattr(qs, manager_name)()
+        return qs.filter(**q).order_by('-' + lookup)
     
 
 
@@ -1163,8 +1174,7 @@ class Article(Content):
                     #print "hi3"
                     corr = Correction(text = oldtext, article = self)
                     corr.save()
-        retval = super(Article, self).save(*args, **kwargs)
-        return retval
+        return super(Article, self).save(*args, **kwargs)
     
     def delete(self):
         self.rel_content.clear()
