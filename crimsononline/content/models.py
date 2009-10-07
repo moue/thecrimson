@@ -723,8 +723,7 @@ class Issue(models.Model):
         a = Article.objects.recent.filter(issue=self,
             rel_content__content_type=Image.content_type(), section=s) \
             .distinct()[:1]
-        if a: return a[0].main_rel_content
-        else: return None
+        return a[0].main_rel_content if a else None
     
     @property
     def arts_cover(self):
@@ -1014,10 +1013,16 @@ class YouTubeVideo(Content):
     def youtube_url(self):
         return 'http://www.youtube.com/watch?v=%s' % self.key
     
+    def admin_youtube(self):
+        return '<a href="%s">%s</a>' % (self.youtube_url, self.youtube_url)
+    admin_youtube.allow_tags = True
+    admin_youtube.short_description = 'YouTube Link'
+    
     def admin_thumb(self):
         """HTML for tiny thumbnail in the admin page."""
         return """<img src="%s">""" % self.pic.display_url(Image.SIZE_TINY)
     admin_thumb.allow_tags = True
+    admin_thumb.short_description = 'Thumbnail'
 
 def flash_get_save_path(instance, filename):
     ext = splitext(filename)[1]

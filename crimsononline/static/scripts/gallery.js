@@ -33,7 +33,7 @@ $(document).ready(function(){
     $("#gal_prev").click(function(){slide_carousel(-1)});
     $("#gal_next").click(function(){slide_carousel(1)});
     // roooooolllllooover
-    $("div.viewer_top > .arrow").hover(function(e){
+    $("div.viewer_top .arrow img").hover(function(e){
         $(e).fadeTo('normal', 0.75);;
     }, function(e){
         $(e).fadeTo('normal', 1);;
