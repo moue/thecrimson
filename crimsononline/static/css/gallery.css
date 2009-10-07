@@ -40,6 +40,9 @@
 #viewer_main .viewer_info {
     font-size: 13px;
 }
+#viewer_main.viewer_info div.byline a:hover {
+    color: #999;
+}
 
 #viewer_main .byline, #viewer_main .byline a, #viewer_main .buyline{
     color: #666;
