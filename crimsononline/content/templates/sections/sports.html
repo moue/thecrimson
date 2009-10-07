@@ -106,11 +106,13 @@
         <span class="clear"></span>
     </div>
     
+    {% if video %}
     <div class="feature gray-bg">
         <h2>Featured Video</h2>
         {{ video|render:"rotator" }}
         <span class="clear"></span>
     </div>
+    {% endif %}
     
     <div class="ad bordered">
         <span>advertisement</span>
