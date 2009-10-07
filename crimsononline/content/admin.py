@@ -669,7 +669,8 @@ class ArticleForm(ContentModelForm):
 
 class ArticleAdmin(ContentAdmin):
     
-    list_display = ('headline', 'section', 'issue','pub_status', 'rotatable')
+    list_display = ('headline', 'section', 'issue','pub_status', 'rotatable',
+                    'group',)
     search_fields = ('headline', 'text',)
     list_filter = ('section', )
     
@@ -894,7 +895,8 @@ class YouTubeVideoForm(ContentModelForm):
 
 class YouTubeVideoAdmin(ContentAdmin):
     form = YouTubeVideoForm
-    list_display = ('admin_thumb', 'title', 'key', 'issue', 'rotatable',)
+    list_display = ('admin_thumb', 'title', 'youtube_url', 'section', 
+                    'issue', 'pub_status', 'rotatable',)
     
     fieldsets = (
         ('Video Setup', {

@@ -24,6 +24,12 @@ $(document).ready(function(){
         }
         return false;
     });
+    // rollover!!!
+    $(".pagination a").live('mouseover', function(e){
+        $(e).fadeTo('normal', 0.75);
+    }).live('mouseout', function(e){
+        $(e).fadeTo('normal', 1);
+    });
     
     // loading media from the sidebar
     $("#viewer_sidebar ul a").live("click", function(e){
