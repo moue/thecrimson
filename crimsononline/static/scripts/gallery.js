@@ -28,9 +28,16 @@ $(document).ready(function(){
         $(".carousel_frame").animate({left: p - 54 * dir}, "normal");
         return true;
     }
-
+    
+    // the arrow buttons
     $("#gal_prev").click(function(){slide_carousel(-1)});
     $("#gal_next").click(function(){slide_carousel(1)});
+    // roooooolllllooover
+    $("div.viewer_top > .arrow").hover(function(e){
+        $(e).fadeTo('normal', 0.75);;
+    }, function(e){
+        $(e).fadeTo('normal', 1);;
+    });
     
     /* ========== changing photos in the gallery ============ */
     var _photo_cache = new Array();
