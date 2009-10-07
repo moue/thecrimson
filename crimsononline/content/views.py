@@ -282,7 +282,9 @@ def section_sports(request):
     latest = latest[:8]
     blog = stories.filter(group__type='blog')
     athlete = first_or_none(stories.filter(tags__text='athlete of the week')) 
-    stories = stories[:10]
+    stories = stories[:6]
+    sports = Tag.objects.filter(category='sports').order_by('text')
+    video = YouTubeVideo.objects.recent.filter(section=section)
     return render_to_response('sections/sports.html', locals())
 
 # IPHONE APP JSON FEEDS

@@ -117,3 +117,26 @@ div#sportsticker_slug a {
     color: black;
     text-decoration: none;
 }
+
+div.twocol > span.cell {
+    display: block;
+    width: 145px;
+    float: left;
+    margin: 0 0 4px 3px;
+    
+    font-size: 13px;
+}
+
+div.feature {
+    padding: 5px 2px 3px;
+    margin: 8px 0;
+}
+div.feature > h2{
+    font-size: 12px;
+    color: #666;
+    margin: 0 0 3px 3px;
+    padding-bottom: 3px;
+    font-family: arial;
+    font-weight: bold;
+    text-transform: uppercase;
+}

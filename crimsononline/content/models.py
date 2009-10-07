@@ -64,7 +64,7 @@ class ContentManager(models.Manager):
     
     @property
     def recent(self):
-        return self.get_query_set().order_by('-issue__issue_date', 'priority')
+        return self.get_query_set().order_by('-issue__issue_date', '-priority')
     
     def prioritized(self, recents=7):
         """Order by (priority / days_old).
@@ -998,7 +998,7 @@ class YouTubeVideo(Content):
     """
     
     key = models.CharField(blank=False, null=False, max_length=100, 
-        help_text="youtube.com/v=(XXXXXX)&... part of the YouTube URL", 
+        help_text="youtube.com/watch?v=(XXXXXX)&... part of the YouTube URL", 
         db_index=True)
     title = models.CharField(blank=False, null=False, max_length=200)
     description = models.TextField(blank=False, null=False)
@@ -1009,6 +1009,10 @@ class YouTubeVideo(Content):
     
     def __unicode__(self):
         return self.title
+    
+    @property
+    def youtube_url(self):
+        return 'http://www.youtube.com/watch?v=%s' % self.key
     
     def admin_thumb(self):
         """HTML for tiny thumbnail in the admin page."""

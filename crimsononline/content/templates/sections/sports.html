@@ -33,6 +33,17 @@
         </ul>
         </div>
     {% endmodule %}
+    {% if athlete %}
+        <span class="clear"></span>
+        {% module 4 "athlete of the week" red %}
+        <div id="athlete_o_week" class="article_previews">
+            <ul>
+                <li>{{ athlete|render:"preview" }}</li>
+            </ul>
+        </div>
+        {% endmodule %}
+        <span class="clear"></span>
+    {% endif %}
 {% endblock %}
 
 {% block middlecolumn %}
@@ -45,18 +56,6 @@
         </ul>
         </div>
     {% endmodule %}
-    
-    {% if athlete %}
-        <span class="clear"></span>
-        {% module 4 "athlete of the week" red %}
-        <div id="athlete_o_week" class="img_list">
-            {{ athlete.main_rel_content|to_img_tag:"60,60" }}
-            <h3>{{ athlete|linkify }}</h3>
-            <p class="teaser">{{ athlete.teaser }}</p>
-        </div>
-        {% endmodule %}
-        <span class="clear"></span>
-    {% endif %}
 {% endblock %}
 
 {% block rightcolumn %}
@@ -79,18 +78,18 @@
 					ticker_urls.push("{{ story.get_absolute_url }}");
 				{% endif %}
 			{% endfor %}
-
+            
 			function rotateArray(arr){
 				cur_item = arr.shift();
 				arr.push(cur_item);
 				return cur_item;
 			}
-
+            
 			function rotateTicker(){
 				cur_sport = rotateArray(ticker_sports);
 				cur_slug = rotateArray(ticker_slugs);
 				cur_url = rotateArray(ticker_urls);
-
+                
 				document.getElementById('sportsticker_sport').innerHTML = "<a href='" + cur_url + "'>" + cur_sport + "</a>";
 				document.getElementById('sportsticker_slug').innerHTML = "<a href='" + cur_url + "'>" + cur_slug + " &raquo;</a>";
 				t=setTimeout("rotateTicker()",5000);
@@ -99,11 +98,22 @@
 		</script>
 	</div>
 
-    <div class="bordered" id="tags">
-        <h2>Tags</h2>
-        <p> some mysterious tag interface here </p>
+    <div class="bordered twocol" id="tags">
+        <h2>Sports</h2>
+        {% for sport in sports %}
+        <span class="cell">{{ sport|linkify }}</span>
+        {% endfor %}
+        <span class="clear"></span>
     </div>
+    
+    <div class="feature gray-bg">
+        <h2>Featured Video</h2>
+        {{ video|render:"rotator" }}
+        <span class="clear"></span>
+    </div>
+    
     <div class="ad bordered">
         <span>advertisement</span>
-        <iframe id='a8ed08bc' name='a8ed08bc' src='http://d1.openx.org/afr.php?zoneid=74816&amp;cb=987987' framespacing='0' frameborder='no' scrolling='no' width='300' height='250'><a href='http://d1.openx.org/ck.php?n=aaf60f27&amp;cb=987897' target='_blank'><img src='http://d1.openx.org/avw.php?zoneid=74816&amp;cb=77777&amp;n=aaf60f27' border='0' alt='' /></a></iframe>    </div>
+        <iframe id='a8ed08bc' name='a8ed08bc' src='http://d1.openx.org/afr.php?zoneid=74816&amp;cb=987987' framespacing='0' frameborder='no' scrolling='no' width='300' height='250'><a href='http://d1.openx.org/ck.php?n=aaf60f27&amp;cb=987897' target='_blank'><img src='http://d1.openx.org/avw.php?zoneid=74816&amp;cb=77777&amp;n=aaf60f27' border='0' alt='' /></a></iframe>
+    </div>
 {% endblock %}
