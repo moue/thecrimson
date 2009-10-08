@@ -50,7 +50,7 @@ def add_issue_filter(f):
         if end:
             if isinstance(end, datetime):
                 end = end.date()
-            q['issue__issue_date____lte'] = end
+            q['issue__issue_date__lte'] = end
         return f(*args, **kwargs).filter(**q)
     return f_prime
 
