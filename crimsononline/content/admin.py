@@ -119,7 +119,7 @@ class ContentModelForm(ModelForm):
     )
     rotatable = forms.ChoiceField(Content.ROTATE_CHOICES, required=True,
         label="Place in rotators?", help_text="<b>Make sure this is / has an "
-        "image before you set this to rotate!</b>.</br>As a general policy, "
+        "image before you set this to rotate!</b>.<br/>As a general policy, "
         "set the article, not the image / gallery / video to rotate."
     )
     pub_status = forms.ChoiceField(Content.PUB_CHOICES, required=True, 
