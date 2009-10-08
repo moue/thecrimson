@@ -21,6 +21,10 @@
             </select>
             <a href="#" class="button" id="{{attrs.id}}_go">Find</a>
             <a href="#" class="button" id="{{attrs.id}}_suggest">Suggestions</a>
+            <br/>
+            <span>Putting stuff into the Search field will search slugs. We highly
+            recommend that you only search one word (since slugs have dashes in them).
+            </span>
         </div>
         <ul class="results">
         </ul>
@@ -40,12 +44,6 @@
                     '{{t.name}}'{% if forloop.last %}{% else %},{% endif %} 
                 {% endfor %}
             ]);
-            $("#label_{{attrs.id}}_tags").tooltip({
-                delay: 0,
-                bodyHandler: function(){
-                    return "This will search slugs. It'll probably work better if you only use one word.";
-                }
-            });
         });
     </script>
 </div>
