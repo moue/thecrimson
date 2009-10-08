@@ -1,4 +1,5 @@
 {% load content_filters %}
+{% load common %}
 
 {% for img in gallery.images.all|slice:":3" %}
     {{ img|to_thumb_tag }}
