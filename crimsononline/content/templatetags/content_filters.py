@@ -2,7 +2,8 @@ from datetime import date, datetime
 from django import template
 from django.template import defaultfilters as filter
 from django.utils.safestring import mark_safe
-from crimsononline.content.models import Image, Map, Article, Content, Marker
+from crimsononline.content.models import Image, Map, Article, Content, Marker, \
+                                         YouTubeVideo
 from crimsononline.common.templatetags.common import linkify, human_list
 from crimsononline.common.forms import size_spec_to_size
 
@@ -70,7 +71,8 @@ def to_img_layout(img, dimensions):
 @register.filter
 def flash_gallery_margin(img):
     """Gets the margin needed for a flash graphic in a gallery (height 450px)"""
-    if float(content.height)/content.width >= float(450)/619 and content.height >= 450:
+    if float(content.height)/content.width >= float(450)/619 and \
+       content.height >= 450:
         return 0
     else:
         ren_height = float(content.height)/content.width*619
@@ -102,6 +104,8 @@ def to_img_tag(img, size_spec):
     """
     if img is None:
         return ''
+    if img.__class__ is Content:
+        img = img.child
     disp_url = img_url(img, size_spec)
     if hasattr(img, 'kicker'):
         k = filter.force_escape(img.kicker)

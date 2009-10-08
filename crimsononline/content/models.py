@@ -1025,9 +1025,7 @@ def youtube_get_save_path(instance, filename):
         filtered_capt + ext
 
 class YouTubeVideo(Content):
-    """
-    Embeddable YouTube video
-    """
+    """Embeddable YouTube video."""
     
     key = models.CharField(blank=False, null=False, max_length=100, 
         help_text="youtube.com/watch?v=(XXXXXX)&... part of the YouTube URL", 
@@ -1041,6 +1039,9 @@ class YouTubeVideo(Content):
     
     def __unicode__(self):
         return self.title
+    
+    def display_url(self, size_spec):
+        return self.pic.display_url(size_spec)
     
     @property
     def youtube_url(self):
