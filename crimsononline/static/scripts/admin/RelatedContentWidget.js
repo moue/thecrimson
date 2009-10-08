@@ -184,7 +184,7 @@ var set_related_content = function(id_prefix, types){
         var end = $(p + '_end_date').val();
         var type = $(p + '_type').val();
         var url = '/admin/content/article/rel_content/find/?ct_id=' + type + 
-            '&st_dt=' + start + '&end_dt=' + end + '&tags=' + tags;
+            '&st_dt=' + start + '&end_dt=' + end + '&q=' + tags;
         $.getJSON(url + '&page=1', function(data){
             process_ajax(url, data);
         });
@@ -196,7 +196,7 @@ var set_related_content = function(id_prefix, types){
         var type = $(p + '_type').val();
         var tags = [];
         $('#id_tags_to').find("option").each(function(i){
-        tags[i] = $(this).val();
+            tags[i] = $(this).val();
         });
         tagstr = ""
         for(i = 0; i < tags.length; i++){

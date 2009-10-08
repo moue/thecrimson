@@ -44,10 +44,7 @@
 					left arrow thing
 				{% endcomment %}
 				<ul style="list-style: none;">
-					{% for image in gallery.images.all %}
-						{% comment %}
-							put an image
-						{% endcomment %}
+					{% for image in gallery.contents.all %}
 						<li id="img_prev_{{image.pk}}" style="display: inline">
 							{{ image|to_img_tag:"75,75" }}
 						</li>

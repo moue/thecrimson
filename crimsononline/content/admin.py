@@ -789,16 +789,14 @@ class ArticleAdmin(ContentAdmin):
         return HttpResponse(simplejson.dumps(json_dict))
     
     def find_rel_content(self, request):
-        """
-        returns JSON containing Content objects and pg numbers
-        """
+        """returns JSON containing Content objects and pg numbers"""
         if request.method != 'GET':
             return Http404
         
         ct_id = request.GET.get('ct_id', None)
         st_dt = request.GET.get('st_dt', None)
         end_dt = request.GET.get('end_dt', None)
-        tags = request.GET.get('tags', None)
+        q = request.GET.get('q', None)
         page = request.GET.get('page', None)
         
         OBJS_PER_REQ = 16
@@ -809,7 +807,8 @@ class ArticleAdmin(ContentAdmin):
         st_dt = datetime.strptime(st_dt, '%m/%d/%Y')
         end_dt = datetime.strptime(end_dt, '%m/%d/%Y')
         
-        objs = cls.find_by_date(st_dt, end_dt)
+        objs = cls.objects.all(start=st_dt, 
+                               end=end_dt).filter(slug__icontains=q)
         p = Paginator(objs, OBJS_PER_REQ).page(page)
         
         json_dict = {}

@@ -32,11 +32,33 @@ from crimsononline.common.utils.strings import \
 from crimsononline.admin_cust.models import Board
 
 
+def add_issue_filter(f):
+    """Modify a manager method to add a filter for restricting by issue date.
+    
+    Adds the ability to process (optional) start and end dates
+    """
+    def f_prime(*args, **kwargs):
+        start = kwargs.pop('start', None)
+        end = kwargs.pop('end', None)
+        if start is None and end is None:
+            return f(*args, **kwargs)
+        q = {}
+        if start:
+            if isinstance(start, datetime):
+                start = start.date()
+            q['issue__issue_date__gte'] = start
+        if end:
+            if isinstance(end, datetime):
+                end = end.date()
+            q['issue__issue_date____lte'] = end
+        return f(*args, **kwargs).filter(**q)
+    return f_prime
+
 class ContentManager(models.Manager):
     """Base class for managers of Content derived objects."""
     
     def rel_content_ordered(self):
-        """Ordered for Article.rel_content.
+        """Ordered for Article.rel_content
         
         #TODO: this is a hack
         """
@@ -44,21 +66,32 @@ class ContentManager(models.Manager):
             'articlecontentrelation__order'
         )
     
+    #TODO: make this date crap into a decorator or something
+    
+    @add_issue_filter
     def get_query_set(self):
         # hack to ensure that related content gets ordered
         if self.__class__.__name__ == 'ManyRelatedManager':
             return self.rel_content_ordered()
         return self.all_objects().select_related(depth=2).filter(pub_status=1)
     
+    @add_issue_filter
+    def all(self):
+        return self.get_query_set()
+    
+    @add_issue_filter
     def all_objects(self):
         return super(ContentManager, self).get_query_set()
     
+    @add_issue_filter
     def admin_objects(self):
         return self.all_objects().select_related(depth=2).exclude(pub_status=-1)
     
+    @add_issue_filter
     def draft_objects(self):
         return self.all_objects().select_related(depth=2).filter(pub_status=0)
     
+    @add_issue_filter
     def deleted_objects(self):
         return self.all_objects().select_related(depth=2).filter(pub_status=-1)
     
