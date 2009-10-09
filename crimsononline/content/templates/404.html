@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% load common %}
+{% load content_module %}
+{% load module %}
+
+{% block title %}
+	Page Not Found
+{% endblock %}
+
+{% block inhead %}
+    {{block.super}}
+   {% static_css "404.css" %}
+{% endblock %}
+
+
+{% block masthead_center %}
+{% endblock %}
+
+
+    {% block pre_body %}
+	<div id="notfound">
+    <div align="center">
+        <div class="bordered" style="width:673px; text-align:left;">
+
+        <h1>Page Not Found.</h1>
+        <p>The page you have requested does not exist at this address. </p><br />
+        <h3>Please try the following:</h3>
+            <ul style="list-style-position:inside; line-height:25px; list-style-type:square;">
+                <li>If you clicked on a headline or other link on theCrimson.com, you can <a href="mailto:itchair@thecrimson.com?subject=Broken Link on Website">report the missing page</a>.</li>
+                <li>If you typed in the address, make sure that it is spelled correctly.</li>
+                <li>Use the navigation bar on the top to find the link you are looking for.</li>
+                <li>Click the <a href="javascript:history.back(-1)">Back</a> button to try another link.</li>
+                <li>Use the search form at the top right to look for information on theCrimson.com.</li>
+            </ul>
+        </div>
+    </div>
+	</div>
+{% endblock %}
