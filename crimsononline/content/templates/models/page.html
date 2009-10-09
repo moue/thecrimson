@@ -19,7 +19,8 @@
     <div class="col-8">
         {% module 8 "" red %}
             {% block pre_content %}
-                <span class="title">{{content.section|upper}}
+                <div class="title">
+				<div id="logoshit">{{content.section|upper}}</div>
                 <div id="articletools">
                     <a href="?print=true"><img src="{% static_url "images/icons/print.gif" %}"                
                         alt="Print"/><span>Print</span></a>
@@ -28,8 +29,8 @@
                     <a href="http://www.addthis.com/bookmark.php?v=20" onmouseover="return addthis_open(this, '', '[URL]', '[TITLE]')" onmouseout="addthis_close()" onclick="return addthis_open(this, '', '[URL]', '[TITLE]')"><img src="{% static_url "images/icons/share.gif" %}" alt="Bookmark and Share" style="border:0"/><span>SHARE</span></a><script type="text/javascript" src="http://s7.addthis.com/js/200/addthis_widget.js"></script>
                     <!-- AddThis Button END -->
                 </div>
-                </span>
-
+				</div>
+<div style="clear:both;"></div>
             <div id="pre_content">
             {% if content.group %}{% spaceless %}
                 <a href="{{ content.group.get_absolute_url }}">
