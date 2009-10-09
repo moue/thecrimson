@@ -55,11 +55,13 @@
 </div>
 </div>
 <div id="submenu">
-<div id="submenu_contents">Quick Links >> 
+<div id="submenu_contents">
+<div id="submenu_menu">
+Quick Links >> 
 <a href="/subscribe/">Subscribe</a>
-<a href="/about/advertising/">Advertising</a>
+<a href="/about/advertising/">Advertising</a></div>
 {% cache 3600 weather %}
-<span style="float: right">Current Cambridge, MA weather: {% weather %}</span>
+<div id="submenu_right">Current Cambridge, MA weather: {% weather %}</div>
 {% endcache %}
 </div>
 </div>

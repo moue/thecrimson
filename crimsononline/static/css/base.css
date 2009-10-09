@@ -288,6 +288,22 @@ h3, h3 a{
     margin-right: 10px;
 }
 
+#submenu_right {
+	font-size: 10px;
+	font-family: Helvetica, Arial, sans-serif;
+    float:left;
+    text-align:right;
+    width:300px;
+}
+
+#submenu_menu {
+	font-size: 10px;
+	font-family: Helvetica, Arial, sans-serif;
+    float:left;
+    width:673px;
+    
+}
+
 /* END NAV */
 
 /* MAIN */
