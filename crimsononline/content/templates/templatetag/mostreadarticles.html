@@ -36,8 +36,8 @@ function mca(){
     </span>
     {% cache 500 mostreadarticles %}
     <div id="mostreadarticles">
-        <ol>
-        {% for article in mostreadarticles %}
+        <ol class="most">        
+         {% for article in mostreadarticles %}
             <li>{{article|linkify}}</li>
         {% endfor %}
         </ol>
