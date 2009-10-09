@@ -29,20 +29,18 @@
 
 .right_navigation-list{
 	color:#666;
-	list-style-type: none;
+	list-style: none;
 	font-size: 15px;
 	width: 220px;
-	padding-left:12px;
-
 }
 
 
 .right_navigation a {
 	color:#666;
-	list-style-type: none;
 	font-size: 15px;
 	width: 220px;
 	margin-left:0px;
+    padding-left:14px;
 
 }
 
@@ -52,7 +50,7 @@
 	background:url('../images/icons/redarrow.png');
 	background-repeat: no-repeat;
 	background-position:left center;
-	margin-left:-14px;
-	padding-left:14px;
+	
+	padding-left:14px; 
 }
 
