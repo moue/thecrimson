@@ -189,6 +189,8 @@ class RelatedContentWidget(forms.widgets.HiddenInput):
                 self.c_types.append({'url': t_url, 'name': t_name, 'id': t_id})
         
         if value:
+            if isinstance(value, basestring):
+                value = [int(v) for v in value.split(';') if v]
             # grab all related content objects AND PRESERVE ORDER !!
             objs = []
             for v in value:

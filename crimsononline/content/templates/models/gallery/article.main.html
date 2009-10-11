@@ -11,11 +11,12 @@
         <p class="kicker">{{image.kicker}}</p>
         <a href="{{gallery.get_absolute_url}}">
             {% ifequal image.orientation "tall" %}
-                {{image|to_img_tag:"240,"}}
+                {{image|to_img_tag:"300,"}}
             {% else %}
-                {{image|to_img_tag:"390,"}}
+                {{image|to_img_tag:"STAND"}}
             {% endifequal %}
         </a>
+        <p class="byline">{{image.contributors.all|linkify|human_list}}</p>
         <p class="caption">{{image.caption}}</p>
     {% endblock %}
 

@@ -989,7 +989,8 @@ class Gallery(Content):
     
     title = models.CharField(blank=False, null=False, max_length=200)
     description = models.TextField(blank=False, null=False)
-    contents = models.ManyToManyField(Content, through='GalleryMembership',related_name="contents_set")
+    contents = models.ManyToManyField(Content, through='GalleryMembership',
+        related_name="galleries_set")
     
     objects = ContentManager()
 
