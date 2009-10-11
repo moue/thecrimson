@@ -88,6 +88,8 @@ def linkify(obj, link_text=''):
         if not getattr(obj,'__iter__',False):
             obj = [obj]
         for item in obj:
+            print item
+            print item.__class__
             l_text = item if link_text == '' \
                 else getattr(item, link_text, link_text)
             l.append(mark_safe('<a href="%s">%s</a>' % (item.get_absolute_url(),
