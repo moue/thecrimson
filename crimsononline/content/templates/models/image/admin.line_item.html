@@ -6,4 +6,4 @@
 <span>{{ image|to_thumb_tag }}</span>
 <span>{{ image.kicker }}</span>
 <span class="contributors">{{ image.contributors.all|human_list }}</span>
-<span>{{ image.created_on|date:"m/d/y" }}</span>
+<span>{{ image.issue.issue_date|date:"m/d/y" }}</span>

@@ -7,4 +7,4 @@
     {{ img|to_thumb_tag }}
 {% endfor %}
 <span>{{ gallery.title }}</span>
-<span>{{ gallery.created_on|date:"m/d/Y" }}</span>
+<span>{{ gallery.issue.issue_date|date:"m/d/Y" }}</span>
