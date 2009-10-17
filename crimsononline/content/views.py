@@ -242,7 +242,14 @@ def section_photo(request):
         page = request.GET.get('page', 1)
     else: raise Http404
     nav = 'photo'
-    content = Gallery.objects.recent
+    
+    sort = request.GET.get('sort')
+    if sort == 'read':
+        RECENT_DAYS = timedelta(days=120)
+        newer_than = datetime.now() - RECENT_DAYS
+        content = Gallery.objects.filter(issue__issue_date__gte = newer_than).order_by("-contenthits")
+    else:
+        content = Gallery.objects.recent
     
     d = paginate(content, page, 6)
     d.update({'nav': nav})

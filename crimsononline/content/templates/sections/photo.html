@@ -21,8 +21,14 @@
 <div class="gutter"></div>
 <div class="col-4">
     <div id="viewer_sidebar"class="">
-        <span class="filters">MOST &nbsp;&nbsp;{{"viewed"|yuhkilabel:"blacktive"}} {{"Recent"|yuhkilabel:"blacktive"}} {{"videos"|yuhkilabel:"black"}} {{"photos"|yuhkilabel:"blacktive"}} </span>
-        <div>
+        <span class="filters">MOST &nbsp;&nbsp;
+	<a href="recent"><span class="thclabel thclabel_blacktive">Recent</span></a>
+	<a href="read"><span class="thclabel thclabel_black">Viewed</span></a>
+{% comment %}
+todo: add this filtering in some logical way	
+{{"videos"|yuhkilabel:"black"}} {{"photos"|yuhkilabel:"blacktive"}} 
+{% endcomment %}
+        </span><div>
         {% include "ajax/media_viewer_page.html" %}
         </div>
     </div>
