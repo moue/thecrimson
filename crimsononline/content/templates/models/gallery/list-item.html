@@ -4,7 +4,9 @@
 <li>
     <div class="image_thumb">
     {% for img in gallery.contents.all|slice:":3" %}
+		<a href="{{ gallery.get_absolute_url }}">
         {{ img|to_img_tag:"75,75,1,1" }}
+		</a>
     {% endfor %}
     </div>
     <div style="float:right">{{gallery.section|yuhkilabel}}</div>

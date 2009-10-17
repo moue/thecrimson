@@ -2,7 +2,9 @@
 {% load content_filters %}
 
 <li>
-    <div class="image_thumb">{{image|to_img_tag:"150,150"}}</div>
+    <a href="{{ image.get_absolute_url }}">
+		<div class="image_thumb">{{image|to_img_tag:"150,150"}}</div>
+	</a>
     <div style="float:right">{{image.section|yuhkilabel}}</div>
     
     <img src="{% static_url "images/icons/photo.gif" %}" alt="image" />
