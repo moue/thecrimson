@@ -418,6 +418,7 @@ class ContentGroup(models.Model):
     
     class Meta:
         unique_together = (('type', 'name',),)
+        verbose_name_plural = "Content Groups"
     
     def __unicode__(self):
         return "%s/%s" % (self.type, self.name)
@@ -1006,6 +1007,9 @@ class Gallery(Content):
     def delete(self):
         self.contents.clear()
         super(Gallery, self).delete()
+        
+    class Meta:
+        verbose_name_plural = "Galleries"
 
 
 class GalleryMembership(models.Model):
@@ -1041,6 +1045,9 @@ class YouTubeVideo(Content):
     def __unicode__(self):
         return self.title
     
+    class Meta:
+        verbose_name_plural = "YouTube Videos"
+
     def display_url(self, size_spec):
         return self.pic.display_url(size_spec)
     
@@ -1078,6 +1085,9 @@ class FlashGraphic(Content):
         return self.title
     
     objects = ContentManager()
+    
+    class Meta:
+        verbose_name_plural = "Flash Graphics"
 
 
 class Map(Content):
