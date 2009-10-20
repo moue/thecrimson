@@ -70,6 +70,8 @@ def writer(request, pk, f_name, m_name, l_name,
         section_str, type_str, w.get_absolute_url()
     )
     
+    w.number_of_articles = Article.objects.filter(contributors=w).count()
+    w.last_update = Content.objects.filter(contributors=w).aggregate(Max('issue__issue_date'))['issue__issue_date__max']
     d = paginate(f.pop('content'), page, 10)
     d.update({'writer': w, 'url': REMOVE_P_RE.sub(request.path, '')})
     d.update(f)

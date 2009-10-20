@@ -24,8 +24,16 @@
         {% if writer.profile_pic %}
             <img src="{{ writer.profile_pic.url}}" /><br/>
         {% else %}
-            <img src="{% static_url "images/noface_133x133.jpg" %}" /><br/>
+            <img src="{% static_url "images/noface_131x131.jpg" %}" /><br/>
         {% endif %}
+        
+        {% comment %}
+        total # of articles, last update, blah
+        {% endcomment %}
+        <h3>Articles Written:</h3><p>{{ writer.number_of_articles }}</p>
+
+        <h3>Last Update:</h3><p>{{ writer.last_update|date:"M. d, Y" }}</p>
+
         {% if writer.class_of %}
             <h3>Class:</h3><p>{{ writer.class_of }}</p>
         {% endif %}
