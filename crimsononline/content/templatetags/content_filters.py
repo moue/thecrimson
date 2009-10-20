@@ -150,6 +150,19 @@ def to_map_thumb(map, size):
     TODO: cache this
     """
     
+    print len(size.split(","))
+    print "is the length"
+    if(len(size.split(","))==2):
+        dims = size.split(",")
+        width=dims[0]
+        height=dims[1]
+        print dims
+        print width
+        print height
+    else:
+        width=size
+        height=size
+    
     GMaps_key = "ABQIAAAA--Z_bVpXIL9HJpQ50CHbfRRi_j0U6kJrkFvY4-OX2XYmEAa76BS5oixsScFqNPn7f8shoeoOZviFMg"
 
     markerstr = ""
@@ -158,7 +171,7 @@ def to_map_thumb(map, size):
         markerstr = markerstr + str(marker.lat) + "," + str(marker.lng) + "|"
     
     tag = '<img src="http://maps.google.com/staticmap?center=%s,%s&zoom=%s&size=%sx%s&maptype=mobile&key=%s&sensor=false&markers=%s" />' % \
-        (map.center_lat, map.center_lng, map.zoom_level, size, size, GMaps_key, markerstr)
+        (map.center_lat, map.center_lng, map.zoom_level, width, height, GMaps_key, markerstr)
     return mark_safe(tag)
 
 @register.filter

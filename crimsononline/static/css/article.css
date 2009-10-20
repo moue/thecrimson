@@ -70,25 +70,25 @@ div#related_articles {
 .wide{
     width: 630px;
 }
-.image {
+.image, .map{
 
 }
 .image img {
     border-width: 0;
 }
-.image > .byline {
+.image > .byline, .map > .byline {
 	font-size: 10px;
     padding-right:5px;
     color: #000;
     text-align: right;
     text-transform: uppercase;
 }
-.image > .byline a{
+.image > .byline a, .map > .byline a{
 	font-size: 10px;
     color: #000;
     text-decoration: none;
 }
-.image > .byline > a:hover{
+.image > .byline > a:hover, .map > .byline > a:hover{
     text-decoration: underline;
     color: black;
 }
@@ -98,14 +98,14 @@ div#related_articles {
 .wide > .caption {
     margin: 0 0 10px 0;
 }
-.image > .caption{
+.image > .caption, .map > .caption{
     padding-right:5px;
     font-family: helvetica, arial, sans-serif;
     font-size: 11px;
     line-height: 1.4em;
     color: #777;
 }
-.image > p{
+.image > p, .map > p{
     padding: 0;
     margin: 0;
 }

@@ -1,0 +1,14 @@
+{% extends "models/wrapper.html" %}
+
+{% load content_filters %}
+{% load common %}
+
+{% block wrapper_classes %}wide{% endblock %}
+{% block wrapper_id %}wide{% endblock %}
+{% block wrapper_contents %}
+    <a href="{{map.get_absolute_url}}">
+    {{map|to_map_thumb:"631,300"}}
+    </a>
+    <p class="byline">CRIMSON/ {{map.contributors.all|linkify|human_list}}</p>
+    <p class="caption">{{map.caption}}</p>
+{% endblock %}
