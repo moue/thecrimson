@@ -2,5 +2,4 @@
 {% load content_filters %}
 
 {{ image|to_img_tag:"200,"}}
-<p class="byline">CRIMSON/ {{ image.contributors.all|linkify|human_list }}</p>
-<p class="caption">{{ image.caption}}</p>
+<br /><span class="caption">{{ image.caption}}</span>
