@@ -361,6 +361,9 @@ class ContentHits(models.Model):
     def save(self, *args, **kwargs):
         return super(ContentHits, self).save(*args, **kwargs)
     
+    def __unicode__(self):
+        return "Content %d with %d hits" % (self.content_id, self.hits)
+    
 
 def get_img_path(instance, filename):
     ext = splitext(filename)[1]
@@ -1199,10 +1202,6 @@ class Article(Content):
     rel_content = models.ManyToManyField(Content, through='ArticleContentRelation', 
         null=True, blank=True, related_name="rel_content")
     
-    #sportsticker_sport = models.CharField(blank=True, null=True, max_length=50,
-    #    choices=SPORTS_TYPE_CHOICES)
-    #sportsticker_slug = models.CharField(blank=True, null=True, max_length=255)
-    
     # Override save to check whether we're modifying an existing article's text
     def save(self, *args, **kwargs):
         if self.pk:
@@ -1211,11 +1210,9 @@ class Article(Content):
             except Article.DoesNotExist:
                 prev_article = None
             if prev_article is not None and int(prev_article.pub_status) is 1:
-                #print "hi2"
                 oldtext = prev_article.text
                 # If the text has changed, make a new Correction for the old text
                 if oldtext != self.text:
-                    #print "hi3"
                     corr = Correction(text = oldtext, article = self)
                     corr.save()
         return super(Article, self).save(*args, **kwargs)

@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block inhead %}
-    {{block.super}}
+   {{block.super}}
    {% static_css "404.css" %}
 {% endblock %}
 
@@ -18,11 +18,10 @@
 {% endblock %}
 
 
-    {% block pre_body %}
+    {% block body %}
 	<div id="notfound">
     <div align="center">
-        <div class="bordered" style="width:673px; text-align:left;">
-
+        <div class="bordered">
         <h1>Page Not Found.</h1>
         <p>The page you have requested does not exist at this address. </p><br />
         <h3>Please try the following:</h3>
@@ -36,4 +35,4 @@
         </div>
     </div>
 	</div>
-{% endblock %}
+    {% endblock %}

@@ -1,5 +1,10 @@
 #notfound p{
 	font-size:13px;
 	padding-bottom:5px;
+}
 
+div#notfound div.bordered {
+    padding: 15px;
+    width: 673px; 
+    text-align:left;
 }

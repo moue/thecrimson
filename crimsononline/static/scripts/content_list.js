@@ -47,12 +47,12 @@ $(document).ready(function(){
     /* Filter sliding effects */
     $("a#filter_toggle").click(function () {
         if ($("#filter_toggle_contents").is(":hidden")) {
-                $("#filter_toggle_contents").slideDown("slow");
-                $(this).text("Hide Filters");
-              } else {
-                $("#filter_toggle_contents").slideUp("slow");
-                $(this).text("Show Filters");
-              }
+            $("#filter_toggle_contents").slideDown("slow");
+            $(this).text("Hide Filters");
+        } else {
+            $("#filter_toggle_contents").slideUp("slow");
+            $(this).text("Filter");
+        }
     });
     
 });
