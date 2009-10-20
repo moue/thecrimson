@@ -59,7 +59,7 @@
 {% endblock %}
 
 {% block rightcolumn %}
-
+    {% comment %}
 	<div class="bordered">
 		<h2>Latest Scores</h2>
 
@@ -97,7 +97,7 @@
 			rotateTicker();
 		</script>
 	</div>
-    
+    {% endcomment %}
     <div class="bordered twocol" id="tags">
         <h2>Sports</h2>
         {% for sport in sports %}

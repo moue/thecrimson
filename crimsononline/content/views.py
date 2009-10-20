@@ -349,8 +349,8 @@ def get_content(request, ctype, year, month, day, slug, content_group=None):
 def get_content_obj(request, ctype, year, month, day, slug, content_group=None):
     """Retrieve a content object from the database (no validation of params)"""
     ctype = ctype.replace('-', ' ') # convert from url
-    c = Content.objects.get(issue__issue_date=date(int(year), int(month), int(day)), slug=slug
-    )
+    c = Content.objects.get(
+        issue__issue_date=date(int(year), int(month), int(day)), slug=slug)
     return c
     
 def get_grouped_content(request, gtype, gname, ctype, year, month, day, slug):
