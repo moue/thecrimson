@@ -1033,7 +1033,8 @@ class YouTubeVideo(Content):
     """Embeddable YouTube video."""
     
     key = models.CharField(blank=False, null=False, max_length=100, 
-        help_text="youtube.com/watch?v=(XXXXXX)&... part of the YouTube URL", 
+        help_text="youtube.com/watch?v=(XXXXXX)&... part of the YouTube URL. "
+        "NOTE: THIS IS NOT THE ENTIRE YOUTUBE URL.", 
         db_index=True)
     title = models.CharField(blank=False, null=False, max_length=200)
     description = models.TextField(blank=False, null=False)

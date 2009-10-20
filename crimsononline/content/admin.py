@@ -891,6 +891,15 @@ class YouTubeVideoForm(ContentModelForm):
         "you changed the YouTube key and you want us to regenerate "
         "the preview image.", required=False)
     
+    def clean_key(self):
+        # try to filter out keys that are probably wrong
+        key = self.cleaned_data['key']
+        if key.find('watch?v=') is not -1:
+            key = key[key.find('watch?v=') + 8:]
+        if key.find('&') is not -1:
+            key = key[:key.find('&')]
+        return key
+    
     class Meta:
         model = YouTubeVideo
     
