@@ -24,7 +24,7 @@ from django.template import RequestContext
 
 from crimsononline.admin_cust.models import UserData
 from crimsononline.common.caching import funcache, expire_page, expire_stuff
-from crimsononline.common.forms import \
+from crimsononline.common.fields import \
     MaxSizeImageField, SuperImageField
 from crimsononline.common.storage import OverwriteStorage
 from crimsononline.common.utils.strings import \
