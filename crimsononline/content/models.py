@@ -1049,7 +1049,10 @@ class YouTubeVideo(Content):
         verbose_name_plural = "YouTube Videos"
 
     def display_url(self, size_spec):
-        return self.pic.display_url(size_spec)
+        if self.pic:
+            return self.pic.display_url(size_spec)
+        else:
+            return ''
     
     @property
     def youtube_url(self):
@@ -1062,7 +1065,10 @@ class YouTubeVideo(Content):
     
     def admin_thumb(self):
         """HTML for tiny thumbnail in the admin page."""
-        return """<img src="%s">""" % self.pic.display_url(Image.SIZE_TINY)
+        if self.pic:
+            return """<img src="%s">""" % self.pic.display_url(Image.SIZE_TINY)
+        else:
+            return "No Preview"
     admin_thumb.allow_tags = True
     admin_thumb.short_description = 'Thumbnail'
 
