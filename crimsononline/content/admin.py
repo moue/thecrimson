@@ -247,7 +247,9 @@ class ContentAdmin(admin.ModelAdmin):
             for x in ['tags', 'start_d', 'end_d', 'page']]
         start_d = datetime.strptime(start_d, '%m/%d/%Y') if start_d else None
         end_d = datetime.strptime(end_d, '%m/%d/%Y') if end_d else None
-        objs = self.model.find_by_date(start=start_d, end=end_d)
+        objs = self.model.objects.all(start=start_d, 
+            end=end_d)
+        
         if tags:
             tags = [t for t in tags.split(',') if t]
             q = reduce(lambda x,y: x and y, 

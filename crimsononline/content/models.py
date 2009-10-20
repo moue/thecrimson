@@ -352,25 +352,6 @@ class Content(models.Model):
         """Return all ContentType objects with parent Content"""
         return [ContentType.objects.get_for_model(cls) 
                 for cls in Content.__subclasses__()]
-    
-    @classmethod
-    def find_by_date(cls, start, end, manager_name=None):
-        """Return a queryset between the two dates"""
-        lookup = cls._meta.get_latest_by
-        q = {}
-        if start:
-            q[lookup + '__gte'] = start.date()
-        if end:
-            q[lookup + '__lte'] = end.date()
-        qs = cls.objects
-        if manager_name is not None:
-            qs = getattr(qs, manager_name)()
-        # okay, so this doesn't make any sense, but its kind of necessary
-        #  for a speedy query
-        return qs.filter(**q).order_by('-id')
-        #return qs.filter(**q).order_by('-' + lookup)
-    
-
 
 class ContentHits(models.Model):
     content = models.ForeignKey(Content)
