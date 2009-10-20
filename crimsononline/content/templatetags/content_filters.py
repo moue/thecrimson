@@ -5,7 +5,7 @@ from django.utils.safestring import mark_safe
 from crimsononline.content.models import Image, Map, Article, Content, Marker, \
                                          YouTubeVideo
 from crimsononline.common.templatetags.common import linkify, human_list
-from crimsononline.common.forms import size_spec_to_size
+from crimsononline.common.fields import size_spec_to_size
 
 
 register = template.Library()
