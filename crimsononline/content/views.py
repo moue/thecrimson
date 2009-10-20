@@ -418,9 +418,11 @@ def filter_helper(req, qs, section_str, type_str, url_base):
         section_str = [s.lower() for s in section_str.split(',') if s]
         sections = [s for s in Section.all() if s.name.lower() in section_str]
         content = content.filter(section__in=sections)
+        show_filter_1 = True
     else:
         section_str = [s.name.lower() for s in Section.all()]
         sections = Section.all()
+        show_filter_1 = False
     # generates URLs for the different filter links
     for section in Section.all():
         a = section in sections
@@ -452,11 +454,11 @@ def filter_helper(req, qs, section_str, type_str, url_base):
         filter_types = [t for t in Content.types() if t.name.lower() in type_str] + othertypes
         types = type_str
         content = content.filter(content_type__in=filter_types)
-        show_filter = True
+        show_filter_2 = True
     # all content types
     else:
         types = content_choices + ["other"]
-        show_filter = False
+        show_filter_2 = False
     
     # Iterate over list choices and form URLs
     for type in content_choices + ["other"]:
@@ -479,7 +481,7 @@ def filter_helper(req, qs, section_str, type_str, url_base):
             tps[type[0].upper() + type[1:]] = {'selected': sel, 'url': url, 'count':ct}
         
     
-    return {'content': content, 'sections': sects, 'types': tps, 'show_filter':show_filter}
+    return {'content': content, 'sections': sects, 'types': tps, 'show_filter':(show_filter_1 or show_filter_2)}
 
 @cache(settings.CACHE_SHORT, "general_generated_toparticles")
 def top_articles(section, dt=None):
