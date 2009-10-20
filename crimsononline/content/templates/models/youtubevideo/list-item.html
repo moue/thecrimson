@@ -1,0 +1,16 @@
+{% load common %}
+{% load content_filters %}
+
+<li>
+    <a href="{{ youtubevideo.get_absolute_url }}">
+		<div class="image_thumb">{{youtubevideo.pic|to_img_tag:"150,150"}}</div>
+	</a>
+    <div style="float:right">{{youtubevideo.section|yuhkilabel}}</div>
+    
+    <img src="{% static_url "images/icons/video.gif" %}" alt="video" />
+    <h3><a href="{{ youtubevideo.get_absolute_url }}">{{ youtubevideo.title }}</a></h3>
+    <span class="byline"> By {{ youtubevideo.contributors.all|linkify|human_list}}</span>
+    <div class="dateline">{{youtubevideo.issue.issue_date|date:"l, F j, Y"}}</div>
+    <p class="teaser">{{ youtubevideo.description|truncatewords:"10" }}</p>
+    <span class="clear"></span>
+</li>

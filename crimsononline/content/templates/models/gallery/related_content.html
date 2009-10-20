@@ -1,0 +1,10 @@
+{% extends "models/related_content.html" %}
+
+{% load content_filters %}
+{% load common %}
+
+{% block rc %}
+    <span class="ctype">Gallery</span>
+    <a href="{{ gallery.get_absolute_url }}">{{ gallery.cover_image|to_img_tag:"180," }}</a>
+    <span class="title"><a href="{{ gallery.get_absolute_url }}">{{ gallery.title }}</a></span>
+{% endblock %}

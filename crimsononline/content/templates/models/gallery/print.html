@@ -1,0 +1,27 @@
+{% extends "models/print.html" %}
+
+{% load content_filters %}
+{% load common %}
+
+{% block title %}
+	{{ gallery.title }}
+{% endblock %}
+
+
+{% block content %}
+<img src="{% static_url "images/print_view_banner.png" %}" />
+<hr />
+<div class="dateline">
+    {{ gallery.issue.issue_date|date:"F d, Y" }}
+</div>
+
+{% for img in gallery.contents.all %}
+    <h1>{{ img.kicker }}</h1>
+    <div class="byline">
+        CRIMSON/ {{ img.contributors.all|human_list }}
+    </div>
+    <div class="image">{{ img|to_img_tag:"STAND" }}</div>
+    {{ block.super }}
+    <div class="text">{{img.caption}}</div>
+{% endfor %}
+{% endblock %}
