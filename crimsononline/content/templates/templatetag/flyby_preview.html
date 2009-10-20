@@ -11,8 +11,10 @@
     {% if article.main_rel_content %}
         <div class="image_thumb" style="width: 40px; float: left; margin-right: 5px; text-align: right;">{{article.main_rel_content|to_img_tag:"40,40,1,1"}}</div>
     {% endif %}
-    <span>{{article|linkify}}</span>
-    <span class="clear">
+    <div class="flyby_preview_a">
+    <p>{{article|linkify}}</p>
+    <p class="teaser">{{article.teaser|truncchars:"100"}}...</p>
+    </div>
 {% endfor %}
 </div>
 {% endmodule %}

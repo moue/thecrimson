@@ -1854,21 +1854,6 @@
     }
 },
 {
-    "pk": 1,
-    "model": "content.content",
-    "fields": {
-        "rotatable": false,
-        "group": null,
-        "contributors": [1],
-        "tags": [1, 2],
-        "section": 4,
-        "priority": 4,
-        "pub_status": 1,
-        "issue": 1,
-        "slug": "skip-gates"
-    }
-},
-{
     "pk": 3,
     "model": "content.content",
     "fields": {
@@ -1881,21 +1866,6 @@
         "pub_status": 1,
         "issue": 1,
         "slug": "picture-gates-gallery"
-    }
-},
-{
-    "pk": 4,
-    "model": "content.content",
-    "fields": {
-        "rotatable": false,
-        "group": null,
-        "contributors": [1],
-        "tags": [1, 2],
-        "section": 4,
-        "priority": 4,
-        "pub_status": 1,
-        "issue": 1,
-        "slug": "police-officer"
     }
 },
 {
