@@ -89,6 +89,9 @@
     padding-right: 10px;
 }
 
+a#filter_toggle{
+    cursor: pointer;
+}
 #filter_toggle_contents form{
     margin-left: 10px;
 }
