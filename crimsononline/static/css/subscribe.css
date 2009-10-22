@@ -1,0 +1,50 @@
+
+form.manage {
+    padding: 10px;
+}
+form.manage * {
+    font-size: 14px;
+}
+form.manage .errorlist {
+    color: red;
+}
+form.manage span.help_text {
+    color: #888;
+    font-size: 14px;
+    display: block;
+    margin-left: 10px;
+}
+form.manage h3, form.manage h3 * {
+    font-weight: normal; 
+    display: inline;
+    font-size:18px;
+}
+form.manage div.fieldWrapper{
+    margin: 10px;
+}
+form.manage div.fieldWrapper input {
+    border: 1px solid #dddddd;
+}
+form.manage ul.acfb-holder{
+    margin-left: 10px;
+}
+
+form.manage li {
+    list-style-type: none;
+    display: inline;
+    margin: 0 10px;
+}
+form.manage button {
+    margin: 10px 0 10px;
+    padding: 10px;
+}
+form.manage div.fieldWrapper input.acfb-input {
+    border: none;
+}
+form.manage ul.acfb-holder {
+    width: 600px;
+}
+p.success {
+    font-size: 24px;
+    margin: 10px 50px 10px;
+}

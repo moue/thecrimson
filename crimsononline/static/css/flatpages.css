@@ -54,3 +54,13 @@
 	padding-left:14px; 
 }
 
+.flatpage_section_header{
+    background-color: #f6f6f6;
+    color: #666;
+    padding: 4px;
+    margin: 10px 0;
+    font-size: 14px;
+    width: 100%;
+    font-family: Helvetica,Tahoma,Arial,sans-serif;
+    display: block;
+}

@@ -125,12 +125,13 @@ class FlatpageNavNode(template.Node):
         self.nodelist = nodelist
     
     def render(self, context):
+        print context
         linkre = compile(r'href=\"(.+)\"')
         textre = compile(r'>(.+)<')
 
         links = []
-
-        hardlinks = [x + "</a>" for x in self.nodelist[0].render(context).split("</a>")]
+        splitnodes = self.nodelist.render(context).split("</a>")
+        hardlinks = [x + "</a>" for x in splitnodes]
         hardlinks = hardlinks[0:len(hardlinks)-1]
 
         for link in hardlinks:

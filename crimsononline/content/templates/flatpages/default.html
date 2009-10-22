@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load common %}
+{% load content_module %}
 {% load module %}
 
 {% block title %}
@@ -14,7 +15,7 @@
    
     <div class="col-8">
     {% module 8 flatpage.title red %}
-        {{ flatpage.content }}
+        {{flatpage.content}}
     {% endmodule %}
     </div>
     
@@ -24,17 +25,17 @@
     {% module 4 "" boxbkgrd %}
 		<span class="title">NAVIGATION</span>
         <ul class="right_navigation">
+	
+		{% block fp_nav %}
         {% flatpage_nav about flatpage.url %}
-            <a href="/search/">Archives</a>
-            <a href="/classifieds/">Classifieds</a>
-            <a href="/corrections/">Corrections</a>
-            <a href="http://www.crimsonprinting.net">Printing</a>
-            <a href="/subscribe/">RSS</a>
-            <a href="/subscribe/">Subscriptions</a>
+			{% contentmodule flatpage_nav %}{% endcontentmodule %}
         {% endflatpage_nav %}
+		{% endblock %}
         </ul>
-		{% endmodule %}
-
+	{% endmodule %}
+    {% module 4 "Masthead" box %}
+		{% contentmodule masthead %}{% endcontentmodule %}
+	{% endmodule %}
     </div>
 
 
