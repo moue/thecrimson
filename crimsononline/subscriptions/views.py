@@ -86,12 +86,13 @@ def email_manage(request):
 @cache_page(settings.CACHE_EONS)
 def email_signup(request):
     if request.method == 'POST':
+        print "signing up"
         # process a submitted form
         f = EmailSubscribeForm(request.POST)
         if f.is_valid():
             f.save()
             return render_to_response('email/manage.html', 
-                {'signup_success': 1, 'email': f.cleaned_data['email']})
+                {'signup': True, 'status': 'success', 'email': f.cleaned_data['email']})
     else:
         tags = request.GET.get('tags', None)
         contributors = request.GET.get('contributors', None)

@@ -125,7 +125,6 @@ class FlatpageNavNode(template.Node):
         self.nodelist = nodelist
     
     def render(self, context):
-        print context
         linkre = compile(r'href=\"(.+)\"')
         textre = compile(r'>(.+)<')
 

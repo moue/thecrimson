@@ -17,7 +17,6 @@ def render(content, method):
     try:
         return mark_safe(content._render(method))
     except Exception, err:
-        #print err, content, method
         pass
     return ''
 
@@ -150,15 +149,10 @@ def to_map_thumb(map, size):
     TODO: cache this
     """
     
-    print len(size.split(","))
-    print "is the length"
     if(len(size.split(","))==2):
         dims = size.split(",")
         width=dims[0]
         height=dims[1]
-        print dims
-        print width
-        print height
     else:
         width=size
         height=size
