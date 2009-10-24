@@ -338,7 +338,11 @@ def get_content(request, ctype, year, month, day, slug, content_group=None):
     View for displaying a piece of content on a page
     Validates the entire URL
     """
-    c = get_content_obj(request, ctype, year, month, day, slug, content_group)
+    try:
+        c = get_content_obj(request, ctype, year, month, day, 
+                            slug, content_group)
+    except Content.DoesNotExist:
+        return Http404
     # redirect to canonical URL
     if request.path != c.get_absolute_url():
         return HttpResponseRedirect(c.get_absolute_url())
