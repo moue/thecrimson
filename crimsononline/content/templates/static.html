@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load common %}
+{% load content_module %}
+{% load module %}
+
+{% block title %}
+    {{ flatpage.title }}
+{% endblock %}
+
+{% block css %}
+{% static_css "flatpages.css" %}
+{% endblock %}
+
+{% block body %}
+   
+    <div class="col-8">
+	{% block content %}
+	{% endblock %}
+    </div>
+    
+	<div class="gutter"></div>
+
+    <div class="col-4">
+    {% module 4 "" boxbkgrd %}
+		<span class="title">NAVIGATION</span>
+        <ul class="right_navigation">
+	
+		{% block fp_nav %}
+        {% flatpage_nav about flatpage.url %}
+			{% contentmodule flatpage_nav %}{% endcontentmodule %}
+        {% endflatpage_nav %}
+		{% endblock %}
+        </ul>
+	{% endmodule %}
+    {% module 4 "Masthead" box %}
+	<div class="masthead">
+		{% contentmodule masthead %}{% endcontentmodule %}
+	</div>
+	{% endmodule %}
+    </div>
+
+
+	
+    <span class="clear" />
+{% endblock %}
