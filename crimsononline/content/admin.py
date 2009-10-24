@@ -15,6 +15,8 @@ from django.conf import settings
 from django.conf.urls.defaults import patterns
 from django.contrib import admin
 from django.contrib.auth.models import User
+from django.contrib.flatpages.models import FlatPage
+from django.contrib.flatpages.admin import FlatpageForm
 from django.core.paginator import Paginator
 from django.core.files import File
 from django.db.models import Q
@@ -1084,3 +1086,40 @@ class HUIDBackend:
             return user
         except User.DoesNotExist:
             return None
+
+class FlatpageFormExtended(FlatpageForm):
+    content = forms.fields.CharField(
+        widget=TinyMCEWidget(attrs={'cols':'94','rows':'40'}, custom_settings={
+        'theme_advanced_buttons1_add':'styleselect',
+	    'theme_advanced_styles':'Header=flatpage_section_header'}), help_text=""
+        "If you're copying and pasting from MS Word, please use the 'Paste "
+        "From Word' button (with a little 'W' on it)"
+    )
+    
+
+# Override flatpage admin
+class FlatPageAdmin(admin.ModelAdmin):
+    #form = FlatPageForm
+    form = FlatpageFormExtended
+    fieldsets = (
+        ('Basic Information', {
+            'fields': ('url','title', 'content', 'sites')
+        }),
+        ('Advanced options', {
+            'classes': ('collapse',),
+            'fields' : ('template_name',)
+        }))
+
+    class Media:
+        js = (
+            'scripts/jquery.js',
+            'scripts/admin/Article.js',
+            'scripts/framework/jquery.sprintf.js',
+            'scripts/tiny_mce/tiny_mce.js'
+        )
+    
+    list_display = ('url', 'title')
+    search_fields = ('url', 'title')
+
+admin.site.unregister(FlatPage)
+admin.site.register(FlatPage, FlatPageAdmin)

@@ -17,11 +17,12 @@
         // set these later
         theme_advanced_styles : "Header 1=header1;Header 2=header2;Header 3=header3;Table Row=tableRow1",
         auto_cleanup_word : true,
-        valid_elements: "a[href|title|onclick],p",
+        valid_elements: "a[href|title|onclick],p,span[class],br",
         custom_shortcuts: false,
         // don't use p tags
         force_p_newlines : true,
-        entities: "amp"
+        entities: "amp",
+		content_css: "{{css_location}}css/flatpages.css",
         {{custom_settings}}
     });
 //});

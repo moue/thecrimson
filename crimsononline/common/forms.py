@@ -16,6 +16,7 @@ from django.template import defaultfilters as filter
 from django.template.loader import render_to_string
 from django.utils.safestring import mark_safe
 
+from crimsononline.settings import MEDIA_URL
 from crimsononline.content.models import *
 from crimsononline.common.utils.numbers import reduce_fraction
 from crimsononline.common.utils.misc import static_content
@@ -341,6 +342,7 @@ class TinyMCEWidget(forms.widgets.Textarea):
             value = filter.escape(value)
         ta = super(TinyMCEWidget, self).render(name, value, attrs)
         custom_settings = mark_safe(self.custom_settings)
+        css_location = MEDIA_URL
         return render_to_string("forms/tinymce_widget.html", locals())
     
 
