@@ -328,7 +328,6 @@ class Command(BaseCommand):
         for row in rows:
             try:
                 a = Article.objects.get(pk=row["ArticleID"])
-                a.contributors.clear()
                 a.contributors.add(Contributor.objects.get(pk=row["ContributorID"]))
             except Exception, e:
                 print "Article Content relation %i failed" % row["ID"]
