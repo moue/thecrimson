@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% load common %}
+{% load content_module %}
+{% load module %}
+
+{% block inhead %}
+    {% static_js "jquery.js" %}
+	{% static_css "flatpages.css" %}
+	{% static_css "subscribe.css" %}
+
+    {{ form.media }}
+{% endblock %}
+
+{% block body %}
+   
+    <div class="col-8">
+    {% module 8 subscribe red %}
+	<div class="flatpage_section_header">Email Subscriptions</div>
+	{% block email_subscriptions %}{% endblock %}
+
+	<div class="flatpage_section_header">Paper Subscriptions</div>
+	INSERT PAPER SUBSCRIPTION STUFF HERE
+	<div class="flatpage_section_header">RSS Feeds</div>
+	INSERT RSS FEEDS HERE
+    {% endmodule %}
+    </div>
+    
+	<div class="gutter"></div>
+
+    <div class="col-4">
+    {% module 4 "" boxbkgrd %}
+		<span class="title">NAVIGATION</span>
+        <ul class="right_navigation">
+	
+        {% flatpage_nav about "/subscribe/" %}
+			{% contentmodule flatpage_nav %}{% endcontentmodule %}
+        {% endflatpage_nav %}
+        </ul>
+	{% endmodule %}
+    {% module 4 "Masthead" box %}
+		{% contentmodule masthead %}{% endcontentmodule %}
+	{% endmodule %}
+    </div>
+
+
+	
+    <span class="clear" />
+{% endblock %}
