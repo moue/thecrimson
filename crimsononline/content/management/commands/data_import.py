@@ -109,7 +109,8 @@ def fix_tags():
 
 class Command(BaseCommand):
     option_list = BaseCommand.option_list
-    help = "Imports data from the old website, hosted on crimson-sql1. Requires pymssql 1.0.2"
+    help = "Imports data from the old website, hosted on crimson-sql1. "
+           "Requires pymssql 1.0.2"
 
     def handle(self, *args, **options):
         if len(args) > 0 and args[0] == 'fix_tags':
@@ -205,7 +206,6 @@ class Command(BaseCommand):
             no_contrib.last_name = "Attributed"
             no_contrib.save()
         
-        
         # import contributors -- working nearly perfectly, except for capitalization
         # don't run part (it's slow) if it's already been done
         if Contributor.objects.count() < 10000:
@@ -281,7 +281,7 @@ class Command(BaseCommand):
                     a.proofer_id = row["Proofer"] if row["Proofer"] not in ["", None] else 1
                     a.sne_id = row["SNE"] if row["SNE"] not in ["", None] else 1
                     a.pub_status = 1
-                    a.id = row["ID"]
+                    a.old_pk = row["ID"]
                 except:
                     print "failed at article id %d" % row['ID']
                     raise

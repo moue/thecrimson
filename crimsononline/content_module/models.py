@@ -28,7 +28,7 @@ class ContentModule(models.Model):
     
     def html(self):
         #TODO: move the expiration code to something like cron
-        if datetime.now() > self.expiration:
+        if self.content is not None and datetime.now() > self.expiration:
             self.content = None
             self.save()
         if self.content:
