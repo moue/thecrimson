@@ -36,6 +36,7 @@
     font-size: 18px;
     padding-top: 10px;
     max-height: 42px;
+    overflow: hidden;
 }
 #viewer_sidebar .dateline {
     font-size: 11px;
