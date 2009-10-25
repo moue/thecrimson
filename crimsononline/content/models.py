@@ -1187,7 +1187,7 @@ class Article(Content):
         blank=True, null=True, max_length=70, choices=BYLINE_TYPE_CHOICES)
     text = models.TextField(blank=False, null = False)
     teaser = models.CharField(
-        blank=True, max_length=1000,
+        blank=True, max_length=2500,
         help_text='If left blank, this will be the first sentence ' \
                     'of the article text.'
     )
@@ -1203,6 +1203,11 @@ class Article(Content):
     
     rel_content = models.ManyToManyField(Content, through='ArticleContentRelation', 
         null=True, blank=True, related_name="rel_content")
+    
+    @property
+    def rel_admin_content(self):
+        acrs = ArticleContentRelation.objects.filter(article=Article.objects.get(pk=self.pk))
+        return ";".join([str(x.related_content.pk) for x in acrs])
     
     # Override save to check whether we're modifying an existing article's text
     def save(self, *args, **kwargs):

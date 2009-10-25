@@ -179,6 +179,7 @@ class RelatedContentWidget(forms.widgets.HiddenInput):
     
     def render(self, name, value, attrs=None):
         # set up content types
+        print value
         if not self.c_types:
             for t in self.rel_types:
                 if t not in self.admin_site._registry:
@@ -216,6 +217,7 @@ class RelatedContentField(forms.CharField):
     """The interface for adding / editing related content."""
     
     def __init__(self, *args, **kwargs):
+        
         kwargs['widget'] = RelatedContentWidget(
             rel_types=kwargs.pop('rel_types', []),
             admin_site=kwargs.pop('admin_site')
@@ -227,6 +229,7 @@ class RelatedContentField(forms.CharField):
         
         value is received as a ; delimited set of primary keys
         """
+
         if not value:
             return []
         ids = [int(id) for id in value.split(';') if id]

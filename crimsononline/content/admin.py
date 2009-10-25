@@ -609,6 +609,10 @@ admin.site.register(Gallery, GalleryAdmin)
 
 TEASER_RE = re.compile(r"<\s*\/?\w.*?>") # tags
 class ArticleForm(ContentModelForm):
+    def __init__(self, *args, **kwargs):
+        kwargs['initial'] = {'rel_content':kwargs['instance'].rel_admin_content}
+        super(ArticleForm, self).__init__(*args, **kwargs)
+
     teaser = forms.fields.CharField(
         widget=forms.Textarea(attrs={'rows':'5', 'cols':'67'}),
         required=False, help_text="""
@@ -636,9 +640,10 @@ class ArticleForm(ContentModelForm):
     sne = FbModelChoiceField(required=False, multiple=False,
         url='/admin/content/contributor/search/', model=Contributor,
         labeler=(lambda obj: str(obj)))
-    rel_content = RelatedContentField(label='New content', required=False,
-        admin_site=admin.site, rel_types=[Image, Gallery, Article, Map, FlashGraphic, YouTubeVideo])
 
+    rel_content = RelatedContentField(label='New admin content', required=False,
+        admin_site=admin.site, rel_types=[Image, Gallery, Article, Map, FlashGraphic, YouTubeVideo])
+        
     sportsticker_sport = forms.fields.ChoiceField(
         widget=forms.Select(attrs={}),
         choices=Article.SPORTS_TYPE_CHOICES,
@@ -672,15 +677,23 @@ class ArticleForm(ContentModelForm):
 
 
 class ArticleAdmin(ContentAdmin):
+
+    def add_view(self, request):
+        print "generating add view"
+        if request.method == 'POST':
+            pass
+            # do whatever you want
+            # remember, POSTing means that someone entered data.
+        return ContentAdmin.add_view(self, request)
     
-    list_display = ('headline', 'section', 'issue','pub_status', 'rotatable',
+    list_display = ('headline','section', 'issue','pub_status', 'rotatable',
                     'group',)
     search_fields = ('headline', 'text',)
     list_filter = ('section', )
     
     fieldsets = (
         ('Headline', {
-            'fields': ('headline', 'subheadline',),
+            'fields': ('headline','subheadline',),
         }),
         ('Text', {
             'fields': ('text', 'teaser', ),#'corrections'),
@@ -811,7 +824,7 @@ class ArticleAdmin(ContentAdmin):
         st_dt = datetime.strptime(st_dt, '%m/%d/%Y')
         end_dt = datetime.strptime(end_dt, '%m/%d/%Y')
         
-        objs = cls.objects.all(start=st_dt, 
+        objs = cls.objects.all_objects(start=st_dt, 
                                end=end_dt).filter(slug__icontains=q)
         p = Paginator(objs, OBJS_PER_REQ).page(page)
         
