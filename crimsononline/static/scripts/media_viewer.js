@@ -3,8 +3,8 @@ $(document).ready(function(){
     var _media_cache = {};
     var _page_cache = {};
     var _cur_sort = "recent";
-    var _cur_sections_default = ["news","sports","fm","arts"]
-    var _cur_sections = _cur_sections_default.slice(0)
+    var _cur_sections_default = ["news","sports","fm","arts"];
+    var _cur_sections = _cur_sections_default.slice(0);
     
     // sort/filter buttons
     // TODO: add filtering
@@ -17,8 +17,8 @@ $(document).ready(function(){
             });
         }
         
-
-        ajax = $.get('/section/photo/', {ajax:'',sort:sortby, page:page_num, sections:sections.join(",")}, inject_results);
+        ajax = $.get('/section/photo/', {ajax: '', sort: sortby, 
+            page:page_num, sections: sections.join(",")} , inject_results);
     }
     
     // sorting
@@ -32,7 +32,7 @@ $(document).ready(function(){
         $(this).find('span').addClass("thclabel_blacktive");
         
         inject_sidebar(1, _cur_sort, _cur_sections)
-
+        
         return false;
     });
     
@@ -95,10 +95,9 @@ $(document).ready(function(){
         
         // destroy the old object in the viewer area and add the new item
         var inject_results = function(results){            
-            $("#viewer_main").fadeOut('fast', function(){
-                $(this).empty().append($(results)).fadeIn('fast');
-            });
+            $("#viewer_main").append($(results)).fadeIn('fast');
         }
+        $("#viewer_main").fadeOut('fast', function(){$(this).empty()});
         
         // look for the object in the cache, fallback on ajax
         if(_media_cache.hasOwnProperty(url)){
