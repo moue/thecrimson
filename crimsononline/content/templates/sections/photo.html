@@ -21,9 +21,16 @@
 <div class="gutter"></div>
 <div class="col-4">
     <div id="viewer_sidebar"class="">
-        <span class="filters">MOST &nbsp;&nbsp;
-	<a href="recent"><span class="thclabel thclabel_blacktive">Recent</span></a>
-	<a href="read"><span class="thclabel thclabel_black">Viewed</span></a>
+        <span id="sort_filters" class="filters">MOST &nbsp;&nbsp;
+			<a href="recent"><span class="thclabel thclabel_blacktive">Recent</span></a>
+			<a href="read"><span class="thclabel thclabel_black">Viewed</span></a>
+		</span>
+        <span id="section_filters" class="filters">SECTIONS &nbsp;&nbsp;
+			<a href="news"><span class="thclabel thclabel_blacktive">News</span></a>
+			<a href="sports"><span class="thclabel thclabel_blacktive">Sports</span></a>
+			<a href="fm"><span class="thclabel thclabel_blacktive">Magazine</span></a>
+			<a href="arts"><span class="thclabel thclabel_blacktive">Arts</span></a>
+		</span>
 {% comment %}
 todo: add this filtering in some logical way	
 {{"videos"|yuhkilabel:"black"}} {{"photos"|yuhkilabel:"blacktive"}} 

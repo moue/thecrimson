@@ -1,6 +1,7 @@
 {% load common %}
 {% load content_filters %}
 
+{% if content %}
 <ul>
     <li class="active">{{ content|first|render:"preview" }}</li>
 {% for c in content|notfirst %}
@@ -18,3 +19,6 @@
     <a href="#{{paginator.num_pages}}">Oldest &raquo;</a>
 {% endif %}
 </span>
+{% else %}
+<span class="empty">Sorry, no galleries matching your filters could be found! Try adding some sections.</span>
+{% endif %}

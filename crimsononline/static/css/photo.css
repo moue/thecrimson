@@ -50,3 +50,11 @@
 #viewer_sidebar .pagination a{
     color: #777777;
 }
+
+#viewer_sidebar .empty{
+    padding: 10px;
+    display: block;
+    font-size: 14px;
+    text-align: center;
+    color: #777777;
+}

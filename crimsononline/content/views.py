@@ -253,6 +253,12 @@ def section_photo(request):
     else:
         content = Gallery.objects.recent
     
+    sections = request.GET.get('sections')
+    if sections and request.GET.has_key('ajax'):
+        s_str = sections.split(",")
+        s_obj = [Section.objects.get(name__iexact=x) for x in s_str]
+        content = content.filter(section__in = s_obj)
+    
     d = paginate(content, page, 6)
     d.update({'nav': nav})
     
