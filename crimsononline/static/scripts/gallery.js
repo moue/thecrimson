@@ -1,14 +1,15 @@
 $(document).ready(function(){
-
-    $(".viewer_top").hover(function (){
+    if($(".carousel_frame ul").children().length > 1){
+        $(".viewer_top").hover(function (){
             $(".gallery_control #inside").fadeIn("fast");
             $(".a_left").fadeIn("fast");
             $(".a_right").fadeIn("fast");
-    },function (){
+        },function (){
             $(".gallery_control #inside").fadeOut("fast");
             $(".a_left").fadeOut("fast");
             $(".a_right").fadeOut("fast");
-    });
+        });
+    }
 
 
     /* ========= the carousel stuff ============== */

@@ -2,7 +2,7 @@
 {% load content_filters %}
 
 {% if gallery.cover_image %}
-<div class="image_thumb">{{gallery.cover_image|to_img_tag:"TINY"}}</div>
+<div class="image_thumb">{{gallery.cover_image|render:"thumb"}}</div>
 {% endif %}
 <div class="title">{{ gallery|linkify }}</div>
 <div class="dateline">

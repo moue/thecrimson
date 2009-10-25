@@ -980,10 +980,12 @@ class Gallery(Content):
     
     objects = ContentManager()
 
+
     @property
     def cover_image(self):
         if not self.contents:
             return None
+        print self.contents.all()[0].child
         return self.contents.all()[0].child
     
     def __unicode__(self):

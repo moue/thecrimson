@@ -1,1 +1,2 @@
-{{ youtubevideo.pic|to_img_tag:"SMALL" }}
+{% load common %}
+<a href="/"><img src="{% static_url "" %}{{youtubevideo.pic}}" style="width:75px;height:75px; alt="banner" /></a>
