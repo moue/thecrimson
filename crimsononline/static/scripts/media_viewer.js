@@ -11,12 +11,12 @@ $(document).ready(function(){
     // TODO: destroy page cache when switching ordering
     
     function inject_sidebar(page_num, sortby, sections){
+        $("#viewer_sidebar > div").fadeOut('fast');
         var inject_results = function(results){
-            $("#viewer_sidebar > div").fadeOut('fast', function(){
-                $(this).empty().append($(results)).fadeIn('fast');
-            });
-        }
-        
+            $("#viewer_sidebar > div").empty()
+                                      .append($(results))
+                                      .fadeIn('fast');
+        };
         ajax = $.get('/section/photo/', {ajax: '', sort: sortby, 
             page:page_num, sections: sections.join(",")} , inject_results);
     }
@@ -24,14 +24,14 @@ $(document).ready(function(){
     // sorting
     $("#sort_filters a").live("click", function(e){
         var sortby = $(this).attr("href");
-        _cur_sort = sortby
+        _cur_sort = sortby;
             
         $('#sort_filters a').find('span').removeClass("thclabel_blacktive");
         $('#sort_filters a').find('span').addClass("thclabel_black");
         $(this).find('span').removeClass("thclabel_black");
         $(this).find('span').addClass("thclabel_blacktive");
         
-        inject_sidebar(1, _cur_sort, _cur_sections)
+        inject_sidebar(1, _cur_sort, _cur_sections);
         
         return false;
     });
@@ -44,7 +44,7 @@ $(document).ready(function(){
         if(_cur_sections.indexOf(section) == -1){
             $(this).find('span').removeClass("thclabel_black");
             $(this).find('span').addClass("thclabel_blacktive");
-            _cur_sections.push(section)
+            _cur_sections.push(section);
         }
         // removed
         else{
@@ -52,18 +52,17 @@ $(document).ready(function(){
             $(this).find('span').addClass("thclabel_black");
             _cur_sections.splice(_cur_sections.indexOf(section), 1);
         }
-
+    
         // if nothing is selected, select everything
         if(_cur_sections.length==0){
             // copy default array
-            _cur_sections = _cur_sections_default.slice(0)
-            $('#section_filters a').find('span').removeClass("thclabel_black") 
-            $('#section_filters a').find('span').addClass("thclabel_blacktive") 
+            _cur_sections = _cur_sections_default.slice(0);
+            $('#section_filters a').find('span').removeClass("thclabel_black"); 
+            $('#section_filters a').find('span').addClass("thclabel_blacktive");
         }
-    
-        inject_sidebar(1, _cur_sort, _cur_sections)
         
-
+        inject_sidebar(1, _cur_sort, _cur_sections);
+        
         return false;
     });
     
@@ -83,7 +82,7 @@ $(document).ready(function(){
             }, 'html');
         }*/
         
-        inject_sidebar(page_num, _cur_sort)
+        inject_sidebar(page_num, _cur_sort, _cur_sections);
         
         return false;
     });
@@ -96,7 +95,7 @@ $(document).ready(function(){
         // destroy the old object in the viewer area and add the new item
         var inject_results = function(results){            
             $("#viewer_main").append($(results)).fadeIn('fast');
-        }
+        };
         $("#viewer_main").fadeOut('fast', function(){$(this).empty()});
         
         // look for the object in the cache, fallback on ajax
