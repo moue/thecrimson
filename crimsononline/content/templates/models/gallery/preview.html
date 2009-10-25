@@ -4,7 +4,7 @@
 {% if gallery.cover_image %}
 <div class="image_thumb">{{gallery.cover_image|render:"thumb"}}</div>
 {% endif %}
-<div class="title"><a href="{{gallery.get_absolute_url}}">{{gallery.title|truncchars:"40"}}</a></div>
+<div class="title">{{gallery|linkify}}</a></div>
 <div class="dateline">
     <img src="{% static_url "images/icons/photo.gif" %}" alt="image gallery" />
     Added: {{ gallery.issue.issue_date|date:"F j, Y" }}
