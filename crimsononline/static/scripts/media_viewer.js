@@ -93,10 +93,10 @@ $(document).ready(function(){
         var url = $(this).attr("href");
         
         // destroy the old object in the viewer area and add the new item
+        $("#viewer_main").fadeOut('fast');
         var inject_results = function(results){            
-            $("#viewer_main").append($(results)).fadeIn('fast');
+            $("#viewer_main").empty().append($(results)).fadeIn('fast');
         };
-        $("#viewer_main").fadeOut('fast', function(){$(this).empty()});
         
         // look for the object in the cache, fallback on ajax
         if(_media_cache.hasOwnProperty(url)){
