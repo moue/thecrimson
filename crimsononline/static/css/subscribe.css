@@ -10,7 +10,8 @@ form.manage .errorlist {
 }
 form.manage span.help_text {
     color: #888;
-    font-size: 14px;
+    font-size: 12px;
+	font-family:"Lucida Grande", Tahoma, helvetica,arial,sans-serif;
     display: block;
     margin-left: 10px;
 }
@@ -36,7 +37,7 @@ form.manage li {
 }
 form.manage button {
     margin: 10px 0 10px;
-    padding: 10px;
+   
 }
 form.manage div.fieldWrapper input.acfb-input {
     border: none;

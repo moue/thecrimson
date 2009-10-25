@@ -68,9 +68,10 @@ p { margin:0 0 18px; }
     border-top:1px solid #EEEEEE;
     color:#666666;
     display:block;
-    font-family:helvetica,arial,sans-serif;
+    /*font-family:"Lucida Grande", Tahoma, helvetica,arial,sans-serif;*/
+    font-family:georgia,"times new roman",times,serif;
     font-size:15px;
-    line-height: 15px;
+    line-height: 10px;
     margin:15px 0;
     padding:8px;
     width:611px;
