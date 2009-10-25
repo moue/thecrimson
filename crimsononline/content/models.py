@@ -60,7 +60,8 @@ class ContentManager(models.Manager):
     def rel_content_ordered(self):
         """Ordered for Article.rel_content
         
-        #TODO: this is a hack
+        #TODO: this is a HUGE hack, most notably, it probably fucks up 
+            all other content with many related managers
         """
         return self.all_objects().filter(pub_status=1).order_by(
             'articlecontentrelation__order'
@@ -979,8 +980,7 @@ class Gallery(Content):
         related_name="galleries_set")
     
     objects = ContentManager()
-
-
+    
     @property
     def cover_image(self):
         if not self.contents:
