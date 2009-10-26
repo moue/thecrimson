@@ -403,15 +403,6 @@ def get_content_group_obj(request, gtype, gname):
     cg = ContentGroup.by_name(gtype, gname)
     return cg
 
-@cache(settings.CACHE_LONG, "general_content_article")
-def get_article_old_website(request):
-    try:
-        id = request.GET.get("ref")
-        a = Article.objects.get(pk=id)
-        return HttpResponse(a._render("page",request=request))
-    except:
-        raise Http404
-
 # sure looks cacheworthy
 @cache(settings.CACHE_STANDARD, "helper")
 def filter_helper(req, qs, section_str, type_str, url_base):

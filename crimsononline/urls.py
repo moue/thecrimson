@@ -1,6 +1,5 @@
 from os import path
 from django.conf import settings
-from django.conf.urls.defaults import *
 from django.contrib import admin
 from django.conf.urls.defaults import *
 from crimsononline.content.views import *
@@ -70,6 +69,9 @@ urlpatterns += patterns('',
     (r'^admin/', include('crimsononline.admin_cust.urls')),
 )
 
+urlpatterns += patterns('',
+    (r'', include('crimsononline.legacy.urls')),
+)
 
 urlpatterns += patterns('',
     (r'^site_media/(?P<path>.*)$', 'django.views.static.serve', 
@@ -87,9 +89,5 @@ generic_patterns = patterns('crimsononline.content.views',
         name='content_contentgroup'),
 )
 
-# old website urls intact
-urlpatterns += patterns('crimsononline.content.views',
-    (r'^article\.aspx', 'get_article_old_website')
-)
-
 urlpatterns += generic_patterns
+
