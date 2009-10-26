@@ -551,7 +551,7 @@ class GalleryForm(ContentModelForm):
     def __init__(self, *args, **kwargs):
         r = kwargs.pop('instance', None)
         if r is not None:
-            kwargs['initial'] = {'rel_content': r.rel_admin_content}
+            kwargs['initial'] = {'contents': r.admin_content_pks}
         super(GalleryForm, self).__init__(*args, **kwargs)
 
     contents = RelatedContentField(label='Contents', required=False,

@@ -2,8 +2,8 @@
 {% load common %}
 
 <span>Image Gallery</span>
-<img src="{% static_url "images/icons/photo.gif" %}" alt="article" />
-{% for img in gallery.contents.all|slice:":4" %}
+<img src="{% static_url "images/icons/photo.gif" %}" alt="gallery" />
+{% for img in gallery.admin_contents|slice:":4" %}
     {{ img|to_thumb_tag }}
 {% endfor %}
 <span>{{ gallery.title }}</span>

@@ -988,7 +988,12 @@ class Gallery(Content):
         return self.contents.all()[0].child
     
     @property
-    def rel_admin_content(self):
+    def admin_contents(self):
+        acrs = GalleryMembership.objects.filter(gallery=self)
+        return [x.content for x in acrs]
+    
+    @property
+    def admin_content_pks(self):
         acrs = GalleryMembership.objects.filter(gallery=self)
         return ";".join([str(x.content.pk) for x in acrs])
 
