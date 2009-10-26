@@ -5,6 +5,7 @@ from datetime import datetime, time, date, timedelta
 from re import compile, match, sub
 from string import letters, digits
 from PIL import Image as pilImage
+import copy
 
 from django.conf import settings
 from django.db import models
@@ -255,26 +256,28 @@ class Content(models.Model):
             'admin' or 'search'
         context -- gets injected into template (optional)
         """
-        
+        n_context = copy.copy(context)
         nav = self.section.name.lower()
         name = self.content_type.name.replace(" ","")
         templ = 'models/%s/%s.html' % (name, method)
         # can access self with either the name of the class (ie, 'article')
         #   or 'content'
-        context.update({name: self.child, 'content': self.child, 'class': name,
-                        'disqus': settings.DISQUS, 'nav':nav})
+        n_context.update({name: self.child, 'content': self.child, 
+                        'class': name, 'disqus': settings.DISQUS, 'nav':nav})
         
         # print view
         if method == 'page' and request.GET.get('print',""):
-            return mark_safe(render_to_string('models/%s/print.html'%(name), context, context_instance=RequestContext(request)))
-        
+            return mark_safe(render_to_string('models/%s/print.html'%(name),
+                n_context))
+            
         if method == 'page':
             self.store_hit()
         
         # flyby content
         if method == 'page' and self.group == ContentGroup.flyby():
-            return mark_safe(render_to_string('models/%s/flyby.html'%(name), context, context_instance=RequestContext(request)))
-        return mark_safe(render_to_string(templ, context))
+            return mark_safe(render_to_string('models/%s/flyby.html'%(name),
+                n_context))
+        return mark_safe(render_to_string(templ, n_context))
     
     def delete(self):
         # anyone can delete drafts
