@@ -548,6 +548,12 @@ admin.site.register(Image, ImageAdmin)
 
 
 class GalleryForm(ContentModelForm):
+    def __init__(self, *args, **kwargs):
+        r = kwargs.pop('instance', None)
+        if r is not None:
+            kwargs['initial'] = {'rel_content': r.rel_admin_content}
+        super(GalleryForm, self).__init__(*args, **kwargs)
+
     contents = RelatedContentField(label='Contents', required=False,
         admin_site=admin.site, rel_types=[Image, YouTubeVideo])
 
