@@ -7,7 +7,7 @@
 }
 .flyby_preview_story{
     width: 297px;
-    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
     padding: 5px;
 }
 .flyby_preview p.headline{
@@ -17,7 +17,17 @@
 .flyby_preview p.teaser{
     color: black
 }
-.flyby_preview_story:hover{background-color: #eee;}
+.more-link{
+    text-align: center;
+    padding: 5px;
+    width: 297px;
+    display: block;
+    font-size: 12px;
+}
+.flyby_preview_story:hover, .more-link:hover{
+    background-color: #eee;
+    text-decoration: none;
+}
 
 
 .article_previews li {
