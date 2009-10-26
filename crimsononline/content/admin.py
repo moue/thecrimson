@@ -679,15 +679,6 @@ class ArticleForm(ContentModelForm):
 
 
 class ArticleAdmin(ContentAdmin):
-
-    def add_view(self, request):
-        print "generating add view"
-        if request.method == 'POST':
-            pass
-            # do whatever you want
-            # remember, POSTing means that someone entered data.
-        return ContentAdmin.add_view(self, request)
-    
     list_display = ('headline','section', 'issue','pub_status', 'rotatable',
                     'group',)
     search_fields = ('headline', 'text',)
