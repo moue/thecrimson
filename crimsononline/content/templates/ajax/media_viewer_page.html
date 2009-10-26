@@ -2,12 +2,14 @@
 {% load content_filters %}
 
 {% if content %}
+<div class="choices">
 <ul>
     <li class="active">{{ content|first|render:"preview" }}</li>
 {% for c in content|notfirst %}
     <li>{{ c|render:"preview" }}</li>
 {% endfor %}
 </ul>
+</div>
 <span class="pagination">
 {% if p.has_previous %}
     <a href="#1">&laquo; Newest</a>

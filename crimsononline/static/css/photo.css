@@ -47,14 +47,20 @@ div#viewer_sidebar_wrapper {
     color: #777;
 }
 #viewer_sidebar .pagination {
+    border-top: 1px solid #666;
     display: block;
     font-size: 12px;
     text-align: center;
     color: #777777;
-    margin-bottom: 20px;
+    margin-top: -1px;
+    margin-bottom: 2px;
+    padding: 4px 0 2px;
 }
 #viewer_sidebar .pagination a{
-    color: #777777;
+    color: #e7e7e7;
+}
+#viewer_sidebar .pagination a:hover{
+    color: #aaa;
 }
 
 #viewer_sidebar .empty{
@@ -63,4 +69,8 @@ div#viewer_sidebar_wrapper {
     font-size: 14px;
     text-align: center;
     color: #777777;
+}
+
+#viewer_sidebar .choices{
+    height: 516px;
 }
