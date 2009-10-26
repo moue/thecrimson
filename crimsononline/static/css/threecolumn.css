@@ -5,7 +5,8 @@
 .flyby_preview .teaser{
     font-size: 12px;
 }
-.flyby_preview_story{
+.flyby_preview_story {
+    display: block;
     width: 297px;
     border-bottom: 1px solid #eee;
     padding: 5px;
@@ -26,9 +27,10 @@
 }
 .flyby_preview_story:hover, .more-link:hover{
     background-color: #eee;
+}
+.flyby_preview a:hover{
     text-decoration: none;
 }
-
 
 .article_previews li {
     display: block; 
