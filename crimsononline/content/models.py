@@ -990,7 +990,7 @@ class Gallery(Content):
     @property
     def admin_contents(self):
         acrs = GalleryMembership.objects.filter(gallery=self)
-        return [x.content for x in acrs]
+        return [x.content.child for x in acrs]
     
     @property
     def admin_content_pks(self):
