@@ -83,16 +83,7 @@ def writer(request, pk, f_name, m_name, l_name,
 
 @cache_page(settings.CACHE_LONG)
 def tag(request, tag, section_str='', type_str='', page=1):
-    """Show the view for a specific tag."""
-    
-    # not really sure why i have to do this, but sometimes, these
-    #  get passed in as None
-    if section_str is None:
-        section_str = ''
-    if type_str is None:
-        type_str = ''
-    if page is None:
-        page = 1
+    """The view for a specific tag."""
     
     tag = get_object_or_404(Tag, text=tag.replace('_', ' '))
     content = Content.objects.recent.filter(tags=tag)
