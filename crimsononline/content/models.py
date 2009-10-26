@@ -987,6 +987,11 @@ class Gallery(Content):
             return None
         return self.contents.all()[0].child
     
+    @property
+    def rel_admin_content(self):
+        acrs = GalleryMembership.objects.filter(gallery=self)
+        return ";".join([str(x.content.pk) for x in acrs])
+
     def __unicode__(self):
         return self.title
     
@@ -1206,7 +1211,7 @@ class Article(Content):
     
     @property
     def rel_admin_content(self):
-        acrs = ArticleContentRelation.objects.filter(article=Article.objects.get(pk=self.pk))
+        acrs = ArticleContentRelation.objects.filter(article=self)
         return ";".join([str(x.related_content.pk) for x in acrs])
     
     # Override save to check whether we're modifying an existing article's text
