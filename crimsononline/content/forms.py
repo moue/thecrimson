@@ -179,7 +179,6 @@ class RelatedContentWidget(forms.widgets.HiddenInput):
     
     def render(self, name, value, attrs=None):
         # set up content types
-        print value
         if not self.c_types:
             for t in self.rel_types:
                 if t not in self.admin_site._registry:

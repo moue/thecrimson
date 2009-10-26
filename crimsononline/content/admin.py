@@ -610,7 +610,9 @@ admin.site.register(Gallery, GalleryAdmin)
 TEASER_RE = re.compile(r"<\s*\/?\w.*?>") # tags
 class ArticleForm(ContentModelForm):
     def __init__(self, *args, **kwargs):
-        kwargs['initial'] = {'rel_content':kwargs['instance'].rel_admin_content}
+        r = kwargs.pop('instance', None)
+        if r is not None:
+            kwargs['initial'] = {'rel_content': r.rel_admin_content}
         super(ArticleForm, self).__init__(*args, **kwargs)
 
     teaser = forms.fields.CharField(
