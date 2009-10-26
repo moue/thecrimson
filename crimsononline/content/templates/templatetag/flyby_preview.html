@@ -5,16 +5,18 @@
 {% module 4 "" box %}
 <div class="flyby_preview">
 
-    <img style="margin-left:-5px;" class="flyby_preview_header" src="{% static_url "images/flyby/flyby_preview.png" %}" alt="flyby_preview" />
+    <img class="flyby_preview_header" src="{% static_url "images/flyby/flyby_preview.png" %}" alt="flyby_preview" />
 
 {% for article in posts %}
+    <a href="{{article.get_absolute_url}}">
     {% if article.main_rel_content %}
         <div class="image_thumb" style="width: 40px; float: left; margin-right: 5px; text-align: right;">{{article.main_rel_content|to_img_tag:"40,40,1,1"}}</div>
     {% endif %}
-    <div class="flyby_preview_a">
-    <p>{{article|linkify}}</p>
-    <p class="teaser">{{article.teaser|truncchars:"100"}}...</p>
+    <div class="flyby_preview_story">
+    <p class="headline">{{article.headline}}</p>
+    <p class="teaser">{{article.teaser|truncchars:"90"}}...</p>
     </div>
+    </a>
 {% endfor %}
 </div>
 {% endmodule %}

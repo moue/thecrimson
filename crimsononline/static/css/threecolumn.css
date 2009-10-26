@@ -1,10 +1,23 @@
-.flyby_preview{padding-bottom: 5px;}
+.flyby_preview{
+    margin-left:-5px;
+    width: 100%;
+}
 .flyby_preview .teaser{
     font-size: 12px;
 }
-.flyby_preview a{font-weight: bold; font-size: 14px;}
-.flyby_preview a:hover{text-decoration: none}
-.flyby_preview_a:hover{background-color: #f6f6f6;}
+.flyby_preview_story{
+    width: 297px;
+    border-top: 1px solid #eee;
+    padding: 5px;
+}
+.flyby_preview p.headline{
+    font-weight: bold;
+    font-size: 14px;
+}
+.flyby_preview p.teaser{
+    color: black
+}
+.flyby_preview_story:hover{background-color: #eee;}
 
 
 .article_previews li {
