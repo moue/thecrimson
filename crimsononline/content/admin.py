@@ -293,7 +293,7 @@ class ContentAdmin(admin.ModelAdmin):
     make_published.short_description = 'Publish content'
     
     def make_draft(self, request, queryset):
-        if not request.user.has_perm('content.content.can_publish'):
+        if not request.user.has_perm('content.content.can_unpublish'):
             raise exceptions.PermissionDenied
         rows_updated = queryset.update(pub_status=0)
         if rows_updated == 1:

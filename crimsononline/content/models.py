@@ -226,6 +226,7 @@ class Content(models.Model):
         )
         permissions = (
             ('content.can_publish', 'Can publish content',),
+            ('content.can_unpublish', 'Can unpublish content',),
         )
         get_latest_by = 'created_on'
         ordering = ['-created_on']
@@ -553,7 +554,7 @@ class Contributor(models.Model):
     profile_text = models.TextField(blank=True, null=True,
         help_text="""<b>Text enclosed in [square brackets] 
         will be bold and red</b>""")
-    profile_pic = SuperImageField(blank=True, null=True, max_width=135,
+    profile_pic = SuperImageField(blank=True, null=True, max_width=131,
         upload_to=contrib_pic_path, storage=OverwriteStorage())
     
     class Meta:
