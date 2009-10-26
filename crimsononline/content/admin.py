@@ -549,7 +549,7 @@ admin.site.register(Image, ImageAdmin)
 
 class GalleryForm(ContentModelForm):
     def __init__(self, *args, **kwargs):
-        r = kwargs.pop('instance', None)
+        r = kwargs.get('instance', None)
         if r is not None:
             kwargs['initial'] = {'contents': r.admin_content_pks}
         super(GalleryForm, self).__init__(*args, **kwargs)
@@ -616,7 +616,7 @@ admin.site.register(Gallery, GalleryAdmin)
 TEASER_RE = re.compile(r"<\s*\/?\w.*?>") # tags
 class ArticleForm(ContentModelForm):
     def __init__(self, *args, **kwargs):
-        r = kwargs.pop('instance', None)
+        r = kwargs.get('instance', None)
         if r is not None:
             kwargs['initial'] = {'rel_content': r.rel_admin_content}
         super(ArticleForm, self).__init__(*args, **kwargs)
