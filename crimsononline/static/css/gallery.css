@@ -4,6 +4,7 @@
 
 #viewer_main{
     margin-left: 10px;
+    margin-right: 10px;
     padding: 10px 0;
 }
 #viewer_main .tags_heading {
@@ -17,7 +18,6 @@
     text-decoration: none;
 }
 
-
 #viewer_main .viewer_header {
     padding: 0 0 8px;
 }
@@ -29,7 +29,7 @@
 #viewer_main .viewer_top {
     display: block;
     position: relative;
-    width: 629px;
+    /*width: 629px;*/
     height: 450px;
     overflow: hidden;
     background-color: #333;
@@ -89,7 +89,6 @@
 #viewer_main .tags a{
     text-decoration: underline;
 }
-
 
 /* carousel */
 .gallery_control{

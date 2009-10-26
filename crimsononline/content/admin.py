@@ -410,7 +410,7 @@ class ContributorAdmin(admin.ModelAdmin):
                 if h:
                     huid_hash = md5_constructor(h).hexdigest()
                 else:
-                    huid_hash = None                                                                        
+                    huid_hash = None       
                 ud.huid_hash = huid_hash
             ud.save()
         return super(ContributorAdmin, self).save_model(

@@ -1,3 +1,7 @@
+div#viewer_sidebar_wrapper {
+    width: 332px;
+}
+
 #viewer_sidebar {
     margin: 10px 10px 10px 0;
     list-style: none;
@@ -19,7 +23,7 @@
     display: block;
     float: left;
     height: 75px;
-    width: 287px;
+    width: 310px;
     padding: 5px;
     margin: 0;
     border-bottom: 1px solid #666;
