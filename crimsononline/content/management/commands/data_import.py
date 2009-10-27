@@ -109,7 +109,7 @@ def fix_tags():
 
 class Command(BaseCommand):
     option_list = BaseCommand.option_list
-    help = "Imports data from the old website, hosted on crimson-sql1. "
+    help = "Imports data from the old website, hosted on crimson-sql1. " \
            "Requires pymssql 1.0.2"
 
     def handle(self, *args, **options):
@@ -327,7 +327,7 @@ class Command(BaseCommand):
         print "Importing " + str(len(rows)) + " Article-Contributor Relations"
         for row in rows:
             try:
-                a = Article.objects.get(pk=row["ArticleID"])
+                a = Article.objects.get(old_pk=row["ArticleID"])
                 a.contributors.add(Contributor.objects.get(pk=row["ContributorID"]))
             except Exception, e:
                 print "Article Content relation %i failed" % row["ID"]
