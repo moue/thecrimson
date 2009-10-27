@@ -242,7 +242,8 @@ def section_photo(request):
     
     if request.method == 'GET':
         page = request.GET.get('page', 1)
-    else: raise Http404
+    else
+        raise Http404
     nav = 'photo'
     
     sort = request.GET.get('sort')
@@ -348,13 +349,13 @@ def get_content(request, ctype, year, month, day, slug, content_group=None):
         c = get_content_obj(request, ctype, year, month, day, 
                             slug, content_group)
     except Content.DoesNotExist:
-        return Http404
+        raise Http404
     # redirect to canonical URL
     if request.path != c.get_absolute_url():
         return HttpResponseRedirect(c.get_absolute_url())
     if request.method == 'GET':
         return HttpResponse(c._render(request.GET.get('render','page'), request=request))
-    return Http404
+    raise Http404
 
 # no need to cache these two i don't think, since they all go through get_content in the end
 
