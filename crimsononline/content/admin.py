@@ -606,6 +606,8 @@ class GalleryAdmin(ContentAdmin):
         super(GalleryAdmin, self).save_model(request, obj, form, change)
         obj.contents.clear()
         for i, content in enumerate(contents):
+            print i
+            print content
             x = GalleryMembership(order=i, gallery=obj, content=content)
             x.save()
         return obj

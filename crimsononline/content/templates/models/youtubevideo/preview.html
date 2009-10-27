@@ -1,11 +1,9 @@
 {% load common %}
 {% load content_filters %}
 
-{% if youtubevideo.pic %}
-<div class="image_thumb">{{youtubevideo.pic|render:"thumb"}}</div>
-{% endif %}
+<div class="image_thumb">{{youtubevideo|render:"thumb"}}</div>
 <div class="title">{{ youtubevideo|linkify }}</div>
 <div class="dateline">
-    <img src="{% static_url "images/icons/video.gif" %}" alt="image gallery" />
+    <img src="{% static_url "images/icons/video.gif" %}" alt="video" />
     Added on {{ youtubevideo.issue.issue_date|date:"F j, Y" }}
 </div>

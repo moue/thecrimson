@@ -3,22 +3,25 @@ $(document).ready(function(){
     var _media_cache = {};
     var _page_cache = {};
     var _cur_sort = "recent";
-    var _cur_sections_default = ["news","sports","fm","arts"];
-    var _cur_sections = _cur_sections_default.slice(0);
+    var _cur_section = "all";
+    var _cur_type = "all";
+    var _filter_state = 0;
     
     // sort/filter buttons
     // TODO: add filtering
     // TODO: destroy page cache when switching ordering
     
-    function inject_sidebar(page_num, sortby, sections){
-        $("#viewer_sidebar > div").fadeOut('fast');
+    function inject_sidebar(page_num, sortby, section, type){
         var inject_results = function(results){
-            $("#viewer_sidebar > div").empty()
-                                      .append($(results))
-                                      .fadeIn('fast');
+            $("#viewer_sidebar #sidebar_galleries").fadeOut('fast', function(){
+                $("#viewer_sidebar #sidebar_galleries").empty()
+                    .append($(results))
+                    .fadeIn('fast')
+            });
         };
+
         ajax = $.get('/section/photo/', {ajax: '', sort: sortby, 
-            page:page_num, sections: sections.join(",")} , inject_results);
+            page:page_num, section: section, type: type} , inject_results);
     }
     
     // sorting
@@ -31,7 +34,7 @@ $(document).ready(function(){
         $(this).find('span').removeClass("thclabel_black");
         $(this).find('span').addClass("thclabel_blacktive");
         
-        inject_sidebar(1, _cur_sort, _cur_sections);
+        inject_sidebar(1, _cur_sort, _cur_section, _cur_type);
         
         return false;
     });
@@ -41,32 +44,50 @@ $(document).ready(function(){
         var section = $(this).attr("href");
 
         // section needs to be added
-        if(_cur_sections.indexOf(section) == -1){
+        if(_cur_section != section){
+            $("#section_filters").find('span').addClass("thclabel_black");
+            $("#section_filters").find('span').removeClass("thclabel_blacktive");
             $(this).find('span').removeClass("thclabel_black");
             $(this).find('span').addClass("thclabel_blacktive");
-            _cur_sections.push(section);
-        }
-        // removed
-        else{
-            $(this).find('span').removeClass("thclabel_blacktive");
-            $(this).find('span').addClass("thclabel_black");
-            _cur_sections.splice(_cur_sections.indexOf(section), 1);
-        }
-    
-        // if nothing is selected, select everything
-        if(_cur_sections.length==0){
-            // copy default array
-            _cur_sections = _cur_sections_default.slice(0);
-            $('#section_filters a').find('span').removeClass("thclabel_black"); 
-            $('#section_filters a').find('span').addClass("thclabel_blacktive");
+            _cur_section = section;
         }
         
-        inject_sidebar(1, _cur_sort, _cur_sections);
+        inject_sidebar(1, _cur_sort, _cur_section, _cur_type);
         
         return false;
     });
     
+    // filtering by type
+    $("#type_filters a").live("click", function(e){
+        var type = $(this).attr("href");
+
+        // section needs to be added
+        if(_cur_type != type){
+            $("#type_filters").find('span').addClass("thclabel_black");
+            $("#type_filters").find('span').removeClass("thclabel_blacktive");
+            $(this).find('span').removeClass("thclabel_black");
+            $(this).find('span').addClass("thclabel_blacktive");
+            _cur_type = type;
+        }
+        
+        inject_sidebar(1, _cur_sort, _cur_section, _cur_type);
+        
+        return false;
+    });
     
+    // toggle filters
+    $("span#toggle_filters").live("click", function(e){
+        if(_filter_state){
+            $("#filter_spans").slideUp("slow");
+            $(this).text("Filter");
+        }
+        else{
+            $("#filter_spans").slideDown("slow");            
+            $(this).text("Hide Filters");
+        }
+        _filter_state = 1-_filter_state
+    });
+        
     // pagination buttons
     $(".pagination a").live("click", function(e){
         var page_num = $(this).attr("href").split("#")[1];

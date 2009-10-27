@@ -4,11 +4,12 @@
 {% load content_module %}
 {% load module %}
 
-{% block inhead %}
+{% block js %}
 	{{block.super}}
     {% static_js "jquery.js" %}
+{% endblock %}
+{% block css %}
 	{% static_css "subscribe.css" %}
-
     {{ form.media }}
 {% endblock %}
 

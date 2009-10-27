@@ -14,7 +14,11 @@
 {% endblock %}
 
 {% block css %}
+	{{block.super}}
     {% static_css "index.css" %}
+{% endblock %}
+{% block js %}
+	{{block.super}}
     {% static_js "jquery.js" %}
     {% static_js "past_issues.js" %}
 {% endblock %}

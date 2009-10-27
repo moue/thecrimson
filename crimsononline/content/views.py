@@ -246,19 +246,35 @@ def section_photo(request):
         raise Http404
     nav = 'photo'
     
+    video_ct = ContentType.objects.get(name="you tube video")
+    gallery_ct = ContentType.objects.get(name="gallery")
+    cts = [video_ct, gallery_ct]
+    
     sort = request.GET.get('sort')
     if sort == 'read':
         RECENT_DAYS = timedelta(days=120)
         newer_than = datetime.now() - RECENT_DAYS
-        content = Gallery.objects.filter(issue__issue_date__gte = newer_than).order_by("-contenthits")
+        content = Content.objects.filter(issue__issue_date__gte = newer_than).order_by("-contenthits")
     else:
-        content = Gallery.objects.recent
+        content = Content.objects.recent
     
-    sections = request.GET.get('sections')
-    if sections and request.GET.has_key('ajax'):
-        s_str = sections.split(",")
-        s_obj = [Section.objects.get(name__iexact=x) for x in s_str]
-        content = content.filter(section__in = s_obj)
+    section = request.GET.get('section')
+    if section and request.GET.has_key('ajax'):
+        try:
+            s_obj = Section.objects.get(name__iexact=section)
+            content = content.filter(section = s_obj)
+        except:
+            pass
+            
+    c_type = request.GET.get('type')
+    if type and request.GET.has_key('ajax'):
+        try:
+            c_type = ContentType.objects.get(name=c_type)
+        except:
+            pass
+        if c_type in cts:
+            cts = [c_type]
+    content = content.filter(content_type__in = cts)
     
     d = paginate(content, page, 6)
     d.update({'nav': nav})

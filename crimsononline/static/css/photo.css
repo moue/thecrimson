@@ -9,14 +9,25 @@ div#viewer_sidebar_wrapper {
     border: 1px solid #666;
 }
 
-#viewer_sidebar .filters{
+#viewer_sidebar .filters, #viewer_sidebar #toggle_filters{
     font-family:arial;
     font-size:10px;
     font-weight:bold;
-    text-transform:uppercase;
+    text-transform:uppercase;    
+}
+
+#viewer_sidebar .filters{
     display: block;
     padding: 4px 8px;
     border-bottom: 1px solid #666;
+}
+#viewer_sidebar #toggle_filters{
+    cursor: pointer;
+    display: block;
+    float: right;
+    height: 20px;
+    line-height: 16px;
+    padding: 0px;
 }
 
 #viewer_sidebar li {

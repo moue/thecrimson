@@ -5,14 +5,13 @@
 {% load top_articles %}
 {% load tag_cloud %}
 {% load module %}
-{% block inhead %}
-    {% static_css "single_content.css" %}
-    {% block css %}
-    {% endblock %}
-    {% static_js "jquery.js" %}
-    {% block js %}
-        
-    {% endblock %}
+
+{% block css %}
+	{{block.super}}
+	{% static_css "single_content.css" %}
+{% endblock %}
+{% block js %}
+	{% static_js "jquery.js" %}
 {% endblock %}
 
 {% block body %}

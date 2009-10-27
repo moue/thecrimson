@@ -5,7 +5,7 @@ from views import *
 
 urlpatterns = patterns('',
     (r'^article\.aspx', redirect_article),
-    (r'^writer\.aspx', redirect_writer),
+    (r'^writ er\.aspx', redirect_writer),
 )
 
 def redirect(url):
