@@ -102,20 +102,24 @@
     margin-top: 205px;
     width:40px;
     height:40px;
-	background-image: url('../images/semitransparent.png'); 
-	border: 1px solid #666;
     position: absolute;
     z-index: 1000;
     display: none;
-}
-.arrow img{
     cursor: pointer;
 }
 .a_left{
     margin-left: 10px;
+    background-image: url(../images/rotator/arrow_left_off.png)
+}
+.a_left:hover{
+    background-image: url(../images/rotator/arrow_left_on.png)
 }
 .a_right{
     margin-left: 577px;
+    background-image: url(../images/rotator/arrow_right_off.png)
+}
+.a_right:hover{
+    background-image: url(../images/rotator/arrow_right_on.png)
 }
 
 .gallery_control #inside{
