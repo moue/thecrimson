@@ -5,11 +5,14 @@ div#viewer_sidebar_wrapper {
 #viewer_sidebar {
     margin: 10px 10px 10px 0;
     list-style: none;
-    min-height: 500px;
     border: 1px solid #666;
 }
 
-#viewer_sidebar .filters, #viewer_sidebar #toggle_filters{
+#viewer_sidebar #sidebar_galleries{
+    min-height: 540px;
+}
+
+#viewer_sidebar .filters, #viewer_sidebar .filter_label, #viewer_sidebar #toggle_filters{
     font-family:arial;
     font-size:10px;
     font-weight:bold;
@@ -20,6 +23,10 @@ div#viewer_sidebar_wrapper {
     display: block;
     padding: 4px 8px;
     border-bottom: 1px solid #666;
+}
+#viewer_sidebar .filter_label{
+    width: 60px;
+    display: inline-block;
 }
 #viewer_sidebar #toggle_filters{
     cursor: pointer;

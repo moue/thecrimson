@@ -45,8 +45,8 @@ $(document).ready(function(){
 
         // section needs to be added
         if(_cur_section != section){
-            $("#section_filters").find('span').addClass("thclabel_black");
-            $("#section_filters").find('span').removeClass("thclabel_blacktive");
+            $("#section_filters a").find('span').addClass("thclabel_black");
+            $("#section_filters a").find('span').removeClass("thclabel_blacktive");
             $(this).find('span').removeClass("thclabel_black");
             $(this).find('span').addClass("thclabel_blacktive");
             _cur_section = section;
@@ -63,8 +63,8 @@ $(document).ready(function(){
 
         // section needs to be added
         if(_cur_type != type){
-            $("#type_filters").find('span').addClass("thclabel_black");
-            $("#type_filters").find('span').removeClass("thclabel_blacktive");
+            $("#type_filters a").find('span').addClass("thclabel_black");
+            $("#type_filters a").find('span').removeClass("thclabel_blacktive");
             $(this).find('span').removeClass("thclabel_black");
             $(this).find('span').addClass("thclabel_blacktive");
             _cur_type = type;
