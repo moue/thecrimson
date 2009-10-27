@@ -242,7 +242,7 @@ def section_photo(request):
     
     if request.method == 'GET':
         page = request.GET.get('page', 1)
-    else
+    else:
         raise Http404
     nav = 'photo'
     
