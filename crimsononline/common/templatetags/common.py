@@ -24,9 +24,18 @@ def capchars(str, n):
         return str
 
 @register.filter
-def truncchars(str, n):
-    """Truncate str at n chars, at a whole word."""
-    return str[:int(n)].rsplit(' ', 1)[0]
+def truncchars(str, specifier):
+    """Truncate str, at a whole word.
+    
+    Specifier is in the form
+        n[,str]
+    where n is an integer, and str is an optional suffix,
+    which will be appended only if len(str) < n.
+    """
+    if specifier.find(',') is -1:
+        specifier += ','
+    n, suffix = tuple(specifier)
+    return str[:int(n)].rsplit(' ', 1)[0] + suffix
 
 @register.filter
 def notfirst(seq):
