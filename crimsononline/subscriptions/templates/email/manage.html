@@ -32,39 +32,70 @@
 	    <div>
 	        <form class="manage" action="." method="post">
 	            {{ form.non_field_errors }}
-	            <h3><label for="id_email">What's your email address?</label></h3>
-	            <div class="fieldWrapper">
-	                {{ form.email.errors }}
-	                {{ form.email }}
-	                <span class="help_text">{{ form.email.help_text }}</span>
-	            </div>
-	            <h3>What are you interested in?</h3>
-	            <div class="fieldWrapper">
-	                {{ form.top_stories.errors }}
-	                {{ form.top_stories.label_tag }}: {{ form.top_stories }}
-	                <span class="help_text">{{ form.top_stories.help_text }}</span>
-	            </div>
-	            <div class="fieldWrapper">
-	                {{ form.sections.errors }}
-	                {{ form.sections.label }}: {{ form.sections }}
-	                <span class="help_text">{{ form.sections.help_text }}</span>
-	            </div>
-	            <div class="fieldWrapper">
-	                {{ form.contributors.errors }}
-	                {{ form.contributors.label_tag }}: {{ form.contributors }}
-	                <span class="help_text">{{ form.contributors.help_text }}</span>
-	            </div>
-	            <div class="fieldWrapper">
-	                {{ form.tags.errors }}
-	                {{ form.tags.label_tag }}: {{ form.tags }}
-	                <span class="help_text">{{ form.tags.help_text }}</span>
-	            </div>
+				{% if form.email.errors %}
+					<span class="errormessage">Please check the highlighted areas below.</span><br /><br />
+				{% endif %}
+				<table>
+				<tr>
+					<td class="field">
+					{% if form.email.errors %}<span class="errormessage">{% endif %}
+					{{ form.email.label_tag }}
+					{% if form.email.errors %}</span>{% endif %}					
+					</td>
+					<td>{{ form.email }}
+					<span class="help_text">{{ form.email.help_text }}</span></td>
+				</tr>
+				<tr>
+					<td class="field">
+					{% if form.top_stories.errors %}<span class="errormessage">{% endif %}
+					{{ form.top_stories.label_tag }}
+					{% if form.top_stories.errors %}</span>{% endif %}					
+					</td>
+					<td>{{ form.top_stories }}
+					<span class="help_text">{{ form.top_stories.help_text }}</span></td>
+				</tr>			
+				<tr>
+					<td class="field">
+					{% if form.sections.errors %}<span class="errormessage">{% endif %}
+					{{ form.sections.label_tag }}
+					{% if form.sections.errors %}</span>{% endif %}					
+					</td>
+					<td>{{ form.sections }}
+					<span class="help_text">{{ form.sections.help_text }}</span></td>
+				</tr>
+				<tr>
+					<td class="field">
+					{% if form.contributors.errors %}<span class="errormessage">{% endif %}
+					{{ form.contributors.label_tag }}
+					{% if form.contributors.errors %}</span>{% endif %}					
+					</td>
+					<td>{{ form.contributors }}
+					<span class="help_text">{{ form.contributors.help_text }}</span></td>
+				</tr>
+				<tr>
+					<td class="field">
+					{% if form.tags.errors %}<span class="errormessage">{% endif %}
+					{{ form.tags.label_tag }}
+					{% if form.tags.errors %}</span>{% endif %}					
+					</td>
+					<td>{{ form.tags }}
+					<span class="help_text">{{ form.tags.help_text }}</span></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td>
+				
+
 	            {{ form.id }} {{ form.passcode }}
 	        {% if manage %}
 	            <button type="submit" value="change" name="submit">Change</button> <button type="submit" value="unsubscribe" name="submit">Unsubscribe</button>
 	        {% else %}
 	            <button type="submit">Sign up!</button>
-	        {% endif %}
+	        {% endif %}					
+					</td>
+				</tr>
+					</table>
+
 	        </form>
 	    </div>
 	{% endifnotequal %}

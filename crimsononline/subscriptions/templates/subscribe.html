@@ -10,6 +10,7 @@
 {% endblock %}
 {% block css %}
 	{% static_css "subscribe.css" %}
+	{{ block.super }}
     {{ form.media }}
 {% endblock %}
 
