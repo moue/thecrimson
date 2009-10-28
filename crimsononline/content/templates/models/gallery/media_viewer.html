@@ -10,10 +10,9 @@
     <div id="gal_prev" class="arrow a_left">
     </div>
     <div id="gal_next" class="arrow a_right">
-            <img src="{% static_url "images/rotator/arrow_right.png"%}"/>
     </div>
 
-    <div class="gallery_control"><div id="inside">
+    <div class="gallery_control"><div id="inside" {% if gallery.contents.all|length_is:"1" %}style="display:none"{% endif %}>
         <span class="arrow" id="gal_left"> <img src="{% static_url "images/left_off.gif" %}"/></span>
         <div class="carousel_frame">
         {% spaceless %}
