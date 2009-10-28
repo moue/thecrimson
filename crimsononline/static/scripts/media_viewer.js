@@ -103,7 +103,7 @@ $(document).ready(function(){
             }, 'html');
         }*/
         
-        inject_sidebar(page_num, _cur_sort, _cur_sections);
+        inject_sidebar(page_num, _cur_sort, _cur_section, _cur_type);
         
         return false;
     });
