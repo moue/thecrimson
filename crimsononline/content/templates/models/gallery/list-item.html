@@ -11,7 +11,7 @@
     </div>
     <div style="float:right">{{gallery.section|yuhkilabel}}</div>
     
-    <img src="{% static_url "images/icons/photo.gif" %}" alt="article" />
+    <img src="{% static_url "images/icons/gallery.gif" %}" alt="article" />
     <h3><a href="{{ gallery.get_absolute_url }}" class="red-text light-red-text-hover">{{ gallery.title }}</a></h3>
     <span class="byline">By {{gallery.contributors.all|linkify|human_list}}</span>
     <div class="dateline">{{gallery.issue.issue_date|date:"l, F j, Y"}}</div>
