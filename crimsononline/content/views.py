@@ -430,7 +430,7 @@ def get_content_group_obj(request, gtype, gname):
 @cache(settings.CACHE_STANDARD, "helper")
 def filter_helper(req, qs, section_str, type_str, url_base):
     """Return a dictionary with components of content_list filter interface."""
-    print "called filter helper"
+
     # TODO: refactor the fuck out of this
     unfilteredcontent = qs
     content = qs
