@@ -18,12 +18,16 @@
 {% block left %}
     {% module 2 "featured articles" gray %}
     <div id="featured_articles">
+	<ul>
         {% for c in featured %}
+		<li {% if forloop.last %}class="last"{% endif %}>
         <p>
-            <a href="{{ c.get_absolute_url }}">{{c.headline|capchars:"36"}}</a>
-            <span class="date">{{c.issue.issue_date|date:"m/d/y"}}</span>
-        </p>
+            <a href="{{ c.get_absolute_url }}">{{c.headline|capchars:"30"}}</a>
+		</p>
+		<p class="date">{{c.issue.issue_date|date}}</p>
+		</li>
         {% endfor %}
+	</ul>
     </div>
     {% endmodule %}
     
@@ -38,7 +42,7 @@
             <img src="{% static_url "images/noface_50x50.jpg" %}" alt="face"/>
         {% endif %}
         <p class="sub2">{{c|linkify}} ({{c.c_count}})</p>
-        <p class="dateline">{{c.rece|date}}</p>
+        <p class="date">{{c.rece|date}}</p>
         {% endfor %}</li>
         </ul>
         <span class="clear"></span>
