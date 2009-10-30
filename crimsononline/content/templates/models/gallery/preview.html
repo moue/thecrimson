@@ -2,11 +2,11 @@
 {% load content_filters %}
 
 {% if gallery.cover_image %}
-<div class="image_thumb">{{gallery.cover_image|render:"thumb"}}</div>
+<div class="image_thumb"><a href="{{gallery.get_absolute_url}}">{{gallery.cover_image|render:"thumb"}}</a></div>
 {% endif %}
 <div class="title">{{gallery|linkify}}</div>
 <div class="dateline">
     <img src="{% static_url "images/icons/gallery.gif" %}" alt="image gallery" />
     Added: {{ gallery.issue.issue_date|date:"F j, Y" }}
-    ({{ gallery.contents.count }} photos)
+    ({{ gallery.contents.count }} photo{% ifnotequal gallery.contents.count 1 %}s{% endifnotequal %})
 </div>

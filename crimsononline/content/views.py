@@ -57,8 +57,11 @@ def index(request, m=None, d=None, y=None):
 REMOVE_P_RE = re.compile(r'page/\d+/$')
 @cache_page(settings.CACHE_LONG)
 def writer(request, pk, f_name, m_name, l_name, 
-    section_str='', type_str='', page=1):
+    page=1):
     """Show the view for a specific writer."""
+    
+    sections = request.GET.get("sections")
+    types = request.GET.get("types")
     
     w = get_object_or_404(Contributor, pk=pk)
     # Validate the URL (we don't want /writer/281/Balls_Q_McTitties to be valid)
@@ -67,7 +70,7 @@ def writer(request, pk, f_name, m_name, l_name,
     
     f = filter_helper(request, 
         w.content.all().order_by('-issue__issue_date'), 
-        section_str, type_str, w.get_absolute_url()
+        sections, types, w.get_absolute_url()
     )
     
     w.number_of_articles = Article.objects.filter(contributors=w).count()
@@ -82,12 +85,15 @@ def writer(request, pk, f_name, m_name, l_name,
     return render_to_response(t, d)
 
 @cache_page(settings.CACHE_LONG)
-def tag(request, tag, section_str='', type_str='', page=1):
+def tag(request, tag, page=1):
     """The view for a specific tag."""
+    
+    sections = request.GET.get("sections")
+    types = request.GET.get("types")
     
     tag = get_object_or_404(Tag, text=tag.replace('_', ' '))
     content = Content.objects.recent.filter(tags=tag)
-    f = filter_helper(request, content, section_str, type_str, 
+    f = filter_helper(request, content, sections, types, 
         tag.get_absolute_url())
     
     articles = Article.objects.filter(tags=tag)
@@ -424,7 +430,7 @@ def get_content_group_obj(request, gtype, gname):
 @cache(settings.CACHE_STANDARD, "helper")
 def filter_helper(req, qs, section_str, type_str, url_base):
     """Return a dictionary with components of content_list filter interface."""
-    
+    print "called filter helper"
     # TODO: refactor the fuck out of this
     unfilteredcontent = qs
     content = qs
