@@ -43,7 +43,7 @@ def datify(cont):
             value = daysold
             unit = 'day'
         else:
-            return ''
+            return issue.strftime('%B %d, %Y')
     plural = 's' if value > 1 else ''
     return '%d %s%s ago' % (value, unit, plural)
 

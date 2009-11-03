@@ -60,9 +60,11 @@
 .article_headlines li {
     font-size: 13px;
     margin: 0 0 6px;
+    padding-bottom: 6px;
+    border-bottom: 1px dotted #d1d1d1;
 }
 .article_headlines h3 > a{
-    font-weight: normal;
+    font-weight: bold;
     font-size: 13px;
 }
 
