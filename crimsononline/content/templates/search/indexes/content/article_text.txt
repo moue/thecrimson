@@ -1,1 +1,3 @@
 {{object.headline}}
+{{object.subheadline}}
+{{object.teaser}}
