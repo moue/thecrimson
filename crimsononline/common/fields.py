@@ -1,3 +1,4 @@
+from __future__ import division
 from os.path import split, exists, splitext
 from PIL import Image as pilImage
 from django.db.models import ImageField
@@ -81,11 +82,62 @@ class AutosizeImageFieldFile(ImageFieldFile):
         img.save(new_path)
         self._path_cache[size_spec] = new_path
     
-    def display_path(self, size_spec):
+    def display_path(self, size_spec, crop_data = None):
         """returns the path for a sized image"""
         path = self._path_cache.get(size_spec, None)
         if path: return path
         path = self._get_path(size_spec)
+        if not exists(path):
+            img = pilImage.open(self.path)
+            ht, wd = size_spec_to_size(size_spec, self.width, self.height)
+            if size_spec[2] and size_spec[3]:
+                x_ratio, y_ratio = size_spec[2], size_spec[3]
+                if crop_data:
+                    crop_x, crop_y, crop_side = float(crop_data[0]), float(crop_data[1]), float(crop_data[2])
+                else:
+                    crop_x, crop_y, crop_side = float(self.width) / 2, float(self.height) / 2, min(self.height, self.width)
+                if x_ratio > y_ratio:
+                    crop_pd_coord = crop_x
+                    crop_sd_coord = crop_y
+                    pic_pd = self.width
+                    new_crop_pd = (float(x_ratio) / float(y_ratio)) * crop_side
+                # shouldn't need a special case for x_r = y_r
+                else:
+                    crop_pd_coord = crop_y
+                    crop_sd_coord = crop_x
+                    pic_pd = self.height
+                    new_crop_pd = (y_ratio / x_ratio) * crop_side
+                new_crop_sd, new_crop_pd_coord, new_crop_sd_coord = float(crop_side), float(crop_pd_coord), float(crop_sd_coord)
+                # doublecheck that pic.width is valid.  I have no idea
+                # if we haven't had to expand past the original width...
+                if new_crop_pd <= pic_pd:
+                    pd_coord_cen = crop_pd_coord + (crop_side / 2)
+                    # Figure out the new point where the crop begins
+                    new_crop_pd_coord = pd_coord_cen - (new_crop_pd / 2)
+                    # Adjust beginning of crop in case we went past left edge
+                    new_crop_pd_coord = max(0, new_crop_pd_coord)
+                    # Adjust beginning of crop in case we went past right edge
+                    new_crop_pd_coord = min(new_crop_pd_coord, pic_pd - new_crop_pd)
+                # Otherwise the crop would be wider than the image
+                else:
+                    overflow_ratio = new_crop_pd / pic_pd
+                    # Make the crop the same width as the image and scale height down to compensate
+                    new_crop_sd = crop_side / overflow_ratio
+                    new_crop_sd = max(1, new_crop_sd)
+                    new_crop_pd = pic_pd
+                    new_crop_pd_coord = 0
+                    # Fix CROP TOP to reflect new height
+                    new_crop_sd_coord = (crop_sd_coord + (crop_side / 2)) - (new_crop_sd / 2)
+                if x_ratio > y_ratio:
+                    crop_coords = (new_crop_pd_coord, new_crop_sd_coord, new_crop_pd_coord + new_crop_pd, new_crop_sd_coord + new_crop_sd)
+                else:
+                    crop_coords = (new_crop_sd_coord, new_crop_pd_coord, new_crop_sd_coord + new_crop_sd, new_crop_pd_coord + new_crop_pd)
+                img = img.transform((ht, wd), pilImage.EXTENT, crop_coords)
+            else:
+                img.thumbnail((ht, wd), pilImage.ANTIALIAS)
+            img.save(path)
+        
+        """
         if not exists(path):
             img = pilImage.open(self.path)
             ht, wd = size_spec_to_size(size_spec, 
@@ -112,15 +164,16 @@ class AutosizeImageFieldFile(ImageFieldFile):
             else:
                 img.thumbnail((ht, wd), pilImage.ANTIALIAS)
             img.save(path)
+        """
         self._path_cache[size_spec] = path
         return path
     
-    def display_url(self, size_spec):
+    def display_url(self, size_spec, crop_data = None):
         """returns the path for a sized image"""
         url = self._url_cache.get(size_spec, None)
         if url: return url
         url = '%s/%s' % (split(self.url)[0], 
-            split(self.display_path(size_spec))[1])
+            split(self.display_path(size_spec, crop_data))[1])
         self._url_cache[size_spec] = url
         return url
     

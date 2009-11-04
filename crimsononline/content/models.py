@@ -841,6 +841,11 @@ class Image(Content):
     # make sure pic is last: photo_save_path needs an instance, and if this
     #  attribute is processed first, all the instance attributes will be blank
     pic = SuperImageField('File', max_width=960, upload_to=image_get_save_path)
+    # Data for crops.  We store the 1:1 ratio crop as the location of its top left
+    # corner and the length of a side.
+    crop_x = models.IntegerField(null=True)
+    crop_y = models.IntegerField(null=True)
+    crop_side = models.IntegerField(null=True)
     
     objects = ImageManager()
     
@@ -862,10 +867,17 @@ class Image(Content):
     
     def display_url(self, size_spec):
         """ convenience method for the pic attribute's method of same name """
-        return self.pic.display_url(size_spec)
+        if self.crop_x and self.crop_y and self.crop_side:
+            return self.pic.display_url(size_spec, (self.crop_x, self.crop_y, self.crop_side))
+        else:
+            return self.pic.display_url(size_spec, None)
     
     def crop_thumb(self, size_spec, crop_coords):
         """ convenience method for the pic attribute's method of same name """
+        print crop_coords
+        self.crop_x = crop_coords[0]
+        self.crop_y = crop_coords[1]
+        self.crop_side = crop_coords[2] - crop_coords[0]
         self.pic.crop_thumb(size_spec, crop_coords)
     
     def __unicode__(self):
