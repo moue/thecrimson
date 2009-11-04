@@ -20,14 +20,14 @@
 * {
 	padding:0px;
 	margin:0px;
-    font-family:georgia,"times new roman",times,serif;
-    font-weight:normal;
 }
 
 body {
 	text-align:left;
 	background-color: #fff;
     font-size: 62.5%;
+    font-family: georgia,"times new roman",times,serif;
+    font-weight: normal;
 }
 
 a{color:#BA0600;}
