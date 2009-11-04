@@ -17,7 +17,7 @@
     {% if article.subheadline %}<h2>{{ article.subheadline }}</h2>{% endif %}
 
     <div class="byline">
-        By {{ article.contributors.all|linkify|human_list }}
+        By {{ article.contributors.all|linkify|human_list }}, {{ article.get_byline_type_display }}{{ article.contributors.count|pluralize }}
     </div>
     <div class="dateline">
         Published: {{ article.issue.issue_date|date:"l, F d, Y" }}
