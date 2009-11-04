@@ -1,6 +1,7 @@
 body {
 font-family:georgia,"times new roman",times,serif;
-font-size: 1em;
+font-size: 15px;
+line-height: 22px;
 }
 
 p { margin:0 0 18px; }
@@ -77,6 +78,7 @@ p { margin:0 0 18px; }
     width:611px;
 }
 
+
 .masthead span{
     color:#666666;
     font-family:"Lucida Grande",Tahoma,Arial,sans-serif;
@@ -86,6 +88,9 @@ p { margin:0 0 18px; }
 
 .masthead ul{margin-bottom: 10px;}
 .masthead li{
+    text-align: center;
+    display: block;
+    width: 100%;
     list-style-type: none;
 }
 .masthead .position{
