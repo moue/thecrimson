@@ -7,8 +7,6 @@ from crimsononline.admin_cust.views import login_user
 from django.contrib.auth.views import login, logout
 from django.contrib.sitemaps import FlatPageSitemap
 from crimsononline.content.sitemaps import ArticleSitemap
-from haystack.views import SearchView
-from crimsononline.search.forms import DateRangeSearchForm
 
 admin.autodiscover()
 
@@ -52,9 +50,12 @@ urlpatterns +=patterns('',
 )
 
 if settings.HAYSTACK:
+    from crimsononline.search.forms import DateRangeSearchForm
+    from haystack.views import SearchView
+    
+    urlpatterns += patterns('haystack.views',
+        url(r'^search/', SearchView(form_class=DateRangeSearchForm)))
 
-	urlpatterns += patterns('haystack.views',
-		url(r'^search/', SearchView(form_class=DateRangeSearchForm)))
 
 """
 urlpatterns += patterns('django.views.generic.simple',
@@ -62,8 +63,6 @@ urlpatterns += patterns('django.views.generic.simple',
     (r'login_return/$', login_user),
 )
 """
-
-
 
 urlpatterns += patterns('',
     (r'^admin/', include('crimsononline.admin_cust.urls')),

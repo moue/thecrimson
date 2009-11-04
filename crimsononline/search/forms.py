@@ -5,7 +5,7 @@ from crimsononline.common.forms import CalendarWidget
 
 class DateRangeSearchForm(SearchForm):
 	start_date = forms.DateField(required=False, widget=CalendarWidget)
-	end_date = forms.DateField(required=False)
+	end_date = forms.DateField(required=False, widget=CalendarWidget)
 
 	def search(self):
 		# First, store the SearchQuerySet received from other processing.

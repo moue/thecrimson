@@ -41,6 +41,12 @@ class CalendarWidget(forms.widgets.HiddenInput):
         super(CalendarWidget, self).__init__(*args, **kwargs)
 
     def render(self, name, value, attrs=None):
+        if value:
+            o_val = value
+            times = value.split("/")
+            value = "%s-%s-%s" % (times[2], times[1], times[0])
+        else:
+            o_val = ""
         hidden = super(CalendarWidget, self).render(name, value, attrs)
         return render_to_string("forms/calendar_widget.html", locals())
 

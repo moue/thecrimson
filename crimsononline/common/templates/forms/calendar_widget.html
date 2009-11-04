@@ -1,21 +1,43 @@
 {% load common %}
 
 {% static_js 'framework/jquery-ui.packed.js' %}
-{% static_js 'admin/IssuePickerWidget.js'%}
 {% static_css 'framework/jquery.ui.css' %}
 {% static_css 'admin/IssuePickerWidget.css' %}
+<script type="text/javascript">
+var set_calendar_picker = function(ele, hidden_input){
+    // turns a date obj into a str of the calendar's format
+    var make_datestring = function(date){
+        var date_str = (date.getMonth() > 8 ) ? "" : "0";
+        date_str += (date.getMonth() + 1) + "/";
+        date_str += (date.getDate() > 9) ? "" : "0";
+        date_str += date.getDate() + "/" + date.getFullYear();
+        return date_str;
+    };
+    
+    $(ele).datepicker({
+        showStatus: true,
+        showOn: "both",
+        buttonImage: "/admin_media/img/admin/icon_calendar.gif",
+        buttonImageOnly: true,
+        mandatory: true,
+        onSelect: function(dateText){
+            $(hidden_input).val(dateText);
+        }
+    });
+};
+</script>
+
 
 
 <p id="issue_picker_daily">
-    <input type="text" class="issue_picker" id="{{attrs.id}}_input" value="{{issue_date|date:"m/d/Y"}}"/>
+    <input type="text" class="issue_picker" id="{{attrs.id}}_input" value="{{o_value}}"/>
 </p>
 
 {{hidden}}
 <script type="text/javascript">
     $(document).ready(function(){
-        set_issue_picker("#{{attrs.id}}_input", 
-            "#{{attrs.id}}", 
-            "/admin/content/issue/special_issue_list/");
+        set_calendar_picker("#{{attrs.id}}_input", 
+            "#{{attrs.id}}");
         
         $("#issue_picker_meta input[value={{meta_select}}]").trigger('click');
         
