@@ -26,6 +26,24 @@ DAYS = [(str(i), str(i)) for i in range(1, 32)]
 YEARS = [(str(i), str(i)) for i in range(1900, (date.today().year) + 1)]
 YEARS.reverse()
 
+class CalendarWidget(forms.widgets.HiddenInput):
+    """
+    Widget that uses a calendar picker to pick dates.
+    """
+
+    class Media:
+        js = (static_content('scripts/framework/jquery-ui.packed.js'),
+            static_content('scripts/admin/IssuePickerWidget.js'),)
+        css = {'all': (static_content('css/framework/jquery.ui.css'),
+            static_content('css/admin/IssuePickerWidget.css'),)}
+    
+    def __init__(self, *args, **kwargs):
+        super(CalendarWidget, self).__init__(*args, **kwargs)
+
+    def render(self, name, value, attrs=None):
+        hidden = super(CalendarWidget, self).render(name, value, attrs)
+        return render_to_string("forms/calendar_widget.html", locals())
+
 class DateSelectWidget(forms.widgets.MultiWidget):
     def __init__(self, attrs=None):
         widgets = (forms.widgets.Select(choices=(MONTHS)), \
