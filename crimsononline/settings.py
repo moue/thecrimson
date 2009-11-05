@@ -109,6 +109,7 @@ INSTALLED_APPS = [
     'crimsononline.content',
     'crimsononline.admin_cust',
     'crimsononline.content_module',
+    'crimsononline.search',
     'crimsononline.common',
     'crimsononline.subscriptions',
 	'crimsononline.mware',

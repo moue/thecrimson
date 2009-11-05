@@ -51,10 +51,10 @@ urlpatterns +=patterns('',
 
 if settings.HAYSTACK:
     from crimsononline.search.forms import DateRangeSearchForm
-    from haystack.views import SearchView
+    from crimsononline.search.views import AjaxSearchView
     
     urlpatterns += patterns('haystack.views',
-        url(r'^search/', SearchView(form_class=DateRangeSearchForm)))
+        url(r'^search/', AjaxSearchView(form_class=DateRangeSearchForm)))
 
 
 """

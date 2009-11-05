@@ -1,0 +1,63 @@
+{% extends 'content_list.html' %}
+{% load content_filters %}
+{% load module %}
+{% load common %}
+{% load content_filters %}
+
+{% block css %}
+	{{block.super}}
+    {% static_css "content_list.css" %}
+{% endblock %}
+{% block js %}
+	{{block.super}}
+	{% static_js "jquery.js" %}
+	{% static_js "search_list.js" %}
+{% endblock %}
+
+{% block title %}Search{% endblock %}
+{% block body %}
+<form method="get" action=".">
+    {{block.super}}
+</form>
+{% endblock %}
+
+{% block left %}
+    {% module 2 "filter" %}
+    
+    <span class="filter_label">SORT BY:</span><br />
+    {{form.order_by}}<br />
+
+    <span class="filter_label">START DATE:</span>
+    {{form.start_date}}
+
+    <span class="filter_label">END DATE:</span>
+    {{form.end_date}}
+
+    <span class="filter_label">SECTIONS:</span><br />
+    {{form.content_sections}}<br />
+
+    {% endmodule %}
+{% endblock %}
+
+{% block content_filters %}
+    <h1>Search</h1>
+    <div class="content_list_filters">
+            <table>
+                    <tr>
+                        <td><span class="filter_label">QUERY: </span></td>
+                        <td>{{form.q}}</td>
+	                    <td>
+	                        <button class="submit" value="Search"><span>Search</span></input>
+	                    </td>
+                    </tr>
+            </table>
+        </form>
+    </div>
+    
+{% endblock %}
+
+{% block content_list %}
+    <div class="content_list_content">
+	    {% include "ajax/search_results_page.html" %}
+    </div>
+{% endblock %}
