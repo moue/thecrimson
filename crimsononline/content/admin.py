@@ -21,6 +21,7 @@ from django.core.paginator import Paginator
 from django.core.files import File
 from django.db.models import Q
 from django.forms import ModelForm
+from django.forms.util import ErrorList
 from django.http import Http404, HttpResponse
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template.defaultfilters import truncatewords
@@ -132,19 +133,21 @@ class ContentModelForm(ModelForm):
     
     def clean(self):
         cd = self.cleaned_data
-        if not self.instance.pk:
-            return cd
         try:
             obj = Content.objects.admin_objects().get(
                 slug=cd['slug'], issue=cd['issue']
             )
         except Content.DoesNotExist:
             return cd
-        if obj.pk == self.instance.pk:
+        if self.instance.pk and obj.pk == self.instance.pk:
             return cd
-        raise forms.ValidationError('There is already content for this '
-            'issue date with this issue and slug.  You should probably '
-            'change the slug.')
+        msg = 'There is already content ' \
+            'for this issue date with this issue and slug.  %%s' \
+            '<a href="%s">See the other item.</a>' \
+            % obj.get_admin_change_url()
+        self._errors['slug'] = ErrorList([mark_safe(msg % '')])
+        raise forms.ValidationError(mark_safe(msg % 'You should ' \
+                                    'probably change the slug.  '))
 
 
 class ContentAdmin(admin.ModelAdmin):

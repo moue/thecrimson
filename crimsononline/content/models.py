@@ -8,6 +8,7 @@ from PIL import Image as pilImage
 import copy
 
 from django.conf import settings
+from django.core import urlresolvers
 from django.db import models
 from django.db.models import permalink, Q
 from django.contrib.auth.models import User, Group
@@ -242,6 +243,11 @@ class Content(models.Model):
             return ('content_grouped_content', url_data)
         else:
             return ('content_content', url_data)
+    
+    def get_admin_change_url(self):
+        return urlresolvers.reverse('admin:content_%s_change' \
+                                    % str(self.content_type), 
+                                    args=(self.pk,))
     
     def __unicode__(self):
         return self.child.__unicode__()
