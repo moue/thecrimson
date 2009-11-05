@@ -36,18 +36,15 @@ class CalendarWidget(forms.widgets.HiddenInput):
             static_content('scripts/admin/IssuePickerWidget.js'),)
         css = {'all': (static_content('css/framework/jquery.ui.css'),
             static_content('css/admin/IssuePickerWidget.css'),)}
-    
-    def __init__(self, *args, **kwargs):
-        super(CalendarWidget, self).__init__(*args, **kwargs)
 
     def render(self, name, value, attrs=None):
-        if value:
-            o_val = value
-            times = value.split("/")
-            value = "%s-%s-%s" % (times[2], times[1], times[0])
-        else:
-            o_val = ""
+        try:
+            o_value = value.split("-")
+            o_value = o_value[1] + "/" + o_value[2] + "/" + o_value[0]
+        except:
+            o_value = ""
         hidden = super(CalendarWidget, self).render(name, value, attrs)
+        
         return render_to_string("forms/calendar_widget.html", locals())
 
 class DateSelectWidget(forms.widgets.MultiWidget):

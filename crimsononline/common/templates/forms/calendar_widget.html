@@ -2,16 +2,17 @@
 
 {% static_js 'framework/jquery-ui.packed.js' %}
 {% static_css 'framework/jquery.ui.css' %}
-{% static_css 'admin/IssuePickerWidget.css' %}
+{% static_css 'admin/CalendarWidget.css' %}
+
 <script type="text/javascript">
 var set_calendar_picker = function(ele, hidden_input){
     // turns a date obj into a str of the calendar's format
     var make_datestring = function(date){
-        var date_str = (date.getMonth() > 8 ) ? "" : "0";
-        date_str += (date.getMonth() + 1) + "/";
-        date_str += (date.getDate() > 9) ? "" : "0";
-        date_str += date.getDate() + "/" + date.getFullYear();
-        return date_str;
+        var date_str = date.split("/");
+		if(date_str.length != 3){
+			return "";
+		}
+        return date_str[2] + '-' + date_str[0] + '-' + date_str[1];
     };
     
     $(ele).datepicker({
@@ -21,27 +22,28 @@ var set_calendar_picker = function(ele, hidden_input){
         buttonImageOnly: true,
         mandatory: true,
         onSelect: function(dateText){
-            $(hidden_input).val(dateText);
+            $(hidden_input).val(make_datestring(dateText));
         }
     });
+	$(ele).change(function(){
+		$(hidden_input).val(make_datestring($(this).val()));
+	});
 };
+
+$(document).ready(function(){
+    set_calendar_picker("#{{attrs.id}}_input", 
+        "#{{attrs.id}}");
+    
+    $("#issue_picker_meta input[value={{meta_select}}]").trigger('click');
+});
 </script>
 
 
 
-<p id="issue_picker_daily">
-    <input type="text" class="issue_picker" id="{{attrs.id}}_input" value="{{o_value}}"/>
+<p class="calendar_widget_container">
+    <input type="text" class="calendar_widget" id="{{attrs.id}}_input" value="{{o_value}}"/>
 </p>
 
 {{hidden}}
-<script type="text/javascript">
-    $(document).ready(function(){
-        set_calendar_picker("#{{attrs.id}}_input", 
-            "#{{attrs.id}}");
-        
-        $("#issue_picker_meta input[value={{meta_select}}]").trigger('click');
-        
-    });
-</script>
 
 
