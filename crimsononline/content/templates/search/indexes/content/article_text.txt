@@ -1,3 +1,5 @@
 {{object.headline}}
+
 {{object.subheadline}}
+
 {{object.text}}
