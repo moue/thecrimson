@@ -49,11 +49,35 @@
 {% block content_list %}
     <div class="content_list_content">
         {% if page.object_list %}
+
+        <p>Yay! We found {{ paginator.count }} matching results.
+                Showing results {{ page.start_index }} to {{ page.end_index }}</p>
+
             <ul>
             {% for result in page.object_list %}
                     {{ result.object.article|render:"list-item" }}
             {% endfor %}
             </ul>
+
+
+			                        <div class="pagination">
+			                                <span class="step-links">
+			                                        {% if page.has_previous %}
+			                                                <a href="?q={{ query }}&page=
+			{{ page.previous_page_number }}">previous</a>
+			                                        {% endif %}
+
+			                                        <span class="current">
+			                                                Page {{ page.number }} of {{ paginator.num_pages }}.
+			                                        </span>
+
+			                                        {% if page.has_next %}
+			                                                <a href="?q={{ query }}&page={{ page.next_page_number }}">next</
+			a>
+			                                        {% endif %}
+			                                </span>
+			                        </div>
+
         {% else %}
             <p>No results found.</p>
         {% endif %}

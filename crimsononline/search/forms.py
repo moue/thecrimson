@@ -4,19 +4,18 @@ from crimsononline.common.forms import CalendarWidget
 
 
 class DateRangeSearchForm(SearchForm):
-	start_date = forms.DateField(required=False, widget=CalendarWidget)
-	end_date = forms.DateField(required=False, widget=CalendarWidget)
+    start_date = forms.DateField(required=False, widget=CalendarWidget)
+    end_date = forms.DateField(required=False, widget=CalendarWidget)
 
-	def search(self):
-		# First, store the SearchQuerySet received from other processing.
-		sqs = super(DateRangeSearchForm, self).search()
+    def search(self):
+        # First, store the SearchQuerySet received from other processing.
+        sqs = super(DateRangeSearchForm, self).search()
+        
+        # Check to see if a start_date was chosen.
+        if self.cleaned_data['start_date']:
+            sqs = sqs.filter(pub_date__gte=self.cleaned_data['start_date'])
+        # Check to see if an end_date was chosen.
+        if self.cleaned_data['end_date']:
+            sqs = sqs.filter(pub_date__lte=self.cleaned_data['end_date'])
 
-		# Check to see if a start_date was chosen.
-		if self.cleaned_data['start_date']:
-			sqs = sqs.filter(pub_date__gte=self.cleaned_data['start_date'])
-
-		# Check to see if an end_date was chosen.
-		if self.cleaned_data['end_date']:
-			sqs = sqs.filter(pub_date__lte=self.cleaned_data['end_date'])
-
-		return sqs
+        return sqs

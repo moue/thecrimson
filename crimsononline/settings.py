@@ -140,7 +140,7 @@ SEARCH_SORT_PARAMS = {
 HAYSTACK_SITECONF = 'crimsononline.search_sites'
 HAYSTACK_SEARCH_ENGINE = 'solr'
 HAYSTACK_SOLR_URL = 'http://127.0.0.1:8983/solr'
-HAYSTACK_SEARCH_RESULTS_PER_PAGE = 1
+HAYSTACK_SEARCH_RESULTS_PER_PAGE = 10
 
 #DISQUS = not DEBUG # you can override this in localsettings.py
 DISQUS = True
