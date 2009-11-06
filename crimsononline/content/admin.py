@@ -137,7 +137,6 @@ class ContentModelForm(ModelForm):
             obj = Content.objects.admin_objects().get(
                 slug=cd['slug'], issue=cd['issue']
             )
-<<<<<<< .mine
             if not self.instance.pk or obj.pk != self.instance.pk:
                 msg = 'There is already content ' \
                     'for this issue date with this issue and slug.  %%s' \
@@ -146,27 +145,9 @@ class ContentModelForm(ModelForm):
                 self._errors['slug'] = ErrorList([mark_safe(msg % '')])
                 raise forms.ValidationError(mark_safe(msg % 'You should ' \
                                         'probably change the slug.  '))
-=======
->>>>>>> .r816
         except Content.DoesNotExist:
-<<<<<<< .mine
             pass
-=======
-            return cd
->>>>>>> .r816
-        if self.instance.pk and obj.pk == self.instance.pk:
-            return cd
-        msg = 'There is already content ' \
-            'for this issue date with this issue and slug.  %%s' \
-            '<a href="%s">See the other item.</a>' \
-            % obj.get_admin_change_url()
-        self._errors['slug'] = ErrorList([mark_safe(msg % '')])
-        raise forms.ValidationError(mark_safe(msg % 'You should ' \
-                                    'probably change the slug.  '))
         return cd
-
-        
-
 
 class ContentAdmin(admin.ModelAdmin):
     """Parent class for Content ModelAdmin classes.
