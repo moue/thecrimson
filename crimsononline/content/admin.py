@@ -636,8 +636,7 @@ class ArticleForm(ContentModelForm):
         required=False, help_text="""
         A short sample from the article, or a summary of the article. <br>
         If you don't provide a teaser, we will automatically generate one 
-        for you.
-        """
+        for you."""
     )
     subheadline = forms.fields.CharField(
         widget=forms.TextInput(attrs={'size':'70'}),

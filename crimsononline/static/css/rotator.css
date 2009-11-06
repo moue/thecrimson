@@ -22,6 +22,9 @@ ul.notext {
 	height:310px;
 	list-style-type: none;
 }
+.rotator_preview .preview_Text {
+    height: 64px;
+}
 
 ul.notext div.preview_text {
     display: none;
