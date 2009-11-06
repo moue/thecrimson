@@ -253,18 +253,17 @@ class WeatherNode(template.Node):
         pass
     
     def render(self, context):
-        datasource = urlopen('http://rss.accuweather.com/rss/liveweather_rss.asp?metric=0&locCode=02138').read()
-        wdom = parseString(datasource)
         try:
+            datasource = urlopen('http://rss.accuweather.com/rss/liveweather_rss'
+                                 '.asp?metric=0&locCode=02138').read()
+            wdom = parseString(datasource)
             cur_weather = wdom.getElementsByTagName("title")[2].childNodes[0].nodeValue
             return str(cur_weather).split()[-1]
         except:
-            return ""
+            return ''
 
 def weather(parser, token):
-    """
-    produces a nice little weather widget for the subnav
-    """
+    """A little weather widget (displays the temp) for the subnav."""
     bits = token.split_contents()
     return WeatherNode(*(bits[1:3]))
 weather = register.tag(weather)

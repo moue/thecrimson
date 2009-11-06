@@ -880,7 +880,6 @@ class Image(Content):
     
     def crop_thumb(self, size_spec, crop_coords):
         """ convenience method for the pic attribute's method of same name """
-        print crop_coords
         self.crop_x = crop_coords[0]
         self.crop_y = crop_coords[1]
         self.crop_side = crop_coords[2] - crop_coords[0]
