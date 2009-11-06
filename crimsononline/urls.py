@@ -64,9 +64,6 @@ urlpatterns += patterns('',
     (r'^admin/', include('crimsononline.admin_cust.urls')),
 )
 
-urlpatterns += patterns('',
-    (r'', include('crimsononline.legacy.urls')),
-)
 
 if settings.DEBUG:
     urlpatterns += patterns('',
@@ -86,5 +83,9 @@ generic_patterns = patterns('crimsononline.content.views',
 )
 
 urlpatterns += generic_patterns
+
+urlpatterns += patterns('',
+    (r'', include('crimsononline.legacy.urls')),
+)
 
 admin.autodiscover()
