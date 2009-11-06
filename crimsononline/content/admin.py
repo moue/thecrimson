@@ -108,7 +108,7 @@ class ContentModelForm(ModelForm):
             date_field='#id_issue_input', text_field='#id_text',
             attrs={'size': '40'},
         ), help_text="This is the text that goes in the URL.  Only letters," \
-        "numbers, _, and - are allowed"
+        "numbers, _, and - are allowed", required=True
     )
     section = forms.ModelChoiceField(Section.all(), required=True)
     priority = forms.ChoiceField(choices=Content.PRIORITY_CHOICES, 
@@ -133,26 +133,21 @@ class ContentModelForm(ModelForm):
     
     def clean(self):
         cd = self.cleaned_data
-        
-        # Check for duplicate slugs
         try:
             obj = Content.objects.admin_objects().get(
                 slug=cd['slug'], issue=cd['issue']
             )
-            if self.instance.pk and obj.pk == self.instance.pk:
-                return cd
-            msg = 'There is already content ' \
-                'for this issue date with this issue and slug.  %%s' \
-                '<a href="%s">See the other item.</a>' \
-                % obj.get_admin_change_url()
-            self._errors['slug'] = ErrorList([mark_safe(msg % '')])
-            raise forms.ValidationError(mark_safe(msg % 'You should ' \
-                                        'probably change the slug.  '))
-    
         except Content.DoesNotExist:
-            # Check that content can be rotated if it's marked rotatable
             return cd
-
+        if self.instance.pk and obj.pk == self.instance.pk:
+            return cd
+        msg = 'There is already content ' \
+            'for this issue date with this issue and slug.  %%s' \
+            '<a href="%s">See the other item.</a>' \
+            % obj.get_admin_change_url()
+        self._errors['slug'] = ErrorList([mark_safe(msg % '')])
+        raise forms.ValidationError(mark_safe(msg % 'You should ' \
+                                    'probably change the slug.  '))
         
 
 
