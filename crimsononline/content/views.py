@@ -404,10 +404,7 @@ def get_grouped_content_obj(request, gtype, gname, ctype, year, month, day, slug
     cg = ContentGroup.by_name(gtype, gname)
     return cg
 
-try:
-    FLYBY = ContentGroup.objects.get(name="FlyBy", type="blog")
-except:
-    FLYBY = ContentGroup.objects.create(name="FlyBy", type="blog")
+FLYBY = ContentGroup.objects.get(name="FlyBy", type="blog")
 @cache(settings.CACHE_STANDARD, "general_contentgroup")
 def get_content_group(request, gtype, gname):
     """Render a Content Group."""

@@ -1,17 +1,20 @@
-from datetime import datetime
-from django.db.models import Q
-from django.shortcuts import render_to_response, get_object_or_404
+from datetime import datetime, timedelta
+import re
+
+from django.conf import settings
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User, Group
 from django.contrib.contenttypes.models import ContentType
 from django.core.paginator import Paginator
+from django.db.models import Q
 from django.http import HttpResponse, Http404, HttpResponseRedirect
+from django.shortcuts import render_to_response, get_object_or_404
 from django.template.loader import render_to_string
 from django.utils import simplejson
 from django.utils.hashcompat import md5_constructor
 from django.utils.safestring import mark_safe
-from crimsononline.content.models import *
 
+from crimsononline.content.models import *
 
 # TODO: protect this
 def get_imgs(request, page=None, pk=None):
