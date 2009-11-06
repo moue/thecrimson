@@ -151,8 +151,6 @@ class ContentModelForm(ModelForm):
     
         except Content.DoesNotExist:
             # Check that content can be rotated if it's marked rotatable
-            print self.cleaned_data['rotatable']
-            print "is the rot stat"
             return cd
 
         
