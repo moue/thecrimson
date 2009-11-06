@@ -7,8 +7,6 @@ from django.contrib.auth.views import login, logout
 from django.contrib.sitemaps import FlatPageSitemap
 from crimsononline.content.sitemaps import ArticleSitemap
 
-admin.autodiscover()
-
 FILTER_URL_RE = r'(?:page/(?P<page>\d+)/)?'
 
 from crimsononline.content import feeds
@@ -35,7 +33,6 @@ feeds = {
     'author': feeds.ByAuthor,
     'tag': feeds.ByTag,
 }
-
 
 sitemaps = {
     'flatpages': FlatPageSitemap,
@@ -90,3 +87,4 @@ generic_patterns = patterns('crimsononline.content.views',
 
 urlpatterns += generic_patterns
 
+admin.autodiscover()
