@@ -24,6 +24,7 @@ ul.notext {
 }
 .rotator_preview .preview_text {
     height: 64px;
+    overflow: hidden;
 }
 
 ul.notext div.preview_text {
