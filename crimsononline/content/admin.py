@@ -681,7 +681,7 @@ class ArticleForm(ContentModelForm):
     def clean(self):
         self.cleaned_data.pop('corrections')
 
-        if self.cleaned_data['rotatable'] > 0:
+        if int(self.cleaned_data['rotatable']) > 0:
             # Check that content can be rotated if it's marked rotatable
             rotatable_names = ['image', 'gallery', 'you tube video', 'map']
             rotatable_ctypes = [ContentType.objects.get(name=x) for x in rotatable_names]
