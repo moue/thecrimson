@@ -137,8 +137,23 @@ class ContentModelForm(ModelForm):
             obj = Content.objects.admin_objects().get(
                 slug=cd['slug'], issue=cd['issue']
             )
+<<<<<<< .mine
+            if not self.instance.pk or obj.pk != self.instance.pk:
+                msg = 'There is already content ' \
+                    'for this issue date with this issue and slug.  %%s' \
+                    '<a href="%s">See the other item.</a>' \
+                    % obj.get_admin_change_url()
+                self._errors['slug'] = ErrorList([mark_safe(msg % '')])
+                raise forms.ValidationError(mark_safe(msg % 'You should ' \
+                                        'probably change the slug.  '))
+=======
+>>>>>>> .r816
         except Content.DoesNotExist:
+<<<<<<< .mine
+            pass
+=======
             return cd
+>>>>>>> .r816
         if self.instance.pk and obj.pk == self.instance.pk:
             return cd
         msg = 'There is already content ' \
@@ -148,6 +163,8 @@ class ContentModelForm(ModelForm):
         self._errors['slug'] = ErrorList([mark_safe(msg % '')])
         raise forms.ValidationError(mark_safe(msg % 'You should ' \
                                     'probably change the slug.  '))
+        return cd
+
         
 
 
@@ -682,6 +699,16 @@ class ArticleForm(ContentModelForm):
     
     def clean(self):
         self.cleaned_data.pop('corrections')
+
+        # Check that content can be rotated if it's marked rotatable
+        rotatable_names = ['image', 'gallery', 'you tube video', 'map']
+        rotatable_ctypes = [ContentType.objects.get(name=x) for x in rotatable_names]
+        if not self.cleaned_data['rel_content']:
+            msg = "This Article cannot be set to rotate since it has no related Content"
+            self._errors['rotatable'] = ErrorList([mark_safe(msg)])
+        elif self.cleaned_data['rel_content'][0].child.content_type not in rotatable_ctypes:
+            msg = "This Article cannot be set to rotate since its primary related Content is not rotatable"
+            self._errors['rotatable'] = ErrorList([mark_safe(msg)])
         return super(ArticleForm, self).clean()
     
     class Meta:
@@ -776,10 +803,7 @@ class ArticleAdmin(ContentAdmin):
         for i, r in enumerate(rel):
             x = ArticleContentRelation(order=i, article=obj, related_content=r)
             x.save()
-        if not rel and int(obj.rotatable) > 0:
-            request.user.message_set.create(message='!! You set this article '
-                'to rotate, even though it doesn\'t have any related content. '
-                '(like an Image). This is a bad idea.')
+
         return obj
     
     def get_urls(self):
