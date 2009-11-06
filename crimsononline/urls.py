@@ -2,7 +2,6 @@ from os import path
 from django.conf import settings
 from django.contrib import admin
 from django.conf.urls.defaults import *
-from crimsononline.content.views import *
 from crimsononline.admin_cust.views import login_user
 from django.contrib.auth.views import login, logout
 from django.contrib.sitemaps import FlatPageSitemap
@@ -72,10 +71,11 @@ urlpatterns += patterns('',
     (r'', include('crimsononline.legacy.urls')),
 )
 
-urlpatterns += patterns('',
-    (r'^site_media/(?P<path>.*)$', 'django.views.static.serve', 
-        {'document_root': settings.MEDIA_ROOT}),    
-)
+if settings.DEBUG:
+    urlpatterns += patterns('',
+        (r'^site_media/(?P<path>.*)$', 'django.views.static.serve', 
+            {'document_root': settings.MEDIA_ROOT}),    
+    )
 
 # generic content urls
 CONTENT_URL_RE = r'([a-z\-]+)/(\d{4})/(\d{1,2})/(\d{1,2})/([0-9A-Za-z_\-]+)/$'
