@@ -468,13 +468,11 @@ ol{
 
 ol.most {
     font-size: 13px;
-    font-family: "Lucida Grande", Tahoma, sans-serif;
     color: black;
     padding-left: 22px;
 }
 
 ol.most li {
-    font-family: "Lucida Grande", Tahoma, sans-serif;
     padding-bottom: 5px;
 }
 
