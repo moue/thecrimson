@@ -28,23 +28,22 @@
 {% endblock %}
 
 {% block leftcolumn %}
-    {% module 4 "top stories" red %}
+    {% module 4 "top stories" red "/section/news/" %}
         {% contentmodule index.topstories %}
-            <div id="topstories" class="article_previews">
-                <ul>
-                    {% for story in top_stories %}
-                        <li>
-                            {% if forloop.first %}{{story|render:"top_preview"}}
-                            {%else%}{{story|render:"preview"}}{%endif%}
-                        </li>
-                    {% endfor %}
-                </ul>
-            </div>
+        <div id="topstories" class="article_previews">
+            <ul>
+                {% for story in top_stories %}
+                <li>
+                    {% if forloop.first %}{{story|render:"top_preview"}}
+                    {%else%}{{story|render:"preview"}}{%endif%}
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
         {% endcontentmodule %}
     {% endmodule %}
 
-
-    {% module 4 magazine %}
+    {% module 4 "magazine" gray "/section/fm/" %}
         {% contentmodule index.fm %}
         <div id="top_fm" class="article_feature gray-bg">
             {{ fms|first|render:"feature" }}
@@ -80,13 +79,12 @@
     
 {% endblock %}
 
-
 {% block middlecolumn %}
     {% contentmodule index.rotater %}
         {% rotator rotate "main_rotator" %}
     {% endcontentmodule %}
     
-    {% module 4 opinion %}
+    {% module 4 opinion gray "/section/opinion/" %}
         {% contentmodule index.opinion %}
 	        <div id="top_opinion" class="article_previews">
                 <ul>
@@ -111,7 +109,7 @@
     {% endmodule %}
 
 
-    {% module 4 sports %}
+    {% module 4 sports gray "/section/sports/" %}
         {% contentmodule index.sports %}
             <div id="top_sports" class="article_previews">
                 <ul>
@@ -123,7 +121,7 @@
         {% endcontentmodule %}
     {% endmodule %}
 
-    {% module 4 arts %}
+    {% module 4 arts gray "/section/arts/" %}
         {% contentmodule index.arts %}
             <div id="top_art" class="article_feature gray-bg">
                 {{ arts|first|render:"feature" }}
@@ -155,7 +153,6 @@
     {% flyby_preview %}
     
     {% most_read_articles %}
-
 
     {% module 4 "" ad %}
 		<div style="width:300px; margin: 0 auto;">

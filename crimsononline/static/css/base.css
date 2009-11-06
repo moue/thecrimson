@@ -124,6 +124,13 @@ h3, h3 a{
     width: 100%;
 	color: #666;    
 }
+.mod > .title a{
+    color: #666;
+}
+.mod > .title a:hover{
+    color: #BA0600;
+    text-decoration: none;
+}
 
 .mod-blue{border-top: 2px solid #d1d1d1;}
 .mod-gray{border-top: 2px solid #d1d1d1;}

@@ -13,8 +13,8 @@ class ModuleNode(template.Node):
     Optional:
         @title => a title (displayed at the top)
     """
-    def __init__(self, nodelist, title, width, color):
-        self.nodelist, self.width, self.color = nodelist, width, color
+    def __init__(self, nodelist, title, width, color, link):
+        self.nodelist, self.width, self.color, self.link = nodelist, width, color, link
         try:
             self.title = template.Variable(title)
         except:
@@ -25,6 +25,8 @@ class ModuleNode(template.Node):
             real_title = self.title.resolve(context).upper()
         except:
             real_title = str(self.title).upper()
+        if self.link:
+            real_title = mark_safe('<a href="%s">%s</a>' % (self.link, real_title))
         cont = mark_safe(self.nodelist.render(context))
         return render_to_string("templatetag/module.html",
             {'c':cont, 'title':real_title, 'width':self.width,'color':self.color})
@@ -36,9 +38,12 @@ def do_module(parser, token):
             '%r tag takes at least 3 arguments' % tokens[0]
     width = tokens[1]
     title = tokens[2] if tokens[2][0] not in ("'",'"') else tokens[2][1:len(tokens[2])-1]
-    color = tokens[3] if len(tokens) == 4 else "blue"
+    color = tokens[3] if len(tokens) >= 4 else "blue"
+    link = tokens[4] if len(tokens) >= 5 else ''
+    if link and link[0] in ("'", '"'):
+        link = link[1:-1]
     nodelist = parser.parse(('endmodule',))
     parser.delete_first_token()
-    return ModuleNode(nodelist, title, width, color)
+    return ModuleNode(nodelist, title, width, color, link)
 
 register.tag('module', do_module)
