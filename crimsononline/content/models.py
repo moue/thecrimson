@@ -928,7 +928,7 @@ class Gallery(Content):
     @property
     def admin_content_pks(self):
         acrs = GalleryMembership.objects.filter(gallery=self)
-        return ";".join([str(x.content_id) for x in acrs])
+        return ";".join([str(x.content.pk) for x in acrs])
     
     def __unicode__(self):
         return self.title
@@ -944,7 +944,7 @@ class Gallery(Content):
     def delete(self):
         self.contents.clear()
         super(Gallery, self).delete()
-        
+    
     class Meta:
         verbose_name_plural = "Galleries"
 
