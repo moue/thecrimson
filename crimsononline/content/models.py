@@ -644,7 +644,7 @@ class Section(models.Model):
     
     @permalink
     def get_absolute_url(self):
-        return ('content_section', [make_url_friendly(self.name)])
+        return ('content.section.%s' % self.name.lower(), [])
     
     def __unicode__(self):
         return self.name
