@@ -28,7 +28,7 @@ urlpatterns += patterns('',
     (r'^magazine\.aspx', redirect('/section/fm/')),
 )
 
-urlpatters += patterns('',
+urlpatterns += patterns('',
 	(r'iraq\.aspx', redirect_tag('Iraq')),
 	# TODO: commencement pages
 	(r'cambridge\.aspx', redirect_tag('Cambridge')),
