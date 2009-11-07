@@ -566,7 +566,6 @@ class GalleryForm(ContentModelForm):
 
     contents = RelatedContentField(label='Contents', required=False,
         admin_site=admin.site, rel_types=[Image, YouTubeVideo])
-
     slug = forms.fields.SlugField(widget=AutoGenSlugWidget(
             url='/admin/content/article/gen_slug/',
             date_field='#id_issue', text_field='#id_description',
@@ -574,7 +573,12 @@ class GalleryForm(ContentModelForm):
         ), help_text="This is the text that goes in the URL.  Only letters," \
         "numbers, _, and - are allowed"
     )
-        
+    
+    def __init__(self, *args, **kwargs):
+        super(GalleryForm, self).__init__(*args, **kwargs)
+        self.fields['pub_status'].help_text = """Warning: publishing this
+            gallery will publish all content inside the gallery."""
+    
     class Meta:
         model = Gallery
     

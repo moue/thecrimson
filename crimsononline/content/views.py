@@ -263,6 +263,7 @@ def section_photo(request):
         content = Content.objects.filter(issue__issue_date__gte = newer_than).order_by("-contenthits")
     else:
         content = Content.objects.recent
+    content = content.filter(content_type__in=cts)
     
     section = request.GET.get('section')
     if section and request.GET.has_key('ajax'):
@@ -280,7 +281,6 @@ def section_photo(request):
             pass
         if c_type in cts:
             cts = [c_type]
-    content = content.filter(content_type__in = cts)
     
     d = paginate(content, page, 6)
     d.update({'nav': nav})

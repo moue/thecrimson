@@ -916,22 +916,30 @@ class Gallery(Content):
     
     @property
     def cover_image(self):
-        if not self.contents:
+        if not self.contents.all():
             return None
         return self.contents.all()[0].child
     
     @property
     def admin_contents(self):
-        acrs = GalleryMembership.objects.filter(gallery=self)
-        return [x.content.child for x in acrs]
+        return [x.child for x in \
+                Content.objects.admin_objects().filter(galleries_set=self)]
     
     @property
     def admin_content_pks(self):
         acrs = GalleryMembership.objects.filter(gallery=self)
-        return ";".join([str(x.content.pk) for x in acrs])
-
+        return ";".join([str(x.content_id) for x in acrs])
+    
     def __unicode__(self):
         return self.title
+    
+    def save(self, commit=True):
+        retval = super(Gallery, self).save(commit)
+        if self.pub_status == 1:
+            Content.objects.admin_objects() \
+                           .filter(galleries_set=self) \
+                           .update(pub_status=1)
+        return retval
     
     def delete(self):
         self.contents.clear()
