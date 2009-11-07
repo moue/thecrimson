@@ -55,7 +55,6 @@ class ByTag(Feed):
         if not obj:
             raise FeedDoesNotExist
         
-        print obj.get_absolute_url()
         return obj.get_absolute_url()
     
     def description(self, obj):
