@@ -9,6 +9,10 @@
 	{{ block.super }}
 {% endblock %}
 
+{% block js %}
+    {{ emailform.media }}
+{% endblock %}
+
 {% block content %}
 {% module 8 subscribe red %}
     {% block content_inner %}
