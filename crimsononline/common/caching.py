@@ -1,4 +1,6 @@
 from hashlib import sha1
+
+from django.conf import settings
 from django.core.cache import cache as _djcache
 from django.http import HttpRequest
 from django.utils.cache import get_cache_key
@@ -39,4 +41,10 @@ def expire_page(path):
 def expire_stuff():
     # EXPIRE ALL OF IT
     # always want to expire index
-    expire_page('/')  
+    expire_page('/')
+    
+
+def expire_all():
+    # on memcached, destroyed the entire cache
+    if settings.CACHE_BACKEND.find('memcache') != -1:
+        _djcache._cache.flush_all()

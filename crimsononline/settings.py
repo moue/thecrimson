@@ -76,6 +76,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 )
 
 MIDDLEWARE_CLASSES = (
+    'django.middleware.gzip.GZipMiddleware',
     'django.middleware.cache.UpdateCacheMiddleware',
     #'crimsononline.mware.linkscriptoptimizer.LinkScriptOptimizer',
     'django.middleware.common.CommonMiddleware',
