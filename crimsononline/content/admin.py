@@ -561,9 +561,9 @@ class GalleryForm(ContentModelForm):
     def __init__(self, *args, **kwargs):
         r = kwargs.get('instance', None)
         if r is not None:
-            kwargs['initial'] = {'contents': r.admin_content_pks}
+            kwargs['initial'].update({'contents': r.admin_content_pks})
         super(GalleryForm, self).__init__(*args, **kwargs)
-
+    
     contents = RelatedContentField(label='Contents', required=False,
         admin_site=admin.site, rel_types=[Image, YouTubeVideo])
     slug = forms.fields.SlugField(widget=AutoGenSlugWidget(
