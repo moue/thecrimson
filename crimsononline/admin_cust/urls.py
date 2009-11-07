@@ -1,6 +1,6 @@
 from django.conf.urls.defaults import *
 from django.contrib import admin
-from views import *
+from crimsononline.admin_cust.views import *
 
 urlpatterns = patterns('',
     (r'^content/gallery/get_images/pk/(?P<pk>\d+)/$', get_imgs),
