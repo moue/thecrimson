@@ -16,6 +16,14 @@ from django.utils.safestring import mark_safe
 
 from crimsononline.content.models import *
 
+def flush_cache(request):
+    """Flush memcached"""
+    if settings.CACHE_BACKEND.find('memcache') != -1:
+        from django.core.cache import cache
+        cache._cache.flush_all()
+        return HttpResponse("Success")
+    return HttpResponse("Failure")
+
 # TODO: protect this
 def get_imgs(request, page=None, pk=None):
     """
