@@ -563,6 +563,8 @@ class GalleryForm(ContentModelForm):
         if r is not None:
             kwargs['initial'].update({'contents': r.admin_content_pks})
         super(GalleryForm, self).__init__(*args, **kwargs)
+        self.fields['pub_status'].help_text = """Warning: publishing this
+            gallery will publish all content inside the gallery."""
     
     contents = RelatedContentField(label='Contents', required=False,
         admin_site=admin.site, rel_types=[Image, YouTubeVideo])
@@ -573,11 +575,6 @@ class GalleryForm(ContentModelForm):
         ), help_text="This is the text that goes in the URL.  Only letters," \
         "numbers, _, and - are allowed"
     )
-    
-    def __init__(self, *args, **kwargs):
-        super(GalleryForm, self).__init__(*args, **kwargs)
-        self.fields['pub_status'].help_text = """Warning: publishing this
-            gallery will publish all content inside the gallery."""
     
     class Meta:
         model = Gallery
