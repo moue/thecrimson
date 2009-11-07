@@ -424,7 +424,7 @@ def get_content_group_obj(request, gtype, gname):
     return cg
 
 # sure looks cacheworthy
-@cache(settings.CACHE_STANDARD, "helper")
+#@cache(settings.CACHE_STANDARD, "helper")
 def filter_helper(req, qs, section_str, type_str, url_base):
     """Return a dictionary with components of content_list filter interface."""
 
@@ -504,7 +504,6 @@ def filter_helper(req, qs, section_str, type_str, url_base):
     
     return {'content': content, 'sections': sects, 'types': tps, 'show_filter':(show_filter_1 or show_filter_2)}
 
-@cache(settings.CACHE_SHORT, "general_generated_toparticles")
 def top_articles(section, dt=None):
     """Return prioritized articles from @section"""
     if isinstance(section, basestring):
