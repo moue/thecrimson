@@ -561,7 +561,7 @@ class GalleryForm(ContentModelForm):
     def __init__(self, *args, **kwargs):
         r = kwargs.get('instance', None)
         if r is not None:
-            if not kwargs.has_key('initial')
+            if not kwargs.has_key('initial'):
                 kwargs['initial'] = {}
             kwargs['initial'].update({'contents': r.admin_content_pks})
         super(GalleryForm, self).__init__(*args, **kwargs)
