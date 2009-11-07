@@ -685,10 +685,23 @@ class ArticleForm(ContentModelForm):
             teaser = TEASER_RE.sub("",teaser)
             return truncatewords(teaser, 20)
     
+
+
     def clean(self):
         self.cleaned_data.pop('corrections')
+
+        if int(self.cleaned_data['rotatable']) > 0:
+            # Check that content can be rotated if it's marked rotatable
+            rotatable_names = ['image', 'gallery', 'you tube video', 'map']
+            rotatable_ctypes = [ContentType.objects.get(name=x) for x in rotatable_names]
+            if not self.cleaned_data['rel_content']:
+                msg = "This Article cannot be set to rotate since it has no related Content"
+                self._errors['rotatable'] = ErrorList([mark_safe(msg)])
+            elif self.cleaned_data['rel_content'][0].child.content_type not in rotatable_ctypes:
+                msg = "This Article cannot be set to rotate since its primary related Content is not rotatable"
+                self._errors['rotatable'] = ErrorList([mark_safe(msg)])
         return super(ArticleForm, self).clean()
-    
+                
     class Meta:
         model = Article
 
