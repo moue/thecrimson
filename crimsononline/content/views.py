@@ -23,6 +23,7 @@ from crimsononline.common.templatetags.common import human_list
 
 # ============ ACTUAL VIEWS =====================
 
+@cache_page(settings.CACHE_STANDARD)
 def index(request, m=None, d=None, y=None):
     """Show the view for the front page."""
     dt = None
@@ -54,6 +55,7 @@ def index(request, m=None, d=None, y=None):
     return render_to_response('index.html', dict)
 
 REMOVE_P_RE = re.compile(r'page/\d+/$')
+@cache_page(settings.CACHE_LONG)
 def writer(request, pk, f_name, m_name, l_name, 
     page=1):
     """Show the view for a specific writer."""
