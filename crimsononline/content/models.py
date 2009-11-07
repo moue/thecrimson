@@ -106,7 +106,7 @@ class ContentManager(models.Manager):
         """Order by (priority / days_old).
         
         Arguments:
-            recents => only return stuff from the past _ issues. this should 
+            recents=N => only return stuff from the past N issues. this should
                 make the query have a reasonable run time.
         """
         issue_pks = [str(i.pk) for i in Issue.last_n(recents)]
