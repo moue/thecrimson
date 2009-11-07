@@ -116,7 +116,7 @@
                 <ul>
                     {% for story in sports|notfirst %}
                     <li>
-                        {{oped|render:"small_preview"}}
+                        {{story|render:"small_preview"}}
                     </li>
                     {% endfor %}
                 </ul>
