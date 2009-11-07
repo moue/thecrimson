@@ -15,7 +15,9 @@ def redirect(url):
     return inner
 
 def redirect_tag(tag):
-	return redirect(Tag.objects.get(text=tag))
+	def inner(request):
+		return redirect(Tag.objects.get(text=tag))
+	return inner
 	
 
 urlpatterns += patterns('',
