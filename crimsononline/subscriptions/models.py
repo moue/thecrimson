@@ -86,19 +86,22 @@ class EmailSubscription(models.Model):
                             (domain, path[1:], self.pk, self.passcode)
         articles = content.Article.objects.filter(issue__issue_date=issue_date)
         d['top_stories'] = articles.filter(priority__gt=5) \
-                           if self.top_stories else None
+                           if self.top_stories else []
         d['sections'] = dict([(s.name, articles.filter(section=s)) \
                               for s in self.sections.all()])
         d['tags'] = dict([(t.text, articles.filter(tags=s)) \
                           for t in self.tags.all()])
         d['contributors'] = dict([(str(c), articles.filter(tags=c)) \
                                   for c in self.contributors.all()])
-        msg = EmailMultiAlternatives("The Crimson's Daily", 
-            render_to_string('email/email.txt', d), 
-            'subscriptions@thecrimson.com', [self.email])
-        msg.attach_alternative(render_to_string('email/email.html', d), 
-            'text/html')
-        msg.send()
+        # don't deliver mail if there are no articles
+        if len(d['top_stories']) + len(d['sections']) + len(d['tags']) + \
+            len(d['contributors']) > 0:
+            msg = EmailMultiAlternatives("The Crimson's Daily", 
+                render_to_string('email/email.txt', d), 
+                'subscriptions@thecrimson.com', [self.email])
+            msg.attach_alternative(render_to_string('email/email.html', d), 
+                'text/html')
+            msg.send()
     
     def new_code(self):
         """Give self a new passcode."""

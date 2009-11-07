@@ -4,7 +4,6 @@
 <hr></hr>
 {% if top_stories %}
 <h2 style="color: #BA0600;">TOP STORIES</h2>
-
     {% for story in top_stories %}
 {{ story|render:"preview.email" }}
     {% endfor %}

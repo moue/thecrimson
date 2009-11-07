@@ -53,7 +53,7 @@ def email_manage(request):
     if request.method == 'POST' or request.method == 'GET':
         context = {'manage': True}
         d = getattr(request, request.method)
-        pk = int(d.get('id', 0))
+        pk = int(d.get('subscription_id', 0))
         passcode = d.get('passcode', '')
         try:
             s = EmailSubscription.objects.get(pk=pk, passcode=passcode)

@@ -84,18 +84,16 @@
 				<tr>
 					<td></td>
 					<td>
-				
-
 	            {{ form.id }} {{ form.passcode }}
 	        {% if manage %}
-	            <button type="submit" value="change" name="submit">Change</button> <button type="submit" value="unsubscribe" name="submit">Unsubscribe</button>
+	            <button type="submit" value="change" name="submit">Change</button>
+	            <button type="submit" value="unsubscribe" name="submit">Unsubscribe</button>
 	        {% else %}
 	            <button type="submit">Sign up!</button>
-	        {% endif %}					
-					</td>
+	        {% endif %}
+					    </td>
 				</tr>
-					</table>
-
+				</table>
 	        </form>
 	    </div>
 	{% endifnotequal %}

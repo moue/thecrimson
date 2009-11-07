@@ -86,7 +86,8 @@ class FbSelectWidget(forms.widgets.HiddenInput):
     For explanations, see FbModelChoiceField's docstring
     """
     class Media:
-        js = (static_content('scripts/framework/jquery.bgiframe.min.js'),
+        js = (static_content('scripts/jquery.js')
+            static_content('scripts/framework/jquery.bgiframe.min.js'),
             static_content('scripts/framework/jquery.autocomplete.js'),
             static_content('scripts/framework/jquery.autocompletefb.js'),
             static_content('scripts/framework/jquery.tooltip.pack.js'),

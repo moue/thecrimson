@@ -12,7 +12,9 @@ class EmailSubscribeForm(forms.ModelForm):
     tags = FbModelChoiceField(required=False, multiple=True, model=Tag,
         url='/subscribe/email/ajax/fb_find/tag/', no_duplicates=True)
     sections = forms.ModelMultipleChoiceField(Section.all(), 
-        widget=forms.CheckboxSelectMultiple, required=False,)
+        widget=forms.CheckboxSelectMultiple, required=False)
+    email = forms.EmailField(required=True, 
+                             widget=forms.TextInput(attrs={'size':'80'}))
     
     class Media:
         css = FbSelectWidget.Media.css
@@ -37,7 +39,8 @@ class EmailSubscriptionManageForm(EmailSubscribeForm):
     passcode = forms.CharField(widget=forms.HiddenInput)
     email = forms.EmailField(required=True, help_text='If you change your '
         'email address, you will need to reactivate your subscription by '
-        'confirming your new email address.')
+        'confirming your new email address.', 
+        widget=forms.TextInput(attrs={'size':'80'}))
     
     class Meta:
         model = EmailSubscription
