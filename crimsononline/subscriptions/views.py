@@ -91,7 +91,8 @@ def email_signup(request):
         if f.is_valid():
             f.save()
             return render_to_response('email/manage.html', 
-                {'signup': True, 'status': 'success', 'email': f.cleaned_data['email']})
+                                      {'signup': True, 'status': 'success', 
+                                       'email': f.cleaned_data['email']})
     else:
         tags = request.GET.get('tags', None)
         contributors = request.GET.get('contributors', None)

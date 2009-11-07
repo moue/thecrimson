@@ -63,6 +63,13 @@ class EmailSubscription(models.Model):
             send_mail(subject, body, "subscriptions@thecrimson.com", 
             [self.email], fail_silently=False)
     
+    @staticmethod
+    def send_all(issue_date=None):
+        """Send all the email subscriptions."""
+        for sub in EmailSubscription.objects.filter(is_active=True)
+            sub.send(issue_date)
+        
+    
     def send(self, issue_date=None):
         """Send out this particular email subscription.
         
