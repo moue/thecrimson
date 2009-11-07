@@ -6,7 +6,7 @@ from views import *
 urlpatterns = patterns('',
     (r'^article\.aspx', redirect_article),
     (r'^writer\.aspx', redirect_writer),
-    ('^(?P<date>\d+-\d+-\d+)/pic-(?P<width>\d+)-(?P<id>\d+)\.jpg', redirect_photo), # links go to http://media.thecrimson.com/_____ so make sure we catch this
+    (r'^(?P<date>\d+-\d+-\d+)/pic-(?P<width>\d+)-(?P<id>\d+)\.jpg', redirect_photo), # links go to http://media.thecrimson.com/_____ so make sure we catch this
 )
 
 def redirect(url):
@@ -14,28 +14,45 @@ def redirect(url):
         return HttpResponsePermanentRedirect(url)
     return inner
 
+def redirect_tag(tag):
+	return redirect(Tag.objects.get(text=tag))
+	
 
 urlpatterns += patterns('',
-    ('^index\.aspx', redirect('/')),
+    (r'^index\.aspx', redirect('/')),
     
-    ('^arts\.aspx', redirect('/section/arts/')),
-    ('^news\.aspx', redirect('/section/news/')),
-    ('^sports\.aspx', redirect('/section/sports/')),
-    ('^opinion\.aspx', redirect('/section/opinion/')),
-    ('^magazine\.aspx', redirect('/section/fm/')),
+    (r'^arts\.aspx', redirect('/section/arts/')),
+    (r'^news\.aspx', redirect('/section/news/')),
+    (r'^sports\.aspx', redirect('/section/sports/')),
+    (r'^opinion\.aspx', redirect('/section/opinion/')),
+    (r'^magazine\.aspx', redirect('/section/fm/')),
 )
 
+urlpatters += patterns('',
+	(r'iraq\.aspx', redirect_tag('Iraq')),
+	# TODO: commencement pages
+	(r'cambridge\.aspx', redirect_tag('Cambridge')),
+	(r'science\.aspx', redirect_tag('Science')),
+	(r'crime\.aspx', redirect_tag('Crime')),
+	(r'uc\.aspx', redirect_tag('Undergraduate Council')),
+	(r'^news_page\.aspx', redirect('/section/news')),
+	(r'^opinion_page\.aspx', redirect('/section/opinion')),
+	(r'^sports_page\.aspx', redirect('/section/sports')),
+	(r'^arts_page\.aspx', redirect('/section/arts')),
+	(r'^photo_gallery\.aspx', redirect('/section/photo')),
+	#(r'\w+\.aspx', redirect('/')), # Any aspx page we don't catch just goes to homepage. Potentially a terrible terrible terrible idea
+
 urlpatterns += patterns('',
-    ('^info/archives\.aspx', redirect('/search/')),
-    ('^info/ads\.aspx', redirect('/about/advertising/')),
-    ('^info/classifieds\.aspx', redirect('/subscribe/')), # TODO
-    ('^info/corrections\.aspx', redirect('/about/corrections/')),
-    ('^info/contacts\.aspx', redirect('/about/contact/')),
-    ('^info/deliveries\.aspx', redirect('/subscribe/')), #TODO
-    ('^info/privacy\.aspx', redirect('/about/privacy/')),
-    ('^info/rss\.aspx', redirect('/subscribe/')),
-    ('^info/subscriptions\.aspx', redirect('/subscribe/')),
-    ('^info/terms\.aspx', redirect('/about/permissions/')),
+    (r'^info/archives\.aspx', redirect('/search/')),
+    (r'^info/ads\.aspx', redirect('/about/advertising/')),
+    (r'^info/classifieds\.aspx', redirect('/subscribe/')), # TODO
+    (r'^info/corrections\.aspx', redirect('/about/corrections/')),
+    (r'^info/contacts\.aspx', redirect('/about/contact/')),
+    (r'^info/deliveries\.aspx', redirect('/subscribe/')), #TODO
+    (r'^info/privacy\.aspx', redirect('/about/privacy/')),
+    (r'^info/rss\.aspx', redirect('/subscribe/')),
+    (r'^info/subscriptions\.aspx', redirect('/subscribe/')),
+    (r'^info/terms\.aspx', redirect('/about/permissions/')),
 )
 
 """ TODO:
