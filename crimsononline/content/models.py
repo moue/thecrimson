@@ -922,8 +922,8 @@ class Gallery(Content):
     
     @property
     def admin_contents(self):
-        return [x.child for x in \
-                Content.objects.admin_objects().filter(galleries_set=self)]
+        acrs = GalleryMembership.objects.filter(gallery=self)
+        return [x.content.child for x in acrs]
     
     @property
     def admin_content_pks(self):
