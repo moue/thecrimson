@@ -641,7 +641,8 @@ class Section(models.Model):
         if section_name:
             return a[section_name]
         return a
-        
+    
+    @permalink
     def get_absolute_url(self):
         return ('content_section', [make_url_friendly(self.name)])
     
@@ -768,6 +769,7 @@ class Issue(models.Model):
         else: 
             return None
     
+    @permalink
     def get_absolute_url(self):
         return ('content_index', [self.issue_date.year, self.issue_date.month, self.issue_date.day])
     
