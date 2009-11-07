@@ -13,6 +13,10 @@ from crimsononline.content.models import Tag, Contributor
 from crimsononline.subscriptions.models import EmailSubscription
 from crimsononline.common.forms import fbmc_search_helper
 
+def index(request):
+    emailform = EmailSubscribeForm()
+    return render_to_response('subscribe.html', locals())
+
 def email_confirm(request):
     """Confirm an email subscription.
     
