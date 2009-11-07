@@ -45,4 +45,4 @@ No articles today.
     {% endfor %}
 {% endif %}
 
-To change or cancel your email subscription, go here: http://www.thecrimson.com/subscribe/email/manage?id={{subscription.pk}}&passcode={{subscription.passcode}}
+To change or cancel your email subscription, go here: {{ manage_url }}
