@@ -14,7 +14,7 @@ class EmailSubscribeForm(forms.ModelForm):
     sections = forms.ModelMultipleChoiceField(Section.all(), 
         widget=forms.CheckboxSelectMultiple, required=False)
     email = forms.EmailField(required=True, 
-                             widget=forms.TextInput(attrs={'size':'80'}))
+                             widget=forms.TextInput(attrs={'size':'50'}))
     
     class Media:
         css = FbSelectWidget.Media.css
@@ -40,7 +40,7 @@ class EmailSubscriptionManageForm(EmailSubscribeForm):
     email = forms.EmailField(required=True, help_text='If you change your '
         'email address, you will need to reactivate your subscription by '
         'confirming your new email address.', 
-        widget=forms.TextInput(attrs={'size':'80'}))
+        widget=forms.TextInput(attrs={'size':'50'}))
     
     class Meta:
         model = EmailSubscription
