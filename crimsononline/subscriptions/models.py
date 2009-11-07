@@ -87,15 +87,18 @@ class EmailSubscription(models.Model):
         articles = content.Article.objects.filter(issue__issue_date=issue_date)
         d['top_stories'] = articles.filter(priority__gt=5) \
                            if self.top_stories else []
+        l = len(d['top_stories'])
         d['sections'] = dict([(s.name, articles.filter(section=s)) \
                               for s in self.sections.all()])
+        l += sum([len(x) for x in d['sections']])
         d['tags'] = dict([(t.text, articles.filter(tags=s)) \
                           for t in self.tags.all()])
+        l += sum([len(x) for x in d['tags']])
         d['contributors'] = dict([(str(c), articles.filter(tags=c)) \
                                   for c in self.contributors.all()])
+        l += sum([len(x) for x in d['contributors']])
         # don't deliver mail if there are no articles
-        if len(d['top_stories']) + len(d['sections']) + len(d['tags']) + \
-            len(d['contributors']) > 0:
+        if l > 0:
             msg = EmailMultiAlternatives("The Crimson's Daily", 
                 render_to_string('email/email.txt', d), 
                 'subscriptions@thecrimson.com', [self.email])
