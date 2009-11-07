@@ -794,10 +794,7 @@ class ArticleAdmin(ContentAdmin):
         for i, r in enumerate(rel):
             x = ArticleContentRelation(order=i, article=obj, related_content=r)
             x.save()
-        if not rel and int(obj.rotatable) > 0:
-            request.user.message_set.create(message='!! You set this article '
-                'to rotate, even though it doesn\'t have any related content. '
-                '(like an Image). This is a bad idea.')
+
         return obj
     
     def get_urls(self):
