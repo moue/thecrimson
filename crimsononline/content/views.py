@@ -510,7 +510,7 @@ def top_articles(section, dt=None):
         key = 'section__name'
     else:
         key = 'section'
-    stories = Article.objects.prioritized().filter(**{key: section})
+    stories = Article.objects.prioritized(10).filter(**{key: section})
     
     if(dt is not None):
         stories = stories.filter(issue__issue_date__lte=dt)

@@ -773,12 +773,15 @@ class Issue(models.Model):
     
     #TODO: funcache this
     @staticmethod
-    def last_n(n):
-        """Last n issue, by date."""
-        i = cache.get('last_%d_issues' % n)
+    def last_n(n, rece_date=None):
+        """Last n issue, by date, only chooses issues >= rece_date"""
+        i = cache.get('last_%d_issues_%s' % (n, str(rece_date)))
+        if rece_date is None:
+            rece_date = date.today()
         if i is None:
-            i = Issue.objects.order_by('-issue_date')[:n]
-            cache.set('last_%d_issues' % n, i, 60*60*4)
+            i = Issue.objects.filter(issue_date__lte=rece_date)\
+                             .order_by('-issue_date')[:n]
+            cache.set('last_%d_issues' % n, i, 60*60)
         if len(i) == 0:
             raise Exception("There are no issues.")
         return i
