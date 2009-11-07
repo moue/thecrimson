@@ -13,7 +13,7 @@ class EmailSubscribeForm(forms.ModelForm):
         url='/subscribe/email/ajax/fb_find/tag/', no_duplicates=True)
     sections = forms.ModelMultipleChoiceField(Section.all(), 
         widget=forms.CheckboxSelectMultiple, required=False)
-    email = forms.EmailField(required=True, label="Your Email"
+    email = forms.EmailField(required=True, label="Your Email",
                              widget=forms.TextInput(attrs={'size':'50'}))
     
     class Media:
