@@ -1,4 +1,10 @@
 /* content list */
+.subscribe-rss{
+    float: right;
+}
+.subscribe-rss img{
+    margin-right: 5px;
+}
 
 .content_list_content ul{
     list-style: none;
@@ -58,7 +64,7 @@
     color: #aa2222;
 }
 
-.filter_label, a.filter_label{
+.filter_label, a.filter_label, .subscribe-rss a{
 	font-size: 11px;
 	font-family: Helvetica, Arial, sans-serif;
     font-family: arial;
@@ -67,7 +73,7 @@
 }
 
 
-.content_list_filters a.filter_text{
+.content_list_filters a.filter_text, .subscribe-rss a{
     color: #BA0600
 }
 

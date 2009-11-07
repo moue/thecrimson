@@ -52,6 +52,7 @@
 
 {% block before_content %}
     <h1>{{ tag }}</h1>
+    <span class="subscribe-rss"><img src="{% static_url "images/icons/rss.png" %}" /><a href="/feeds{{tag.get_absolute_url}}">Subscribe</a></span>
 {% endblock %}
 
 {% block right %}
