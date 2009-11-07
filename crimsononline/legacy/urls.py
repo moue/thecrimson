@@ -41,7 +41,8 @@ urlpatters += patterns('',
 	(r'^arts_page\.aspx', redirect('/section/arts')),
 	(r'^photo_gallery\.aspx', redirect('/section/photo')),
 	#(r'\w+\.aspx', redirect('/')), # Any aspx page we don't catch just goes to homepage. Potentially a terrible terrible terrible idea
-
+)
+	
 urlpatterns += patterns('',
     (r'^info/archives\.aspx', redirect('/search/')),
     (r'^info/ads\.aspx', redirect('/about/advertising/')),
