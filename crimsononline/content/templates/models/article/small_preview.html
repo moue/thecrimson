@@ -1,0 +1,6 @@
+{% load common %}
+{% load content_filters %}
+
+<h3><a href="{{ story.get_absolute_url }}">{{ article.headline }}</a></h3>
+<span class="byline">By {{article.contributors.all|linkify|human_list}}</span>
+<span class="dateline">{{ article|datify }}</span>

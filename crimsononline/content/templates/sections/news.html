@@ -47,8 +47,7 @@
             <ul>
                 {% for s in stories|slice:"7:" %}
                     <li>
-                        <h3><a href="{{s.get_absolute_url}}">{{s}}</a></h3>
-                        <p class="byline">By {{s.contributors.all|linkify|human_list}}</p>
+                        {{s|render:"small_preview"}}
                     </li>
                 {% endfor %}
             </ul>
@@ -90,7 +89,7 @@
    if (document.context) document.write ("&context=" + escape(document.context));
    if (document.mmm_fo) document.write ("&amp;mmm_fo=1");
    document.write ("'><\/scr"+"ipt>");
-//]]>--></script><noscript><a href='http://www.oncampusweb.com/delivery/ck.php?n=abd553ed&amp;cb=INSERT_RANDOM_NUMBER_HERE' target='_blank'><img src='http://www.oncampusweb.com/delivery/avw.php?zoneid=59&amp;cb=INSERT_RANDOM_NUMBER_HERE&amp;n=abd553ed' border='0' alt='' /></a></noscript>
+//]]>--></script><noscript><a href='http://www.oncampusweb.com/delivery/ck.php?n=abd553ed&amp;cb=15657321567' target='_blank'><img src='http://www.oncampusweb.com/delivery/avw.php?zoneid=59&amp;cb=INSERT_RANDOM_NUMBER_HERE&amp;n=abd553ed' border='0' alt='' /></a></noscript>
     {% tag_cloud 20 "tags" %}
     {% most_read_articles %}
     
@@ -109,6 +108,6 @@
    if (document.context) document.write ("&context=" + escape(document.context));
    if (document.mmm_fo) document.write ("&amp;mmm_fo=1");
    document.write ("'><\/scr"+"ipt>");
-//]]>--></script><noscript><a href='http://www.oncampusweb.com/delivery/ck.php?n=a4cb1baa&amp;cb=INSERT_RANDOM_NUMBER_HERE' target='_blank'><img src='http://www.oncampusweb.com/delivery/avw.php?zoneid=58&amp;cb=INSERT_RANDOM_NUMBER_HERE&amp;n=a4cb1baa' border='0' alt='' /></a></noscript>
+//]]>--></script><noscript><a href='http://www.oncampusweb.com/delivery/ck.php?n=a4cb1baa&amp;cb=15657321567' target='_blank'><img src='http://www.oncampusweb.com/delivery/avw.php?zoneid=58&amp;cb=INSERT_RANDOM_NUMBER_HERE&amp;n=a4cb1baa' border='0' alt='' /></a></noscript>
 	{% endmodule %}
 {% endblock %}
