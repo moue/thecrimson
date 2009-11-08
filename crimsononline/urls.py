@@ -53,6 +53,12 @@ urlpatterns += patterns('django.views.generic.simple',
 )
 """
 
+admin.autodiscover()
+
+urlpatterns += patterns('',
+    (r'^admin/', include('crimsononline.admin_cust.urls')),
+)
+
 # generic content urls
 CONTENT_URL_RE = r'([a-z\-]+)/(\d{4})/(\d{1,2})/(\d{1,2})/([0-9A-Za-z_\-]+)/$'
 CGROUP_URL_RE = r'([a-z]+)/([a-z0-9\-]+)/'
@@ -64,12 +70,6 @@ generic_patterns = patterns('crimsononline.content.views',
         name='content_contentgroup'),
 )
 urlpatterns += generic_patterns
-
-admin.autodiscover()
-
-urlpatterns += patterns('',
-    (r'^admin/', include('crimsononline.admin_cust.urls')),
-)
 
 if settings.HAYSTACK:
     import haystack
