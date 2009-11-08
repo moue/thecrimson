@@ -11,6 +11,10 @@ NUM_STORIES = 25
 class CrimsonFeed(Feed):
     def item_author_name(self, item):
         return human_list(item.contributors.all())
+    
+    def item_author_link(self, obj):
+        if(item.contributors.all().count() == 1):
+            return item.contributors.all()[0].get_absolute_url()
 
 class Latest(CrimsonFeed):
     title = TITLE_BASE + "All Articles"
