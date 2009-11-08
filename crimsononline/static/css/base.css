@@ -408,7 +408,8 @@ a {
 	text-decoration: none;
 }
 .byline{
-    color: #999;
+    font-weight: normal;
+	color: #999;
     line-height: normal;
     margin-bottom: 2px;
 }

@@ -9,7 +9,7 @@
     display: block;
     width: 297px;
     border-bottom: 1px solid #eee;
-    padding: 5px;
+    padding: 5px 5px 10px 5px;
 }
 .flyby_preview p.headline{
     font-weight: bold;

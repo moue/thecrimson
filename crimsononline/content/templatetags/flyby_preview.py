@@ -14,9 +14,10 @@ class FlyByNode(template.Node):
     
     def render(self, context):
         fbb = ContentGroup.objects.get(name="FlyBy")
-        self.posts = Article.objects.filter(group__id=fbb.id)[:2]
+        self.posts = Article.objects.filter(group__id=fbb.id)[:3]
+        filenames = ['images/flyby/flybyicon0.png', 'images/flyby/flybyicon1.png', 'images/flyby/flybyicon2.png', 'images/flyby/flybyicon3.png']
         return render_to_string('templatetag/flyby_preview.html', 
-            {'posts': self.posts,})
+            {'posts': self.posts, 'filenames': filenames,})
     
 
 def do_flyby(parser, token, nopreview=False):
