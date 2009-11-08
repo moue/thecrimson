@@ -13,7 +13,9 @@
 	{{block.super}}
 	{% static_css "threecolumn.css" %}
 {% endblock %}
-    {% block js %}{% endblock %}
+    {% block js %}
+		{{block.super}}
+	{% endblock %}
     
 {% block body %}
         <div class="col-4">
