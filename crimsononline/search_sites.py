@@ -1,3 +1,3 @@
-import haystack
+from haystack import site
 
-haystack.autodiscover()
+__import__('crimsononline.content.search_indexes.py')

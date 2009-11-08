@@ -113,7 +113,7 @@ INSTALLED_APPS = [
     'crimsononline.search',
     'crimsononline.common',
     'crimsononline.subscriptions',
-	'crimsononline.mware',
+    'crimsononline.mware',
 ]
 
 try:
@@ -126,8 +126,6 @@ finally:
     INSTALLED_APPS = tuple(INSTALLED_APPS)
 
 
-    
-    
 MEDIA_LOC = MEDIA_ROOT
     
 EMAIL_HOST = 'smtp.gmail.com'
