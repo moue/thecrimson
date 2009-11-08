@@ -163,8 +163,8 @@ class TopArticlesNode(template.Node):
             del threadobjlist[20:]
         
         mostcommentedarticles = [x for x in map(lambda x: call_view(x[0], x[1]), filter(lambda x: x != None, threadobjlist)) if x is not None]
-        # Only want top 5 -- we need to do this last because we're not guaranteed that there won't be some gaps in threadobjlist
-        del mostcommentedarticles[5:]
+        # Only want top 10 -- we need to do this last because we're not guaranteed that there won't be some gaps in threadobjlist
+        del mostcommentedarticles[10:]
         """
         
         return render_to_string('templatetag/mostreadarticles.html',
