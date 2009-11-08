@@ -139,6 +139,10 @@ h3, h3 a{
 .mod-box{
 	border:1px solid #E5E5E5;
 }
+.mod-nopad{
+    margin-bottom: 0px;
+    border-top: 2px solid #d1d1d1;
+}
 .mod-boxbkgrd{
 	border:1px solid #E5E5E5;
 	background: url('../images/sealbkbox.png') no-repeat right top;
