@@ -17,6 +17,7 @@ from django.utils.safestring import mark_safe
 from crimsononline.content.models import *
 
 def misc(request):
+    """Solves a mysterious bug on ws2. Only need to run this on ws2."""
     if not request.META.get('HTTP_HOST', '').startswith('localhost'):
         raise Http404
     from django.core.urlresolvers import get_resolver, reverse, _resolver_cache

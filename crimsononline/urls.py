@@ -45,14 +45,6 @@ urlpatterns +=patterns('',
     url(r'^sitemap-(?P<section>.+)\.xml$', 'django.contrib.sitemaps.views.sitemap', {'sitemaps': sitemaps}),
 )
 
-if settings.HAYSTACK:
-    from crimsononline.search.forms import DateRangeSearchForm
-    from crimsononline.search.views import AjaxSearchView
-    
-    urlpatterns += patterns('haystack.views',
-        url(r'^search/', AjaxSearchView(form_class=DateRangeSearchForm)))
-
-
 """
 urlpatterns += patterns('django.views.generic.simple',
     (r'login/$', 'redirect_to', { 'url': 'http://www.alondite.com/welp/crimlogin.html'}),
@@ -63,13 +55,6 @@ urlpatterns += patterns('django.views.generic.simple',
 urlpatterns += patterns('',
     (r'^admin/', include('crimsononline.admin_cust.urls')),
 )
-
-
-if settings.DEBUG:
-    urlpatterns += patterns('',
-        (r'^site_media/(?P<path>.*)$', 'django.views.static.serve', 
-            {'document_root': settings.MEDIA_ROOT}),    
-    )
 
 # generic content urls
 CONTENT_URL_RE = r'([a-z\-]+)/(\d{4})/(\d{1,2})/(\d{1,2})/([0-9A-Za-z_\-]+)/$'
@@ -83,6 +68,19 @@ generic_patterns = patterns('crimsononline.content.views',
 )
 
 urlpatterns += generic_patterns
+
+if settings.HAYSTACK:
+    from crimsononline.search.forms import DateRangeSearchForm
+    from crimsononline.search.views import AjaxSearchView
+    
+    urlpatterns += patterns('haystack.views',
+        url(r'^search/', AjaxSearchView(form_class=DateRangeSearchForm)))
+
+if settings.DEBUG:
+    urlpatterns += patterns('',
+        (r'^site_media/(?P<path>.*)$', 'django.views.static.serve', 
+            {'document_root': settings.MEDIA_ROOT}),    
+    )
 
 urlpatterns += patterns('',
     (r'', include('crimsononline.legacy.urls')),
