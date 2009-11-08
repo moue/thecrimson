@@ -804,8 +804,10 @@ class Issue(models.Model):
         return cache.set('current_issue', self, timeout)
     
     def __unicode__(self):
+        if self.issue_date.year >= 1900:
+            return self.issue_date.strftime('%A, %B %d, %Y')
         return strftime_safe(self.issue_date, '%A, %B %d, %Y')
-
+    
 
 class ImageManager(ContentManager):
 
