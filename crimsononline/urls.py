@@ -53,7 +53,16 @@ urlpatterns += patterns('django.views.generic.simple',
 )
 """
 
+ia = list(settings.INSTALLED_APPS)
+try:
+    ia.remove('haystack')
+except ValueError:
+    pass
+settings.INSTALLED_APPS = tuple(ia)
 admin.autodiscover()
+if settings.HAYSTACK:
+    ia.append('haystack')
+settings.INSTALLED_APPS = tuple(ia)
 
 urlpatterns += patterns('',
     (r'^admin/', include('crimsononline.admin_cust.urls')),
