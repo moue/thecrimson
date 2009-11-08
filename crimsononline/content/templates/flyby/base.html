@@ -8,7 +8,6 @@
     <title>FlyByBlog &rsaquo; Harvard Life. To Go.</title>
     {% static_css "flyby/style.css" %}
     {% static_css "flyby/print.css" %}
-
 </head>
 
 <body>
@@ -17,15 +16,15 @@
 
     <div id="header">
 
-<a href="/blog/flyby/"><img src = "{% static_url 'images/flyby/banner_top.jpg' %}" style="width:900px;" alt="topbanner" /></a>
-    </div><!-- #header -->
+<a href="/section/flyby/"><img src = "{% static_url 'images/flyby/banner_top.jpg' %}" style="width:900px;" alt="topbanner" /></a>
+    </div>
 
 <div id="container">
     <div id="content" class="hfeed">
         {% block body %}
         {% endblock %}
-    </div><!-- #content .hfeed -->
-</div><!-- #container -->
+    </div>
+</div>
 
 <div class="sidebar">
 

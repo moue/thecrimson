@@ -59,7 +59,7 @@ class ContentGroupModelForm(ModelForm):
         widget=admin.widgets.AdminFileWidget)
     class Meta:
         model = ContentGroup
-    
+
 class ContentGroupAdmin(admin.ModelAdmin):
     form = ContentGroupModelForm
     def get_urls(self):

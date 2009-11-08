@@ -327,6 +327,12 @@ def section_sports(request):
     video = first_or_none(YouTubeVideo.objects.recent.filter(section=section))
     return render_to_response('sections/sports.html', locals())
 
+def section_flyby(request):
+    nav = 'flyby'
+    section = Section.cached(nav)
+    content = Article.objects.recent.filter(section=section)
+    return render_to_response('flyby/content_list.html', locals())
+
 # IPHONE APP JSON FEEDS
 
 def iphone(request, s = None):
@@ -365,8 +371,7 @@ def iphone(request, s = None):
 
 @cache(settings.CACHE_LONG, "general_content")
 def get_content(request, ctype, year, month, day, slug, content_group=None):
-    """
-    View for displaying a piece of content on a page
+    """View for displaying a piece of content on a page
     Validates the entire URL
     """
     try:
@@ -378,11 +383,11 @@ def get_content(request, ctype, year, month, day, slug, content_group=None):
     if request.path != c.get_absolute_url():
         return HttpResponseRedirect(c.get_absolute_url())
     if request.method == 'GET':
-        return HttpResponse(c._render(request.GET.get('render','page'), request=request))
+        return HttpResponse(c._render(request.GET.get('render','page'), 
+                            request=request))
     raise Http404
 
 # no need to cache these two i don't think, since they all go through get_content in the end
-
 def get_content_obj(request, ctype, year, month, day, slug, content_group=None):
     """Retrieve a content object from the database (no validation of params)"""
     ctype = ctype.replace('-', ' ') # convert from url
@@ -399,14 +404,12 @@ def get_grouped_content(request, gtype, gname, ctype, year, month, day, slug):
         year, month, day, slug)
     if cg:
         return get_content(request, ctype, year, month, day, slug, cg)
-    else:
-        raise Http404
+    raise Http404
 
 def get_grouped_content_obj(request, gtype, gname, ctype, year, month, day, slug):
     cg = ContentGroup.by_name(gtype, gname)
     return cg
 
-FLYBY = ContentGroup.objects.get(name="FlyBy", type="blog")
 @cache(settings.CACHE_STANDARD, "general_contentgroup")
 def get_content_group(request, gtype, gname):
     """Render a Content Group."""
@@ -415,11 +418,7 @@ def get_content_group(request, gtype, gname):
     if not cg:
         raise Http404
     c = cg.content.all()
-    
-    templ = "contentgroup.html"
-    if(cg == FLYBY):
-        templ = "flyby/content_list.html"
-    return render_to_response(templ, {'cg': cg, 'content': c})
+    return render_to_response("contentgroup.html", {'cg': cg, 'content': c})
 
 def get_content_group_obj(request, gtype, gname):
     cg = ContentGroup.by_name(gtype, gname)

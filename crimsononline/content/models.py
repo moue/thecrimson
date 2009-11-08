@@ -272,18 +272,19 @@ class Content(models.Model):
         n_context.update({name: self.child, 'content': self.child, 
                         'class': name, 'disqus': settings.DISQUS, 'nav':nav})
         
-        # print view
-        if method == 'page' and request.GET.get('print',""):
-            return mark_safe(render_to_string('models/%s/print.html'%(name),
-                n_context))
-            
         if method == 'page':
+            # print view
+            if request.GET.get('print',""):
+                return mark_safe(render_to_string('models/%s/print.html'%(name),
+                                 n_context))
+            
             self.store_hit()
+            
+            # flyby content
+            if self.section == Section.cached('flyby'):
+                return mark_safe(render_to_string('models/%s/flyby.html'%(name),
+                                 n_context))
         
-        # flyby content
-        if method == 'page' and self.group == ContentGroup.flyby():
-            return mark_safe(render_to_string('models/%s/flyby.html'%(name),
-                n_context))
         return mark_safe(render_to_string(templ, n_context))
     
     def delete(self):
@@ -466,12 +467,6 @@ class ContentGroup(models.Model):
     def get_absolute_url(self):
         return ('content_contentgroup', [self.type, make_url_friendly(self.name)])
     
-    @classmethod
-    def flyby(cls):
-        try:
-            return cls.objects.get(name='FlyBy', type='blog')
-        except:
-            return cls.objects.create(name='FlyBy', type='blog')
 
 class Tag(models.Model):
     """
