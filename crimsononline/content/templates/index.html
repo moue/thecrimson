@@ -165,10 +165,28 @@
         
     {% tag_cloud 20 "Popular Tags" %}
     
-    {% module 4 "Featured Galleries" box %}
-    {% for gall in galleries %}
-        {{gall|render:"front_preview"}}
-    {% endfor %}
+    {% module 4 "Featured Videos" box %}
+        {% for vid in videos %}
+            {{vid|render:"front_preview"}}
+        {% endfor %}
     {% endmodule %}
     
+{% endblock %}
+
+{% block belowcolumn %}
+<div class="col-12">
+{% module 12 "Featured Galleries" %}
+{% endmodule%}
+</div>
+        <div class="col-2">
+    {% for gall in galleries %}
+        {{gall|render:"front_preview"}}
+        </div>
+        {% if forloop.last %}
+        {% else %}
+        <div class="gutter"></div>
+        <div class="col-2">
+        {% endif %}
+    {% endfor %}
+        <span class="clear"></span>
 {% endblock %}
