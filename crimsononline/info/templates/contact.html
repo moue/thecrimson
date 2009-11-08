@@ -1,0 +1,43 @@
+{% extends "static.html" %}
+
+{% load common %}
+{% load content_module %}
+{% load module %}
+
+{% block css %}
+	{% static_css "subscribe.css" %}
+	{{ block.super }}
+{% endblock %}
+
+{% block js %}
+    {% static_js "jquery.js" %}
+{% endblock %}
+
+{% block content %}
+{% module 8 contact red %}
+    {% block content_inner %}
+        <div class="flatpage_section_header">Submit your Question or Concern</div>
+        <div class="contactform">
+            <form action="/about/contact/" method="POST">
+            {{ form.non_field_errors }}
+            {% if form.errors %}
+            <span class="errormessage">All fields are required.</span><br /><br />
+            {% endif %}
+            <table>
+                {% include "contact_form.html" %}
+                <tr>
+                    <td>&nbsp;</td>
+                    <td><button type="submit">Submit</button></td>
+                </tr>
+            </table>
+            </form>
+        </div>
+    {% endblock %}
+{% endmodule %}
+{% endblock %}
+
+{% block fp_nav %}
+	{% flatpage_nav about "/about/content/" %}
+		{% contentmodule flatpage_nav %}{% endcontentmodule %}
+    {% endflatpage_nav %}
+{% endblock %}

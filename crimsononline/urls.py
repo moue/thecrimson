@@ -24,6 +24,7 @@ urlpatterns += patterns('crimsononline.content.views',
     url(r'^$', 'index', name='content_index'),
     url(r'^issue/(\d+)/(\d+)/(\d+)/$', 'index', name='content_index'),    
     url(r'^subscribe/', include('crimsononline.subscriptions.urls')),
+    url(r'^about/', include('crimsononline.info.urls')),
     url(r'^iphone/(?P<s>\w+)/$', 'iphone'),
 )
 

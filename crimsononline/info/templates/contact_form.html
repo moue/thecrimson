@@ -1,0 +1,24 @@
+<tr>
+    <td class="field">
+    {% if form.name.errors %}<span class="errormessage2">{% endif %}
+    {{ form.name.label_tag }}
+    {% if form.name.errors %}</span>{% endif %}					
+    </td>
+    <td>{{ form.name }}</td>
+</tr>
+<tr>
+    <td class="field">
+    {% if form.email.errors %}<span class="errormessage2">{% endif %}
+    {{ form.email.label_tag }}
+    {% if form.email.errors %}</span>{% endif %}					
+    </td>
+    <td>{{ form.email}}</td>
+</tr>			
+<tr>
+    <td class="field">
+    {% if form.message.errors %}<span class="errormessage2">{% endif %}
+    {{ form.message.label_tag }}
+    {% if form.message.errors %}</span>{% endif %}					
+    </td>
+    <td>{{ form.message }}</td>
+</tr>
