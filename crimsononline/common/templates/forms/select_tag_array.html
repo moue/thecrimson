@@ -1,0 +1,52 @@
+<script type="text/javascript">
+ 
+    // Tags available to be added
+    tag_list = {
+        {% for category, tags in categories.items %}
+            "{{ category }}": {
+                {% for tag in tags %}     
+                    {{ tag.id }}: "{{ tag.text }}"{% if not forloop.last %},{% endif %}
+                {% endfor %}
+            }{% if not forloop.last %},{% endif %}
+        {% endfor %}
+    };  
+    
+    // Tags currently applied to this content
+    tags_in_use = {
+        {% for category in categories.keys %}
+            "{{ category }}": {}{% if not forloop.last %},{% endif %}
+        {% endfor %}
+    
+    };
+    
+</script>
+
+<div style="float:left; width: 200px">
+{% for category in categories.keys %}
+    <button type="button" name="{{ category }}" class="tag_filter button">{{ category }}</button>
+{% endfor %}
+</div>
+
+<script type="text/javascript">
+    
+    // Make selector buttons switch categories
+    $("button.tag_filter").bind("click", function (e) {
+        SelectTag.clearSelect();
+        category = tag_list[e.target.name];
+        for (var value in category) {
+            text = category[value];
+            SelectTag.addOption(value,text);
+        }
+        
+        
+        
+        
+        
+        
+    
+    });
+
+</script>
+
+
+
