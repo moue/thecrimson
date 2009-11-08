@@ -9,11 +9,49 @@ from re import compile
 from django import forms
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.contenttypes.models import ContentType
+from django.conf import settings
 from django.db.models import Q
 from django.template.loader import render_to_string
 from django.utils.safestring import mark_safe
 from crimsononline.content.models import Image, Issue, Content, Section
 from crimsononline.common.utils.misc import static_content
+
+class TagSelectWidget(forms.SelectMultiple):
+    """
+    A SelectMultiple with a JavaScript filter interface.
+
+    Note that the resulting JavaScript assumes that the jsi18n
+    catalog has been loaded in the page
+    """
+    class Media:
+        js = (settings.ADMIN_MEDIA_PREFIX + "js/core.js",
+              settings.ADMIN_MEDIA_PREFIX + "js/SelectBox.js",
+              settings.MEDIA_URL + "scripts/admin/SelectTag.js")
+
+    def __init__(self, verbose_name, is_stacked, attrs=None, choices=(), tags={}):
+        self.verbose_name = verbose_name
+        self.is_stacked = is_stacked
+        super(TagSelectWidget, self).__init__(attrs, choices)
+        #self.radio = radio
+        self.tags = tags
+
+    def render(self, name, value, attrs=None, choices=()):
+        
+        output = []
+        output.append(super(TagSelectWidget, self).render(name, value, attrs, choices))
+        
+        output.append(u'<script type="text/javascript">addEvent(window, "load", function(e) {')
+        # TODO: "id_" is hard-coded here. This should instead use the correct
+        # API to determine the ID dynamically.
+        output.append(u'SelectTag.init("id_%s", "%s", %s, "%s"); });</script>\n' % \
+            (name, self.verbose_name.replace('"', '\\"'), int(self.is_stacked), settings.ADMIN_MEDIA_PREFIX))
+            
+        tag_array = render_to_string('forms/select_tag_array.html', {"categories": self.tags})
+        output.append(tag_array)
+        
+        return mark_safe(u''.join(output))
+
+
 
 
 class AutoGenSlugWidget(forms.widgets.TextInput):

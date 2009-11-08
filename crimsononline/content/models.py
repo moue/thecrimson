@@ -494,6 +494,8 @@ class Tag(models.Model):
     
     CATEGORY_CHOICES = (
         ('sports', 'Sports'),
+        ('editorial', 'Editorial'),
+        ('', 'Uncategorized')
     )
     
     # validates in the admin

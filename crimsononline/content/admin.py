@@ -88,12 +88,23 @@ class ContentModelForm(ModelForm):
     Doesn't actually work by itself.
     """
     
-    tags = forms.ModelMultipleChoiceField(Tag.objects.all(), required=True,
+    # This is being set when server is started, not updated when we add tags...crap.
+    t = Tag.objects.all()
+    categories = Tag.CATEGORY_CHOICES
+    
+    tag_dict = {}
+    
+    for cat in categories:
+        short, verbose = cat
+        tag_dict[verbose] = t.filter(category=short)
+    
+    # uses the TagSelectWidget, which invokes SelectTag.js
+    tags = forms.ModelMultipleChoiceField(t, required=True,
         widget=admin.widgets.RelatedFieldWidgetWrapper(
-            admin.widgets.FilteredSelectMultiple('Tags', False),
-            Content._meta.get_field('tags').rel,
-            admin.site
-        )
+                TagSelectWidget('Tags', False, tags=tag_dict),
+                Content._meta.get_field('tags').rel,
+                admin.site
+            )
     )
     contributors = FbModelChoiceField(required=True, multiple=True,
         url='/admin/content/contributor/search/', model=Contributor,
