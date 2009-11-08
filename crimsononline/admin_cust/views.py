@@ -16,6 +16,11 @@ from django.utils.safestring import mark_safe
 
 from crimsononline.content.models import *
 
+def misc(request):
+    from django.core.urlresolvers import get_resolver
+    r = get_resolver()
+    return HttpResponse(str(r.reverse_dict))
+
 def flush_cache(request):
     """Flush memcached"""
     if settings.CACHE_BACKEND.find('memcache') != -1:
