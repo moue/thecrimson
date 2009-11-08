@@ -53,6 +53,7 @@ def convert(infile):
     # Each post is a dictionary
     
     dom = minidom.parse(infile)
+    missing_authors = []
 
     for node in dom.getElementsByTagName('item'):
         a = Article()
@@ -157,11 +158,12 @@ def convert(infile):
         
         }
         for author in node.getElementsByTagName('dc:creator')[0].firstChild.data.split("and"):
-            author.replace(" ","")
+            author = author.replace(" ","")
             try:
                 c = Contributor.objects.get(pk=AUTHORS_DICT[author])
                 a.contributors.add(c)
             except:
+                missing_authors.append(author)
                 pass
         a.pub_status = 1
         
@@ -170,7 +172,11 @@ def convert(infile):
             a.save()
         except:
             pass
-            
+        
+        print a.headline[0]
+    for i in set(missing_authors):
+        print i     
+    
 def usage(pname):
     """Displays usage information
     
