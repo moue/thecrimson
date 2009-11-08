@@ -3,7 +3,7 @@ from models import *
 from crimsononline.common.templatetags.common import human_list
 from django.contrib.syndication.feeds import FeedDoesNotExist
 from django.core.exceptions import ObjectDoesNotExist
-
+from settings import URL_BASE
 
 TITLE_BASE = "The Harvard Crimson" + " | "
 NUM_STORIES = 25
@@ -14,7 +14,7 @@ class CrimsonFeed(Feed):
     
     def item_author_link(self, obj):
         if(item.contributors.all().count() == 1):
-            return item.contributors.all()[0].get_absolute_url()
+            return URL_BASE + item.contributors.all()[0].get_absolute_url()
 
 class Latest(CrimsonFeed):
     title = TITLE_BASE + "All Articles"
