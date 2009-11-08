@@ -392,7 +392,7 @@ h3, h3 a{
 
 /* bordered */
 .bordered {
-    border: 1px solid #bbb;
+    border: 1px solid #e5e5e5;
     padding: 5px;
     margin-bottom: 5px;
     overflow: none;
