@@ -6,7 +6,7 @@ from django.utils.datetime_safe import strftime
 from re import compile, match, sub
 from string import letters, digits
 from PIL import Image as pilImage
-from django.utils.datetime_safe import strftime as strftime_safe
+import copy
 
 from django.conf import settings
 from django.core import urlresolvers
@@ -24,6 +24,7 @@ from django.forms import ModelForm
 from django.db.models.query import QuerySet
 from django.http import Http404
 from django.template import RequestContext
+from django.utils.datetime_safe import strftime as strftime_safe
 
 from crimsononline.admin_cust.models import UserData
 from crimsononline.common.caching import funcache, expire_page, expire_stuff
