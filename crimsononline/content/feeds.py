@@ -3,7 +3,7 @@ from models import *
 from crimsononline.common.templatetags.common import human_list
 from django.contrib.syndication.feeds import FeedDoesNotExist
 from django.core.exceptions import ObjectDoesNotExist
-from settings import URL_BASE
+from crimsononline.settings import URL_BASE
 
 TITLE_BASE = "The Harvard Crimson" + " | "
 NUM_STORIES = 25
