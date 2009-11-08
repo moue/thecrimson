@@ -1,5 +1,6 @@
 from django.contrib.syndication.feeds import Feed
 from models import *
+from crimsononline.common.templatetags.common import human_list
 from django.contrib.syndication.feeds import FeedDoesNotExist
 from django.core.exceptions import ObjectDoesNotExist
 
@@ -7,7 +8,11 @@ from django.core.exceptions import ObjectDoesNotExist
 TITLE_BASE = "The Harvard Crimson" + " | "
 NUM_STORIES = 25
 
-class Latest(Feed):
+class CrimsonFeed(Feed):
+    def item_author_name(self, item):
+        return human_list(item.contributors.all())
+
+class Latest(CrimsonFeed):
     title = TITLE_BASE + "All Articles"
     link = "/"
     description = "The latest Crimson articles"
@@ -18,7 +23,7 @@ class Latest(Feed):
         return Article.objects.order_by('-created_on')[:NUM_STORIES]
     
 
-class ByAuthor(Feed):
+class ByAuthor(CrimsonFeed):
 
     def get_object(self, bits):
         # Should be feeds/author/[id], not feeds/author/[id]/bullshit
@@ -41,7 +46,7 @@ class ByAuthor(Feed):
         return Article.objects.filter(contributors__id__exact=obj.pk).order_by('-created_on')[:NUM_STORIES]
     
 
-class ByTag(Feed):
+class ByTag(CrimsonFeed):
     # Should be feeds/tag/ninja_stuff to access tag Ninja Stuff
     def get_object(self, bits):
         if len(bits) != 1:
@@ -64,7 +69,7 @@ class ByTag(Feed):
         return Article.objects.filter(tags__id__exact=obj.pk).order_by('-created_on')[:NUM_STORIES]
     
 
-class BySection(Feed):
+class BySection(CrimsonFeed):
     # Should be feeds/section/arts
     def get_object(self, bits):
         if len(bits) != 1:
