@@ -619,11 +619,12 @@ class GalleryAdmin(ContentAdmin):
         super(GalleryAdmin, self).save_model(request, obj, form, change)
         # set the Gallery contents
         obj.contents.clear()
+        
         for i, content in enumerate(contents):
             x = GalleryMembership(order=i, gallery=obj, content=content)
             x.save()
-        # publish all the contents if the gallery is also published
-        if obj.pub_status == 1:
+        # publish all the contents if the gallery is also publishe
+        if int(obj.pub_status) == 1: # why is pub_status a unicode?!
             for content in contents:
                 if content.pub_status != 1:
                     content.pub_status = 1
