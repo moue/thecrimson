@@ -17,7 +17,7 @@ from django.utils.safestring import mark_safe
 from crimsononline.content.models import *
 
 def misc(request):
-    from django.core.urlresolvers import get_resolver
+    from django.core.urlresolvers import get_resolver, reverse
     r = get_resolver(None)
     return HttpResponse(str(r.reverse_dict))
 
