@@ -71,8 +71,8 @@ urlpatterns += patterns('',
 )
 
 if settings.HAYSTACK:
-    from haystack import site as hssite
-    hssite.autodiscover()
+    import haystack
+    haystack.autodiscover()
     
     from crimsononline.search.forms import DateRangeSearchForm
     from crimsononline.search.views import AjaxSearchView
