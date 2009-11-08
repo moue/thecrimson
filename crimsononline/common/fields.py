@@ -76,18 +76,18 @@ class AutosizeImageFieldFile(ImageFieldFile):
         
         # crop the file
         img = pilImage.open(self.path)
-        img = img.transform(size_spec[:2], pilImage.EXTENT, crop_coords)
+        img = img.transform(size_spec[:2], pilImage.EXTENT, crop_coords, pilImage.BICUBIC)
         
         new_path = self._get_path(size_spec)
         img.save(new_path)
         self._path_cache[size_spec] = new_path
     
-    def display_path(self, size_spec, crop_data = None):
+    def display_path(self, size_spec, crop_data=None):
         """returns the path for a sized image"""
         path = self._path_cache.get(size_spec, None)
-        if path: return path
+        if path:
+            return path
         path = self._get_path(size_spec)
-        import pdb
         if not exists(path):
             img = pilImage.open(self.path)
             ht, wd = size_spec_to_size(size_spec, self.width, self.height)
@@ -97,7 +97,6 @@ class AutosizeImageFieldFile(ImageFieldFile):
                     crop_x, crop_y, crop_side = float(crop_data[0]), float(crop_data[1]), float(crop_data[2])
                 else:
                     crop_x, crop_y, crop_side = 0, 0, min(self.height, self.width)
-                # pdb.set_trace()
                 if x_ratio > y_ratio:
                     crop_pd_coord = crop_x
                     crop_sd_coord = crop_y
@@ -134,7 +133,7 @@ class AutosizeImageFieldFile(ImageFieldFile):
                     crop_coords = (new_crop_pd_coord, new_crop_sd_coord, new_crop_pd_coord + new_crop_pd, new_crop_sd_coord + new_crop_sd)
                 else:
                     crop_coords = (new_crop_sd_coord, new_crop_pd_coord, new_crop_sd_coord + new_crop_sd, new_crop_pd_coord + new_crop_pd)
-                img = img.transform((ht, wd), pilImage.EXTENT, crop_coords)
+                img = img.transform((ht, wd), pilImage.EXTENT, crop_coords, pilImage.BICUBIC)
             else:
                 img.thumbnail((ht, wd), pilImage.ANTIALIAS)
             img.save(path)
