@@ -200,8 +200,6 @@ class ContentAdmin(admin.ModelAdmin):
         
         new_status = int(obj.pub_status)
         old_status = int(old_obj.pub_status)
-        print new_status
-        print old_status
         
         if change and obj and new_status == 1:
             if (obj.issue != old_obj.issue or obj.slug != old_obj.slug) and old_status == 1:
