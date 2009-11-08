@@ -135,10 +135,10 @@ h3, h3 a{
 .mod-blue{border-top: 2px solid #d1d1d1;}
 .mod-gray{border-top: 2px solid #d1d1d1;}
 .mod-box{
-	border:1px solid #EEEEEE;
+	border:1px solid #E5E5E5;
 }
 .mod-boxbkgrd{
-	border:1px solid #EEEEEE;
+	border:1px solid #E5E5E5;
 	background: url('../images/sealbkbox.png') no-repeat right top;
 }
 
