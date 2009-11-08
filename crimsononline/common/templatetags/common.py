@@ -261,8 +261,6 @@ class WeatherNode(template.Node):
             
             temperature = str(cur_weather).split()[-1]
             currently = str(cur_weather).split(":")[1].lower()
-            print currently
-            print currently.count("cloud")
             icon = ""
             if(currently.count("sun")>0):
                 icon = "sun.gif"
@@ -273,9 +271,7 @@ class WeatherNode(template.Node):
             elif(currently.count("cloud")>0):
                 icon = "cloud.gif"
             if icon:
-                print "icon"
                 icon_txt = '<img src="' + static_url('images/icons/' + icon) + '" />'
-                print icon_txt
             else:
                 icon_txt = ""
             
