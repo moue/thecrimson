@@ -12,7 +12,7 @@ class CrimsonFeed(Feed):
     def item_author_name(self, item):
         return human_list(item.contributors.all())
     
-    def item_author_link(self, obj):
+    def item_author_link(self, item):
         if(item.contributors.all().count() == 1):
             return URL_BASE + item.contributors.all()[0].get_absolute_url()
 
