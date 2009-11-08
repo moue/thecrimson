@@ -88,18 +88,7 @@ class ContentModelForm(ModelForm):
     Doesn't actually work by itself.
     """
     
-    # This is being set when server is started, not updated when we add tags...crap.
-    t = Tag.objects.all()
-    categories = Tag.CATEGORY_CHOICES
-    
-    tag_dict = {}
-    
-    for cat in categories:
-        short, verbose = cat
-        tag_dict[verbose] = t.filter(category=short)
-    
-    # uses the TagSelectWidget, which invokes SelectTag.js
-    tags = forms.ModelMultipleChoiceField(t, required=True,
+    tags = forms.ModelMultipleChoiceField(Tag.objects.all(), required=True,
         widget=admin.widgets.RelatedFieldWidgetWrapper(
             admin.widgets.FilteredSelectMultiple('Tags', False),
             Content._meta.get_field('tags').rel,
