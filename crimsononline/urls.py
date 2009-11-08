@@ -41,7 +41,7 @@ sitemaps = {
 
 urlpatterns +=patterns('',
     url(r'^feeds/(?P<url>.*)/$', 'django.contrib.syndication.views.feed', {'feed_dict': feeds}),
-    url(r'^sitemap.xml$', 'django.contrib.sitemaps.views.index', {'sitemaps': sitemaps}),
+    url(r'^sitemap\.xml$', 'django.contrib.sitemaps.views.index', {'sitemaps': sitemaps}),
     url(r'^sitemap-(?P<section>.+)\.xml$', 'django.contrib.sitemaps.views.sitemap', {'sitemaps': sitemaps}),
 )
 
@@ -51,10 +51,6 @@ urlpatterns += patterns('django.views.generic.simple',
     (r'login_return/$', login_user),
 )
 """
-
-urlpatterns += patterns('',
-    (r'^admin/', include('crimsononline.admin_cust.urls')),
-)
 
 # generic content urls
 CONTENT_URL_RE = r'([a-z\-]+)/(\d{4})/(\d{1,2})/(\d{1,2})/([0-9A-Za-z_\-]+)/$'
@@ -66,8 +62,13 @@ generic_patterns = patterns('crimsononline.content.views',
     url('^' + CGROUP_URL_RE + '$', 'get_content_group', 
         name='content_contentgroup'),
 )
-
 urlpatterns += generic_patterns
+
+admin.autodiscover()
+
+urlpatterns += patterns('',
+    (r'^admin/', include('crimsononline.admin_cust.urls')),
+)
 
 if settings.HAYSTACK:
     from crimsononline.search.forms import DateRangeSearchForm
@@ -85,5 +86,3 @@ if settings.DEBUG:
 urlpatterns += patterns('',
     (r'', include('crimsononline.legacy.urls')),
 )
-
-admin.autodiscover()
