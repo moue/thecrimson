@@ -101,10 +101,10 @@ class ContentModelForm(ModelForm):
     # uses the TagSelectWidget, which invokes SelectTag.js
     tags = forms.ModelMultipleChoiceField(t, required=True,
         widget=admin.widgets.RelatedFieldWidgetWrapper(
-                TagSelectWidget('Tags', False, tags=tag_dict),
-                Content._meta.get_field('tags').rel,
-                admin.site
-            )
+            admin.widgets.FilteredSelectMultiple('Tags', False),
+            Content._meta.get_field('tags').rel,
+            admin.site
+        )
     )
     contributors = FbModelChoiceField(required=True, multiple=True,
         url='/admin/content/contributor/search/', model=Contributor,
