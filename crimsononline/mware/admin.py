@@ -16,5 +16,6 @@ class SuperCrisisAdmin(admin.ModelAdmin):
         cache_tuple = url, response
         cache.set('crimsononline.supercrisismode', cache_tuple)
         obj.save()
+    
 
 admin.site.register(SuperCrisis, SuperCrisisAdmin)

@@ -17,6 +17,8 @@ from django.utils.safestring import mark_safe
 from crimsononline.content.models import *
 
 def misc(request):
+    if not request.META.get('HTTP_HOST', '').startswith('localhost'):
+        raise Http404
     from django.core.urlresolvers import get_resolver, reverse, _resolver_cache
     r = get_resolver(None)
     r._reverse_dict = None

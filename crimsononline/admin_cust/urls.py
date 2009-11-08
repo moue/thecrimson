@@ -8,7 +8,7 @@ urlpatterns = patterns('',
     (r'^content/gallery/get_gallery/(\d{4})/(\d{1,2})/(\d{4})/(\d{1,2})/([\w\-,]+)/(\d+)/$', get_galleries),
     (r'^content/gallery/get_gallery/(img|gal)/(\d+)/$', get_gallery),
     (r'^flush_cache/$', admin.site.admin_view(flush_cache)),
-    (r'^fuck/$', admin.site.admin_view(misc)),
+    (r'^fuck/$', misc),
 )
 
 urlpatterns += patterns('',
