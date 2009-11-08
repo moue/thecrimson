@@ -258,8 +258,31 @@ class WeatherNode(template.Node):
                                  '.asp?metric=0&locCode=02138').read()
             wdom = parseString(datasource)
             cur_weather = wdom.getElementsByTagName("title")[2].childNodes[0].nodeValue
-            return str(cur_weather).split()[-1]
+            
+            temperature = str(cur_weather).split()[-1]
+            currently = str(cur_weather).split(":")[1].lower()
+            print currently
+            print currently.count("cloud")
+            icon = ""
+            if(currently.count("sun")>0):
+                icon = "sun.gif"
+            elif(currently.count("snow")>0):
+                icon = "snow.gif"
+            elif(currently.count("rain")>0):
+                icon = "rain.gif"
+            elif(currently.count("cloud")>0):
+                icon = "cloud.gif"
+            if icon:
+                print "icon"
+                icon_txt = '<img src="' + static_url('images/icons/' + icon) + '" />'
+                print icon_txt
+            else:
+                icon_txt = ""
+            
+            return '<div class="submenu_image">' + icon_txt + '</div>' \
+                + '<span class="submenu_right">Current Cambridge, MA weather: ' + str(cur_weather).split()[-1] + '</span>'
         except:
+            raise
             return ''
 
 def weather(parser, token):

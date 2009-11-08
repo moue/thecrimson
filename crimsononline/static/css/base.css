@@ -268,12 +268,20 @@ h3, h3 a{
 
 #submenu{
 	min-width: 973px;
-	height: 18px;
+	height: 14px;
 	background-color: #fff;
 	border-bottom: 1px solid #eee;
 	margin-bottom: 10px;
 	border-bottom: 1px solid #ccc;
 	border-top: 1px solid #fafafa;
+    margin-top: 4px;
+}
+
+.submenu_image{
+    float: right;
+    display: block;
+    width: 20px;
+    margin-top: -3px;
 }
 
 #submenu_contents{
@@ -281,9 +289,10 @@ h3, h3 a{
 	margin: 0 auto;
 	font-size: 10px;
 	line-height: 10px;
-	padding-top: 4px;
 	font-family: Helvetica, Arial, sans-serif;
+    padding: 0;
 	color: #666;
+    height: 10px;
 	text-transform: uppercase;
 }
 #submenu_contents a, #submenu_contents span{
@@ -295,12 +304,13 @@ h3, h3 a{
     margin-left: 10px;
 }
 
-#submenu_right {
+.submenu_right {
 	font-size: 10px;
 	font-family: Helvetica, Arial, sans-serif;
-    float:left;
+    float:right;
     text-align:right;
-    width:300px;
+    width:270px;
+    margin-right: 6px;
 }
 
 #submenu_menu {

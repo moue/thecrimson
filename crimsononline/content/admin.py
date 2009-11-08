@@ -196,10 +196,11 @@ class ContentAdmin(admin.ModelAdmin):
     
     def save_model(self, request, obj, form, change):
         # don't let anyone change issue / slug on published content.
-        old_obj = self.model.objects.all_objects().get(pk=obj.pk)
+        if change:
+            old_obj = self.model.objects.all_objects().get(pk=obj.pk)
         
-        new_status = int(obj.pub_status)
-        old_status = int(old_obj.pub_status)
+            new_status = int(obj.pub_status)
+            old_status = int(old_obj.pub_status)
         
         if change and obj and new_status == 1:
             if (obj.issue != old_obj.issue or obj.slug != old_obj.slug) and old_status == 1:
