@@ -165,4 +165,10 @@
         
     {% tag_cloud 20 "Popular Tags" %}
     
+    {% module 4 "Featured Galleries" box %}
+    {% for gall in galleries %}
+        {{gall|render:"front_preview"}}
+    {% endfor %}
+    {% endmodule %}
+    
 {% endblock %}

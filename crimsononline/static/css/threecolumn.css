@@ -31,6 +31,10 @@
 .flyby_preview a:hover{
     text-decoration: none;
 }
+.front_gallery .text{
+    height: 20px;
+    margin-top: -20px;
+}
 
 .article_previews li {
     display: block; 
