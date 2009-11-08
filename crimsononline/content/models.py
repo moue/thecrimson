@@ -2,10 +2,11 @@ from hashlib import md5
 from random import randint
 from os.path import splitext, exists, split, join
 from datetime import datetime, time, date, timedelta
+from django.utils.datetime_safe import strftime
 from re import compile, match, sub
 from string import letters, digits
 from PIL import Image as pilImage
-import copy
+from django.utils.datetime_safe import strftime as strftime_safe
 
 from django.conf import settings
 from django.core import urlresolvers
@@ -801,7 +802,7 @@ class Issue(models.Model):
         return cache.set('current_issue', self, timeout)
     
     def __unicode__(self):
-        return self.issue_date.strftime('%A, %B %d, %Y')
+        return strftime_safe(self.issue_date, '%A, %B %d, %Y')
 
 
 class ImageManager(ContentManager):

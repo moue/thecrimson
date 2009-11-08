@@ -25,7 +25,7 @@ class Command(NoArgsCommand):
     help = "Sets the right content type on Content objects"
     
     def handle_noargs(self, **options):
-        Article.objects.all_objects().filter(section=Section.objects.get(name="Flyby")).delete()
+        Article.objects.all_objects().filter(section=Section.cached(flyby)).delete()
         convert(infile="wordpress.2009-11-07.xml")
 
 def get_issue(dt):
@@ -67,8 +67,7 @@ def convert(infile):
     	dt = node.getElementsByTagName('pubDate')[0].firstChild.data
         dt = datetime.strptime(dt, '%a, %d %b %Y %H:%M:%S +0000')
         a.issue = get_issue(dt)
-        a.section = Section.objects.get(name="Flyby")
-        a.group = ContentGroup.objects.get(type="blog",name="FlyBy")
+        a.section = Section.cached("flyby")
         slugtext = a.headline + " " + a.text
         
 
