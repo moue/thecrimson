@@ -196,9 +196,15 @@ class ContentAdmin(admin.ModelAdmin):
     
     def save_model(self, request, obj, form, change):
         # don't let anyone change issue / slug on published content.
-        if change and obj and int(obj.pub_status) == 1:
-            old_obj = self.model.objects.all_objects().get(pk=obj.pk)
-            if obj.issue != old_obj.issue or obj.slug != old_obj.slug:
+        old_obj = self.model.objects.all_objects().get(pk=obj.pk)
+        
+        new_status = int(obj.pub_status)
+        old_status = int(old_obj.pub_status)
+        print new_status
+        print old_status
+        
+        if change and obj and new_status == 1:
+            if (obj.issue != old_obj.issue or obj.slug != old_obj.slug) and old_status == 1:
                 request.user.message_set.create(message='You can\'t change '
                     'the issue or slug on published content.  Changes to '
                     'those fields have been undone.')
