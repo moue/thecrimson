@@ -31,7 +31,8 @@ ul.notext div.preview_text {
     display: none;
 }
 .preview_text > .teaser {
-    font-size: 13px;
+	font-family: helvetica, arial, sans-serif;
+    font-size: 11px;
 }
 
 .rotator_carousel {
