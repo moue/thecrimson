@@ -58,6 +58,19 @@ urlpatterns += patterns('',
     (r'^info/terms\.aspx', redirect('/about/permissions/')),
 )
 
+urlpatterns += patterns('',
+	#arts_features.aspx - unreachable
+    ('^arts_page\.aspx', redirect('/section/arts/')),
+	('^artsblog\.aspx', redirect('/section/arts/')),
+	#athleteoftheweek.aspx - page is broken
+	#blogentry.aspx - page broken
+	('^browse_by_issue\.aspx', redirect('/search/')),
+	#calendar_menu.aspx - blank page
+	('^cambridgenews\.aspx', redirect('/tag/cambridge%20city%20council/')),
+	)
+	
+	
+
 """ TODO:
 
 http://www.thecrimson.com/printerfriendly.aspx?ref=529893
