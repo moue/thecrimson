@@ -11,6 +11,6 @@ class ArticleIndex(indexes.SearchIndex):
 		return 'modified_on'
 		
 	def get_queryset(self):
-	    return Article.objects.filter(issue__issue_date__gte = datetime.date(1900,1,1))
+	    return Article.objects.filter(issue__issue_date__gte=datetime.date(1900,1,1))
 
 site.register(Article, ArticleIndex)
