@@ -18,7 +18,7 @@ from crimsononline.content.models import *
 
 def misc(request):
     from django.core.urlresolvers import get_resolver
-    r = get_resolver()
+    r = get_resolver(None)
     return HttpResponse(str(r.reverse_dict))
 
 def flush_cache(request):
