@@ -3,7 +3,6 @@
 {% load content_filters %}
 
 <div class="front_gallery">
-    {{gallery.section|yuhkilabel}}
-    <a href="{{gallery.get_absolute_url}}">{{gallery.cover_image|to_img_tag:"133,100,5,4" }}</a>
-    <a href="{{gallery.get_absolute_url}}">{{gallery.title}}</a>
+    <a href="{{gallery.get_absolute_url}}">{{gallery.cover_image|to_img_tag:"143,120,5,4" }}</a>
+    <a href="{{gallery.get_absolute_url}}"><h3>{{gallery.title}}</h3></a>
 </div>
