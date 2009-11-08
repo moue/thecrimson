@@ -115,6 +115,7 @@ INSTALLED_APPS = [
     'crimsononline.subscriptions',
 	'crimsononline.mware',
 ]
+
 try:
     import pysolr
     INSTALLED_APPS.append('haystack')
@@ -125,6 +126,8 @@ finally:
     INSTALLED_APPS = tuple(INSTALLED_APPS)
 
 
+    
+    
 MEDIA_LOC = MEDIA_ROOT
     
 EMAIL_HOST = 'smtp.gmail.com'
@@ -132,6 +135,16 @@ EMAIL_HOST_USER = 'crimsononlinemailer'
 EMAIL_HOST_PASSWORD = 'abomination'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
+
+# Notifies the users in "to" whenever someone edits an article over "time_span" days old"
+NOTIFY_ON_SKETCHY_EDIT = {
+    "enabled": False,
+    "from": "watchdog@thecrimson.com",
+    "to": ["cheeselord@gmail.com"],
+    "subject": "Sketchy Article Change!",
+    "time_span": 30, # In days
+}
+
 
 # specify SOLR options in local_settings.py
 SEARCH_SORT_PARAMS = {

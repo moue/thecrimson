@@ -208,7 +208,7 @@ class ContentAdmin(admin.ModelAdmin):
                     'those fields have been undone.')
                 obj.issue, obj.slug = old_obj.issue, old_obj.slug
             # don't let nonpermissioned users publish articles
-            if int(old_obj.pub_status) != 1 and not \
+            if old_status != 1 and not \
                 request.user.has_perm('content.content.can_publish'):
                 raise exceptions.SuspiciousOperation()
         
@@ -809,6 +809,14 @@ class ArticleAdmin(ContentAdmin):
         for i, r in enumerate(rel):
             x = ArticleContentRelation(order=i, article=obj, related_content=r)
             x.save()
+            
+        # Notifies authority figures if an old article has been modified, otherwise we'd never notice
+        notify_settings = settings.NOTIFY_ON_SKETCHY_EDIT
+        suspicion_cutoff = date.today() - timedelta(days=notify_settings["time_span"])
+        if obj.issue.issue_date < suspicion_cutoff and notify_settings["enabled"]:
+            subject = notify_settings["subject"]
+            body = render_to_string("email/confirm_email.txt", {"article": obj})
+            send_mail(subject, body, notify_settings["from"],  notify_settings["to"], fail_silently=False)
 
         return obj
     
@@ -1169,3 +1177,5 @@ class FlatPageAdmin(admin.ModelAdmin):
 
 admin.site.unregister(FlatPage)
 admin.site.register(FlatPage, FlatPageAdmin)
+
+admin.site.register(Correction)
