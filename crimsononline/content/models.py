@@ -230,7 +230,6 @@ class Content(models.Model):
             ('content.can_unpublish', 'Can unpublish content',),
         )
         get_latest_by = 'created_on'
-        ordering = ['-created_on']
     
     @permalink
     def get_absolute_url(self):
