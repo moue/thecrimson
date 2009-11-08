@@ -581,7 +581,7 @@ class GalleryForm(ContentModelForm):
     class Meta:
         model = Gallery
     
-    
+
 
 class GalleryAdmin(ContentAdmin):
     fieldsets = (
@@ -617,10 +617,17 @@ class GalleryAdmin(ContentAdmin):
     def save_model(self, request, obj, form, change):
         contents = form.cleaned_data.pop('contents', [])
         super(GalleryAdmin, self).save_model(request, obj, form, change)
+        # set the Gallery contents
         obj.contents.clear()
         for i, content in enumerate(contents):
             x = GalleryMembership(order=i, gallery=obj, content=content)
             x.save()
+        # publish all the contents if the gallery is also published
+        if obj.pub_status == 1:
+            for content in contents:
+                if content.pub_status != 1:
+                    content.pub_status = 1
+                    content.save()
         return obj
     
 

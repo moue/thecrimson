@@ -933,14 +933,6 @@ class Gallery(Content):
     def __unicode__(self):
         return self.title
     
-    def save(self, commit=True):
-        retval = super(Gallery, self).save(commit)
-        if self.pub_status == 1:
-            Content.objects.admin_objects() \
-                           .filter(galleries_set=self) \
-                           .update(pub_status=1)
-        return retval
-    
     def delete(self):
         self.contents.clear()
         super(Gallery, self).delete()
