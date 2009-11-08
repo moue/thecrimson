@@ -178,6 +178,7 @@
 {% module 12 "Featured Galleries" %}
 {% endmodule%}
 </div>
+<div class="front_galleries">
         <div class="col-2">
     {% for gall in galleries %}
         {{gall|render:"front_preview"}}
@@ -189,4 +190,5 @@
         {% endif %}
     {% endfor %}
         <span class="clear"></span>
+</div>
 {% endblock %}
