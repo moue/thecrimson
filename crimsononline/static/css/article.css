@@ -48,10 +48,6 @@ p {
     margin-top: 3px;
 }
 
-div#related_articles  li{
-    list-style-type: none;
-}
-
 /* article photo stuff */
 .tall{
     width: 300px;

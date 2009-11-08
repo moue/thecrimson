@@ -51,6 +51,22 @@
         {% block outside_content %}
         {% endblock %}
 
+
+        {% block related %}
+        {% with content.rel_content.all as ras %}
+        {% if ras %}
+            <div id="related_articles">
+                <h3>Related Articles:</h3>
+                <ul>
+                {% for ra in ras %}
+                    <li>{{ ra|linkify }}</li>
+                {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+        {% endwith %}
+        {% endblock %}
+
         {% module 8 "" none %}
         <div id="tags">
             {% with content.tags.all as a_tags %}
@@ -65,6 +81,8 @@
         {% endmodule %}
         
 
+        
+        
         {% module 8 comment %}
             {% block post_content %}
                 {% if disqus %}

@@ -811,6 +811,17 @@ class ArticleAdmin(ContentAdmin):
             x = ArticleContentRelation(order=i, article=obj, related_content=r)
             x.save()
             
+
+        # publish all the contents if the gallery is also publishe
+        if int(obj.pub_status) == 1: # why is pub_status a unicode?!
+            for content in obj.rel_content.all_objects():
+                print content
+                print content.pub_status
+                if content.pub_status != 1:
+                    content.pub_status = 1
+                    print content.pub_status
+                    content.save()
+
         # Notifies authority figures if an old article has been modified, otherwise we'd never notice
         notify_settings = settings.NOTIFY_ON_SKETCHY_EDIT
         suspicion_cutoff = date.today() - timedelta(days=notify_settings["time_span"])

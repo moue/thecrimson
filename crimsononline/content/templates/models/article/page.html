@@ -44,10 +44,12 @@
             {{ paras|slice:"4:"|join:"" }}
         {% endwith %}
     </div>
+    
+    {% block related %}
     {% with article.rel_content.all|rel_articles as ras %}
     {% if ras %}
         <div id="related_articles">
-            <h3>Related Articles</h3>
+            <h3>Related Articles:</h3>
             <ul>
             {% for ra in ras %}
                 <li>{{ ra|linkify }}</li>
@@ -56,5 +58,6 @@
         </div>
     {% endif %}
     {% endwith %}
+    {% endblock %}
 {% endblock %}
 

@@ -1,3 +1,9 @@
+
+div#related_articles  li{
+    list-style-type: none;
+    margin-bottom: 10px;
+}
+
 div#pre_content {
     width: inherit;
     float: left;
