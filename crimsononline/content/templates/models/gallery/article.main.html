@@ -13,6 +13,6 @@
             {{gallery|to_img_tag:"STAND"}}
         {% endifequal %}
     </a>
-    <p class="byline">By {{gallery.cover_image.contributors.all|linkify|humanize}}</p>
+    <p class="byline">By {{gallery.cover_image.contributors.all|linkify|human_list}}</p>
     <p class="caption">{{gallery.cover_image.caption}}</p>
 {% endblock %}
