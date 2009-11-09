@@ -1,2 +1,2 @@
-{% load common %}
-<img src="{% static_url "" %}{{youtubevideo.pic}}" style="width:75px;height:75px; alt="banner" />
+{% load content_filters %}
+{{youtubevideo.pic|to_img_tag:"75,75,1,1"}}

@@ -946,9 +946,14 @@ class Gallery(Content):
     
     @property
     def cover_image(self):
-        if not self.contents.all():
-            return None
-        return self.contents.all()[0].child
+        # TODO: clear this on save
+        if not hasattr(self, '_cover_image'):
+            if not self.contents.all():
+                ci = None
+            else:
+                ci = self.contents.all()[0].child
+            self._cover_image = ci
+        return self._cover_image
     
     @property
     def admin_contents(self):
