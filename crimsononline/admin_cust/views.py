@@ -5,6 +5,7 @@ from django.conf import settings
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User, Group
 from django.contrib.contenttypes.models import ContentType
+from django.core import urlresolvers
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.http import HttpResponse, Http404, HttpResponseRedirect
@@ -15,16 +16,21 @@ from django.utils.hashcompat import md5_constructor
 from django.utils.safestring import mark_safe
 
 from crimsononline.content.models import *
+from crimsononline.content.views import rotatables
 
-def misc(request):
-    """Solves a mysterious bug on ws2. Only need to run this on ws2."""
-    if not request.META.get('HTTP_HOST', '').startswith('localhost'):
-        raise Http404
-    from django.core.urlresolvers import get_resolver, reverse, _resolver_cache
-    r = get_resolver(None)
-    r._reverse_dict = None
-    _resolver_cache = None
-    return HttpResponse("success?")
+def rotator_items(self, section=None):
+    if section is None:
+        content = rotatables()
+    else:
+        try:
+            content = rotatables(Section.cached(section))
+        except:
+            raise Http404
+    output = ['<table><th><td>pk</td><td>ct</td><td>slug</td></th>']
+    tmpl = "<tr><td>%d</td><td>%s</td><td>%s</td></tr>"
+    output += [templ % (c.pk, c.content_type, c.slug) for c in content]
+    output.append('</table>')
+    return HttpResponse('\n'.join(output))
 
 def flush_cache(request):
     """Flush memcached"""

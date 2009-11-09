@@ -12,22 +12,22 @@ def view(request):
         import memcache
     except ImportError:
         raise http.Http404
-
+    
     if not (request.user.is_authenticated() and
             request.user.is_staff):
         raise http.Http404
-
+    
     # get first memcached URI
     m = re.match(
         "memcached://([.\w]+:\d+)", settings.CACHE_BACKEND
     )
     if not m:
         raise http.Http404
-
+    
     host = memcache._Host(m.group(1))
     host.connect()
     host.send_cmd("stats")
-
+    
     class Stats:
         pass
 
