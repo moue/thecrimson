@@ -504,7 +504,13 @@ class Tag(models.Model):
     
     CATEGORY_CHOICES = (
         ('sports', 'Sports'),
-        ('editorial', 'Editorial'),
+        ('college', 'College'),
+        ('faculty', 'Faculty'),
+        ('university', 'University'),
+        ('city', 'City'),
+        ('stugroups', 'Student Groups'),
+        ('houses', 'Houses'),
+        ('depts', 'Departments'),
         ('', 'Uncategorized')
     )
     
