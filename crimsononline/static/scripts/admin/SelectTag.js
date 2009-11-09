@@ -73,6 +73,8 @@ var SelectTag = {
         SelectBox.redisplay(to);
     },
 
+
+
     init: function(field_id, field_name, is_stacked, admin_media_prefix) {
         var from_box = document.getElementById(field_id);
         from_box.id += '_from'; // change its ID
