@@ -53,6 +53,9 @@ urlpatterns += patterns('django.views.generic.simple',
 )
 """
 
+# GHETTO ASS HACK TO GET WS2 WORKING
+#   for some, running admin.autodiscover() on the haystack app
+#   messes up loading the rest of the urls.py file, 
 ia = list(settings.INSTALLED_APPS)
 try:
     ia.remove('haystack')

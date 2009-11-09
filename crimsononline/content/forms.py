@@ -17,17 +17,19 @@ from crimsononline.content.models import Image, Issue, Content, Section
 from crimsononline.common.utils.misc import static_content
 
 class TagSelectWidget(forms.SelectMultiple):
-    """
-    A SelectMultiple with a JavaScript filter interface.
+    """A SelectMultiple with a JavaScript filter interface.
 
-    Note that the resulting JavaScript assumes that the jsi18n
-    catalog has been loaded in the page
+    This is designed only to be used in the admin interface.  Will probably
+    not work elsewhere without many 1337 haxx / patches.  Note that the 
+    resulting JavaScript assumes that the jsi18n
+    catalog has been loaded in the page.
     """
     class Media:
         js = (settings.ADMIN_MEDIA_PREFIX + "js/core.js",
               settings.ADMIN_MEDIA_PREFIX + "js/SelectBox.js",
-              settings.MEDIA_URL + "scripts/admin/SelectTag.js")
-
+              static_content("scripts/admin/SelectTag.js")
+             )
+    
     def __init__(self, verbose_name, is_stacked, attrs=None, choices=(), tags={}):
         self.verbose_name = verbose_name
         self.is_stacked = is_stacked
