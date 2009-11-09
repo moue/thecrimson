@@ -3,21 +3,16 @@
 {% load content_filters %}
 {% load common %}
 
-{% with gallery.cover_image as image %}
-
-    {% block wrapper_classes %}{{image.orientation}} image{% endblock %}
-
-    {% block wrapper_contents %}
-        <p class="kicker">{{image.kicker}}</p>
-        <a href="{{gallery.get_absolute_url}}">
-            {% ifequal image.orientation "tall" %}
-                {{image|to_img_tag:"300,"}}
-            {% else %}
-                {{image|to_img_tag:"STAND"}}
-            {% endifequal %}
-        </a>
-        <p class="byline">{{image.contributors.all}}</p>
-        <p class="caption">{{image.caption}}</p>
-    {% endblock %}
-
-{% endwith %}
+{% block wrapper_classes %}{{gallery.cover_image.orientation}} image{% endblock %}
+{% block wrapper_contents %}
+    <p class="kicker">{{gallery.cover_image.kicker}}</p>
+    <a href="{{gallery.get_absolute_url}}">
+        {% ifequal gallery.cover_image.orientation "tall" %}
+            {{gallery|to_img_tag:"300,"}}
+        {% else %}
+            {{gallery|to_img_tag:"STAND"}}
+        {% endifequal %}
+    </a>
+    <p class="byline">By {{gallery.cover_image.contributors.all|linkify|humanize}}</p>
+    <p class="caption">{{gallery.cover_image.caption}}</p>
+{% endblock %}
