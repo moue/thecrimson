@@ -815,11 +815,8 @@ class ArticleAdmin(ContentAdmin):
         # publish all the contents if the gallery is also publishe
         if int(obj.pub_status) == 1: # why is pub_status a unicode?!
             for content in obj.rel_content.all_objects():
-                print content
-                print content.pub_status
                 if content.pub_status != 1:
                     content.pub_status = 1
-                    print content.pub_status
                     content.save()
 
         # Notifies authority figures if an old article has been modified, otherwise we'd never notice
