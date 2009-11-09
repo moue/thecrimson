@@ -16,13 +16,15 @@ function findForm(node) {
 
 var SelectTag = {
 
-    addOption: function(id,tag) {
+    addOption: function(id,tag,redisplay) {
         // $("#id_tags_from").append("<option value='" + id + "'>" + tag + "</option>");
         option = new Object();
         option.value = id;
         option.text = tag;
         SelectBox.add_to_cache("id_tags_from",option);
-        SelectBox.redisplay("id_tags_from");
+        if(redisplay){
+            SelectBox.redisplay("id_tags_from");
+        }
     },
 
     clearSelect: function() {
@@ -41,7 +43,7 @@ var SelectTag = {
                 
                 SelectBox.add_to_cache(to, {value: option.value, text: option.text, displayed: 1});
                 SelectBox.delete_from_cache(from, option.value);
-
+                
                 // Adding a tag
                 if(from == "id_tags_from") {                
                     for (var category in tag_list) {
@@ -65,16 +67,12 @@ var SelectTag = {
                         }
                     }
                 }
-                
-                
             }
         }
         SelectBox.redisplay(from);
         SelectBox.redisplay(to);
     },
-
-
-
+    
     init: function(field_id, field_name, is_stacked, admin_media_prefix) {
         var from_box = document.getElementById(field_id);
         from_box.id += '_from'; // change its ID

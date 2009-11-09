@@ -13,7 +13,7 @@ from django.conf import settings
 from django.db.models import Q
 from django.template.loader import render_to_string
 from django.utils.safestring import mark_safe
-from crimsononline.content.models import Image, Issue, Content, Section
+from crimsononline.content.models import Image, Issue, Content, Section, Tag
 from crimsononline.common.utils.misc import static_content
 
 class TagSelectWidget(forms.SelectMultiple):
@@ -30,30 +30,28 @@ class TagSelectWidget(forms.SelectMultiple):
               static_content("scripts/admin/SelectTag.js")
              )
     
-    def __init__(self, verbose_name, is_stacked, attrs=None, choices=(), tags={}):
+    def __init__(self, verbose_name, is_stacked, attrs=None, choices=(), tag_qs=None):
+        if tag_qs is None:
+            tag_qs = Tag.objects.all()
+        categories = Tag.CATEGORY_CHOICES
+        tag_dict = {}
+        for short, verbose in categories:
+            tag_dict[verbose] = tag_qs.filter(category=short)
         self.verbose_name = verbose_name
         self.is_stacked = is_stacked
         super(TagSelectWidget, self).__init__(attrs, choices)
         #self.radio = radio
-        self.tags = tags
+        self.tags = tag_dict
 
     def render(self, name, value, attrs=None, choices=()):
-        
-        output = []
-        output.append(super(TagSelectWidget, self).render(name, value, attrs, choices))
-        
-        output.append(u'<script type="text/javascript">addEvent(window, "load", function(e) {')
-        # TODO: "id_" is hard-coded here. This should instead use the correct
-        # API to determine the ID dynamically.
-        output.append(u'SelectTag.init("id_%s", "%s", %s, "%s"); });</script>\n' % \
-            (name, self.verbose_name.replace('"', '\\"'), int(self.is_stacked), settings.ADMIN_MEDIA_PREFIX))
-            
-        tag_array = render_to_string('forms/select_tag_array.html', {"categories": self.tags})
-        output.append(tag_array)
-        
-        return mark_safe(u''.join(output))
-
-
+        owidg = super(TagSelectWidget, self).render(name, value, attrs, choices)
+        vname = self.verbose_name.replace('"', '\\"')
+        is_stacked = int(self.is_stacked)
+        adm_media_prefix = settings.ADMIN_MEDIA_PREFIX
+        categories = self.tags
+        return mark_safe(render_to_string('forms/select_tag_array.html', 
+                                          locals()))
+    
 
 
 class AutoGenSlugWidget(forms.widgets.TextInput):

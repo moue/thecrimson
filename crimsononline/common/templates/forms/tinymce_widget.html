@@ -22,7 +22,7 @@
         // don't use p tags
         force_p_newlines : true,
         entities: "amp",
-		content_css: "{{css_location}}css/flatpages.css",
+		content_css: "{{css_location}}css/flatpages.css"{% if custom_settings %},{% endif %}
         {{custom_settings}}
     });
 //});
