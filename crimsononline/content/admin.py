@@ -1,7 +1,5 @@
 from datetime import datetime, timedelta, date
-from re import compile
 from time import strptime
-from itertools import *
 import copy
 import re
 import urllib
@@ -108,7 +106,7 @@ class ContentModelForm(ModelForm):
             date_field='#id_issue_input', text_field='#id_text',
             attrs={'size': '40'},
         ), help_text="This is the text that goes in the URL.  Only letters," \
-        "numbers, _, and - are allowed", required=True
+        "numbers, _, and - are allowed", required=True, max_length=70
     )
     section = forms.ModelChoiceField(Section.all(), required=True)
     priority = forms.ChoiceField(choices=Content.PRIORITY_CHOICES, 
@@ -319,7 +317,7 @@ class ContentAdmin(admin.ModelAdmin):
     make_draft.short_description = 'Mark content as Draft'
 
 class TagForm(forms.ModelForm):
-    ALLOWED_REGEXP = compile(r'[A-Za-z\s\']+$')
+    ALLOWED_REGEXP = re.compile(r'[A-Za-z\s\']+$')
     
     class Meta:
         model = Tag
@@ -573,7 +571,7 @@ class GalleryForm(ContentModelForm):
         self.fields['pub_status'].help_text = """Warning: publishing this
             gallery will publish all content inside the gallery."""
     
-    contents = RelatedContentField(label='Contents', required=False,
+    contents = RelatedContentField(label='Contents', required=True,
         admin_site=admin.site, rel_types=[Image, YouTubeVideo])
     slug = forms.fields.SlugField(widget=AutoGenSlugWidget(
             url='/admin/content/article/gen_slug/',
@@ -652,13 +650,13 @@ class ArticleForm(ContentModelForm):
         required=False, help_text="""
         A short sample from the article, or a summary of the article. <br>
         If you don't provide a teaser, we will automatically generate one 
-        for you."""
+        for you.""", max_length=2500
     )
     subheadline = forms.fields.CharField(
         widget=forms.TextInput(attrs={'size':'70'}),
-        required=False
+        required=False, max_length=255
     )
-    headline = forms.fields.CharField(
+    headline = forms.fields.CharField(max_length=127,
         widget=forms.TextInput(attrs={'size':'70'})
     )
     text = forms.fields.CharField(
@@ -666,7 +664,7 @@ class ArticleForm(ContentModelForm):
         "If you're copying and pasting from MS Word, please use the 'Paste "
         "From Word' button (with a little 'W' on it)"
     )
-    corrections = forms.ModelChoiceField(queryset = Section.all(), required=False)
+    corrections = forms.ModelChoiceField(queryset=Section.all(), required=False)
     proofer = FbModelChoiceField(required=False, multiple=False,
         url='/admin/content/contributor/search/', model=Contributor,
         labeler=(lambda obj: str(obj)))
@@ -701,8 +699,6 @@ class ArticleForm(ContentModelForm):
             teaser = TEASER_RE.sub("",teaser)
             return truncatewords(teaser, 20)
     
-
-
     def clean(self):
         self.cleaned_data.pop('corrections')
         
@@ -717,7 +713,7 @@ class ArticleForm(ContentModelForm):
                 msg = "This Article cannot be set to rotate since its primary related Content is not rotatable"
                 self._errors['rotatable'] = ErrorList([mark_safe(msg)])
         return super(ArticleForm, self).clean()
-                
+    
     class Meta:
         model = Article
 
@@ -971,6 +967,7 @@ class YouTubeVideoForm(ContentModelForm):
 
 class YouTubeVideoAdmin(ContentAdmin):
     form = YouTubeVideoForm
+    list_filter = ('section',)
     list_display = ('admin_thumb', 'title', 'youtube_url', 'section', 
                     'issue', 'pub_status', 'rotatable',)
     

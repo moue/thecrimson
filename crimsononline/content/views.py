@@ -10,7 +10,7 @@ from django.conf import settings
 from django.contrib.flatpages.models import FlatPage
 from django.contrib.contenttypes.models import ContentType
 from django.db import connection
-from django.db.models import Count, Max, Q
+from django.db.models import Count, Max, Q, Sum
 from django.utils import simplejson
 from django.views.decorators.cache import cache_page
 
@@ -258,9 +258,12 @@ def section_photo(request):
     
     sort = request.GET.get('sort')
     if sort == 'read':
-        RECENT_DAYS = timedelta(days=120)
+        RECENT_DAYS = timedelta(days=60)
         newer_than = datetime.now() - RECENT_DAYS
-        content = Content.objects.filter(issue__issue_date__gte=newer_than).order_by("-contenthits")
+        content = Content.objects \
+                         .filter(issue__issue_date__gte=newer_than) \
+                         .annotate(hits=Sum('contenthits__hits')) \
+                         .order_by('-hits')
     else:
         content = Content.objects.recent
     

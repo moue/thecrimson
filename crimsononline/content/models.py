@@ -1092,8 +1092,8 @@ class Article(Content):
     """
         
     BYLINE_TYPE_CHOICES = (
-        ('cstaff', 'Crimson Staff Writer'),
-        ('contrib', 'Contributing Writer'),
+        ('cstaff', 'Crimson Staff Writer(s)'),
+        ('contrib', 'Contributing Writer(s)'),
     )
     
     SPORTS_TYPE_CHOICES = (
