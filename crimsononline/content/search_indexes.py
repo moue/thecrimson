@@ -13,8 +13,5 @@ class ArticleIndex(indexes.SearchIndex):
     def get_queryset(self):
         return Article.objects.filter(issue__issue_date__gte=datetime.date(1900,1,1))
     
-    def should_update(self, instance, **kwargs):
-        return False
-    
 
 site.register(Article, ArticleIndex)
