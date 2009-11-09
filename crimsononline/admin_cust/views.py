@@ -28,7 +28,7 @@ def rotator_items(self, section=None):
             raise Http404
     output = ['<table><th><td>pk</td><td>ct</td><td>slug</td></th>']
     tmpl = "<tr><td>%d</td><td>%s</td><td>%s</td></tr>"
-    output += [templ % (c.pk, c.content_type, c.slug) for c in content]
+    output += [tmpl % (c.pk, c.content_type, c.slug) for c in content]
     output.append('</table>')
     return HttpResponse('\n'.join(output))
 
