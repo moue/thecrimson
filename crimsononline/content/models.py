@@ -1158,7 +1158,7 @@ class Article(Content):
     byline_type = models.CharField(
         blank=True, null=True, max_length=70, choices=BYLINE_TYPE_CHOICES,
         help='This will automatically be pluralized if there are multiple ' \
-             'contributors.)
+             'contributors.')
     text = models.TextField(blank=False, null = False)
     teaser = models.CharField(
         blank=True, max_length=2500,
