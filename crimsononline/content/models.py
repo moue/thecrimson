@@ -870,6 +870,11 @@ class Image(Content):
     objects = ImageManager()
     
     @property
+    def img_title(self):
+        """Title / alt for <img> tags."""
+        return self.kicker
+    
+    @property
     def orientation(self):
         ratio = float(self.pic.width) / float(self.pic.height)
         if ratio >= 1.4:
@@ -922,6 +927,16 @@ class Gallery(Content):
         related_name="galleries_set")
     
     objects = ContentManager()
+    
+    @property
+    def img_title(self):
+        """Title/alt for an <img> tag"""
+        return self.title
+    
+    def display_url(self, size_spec):
+        if self.cover_image is None:
+            return ''
+        return self.cover_image.display_url(size_spec)
     
     @property
     def cover_image(self):
@@ -980,6 +995,11 @@ class YouTubeVideo(Content):
         upload_to=youtube_get_save_path, null=True)
     
     objects = ContentManager()
+    
+    @property
+    def img_title(self):
+        """Title/alt for <img> tags."""
+        return self.title
     
     def __unicode__(self):
         return self.title
@@ -1093,8 +1113,8 @@ class Article(Content):
     """
         
     BYLINE_TYPE_CHOICES = (
-        ('cstaff', 'Crimson Staff Writer(s)'),
-        ('contrib', 'Contributing Writer(s)'),
+        ('cstaff', 'Crimson Staff Writer'),
+        ('contrib', 'Contributing Writer'),
     )
     
     SPORTS_TYPE_CHOICES = (
@@ -1136,7 +1156,9 @@ class Article(Content):
     headline = models.CharField(blank=False, max_length=127, db_index=True)
     subheadline = models.CharField(blank=True, null=True, max_length=255)
     byline_type = models.CharField(
-        blank=True, null=True, max_length=70, choices=BYLINE_TYPE_CHOICES)
+        blank=True, null=True, max_length=70, choices=BYLINE_TYPE_CHOICES,
+        help='This will automatically be pluralized if there are multiple ' \
+             'contributors.)
     text = models.TextField(blank=False, null = False)
     teaser = models.CharField(
         blank=True, max_length=2500,

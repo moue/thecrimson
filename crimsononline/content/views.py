@@ -501,7 +501,6 @@ def filter_helper(req, qs, section_str, type_str, url_base):
 
         if(type in content_choices + ["other"]):
             tps[type[0].upper() + type[1:]] = {'selected': sel, 'url': url, 'count':ct}
-        
     
     return {'content': content, 'sections': sects, 'types': tps, 'show_filter':(show_filter_1 or show_filter_2)}
 

@@ -397,7 +397,6 @@ class ContributorAdmin(admin.ModelAdmin):
         (None, {
             'fields': (
                 ('first_name', 'middle_name', 'last_name'),
-                'type',
                 'is_active',
             )
         }),

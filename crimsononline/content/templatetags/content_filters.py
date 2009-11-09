@@ -90,7 +90,7 @@ def img_gallery_margin(img):
 
 @register.filter
 def to_img_tag(img, size_spec):
-    """Turns an Image into an img tag (html).
+    """Turns an Image or ImageGallery into an img tag (html).
     
     @size_spec => the size spec of the display image. 3 possible formats:
         string name of the size_spec defined in the Image model
@@ -106,12 +106,8 @@ def to_img_tag(img, size_spec):
     if img.__class__ is Content:
         img = img.child
     disp_url = img_url(img, size_spec)
-    if hasattr(img, 'kicker'):
-        k = filter.force_escape(img.kicker)
-    else:
-        k = ''
-    tag = '<img src="%s" title="%s" alt="%s"/>' % \
-            (disp_url, k, k)
+    k = filter.force_escape(getattr(img, 'img_title', ''))
+    tag = '<img src="%s" title="%s" alt="%s"/>' % (disp_url, k, k)
     return mark_safe(tag)
 
 @register.filter
