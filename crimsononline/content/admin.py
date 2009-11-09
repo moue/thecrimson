@@ -946,7 +946,7 @@ admin.site.register(Article, ArticleAdmin)
 class ReviewAdmin(admin.ModelAdmin):
     radio_fields = {"rating": admin.HORIZONTAL}
 
-admin.site.register(Review, ReviewAdmin)
+#admin.site.register(Review, ReviewAdmin)
 
 class YouTubeVideoForm(ContentModelForm):
     pic = forms.fields.ImageField(widget=admin.widgets.AdminFileWidget,
