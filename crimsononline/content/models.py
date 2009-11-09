@@ -31,6 +31,7 @@ from crimsononline.common.caching import funcache, expire_page, expire_stuff
 from crimsononline.common.fields import \
     MaxSizeImageField, SuperImageField
 from crimsononline.common.storage import OverwriteStorage
+from crimsononline.common.utils.misc import ret_on_fail
 from crimsononline.common.utils.strings import \
     make_file_friendly, make_url_friendly
 from crimsononline.admin_cust.models import Board
@@ -607,6 +608,7 @@ class Contributor(models.Model):
     def get_absolute_url(self):
         return ('content_writer_profile', 
             [str(self.id), self.first_name, self.middle_name, self.last_name])
+    get_absolute_url = ret_on_fail(get_absolute_url, '')
 
 
 class Section(models.Model):
