@@ -10,12 +10,11 @@ $(document).ready(function(){
             $(".a_right").fadeOut("fast");
         });
     }
-
-
+    
     /* ========= the carousel stuff ============== */
     var num_items = $(".carousel_frame ul").children().length;
     var cur_item = 0;
-
+    
     // returns false if the slide was unsuccessful
     var slide_carousel = function(dir){
         cur_item += dir;

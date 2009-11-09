@@ -1,8 +1,8 @@
 import sys
 import re
-from django.utils import simplejson
 from StringIO import StringIO
 from datetime import datetime, timedelta, date
+
 from django.shortcuts import get_object_or_404, get_list_or_404, render_to_response
 from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.template import Context, loader
@@ -11,7 +11,9 @@ from django.contrib.flatpages.models import FlatPage
 from django.contrib.contenttypes.models import ContentType
 from django.db import connection
 from django.db.models import Count, Max, Q
+from django.utils import simplejson
 from django.views.decorators.cache import cache_page
+
 from crimsononline.content.models import *
 from crimsononline.content_module.models import ContentModule
 from crimsononline.common.caching import funcache as cache
@@ -254,35 +256,30 @@ def section_photo(request):
         raise Http404
     nav = 'photo'
     
-    video_ct = ContentType.objects.get(name="you tube video")
-    gallery_ct = ContentType.objects.get(name="gallery")
-    cts = [video_ct, gallery_ct]
-    
     sort = request.GET.get('sort')
     if sort == 'read':
         RECENT_DAYS = timedelta(days=120)
         newer_than = datetime.now() - RECENT_DAYS
-        content = Content.objects.filter(issue__issue_date__gte = newer_than).order_by("-contenthits")
+        content = Content.objects.filter(issue__issue_date__gte=newer_than).order_by("-contenthits")
     else:
         content = Content.objects.recent
+    
+    c_type = request.GET.get('type')
+    if c_type == 'gallery':
+        cts = [Gallery.ct()]
+    elif c_type == 'you tube video':
+        cts = [YouTubeVideo.ct()]
+    else:
+        cts = [YouTubeVideo.ct(), Gallery.ct()]
     content = content.filter(content_type__in=cts)
     
     section = request.GET.get('section')
     if section and request.GET.has_key('ajax'):
         try:
             s_obj = Section.objects.get(name__iexact=section)
-            content = content.filter(section = s_obj)
+            content = content.filter(section=s_obj)
         except:
             pass
-            
-    c_type = request.GET.get('type')
-    if type and request.GET.has_key('ajax'):
-        try:
-            c_type = ContentType.objects.get(name=c_type)
-        except:
-            pass
-        if c_type in cts:
-            cts = [c_type]
     
     d = paginate(content, page, 6)
     d.update({'nav': nav})

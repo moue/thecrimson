@@ -212,7 +212,15 @@ class Content(models.Model):
         except:
             pass
         return retval
-
+    
+    @classmethod
+    def ct(cls):
+        """Returns the content type for this class.
+        
+        Note that ContentType.objects already caches
+        """
+        return ContentType.objects.get_for_model(cls)
+    
     @property
     def child(self):
         """Return the instance of the child class.
