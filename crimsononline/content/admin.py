@@ -817,15 +817,14 @@ class ArticleAdmin(ContentAdmin):
                 if content.pub_status != 1:
                     content.pub_status = 1
                     content.save()
-
+        
         # Notifies authority figures if an old article has been modified, otherwise we'd never notice
-        notify_settings = settings.NOTIFY_ON_SKETCHY_EDIT
-        suspicion_cutoff = date.today() - timedelta(days=notify_settings["time_span"])
-        if obj.issue.issue_date < suspicion_cutoff and notify_settings["enabled"]:
-            subject = notify_settings["subject"]
-            body = render_to_string("email/confirm_email.txt", {"article": obj})
-            send_mail(subject, body, notify_settings["from"],  notify_settings["to"], fail_silently=False)
-
+        #notify_settings = settings.NOTIFY_ON_SKETCHY_EDIT
+        #suspicion_cutoff = date.today() - timedelta(days=notify_settings["time_span"])
+        #if obj.issue.issue_date < suspicion_cutoff and notify_settings["enabled"]:
+        #    subject = notify_settings["subject"]
+        #    body = render_to_string("email/confirm_email.txt", {"article": obj})
+        #    send_mail(subject, body, notify_settings["from"],  notify_settings["to"], fail_silently=False)
         return obj
     
     def get_urls(self):
