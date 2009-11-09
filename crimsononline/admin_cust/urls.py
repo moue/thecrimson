@@ -1,6 +1,7 @@
 from django.conf.urls.defaults import *
 from django.contrib import admin
 from crimsononline.admin_cust.views import *
+from crimsononline.admin_cust.memcached_status import view as mcstatus
 
 urlpatterns = patterns('',
     (r'^content/gallery/get_images/pk/(?P<pk>\d+)/$', get_imgs),
@@ -9,7 +10,7 @@ urlpatterns = patterns('',
     (r'^content/gallery/get_gallery/(img|gal)/(\d+)/$', get_gallery),
     (r'^flush_cache/$', admin.site.admin_view(flush_cache)),
     (r'^rotator/(\w+)/$', admin.site.admin_view(rotator_items)),
-    (r'^status/cache/$', 'crimsononline.admin_cust.memcached_status.view'),
+    (r'^status/cache/$', mcstatus),
 )
 
 urlpatterns += patterns('',
