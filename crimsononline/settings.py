@@ -141,7 +141,7 @@ NOTIFY_ON_SKETCHY_EDIT = {
     "from": "watchdog@thecrimson.com",
     "to": ["cheeselord@gmail.com"],
     "subject": "Sketchy Article Change!",
-    "time_span": 30, # In days
+    "time_span": 7, # In days
 }
 
 
