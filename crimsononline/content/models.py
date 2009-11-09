@@ -238,6 +238,7 @@ class Content(models.Model):
         permissions = (
             ('content.can_publish', 'Can publish content',),
             ('content.can_unpublish', 'Can unpublish content',),
+            ('content.can_delete_published', 'Can delete published content'),
         )
         get_latest_by = 'created_on'
     

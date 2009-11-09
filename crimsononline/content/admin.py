@@ -21,11 +21,12 @@ from django.db.models import Q
 from django.forms import ModelForm
 from django.forms.util import ErrorList
 from django.http import Http404, HttpResponse
-from django.shortcuts import render_to_response, get_object_or_404
+from django.shortcuts import render_to_response, get_object_or_404, redirect
 from django.template.defaultfilters import truncatewords
 from django.utils import simplejson, html
 from django.utils.safestring import mark_safe
 from django.utils.hashcompat import md5_constructor
+from django.core.exceptions import PermissionDenied
 
 from crimsononline.admin_cust.models import UserData
 from crimsononline.content.models import *
@@ -193,6 +194,7 @@ class ContentAdmin(admin.ModelAdmin):
         return f
     
     def save_model(self, request, obj, form, change):
+    
         # don't let anyone change issue / slug on published content.
         if change:
             old_obj = self.model.objects.all_objects().get(pk=obj.pk)
@@ -216,6 +218,27 @@ class ContentAdmin(admin.ModelAdmin):
             form.cleaned_data['pub_status'] is -1:
             raise exceptions.SuspiciousOperation()
         super(ContentAdmin, self).save_model(request, obj, form, change)
+
+    #  Prevents deletion of published content by users without the necessary permissions    
+    def delete_view(self, request, object_id, extra_context=None):
+        obj = self.queryset(request).get(pk=object_id)
+        
+        # If it's published, require stricter permissions
+        if int(obj.pub_status) == 1 and not request.user.has_perm('content.content.can_delete_published'):
+            request.user.message_set.create(message="You do not have permission to delete published articles.")
+            change_url = urlresolvers.reverse('admin:content_%s_change' % self.model.ct().name, args=(object_id,))
+            return redirect(change_url)
+        
+        # They have good permissions, or it's a draft, so let ModelAdmin's delete_view handle the other permissions checks
+        return super(ContentAdmin,self).delete_view(request, object_id, extra_context)
+        
+    # Prevent bulk-deletion of content by users without necessary permissions
+    def get_actions(self, request):
+        actions = super(ContentAdmin, self).get_actions(request)
+        if not request.user.has_perm('content.content.can_delete_published'):
+            del actions['delete_selected']
+        return actions
+
     
     def get_urls(self):
         return patterns('',
