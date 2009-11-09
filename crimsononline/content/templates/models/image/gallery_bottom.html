@@ -2,7 +2,7 @@
 {% load content_filters %}
 <div class="right">
     <div class="byline">CRIMSON/ {{ image.contributors.all|linkify|human_list }}</div>
-    <div class="buyline"><img src="{% static_url "images/icons/shoppingcart.gif" %}" /><span>Buy</span></div>
+    <div class="buyline">&nbsp;</div>
     <p class="tags_heading">Photo {{ "Tags"|yuhkilabel:"black"}}</p>
     <p class="tags">{{ image.tags.all|linkify|human_list}}</p>
 </div>
