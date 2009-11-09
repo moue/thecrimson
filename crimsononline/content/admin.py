@@ -61,6 +61,12 @@ class ContentGroupModelForm(ModelForm):
 
 class ContentGroupAdmin(admin.ModelAdmin):
     form = ContentGroupModelForm
+    
+    class Media:
+        js = (
+            'scripts/noenter.js',
+        )
+    
     def get_urls(self):
         urls = super(ContentGroupAdmin, self).get_urls()
         urls = patterns('',
@@ -164,7 +170,12 @@ class ContentAdmin(admin.ModelAdmin):
     
     ordering = ('-issue__issue_date',)
     actions = ['make_published', 'make_draft',]
-    
+	
+    class Media:
+        js = (
+            'scripts/noenter.js',
+        )
+	
     def get_form(self, request, obj=None):
         f = super(ContentAdmin, self).get_form(request, obj)
         
@@ -405,6 +416,11 @@ class ContributorAdmin(admin.ModelAdmin):
     )
     form = ContributorForm
     
+    class Media:
+        js = (
+            'scripts/noenter.js',
+        )
+    
     def get_form(self, request, obj=None, **kwargs):
         f = super(ContributorAdmin, self).get_form(request, obj, **kwargs)
         if obj and obj.user and obj.user.get_profile():
@@ -474,7 +490,12 @@ class IssueAdmin(admin.ModelAdmin):
     search_fields = ('issue_date',)
     fields = ('issue_date', 'web_publish_date', 'special_issue_name', 
         'fm_name', 'arts_name', 'comments',)
-        
+    
+    class Media:
+        js = (
+            'scripts/noenter.js',
+        )
+    
     def get_urls(self):
         urls = patterns('',
             (r'^special_issue_list/$', 
@@ -1142,7 +1163,6 @@ class MapAdmin(ContentAdmin):
         )
 
 admin.site.register(Map, MapAdmin)
-admin.site.register(Marker)
 
 class HUIDBackend:
     """
