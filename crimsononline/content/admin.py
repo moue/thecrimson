@@ -705,7 +705,7 @@ class ArticleForm(ContentModelForm):
 
     def clean(self):
         self.cleaned_data.pop('corrections')
-
+        
         if int(self.cleaned_data['rotatable']) > 0:
             # Check that content can be rotated if it's marked rotatable
             rotatable_names = ['image', 'gallery', 'you tube video', 'map']
@@ -810,11 +810,10 @@ class ArticleAdmin(ContentAdmin):
         for i, r in enumerate(rel):
             x = ArticleContentRelation(order=i, article=obj, related_content=r)
             x.save()
-            
-
+        
         # publish all the contents if the gallery is also publishe
         if int(obj.pub_status) == 1: # why is pub_status a unicode?!
-            for content in obj.rel_content.all_objects():
+            for content in rel:
                 if content.pub_status != 1:
                     content.pub_status = 1
                     content.save()
