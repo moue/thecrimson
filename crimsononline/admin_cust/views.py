@@ -18,8 +18,8 @@ from django.utils.safestring import mark_safe
 from crimsononline.content.models import *
 from crimsononline.content.views import rotatables
 
-def rotator_items(self, section=None):
-    if section is 'front':
+def rotator_items(self, section='front'):
+    if section == 'front':
         content = rotatables()
     else:
         try:
