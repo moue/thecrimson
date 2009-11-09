@@ -9,7 +9,7 @@ urlpatterns = patterns('',
     (r'^content/gallery/get_gallery/(img|gal)/(\d+)/$', get_gallery),
     (r'^flush_cache/$', admin.site.admin_view(flush_cache)),
     (r'^fuck/$', misc),
-    (r'^status/cache/$', 'admin_cust.memcached_status.view'),
+    (r'^status/cache/$', 'crimsononline.admin_cust.memcached_status.view'),
 )
 
 urlpatterns += patterns('',
