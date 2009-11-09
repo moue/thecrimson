@@ -87,7 +87,10 @@ class AutosizeImageFieldFile(ImageFieldFile):
         path = self._path_cache.get(size_spec, None)
         if path:
             return path
-        path = self._get_path(size_spec)
+        try:
+            path = self._get_path(size_spec)
+        except IOError:
+            return ''
         if not exists(path):
             img = pilImage.open(self.path)
             ht, wd = size_spec_to_size(size_spec, self.width, self.height)
