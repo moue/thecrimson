@@ -118,7 +118,7 @@ def img_url(img, size_spec):
         size_spec = [s or 0 for s in size_spec]
     else:
         size_spec = str(size_spec)
-        s = getattr(img, 'SIZE_' + size_spec, None)
+        s = getattr(Image, 'SIZE_' + size_spec, None)
         if not s:
             size_spec = size_spec.replace('(','').replace(')','')
             size_spec = [s or 0 for s in size_spec.split(',')]
