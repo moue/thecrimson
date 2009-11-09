@@ -60,17 +60,59 @@ urlpatterns += patterns('',
 
 urlpatterns += patterns('',
 	#arts_features.aspx - unreachable
-    ('^arts_page\.aspx', redirect('/section/arts/')),
-	('^artsblog\.aspx', redirect('/section/arts/')),
+	(r'^artsblog\.aspx', redirect('/section/arts/')),
 	#athleteoftheweek.aspx - page is broken
 	#blogentry.aspx - page broken
 	('^browse_by_issue\.aspx', redirect('/search/')),
 	#calendar_menu.aspx - blank page
-	('^cambridgenews\.aspx', redirect('/tag/cambridge%20city%20council/')),
-	)
-	
-	
-
+	(r'^cambridgenews\.aspx', redirect_tag('Cambridge')),
+    (r'^classifieds\.aspx', redirect('/subscribe/')), # TODO
+    #commencement pages should be done, should just paste in html from old site to flat page on new site
+        #same with index_commencement2007.aspx
+    #comics.aspx  - broken on this site
+    #comment.aspx - just the comment box
+    #confi.aspx - works on the site, decided would be too much work to recreate (also configuide2006)
+    (r'^crisis\.aspx', redirect('/section/news')),
+    (r'^dailygallery\.aspx', redirect('/section/photo')),
+    (r'^donate\.aspx', redirect('/about/donate')),
+    (r'^edigest\.aspx', redirect('/subscribe')),
+    (r'^edigestmanage\.aspx', redirect('/subscribe')),
+	(r'^editorialcartoons\.aspx', redirect('/section/opinion')),
+    #election2008 should be done, should just paste in html from old site to flat page on new site
+    #email is just the email story form
+    #events can 404, no one should visit
+    #fiction goes to a blank page
+    (r'^gallery\.aspx', redirect('/section/photo')),
+    (r'^gallery_new\.aspx', redirect('/section/photo')),
+    #iraq.aspx should get the commencement page treatment (paste in html to flat page on new site)
+    #journalismfair stuff can 404
+    #layoffs.aspx is blank
+    #login can 404
+    #myfirstyear09.aspx is AWESOME and should definitely be transferred via the flat page method
+    #neworleans.aspx can be put on a flat page
+    #news_new is broken
+    #news_page is broken
+    #newstoday is also broken
+    (r'^opinion_old\.aspx', redirect('/section/opinion')),
+    #photorequest.aspx can 404
+    #postblogcomment.aspx can 404
+    #postcards08.aspx and postcards09.aspx should have their html transferred to a flat page
+    #postcomment can 404
+    #presidentialsearch.aspx is blank, can 404
+    #printerfriendly.aspx can 404
+    (r'^privacy\.aspx', redirect('/about/privacy/')),
+    #propertymap.aspx should be pasted to a flat page
+    #reportblogcomment.aspx can 404
+    (r'^rss\.aspx', redirect('/subscribe')),
+    (r'^science\.aspx', redirect_tag('Science')),
+    #senddigest.aspx can 404
+    (r'^terms\.aspx', redirect('/about/privacy/')),
+    #uc.aspx should be pasted to new flat page
+    #ucelection2007.aspx should link to the uc.aspx flat page
+    #writer.aspx can 404 
+    
+    
+)
 """ TODO:
 
 http://www.thecrimson.com/printerfriendly.aspx?ref=529893
