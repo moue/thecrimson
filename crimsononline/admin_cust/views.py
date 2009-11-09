@@ -19,17 +19,17 @@ from crimsononline.content.models import *
 from crimsononline.content.views import rotatables
 
 def rotator_items(self, section=None):
-    if section is None:
+    if section is 'front':
         content = rotatables()
     else:
         try:
             content = rotatables(Section.cached(section))
         except:
             raise Http404
-    output = ['<table><th><td>pk</td><td>ct</td><td>slug</td></th>']
+    output = ['<html><head></head><body><table><th><td>pk</td><td>ct</td><td>slug</td></th>']
     tmpl = "<tr><td>%d</td><td>%s</td><td>%s</td></tr>"
     output += [tmpl % (c.pk, c.content_type, c.slug) for c in content]
-    output.append('</table>')
+    output.append('</table></body></html>')
     return HttpResponse('\n'.join(output))
 
 def flush_cache(request):
