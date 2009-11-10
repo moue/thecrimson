@@ -30,8 +30,8 @@ div#viewer_sidebar_wrapper {
 }
 #viewer_sidebar #toggle_filters{
     cursor: pointer;
-    display: block;
-    float: right;
+    display: inline-block;
+    
     height: 20px;
     line-height: 16px;
     padding: 0px;
