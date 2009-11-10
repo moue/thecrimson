@@ -28,8 +28,8 @@ class AjaxSearchView(SearchView):
             'form': self.form,
             'page': page,
             'paginator': paginator,
-            'contributors': matching_contributors,
-            'tags': matching_tags,
+            'mcontributors': matching_contributors,
+            'mtags': matching_tags,
         }
         context.update(self.extra_context())
 

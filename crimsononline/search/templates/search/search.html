@@ -62,9 +62,9 @@
 {% block right %}
 {% if form.q %}
 {% module 4 "related contributors" box %}
-	{% if contributors %}
+	{% if mcontributors %}
 		<ul class="sub_search_results">
-		{% for contributor in contributors %}
+		{% for contributor in mcontributors %}
 			<li><a href="{{contributor.object.get_absolute_url}}">{{contributor.object}}</a></li>
 		{% endfor %}
 		</ul>
@@ -74,9 +74,9 @@
 {% endmodule %}
 
 {% module 4 "related tags" box %}
-	{% if tags %}
+	{% if mtags %}
 		<ul class="sub_search_results">
-		{% for tag in tags %}
+		{% for tag in mtags %}
 			<li><a href="{{tag.object.get_absolute_url}}">{{tag.object.text}}</a></li>
 		{% endfor %}
 		</ul>
