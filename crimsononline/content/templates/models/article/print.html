@@ -19,7 +19,7 @@
     {% if article.subheadline %}<h2>{{ article.subheadline }}</h2>{% endif %}
 
     <div class="byline">
-        By {{ article.contributors.all|human_list }}
+        {{ article|byline:"long" }}
     </div>
     <div class="text">
         {% with article.text|safe|paragraphs as paras %}
