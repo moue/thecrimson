@@ -1,7 +1,7 @@
 <tr>
-    <td style="vertical-align:top;" class="field">
+    <td style="vertical-align:top;" class="field" width="100px">
     {% if form.name.errors %}<span class="errormessage2">{% endif %}
-    {{ form.name.label_tag }}
+    {{ form.name.label_tag }}: 
     {% if form.name.errors %}</span>{% endif %}					
     </td>
     <td>{{ form.name }}</td>
@@ -9,7 +9,7 @@
 <tr>
     <td style="vertical-align:top;" class="field">
     {% if form.email.errors %}<span class="errormessage2">{% endif %}
-    {{ form.email.label_tag }}
+    {{ form.email.label_tag }}:     
     {% if form.email.errors %}</span>{% endif %}					
     </td>
     <td>{{ form.email}}</td>
@@ -17,7 +17,7 @@
 <tr>
     <td style="vertical-align:top;" class="field">
     {% if form.message.errors %}<span class="errormessage2">{% endif %}
-    {{ form.message.label_tag }}
+    {{ form.message.label_tag }}:     
     {% if form.message.errors %}</span>{% endif %}					
     </td>
     <td>{{ form.message }}</td>
