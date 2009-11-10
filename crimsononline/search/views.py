@@ -11,7 +11,6 @@ class AjaxSearchView(SearchView):
         Generates the actual HttpResponse to send back to the user.
         """
         
-        """
         qu =  self.request.GET.get('q','')
         if qu:
             contributors_qs = SearchQuerySet().models(Contributor)
@@ -21,10 +20,6 @@ class AjaxSearchView(SearchView):
         else:
             matching_contributors = None
             matching_tags = None
-        """
-        matching_contributors = None
-        matching_tags = None
-        
         
         (paginator, page) = self.build_page()
         
