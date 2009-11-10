@@ -820,7 +820,7 @@ class ArticleAdmin(ContentAdmin):
     )
     
     form = ArticleForm
-    inlines = [ScoreInline,]
+    #inlines = [ScoreInline,]
     
     class Media:
         js = (

@@ -177,7 +177,7 @@ def section_news(request):
     
     nav = 'news'
     section = Section.cached(nav)
-    stories = top_articles(section)[:20]
+    stories = top_articles(section)[:18]
     rotate = rotatables(section, 4)
     
     series = ContentGroup.objects.filter(section=section) \
@@ -193,7 +193,6 @@ def section_news(request):
         .filter(issue__issue_date__gte=lastmonth) \
         .filter(issue__issue_date__lte=lastweek) \
         .order_by('-priority')[:4]
-    
     
     return render_to_response('sections/news.html', locals())
 
