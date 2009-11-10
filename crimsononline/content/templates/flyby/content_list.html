@@ -6,8 +6,21 @@
 
 {% block body %}
     <ul class="blog_entries">
-    {% for c in content %}
+    {% for c in entries.object_list %}
         <li>{{ c|render:"flyby_entry" }}</li>
     {% endfor %}
     </ul>
+    
+    <div id="nav-below" class="navigation">
+        {% if entries.has_next %}
+        <div class="nav-previous">
+            <a href="?page={{entries.next_page_number}}">Older posts</a>
+        </div>
+        {% endif %}
+        {% if entries.has_previous %}
+        <div class="nav-next">
+            <a href="?page={{entries.previous_page_number}}">Newer posts</a>
+        </div>
+        {% endif %}
+    </div>
 {% endblock %}

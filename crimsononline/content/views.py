@@ -7,6 +7,7 @@ from django.shortcuts import get_object_or_404, get_list_or_404, render_to_respo
 from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.template import Context, loader
 from django.conf import settings
+from django.core.paginator import Paginator
 from django.contrib.flatpages.models import FlatPage
 from django.contrib.contenttypes.models import ContentType
 from django.db import connection
@@ -78,8 +79,8 @@ def writer(request, pk, f_name, m_name, l_name,
     )
     
     w.number_of_articles = Article.objects.filter(contributors=w).count()
-    w.last_update = Content.objects.filter(contributors=w).aggregate(Max('issue__issue_date'))['issue__issue_date__max']
     d = paginate(f.pop('content'), page, 10)
+    w.last_update = Content.objects.filter(contributors=w).aggregate(Max('issue__issue_date'))['issue__issue_date__max']
     d.update({'writer': w, 'url': REMOVE_P_RE.sub(request.path, '')})
     d.update(f)
     
@@ -330,11 +331,23 @@ def section_sports(request):
     video = first_or_none(YouTubeVideo.objects.recent.filter(section=section))
     return render_to_response('sections/sports.html', locals())
 
+FLYBY_RESULTS_PER_PAGE = 10
 def section_flyby(request):
     nav = 'flyby'
     section = Section.cached(nav)
+    
+    try:
+        page = int(request.GET.get('page','1'))
+    except ValueError:
+        page = 1
+    
     content = Article.objects.recent.filter(section=section)
-    return render_to_response('flyby/content_list.html', locals())
+    paginator = Paginator(content, FLYBY_RESULTS_PER_PAGE)
+    try:
+        entries = paginator.page(page)
+    except:
+        entries = paginator.page(1)
+    return render_to_response('flyby/content_list.html', {"entries":entries})
 
 # IPHONE APP JSON FEEDS
 
