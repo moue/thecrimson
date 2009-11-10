@@ -30,7 +30,7 @@ class AjaxSearchView(SearchView):
             'paginator': paginator,
             'mcontributors': matching_contributors,
             'mtags': matching_tags,
-            'is_search': not bool(qu)
+            'is_search': qu
         }
         context.update(self.extra_context())
 
