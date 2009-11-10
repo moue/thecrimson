@@ -1,4 +1,8 @@
 /* content list */
+.search_form ul{
+    list-style-type: none;
+}
+
 .subscribe-rss{
     float: right;
 }

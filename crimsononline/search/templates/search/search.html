@@ -21,20 +21,18 @@
 {% endblock %}
 
 {% block left %}
-    {% module 2 "filter" %}
-    
-    <span class="filter_label">SORT BY:</span><br />
-    {{form.order_by}}<br />
+    <div class="search_form">
+        {% module 2 "filter" %}
 
-    <span class="filter_label">START DATE:</span>
-    {{form.start_date}}
+        <span class="filter_label">SORT BY:</span><br />
+        {{form.order_by}}<br />
 
-    <span class="filter_label">END DATE:</span>
-    {{form.end_date}}
+        <span class="filter_label">START DATE:</span>
+        {{form.start_date}}
 
-    <span class="filter_label">SECTIONS:</span><br />
-    {{form.content_sections}}<br />
-
+        <span class="filter_label">END DATE:</span>
+        {{form.end_date}}
+    </div>
     {% endmodule %}
 {% endblock %}
 

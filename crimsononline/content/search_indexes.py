@@ -1,7 +1,7 @@
 import datetime
 from haystack import site
 from haystack import indexes
-from crimsononline.content.models import Article
+from crimsononline.content.models import Article, Contributor
 
 class ArticleIndex(indexes.SearchIndex):
     text = indexes.CharField(document=True, model_attr='teaser', use_template=True)
@@ -15,3 +15,5 @@ class ArticleIndex(indexes.SearchIndex):
     
 
 site.register(Article, ArticleIndex)
+
+site.register(Contributor)
