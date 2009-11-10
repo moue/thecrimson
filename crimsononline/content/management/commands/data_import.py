@@ -51,7 +51,7 @@ def get_save_path_new(instance, filename):
 def fix_images():
     import urllib
     import os
-    from django.db.models.fields.files import ImageFieldFile
+    from django.core.files import File
     
     do_delete = False
     
@@ -109,7 +109,6 @@ def fix_images():
                     continue
             
             # save the record in the database
-            image.pic = ImageFieldFile(new_path)
             image.save()
            
             print "Success!"

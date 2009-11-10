@@ -911,12 +911,12 @@ class Image(Content):
     def save(self, commit=True):
         super(Image, self).save(commit)
         a = basename(self.pic.path)
-        b = basename(image_get_save_path(self, self.pic.path))
+        b = image_get_save_path(self, self.pic.path)
         # the pic path was the randomly generated one
-        if a != b:
-            new_path = self.pic.path.replace(a, b)
+        if a != basename(b):
+            new_path = self.pic.path.replace(a, basename(b))
             os.rename(self.pic.path, new_path)
-            self.pic = ImageFieldFile(new_path)
+            self.pic.name = b
             super(Image, self).save(commit)
         
     
