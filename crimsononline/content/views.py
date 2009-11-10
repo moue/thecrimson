@@ -325,10 +325,13 @@ def section_sports(request):
     latest = latest[:8]
     blog = stories.filter(group__type='blog')
     athlete = first_or_none(stories.filter(tags__text='athlete of the week')) 
-    stories = stories[:6]
+    stories = stories[:5]
     scores = Score.objects.order_by('-event_date')[:10]
     sports = Tag.objects.filter(category='sports').order_by('text')
     video = first_or_none(YouTubeVideo.objects.recent.filter(section=section))
+    columns = ContentGroup.objects.filter(section=section, active=True,
+        type='column').annotate(recent=Max('content__issue__issue_date'))
+    
     return render_to_response('sections/sports.html', locals())
 
 FLYBY_RESULTS_PER_PAGE = 10
