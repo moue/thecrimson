@@ -91,7 +91,7 @@
 //]]>--></script><noscript><a href='http://www.oncampusweb.com/delivery/ck.php?n=abd553ed&amp;cb=INSERT_RANDOM_NUMBER_HERE' target='_blank'><img src='http://www.oncampusweb.com/delivery/avw.php?zoneid=59&amp;cb=INSERT_RANDOM_NUMBER_HERE&amp;n=abd553ed' border='0' alt='' /></a></noscript>
     {% tag_cloud 20 "tags" %}
     {% most_read_articles %}
-    
+  <!---  
     {% module 4 "featured content" gray %}
         
     <div id = "featured_content">
@@ -102,7 +102,7 @@
                             <li>
                                 {% if article.main_rel_content %}
 <div class="image_thumb"><a href="{{article.get_absolute_url}}">{{article.main_rel_content|to_img_tag:"TINY"}}</a></div>
-{% endif %}
+{% endif %}--->
 <h3>{{article|linkify}}</h3>
 <span class="byline">{{ article|byline:"short" }}</span>
 <span class="dateline">{{ article|datify }}</span>
