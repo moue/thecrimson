@@ -63,6 +63,8 @@ class TagCloudNode(template.Node):
                     .annotate(content_count=Count('content')) \
                     .order_by('-content_count')
             tags = list(tags[0:self.num])
+        if len(tags) == 0:
+            return ''
         # base sizes on relative max, min of counts
         mx, mn = tags[0].content_count, tags[-1].content_count
         step = float(mx - mn) / 4.0
