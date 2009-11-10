@@ -185,6 +185,16 @@ def section_news(request):
         .annotate(latest=Max('content__issue__issue_date')) \
         .order_by('-latest')[:2]
     
+    today = datetime.today()
+    lastweek = today-timedelta(7)
+    lastmonth = today-timedelta(30)
+    
+    featured = Content.objects.filter(section=section) \
+        .filter(issue__issue_date__gte=lastmonth) \
+        .filter(issue__issue_date__lte=lastweek) \
+        .order_by('-priority')[:4]
+    
+    
     return render_to_response('sections/news.html', locals())
 
 @cache_page(settings.CACHE_SHORT)
@@ -197,6 +207,16 @@ def section_opinion(request):
     rotate = rotatables(section, 4)
     columns = ContentGroup.objects.filter(section=section, active=True,
         type='column').annotate(recent=Max('content__issue__issue_date'))
+        
+    today = datetime.today()
+    lastweek = today-timedelta(7)
+    lastmonth = today-timedelta(30)
+    
+    featured = Content.objects.filter(section=section) \
+        .filter(issue__issue_date__gte=lastmonth) \
+        .filter(issue__issue_date__lte=lastweek) \
+        .order_by('-priority')[:4]
+        
     return render_to_response('sections/opinion.html', locals())
 
 @cache_page(settings.CACHE_SHORT)
@@ -227,6 +247,16 @@ def section_fm(request):
     issues = Issue.objects.exclude(Q(fm_name=None)|Q(fm_name=''))[:3]
     columns = ContentGroup.objects.filter(section=section, active=True,
         type='column').annotate(recent=Max('content__issue__issue_date'))
+        
+    today = datetime.today()
+    lastweek = today-timedelta(7)
+    lastmonth = today-timedelta(30)
+    
+    featured = Content.objects.filter(section=section) \
+        .filter(issue__issue_date__gte=lastmonth) \
+        .filter(issue__issue_date__lte=lastweek) \
+        .order_by('-priority')[:4]
+    
     return render_to_response('sections/fm.html', locals())
 
 @cache_page(settings.CACHE_SHORT)
@@ -247,6 +277,16 @@ def section_arts(request):
     reviews = {}
     for t in ['movie', 'music', 'book']:
         reviews[t] = Review.objects.filter(type=t)[:4]
+        
+    today = datetime.today()
+    lastweek = today-timedelta(7)
+    lastmonth = today-timedelta(30)
+    
+    featured = Content.objects.filter(section=section) \
+        .filter(issue__issue_date__gte=lastmonth) \
+        .filter(issue__issue_date__lte=lastweek) \
+        .order_by('-priority')[:4]
+        
     return render_to_response('sections/arts.html', locals())
 
 @cache_page(settings.CACHE_SHORT)
