@@ -909,10 +909,11 @@ class Image(Content):
             return 'tall'
     
     def save(self, *args, **kwargs):
+        newpath = kwargs.pop('newpath', False)
         super(Image, self).save(*args, **kwargs)
         a = basename(self.pic.path)
-        b = image_get_save_path(self, self.pic.path)
-        # the pic path was the randomly generated one
+        b = newpath or image_get_save_path(self, self.pic.path)
+        # move the image
         if a.split('_')[-1] != basename(b).split('_')[1]:
             new_path = self.pic.path.replace(a, basename(b))
             os.rename(self.pic.path, new_path)

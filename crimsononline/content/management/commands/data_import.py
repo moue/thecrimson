@@ -51,7 +51,9 @@ def get_save_path_new(instance, filename):
 def fix_images():
     import urllib
     import os
+    from os import path
     from django.core.files import File
+    from crimsononline.content.models import image_get_save_path
     
     do_delete = False
     
@@ -102,14 +104,16 @@ def fix_images():
             for thumb in thumbs:
                 print "Deleting",thumb
                 try:
-                    if do_delete: os.remove(os.path.join(img_dir,thumb))
+                    if do_delete: os.remove(path.join(img_dir,thumb))
                     print "removed"
                 except WindowsError:
                     print "Windows Error on",thumb
                     continue
             
             # save the record in the database
-            image.save()
+            fname = path.basename(image_get_save_path(image, new_path))
+            new_path = path.join(path.dirname(new_path), fname)
+            image.save(newpath=new_path)
            
             print "Success!"
         except IOError:
