@@ -13,11 +13,14 @@
     margin-bottom: 0;
 }
 #featured_articles .date{
+	font-family:Helvetica,Tahoma,Arials,sans-serif;
+	font-size: 11px;
     margin-bottom: 5px;
 }
 
 #featured_articles .date, #top_contributors .date {
-    font-size: 12px;
+	font-family:Helvetica,Tahoma,Arials,sans-serif;
+    font-size: 11px;
     color: #666;
 }
 
