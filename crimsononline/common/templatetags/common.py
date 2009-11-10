@@ -35,6 +35,8 @@ def truncchars(str, specifier):
     if specifier.find(',') is -1:
         specifier += ','
     n, suffix = tuple(specifier.split(','))
+    if len(str) >= n:
+        return str
     return str[:int(n)].rsplit(' ', 1)[0] + suffix
 
 @register.filter
