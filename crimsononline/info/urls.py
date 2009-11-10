@@ -4,6 +4,6 @@ from django.conf.urls.defaults import *
 
 urlpatterns = patterns('crimsononline.info.views',
     url(r'^contact/', 'contact'),
-    url(r'^corrections/', 'contact'),
+    url(r'^corrections/', 'corrections'),
     url(r'^thanks/', 'thank'),
 )
