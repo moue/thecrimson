@@ -46,6 +46,7 @@ class TagCloudNode(template.Node):
         self.title = title
         
     def render(self, context):
+        return ''
         if self.tags:
             try:
                 tags = self.tags.resolve(context)
