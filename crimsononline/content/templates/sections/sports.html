@@ -8,6 +8,11 @@
 {% load tag_cloud %}
 {% load top_articles %}
 
+{% block js %}
+    {{ block.super }}
+	{% static_js "sports_scores.js" %}
+{% endblock %}
+
 {% block leftcolumn %}
     {% rotator rotate "sports_rotator" %}
     
@@ -59,7 +64,7 @@
 {% endblock %}
 
 {% block rightcolumn %}
-    {% comment %}
+
 	<div class="bordered">
 		<h2>Latest Scores</h2>
 
@@ -68,36 +73,17 @@
 		 	<div id='sportsticker_slug'></div>
 		</p>
 		<script type="text/javascript">
-			var ticker_sports = new Array();
-			var ticker_slugs = new Array();
-			var ticker_urls = new Array();
-			{% for story in stories %}
-				{% if story.sportsticker_sport %}
-					ticker_sports.push("{{ story.sportsticker_sport|pretty_sport_name }}");
-				 	ticker_slugs.push("{{ story.sportsticker_slug }}");
-					ticker_urls.push("{{ story.get_absolute_url }}");
-				{% endif %}
-			{% endfor %}
-            
-			function rotateArray(arr){
-				cur_item = arr.shift();
-				arr.push(cur_item);
-				return cur_item;
-			}
-            
-			function rotateTicker(){
-				cur_sport = rotateArray(ticker_sports);
-				cur_slug = rotateArray(ticker_slugs);
-				cur_url = rotateArray(ticker_urls);
-                
-				document.getElementById('sportsticker_sport').innerHTML = "<a href='" + cur_url + "'>" + cur_sport + "</a>";
-				document.getElementById('sportsticker_slug').innerHTML = "<a href='" + cur_url + "'>" + cur_slug + " &raquo;</a>";
-				t=setTimeout("rotateTicker()",5000);
-			}
+
+            {% for score in scores %}
+                ticker_sports.push("{{ score.sport.text|title }}");
+                ticker_slugs.push("{{ score }}");
+                ticker_urls.push("{{ story.get_absolute_url }}");
+            {% endfor %}    
+
 			rotateTicker();
 		</script>
 	</div>
-    {% endcomment %}
+
 	{% module 4 Sports box %}
     <div class="twocol" id="tags">
         {% for sport in sports %}

@@ -1130,40 +1130,6 @@ class Article(Content):
         ('contrib', 'Contributing Writer'),
     )
     
-    SPORTS_TYPE_CHOICES = (
-        ("baseball", "Baseball"),
-        ("basketball_mens", "Basketball (Men's)"),
-        ("basketball_womens", "Basketball (Women's)"),
-        ("crew_mens", "Crew (Men's)"),
-        ("crew_womens", "Crew (Women's)"),
-        ("field_hockey", "Field Hockey"),
-        ("fencing", "Fencing"),
-        ("football", "Football"),
-        ("golf_mens", "Golf (Men's)"),
-        ("golf_womens", "Golf (Women's)"),
-        ("hockey_mens", "Hockey (Men's)"),
-        ("hockey_womens", "Hockey (Women's)"),
-        ("lacrosse_mens", "Lacrosse (Men's)"),
-        ("lacrosse_womens", "Lacrosse (Women's)"),
-        ("sailing", "Sailing"),
-        ("skiing", "Skiing"),
-        ("soccer_mens", "Soccer (Men's)"),
-        ("soccer_womens", "Soccer (Women's)"),
-        ("squash_mens", "Squash (Men's)"),
-        ("squash_womens", "Squash (Women's)"),
-        ("swimming_mens", "Swimming (Men's)"),
-        ("swimming_womens", "Swimming (Women's)"),
-        ("tennis_mens", "Tennis (Men's)"),
-        ("tennis_womens", "Tennis (Women's)"),
-        ("track", "Track"),
-        ("water_polo_mens", "Water Polo (Men's)"),
-        ("water_polo_womens", "Water Polo (Women's)"),
-        ("wrestling", "Wrestling"),
-        ("volleyball_mens", "Volleyball (Men's)"),
-        ("volleyball_womens", "Volleyball (Women's)"),
-        ("other", "Other"),
-    )
-    
     objects = ContentManager()    
     
     headline = models.CharField(blank=False, max_length=127, db_index=True)
@@ -1263,12 +1229,25 @@ class Review(models.Model):
 
 
 class Score(models.Model):
-    team1 = models.CharField(max_length=50, null=True, blank=True)
-    team2 = models.CharField(max_length=50, null=True, blank=True)
-    score1 = models.CharField(max_length=20, null=True, blank=True)
-    score2 = models.CharField(max_length=20, null=True, blank=True)
-    comment = models.CharField(max_length=50, null=True, blank=True)
+
+    article = models.ForeignKey(Article,related_name='sports_scores')
+    sport = models.ForeignKey(Tag,limit_choices_to={'category':'sports'},)
+    opponent = models.CharField(max_length=50, null=True, blank=True)
+    our_score = models.CharField(max_length=20, null=True, blank=True)
+    their_score = models.CharField(max_length=20, null=True, blank=True)
+    home_game = models.BooleanField()
+    text = models.CharField(max_length=50, null=True, blank=True)
     event_date = models.DateField()
+    
+    def __unicode__(self):
+        if self.text:
+            return self.text
+        elif self.opponent and self.home_game:
+            return "Harvard %s, %s %s" % (self.our_score,self.opponent,self.their_score)
+        elif self.opponent and self.home_game:
+            return "%s %s, Harvard %s" % (self.opponent,self.their_score,self.our_score)
+    
+    
 
 class Correction(models.Model):
     text = models.TextField(blank=False, null=False)

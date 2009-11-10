@@ -718,7 +718,7 @@ class ArticleForm(ContentModelForm):
     rel_content = RelatedContentField(label='New admin content', required=False,
         admin_site=admin.site, rel_types=[Image, Gallery, Article, Map, FlashGraphic, YouTubeVideo])
         
-    sportsticker_sport = forms.fields.ChoiceField(
+    """sportsticker_sport = forms.fields.ChoiceField(
         widget=forms.Select(attrs={}),
         choices=Article.SPORTS_TYPE_CHOICES,
         label='Sport',
@@ -730,7 +730,7 @@ class ArticleForm(ContentModelForm):
         label='Content',
         required=False,
         help_text="Text to display in the sports score ticker, eg \"Harvard 21 Yale 7\""
-    )
+    )"""
     
     def clean_teaser(self):
         """Add a teaser if one does not exist."""
@@ -761,6 +761,31 @@ class ArticleForm(ContentModelForm):
         model = Article
 
 
+class ScoreForm(forms.ModelForm):
+    class Meta:
+        model = Score
+
+    def clean(self):
+        cleaned_data = self.cleaned_data
+        opponent = cleaned_data.get("opponent")
+        their_score = cleaned_data.get("their_score")
+        our_score = cleaned_data.get("our_score")
+        text = cleaned_data.get("text")
+        
+        if (opponent == "" or their_score == "" or our_score == "") and (text == ""):
+            raise forms.ValidationError("Sports scores need text or scores filled in to be valid")
+
+        # Always return the full collection of cleaned data.
+        return cleaned_data
+
+        
+        
+class ScoreInline(admin.TabularInline):
+    model = Score
+    extra = 1
+    form = ScoreForm
+    fields = ('sport','opponent','our_score','their_score','text','event_date','home_game',)
+        
 class ArticleAdmin(ContentAdmin):
     list_display = ('headline','section', 'issue','pub_status', 'rotatable',
                     'group',)
@@ -787,10 +812,6 @@ class ArticleAdmin(ContentAdmin):
             'fields': ('pub_status', 'priority', 'slug', 'tags', 
                         'rotatable', 'web_only'),
         }),
-        #('Sports Ticker', {
-        #    'fields': ('sportsticker_sport', 'sportsticker_slug',),
-        #    'classes': ('collapse',),
-        #}),
         ('Editing', {
             'fields': ('proofer', 'sne',),
             'classes': ('collapse',),
@@ -802,6 +823,7 @@ class ArticleAdmin(ContentAdmin):
     )
     
     form = ArticleForm
+    inlines = [ScoreInline,]
     
     class Media:
         js = (

@@ -323,6 +323,7 @@ def section_sports(request):
     blog = stories.filter(group__type='blog')
     athlete = first_or_none(stories.filter(tags__text='athlete of the week')) 
     stories = stories[:6]
+    scores = Score.objects.order_by('-event_date')[:10]
     sports = Tag.objects.filter(category='sports').order_by('text')
     video = first_or_none(YouTubeVideo.objects.recent.filter(section=section))
     return render_to_response('sections/sports.html', locals())
