@@ -777,15 +777,13 @@ class ScoreForm(forms.ModelForm):
 
         # Always return the full collection of cleaned data.
         return cleaned_data
-
-        
-        
+  
 class ScoreInline(admin.TabularInline):
     model = Score
     extra = 1
     form = ScoreForm
     fields = ('sport','opponent','our_score','their_score','text','event_date','home_game',)
-        
+
 class ArticleAdmin(ContentAdmin):
     list_display = ('headline','section', 'issue','pub_status', 'rotatable',
                     'group',)
@@ -1147,8 +1145,6 @@ class FlashGraphicAdmin(ContentAdmin):
     
 
 admin.site.register(FlashGraphic, FlashGraphicAdmin)
-
-admin.site.register(Score)
 
 
 class MarkerInline(admin.TabularInline):
