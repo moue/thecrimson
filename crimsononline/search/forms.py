@@ -3,7 +3,7 @@ from django import forms
 from django.forms.widgets import RadioSelect
 from haystack.forms import SearchForm
 from crimsononline.common.forms import CalendarWidget
-
+from crimsononline.content.models import Article
 
 class DateRangeSearchForm(SearchForm):
     
@@ -13,7 +13,7 @@ class DateRangeSearchForm(SearchForm):
 
     def search(self):
         # First, store the SearchQuerySet received from other processing.
-        sqs = super(DateRangeSearchForm, self).search()
+        sqs = super(DateRangeSearchForm, self).search().models(Article)
         
         # Check to see if a start_date was chosen.
         if self.cleaned_data['start_date']:
