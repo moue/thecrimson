@@ -51,15 +51,12 @@
 {% endblock %}
 
 {% block content_list %}
-    {% if is_search %}
     <div class="content_list_content">
 	    {% include "ajax/search_results_page.html" %}
     </div>
-    {% endif %}
 {% endblock %}
 
 {% block right %}
-{% if is_search %}
 {% module 4 "related contributors" box %}
 	{% if mcontributors %}
 		<ul class="sub_search_results">
@@ -83,7 +80,6 @@
 		No matching tags found.
 	{% endif %}
 {% endmodule %}
-{% endif %}
 
 {{block.super}}
 </form>
