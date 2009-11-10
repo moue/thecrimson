@@ -13,12 +13,9 @@
     padding: 5px 5px 10px 5px;
 	min-height: 35px;
 	}
-.flyby_preview p.headline{
+.flyby_preview span.headline{
     font-weight: bold;
     font-size: 14px;
-}
-.flyby_preview p.teaser{
-    color: black
 }
 .more-link{
     text-align: center;
