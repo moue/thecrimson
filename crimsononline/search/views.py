@@ -3,19 +3,20 @@ from django.shortcuts import render_to_response
 from haystack.query import SearchQuerySet
 from crimsononline.content.models import Contributor, Tag
 
+
+
 class AjaxSearchView(SearchView):
-    
     def create_response(self):
         """
         Generates the actual HttpResponse to send back to the user.
         """
         
-        q =  self.request.GET.get('q','')
-        if q:
+        qu =  self.request.GET.get('q','')
+        if qu:
             contributors_qs = SearchQuerySet().models(Contributor)
             tags_qs = SearchQuerySet().models(Tag)
-            matching_contributors = contributors_qs.auto_query(q)
-            matching_tags = tags_qs.auto_query(q)
+            matching_contributors = contributors_qs.auto_query(qu)
+            matching_tags = tags_qs.auto_query(qu)
         else:
             matching_contributors = None
             matching_tags = None

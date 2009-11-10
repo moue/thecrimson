@@ -1,19 +1,15 @@
 import datetime
 from django import forms
+from django.forms.widgets import RadioSelect
 from haystack.forms import SearchForm
 from crimsononline.common.forms import CalendarWidget
 
 
 class DateRangeSearchForm(SearchForm):
-
-    def __init__(self, *args, **kwargs):
-        super(DateRangeSearchForm, self).__init__(*args, **kwargs)
-        #self.fields['models'].widget = forms.RadioSelect()
-
+    
     start_date = forms.DateField(required=False, widget=CalendarWidget)
     end_date = forms.DateField(required=False, widget=CalendarWidget)
-    order_by = forms.ChoiceField(choices=(('relevance','Relevance'),('date','Date')),widget=forms.RadioSelect)
-
+    order_res = forms.ChoiceField(required=False,choices=[['relevance','Relevance'],['date','Date']],widget=RadioSelect())
 
     def search(self):
         # First, store the SearchQuerySet received from other processing.
@@ -28,7 +24,7 @@ class DateRangeSearchForm(SearchForm):
         if self.cleaned_data['end_date']:
             sqs = sqs.filter(pub_date__lte=self.cleaned_data['end_date'])
 
-        if self.cleaned_data['order_by'] and self.cleaned_data['order_by'] == 'date':
-            sqs = sqs.order_by('-pub_date')
-            
+        #if self.cleaned_data['order_res'] and self.cleaned_data['order_res'] == 'date':
+        #    sqs = sqs.order_by('-pub_date')
+        
         return sqs
