@@ -177,7 +177,7 @@ def section_news(request):
     
     nav = 'news'
     section = Section.cached(nav)
-    stories = top_articles(section)[:18]
+    stories = top_articles(section)[:22]
     rotate = rotatables(section, 4)
     
     series = ContentGroup.objects.filter(section=section) \
