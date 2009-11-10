@@ -187,7 +187,7 @@ def section_news(request):
     
     today = datetime.today()
     lastweek = today-timedelta(7)
-    lastmonth = today-timedelta(30)
+    lastmonth = today-timedelta(120)
     
     featured = Article.objects.filter(section=section) \
         .filter(issue__issue_date__gte=lastmonth) \
@@ -569,7 +569,7 @@ def top_articles(section, dt=None):
         key = 'section__name'
     else:
         key = 'section'
-    stories = Article.objects.prioritized(10).filter(**{key: section})
+    stories = Article.objects.prioritized(100).filter(**{key: section})
     
     if(dt is not None):
         stories = stories.filter(issue__issue_date__lte=dt)
