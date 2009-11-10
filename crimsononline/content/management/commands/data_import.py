@@ -189,9 +189,13 @@ class Command(BaseCommand):
            "Requires pymssql 1.0.2"
 
     def handle(self, *args, **options):
-        if len(args) > 0 and args[0] == 'fix_tags':
-            fix_tags()
-            return
+        if len(args) > 0:
+            if args[0] == 'fix_tags':
+                fix_tags()
+                return
+            elif args[0] == 'fix_images':
+                fix_images()
+                return
         
         try:
             import pymssql
