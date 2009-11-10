@@ -17,7 +17,6 @@
 {% block body %}
 <form method="get" action=".">
     {{block.super}}
-</form>
 {% endblock %}
 
 {% block left %}
@@ -39,28 +38,29 @@
 {% block content_filters %}
     <h1>Search</h1>
     <div class="content_list_filters">
-            <table>
-                    <tr>
-                        <td><span class="filter_label">QUERY: </span></td>
-                        <td>{{form.q}}</td>
-	                    <td>
-	                        <button class="submit" value="Search"><span>Search</span></input>
-	                    </td>
-                    </tr>
-            </table>
-        </form>
+        <table>
+            <tr>
+                <td><span class="filter_label">QUERY: </span></td>
+                <td>{{form.q}}</td>
+                <td>
+                    <button class="submit" value="Search"><span>Search</span></input>
+                </td>
+            </tr>
+        </table>
     </div>
     
 {% endblock %}
 
 {% block content_list %}
+    {% if is_search %}
     <div class="content_list_content">
 	    {% include "ajax/search_results_page.html" %}
     </div>
+    {% endif %}
 {% endblock %}
 
 {% block right %}
-{% if form.q %}
+{% if is_search %}
 {% module 4 "related contributors" box %}
 	{% if mcontributors %}
 		<ul class="sub_search_results">
@@ -87,4 +87,5 @@
 {% endif %}
 
 {{block.super}}
+</form>
 {% endblock %}

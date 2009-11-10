@@ -30,6 +30,7 @@ class AjaxSearchView(SearchView):
             'paginator': paginator,
             'mcontributors': matching_contributors,
             'mtags': matching_tags,
+            'is_search': bool(qu)
         }
         context.update(self.extra_context())
 
@@ -37,6 +38,7 @@ class AjaxSearchView(SearchView):
             t = 'ajax/search_results_page.html'
         else:
             t = self.template
-        return render_to_response(t, context, context_instance=self.context_class(self.request))
+        return render_to_response(t, context, 
+            context_instance=self.context_class(self.request))
         
     

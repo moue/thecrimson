@@ -7,10 +7,12 @@ from crimsononline.content.models import Article
 
 class DateRangeSearchForm(SearchForm):
     
-    start_date = forms.DateField(required=False, widget=CalendarWidget)
-    end_date = forms.DateField(required=False, widget=CalendarWidget)
+    start_date = forms.DateField(required=False, widget=CalendarWidget, 
+        initial=lambda : datetime.date.today() - datetime.timedelta(years=10))
+    end_date = forms.DateField(required=False, widget=CalendarWidget
+        initial=datetime.date.today)
     order_res = forms.ChoiceField(required=False,choices=[['relevance','Relevance'],['date','Date']],widget=RadioSelect())
-
+    
     def search(self):
         # First, store the SearchQuerySet received from other processing.
         sqs = super(DateRangeSearchForm, self).search().models(Article)
