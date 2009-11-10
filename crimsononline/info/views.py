@@ -35,7 +35,7 @@ def corrections(request):
             name = form.cleaned_data['name']
             email = form.cleaned_data['email']
             message = form.cleaned_data['message']
-            recipients = ['lazovich@gmail.com']
+            recipients = ['cmarks@fas.harvard.edu']
             
             front = 'Correction sent from: ' + name + ' with email address ' + email
             message = front + '\n\n' + message
