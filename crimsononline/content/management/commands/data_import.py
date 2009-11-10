@@ -46,6 +46,72 @@ def get_save_path_new(instance, filename):
         filtered_capt + ext
     
 
+    
+    
+def fix_images():
+    import urllib
+    import os
+    
+    do_delete = False;
+    
+    # CHANGE ME!!!!
+    f = open('C:\Users\Jon\Desktop\crimsononline\content\management\commands\images_to_fix.txt','r')
+    
+    # Dictionary mapping PKs to old urls
+    old_urls = {}
+    
+    for line in f:
+        pk, month, day, year, filename = line.split(',') 
+        # Ignore /media links
+        if filename[:3] != "pic":
+            continue
+       
+        datefolder = "%s-%s-%s" % (month,day,year)
+        old_location = "http://media.thecrimson.com/" + datefolder + "/" + filename
+        old_urls[int(pk)] = old_location     
+        
+    old_images = Image.objects.filter(old_pk__isnull=False)
+    
+    for image in old_images:
+        if image.old_pk not in old_urls:
+            continue
+        
+        try:
+            # Replace old file with new file
+            print "Downloading",old_location
+            print "Deleting",image.pic.path
+            
+            if do_delete:
+                new_path, message = urllib.urlretrieve(old_location,image.pic.path)
+            else:
+                new_path = image.pic.path
+            
+            # Length of ".jpg" or ".gif" or ".png"
+            base_filename = os.path.basename(new_path)
+            prefix = filename[:-4]
+            img_dir = os.path.dirname(new_path)
+            
+            # Get all the images starting with the same thing as this one
+            matches = lambda filename: filename[:len(prefix)] == prefix and filename != base_filename
+            thumbs = filter(matches,os.listdir(img_dir))
+            
+            # Delete thumbnails
+            for thumb in thumbs:
+                print "Deleting",thumb
+                try:
+                    if do_delete: os.remove(os.path.join(img_dir,thumb))
+                    print "removed"
+                except WindowsError:
+                    print "Windows Error on",thumb
+                    continue
+                
+           
+            print "Success!"
+        except IOError:
+            print "FAILURE!"
+            continue
+    
+    
 def fix_tags():
     """A lot of the subsections were mapped incorrectly in the old db."""
     wrong_tags = ['News', 'Breaking News', 'Editorials', 'Comments',
