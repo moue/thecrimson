@@ -52,10 +52,10 @@ def fix_images():
     import urllib
     import os
     
-    do_delete = False;
+    do_delete = True
     
     # CHANGE ME!!!!
-    f = open('C:\Users\Jon\Desktop\crimsononline\content\management\commands\images_to_fix.txt','r')
+    f = open('image_paths.csv','r')
     
     # Dictionary mapping PKs to old urls
     old_urls = {}
@@ -88,13 +88,15 @@ def fix_images():
             
             # Length of ".jpg" or ".gif" or ".png"
             base_filename = os.path.basename(new_path)
-            prefix = filename[:-4]
+            prefix = base_filename.split(".")[0]
             img_dir = os.path.dirname(new_path)
             
             # Get all the images starting with the same thing as this one
             matches = lambda filename: filename[:len(prefix)] == prefix and filename != base_filename
             thumbs = filter(matches,os.listdir(img_dir))
             
+            print img_dir
+            print prefix
             # Delete thumbnails
             for thumb in thumbs:
                 print "Deleting",thumb
