@@ -393,8 +393,7 @@ class ContentHits(models.Model):
 def get_img_path(instance, filename):
     ext = splitext(filename)[1]
     safe_name = make_file_friendly(instance.name)
-    return "images/%s/%s%s" % (instance.type, safe_name, ext)
-
+    return "photos/contentgroups/%s/%s%s" % (instance.type, safe_name, ext)
 
 class ContentGroup(models.Model):
     """
