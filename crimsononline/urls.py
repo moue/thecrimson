@@ -53,19 +53,7 @@ urlpatterns += patterns('django.views.generic.simple',
 )
 """
 
-# GHETTO ASS HACK TO GET WS2 WORKING
-#   for some, running admin.autodiscover() on the haystack app
-#   messes up loading the rest of the urls.py file, 
-ia = list(settings.INSTALLED_APPS)
-try:
-    ia.remove('haystack')
-except ValueError:
-    pass
-settings.INSTALLED_APPS = tuple(ia)
 admin.autodiscover()
-if settings.HAYSTACK:
-    ia.append('haystack')
-settings.INSTALLED_APPS = tuple(ia)
 
 urlpatterns += patterns('',
     (r'^admin/', include('crimsononline.admin_cust.urls')),
