@@ -28,7 +28,8 @@
             </ul>
         </div>
     {% endmodule %}
-
+    
+    {% comment %}
     {% module 4 "past issues" %}
         <div class="img_list" id="past_issues">
             <ul>
@@ -42,6 +43,15 @@
                 {% endfor %}
             </ul>
             <span class="clear"></span>
+        </div>
+    {% endmodule %}
+    {% endcomment %}
+    
+    {% module 4 endpaper %}
+        <div class="article_previews" id="endpaper">
+            <ul>
+                <li>{{ endpaper|render:"preview" }}
+            </ul>
         </div>
     {% endmodule %}
 {% endblock %}
@@ -61,13 +71,6 @@
         </div>
     {% endmodule %}
     
-    {% module 4 endpaper %}
-        <div class="article_previews" id="endpaper">
-            <ul>
-                <li>{{ endpaper|render:"preview" }}
-            </ul>
-        </div>
-    {% endmodule %}
 {% endblock %}
 
 {% block rightcolumn %}
