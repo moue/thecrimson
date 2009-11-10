@@ -66,6 +66,22 @@
 {% endblock %}
 
 {% block rightcolumn %}
+    {% module 4 "featured content" gray %}
+    <div id = "featured_content">
+        <div id="headlines" class="article_previews">
+             <ul>
+            {% for story in featured %}
+                {% if story %}
+                    <li>
+                        {{story|render:"preview"}}
+                    </li>
+                {% endif %}
+            {% endfor %}
+            </ul>
+        </div>
+    </div>
+    {% endmodule %}
+    
 <script type='text/javascript'><!--//<![CDATA[
    var m3_u = (location.protocol=='https:'?'https://www.oncampusweb.com/delivery/ajs.php':'http://www.oncampusweb.com/delivery/ajs.php');
    var m3_r = Math.floor(Math.random()*99999999999);
@@ -82,26 +98,10 @@
    document.write ("'><\/scr"+"ipt>");
 //]]>--></script><noscript><a href='http://www.oncampusweb.com/delivery/ck.php?n=abd553ed&amp;cb=INSERT_RANDOM_NUMBER_HERE' target='_blank'><img src='http://www.oncampusweb.com/delivery/avw.php?zoneid=59&amp;cb=INSERT_RANDOM_NUMBER_HERE&amp;n=abd553ed' border='0' alt='' /></a></noscript>
     
-    {% comment %}{% tag_cloud 20 "tags" %}{% endcomment %}
-    
-    {% module 4 "featured content" gray %}
-    <div id = "featured_content">
-        <div id="headlines" class="article_previews">
-             <ul>
-            {% for story in featured %}
-                {% if story %}
-                    <li>
-                        {{story|render:"preview"}}
-                    </li>
-                {% endif %}
-            {% endfor %}
-            </ul>
-        </div>
-    </div>
-    {% endmodule %}
-
     {% most_read_articles %}
     
+    {% comment %}{% tag_cloud 20 "tags" %}{% endcomment %}
+
     {% module 4 "" ad %}
 <script type='text/javascript'><!--//<![CDATA[
    var m3_u = (location.protocol=='https:'?'https://www.oncampusweb.com/delivery/ajs.php':'http://www.oncampusweb.com/delivery/ajs.php');

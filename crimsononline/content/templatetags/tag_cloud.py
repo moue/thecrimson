@@ -66,7 +66,8 @@ class TagCloudNode(template.Node):
         if len(tags) == 0:
             return ''
         # base sizes on relative max, min of counts
-        mx, mn = tags[0].content_count, tags[-1].content_count
+        l = len(tags)
+        mx, mn = tags[0].content_count, tags[l-1].content_count
         step = float(mx - mn) / 4.0
         levels = [mn + step * i for i in range(1, 4)]
         levels.reverse()
