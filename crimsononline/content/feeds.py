@@ -26,7 +26,7 @@ class Latest(CrimsonFeed):
 
     
     def items(self):
-        return Article.objects.order_by('-created_on')[:NUM_STORIES]
+        return Article.objects.order_by('-pk')[:NUM_STORIES]
     
 
 class ByAuthor(CrimsonFeed):
