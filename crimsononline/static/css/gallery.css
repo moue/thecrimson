@@ -99,9 +99,9 @@
 }
 
 .arrow{
-    margin-top: 205px;
+    /*margin-top: 205px;*/
     width:40px;
-    height:40px;
+    height:100%;
     position: absolute;
     z-index: 1000;
     display: none;
@@ -115,7 +115,7 @@
     background-image: url(../images/rotator/arrow_left_on.png)
 }
 .a_right{
-    margin-left: 577px;
+    margin-left: 570px;
     background-image: url(../images/rotator/arrow_right_off.png)
 }
 .a_right:hover{
