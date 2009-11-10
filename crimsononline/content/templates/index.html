@@ -81,27 +81,32 @@
         {% rotator rotate "main_rotator" %}
     {% endcontentmodule %}
     
+    {% module 4 welcome red "/section/opinion/" %}
+        <div id="welcome" class="article_headlines">
+            <ul>
+                <li>{{ welcome|render:"preview"}}</li>
+            </ul>
+        </div>
+    {% endmodule %}
+    
     {% module 4 opinion gray "/section/opinion/" %}
         {% contentmodule index.opinion %}
-	        <div class="article_previews">
-                <ul>
-                    <li>
-                        {{ opeds|first|render:"preview"}}
-                    </li>
-                </ul>
-            </div>
-            <div class="article_headlines">
-                <ul>
-                    {% for oped in opeds|notfirst %}
-                    <li>
-                        {{oped|render:"small_preview"}}
-                    </li>
-                    {% endfor %}
-                </ul>
-            </div>
+        <div class="article_previews">
+            <ul>
+                <li>{{ opeds|first|render:"preview"}}</li>
+            </ul>
+        </div>
+        <div class="article_headlines">
+            <ul>
+                {% for oped in opeds|notfirst %}
+                <li>
+                    {{oped|render:"small_preview"}}
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
         {% endcontentmodule %}
     {% endmodule %}
-
 
     {% module 4 sports gray "/section/sports/" %}
         {% contentmodule index.sports %}

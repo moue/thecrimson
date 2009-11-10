@@ -11,7 +11,9 @@ class DateRangeSearchForm(SearchForm):
         initial=lambda : datetime.date.today() - datetime.timedelta(years=10))
     end_date = forms.DateField(required=False, widget=CalendarWidget
         initial=datetime.date.today)
-    order_res = forms.ChoiceField(required=False,choices=[['relevance','Relevance'],['date','Date']],widget=RadioSelect())
+    order_res = forms.ChoiceField(required=False,
+        choices=[['relevance','Relevance'],['date','Date']],
+        widget=RadioSelect())
     
     def search(self):
         # First, store the SearchQuerySet received from other processing.
