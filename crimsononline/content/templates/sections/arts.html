@@ -10,13 +10,13 @@
 
 {% block leftcolumn %}
     {% module 4 "top arts" red %}
-        <div class="article_previews">
-            <ul>
-                {% for s in stories|slice:":7" %}
-                    <li>{{ s|render:"preview" }}</li>
-                {% endfor %}
-            </ul>
-        </div>
+    <div class="article_previews">
+        <ul>
+        {% for s in stories|slice:":7" %}
+            <li>{{ s|render:"preview" }}</li>
+        {% endfor %}
+        </ul>
+    </div>
     {% endmodule %}
 {% endblock %}
 
@@ -24,15 +24,15 @@
     {% rotator rotate "news_rotator" %}
     
     {% module 4 "more stories" %}
-        <div class="article_headlines">
-            <ul>
-                {% for s in stories|slice:"4:14" %}
-                    <li>
-                        {{s|render:"small_preview"}}
-                    </li>
-                {% endfor %}
-            </ul>
-        </div>
+    <div class="article_headlines">
+        <ul>
+        {% for s in stories|slice:"4:14" %}
+            <li>
+                {{s|render:"small_preview"}}
+            </li>
+        {% endfor %}
+        </ul>
+    </div>
     {% endmodule %}
 {% endblock %}
 
@@ -104,7 +104,8 @@
     {% module 4 "" ad %}
     <iframe id='a8ed08bc' name='a8ed08bc' src='http://d1.openx.org/afr.php?zoneid=74816&amp;cb=987987' framespacing='0' frameborder='no' scrolling='no' width='300' height='250'><a href='http://d1.openx.org/ck.php?n=aaf60f27&amp;cb=987897' target='_blank'><img src='http://d1.openx.org/avw.php?zoneid=74816&amp;cb=77777&amp;n=aaf60f27' border='0' alt='' /></a></iframe>
     {% endmodule %}
-
+    
+    {% comment %}
     {% module 4 "past issues" %}
     <div id="issues" class="img_list">
         <ul>
@@ -120,4 +121,5 @@
         <span class="clear"></span>
     </div>
     {% endmodule %}
+    {% endcomment %}
 {% endblock %}

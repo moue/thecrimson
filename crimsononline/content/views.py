@@ -241,6 +241,8 @@ def section_arts(request):
     music = stories.filter(tags__text='music')[:2]
     visualarts = stories.filter(tags__text='visual arts')[:2]
     issues = Issue.objects.exclude(Q(arts_name=None)|Q(arts_name=''))[:3]
+    columns = ContentGroup.objects.filter(section=section, active=True,
+        type='column').annotate(recent=Max('content__issue__issue_date'))
     reviews = {}
     for t in ['movie', 'music', 'book']:
         reviews[t] = Review.objects.filter(type=t)[:4]

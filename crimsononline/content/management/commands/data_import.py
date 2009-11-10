@@ -434,7 +434,8 @@ class Command(BaseCommand):
                 print ""
         
         # import blog entries as articles
-        cur.execute("SELECT ID, Title, Text, PublishedOn, CreatedOn, ModifiedOn, SectionID, BlogID, ContributorID FROM BlogEntries")
+        cur.execute("SELECT ID, Title, Text, PublishedOn, CreatedOn, ModifiedOn, "
+                    "SectionID, BlogID, ContributorID FROM BlogEntries")
         rows = cur.fetchall()
         print "Importing " + str(len(rows)) + " Blog Entries"
         for row in rows:
