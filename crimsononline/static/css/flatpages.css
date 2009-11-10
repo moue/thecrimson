@@ -81,7 +81,7 @@ p { margin:0 0 18px; }
 
 .masthead span{
     color:#666666;
-    font-family:"Lucida Grande",Tahoma,Arial,sans-serif;
+    font-family:georgia,"times new roman",times,serif;
     font-size:12px;
     margin-bottom:2px;
 }
@@ -92,10 +92,11 @@ p { margin:0 0 18px; }
     display: block;
     width: 100%;
     list-style-type: none;
+	line-height: 18px;
 }
 .masthead .position{
-    font-weight: bold;
     margin-right: 3px;
+	font-style: italic;
 }
 .masthead .board{
     text-align: center;
@@ -105,6 +106,6 @@ p { margin:0 0 18px; }
     margin-top: 12px;
     color:#666666;
     font-weight: bold;
-    font-family:Helvetica,Tahoma,Arial,sans-serif;
+    font-family:georgia,"times new roman",times,serif;
     font-size:12px;
 }

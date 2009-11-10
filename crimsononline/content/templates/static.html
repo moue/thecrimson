@@ -21,6 +21,7 @@
 	<div class="gutter"></div>
 
     <div class="col-4">
+	
     {% module 4 "" boxbkgrd %}
 		<span class="title">NAVIGATION</span>
         <ul class="right_navigation">
@@ -32,9 +33,12 @@
 		{% endblock %}
         </ul>
 	{% endmodule %}
-    {% module 4 "Masthead" box %}
+    {% module 4 "" box %}
 	<div class="masthead">
-		{% contentmodule masthead %}{% endcontentmodule %}
+
+    <img class="flyby_preview_header" src="{% static_url "images/mastheadtop.png" %}" alt="masthead" style="margin-left:-5px;"/>
+	{% contentmodule masthead %}{% endcontentmodule %}
+	Blah
 	</div>
 	{% endmodule %}
     </div>
