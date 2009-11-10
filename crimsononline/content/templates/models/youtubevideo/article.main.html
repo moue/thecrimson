@@ -13,7 +13,7 @@
                 type="application/x-shockwave-flash" allowscriptaccess="always" 
                 allowfullscreen="true" width="640" height="385"></embed>
     </object>
-    <p class="byline">CRIMSON/ {{youtubevideo.contributors.all|linkify|human_list}}</p>
+    <p class="byline"><img src="{% static_url "images/icons/video.gif" %}" alt="video" />CRIMSON/ {{youtubevideo.contributors.all|linkify|human_list}}</p>
     <p class="caption">{{youtubevideo.description}}</p>
 </div>
 {% endblock %}
