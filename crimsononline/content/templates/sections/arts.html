@@ -83,34 +83,38 @@
     {% endmodule %}
     
     {% module 4 columns %}
-        <div id="columnists" class="img_list">
-            <ul>
-                {% for column in columns %}
-                    <li>
-                        {% if column.image %}{{ column.image|to_img_tag:"60,60,1,1" }}
-                        {% else %}{% endif %}
-                        <h3>{{ column|linkify:column.name }}</h3>
-                        <p>{{ column.subname }}</p>
-                        <p class="dateline">Updated {{ column.recent|date }}</p>
-                    </li>
-                {% endfor %}
-            </ul>
-        </div>
+    <div id="columnists" class="img_list">
+        <ul>
+        {% for column in columns %}
+            {% if column.recent %}
+            <li>
+                <a href="{{ column.get_absolute_url }}" class="img">
+                {% if column.image %}{{ column.image|to_img_tag:"60,60,1,1" }}
+                {% else %}<img src="{% static_url "images/noface_60x60.jpg" %}" />{% endif %}</a>
+                <h3>{{ column|linkify:column.name }}</h3>
+                <p>{{ column.subname }}</p>
+                <p class="dateline">Updated {{ column.recent|date }}</p>
+            </li>
+            {% endif %}
+        {% endfor %}
+        </ul>
+    </div>
     {% endmodule %}
 
     {% module 4 "" ad %}
-        <iframe id='a8ed08bc' name='a8ed08bc' src='http://d1.openx.org/afr.php?zoneid=74816&amp;cb=987987' framespacing='0' frameborder='no' scrolling='no' width='300' height='250'><a href='http://d1.openx.org/ck.php?n=aaf60f27&amp;cb=987897' target='_blank'><img src='http://d1.openx.org/avw.php?zoneid=74816&amp;cb=77777&amp;n=aaf60f27' border='0' alt='' /></a></iframe>    {% endmodule %}
+    <iframe id='a8ed08bc' name='a8ed08bc' src='http://d1.openx.org/afr.php?zoneid=74816&amp;cb=987987' framespacing='0' frameborder='no' scrolling='no' width='300' height='250'><a href='http://d1.openx.org/ck.php?n=aaf60f27&amp;cb=987897' target='_blank'><img src='http://d1.openx.org/avw.php?zoneid=74816&amp;cb=77777&amp;n=aaf60f27' border='0' alt='' /></a></iframe>
+    {% endmodule %}
 
     {% module 4 "past issues" %}
     <div id="issues" class="img_list">
         <ul>
         {% for issue in issues %}
-        <li><a href="">
-            {% if issue.arts_cover %}{{ issue.arts_cover|to_img_tag:"60,60,1,1"}}
-            {% else %}{% endif %}
-            <h3>{{ issue.arts_name }}</h3></a>
-            <p class="dateline">{{ issue.issue_date }}</p>
-        </li>
+            <li><a href="">
+                {% if issue.arts_cover %}{{ issue.arts_cover|to_img_tag:"60,60,1,1"}}
+                {% else %}{% endif %}
+                <h3>{{ issue.arts_name }}</h3></a>
+                <p class="dateline">{{ issue.issue_date }}</p>
+            </li>
         {% endfor %}
         </ul>
         <span class="clear"></span>

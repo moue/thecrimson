@@ -25,6 +25,7 @@
         </ul>
         </div>
     {% endmodule %}
+    {% comment %}
     <span class="clear"></span>
     {% module 4 "sports blog" gray %}
         <div class="series">
@@ -38,16 +39,17 @@
         </ul>
         </div>
     {% endmodule %}
+    {% endcomment %}
     {% if athlete %}
-        <span class="clear"></span>
-        {% module 4 "athlete of the week" red %}
+    <span class="clear"></span>
+    {% module 4 "athlete of the week" red %}
         <div id="athlete_o_week" class="article_previews">
-            <ul>
-                <li>{{ athlete|render:"preview" }}</li>
-            </ul>
+        <ul>
+            <li>{{ athlete|render:"preview" }}</li>
+        </ul>
         </div>
-        {% endmodule %}
-        <span class="clear"></span>
+    {% endmodule %}
+    <span class="clear"></span>
     {% endif %}
 {% endblock %}
 

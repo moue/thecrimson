@@ -11,48 +11,48 @@
 
 {% block leftcolumn %}
     {% module 4 scrutiny red %}
-        <div class="article_previews" id="scrutiny" >
-            <ul>
-                <li>{{ scrutiny|render:"preview" }}</li>
-            </ul>
-        </div>
-        <span class="clear"></span>
+    <div class="article_previews" id="scrutiny" >
+        <ul>
+            <li>{{ scrutiny|render:"preview" }}</li>
+        </ul>
+    </div>
+    <span class="clear"></span>
     {% endmodule %}
-
+    
     {% module 4 "in the meantime" %}
-        <div class="article_previews" id="itm">
-            <ul>
-                {% for s in itm %}
-                    <li>{{ s|render:"preview" }}</li>
-                {% endfor %}
-            </ul>
-        </div>
+    <div class="article_previews" id="itm">
+        <ul>
+            {% for s in itm %}
+                <li>{{ s|render:"preview" }}</li>
+            {% endfor %}
+        </ul>
+    </div>
     {% endmodule %}
     
     {% comment %}
     {% module 4 "past issues" %}
-        <div class="img_list" id="past_issues">
-            <ul>
-                {% for i in issues %}
-                    <li>
-                        {% if i.fm_cover %}{{ i.fm_cover|to_img_tag:"60,60,1,1"}}
-                        {% else %}{% endif %}
-                        <h3><a href="">{{ i.fm_name }}</a></h3>
-                        <p class="dateline">{{ i.issue_date }}</p>
-                    </li>
-                {% endfor %}
-            </ul>
-            <span class="clear"></span>
-        </div>
+    <div class="img_list" id="past_issues">
+        <ul>
+            {% for i in issues %}
+                <li>
+                    {% if i.fm_cover %}{{ i.fm_cover|to_img_tag:"60,60,1,1"}}
+                    {% else %}{% endif %}
+                    <h3><a href="">{{ i.fm_name }}</a></h3>
+                    <p class="dateline">{{ i.issue_date }}</p>
+                </li>
+            {% endfor %}
+        </ul>
+        <span class="clear"></span>
+    </div>
     {% endmodule %}
     {% endcomment %}
     
     {% module 4 endpaper %}
-        <div class="article_previews" id="endpaper">
-            <ul>
-                <li>{{ endpaper|render:"preview" }}
-            </ul>
-        </div>
+    <div class="article_previews" id="endpaper">
+        <ul>
+            <li>{{ endpaper|render:"preview" }}
+        </ul>
+    </div>
     {% endmodule %}
 {% endblock %}
 
@@ -60,15 +60,15 @@
     {% rotator rotate "news_rotator" %}
     
     {% module 4 "for the moment" %}
-        <div class="article_headlines" id="ftm">
-            <ul>
-                {% for s in ftm %}
-                    <li>
-                        {{s|render:"small_preview"}}
-                    </li>
-                {% endfor %}
-            </ul>
-        </div>
+    <div class="article_headlines" id="ftm">
+        <ul>
+            {% for s in ftm %}
+            <li>
+                {{s|render:"small_preview"}}
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
     {% endmodule %}
     
 {% endblock %}
@@ -112,13 +112,16 @@
     {% module 4 columnists %}
     <div class="img_list" id="columnists">
         {% for column in columns %}
+            {% if column.recent %}
             <li>
+                <a href="{{ column.get_absolute_url }}" class="img">
                 {% if column.image %}{{ column.image|to_img_tag:"60,60,1,1" }}
-                {% else %}{% endif %}
+                {% else %}<img src="{% static_url "images/noface_60x60.jpg" %}" />{% endif %}</a>
                 <h3>{{ column|linkify:column.name }}</h3>
                 <p>{{ column.subname }}</p>
                 <p class="dateline">Updated {{ column.recent|date }}</p>
             </li>
+            {% endif %}
         {% endfor %}
         <span class="clear"></span>
     </div>
