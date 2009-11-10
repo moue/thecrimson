@@ -913,7 +913,7 @@ class Image(Content):
         a = basename(self.pic.path)
         b = image_get_save_path(self, self.pic.path)
         # the pic path was the randomly generated one
-        if a.split('_')[1] != basename(b).split('_')[1]:
+        if a.split('_')[-1] != basename(b).split('_')[1]:
             new_path = self.pic.path.replace(a, basename(b))
             os.rename(self.pic.path, new_path)
             self.pic.name = b
