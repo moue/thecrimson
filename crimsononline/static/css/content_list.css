@@ -1,4 +1,8 @@
 /* content list */
+ul.sub_search_results{
+    list-style-type: none;
+}
+
 .search_form ul{
     list-style-type: none;
 }

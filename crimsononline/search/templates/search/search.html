@@ -63,9 +63,11 @@
 {% if form.q %}
 {% module 4 "contributors matching query" box %}
 	{% if contributors %}
+		<ul class="sub_search_results">
 		{% for contributor in contributors %}
-			<a href="{{contributor.object.get_absolute_url}}">{{contributor.object}}</a>
+			<li><a href="{{contributor.object.get_absolute_url}}">{{contributor.object}}</a></li>
 		{% endfor %}
+		</ul>
 	{% else %}
 		No matching contributors found!
 	{% endif %}
@@ -73,9 +75,11 @@
 
 {% module 4 "tags matching query" box %}
 	{% if tags %}
+		<ul class="sub_search_results">
 		{% for tag in tags %}
-			<a href="{{tag.object.get_absolute_url}}">{{tag.object.text}}</a>
+			<li><a href="{{tag.object.get_absolute_url}}">{{tag.object.text}}</a></li>
 		{% endfor %}
+		</ul>
 	{% else %}
 		No matching tags found!
 	{% endif %}
