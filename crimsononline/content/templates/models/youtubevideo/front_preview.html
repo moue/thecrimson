@@ -1,5 +1,5 @@
 {% load content_filters %}
 <div style="margin-bottom:10px;">
 <a href="{{youtubevideo.get_absolute_url}}">{{ youtubevideo.pic|to_img_tag:"296,240,5,4" }}</a>
-<h3 style="font-size:13px;"><a href="{{youtubevideo.get_absolute_url}}"><{{youtubevideo.title}}</a></h3>
+<h3 style="font-size:13px;"><a href="{{youtubevideo.get_absolute_url}}">{{youtubevideo.title}}</a></h3>
 </div>
