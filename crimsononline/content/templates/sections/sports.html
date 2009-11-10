@@ -98,20 +98,20 @@
 		</script>
 	</div>
     {% endcomment %}
-    <div class="bordered twocol" id="tags">
-        <h2>Sports</h2>
+	{% module 4 Sports box %}
+    <div class="twocol" id="tags">
         {% for sport in sports %}
         <span class="cell">{{ sport|linkify }}</span>
         {% endfor %}
         <span class="clear"></span>
     </div>
+	{% endmodule %}
     
     {% if video %}
-    <div class="feature gray-bg">
-        <h2>Featured Video</h2>
+	{% module 4 "Featured Video" boxgray %}
         {{ video|render:"rotator" }}
         <span class="clear"></span>
-    </div>
+	{% endmodule %}
     {% endif %}
     
     <div class="ad bordered">
