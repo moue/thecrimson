@@ -119,7 +119,6 @@ class Command(NoArgsCommand):
     help = "Sets the right content type on Content objects"
     
     def handle_noargs(self, **options):
-        Article.objects.all_objects().filter(section=Section.cached("flyby")).delete()
         convert(infile="wordpress.2009-11-07.xml")
 
 def get_issue(dt):
