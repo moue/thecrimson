@@ -1243,9 +1243,9 @@ class Score(models.Model):
         if self.text:
             return self.text
         elif self.opponent and self.home_game:
-            return "Harvard %s, %s %s" % (self.our_score,self.opponent,self.their_score)
+            return "Harvard %s %s %s" % (self.our_score,self.opponent,self.their_score)
         elif self.opponent and self.home_game:
-            return "%s %s, Harvard %s" % (self.opponent,self.their_score,self.our_score)
+            return "%s %s Harvard %s" % (self.opponent,self.their_score,self.our_score)
     
     
 

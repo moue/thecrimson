@@ -67,24 +67,26 @@
 
 {% block rightcolumn %}
 
-	<div class="bordered">
-		<h2>Latest Scores</h2>
-
-		<p id='sportsticker'> 
+	{% module 4 "Latest Scores" box %}
+		<div id='sportsticker'  style="margin-bottom: 10px; font-family: tahoma;"> 
 			<div id='sportsticker_sport' class='thclabel thclabel_red'></div>
-		 	<div id='sportsticker_slug'></div>
-		</p>
+		 	<div id='sportsticker_slug' style="font-size: 11px;"></div>
+		</div>
 		<script type="text/javascript">
 
             {% for score in scores %}
                 ticker_sports.push("{{ score.sport.text|title }}");
                 ticker_slugs.push("{{ score }}");
                 ticker_urls.push("{{ story.get_absolute_url }}");
+				ticker_opp.push("{{ score.opponent }}");
+				ticker_field.push("{{ score.home_game }}");
+				ticker_oppscore.push("{{ score.their_score }}");
+				ticker_ourscore.push("{{ score.our_score }}");
             {% endfor %}    
 
 			rotateTicker();
 		</script>
-	</div>
+	{% endmodule %}
 
 	{% module 4 Sports box %}
     <div class="twocol" id="tags">
