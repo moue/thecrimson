@@ -163,7 +163,8 @@
 		</div>
     {% endmodule %}
         
-    
+    {% tag_cloud 20 "tags" %}
+	
     {% module 4 "Featured Videos" box %}
         {% for vid in videos %}
             {{vid|render:"front_preview"}}
