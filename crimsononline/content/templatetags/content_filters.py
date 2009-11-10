@@ -197,7 +197,9 @@ def byline(obj, type):
     if type == 'short':
         return mark_safe(str)
     
-    byline_type = getattr(obj, 'byline_type', None)
+    # byline_type = getattr(obj, 'byline_type', None)
+    if hasattr(obj,'byline_type'):
+        byline_type = obj.get_byline_type_display()
     if byline_type is not None:
         str += ', ' + byline_type.upper()
         str += filter.pluralize(count).upper()
