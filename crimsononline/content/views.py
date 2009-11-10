@@ -54,7 +54,7 @@ def index(request, m=None, d=None, y=None):
     dict['fms'] = top_articles('FM', dt)[:4]
     #dict['issue'] = Issue.get_current()
     dict['galleries'] = Gallery.objects.prioritized(40)[:6]
-    dict['videos'] = YouTubeVideo.objects.prioritized(60)[:3]
+    dict['videos'] = YouTubeVideo.objects.prioritized(60)[:2]
     
     return render_to_response('index.html', dict)
 
