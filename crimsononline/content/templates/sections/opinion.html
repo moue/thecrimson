@@ -84,6 +84,22 @@
     {% tag_cloud 20 "tags" %}
     {% most_read_articles %}
     
+    {% module 4 "featured content" gray %}
+        
+    <div id = "featured_content">
+        <div id="headlines" class="article_headlines">
+             <ul>
+                    {% for story in featured %}
+                    <li>
+                        {{story|render:"preview"}}
+                    </li>
+                    {% endfor %}
+            </ul>
+        </div>
+    </div> 
+
+    {% endmodule %}
+    
     {% module 4 "" ad %}
 <script type='text/javascript'><!--//<![CDATA[
    var m3_u = (location.protocol=='https:'?'https://www.oncampusweb.com/delivery/ajs.php':'http://www.oncampusweb.com/delivery/ajs.php');

@@ -93,6 +93,22 @@
     {% tag_cloud 20 "tags" %}
     {% most_read_articles %}
     
+    {% module 4 "featured content" gray %}
+        
+    <div id = "featured_content">
+        <div id="headlines" class="article_headlines">
+             <ul>
+                    {% for story in featured %}
+                    <li>
+                        {{story|render:"preview"}}
+                    </li>
+                    {% endfor %}
+            </ul>
+        </div>
+    </div> 
+
+    {% endmodule %}
+    
     {% module 4 "" ad %}
 <script type='text/javascript'><!--//<![CDATA[
    var m3_u = (location.protocol=='https:'?'https://www.oncampusweb.com/delivery/ajs.php':'http://www.oncampusweb.com/delivery/ajs.php');
@@ -110,4 +126,6 @@
    document.write ("'><\/scr"+"ipt>");
 //]]>--></script><noscript><a href='http://www.oncampusweb.com/delivery/ck.php?n=a4cb1baa&amp;cb=15657321567' target='_blank'><img src='http://www.oncampusweb.com/delivery/avw.php?zoneid=58&amp;cb=INSERT_RANDOM_NUMBER_HERE&amp;n=a4cb1baa' border='0' alt='' /></a></noscript>
 	{% endmodule %}
+	
+	
 {% endblock %}
