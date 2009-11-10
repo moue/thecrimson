@@ -201,6 +201,7 @@ def convert(infile):
                     fout = open("static/" + new_location, "wb")
                 except:
                     print "couldn't open filehandle"
+                    raise
                     continue
                     
                 fout.write(pic)
