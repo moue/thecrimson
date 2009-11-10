@@ -15,13 +15,15 @@ class CrimsonFeed(Feed):
     def item_author_link(self, item):
         if(item.contributors.all().count() == 1):
             return URL_BASE + item.contributors.all()[0].get_absolute_url()
+            
+    title_template = 'feeds/title.html'
+    description_template = 'feeds/description.html'
 
 class Latest(CrimsonFeed):
     title = TITLE_BASE + "All Articles"
     link = "/"
     description = "The latest Crimson articles"
-    title_template = 'feeds/title.html'
-    description_template = 'feeds/description.html'
+
     
     def items(self):
         return Article.objects.order_by('-created_on')[:NUM_STORIES]
