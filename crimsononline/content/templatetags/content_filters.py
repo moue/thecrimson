@@ -200,7 +200,7 @@ def byline(obj, type):
     # byline_type = getattr(obj, 'byline_type', None)
     if hasattr(obj,'byline_type'):
         byline_type = obj.get_byline_type_display()
-    if byline_type is not None:
+    if byline_type is not None and byline_type != 'None':
         str += ', ' + byline_type.upper()
         str += filter.pluralize(count).upper()
     
