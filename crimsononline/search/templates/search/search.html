@@ -61,7 +61,7 @@
 
 {% block right %}
 {% if form.q %}
-{% module 4 "contributors matching query" box %}
+{% module 4 "related contributors" box %}
 	{% if contributors %}
 		<ul class="sub_search_results">
 		{% for contributor in contributors %}
@@ -69,11 +69,11 @@
 		{% endfor %}
 		</ul>
 	{% else %}
-		No matching contributors found!
+		No matching contributors found.
 	{% endif %}
 {% endmodule %}
 
-{% module 4 "tags matching query" box %}
+{% module 4 "related tags" box %}
 	{% if tags %}
 		<ul class="sub_search_results">
 		{% for tag in tags %}
@@ -81,7 +81,7 @@
 		{% endfor %}
 		</ul>
 	{% else %}
-		No matching tags found!
+		No matching tags found.
 	{% endif %}
 {% endmodule %}
 {% endif %}
