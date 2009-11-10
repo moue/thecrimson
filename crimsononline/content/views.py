@@ -189,7 +189,7 @@ def section_news(request):
     lastweek = today-timedelta(7)
     lastmonth = today-timedelta(30)
     
-    featured = Content.objects.filter(section=section) \
+    featured = Article.objects.filter(section=section) \
         .filter(issue__issue_date__gte=lastmonth) \
         .filter(issue__issue_date__lte=lastweek) \
         .order_by('-priority')[:4]
@@ -212,7 +212,7 @@ def section_opinion(request):
     lastweek = today-timedelta(7)
     lastmonth = today-timedelta(30)
     
-    featured = Content.objects.filter(section=section) \
+    featured = Article.objects.filter(section=section) \
         .filter(issue__issue_date__gte=lastmonth) \
         .filter(issue__issue_date__lte=lastweek) \
         .order_by('-priority')[:4]
@@ -252,7 +252,7 @@ def section_fm(request):
     lastweek = today-timedelta(7)
     lastmonth = today-timedelta(30)
     
-    featured = Content.objects.filter(section=section) \
+    featured = Article.objects.filter(section=section) \
         .filter(issue__issue_date__gte=lastmonth) \
         .filter(issue__issue_date__lte=lastweek) \
         .order_by('-priority')[:4]
@@ -282,7 +282,7 @@ def section_arts(request):
     lastweek = today-timedelta(7)
     lastmonth = today-timedelta(30)
     
-    featured = Content.objects.filter(section=section) \
+    featured = Article.objects.filter(section=section) \
         .filter(issue__issue_date__gte=lastmonth) \
         .filter(issue__issue_date__lte=lastweek) \
         .order_by('-priority')[:4]
