@@ -908,16 +908,16 @@ class Image(Content):
         else:
             return 'tall'
     
-    def save(self, commit=True):
-        super(Image, self).save(commit)
+    def save(self, *args, **kwargs):
+        super(Image, self).save(*args, **kwargs)
         a = basename(self.pic.path)
         b = image_get_save_path(self, self.pic.path)
         # the pic path was the randomly generated one
-        if a != basename(b):
+        if a.split('_')[1] != basename(b).split('_')[1]:
             new_path = self.pic.path.replace(a, basename(b))
             os.rename(self.pic.path, new_path)
             self.pic.name = b
-            super(Image, self).save(commit)
+            super(Image, self).save(*args, **kwargs)
         
     
     def __getattr__(self, attr):
