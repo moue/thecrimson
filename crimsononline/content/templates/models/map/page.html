@@ -15,7 +15,7 @@
 {% block content %}
     <h1>{{ map.title }}</h1>
 
-    {% static_js "http://maps.google.com/maps?file=api&v=2&key=ABQIAAAA--Z_bVpXIL9HJpQ50CHbfRRi_j0U6kJrkFvY4-OX2XYmEAa76BS5oixsScFqNPn7f8shoeoOZviFMg" %}
+    {% static_js "http://maps.google.com/maps?file=api&v=2&key=ABQIAAAA--Z_bVpXIL9HJpQ50CHbfRSMTarlKQyRRh5ucdthk06p19vF5xQu0eFsX5P7jVrW5pMBEz3sFASmLQ" %}
     <script type="text/javascript">
     gmap = new GMap2(document.getElementById('map_preview'));
     gmap.setCenter(new GLatLng({{ map.center_lat }},{{ map.center_lng }}), {{ map.zoom_level }});
