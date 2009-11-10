@@ -40,7 +40,7 @@
 #viewer_main .viewer_info {
     font-size: 13px;
 }
-#viewer_main.viewer_info div.byline a:hover {
+#viewer_main .byline a:hover {
     color: #999;
 }
 

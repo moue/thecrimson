@@ -19,6 +19,26 @@ div#section_header {
     text-transform: uppercase;
     font-family: arial, sans-serif;
 }
+a.cg_header {
+    color:#666;
+}
+a.cg_header:hover {
+    text-decoration: none;
+    color: black;
+}
+div.cg_header {
+    width: 614px;
+    background-color:#FAFAFA;
+    border-bottom:1px solid #eee;
+    border-left:5px solid #ba0600;
+    border-top:1px solid #eee;
+    /*font-family:"Lucida Grande", Tahoma, helvetica,arial,sans-serif;*/
+    font-family:georgia,"times new roman",times,serif;
+    font-size:15px;
+    line-height: 10px;
+    margin:15px 0;
+    padding:8px;
+}
 
 /* ARTICLE TOOLS */
 #articletools {

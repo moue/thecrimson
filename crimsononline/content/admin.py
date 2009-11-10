@@ -982,10 +982,27 @@ class ArticleAdmin(ContentAdmin):
 admin.site.register(Article, ArticleAdmin)
 
 
+class ReviewForm(forms.ModelForm):
+    article = forms.IntegerField(required=True, help_text='The article id' \
+        'of the article the review is attached to. This is the number in ' \
+        'the URL on the admin page. Ie. URL=/admin/content/article/2331/ ' \
+        '=> Article ID = 2331.', label='Article ID')
+    class Meta:
+        model = Review
+    
+    def clean_article(self):
+        a = self.cleaned_data['article']
+        try:
+            a = Article.objects.get(pk=int(a))
+        except ValueError, Article.DoesNotExist:
+            raise ValidationError('Article with that id does not exist.')
+        return a
+
 class ReviewAdmin(admin.ModelAdmin):
+    form = ReviewForm
     radio_fields = {"rating": admin.HORIZONTAL}
 
-#admin.site.register(Review, ReviewAdmin)
+admin.site.register(Review, ReviewAdmin)
 
 class YouTubeVideoForm(ContentModelForm):
     pic = forms.fields.ImageField(widget=admin.widgets.AdminFileWidget,
