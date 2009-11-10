@@ -189,20 +189,17 @@ def byline(obj, type):
     str = 'By '
 	
     count = obj.contributors.count()
-    if count==0:
+    if count is 0:
         return filter.upper('No Writer Attributed')
-    else:
-        links = []
-        for c in obj.contributors.all():
-            links.append(linkify(c))
-        
-        str += human_list(links)
+    links = linkify(obj.contributors.all())
+    str += human_list(links)
     
     if type == 'short':
         return mark_safe(str)
     
-    if obj.get_byline_type_display() != None:    		
-        str += ', ' + filter.upper(obj.get_byline_type_display())
-        str += filter.upper(filter.pluralize(count))
+    byline_type = getattr(obj, 'byline_type', None)
+    if byline_type is not None:
+        str += ', ' + byline_type.upper()
+        str += filter.pluralize(count).upper()
     
     return mark_safe(str)
