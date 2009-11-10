@@ -45,10 +45,10 @@
 
     {% module 4 "magazine" gray "/section/fm/" %}
         {% contentmodule index.fm %}
-        <div id="top_fm" class="article_feature gray-bg">
+        <div class="article_feature gray-bg">
             {{ fms|first|render:"feature" }}
         </div>
-        <div id="top_fms" class="article_headlines">
+        <div class="article_headlines">
             <ul>
                 {% for story in fms|notfirst %}
                 <li>
@@ -83,14 +83,14 @@
     
     {% module 4 opinion gray "/section/opinion/" %}
         {% contentmodule index.opinion %}
-	        <div id="top_opinion" class="article_previews">
+	        <div class="article_previews">
                 <ul>
                     <li>
                         {{ opeds|first|render:"preview"}}
                     </li>
                 </ul>
             </div>
-            <div id="top_opinions" class="article_headlines">
+            <div class="article_headlines">
                 <ul>
                     {% for oped in opeds|notfirst %}
                     <li>
@@ -105,14 +105,14 @@
 
     {% module 4 sports gray "/section/sports/" %}
         {% contentmodule index.sports %}
-	        <div id="top_sports" class="article_previews">
+	        <div class="article_previews">
                 <ul>
                     <li>
                         {{ sports|first|render:"preview"}}
                     </li>
                 </ul>
             </div>
-            <div id="top_sports" class="article_headlines">
+            <div class="article_headlines">
                 <ul>
                     {% for story in sports|notfirst %}
                     <li>
@@ -126,10 +126,10 @@
 
     {% module 4 arts gray "/section/arts/" %}
         {% contentmodule index.arts %}
-            <div id="top_art" class="article_feature gray-bg">
+            <div class="article_feature gray-bg">
                 {{ arts|first|render:"feature" }}
             </div>
-            <div id="top_arts" class="article_headlines">
+            <div class="article_headlines">
                 <ul>
                     {% for story in arts|notfirst %}
                         <li>

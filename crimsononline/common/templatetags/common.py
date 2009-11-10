@@ -297,7 +297,7 @@ class WeatherNode(template.Node):
             elif(currently.count("cloud")>0):
                 icon = "cloud.gif"
             if icon:
-                icon_txt = '<img src="' + static_url('images/icons/' + icon) + '" />'
+                icon_txt = '<img alt="%s" src="%s" />' % (currently, static_url('images/icons/' + icon))
             else:
                 icon_txt = ""
             

@@ -14,9 +14,9 @@
     {% else %}
 		<div class="image_thumb" style="width: 40px; float: left; margin-right: 5px; text-align: right;">
 			{% with filenames|random as bla %}
-			<img src="{% static_url bla %}" />
+			<img src="{% static_url bla %}" alt="flyby_icon" />
 			{% endwith %}
-		</div>		
+		</div>
 	{% endif %}    
 	
 	<div>
