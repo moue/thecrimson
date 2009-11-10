@@ -90,9 +90,11 @@
         <div id="headlines" class="article_headlines">
              <ul>
                     {% for story in featured %}
-                    <li>
-                        {{story|render:"preview"}}
-                    </li>
+                        {% if story %}
+                            <li>
+                                {{story|render:"preview"}}
+                            </li>
+                        {% endif %}
                     {% endfor %}
             </ul>
         </div>
