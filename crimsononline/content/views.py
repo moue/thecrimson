@@ -113,6 +113,21 @@ def tag(request, tag, page=1):
             issue__issue_date__lte=last_year()).order_by('-priority')[:5])
     featured_articles = featured_articles[:5]
     
+    writers = get_tag_top_contribs(tag.pk)
+    reltags = get_related_tags(tag.pk)
+    
+    d = paginate(f.pop('content'), page, 10)
+    d.update({'tag': tag, 'url': tag.get_absolute_url(), 'tags': reltags,
+        'featured': featured_articles, 'top_contributors': writers,})
+    d.update(f)
+    
+    t = 'tag.html'
+    if request.GET.has_key('ajax'):
+        t = 'ajax/content_list_page.html'
+    return render_to_response(t, d)
+
+@cache(settings.CACHE_LONG)
+def get_tag_top_contribs(pk):
     # top writers (contributors that have the most content with this tag)
     cursor = connection.cursor()
     cursor.execute("""SELECT
@@ -130,7 +145,7 @@ def tag(request, tag, page=1):
         GROUP BY content_contributors.contributor_id 
         ORDER BY objcount DESC 
         LIMIT 5
-    """ % tag.pk) # TODO: should actually do this with sqlite3 replacement, not python
+    """ % pk) # TODO: should actually do this with sqlite3 replacement, not python
     rows = [r for r in cursor.fetchall() if r[1] > 0]
     writers = Contributor.objects.filter(pk__in=[r[0] for r in rows])
     contrib_count = dict(rows)
@@ -139,17 +154,21 @@ def tag(request, tag, page=1):
         w.rece = w.content.recent[:1][0].issue.issue_date
     writers = list(writers)
     writers.sort(lambda x, y: cmp(y.c_count, x.c_count))
+    return writers
     
+@cache(settings.CACHE_LONG)
+def get_related_tags(pk):
     # related tags (tags with most shared content)
     #  select the tags for which there are the most objects that have both 
     #  this tag and that tag within some timeframe
+    cursor = connection.cursor()
     cursor.execute("""SELECT cgt2.tag_id, 
         count(cgt2.content_id) AS o_count  
         FROM content_content_tags AS cgt1 
         JOIN content_content_tags AS cgt2
         ON cgt1.content_id=cgt2.content_id 
         WHERE cgt1.tag_id = %(pk)i AND cgt2.tag_id != %(pk)i 
-        GROUP BY cgt2.tag_id ORDER BY o_count DESC LIMIT 15;""" % {'pk': tag.pk}
+        GROUP BY cgt2.tag_id ORDER BY o_count DESC LIMIT 15;""" % {'pk': pk}
     )
     rows = cursor.fetchall()
     tags = Tag.objects.filter(pk__in=[r[0] for r in rows])
@@ -158,17 +177,8 @@ def tag(request, tag, page=1):
         t.content_count = tags_count[t.pk]
     tags = list(tags)
     tags.sort(lambda x,y: cmp(y.content_count, x.content_count))
+    return tags
     
-    d = paginate(f.pop('content'), page, 10)
-    d.update({'tag': tag, 'url': tag.get_absolute_url(), 'tags': tags,
-        'featured': featured_articles, 'top_contributors': writers,})
-    d.update(f)
-    
-    t = 'tag.html'
-    if request.GET.has_key('ajax'):
-        t = 'ajax/content_list_page.html'
-    return render_to_response(t, d)
-
 # ============= Section Views ============
 
 @cache_page(settings.CACHE_SHORT)
