@@ -71,7 +71,9 @@
     list-style-type: none;
 }
 .article_headlines li {
-    font-size: 13px;
+    font-size: 11px;
+	font-family: Helvetica,Tahoma,Arials,sans-serif;
+	color: #999;
     margin: 0 0 6px;
     padding-bottom: 6px;
     border-bottom: 1px dotted #d1d1d1;
@@ -79,6 +81,7 @@
 .article_headlines h3 > a{
     font-weight: bold;
     font-size: 13px;
+	font-family: georgia,"times new roman",times,serif;
 }
 
 .article_feature {
