@@ -182,4 +182,28 @@ def rel_no_articles(rel_content):
 def rel_articles(rel_content):
     """Return the articles in a list of rel_content."""
     return [c for c in rel_content if isinstance(c.child, Article)]
+
+@register.filter
+def byline(obj, type):
+    """Get the byline from an article, properly pluralized"""
+    str = 'By '
+	
+    count = obj.contributors.count()
+    print count
+    if count==0:
+        return filter.upper('No Writer Attributed')
+    else:
+        links = []
+        for c in obj.contributors.all():
+            links.append(linkify(c))
+        
+        str += human_list(links)
     
+    if type == 'short':
+        return mark_safe(str)
+    
+    if obj.get_byline_type_display() != None:    		
+        str += ', ' + filter.upper(obj.get_byline_type_display())
+        str += filter.upper(filter.pluralize(count))
+    
+    return mark_safe(str)
