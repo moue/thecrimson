@@ -113,6 +113,7 @@ def fix_images():
             # save the record in the database
             fname = path.basename(image_get_save_path(image, new_path))
             new_path = path.join(path.dirname(new_path), fname)
+            new_path = new_path.replace('/home/sites/crimson/crimsononline/static/', '')
             image.save(newpath=new_path)
            
             print "Success!"
