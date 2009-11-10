@@ -7,6 +7,100 @@ from datetime import *
 import urllib2
 from django.core.files import File
 
+try:    
+    flyby_contrib = Contributor.objects.get(first_name="",middle_name="",last_name="FlyByBlog")
+except:
+    flyby_contrib = Contributor(first_name="",middle_name="",last_name="FlyByBlog")
+    flyby_contrib.save()
+                    
+AUTHORS_DICT = {
+'loisbeckett' : 1202052,
+'samueljacobs' : 1202069,
+'pchesnut' : 1202090,
+'amcleese' : 1202142,
+'emmalind' : 1202230,
+'cliffmarks' : 1203016,
+'cflow' : 1203017,
+'jahill' : 1203018,
+'jkearney' : 1203023,
+'LuisUrbina' : 1203030,
+'lamor' : 1203050,
+'abashir' : 1203100,
+'abalakrishna' : 1203109,
+'aditibalakrishna' : 1203109,
+'loganury' : 1203119,
+'asidman' : 1203135,
+'nathanstrauss' : 1203244,
+'adphill' : 1203409,
+'mlchild' : 1203425,
+'ecyu' : 1203538,
+'junli' : 1203574,
+'petertilton' : 1203593,
+'chelseashover' : 1203759,
+'ajdavis' : 1203774,
+'michellequach' : 1203779,
+'ajiang' : 1203791,
+'laurenkiel' : 1203799,
+'bonniekavoussi' : 1203800,
+'coracurrier' : 1203808,
+'kateleist' : 1203812,
+'amdgama' : 1203813,
+'pknoth' : 1203821,
+'shanwang' : 1203911,
+'junewu' : 1203916,
+'mstrauss' : 1203968,
+'mollystrauss' : 1203968,
+'maxbrondfield' : 1204060,
+'estheryi' : 1204069,
+'estheriyi' : 1204069,
+'ahmedmabruk' : 1204085,
+'lvargas' : 1204091,
+'sjoselow' : 1204192,
+'peterzhu' : 1204212,
+'charletonlamb' : 1204221,
+'aleelockman' : 1204235,
+'zwruble' : 1204244,
+'bitaassad' : 1204291,
+'cwells' : 1204303,
+'tlawless' : 1204371,
+'kpetti' : 1204392,
+'dzheng' : 1204411,
+'lmirviss' : 1204413,
+'emdussom' : 1204420,
+'dkolin' : 1204428,
+'wendyhchang' : 1204433,
+'jilliankushner' : 1204434,
+'cfahey' : 1204442,
+'enewcomer' : 1204459,
+'liyunjin' : 1204461,
+'egroll' : 1204462,
+'ahofschneider' : 1204470,
+'noahrayman' : 1204492,
+'erosenman' : 1204493,
+'sofiagroopman' : 1204511,
+'mlyons' : 1204515,
+'jchen' : 1204550,
+'ashah' : 1204557,
+'espitzer' : 1204575,
+'mding' : 1204588,
+'llian' : 1204743,
+'jjiang' : 1204762,
+'naveensrivatsa' : 1204798,
+'jmcauley' : 1204942,
+'amysun' : 1204993,
+'janietankard' : 1205016,
+'zoeweinberg' : 1205027,
+'juliezauzmer' : 1205066,
+'xiyu' : 1205070,
+'jbarzilay' : 1205108,
+'joannewong' : 1205111,
+'siddarthch' : 1205113,
+'garynorris' : 1205199,
+'jnoronha' : 1205203,
+'samnovey' : 1205205  
+}
+
+
 def ensure_dir(f):
     d = os.path.dirname(f)
     if not os.path.exists(d):
@@ -25,7 +119,7 @@ class Command(NoArgsCommand):
     help = "Sets the right content type on Content objects"
     
     def handle_noargs(self, **options):
-        Article.objects.all_objects().filter(section=Section.cached(flyby)).delete()
+        Article.objects.all_objects().filter(section=Section.cached("flyby")).delete()
         convert(infile="wordpress.2009-11-07.xml")
 
 def get_issue(dt):
@@ -53,7 +147,6 @@ def convert(infile):
     # Each post is a dictionary
     
     dom = minidom.parse(infile)
-    missing_authors = []
 
     for node in dom.getElementsByTagName('item'):
         a = Article()
@@ -68,22 +161,8 @@ def convert(infile):
         dt = datetime.strptime(dt, '%a, %d %b %Y %H:%M:%S +0000')
         a.issue = get_issue(dt)
         a.section = Section.cached("flyby")
-        slugtext = a.headline + " " + a.text
-        
 
-            
-
-        
-    	# wp:attachment_url could be use to download attachments
-        a.slug = slugify("-".join(slugtext.split()[:6]))[:65]
-        
-    	# Get the categories
-    	tempCategories = []
-    	for subnode in node.getElementsByTagName('category'):
-    		 tempCategories.append(subnode.getAttribute('nicename'))
-    	categories = [x for x in tempCategories if x != '']
-    	#post["categories"] = categories 
-
+        a.slug =   node.getElementsByTagName('link')[0].firstChild.data.split("/")[-2]
         
     	# Add post to the list of all posts
         try:
@@ -91,7 +170,8 @@ def convert(infile):
         except:
             continue
 
-    	if node.getElementsByTagName('content:encoded')[0].firstChild != None:
+        opener = urllib2.build_opener()
+        if node.getElementsByTagName('content:encoded')[0].firstChild != None:
             ATTACHMENTS = re.compile(r'\[caption([^\[]+)\[/caption\]')
     	    a.text = node.getElementsByTagName('content:encoded')[0].firstChild.data
             images = ATTACHMENTS.findall(a.text)
@@ -99,14 +179,15 @@ def convert(infile):
                 SRC = re.compile(r'src="([^"]*)"')
                 CAPTION = re.compile(r'caption="([^"]*)"')
                 old_location = SRC.search(image).group(1)
+
                 cur_caption = CAPTION.search(image).group(1)
 
-                i = Image(caption=cur_caption)
-                i.section = Section.objects.get(name="Flyby")
-
+                i = Image()
+                i.caption = cur_caption
+                i.slug = slugify("-".join(cur_caption.split()[:6]))[:65]
+                i.section = Section.cached('flyby')
                 i.issue = a.issue
                 
-                opener = urllib2.build_opener()
                 try:
                     pic = opener.open(old_location).read()
                 except:
@@ -124,22 +205,22 @@ def convert(infile):
                 fout.write(pic)
                 fout.close()
                 i.pic = new_location
-                i.slug = slugify("-".join(cur_caption.split()[:6]))[:65]
                 i.caption = cur_caption
                 i.pub_status = 1
                 i.kicker = 'FlyBy Image'
                 
                 try:
                     i.save()
-                except:
+                except IOError:
+                    print "couldn't save becuase of encoding issues with the image... whatevs"
                     continue
-                    
-                try:    
-                    flyby_contrib = Contributor.objects.get(last_name="FlyByBlog")
                 except:
-                    flyby_contrib = Contributor(last_name="FlyByBlog")
-                    flyby_contrib.save()
-                    
+                    i.slug = i.slug + "-dup"
+                    try:
+                        i.save()
+                    except:
+                        continue
+                
                 i.contributors.add(flyby_contrib)
                 acr = ArticleContentRelation(article=a, related_content=i)
                 acr.save()
@@ -148,34 +229,46 @@ def convert(infile):
             a.text = '<p>' + a.text.replace("\n","</p><p>") + '</p>'
             a.text = a.text.replace("<p></p>","")
             a.teaser = a.text.split("<!--more-->")[0]
-            a.teaser = TAGS.sub(' ', a.teaser)
-            if len(a.teaser) == 0:
-                a.teaser = TAGS.sub(' ',a.text)
-
-        AUTHORS_DICT = {
-            'ajdavis':1203774,
-        
-        }
+            fre = re.compile(r'<[^p^/][^>]*>')
+            lre = re.compile(r'</[^p][^>]*>')
+            a.teaser = fre.sub("",a.teaser)
+            a.teaser = lre.sub("",a.teaser)
+            
+            
         for author in node.getElementsByTagName('dc:creator')[0].firstChild.data.split("and"):
             author = author.replace(" ","")
             try:
                 c = Contributor.objects.get(pk=AUTHORS_DICT[author])
                 a.contributors.add(c)
             except:
-                missing_authors.append(author)
+                print "couldn't find contributor %s" % author
+                a.contributors.add(flyby_contrib)
                 pass
         a.pub_status = 1
+
+        
+    	# Get the categories
+        """
+    	tempCategories = []
+    	for subnode in node.getElementsByTagName('category'):
+    		 tempCategories.append(subnode.getAttribute('nicename'))
+        for cat in tempCategories:
+            try:
+                t = Tag.objects.get(text=cat)
+            except:
+                t = Tag(text=cat)
+                t.save()
+            a.tags.add(t)
+    	categories = [x for x in tempCategories if x]
+    	#post["categories"] = categories 
+        """
         
         # Add post to the list of all posts
         try:
             a.save()
         except:
             pass
-        
-        print a.headline[0]
-    for i in set(missing_authors):
-        print i     
-    
+            
 def usage(pname):
     """Displays usage information
     

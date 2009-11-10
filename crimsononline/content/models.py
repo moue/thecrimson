@@ -1140,7 +1140,7 @@ class Article(Content):
              'are multiple contributors.')
     text = models.TextField(blank=False, null = False)
     teaser = models.CharField(
-        blank=True, max_length=2500,
+        blank=True, max_length=5000,
         help_text='If left blank, this will be the first sentence ' \
                     'of the article text.'
     )

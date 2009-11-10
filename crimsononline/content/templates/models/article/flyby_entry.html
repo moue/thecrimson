@@ -9,7 +9,7 @@
     <div class="image">{{ article.main_rel_content|render:"blog_image" }}</div>
 {% endif %}
 <span class="text">
-    {{article.teaser}}
+    {{article.teaser|safe}}
     <p class="jump"><a href="{{ article.get_absolute_url }}">(Continued)</a></p>
 </span>
 <div class="entry-tags">
