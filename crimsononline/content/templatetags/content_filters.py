@@ -189,7 +189,6 @@ def byline(obj, type):
     str = 'By '
 	
     count = obj.contributors.count()
-    print count
     if count==0:
         return filter.upper('No Writer Attributed')
     else:
