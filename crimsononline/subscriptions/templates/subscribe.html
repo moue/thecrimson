@@ -17,7 +17,7 @@
 {% block content %}
 {% module 8 subscribe red %}
     {% block content_inner %}
-        <div class="flatpage_section_header">Email Subscriptions</div>
+        <div class="flatpage_section_header"><a name="email"></a>Email Subscriptions</div>
         <div class="emailform">
         {% with emailform as form %}
             <form class="manage" action="/subscribe/email/" method="post">
@@ -36,10 +36,10 @@
         {% endwith %}
         </div>
         
-        <div class="flatpage_section_header">Paper Subscriptions</div>
+        <div class="flatpage_section_header"><a name="paper"></a>Paper Subscriptions</div>
         <div> Some kind of form</div>
         
-        <div class="flatpage_section_header">RSS Feeds</div>
+        <div class="flatpage_section_header"><a name="rss"></a>RSS Feeds</div>
         <div>
             {% contentmodule rss_feeds %}
             
