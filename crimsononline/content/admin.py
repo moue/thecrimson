@@ -56,6 +56,7 @@ STOP_WORDS = ['a', 'able', 'about', 'across', 'after', 'all', 'almost', 'also',
 class ContentGroupModelForm(ModelForm):
     image = forms.ImageField(required=False, 
         widget=admin.widgets.AdminFileWidget)
+    
     class Meta:
         model = ContentGroup
 
@@ -75,9 +76,7 @@ class ContentGroupAdmin(admin.ModelAdmin):
         return urls
     
     def fbmc_search(self, request):
-        """
-        Returns a text response for FBModelChoice Field
-        """
+        """Returns a text response for FBModelChoice Field."""
         q_str, excludes, limit = fbmc_search_helper(request)
         cg = ContentGroup.objects.filter(
             Q(type__icontains=q_str) | Q(name__icontains=q_str)) \

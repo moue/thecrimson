@@ -14,7 +14,10 @@ register = template.Library()
 
 @register.filter
 def capchars(str, n):
-    """Make str have at most n chars, broken at a space."""
+    """Make str have at most n chars, broken at a space.
+    
+    Don't use this, truncchars is better.
+    """
     try:
         n = int(n)
         if len(str) < n:
@@ -35,7 +38,7 @@ def truncchars(str, specifier):
     if specifier.find(',') is -1:
         specifier += ','
     n, suffix = tuple(specifier.split(','))
-    if len(str) >= n:
+    if len(str) <= n:
         return str
     return str[:int(n)].rsplit(' ', 1)[0] + suffix
 

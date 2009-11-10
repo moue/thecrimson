@@ -8,9 +8,11 @@
     {% static_css "contentgroup.css" %}
 {% endblock %}
 
-{% block pre_content%}
-    {{ cg.image|to_img_tag:"620," }}
-{% endblock %}
+{% block pre_content%}{% spaceless %}
+    <a href="{{ contentgroup.get_absolute_url }}" class="cg_header">
+        <div class="cg_header">{{ contentgroup.name }}</div>
+    </a>
+{% endspaceless %}{% endblock %}
 
 {% block content %}
     <ul class="blog_entries">

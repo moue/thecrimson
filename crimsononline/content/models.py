@@ -419,8 +419,9 @@ class ContentGroup(models.Model):
     subname = models.CharField(max_length=40, blank=True, null=True)
     blurb = models.TextField(blank=True, null=True)
     section = models.ForeignKey('Section', blank=True, null=True)
-    image = SuperImageField(upload_to=get_img_path, max_width=620,
-        blank=True, null=True, storage=OverwriteStorage())
+    image = SuperImageField(upload_to=get_img_path, max_width=300,
+        blank=True, null=True, storage=OverwriteStorage(), 
+        help_text='Thumbnail')
     active = models.BooleanField(default=True, help_text="ContentGroups that " \
         "could still have content posted to them are active.  Active "\
         "blogs and columnists show up on section pages.", db_index=True)

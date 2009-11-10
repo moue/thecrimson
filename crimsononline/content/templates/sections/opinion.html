@@ -49,6 +49,16 @@
             {% endif %}
         {% endfor %}
         </ul>
+        <ul>
+        {% for column in columns|slice:"6:" %}
+            {% if column.recent %}
+            <li>
+                <h3>{{ column|linkify:column.name }}</h3>
+                <p>{{ column.subname }}</p>
+            </li>
+            {% endif %}
+        {% endfor %}
+        </ul>
         </div>
     {% endmodule %}
 {% endblock %}

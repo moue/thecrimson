@@ -33,11 +33,7 @@
             <div id="pre_content">
             {% if content.group %}{% spaceless %}
                 <a href="{{ content.group.get_absolute_url }}" class="cg_header">
-                    {% if content.group.image %}
-                        {{ content.group.image|to_img_tag:"630,"}}
-                    {% else %}
-                        <div class="cg_header">{{ content.group.name }}</div>
-                    {% endif %}
+                    <div class="cg_header">{{ content.group.name }}</div>
                 </a>
             {% endspaceless %}{% endif %}
             </div>
