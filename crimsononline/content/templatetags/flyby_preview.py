@@ -10,7 +10,7 @@ class FlyByNode(template.Node):
     """
     def render(self, context):
         fbb = Section.cached('flyby')
-        self.posts = Article.objects.recent.filter(section=fbb)[:3]
+        self.posts = Article.objects.recent.filter(section=fbb)[:4]
         filenames = ['flybyicon0', 'flybyicon1', 'flybyicon2', 'flybyicon3']
         filenames = ['images/flyby/%s.png' % s for s in filenames]
         return render_to_string('templatetag/flyby_preview.html', 

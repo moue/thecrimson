@@ -5,7 +5,7 @@
 {% module 4 "" box %}
 <div class="flyby_preview">
 
-    <img class="flyby_preview_header" src="{% static_url "images/flyby/flyby_preview.png" %}" alt="flyby_preview" />
+    <a href="/section/flyby/"><img class="flyby_preview_header" src="{% static_url "images/flyby/flyby_preview.png" %}" alt="flyby_preview" /></a>
 
 {% for article in posts %}
     <a class="flyby_preview_story" href="{{article.get_absolute_url}}">
@@ -26,8 +26,10 @@
     </div>
     </a>
 {% endfor %}
+{% comment %}
     <a class="more-link" href="/section/flyby/">
     More from FlyByBlog!
     </a>
+{% endcomment %}
 </div>
 {% endmodule %}
