@@ -64,7 +64,7 @@
 }
 
 .article_headlines .byline, .article_headlines .byline > a{
-    color: #666;
+    color: #999;
 }
 
 .article_headlines ul {
@@ -96,7 +96,8 @@
     font-size: 16px;
 }
 .article_feature .byline {
-    font-size: 12px;
+    color: #999;
+	font-size: 12px;
     margin: 4px 0 3px;
 }
 .article_feature .teaser {
