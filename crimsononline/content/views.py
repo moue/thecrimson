@@ -214,7 +214,7 @@ def section_opinion(request):
     featured = Article.objects.filter(section=section) \
         .filter(issue__issue_date__gte=lastmonth) \
         .filter(issue__issue_date__lte=lastweek) \
-        .order_by('-priority')[:4]
+        .order_by('-priority')[:3]
         
     return render_to_response('sections/opinion.html', locals())
 
