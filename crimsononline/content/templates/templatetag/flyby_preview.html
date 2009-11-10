@@ -10,13 +10,13 @@
 {% for article in posts %}
     <a class="flyby_preview_story" href="{{article.get_absolute_url}}">
     {% if article.main_rel_content %}
-        <div class="image_thumb" style="width: 40px; float: left; margin-right: 5px; text-align: right;">{{article.main_rel_content|to_img_tag:"40,40,1,1"}}</div>
+        <span class="image_thumb" style="width: 40px; float: left; margin-right: 5px; text-align: right;">{{article.main_rel_content|to_img_tag:"40,40,1,1"}}</span>
     {% else %}
-		<div class="image_thumb" style="width: 40px; float: left; margin-right: 5px; text-align: right;">
+		<span class="image_thumb" style="width: 40px; float: left; margin-right: 5px; text-align: right;">
 			{% with filenames|random as bla %}
 			<img src="{% static_url bla %}" alt="flyby_icon" />
 			{% endwith %}
-		</div>
+		</span>
 	{% endif %}    
 	
 	<div>
