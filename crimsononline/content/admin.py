@@ -881,7 +881,7 @@ class ArticleAdmin(ContentAdmin):
         suspicion_cutoff = date.today() - timedelta(days=notify_settings["time_span"])
         if obj.issue.issue_date < suspicion_cutoff and notify_settings["enabled"]:
             subject = notify_settings["subject"]
-            body = render_to_string("email/confirm_email.txt", {"article": obj})
+            body = render_to_string("email/suspicious.txt", {"article": obj})
             send_mail(subject, body, notify_settings["from"],  notify_settings["to"], fail_silently=False)
         return obj
     
