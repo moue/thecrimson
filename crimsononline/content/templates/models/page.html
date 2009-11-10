@@ -49,7 +49,7 @@
 
 
         {% block related %}
-        {% with content.rel_content.all as ras %}
+        {% with content.rel_content.all|rel_articles as ras %}
         {% if ras %}
             <div id="related_articles">
                 <h3>Related Articles:</h3>
