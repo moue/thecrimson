@@ -78,11 +78,15 @@ def fix_images():
     for image in old_images:
         if image.old_pk not in old_urls:
             continue
+        if os.path.exists(image.pic.path):
+            continue
+            
+        print "Importing %d" % image.pk
         
         try:
             # Replace old file with new file
-            print "Downloading",old_urls[image.old_pk]
-            print "Deleting",image.pic.path
+            #rint "Downloading",old_urls[image.old_pk]
+            #print "Deleting",image.pic.path
             
             if do_delete:
                 new_path, message = urllib.urlretrieve(old_urls[image.old_pk],image.pic.path)
@@ -98,8 +102,6 @@ def fix_images():
             matches = lambda filename: filename[:len(prefix)] == prefix and filename != base_filename
             thumbs = filter(matches,os.listdir(img_dir))
             
-            print img_dir
-            print prefix
             # Delete thumbnails
             for thumb in thumbs:
                 print "Deleting",thumb
@@ -116,7 +118,6 @@ def fix_images():
             new_path = new_path.replace('/home/sites/crimson/crimsononline/static/', '')
             image.save(newpath=new_path)
            
-            print "Success!"
         except IOError:
             print "FAILURE!"
             continue
