@@ -52,7 +52,7 @@ def fix_images():
     import urllib
     import os
     
-    do_delete = True
+    do_delete = False
     
     # CHANGE ME!!!!
     f = open('image_paths.csv','r')
@@ -78,11 +78,11 @@ def fix_images():
         
         try:
             # Replace old file with new file
-            print "Downloading",old_location
+            print "Downloading",old_urls[image.old_pk]
             print "Deleting",image.pic.path
             
             if do_delete:
-                new_path, message = urllib.urlretrieve(old_location,image.pic.path)
+                new_path, message = urllib.urlretrieve(old_urls[image.old_pk],image.pic.path)
             else:
                 new_path = image.pic.path
             
