@@ -524,6 +524,8 @@ class Tag(models.Model):
     def __unicode__(self):
         return self.text
     
+    """
+    # This is incredibly slow right now
     @staticmethod
     def top_by_section(section,range=30,n=10):
         # Range is the number of days to look back for tags
@@ -532,9 +534,9 @@ class Tag(models.Model):
                 .filter(content__section=section) \
                 .filter(content__issue__issue_date__gt = too_old) \
                 .annotate(content_count=Count('content')) \
-                .order_by('-content_count')
+                .order_by('-content_count')[:n]
         return tags
-        
+    """    
     
     @permalink
     def get_absolute_url(self):
@@ -669,9 +671,10 @@ class Section(models.Model):
             return a[section_name]
         return a
     
+    """
     def top_tags(self,range=30,n=10):
         return Tag.top_by_section(self,range)
-    
+    """
     
     @permalink
     def get_absolute_url(self):
