@@ -11,7 +11,7 @@ import copy
 from django.conf import settings
 from django.core import urlresolvers
 from django.db import models
-from django.db.models import permalink, Q
+from django.db.models import permalink, Q, Count
 from django.contrib.auth.models import User, Group
 from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
@@ -524,6 +524,18 @@ class Tag(models.Model):
     def __unicode__(self):
         return self.text
     
+    @staticmethod
+    def top_by_section(section,range=30,n=10):
+        # Range is the number of days to look back for tags
+        too_old = datetime.now() - timedelta(days = range)
+        tags = Tag.objects.all() \
+                .filter(content__section=section) \
+                .filter(content__issue__issue_date__gt = too_old) \
+                .annotate(content_count=Count('content')) \
+                .order_by('-content_count')
+        return tags
+        
+    
     @permalink
     def get_absolute_url(self):
         return ('content_tag', [self.text])
@@ -656,6 +668,10 @@ class Section(models.Model):
         if section_name:
             return a[section_name]
         return a
+    
+    def top_tags(self,range=30,n=10):
+        return Tag.top_by_section(self,range)
+    
     
     @permalink
     def get_absolute_url(self):

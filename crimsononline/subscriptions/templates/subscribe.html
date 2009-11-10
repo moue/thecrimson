@@ -41,7 +41,25 @@
         
         <div class="flatpage_section_header">RSS Feeds</div>
         <div>
-            {% contentmodule rss_feeds %}{% endcontentmodule %}
+            {% contentmodule rss_feeds %}
+            
+            <ul>
+                <li>
+                    <span class="subscribe-rss"><img src="{% static_url "images/icons/rss.gif" %}" /><a href="/feeds/all">All news stories</a></span>
+            {% for section in sections %}
+                <li>
+                    <span class="subscribe-rss"><img src="{% static_url "images/icons/rss.gif" %}" /><a href="/feeds{{section.get_absolute_url}}">{{ section.name }}</a></span>
+                    <ul>
+                        {% for tag in section.top_tags %}
+                        <li><a href="/feeds{{tag.get_absolute_url}}">{{ tag.text }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </li>
+            {% endfor %}
+            </ul>
+            
+            
+            {% endcontentmodule %}
         </div>
     {% endblock %}
 {% endmodule %}

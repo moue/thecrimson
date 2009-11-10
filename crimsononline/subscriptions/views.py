@@ -6,15 +6,17 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.views import login as d_login, logout as d_logout
 from django.shortcuts import render_to_response
 from django.views.decorators.cache import cache_page
+from django.db.models import Count
 
 from crimsononline.subscriptions.forms import \
     EmailSubscribeForm, EmailSubscribeConfirmForm, EmailSubscriptionManageForm
-from crimsononline.content.models import Tag, Contributor
+from crimsononline.content.models import Tag, Contributor, Section
 from crimsononline.subscriptions.models import EmailSubscription
 from crimsononline.common.forms import fbmc_search_helper
 
 def index(request):
     emailform = EmailSubscribeForm()
+    sections = Section.objects.all()
     return render_to_response('subscribe.html', locals())
 
 def email_confirm(request):
