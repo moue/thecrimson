@@ -17,6 +17,7 @@ var client = {
     isOpera:    ua.indexOf('opera') > -1,
     isIE:       ua.indexOf('msie') > -1,
     isIE7:      ua.indexOf('msie 7') > -1,
+    isIE8:      us.indexOf('msie 8') > -1,
     isSafari:   /webkit|khtml/.test(ua),
     isWindows:  ua.indexOf('windows') != -1 || ua.indexOf('win32') != -1,
     isMac:      ua.indexOf('macintosh') != -1 || ua.indexOf('mac os x') != -1,
@@ -33,7 +34,7 @@ client.isGecko = ua.indexOf('gecko') != -1 && !client.isSafari;
  * @var         Boolean
  * @private
  */
-var ltIE7 = (client.isIE && !client.isIE7) || client.isFF;
+var ltIE7 = (client.isIE && !client.isIE7 && !client.isIE8) || client.isFF;
 
 if(ltIE7){
   addLoadEvent(display_warning);
