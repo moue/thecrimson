@@ -61,6 +61,11 @@ h3, h3 a{
     line-height: 110%;
 }
 
+ul.normal_bullets {
+    padding-left: 1.5em;
+}
+
+
 .submit{
     display:block;
     height:20px;
