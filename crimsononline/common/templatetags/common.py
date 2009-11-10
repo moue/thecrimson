@@ -180,6 +180,27 @@ def do_flatpage_nav(parser, token):
 
 register.tag('flatpage_nav', do_flatpage_nav)
 
+class AdvertisementNode(template.Node):
+    def __init__(self, zone):
+        self.zone = zone
+        
+    def render(self, context):
+        return render_to_string("templatetag/advertisement.html",{'zone': self.zone})
+
+def advertisement(parser, token):
+    """
+    Renders an ad using the OpenX Account
+    """
+    bits = token.split_contents()
+    
+    if len(bits) != 2:
+        raise template.TemplateSyntaxError('%r tag requires 1 argument.' % bits[0])
+    
+    zone = bits[1]
+    return AdvertisementNode(zone)
+    
+advertisement = register.tag(advertisement)
+    
 class RepeatNode(template.Node):
     def __init__(self, nodelist, count):
         self.nodelist = nodelist
