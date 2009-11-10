@@ -58,3 +58,29 @@
 	    {% include "ajax/search_results_page.html" %}
     </div>
 {% endblock %}
+
+{% block right %}
+{% if form.q %}
+{% module 4 "contributors matching query" box %}
+	{% if contributors %}
+		{% for contributor in contributors %}
+			<a href="{{contributor.object.get_absolute_url}}">{{contributor.object}}</a>
+		{% endfor %}
+	{% else %}
+		No matching contributors found!
+	{% endif %}
+{% endmodule %}
+
+{% module 4 "tags matching query" box %}
+	{% if tags %}
+		{% for tag in tags %}
+			<a href="{{tag.object.get_absolute_url}}">{{tag.object.text}}</a>
+		{% endfor %}
+	{% else %}
+		No matching tags found!
+	{% endif %}
+{% endmodule %}
+{% endif %}
+
+{{block.super}}
+{% endblock %}

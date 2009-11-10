@@ -20,7 +20,7 @@
         <div class="article_headlines">
         <ul>
         {% for s in latest %}
-            <li><h3><a href="{{s.get_absolute_url}}">{{s}}</a></h3> {{ s|datify }}</li>
+            <li>{{s|render:"small_preview"}}</li>
         {% endfor %}
         </ul>
         </div>

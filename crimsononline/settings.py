@@ -47,7 +47,7 @@ DATABASE_PORT = ''             # Set to empty string for default. Not used with 
 
 # If you set this to False, Django will make some optimizations so as not
 # to load the internationalization machinery.
-USE_I18N = False
+USE_I18N = True
 
 URL_BASE = 'http://localhost:8000/'
 

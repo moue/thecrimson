@@ -28,6 +28,10 @@ urlpatterns += patterns('crimsononline.content.views',
     url(r'^iphone/(?P<s>\w+)/$', 'iphone'),
 )
 
+urlpatterns += patterns('',
+    (r'^admin/jsi18n/$', 'django.views.i18n.javascript_catalog'),
+)
+
 feeds = {
     'latest': feeds.Latest,
     'section': feeds.BySection,
