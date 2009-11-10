@@ -1,6 +1,7 @@
 from hashlib import md5
 from random import randint
-from os.path import splitext, exists, split, join
+from os.path import splitext, exists, split, join, basename
+import os
 from datetime import datetime, time, date, timedelta
 from django.utils.datetime_safe import strftime
 from re import compile, match, sub
@@ -12,6 +13,7 @@ from django.conf import settings
 from django.core import urlresolvers
 from django.db import models
 from django.db.models import permalink, Q, Count
+from django.db.models.fields.files import ImageFieldFile
 from django.contrib.auth.models import User, Group
 from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
@@ -859,11 +861,8 @@ class ImageManager(ContentManager):
 
 def image_get_save_path(instance, filename):
     ext = splitext(filename)[1]
-    filtered_capt = make_file_friendly(instance.slug)
-    if filtered_capt == '':
-        filtered_capt = make_file_friendly(instance.kicker)
-    return datetime.now().strftime("photos/%Y/%m/%d/%H%M%S_") + \
-        filtered_capt + ext
+    key = rand_str(10) if instance.pk is None else str(instance.pk)
+    return datetime.now().strftime("photos/%Y/%m/%d/%H%M%S_") + key + ext
 
 class Image(Content):
 
@@ -908,6 +907,18 @@ class Image(Content):
             return 'wide'
         else:
             return 'tall'
+    
+    def save(self, commit=True):
+        super(Image, self).save(commit)
+        a = basename(self.pic.path)
+        b = basename(image_get_save_path(self, self.pic.path))
+        # the pic path was the randomly generated one
+        if a != b:
+            new_path = self.pic.path.replace(a, b)
+            os.rename(self.pic.path, new_path)
+            self.pic = ImageFieldFile(new_path)
+            super(Image, self).save(commit)
+        
     
     def __getattr__(self, attr):
         "dispatches calls to standard sizes to display()"

@@ -51,6 +51,7 @@ def get_save_path_new(instance, filename):
 def fix_images():
     import urllib
     import os
+    from django.db.models.fields.files import ImageFieldFile
     
     do_delete = False
     
@@ -65,11 +66,11 @@ def fix_images():
         # Ignore /media links
         if filename[:3] != "pic":
             continue
-       
+        
         datefolder = "%s-%s-%s" % (month,day,year)
         old_location = "http://media.thecrimson.com/" + datefolder + "/" + filename
         old_urls[int(pk)] = old_location     
-        
+    
     old_images = Image.objects.filter(old_pk__isnull=False)
     
     for image in old_images:
@@ -106,7 +107,10 @@ def fix_images():
                 except WindowsError:
                     print "Windows Error on",thumb
                     continue
-                
+            
+            # save the record in the database
+            image.pic = ImageFieldFile(new_path)
+            image.save()
            
             print "Success!"
         except IOError:
