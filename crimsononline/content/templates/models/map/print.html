@@ -17,7 +17,7 @@
 
     <h1>{{ map.title }}</h1>
     <div class="byline">
-        CRIMSON/ {{ map.contributors.all|human_list }}
+        {{ map.contributors.all|human_list }}
     </div>
     <div class="image">{{ map|to_map_thumb:"630" }}</div>
     {{ block.super }}

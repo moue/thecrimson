@@ -18,7 +18,7 @@
 {% for img in gallery.contents.all %}
     <h1>{{ img.kicker }}</h1>
     <div class="byline">
-        CRIMSON/ {{ img.contributors.all|human_list }}
+        {{ img.contributors.all|human_list }}
     </div>
     <div class="image">{{ img|to_img_tag:"STAND" }}</div>
     {{ block.super }}

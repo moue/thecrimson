@@ -17,7 +17,7 @@
 
     <h1>{{ image.kicker }}</h1>
     <div class="byline">
-        CRIMSON/ {{ image.contributors.all|human_list }}
+        {{ image.contributors.all|human_list }}
     </div>
     <div class="image">{{ image|to_img_tag:"STAND" }}</div>
     {{ block.super }}

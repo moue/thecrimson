@@ -1,7 +1,7 @@
 {% load common %}
 {% load content_filters %}
 <div class="right">
-    <div class="byline">CRIMSON/ {{ content.contributors.all|linkify|human_list }}</div>
+    <div class="byline">{{ content.contributors.all|linkify|human_list }}</div>
     <div class="buyline">&nbsp;</div>
     <p class="tags_heading">Video {{ "Tags"|yuhkilabel:"black"}}</p>
     <p class="tags">{{ content.tags.all|linkify|human_list}}</p>
