@@ -132,6 +132,10 @@
     </div>
 	{% endmodule %}
     
+    {% module 4 "" box %}
+        {% advertisement 59 %}
+    {% endmodule %}
+
     {% if video %}
 	{% module 4 "Featured Video" boxgray %}
         {{ video|render:"rotator" }}
@@ -139,8 +143,5 @@
 	{% endmodule %}
     {% endif %}
     
-    {% module 4 "" box %}
-        {% advertisement 59 %}
-    {% endmodule %}
     
 {% endblock %}
