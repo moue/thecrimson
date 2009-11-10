@@ -254,7 +254,7 @@ def section_fm(request):
     featured = Article.objects.filter(section=section) \
         .filter(issue__issue_date__gte=lastmonth) \
         .filter(issue__issue_date__lte=lastweek) \
-        .order_by('-priority')[:4]
+        .order_by('-priority')[:3]
     
     return render_to_response('sections/fm.html', locals())
 
@@ -274,9 +274,9 @@ def section_arts(request):
     columns = ContentGroup.objects.filter(section=section, active=True,
         type='column').annotate(recent=Max('content__issue__issue_date'))
     reviews = {}
-    for t in ['movie', 'music', 'book']:
-        reviews[t] = Review.objects.filter(type=t)[:4]
-        
+    #for t in ['movie', 'music', 'book']:
+    #    reviews[t] = Review.objects.filter(type=t)[:4]
+    
     today = datetime.today()
     lastweek = today-timedelta(7)
     lastmonth = today-timedelta(30)
@@ -285,7 +285,7 @@ def section_arts(request):
         .filter(issue__issue_date__gte=lastmonth) \
         .filter(issue__issue_date__lte=lastweek) \
         .order_by('-priority')[:4]
-        
+    
     return render_to_response('sections/arts.html', locals())
 
 @cache_page(settings.CACHE_SHORT)
