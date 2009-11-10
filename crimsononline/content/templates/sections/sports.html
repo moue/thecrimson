@@ -67,31 +67,35 @@
 
 {% block rightcolumn %}
 
-	{% module 4 "Latest Scores" box %}
-		<div id='sportsticker'  style="margin-bottom: 10px; font-family: tahoma;"> 
-			<div id='sportsticker_sport' class='thclabel thclabel_red'></div>
-		 	<div id='sportsticker_slug' style="font-size: 11px;"></div>
-		</div>
-		<script type="text/javascript">
+    {% if scores.count %}
+        {% module 4 "Latest Scores" box %}
+        
+            <div id='sportsticker'  style="margin-bottom: 10px; font-family: tahoma;"> 
+                <div id='sportsticker_sport' class='thclabel thclabel_red'></div>
+                <div id='sportsticker_slug' style="font-size: 11px;"></div>
+            </div>
+            <script type="text/javascript">
 
-            {% for score in scores %}
-                ticker_sports.push("{{ score.sport.text|title }}");
-                ticker_slugs.push("{{ score }}");
-                ticker_urls.push("{{ story.get_absolute_url }}");
-				ticker_opp.push("{{ score.opponent }}");
-				ticker_field.push("{{ score.home_game }}");
-				ticker_oppscore.push("{{ score.their_score }}");
-				ticker_ourscore.push("{{ score.our_score }}");
-            {% endfor %}    
+                {% for score in scores %}
+                    ticker_sports.push("{{ score.sport.text|title }}");
+                    ticker_slugs.push("{{ score }}");
+                    ticker_urls.push("{{ score.article.get_absolute_url }}");
+                    ticker_opp.push("{{ score.opponent }}");
+                    ticker_field.push("{{ score.home_game }}");
+                    ticker_oppscore.push("{{ score.their_score }}");
+                    ticker_ourscore.push("{{ score.our_score }}");
+                {% endfor %}    
 
-			rotateTicker();
-		</script>
-	{% endmodule %}
+                rotateTicker();
+            </script>
+
+        {% endmodule %}
+    {% endif %}
 
 	{% module 4 Sports box %}
     <div class="twocol" id="tags">
         {% for sport in sports %}
-        <span class="cell">{{ sport|linkify }}</span>
+        <span class="cell">{{ sport|linkify|title }}</span>
         {% endfor %}
         <span class="clear"></span>
     </div>
