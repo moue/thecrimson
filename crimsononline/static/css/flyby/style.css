@@ -43,6 +43,20 @@ body div#shadow {
     background-repeat:repeat-y;
     margin:0 auto;
 }
+.tall{
+    width: 300px;
+    float: left;
+    padding: 0 0 3px 0;
+    border-style: solid;
+    border-color: #c4c5c7;
+    border-width: 1px;
+	margin-top: 4px;
+	margin-right: 10px;
+	margin-bottom: 4px;
+    /* -moz-border-radius: 0 0 8px 8px;
+    -webkit-border-bottom-left-radius: 8px;
+    -webkit-border-bottom-right-radius: 8px;*/
+}
 .image img {
     border-width: 0;
 }
