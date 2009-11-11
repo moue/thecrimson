@@ -4,6 +4,10 @@
     red for links:   #BA0600
     red hover:      #EA0600
 */
+/* addthis tracker hiding */
+#atff {
+  display: none;
+}
 
 /* wrapper type stuff */
 
