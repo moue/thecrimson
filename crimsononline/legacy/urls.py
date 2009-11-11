@@ -22,7 +22,6 @@ def redirect_tag(tag):
 
 urlpatterns += patterns('',
     (r'^index\.aspx', redirect('/')),
-    
     (r'^arts\.aspx', redirect('/section/arts/')),
     (r'^news\.aspx', redirect('/section/news/')),
     (r'^sports\.aspx', redirect('/section/sports/')),
@@ -31,6 +30,7 @@ urlpatterns += patterns('',
 )
 
 urlpatterns += patterns('',
+    (r'archives\.aspx', redirect('/search/')),
 	(r'iraq\.aspx', redirect_tag('Iraq')),
 	# TODO: commencement pages
 	(r'cambridge\.aspx', redirect_tag('Cambridge')),
