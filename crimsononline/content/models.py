@@ -362,10 +362,10 @@ class Content(models.Model):
                 # It was, so increase the interval
                 cache.set(thres_str, cur_threshold + THRESHOLD_JUMP, MIN_DB_STORE_INTERVAL * 3)
             try:
-                ch = ContentHits.objects.get(content = self, date = date.today())
+                ch = ContentHits.objects.filter(content=self, date = date.today())[0]
                 ch.hits += cached_hits
                 ch.save()
-            except ContentHits.DoesNotExist:
+            except ContentHits.DoesNotExist, IndexError:
                 ch = ContentHits(content = self)
                 ch.hits = cached_hits
                 ch.save()

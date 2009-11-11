@@ -733,11 +733,14 @@ class ArticleForm(ContentModelForm):
     
     def clean_teaser(self):
         """Add a teaser if one does not exist."""
-        if self.cleaned_data['teaser']:
-            return self.cleaned_data['teaser']
+        t = self.cleaned_data['teaser']
+        if t:
+            if t.find('</p>') == -1:
+                t = '\n'.join(['<p>%s</p>' % para for para in t.split('\n') if para])
+            return t
         else:
             # split article by paragraphs, return first 20 words of first para
-            teaser = para_list(self.cleaned_data['text'])[0]
+            teaser = para_list(t)[0]
             teaser = TEASER_RE.sub("",teaser)
             return truncatewords(teaser, 20)
     
