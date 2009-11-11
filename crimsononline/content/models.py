@@ -294,7 +294,7 @@ class Content(models.Model):
             self.store_hit()
             
             # flyby content
-            if self.section == Section.cached('flyby'):
+            if self.section == Section.cached('flyby') and self.content_type == Article.ct():
                 return mark_safe(render_to_string('models/%s/flyby.html'%(name),
                                  n_context))
         
