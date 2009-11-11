@@ -6,4 +6,4 @@
 {% endif %}
 <h3>{{ article|linkify }}</h3>
 <p class="byline">By {{ article.contributors.all|linkify|human_list }}</p>
-<p class="teaser">{{ article.teaser }}</p>
+<p class="teaser">{{ article.teaser|safe }}</p>

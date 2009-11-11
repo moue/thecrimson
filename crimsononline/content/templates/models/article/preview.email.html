@@ -7,4 +7,4 @@
 <h3 style="color: #BA0600; font-size: 16px;">{{article|linkify}}</h3>
 <div class="byline" style="font-size: 12px;">By {{article.contributors.all|linkify|human_list}}</div>
 <div class="dateline" style="font-size: 12px; color: #999999">{{ article.issue.issue_date|date:"l, F j, Y" }}</div>
-<p class="teaser" style="font-size: 14px; color: black;">{{ article.teaser }}</p>
+<p class="teaser" style="font-size: 14px; color: black;">{{ article.teaser|safe }}</p>
