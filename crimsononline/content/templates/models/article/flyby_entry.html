@@ -10,7 +10,9 @@
 {% endif %}
 <span class="text">
     {{article.teaser|safe}}
-    <p class="jump"><a href="{{ article.get_absolute_url }}">(Continued)</a></p>
+    {% if article|has_jump %}
+        <p class="jump"><a href="{{ article.get_absolute_url }}">(Continued)</a></p>
+    {% endif %}
 </span>
 <div class="entry-tags">
     {% with content.tags.all as a_tags %}
