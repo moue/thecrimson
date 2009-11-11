@@ -9,7 +9,7 @@ from crimsononline.common.caching import funcache as cache
 def redirect_article(request):
     try:
         id = request.GET.get("ref")
-        a = Article.objects.get(pk=id)
+        a = Article.objects.get(old_pk=id)
         return HttpResponsePermanentRedirect(a.get_absolute_url())
     except:
         raise Http404

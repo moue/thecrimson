@@ -15,10 +15,10 @@ def redirect(url):
     return inner
 
 def redirect_tag(tag):
-	def inner(request):
-		return redirect(Tag.objects.get(text=tag))
-	return inner
-	
+    def inner(request):
+        return redirect(Tag.objects.get(text=tag))
+    return inner
+    
 
 urlpatterns += patterns('',
     (r'^index\.aspx', redirect('/')),
@@ -31,25 +31,26 @@ urlpatterns += patterns('',
 
 urlpatterns += patterns('',
     (r'^archives\.aspx', redirect('/search/')),
-	(r'^iraq\.aspx', redirect_tag('Iraq')),
-	# TODO: commencement pages
-	(r'^cambridge\.aspx', redirect_tag('Cambridge')),
-	(r'^science\.aspx', redirect_tag('Science')),
-	(r'^crime\.aspx', redirect_tag('Crime')),
-	(r'^uc\.aspx', redirect_tag('Undergraduate Council')),
-	(r'^news_page\.aspx', redirect('/section/news')),
-	(r'^opinion_page\.aspx', redirect('/section/opinion')),
-	(r'^sports_page\.aspx', redirect('/section/sports')),
-	(r'^arts_page\.aspx', redirect('/section/arts')),
-	(r'^photo_gallery\.aspx', redirect('/section/photo')),
-	#(r'\w+\.aspx', redirect('/')), # Any aspx page we don't catch just goes to homepage. Potentially a terrible terrible terrible idea
+    (r'^iraq\.aspx', redirect_tag('Iraq')),
+    # TODO: commencement pages
+    (r'^cambridge\.aspx', redirect_tag('Cambridge')),
+    (r'^science\.aspx', redirect_tag('Science')),
+    (r'^crime\.aspx', redirect_tag('Crime')),
+    (r'^uc\.aspx', redirect_tag('Undergraduate Council')),
+    (r'^news_page\.aspx', redirect('/section/news')),
+    (r'^opinion_page\.aspx', redirect('/section/opinion')),
+    (r'^sports_page\.aspx', redirect('/section/sports')),
+    (r'^arts_page\.aspx', redirect('/section/arts')),
+    (r'^photo_gallery\.aspx', redirect('/section/photo')),
+    #(r'\w+\.aspx', redirect('/')), # Any aspx page we don't catch just goes to homepage. Potentially a terrible terrible terrible idea
 )
-	
+    
 urlpatterns += patterns('',
     (r'^info/archives\.aspx', redirect('/search/')),
     (r'^info/ads\.aspx', redirect('/about/advertising/')),
     (r'^info/classifieds\.aspx', redirect('/subscribe/')), # TODO
     (r'^info/corrections\.aspx', redirect('/about/corrections/')),
+    (r'^info/comp\.aspx', redirect('http://comp.thecrimson.com/')),
     (r'^info/contacts\.aspx', redirect('/about/contact/')),
     (r'^info/deliveries\.aspx', redirect('/subscribe/')), #TODO
     (r'^info/privacy\.aspx', redirect('/about/privacy/')),
@@ -59,13 +60,13 @@ urlpatterns += patterns('',
 )
 
 urlpatterns += patterns('',
-	#arts_features.aspx - unreachable
-	(r'^artsblog\.aspx', redirect('/section/arts/')),
-	#athleteoftheweek.aspx - page is broken
-	#blogentry.aspx - page broken
-	('^browse_by_issue\.aspx', redirect('/search/')),
-	#calendar_menu.aspx - blank page
-	(r'^cambridgenews\.aspx', redirect_tag('Cambridge')),
+    #arts_features.aspx - unreachable
+    (r'^artsblog\.aspx', redirect('/section/arts/')),
+    #athleteoftheweek.aspx - page is broken
+    #blogentry.aspx - page broken
+    ('^browse_by_issue\.aspx', redirect('/search/')),
+    #calendar_menu.aspx - blank page
+    (r'^cambridgenews\.aspx', redirect_tag('Cambridge')),
     (r'^classifieds\.aspx', redirect('/subscribe/')), # TODO
     #commencement pages should be done, should just paste in html from old site to flat page on new site
         #same with index_commencement2007.aspx
@@ -77,7 +78,7 @@ urlpatterns += patterns('',
     (r'^donate\.aspx', redirect('/about/donate')),
     (r'^edigest\.aspx', redirect('/subscribe')),
     (r'^edigestmanage\.aspx', redirect('/subscribe')),
-	(r'^editorialcartoons\.aspx', redirect('/section/opinion')),
+    (r'^editorialcartoons\.aspx', redirect('/section/opinion')),
     #election2008 should be done, should just paste in html from old site to flat page on new site
     #email is just the email story form
     #events can 404, no one should visit
