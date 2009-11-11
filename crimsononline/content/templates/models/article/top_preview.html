@@ -4,4 +4,4 @@
 <h2>{{article|linkify}}</h2>
 <span class="byline"> {{ article|byline:"short" }} </span>
 <span class="dateline">{{ article|datify }}</span>
-<p class="teaser">{{ article.teaser }}</p>
+<p class="teaser">{{ article.teaser|safe }}</p>
