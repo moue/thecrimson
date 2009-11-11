@@ -77,11 +77,15 @@
 {% block rightcolumn %}
     {% module 4 "featured content" box %}
     <div id = "featured_content">
-        <div id="headlines" class="article_previews">
+        <div id="headlines" class = "article_previews">
              <ul>
                     {% for story in featured %}
                         {% if story %}
-                            <li>
+                            {%if forloop.last %}
+                                <li class ="last_item">
+                            {% else %}
+                                <li>
+                            {% endif %}
                                 {{story|render:"preview"}}
                             </li>
                         {% endif %}

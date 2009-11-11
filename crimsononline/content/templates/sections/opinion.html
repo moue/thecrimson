@@ -72,8 +72,12 @@
              <ul>
             {% for story in featured %}
                 {% if story %}
-                    <li>
-                        {{story|render:"preview"}}
+                    {%if forloop.last %}
+                        <li class ="last_item">
+                    {% else %}
+                        <li>
+                    {% endif %}
+                    {{story|render:"preview"}}
                     </li>
                 {% endif %}
             {% endfor %}
