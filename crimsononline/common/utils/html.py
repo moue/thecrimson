@@ -1,6 +1,6 @@
 import re
 
-PARA_RE = re.compile(r'</p>\s+<p')
+PARA_RE = re.compile(r'</p>\s*<p')
 def para_list(s):
     """Split s on <p> tags
     

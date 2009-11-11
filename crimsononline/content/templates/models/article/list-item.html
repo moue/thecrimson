@@ -13,6 +13,6 @@
     {% if article.web_only %}    
     <span class="webonly">Web Only</span>
     {% endif %}
-    <p class="teaser">{{ article.teaser|safe }}</p>
+    <div class="teaser">{{ article.teaser|fix_teaser|safe }}</p>
     <span class="clear"></span>
 </li>

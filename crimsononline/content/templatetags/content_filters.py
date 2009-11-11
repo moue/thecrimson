@@ -6,6 +6,7 @@ from crimsononline.content.models import Image, Map, Article, Content, Marker, \
                                          YouTubeVideo
 from crimsononline.common.templatetags.common import linkify, human_list
 from crimsononline.common.fields import size_spec_to_size
+from crimsononline.common.utils.html import para_list
 
 
 register = template.Library()
@@ -205,3 +206,13 @@ def byline(obj, type):
         str += filter.pluralize(count).upper()
     
     return mark_safe(str)
+    
+@register.filter
+def fix_teaser(teaser):
+    """Fixes the messed-up Flyby teasers that show up on writer pages."""
+    teaser_paras = para_list(teaser)
+    try:
+        return teaser_paras[0]
+    # I think this shouldn't happen, but better safe than sorry...
+    except IndexError:
+        return ''
