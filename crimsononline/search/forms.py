@@ -9,7 +9,7 @@ class DateRangeSearchForm(SearchForm):
     
     start_date = forms.DateField(required=False, widget=CalendarWidget, 
         initial=lambda : datetime.date.today() - datetime.timedelta(years=10))
-    end_date = forms.DateField(required=False, widget=CalendarWidget
+    end_date = forms.DateField(required=False, widget=CalendarWidget,
         initial=datetime.date.today)
     order_res = forms.ChoiceField(required=False,
         choices=[['relevance','Relevance'],['date','Date']],
