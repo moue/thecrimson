@@ -365,7 +365,7 @@ class Content(models.Model):
                 ch = ContentHits.objects.filter(content=self, date = date.today())[0]
                 ch.hits += cached_hits
                 ch.save()
-            except ContentHits.DoesNotExist, IndexError:
+            except (ContentHits.DoesNotExist, IndexError):
                 ch = ContentHits(content = self)
                 ch.hits = cached_hits
                 ch.save()
