@@ -3,7 +3,7 @@ from django.shortcuts import render_to_response
 from haystack.query import SearchQuerySet
 from crimsononline.content.models import Contributor, Tag
 
-
+MAX_MCONTRIBS = 20
 
 class AjaxSearchView(SearchView):
     def create_response(self):
@@ -15,7 +15,7 @@ class AjaxSearchView(SearchView):
         if qu:
             contributors_qs = SearchQuerySet().models(Contributor)
             tags_qs = SearchQuerySet().models(Tag)
-            matching_contributors = contributors_qs.auto_query(qu)
+            matching_contributors = (contributors_qs.auto_query(qu))[:MAX_MCONTRIBS]
             matching_tags = tags_qs.auto_query(qu)
         else:
             matching_contributors = None
