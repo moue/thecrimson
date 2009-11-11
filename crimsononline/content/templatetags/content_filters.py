@@ -27,7 +27,7 @@ def datify(cont):
     Uses the modified date if its recent, otherwise, uses issue_date
     """
     issue = cont.issue.issue_date
-    if(date.today() == issue):
+    if(date.today() <= issue):
         secs_ago = (datetime.today() - cont.modified_on).seconds
         if secs_ago < 3600:
             value = (secs_ago/60)
