@@ -49,11 +49,15 @@
     margin-bottom: 8px;
     border-bottom: 1px dotted #d1d1d1;
 }
+
+.article_previews li.last_item{
+    border-bottom: 0px;
+}
+
 .article_previews .image_thumb {
     float: right;
     margin-left: 5px;
 }
-
 
 .article_previews .teaser {
     font-size: 13px;
