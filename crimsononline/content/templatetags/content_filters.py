@@ -216,3 +216,15 @@ def fix_teaser(teaser):
     # I think this shouldn't happen, but better safe than sorry...
     except IndexError:
         return ''
+        
+@register.filter
+def has_jump(flybyarticle):
+    """Checks whether a Flyby article has content past the jump.  Returns
+    a boolean value that tells the Flyby content list template whether to
+    display the "continued" link."""
+    fba_paras = para_list(flybyarticle.text)
+    teaser_paras = para_list(flybyarticle.teaser)
+    if len(fba_paras) > len(teaser_paras):
+        return True
+    else:
+        return False
