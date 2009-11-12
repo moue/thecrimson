@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from django.contrib import admin
 from crimsononline.subscriptions.models import EmailSubscription
 
-class EmailSubscriptionAdmin(admin.ModelAmin):
+class EmailSubscriptionAdmin(admin.ModelAdmin):
     list_display = ('email', 'created_on', 'is_active',)
     actions = ['action_deactivate', 'action_activate']
     
