@@ -95,7 +95,9 @@ def long_articles(*args):
                 del f
                 text = text.decode('utf-8', 'ignore')
                 try:
-                    Article.objects.get(old_pk=pk).update(text=text)
+                    a = Article.objects.get(old_pk=pk)
+                    a.text = text
+                    a.save()
                 except:
                     fail.append(pk)
                     continue
