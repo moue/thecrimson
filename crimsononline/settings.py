@@ -139,7 +139,7 @@ EMAIL_USE_TLS = True
 NOTIFY_ON_SKETCHY_EDIT = {
     "enabled": False,
     "from": "watchdog@thecrimson.com",
-    "to": ["cheeselord@gmail.com"],
+    "to": ["president@thecrimson.com"],
     "subject": "Sketchy Article Change!",
     "time_span": 7, # In days
 }
@@ -161,8 +161,8 @@ DISQUS = True
 
 # caching durations in sec
 CACHE_SHORT = 2 * 60 * 60
-CACHE_STANDARD = 12 * 60 * 60
-CACHE_LONG = 24 * 60 * 60
+CACHE_STANDARD = 4 * 60 * 60
+CACHE_LONG = 12 * 60 * 60
 CACHE_EONS = 7 * 24 * 60 * 60
 
 if DEBUG:
