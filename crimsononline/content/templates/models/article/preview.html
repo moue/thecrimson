@@ -7,4 +7,4 @@
 <h3>{{article|linkify}}</h3>
 <span class="byline">{{ article|byline:"short" }}</span>
 <span class="dateline">{{ article|datify }}</span>
-<p class="teaser">{{ article.teaser|safe }}</p>
+<p class="teaser">{{ article.teaser|striptags }}</p>
