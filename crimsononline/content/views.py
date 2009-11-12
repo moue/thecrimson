@@ -56,7 +56,6 @@ def index(request, m=None, d=None, y=None):
     #dict['issue'] = Issue.get_current()
     dict['galleries'] = Gallery.objects.prioritized(40)[:6]
     dict['videos'] = YouTubeVideo.objects.prioritized(60)[:2]
-    dict['welcome'] = Article.objects.get(pk=1218250)
     
     return render_to_response('index.html', dict)
 

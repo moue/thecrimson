@@ -81,17 +81,6 @@
         {% rotator rotate "main_rotator" %}
     {% endcontentmodule %}
     
-    {% module 4 welcome red "/section/opinion/" %}
-        <div id="welcome" class="article_previews">
-            <ul>
-                <li>
-                    <h3>{{welcome|linkify}}</h3>
-                    <span class="byline">{{ welcome|byline:"short" }}</span>
-                </li>
-            </ul>
-        </div>
-    {% endmodule %}
-    
     {% module 4 opinion gray "/section/opinion/" %}
         {% contentmodule index.opinion %}
         <div class="article_previews">
