@@ -120,7 +120,7 @@ def long_articles(*args):
         print "Already correct: ", already
         print "Not found: ", notfound
         print ''
-        return failed
+        return fail
     else:
         failures = []
         for i in range(1, 101):
