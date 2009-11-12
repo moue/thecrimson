@@ -73,6 +73,7 @@ def long_articles(*args):
         root, dirs, files = w.next()
         del w
         l = len(files)
+        print "  processing %d files..." % l
         for i in range(0, l, 5):
             f_list = files[i:i+5]
             pks = [int(f.split('.')[0]) for f in f_list]
@@ -263,7 +264,7 @@ class Command(BaseCommand):
                 fix_images()
                 return
             elif args[0] == 'long_articles':
-                long_articles(args[1:])
+                long_articles(*args[1:])
                 return
             
         
