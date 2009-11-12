@@ -9,7 +9,7 @@
     <div class="image">{{ article.main_rel_content|render:"blog_image" }}</div>
 {% endif %}
 <span class="text">
-    {{article.teaser|safe}}
+    {{article.teaser|newlines_to_paragraphs|join:"" }}
     {% if article|has_jump %}
         <p class="jump"><a href="{{ article.get_absolute_url }}">(Continued)</a></p>
     {% endif %}
@@ -23,5 +23,4 @@
             <a class="tag" href="{{ tag.get_absolute_url }}">{{ tag.text }}</a>{% ifnotequal forloop.last 1 %}, {% endifnotequal %}
         {% endfor %}
     {% endwith %}
-
 </div>

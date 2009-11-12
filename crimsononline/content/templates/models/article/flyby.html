@@ -12,6 +12,6 @@
         <div class="image {{article.main_rel_content.orientation}}">{{ article.main_rel_content|render:"blog_image" }}</div>
     {% endif %}
     <div class="text">
-        {{ article.text|safe|paragraphs|join:"" }}
+        {{ article.text|safe }}
     </div>
 {% endblock %}

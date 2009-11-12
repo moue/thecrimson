@@ -1,4 +1,4 @@
-from re import compile, search
+from re import compile, search, sub
 import operator
 from django import template
 from django.contrib.flatpages.models import FlatPage
@@ -85,6 +85,15 @@ def paragraphs(str):
     Keep the <p> tags in the output.
     """
     return [mark_safe(x) for x in para_list(str)]
+
+
+@register.filter
+def newlines_to_paragraphs(str):
+    """Return a <p> separated string, separating on newlines
+    
+    Keep the <p> tags in the output.
+    """
+    return [mark_safe("<p>%s</p>" % x) for x in str.split('\n') if len(sub(r'[\r\s\t]',"",x)) > 0]
 
 @register.filter
 def is_nav_cur(current, check):
