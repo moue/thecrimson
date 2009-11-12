@@ -81,8 +81,15 @@ def long_articles(*args):
                 print "   %d%% complete..." % (100 * i / l)
             qu = [Q(old_pk=pk) for pk in pks]
             qu = reduce(lambda x, y: x | y, qu)
-            arts = Article.objects.filter(qu).values('id', 'text')
-            arts = dict([(a['id'], a['text']) for a in arts])
+            values = Article.objects.filter(qu).values('id', 'text')
+            arts = dict([(a['id'], a['text']) for a in values])
+            if len(values) != len(arts):
+                print "old_pk not unique, uhoh!"
+                fail += pks
+                del qu
+                del values
+                del arts
+                continue
             notfound += (len(pks) - len(arts))
             for f in f_list:
                 pk = int(f.split('.')[0])
@@ -95,9 +102,7 @@ def long_articles(*args):
                 del f
                 text = text.decode('utf-8', 'ignore')
                 try:
-                    article = Article.objects.get(old_pk=pk)
-                    article.text = text
-                    article.save()
+                    article = Article.objects.filter(old_pk=pk).update(text=text)
                 except:
                     fail.append(pk)
                     continue
@@ -108,6 +113,7 @@ def long_articles(*args):
             del pks
             del qu
             del arts
+            del values
         print "Folder ", args[0], " completed"
         print "Successful: ", success
         print "Failed saves: ", len(fail)
