@@ -76,7 +76,7 @@ def long_articles(*args):
         for i in range(0, l, 5):
             f_list = files[i:i+5]
             pks = [int(f.split('.')[0]) for f in f_list]
-            if i % 100 == 0:
+            if i % 6 == 0:
                 print "   %d%% complete..." % (100 * i / l)
             qu = [Q(old_pk=pk) for pk in pks]
             qu = reduce(lambda x, y: x | y, qu)
@@ -84,7 +84,7 @@ def long_articles(*args):
             arts = dict([(a['id'], a['text']) for a in arts])
             notfound += (len(pks) - len(arts))
             for f in f_list:
-                pk = int(f.split('.')[0]
+                pk = int(f.split('.')[0])
                 if len(a['text']) > 4150:
                     already += 1
                     continue
