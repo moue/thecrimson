@@ -31,6 +31,7 @@ from django.core.exceptions import PermissionDenied
 from crimsononline.admin_cust.models import UserData
 from crimsononline.content.models import *
 from crimsononline.content.forms import *
+from crimsononline.common.utils.lists import combinations
 from crimsononline.common.utils.strings import alphanum_only
 from crimsononline.common.utils.html import para_list
 from crimsononline.common.forms import \
