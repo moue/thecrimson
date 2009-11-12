@@ -5,7 +5,6 @@ import re
 import urllib
 import os
 from PIL import Image as pilImage
-from itertools import combinations
 
 from django import forms
 from django.core import exceptions
