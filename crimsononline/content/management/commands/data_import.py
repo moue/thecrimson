@@ -89,7 +89,7 @@ def long_articles(*args):
                 if len(a['text']) > 4150:
                     already += 1
                     continue
-                f = open(path.join(root, file), 'rb')
+                f = open(path.join(root, f), 'rb')
                 text = ''.join(f.readlines())
                 f.close()
                 del f
