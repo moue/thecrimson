@@ -45,9 +45,74 @@ def get_save_path_new(instance, filename):
     return instance.issue.issue_date.strftime("photos/%Y/%m/%d/") + \
         filtered_capt + ext
     
+def long_articles(*args):
+    from os import path
+    import os
+    import random
+    import shutil
+    if len(args) > 0 and args[0] == 'prep':
+        w = os.walk('/home/itchair/long_articles')
+        root, dirs, files = w.next()
+        del w
+        # make all the folders
+        for i in range(1, 101):
+            os.mkdir(path.join(root, str(i)))
 
+        # distribute the files
+        for i in xrange(0, len(files)):
+            r = random.randint(1, 100)
+            old_path = path.join(root, files[i])
+            new_path = path.join(root, str(r), files[i])
+            shutil.move(old_path, new_path)
+        
+    elif len(args) > 0:
+        from django.db.models import Q
+        print "Beginning import of folder ", args[0], " ..."
+        success, fail, already, notfound = 0, [], 0, 0
+        w = os.walk('/home/itchair/long_articles/%s' % args[0])
+        root, dirs, files = w.next()
+        del w
+        l = len(files)
+        for i in range(0, l, 5):
+            f_list = files[i:i+5]
+            pks = [int(f.split('.')[0]) for f in f_list]
+            if i % 100 == 0:
+                print "   %d%% complete..." % (100 * i / l)
+            qu = [Q(old_pk=pk) for pk in pks]
+            qu = reduce(lambda x, y: x | y, qu)
+            arts = Article.objects.filter(qu).values('id', 'text')
+            arts = dict([(a['id'], a['text']) for a in arts])
+            notfound += (len(pks) - len(arts))
+            for f in f_list:
+                pk = int(f.split('.')[0]
+                if len(a['text']) > 4150:
+                    already += 1
+                    continue
+                f = open(path.join(root, file), 'rb')
+                text = ''.join(f.readlines())
+                f.close()
+                del f
+                text = text.decode('utf-8', 'ignore')
+                try:
+                    Article.objects.get(old_pk=pk).update(text=text)
+                except:
+                    fail.append(pk)
+                    continue
+                finally:
+                    del text
+                success += 1
+            del pks
+            del qu
+            del arts
+        print "Folder ", args[0], " completed"
+        print "Successful: ", success
+        print "Failed saves: ", len(fail)
+        print "Already correct: ", already
+        print "Not found: ", notfound
+        print ''
+        
     
-    
+
 def fix_images():
     import urllib
     import os
@@ -122,7 +187,7 @@ def fix_images():
             print "FAILURE!"
             continue
     
-    
+
 def fix_tags():
     """A lot of the subsections were mapped incorrectly in the old db."""
     wrong_tags = ['News', 'Breaking News', 'Editorials', 'Comments',
@@ -197,6 +262,10 @@ class Command(BaseCommand):
             elif args[0] == 'fix_images':
                 fix_images()
                 return
+            elif args[0] == 'long_articles':
+                long_articles(args[1:])
+                return
+            
         
         try:
             import pymssql
