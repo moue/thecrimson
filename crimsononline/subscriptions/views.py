@@ -60,9 +60,10 @@ def email_manage(request):
         context = {'manage': True}
         if request.method == 'POST':
             pk = request.POST.get('id', 0)
+            passcode = request.POST.get('passcode', '')
         else:
             pk = request.GET.get('subscription_id', 0)
-        passcode = d.get('passcode', '')
+            passcode = request.GET.get('passcode', '')
         try:
             s = EmailSubscription.objects.get(pk=int(pk), passcode=passcode)
         except EmailSubscription.DoesNotExist:
