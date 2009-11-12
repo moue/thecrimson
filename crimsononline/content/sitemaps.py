@@ -9,4 +9,4 @@ class ArticleSitemap(Sitemap):
         return Article.objects.filter(pub_status=1)
 
     def lastmod(self, obj):
-        return obj.issue.issue_date
+        return obj.modified_on
