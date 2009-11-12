@@ -95,13 +95,14 @@ def long_articles(*args):
                 del f
                 text = text.decode('utf-8', 'ignore')
                 try:
-                    a = Article.objects.get(old_pk=pk)
-                    a.text = text
-                    a.save()
+                    article = Article.objects.get(old_pk=pk)
+                    article.text = text
+                    article.save()
                 except:
                     fail.append(pk)
                     continue
                 finally:
+                    del article
                     del text
                 success += 1
             del pks
