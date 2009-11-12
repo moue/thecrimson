@@ -58,12 +58,14 @@ def email_confirm(request):
 def email_manage(request):
     if request.method == 'POST' or request.method == 'GET':
         context = {'manage': True}
-        d = getattr(request, request.method)
-        pk = int(d.get('subscription_id', 0))
+        if request.method == 'POST':
+            pk = request.POST.get('id', 0)
+        else:
+            pk = request.GET.get('subscription_id', 0)
         passcode = d.get('passcode', '')
         try:
-            s = EmailSubscription.objects.get(pk=pk, passcode=passcode)
-        except:
+            s = EmailSubscription.objects.get(pk=int(pk), passcode=passcode)
+        except EmailSubscription.DoesNotExist:
             context['status'] = 'fail'
             return render_to_response('email/manage.html', context)
         
