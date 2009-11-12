@@ -120,6 +120,15 @@ def long_articles(*args):
         print "Already correct: ", already
         print "Not found: ", notfound
         print ''
+        return failed
+    else:
+        failures = []
+        for i in range(1, 101):
+            failures += long_articles(str(i))
+        f = open('long_article_errors.log', 'w')
+        for failure in failures:
+            f.write('%d\n' % failure)
+        f.close()
         
     
 
