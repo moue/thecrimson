@@ -717,21 +717,7 @@ class ArticleForm(ContentModelForm):
 
     rel_content = RelatedContentField(label='New admin content', required=False,
         admin_site=admin.site, rel_types=[Image, Gallery, Article, Map, FlashGraphic, YouTubeVideo])
-        
-    """sportsticker_sport = forms.fields.ChoiceField(
-        widget=forms.Select(attrs={}),
-        choices=Article.SPORTS_TYPE_CHOICES,
-        label='Sport',
-        required=False,
-        help_text="Sport name to display before the headline."
-    )
-    sportsticker_slug = forms.fields.CharField(
-        widget=forms.TextInput(attrs={'size':'100'}),
-        label='Content',
-        required=False,
-        help_text="Text to display in the sports score ticker, eg \"Harvard 21 Yale 7\""
-    )"""
-    
+           
     def clean_teaser(self):
         """Add a teaser if one does not exist."""
         t = self.cleaned_data['teaser']
@@ -739,7 +725,7 @@ class ArticleForm(ContentModelForm):
             return t
         else:
             # split article by paragraphs, return first 20 words of first para
-            teaser = para_list(t)[0]
+            teaser = para_list(self.cleaned_data['text'])[0]
             teaser = TEASER_RE.sub("",teaser)
             return truncatewords(teaser, 20)
     
