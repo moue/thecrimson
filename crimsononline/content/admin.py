@@ -1083,20 +1083,20 @@ class YouTubeVideoAdmin(ContentAdmin):
         super(YouTubeVideoAdmin, self).save_model(request, obj, form, change)
         try:
             img = urllib.urlretrieve(img_url)
-        
+            
             fpath = youtube_get_save_path(obj, img_url.rsplit('/', 1)[1])
             # auto-crop the image
             i = pilImage.open(img[0])
             i = i.crop((124, 50, 464, 305))
             i.save(img[0])
-        
+            
             f = File(open(img[0]))
-
+            
             obj.pic.save(fpath, f)
             obj.save()
             f.close()
             os.remove(img[0])
-            
+        
         except:
             request.user.message_set.create(message='There was a problem automatically'
                 ' downloading the preview image from Youtube (this may happen '
