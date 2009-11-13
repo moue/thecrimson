@@ -10,11 +10,11 @@ $(document).ready(function(){
 	});
 
     $(".rotator").hover(function (){
-            $(".rotator_carousel").fadeIn("fast");
-            $('.rotator_preview').cycle('pause'); 
+            $(".rotator_carousel", this).fadeIn("fast");
+            $('.rotator_preview', this).cycle('pause'); 
     },function (){
-            $(".rotator_carousel").fadeOut("fast");
-            $('.rotator_preview').cycle('resume'); 
+            $(".rotator_carousel", this).fadeOut("fast");
+            $('.rotator_preview', this).cycle('resume'); 
     });
     
 });
