@@ -381,6 +381,12 @@ def section_sports(request):
     columns = ContentGroup.objects.filter(section=section, active=True,
         type='column').annotate(recent=Max('content__issue__issue_date'))
     columns = columns[:3]
+    featured_group_name = "Basketball '09" #We could theoretically set this up to
+                                           #be changed through admin
+    featured_group = ContentGroup.objects.filter(section=section, active=True, 
+        name=featured_group_name)
+    featured = Article.objects.filter(section=section, group=featured_group)
+    
     return render_to_response('sections/sports.html', locals())
 
 FLYBY_RESULTS_PER_PAGE = 10
