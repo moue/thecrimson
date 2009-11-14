@@ -79,11 +79,12 @@ class EmailSubscription(models.Model):
             return False
         if issue_date is None:
             issue_date = date.today()
-        domain = settings.URL_BASE
         path = reverse("crimsononline.subscriptions.views.email_manage")
         d = {'issue_date': issue_date, 'subscription': self}
         d['manage_url'] = u"%s%s?subscription_id=%s&passcode=%s" % \
                             (domain, path[1:], self.pk, self.passcode)
+        if domain[-1] == '/':
+            domain = domain[:-1]
         articles = content.Article.objects.filter(issue__issue_date=issue_date)
         d['top_stories'] = articles.filter(priority__gt=5) \
                            if self.top_stories else []

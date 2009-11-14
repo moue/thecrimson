@@ -101,10 +101,31 @@ def is_nav_cur(current, check):
         return mark_safe('id="nav_cur"')
     else:
         return ''
-        
+    
+@register.filter
+def dlinkify(obj, domain=''):
+    """Like linkify(), but with a domain prepended.
+    
+    Unfortunately, this makes link text much less customizable.
+    """
+    try:
+        # if obj is not a list, convert it into a list
+        if not getattr(obj, '__iter__', False):
+            obj = [obj]
+        l = [mark_safe('<a href="%s%s">%s</a>' % \
+                (domain, i.get_absolute_url(), filter.force_escape(i))) for i in obj]
+        # nonlists obj's should be returned as nonlists
+        return l[0] if len(l) == 1 else l
+    except IndexError:
+        return ''
+    
+
 @register.filter
 def linkify(obj, link_text=''):
-    """turns object(s) into (html) link(s)"""
+    """turns object(s) into (html) link(s).
+    
+    if objects have the attr 'domain', stick the domain in the URL.
+    """
     try:
         l = []
         # if obj is not a list, convert it into a list
@@ -113,8 +134,8 @@ def linkify(obj, link_text=''):
         for item in obj:
             l_text = item if link_text == '' \
                 else getattr(item, link_text, link_text)
-            l.append(mark_safe('<a href="%s">%s</a>' % (item.get_absolute_url(),
-                filter.force_escape(l_text))))
+            l.append(mark_safe('<a href="%s">%s</a>' % \
+                (item.get_absolute_url(), filter.force_escape(l_text))))
         # nonlists obj's should be returned as nonlists
         return l[0] if len(l) == 1 else l
     except IndexError:

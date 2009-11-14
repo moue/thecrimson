@@ -279,7 +279,8 @@ class Content(models.Model):
         n_context = copy.copy(context)
         nav = self.section.name.lower()
         name = self.content_type.name.replace(" ","")
-        templ = 'models/%s/%s.html' % (name, method)
+        ext = '.html' if method[-4:] != '.txt' else ''
+        templ = 'models/%s/%s%s' % (name, method, ext)
         # can access self with either the name of the class (ie, 'article')
         #   or 'content'
         n_context.update({name: self.child, 'content': self.child, 

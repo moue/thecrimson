@@ -1,7 +1,7 @@
 {% load common %}
 {% load content_filters %}
 {{ article }}
-{{ article.get_absolute_url }}
+http://www.thecrimson.com{{ article.get_absolute_url }}
 By {{article.contributors.all|human_list}}
 {{ article.issue.issue_date|date:"l, F j, Y" }}
 {{ article.teaser }}
