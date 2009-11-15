@@ -27,7 +27,7 @@ class RotatorNode(template.Node):
             self.title = ''
         return render_to_string('templatetag/rotator.html', 
             {'contents': self.contents, 'title': self.title, 
-             'nopreview': self.nopreview})
+             'nopreview': self.nopreview, 'id': self.id})
     
 
 def do_rotator(parser, token, nopreview=False):

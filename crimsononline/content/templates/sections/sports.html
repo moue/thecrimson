@@ -70,6 +70,14 @@
         </div>
     {% endmodule %}
     
+    {% if video %}
+    	{% module 4 "Featured Video" boxgray %}
+            {{ video|render:"rotator" }}
+            <span class="clear"></span>
+    	{% endmodule %}
+    {% endif %}
+    
+    
     {% module 4 columns %}
         <div id="columnists" class="img_list">
         <ul>
@@ -106,7 +114,7 @@
     
     {% module 4 featured_group_name red %}
         {% contentmodule sports.rotator %}
-            {% rotator featured "featured_rotator %}
+            {% rotator featured featured_rotator %}
         {% endcontentmodule %}
     {% endmodule %}
     
@@ -146,14 +154,6 @@
     
     {% module 4 "" box %}
         {% advertisement 59 %}
-    {% endmodule %}
-
-    {% if video %}
-	{% module 4 "Featured Video" boxgray %}
-        {{ video|render:"rotator" }}
-        <span class="clear"></span>
-	{% endmodule %}
-    {% endif %}
-    
+    {% endmodule %}  
     
 {% endblock %}

@@ -371,10 +371,10 @@ def section_sports(request):
     stories = top_articles(section)
     rotate = rotatables(section)
     latest = Article.objects.filter(section=section).order_by('-modified_on')
-    latest = latest[:8]
+    latest = latest[:10]
     blog = stories.filter(group__type='blog')
     athlete = first_or_none(stories.filter(tags__text='athlete of the week')) 
-    stories = stories[:5]
+    stories = stories[:4]
     scores = Score.objects.order_by('-event_date')[:10]
     sports = Tag.objects.filter(category='sports').order_by('text')
     video = first_or_none(YouTubeVideo.objects.recent.filter(section=section))

@@ -5,7 +5,7 @@
 {% static_js "jquery.cycle.all.min.js" %}
 {% static_js "rotator.js" %}
 
-<div class="rotator gray-bg">
+<div class="rotator gray-bg" id="{{ id }}">
     {% if title %}<h2>{{ title }}</h2>{% endif %}
     <div class="rotator_carousel" style="display:none">
         <div class="rotator_carousel_contents"></div>

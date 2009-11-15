@@ -366,9 +366,11 @@ def static_js(link_to_js):
     renders a javascript include.
     make sure you use a url relative to the base javascript folder, or a link that
         starts with http://
+        
+    depends on the require_once function, defined in media_include.js and included
+    in base.html
     """
     if link_to_js[:7] != 'http://':
         link_to_js = misc.static_content("scripts/%s" % link_to_js)
-    return mark_safe("""<script type="text/javascript" src="%s"></script>""" \
+    return mark_safe('<script type="text/javascript">require_once("%s");</script>' \
         % link_to_js)
-

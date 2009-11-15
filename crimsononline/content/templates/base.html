@@ -10,7 +10,8 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title>{% block title %}{{ title }}{% endblock %} | The Harvard Crimson</title>
 	 <link rel="icon" type="image/vnd.microsoft.icon" href="/site_media/images/icons/favicon.ico" />
-	{% static_css "base.css" %}
+	<script type="text/javascript" src="{% static_url "scripts/media_include.js" %}"></script>
+    {% static_css "base.css" %}
 	{% block css %}{% endblock %}
 	{% block js %}{% endblock %}
 	{% static_js "browser_upgrade_notification.js" %}
