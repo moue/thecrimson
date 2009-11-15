@@ -29,7 +29,7 @@ def rotator_items(self, section='front'):
     output = ['<html><head></head><body><table><th><td>pk</td><td>ct</td><td>slug</td></th>']
     tmpl = "<tr><td><a href='%s'>%d</a></td><td>%s</td><td>%s</td></tr>"
     for c in content:
-        link = "/admin/content/%s/%d/" % (c.content_type, c.pk)
+        link = urlresolvers.reverse('admin:content_%s_change' % c.content_type, args=(c.pk,))
         output += [tmpl % (link, c.pk, c.content_type, c.slug)]
     
     output.append('</table></body></html>')
