@@ -1,5 +1,7 @@
 {% load content_filters %}
 {% load common %}
+{% load content_module %}
+
 {% load tag_cloud %}
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
@@ -35,15 +37,8 @@
 	<p>The editors of <a href="http://www.thecrimson.com" target="_blank">The Harvard Crimson</a> present FlyByBlog, your more-than-daily source for Harvard news, gossip, and oddities. Follow us by subscribing to our <a href="/feeds/section/flyby/">RSS Feed</a>.</p>
 
 <h3>Quick Links</h3>
-	<ul class='blogroll'>
-        <li><a href="http://www.weather.com/weather/local/02138?lswe=02138&amp;lwsa=WeatherLocalUndeclared" target="_blank">Cambridge Weather</a></li>
-        <li><a href="http://q.fas.harvard.edu/harvardQ/qguide.jsp" target="_blank">CUE (Q&#8230;) Guide</a></li>
-        <li><a href="http://lms01.harvard.edu/F/L72N3A41VM1VK8HGDVX4133UMFFPS1NF4KVQVAU51JQ2KM5J48-42881?RN=421962194" target="_blank">HOLLIS Catalog</a></li>
-        <li><a href="http://www.foodpro.huds.harvard.edu/foodpro/locationresidential.asp" target="_blank">HUDS Menu</a></li>
-        <li><a href="http://www.my.harvard.edu" target="_blank">My.Harvard</a></li>
-        <li><a href="http://shuttleboy.com/" target="_blank">Shuttleboy</a></li>
-        <li><a href="http://www.thecrimson.com" target="_blank">The Harvard Crimson</a></li>
-    </ul>
+	{% contentmodule flyby_quicklinks %}{% endcontentmodule %}
+
 
 {% comment %}
 <h3>Tags</h3>
@@ -51,31 +46,13 @@
 {% endcomment %}
 
 <h3>Harvard Blogs</h3>
-	<ul class='blogroll'>
-        <li><a href="http://www.harvarddems.com/blog" target="_blank">Dem Apples</a></li>
-        <li><a href="http://www.harvardarts.wordpress.com" target="_blank">Harvard Arts Blog</a></li>
-        <li><a href="http://harvardhooligans.com" target="_blank">Harvard Hooligans</a></li>
-        <li><a href="http://harvarddining.blogspot.com/" target="_blank">HUDS Blog</a></li>
-        <li><a href="http://gregmankiw.blogspot.com/" target="_blank">Mankiw&#8217;s Blog</a></li>
-        <li><a href="http://sexandtheivy.com/" target="_blank">Sex and the Ivy</a></li>
-        <li><a href="http://theelwordblog.blogspot.com/" target="_blank">The El Word</a></li>
-        <li><a href="http://thequadrangle.wordpress.com/" target="_blank">The Quadrangle</a></li>
-	</ul>
+	{% contentmodule flyby_harvardblogs %}{% endcontentmodule %}
+
 
 
 <h3>College Blogs</h3>
-	<ul class='xoxo blogroll'>
-        <li><a href="http://www.bwog.net/" target="_top">Bwog (Columbia)</a></li>
-        <li><a href="http://www.ivygateblog.com/" target="_blank">IvyGate (All Ivy)</a></li>
-        <li><a href="http://www.madsvassarblog.com/" target="_blank">MadsVassar (Vassar)</a></li>
-        <li><a href="http://midd-blog.com/" target="_blank">MiddBlog (Middlebury)</a></li>
-        <li><a href="http://onwardstate.com/" target="_blank">Onward State (Penn State)</a></li>
-        <li><a href="http://saxaspeak.blogspot.com/" target="_blank">SaxaSpeak (Georgetown)</a></li>
-        <li><a href="http://clog.dailycal.org/" target="_blank">The Daily Clog (UC-Berkeley)</a></li>
-        <li><a href="http://tusb.stanford.edu/" target="_blank">The Unofficial Stanford Blog (Stanford)</a></li>
-        <li><a href="http://underthebutton.com/" target="_blank">Under the Button (Penn)</a></li>
-        <li><a href="http://wesleying.blogspot.com/" target="_blank">Wesleying (Wesleyan)</a></li>
-	</ul>
+	{% contentmodule flyby_collegeblogs %}{% endcontentmodule %}
+
 
 
 </div><!-- #primary .sidebar -->	
