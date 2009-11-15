@@ -2,7 +2,7 @@ $(document).ready(function(){
 	$('.rotator_preview').cycle({
 	    fx:     'fade',
 	    speed:  'slow',
-		timeout: 4000,
+		timeout: 5000,
 	    pager:  '.rotator_carousel_contents',
 	    pagerAnchorBuilder: function(idx, slide) {
 	        return '<span class="pager_item"><a href="#">&bull;</a></span>';
