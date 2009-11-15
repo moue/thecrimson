@@ -223,6 +223,10 @@ class ContentAdmin(admin.ModelAdmin):
             if old_status != 1 and not \
                 request.user.has_perm('content.content.can_publish'):
                 raise exceptions.SuspiciousOperation()
+                
+            if old_status != 1:
+                obj.created_on = datetime.now()
+                #Change created_on to time published
         
         # don't let unpermissioned users delete content
         if not request.user.has_perm('content.content.can_delete') and \
