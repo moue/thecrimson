@@ -424,7 +424,7 @@ def section_flyby(request):
         entries = paginator.page(page)
     except:
         entries = paginator.page(1)
-    return mark_safe(render_to_response('flyby/content_list.html', {"entries":entries}))
+    return render_to_response('flyby/content_list.html', {"entries":entries})
 
 # IPHONE APP JSON FEEDS
 
