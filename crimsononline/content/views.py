@@ -31,7 +31,8 @@ def sitemap(request, year=None, month=None):
     if year is None and month is None:
         ordered = Article.objects.order_by("issue__issue_date")
         oldest = ordered[0].issue.issue_date.year
-        newest = ordered[ordered.count()-1].issue.issue_date.year
+        ordered = Article.objects.order_by("-issue__issue_date")
+        newest = ordered[0].issue.issue_date.year
         years = range(oldest,newest+1)
         months = [("%02d"%x) for x in range(1,13)]
         return render_to_response("sitemap/sitemap_base.html",{'years':years,'months':months})
