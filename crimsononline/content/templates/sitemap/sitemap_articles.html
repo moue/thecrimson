@@ -1,0 +1,17 @@
+{% load common %}
+
+<html>
+<head><title>Articles</title></head>
+<body>
+Articles from {{month}} {{year}}:
+<ul>
+{% if articles %}
+	{% for article in articles %}
+	<li>{{article|linkify}}</li>
+	{% endfor %}
+{% else %}
+	No articles found in this time period
+{% endif %}
+</ul>
+</body>
+</html>

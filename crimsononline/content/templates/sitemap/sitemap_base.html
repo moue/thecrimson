@@ -1,0 +1,13 @@
+{% load common %}
+
+<html>
+<head><title>Articles</title></head>
+<body>
+Articles in date range:
+<ul>
+{% for dt in dates %}
+<li><a href="/sitemap/{{dt}}/">{{dt}}</a></li>
+{% endfor %}
+</ul>
+</body>
+</html>
