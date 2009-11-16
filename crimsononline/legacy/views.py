@@ -21,8 +21,7 @@ def redirect_writer(request):
         w = Contributor.objects.get(pk=id)
         return HttpResponsePermanentRedirect(w.get_absolute_url())
     except:
-        raise
-        #raise Http404
+        raise Http404
 
 @cache(settings.CACHE_LONG, "general_content_photo")
 def redirect_photo(request,date,width,id):
