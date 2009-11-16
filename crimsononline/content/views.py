@@ -27,22 +27,23 @@ from crimsononline.common.templatetags.common import human_list
 # ============ ACTUAL VIEWS =====================
 
 @cache(settings.CACHE_STANDARD, "sitemap")
-def sitemap(request, year=None, month=None):
-    if year is None and month is None:
-        ordered = Article.objects.order_by("issue__issue_date")
-        oldest = ordered[0].issue.issue_date.year
-        ordered = Article.objects.order_by("-issue__issue_date")
-        newest = ordered[0].issue.issue_date.year
+def sitemap(request, year=None, issue=None):
+    if year is None:
+        oldest = Article.objects.order_by("issue__issue_date")[0].issue.issue_date.year
+        newest = Article.objects.order_by("-issue__issue_date")[0].issue.issue_date.year
         years = range(oldest,newest+1)
         months = [("%02d"%x) for x in range(1,13)]
-        return render_to_response("sitemap/sitemap_base.html",{'years':years,'months':months})
-    
-    try:
-        ars = Article.objects.filter(issue__issue_date__year = year, issue__issue_date__month = month)
-        return render_to_response("sitemap/sitemap_articles.html",{'articles': ars,'year':year,'month':month})
-    except:
-        return HttpResponseRedirect("sitemap/")
-        
+        return render_to_response("sitemap/sitemap_base.html",{'years':years})
+    elif year is not None and issue is None:
+        issues = Issue.objects.filter(issue_date__year=year)
+        return render_to_response("sitemap/sitemap_issues.html",{'year':year, 'issues':issues})
+    elif issue is not None:
+        try:
+            issue = Issue.objects.get(pk=issue)
+            ars = Article.objects.filter(issue=issue)
+            return render_to_response("sitemap/sitemap_articles.html",{'articles': ars,'issue':issue})
+        except:
+            return Http404
 
 @cache_page(settings.CACHE_STANDARD)
 def index(request, m=None, d=None, y=None):

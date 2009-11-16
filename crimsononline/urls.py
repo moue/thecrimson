@@ -49,7 +49,8 @@ urlpatterns +=patterns('',
     url(r'^sitemap\.xml$', 'django.contrib.sitemaps.views.index', {'sitemaps': sitemaps}),
     url(r'^sitemap-(?P<section>.+)\.xml$', 'django.contrib.sitemaps.views.sitemap', {'sitemaps': sitemaps}),
     url(r'^sitemap/$', 'crimsononline.content.views.sitemap'),
-    url(r'^sitemap/(\d{4})-(\d{2})/$', 'crimsononline.content.views.sitemap'),
+    url(r'^sitemap/(\d{4})/$', 'crimsononline.content.views.sitemap'),
+    url(r'^sitemap/(\d{4})/(\d+)/$', 'crimsononline.content.views.sitemap'),
 )
 
 """

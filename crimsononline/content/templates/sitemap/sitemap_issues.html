@@ -3,10 +3,10 @@
 <html>
 <head><title>Articles</title></head>
 <body>
-Articles in year:
+Articles on day:
 <ul>
-{% for year in years %}
-<li><a href="/sitemap/{{year}}/">{{year}}</a></li>
+{% for issue in issues %}
+<li><a href="/sitemap/{{year}}/{{issue.id}}/">{{issue}}</a></li>
 {% endfor %}
 </ul>
 </body>
