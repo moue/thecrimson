@@ -5,8 +5,10 @@
 <body>
 Articles in date range:
 <ul>
-{% for dt in dates %}
-<li><a href="/sitemap/{{dt}}/">{{dt}}</a></li>
+{% for year in years %}
+	{% for month in months %}
+<li><a href="/sitemap/{{year}}-{{month}}/">{{year}}-{{month}}</a></li>
+	{% endfor %}
 {% endfor %}
 </ul>
 </body>

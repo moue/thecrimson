@@ -32,11 +32,9 @@ def sitemap(request, year=None, month=None):
         ordered = Article.objects.order_by("issue__issue_date")
         oldest = ordered[0].issue.issue_date.year
         newest = ordered[len(ordered)-1].issue.issue_date.year
-        dts = []
-        for yr in range(oldest,newest+1):
-            for mo in range(1,13):
-                dts.append("%d-%02d" % (yr, mo))
-        return render_to_response("sitemap/sitemap_base.html",{'dates':dts})
+        years = range(oldest,newest+1)
+        months = [("%02d"%x) for x in range(1,13)]
+        return render_to_response("sitemap/sitemap_base.html",{'years':years,'months':months})
     
     try:
         ars = Article.objects.filter(issue__issue_date__year = year, issue__issue_date__month = month)
