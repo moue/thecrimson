@@ -35,7 +35,7 @@ from crimsononline.common.fields import \
 from crimsononline.common.storage import OverwriteStorage
 from crimsononline.common.utils.misc import ret_on_fail
 from crimsononline.common.utils.strings import \
-    make_file_friendly, make_url_friendly
+    make_file_friendly, make_url_friendly, rand_str
 from crimsononline.admin_cust.models import Board
 
 

@@ -6,7 +6,7 @@
 {% block content %}
     <h1>{{ article.headline }}</h1>
     <div class="publishedline">
-        Published by {{ article.contributors.all|linkify|human_list }} on {{ article.created_on|date:"F d, Y" }} at {{ article.created_on|date:"g:iA" }} 
+        Published by {{ article.contributors.all|linkify|human_list }} on {{ article.issue.issue_date|date:"F d, Y" }} at {{ article.issue.issue_date|date:"g:iA" }} 
     </div>
     {% if article.main_rel_content %}
         <div class="image {{article.main_rel_content.orientation}}">{{ article.main_rel_content|render:"blog_image" }}</div>

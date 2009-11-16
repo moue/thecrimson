@@ -17,11 +17,12 @@ def redirect_article(request):
 @cache(settings.CACHE_LONG, "general_content_writer")
 def redirect_writer(request):
     try:
-        id = request.GET.get("id")
+        id = request.GET.get("id",request.GET.get("ID"))
         w = Contributor.objects.get(pk=id)
         return HttpResponsePermanentRedirect(w.get_absolute_url())
     except:
-        raise Http404
+        raise
+        #raise Http404
 
 @cache(settings.CACHE_LONG, "general_content_photo")
 def redirect_photo(request,date,width,id):

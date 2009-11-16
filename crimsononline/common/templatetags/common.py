@@ -334,7 +334,7 @@ class WeatherNode(template.Node):
             return '<div class="submenu_image">' + icon_txt + '</div>' \
                 + '<span class="submenu_right">Current Cambridge, MA weather: ' + str(cur_weather).split()[-1] + '</span>'
         except:
-            raise
+            # Don't raise exception if feed is down or something else
             return ''
 
 def weather(parser, token):

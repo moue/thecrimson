@@ -5,6 +5,7 @@ from content.models import *
 from django.core.management.base import NoArgsCommand
 from datetime import *
 import urllib2
+import urllib
 from django.core.files import File
 
 try:    
@@ -173,11 +174,16 @@ def convert(infile):
         opener = urllib2.build_opener()
         if node.getElementsByTagName('content:encoded')[0].firstChild != None:
             ATTACHMENTS = re.compile(r'\[caption([^\[]+)\[/caption\]')
+            IMAGES = re.compile(r'<img(.*)\/>')
     	    a.text = node.getElementsByTagName('content:encoded')[0].firstChild.data
             images = ATTACHMENTS.findall(a.text)
+            a.text = ATTACHMENTS.sub("",a.text)
+            images2 = IMAGES.findall(a.text)
+            a.text = IMAGES.sub("",a.text)
+            images.extend(images2)
             for image in images:
                 SRC = re.compile(r'src="([^"]*)"')
-                CAPTION = re.compile(r'caption="([^"]*)"')
+                CAPTION = re.compile(r'alt="([^"]*)"')
                 old_location = SRC.search(image).group(1)
 
                 cur_caption = CAPTION.search(image).group(1)
@@ -189,23 +195,23 @@ def convert(infile):
                 i.issue = a.issue
                 
                 try:
-                    pic = opener.open(old_location).read()
+                    req = urllib2.Request(old_location);
+                    req.add_header('User-agent', 'Mozilla/5.0 (compatible; Konqueror/4.2; Linux) KHTML/4.2.2 (like Gecko)')                    
+
+                    old_filename = old_location.split("/")[len(old_location.split("/"))-1]
+                    new_location = image_get_save_path(i, old_filename)
+                    ensure_dir("static/" + new_location)
+                    
+                    f = urllib2.urlopen(req)
+                    local = open("static/" + new_location, 'wb')
+                    local.write(f.read())
+                    local.close()
                 except:
+                    print "couldn't read image at url %s" % old_location
+                    print new_location
                     continue
                 
-                old_filename = old_location.split("/")[len(old_location.split("/"))-1]
-                new_location = image_get_save_path(i, old_filename)
             
-                ensure_dir("static/" + new_location)
-                try:
-                    fout = open("static/" + new_location, "wb")
-                except:
-                    print "couldn't open filehandle"
-                    raise
-                    continue
-                    
-                fout.write(pic)
-                fout.close()
                 i.pic = new_location
                 i.caption = cur_caption
                 i.pub_status = 1
@@ -227,7 +233,6 @@ def convert(infile):
                 acr = ArticleContentRelation(article=a, related_content=i)
                 acr.save()
                 
-            a.text = ATTACHMENTS.sub("",a.text)
             a.text = '<p>' + a.text.replace("\n","</p><p>") + '</p>'
             a.text = a.text.replace("<p></p>","")
             a.teaser = a.text.split("<!--more-->")[0]
@@ -243,7 +248,6 @@ def convert(infile):
                 c = Contributor.objects.get(pk=AUTHORS_DICT[author])
                 a.contributors.add(c)
             except:
-                print "couldn't find contributor %s" % author
                 a.contributors.add(flyby_contrib)
                 pass
         a.pub_status = 1
