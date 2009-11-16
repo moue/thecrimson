@@ -2,6 +2,7 @@ from django.contrib.sitemaps import Sitemap
 from crimsononline.content.models import Article
 
 class ArticleSitemap(Sitemap):
+    limit = 1000
     changefreq = "weekly"
     priority = 0.5
 
