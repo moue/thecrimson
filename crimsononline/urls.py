@@ -5,6 +5,7 @@ from django.conf.urls.defaults import *
 from crimsononline.admin_cust.views import login_user
 from django.contrib.auth.views import login, logout
 from django.contrib.sitemaps import FlatPageSitemap
+from django.views.generic.simple import redirect_to
 from crimsononline.content.sitemaps import ArticleSitemap
 
 FILTER_URL_RE = r'(?:page/(?P<page>\d+)/)?'
@@ -26,6 +27,7 @@ urlpatterns += patterns('crimsononline.content.views',
     url(r'^subscribe/', include('crimsononline.subscriptions.urls')),
     url(r'^about/', include('crimsononline.info.urls')),
     url(r'^iphone/(?P<s>\w+)/$', 'iphone'),
+    url(r'^classifieds/$',redirect_to, {'url':'http://ad2ad.com/?portalid=1708065'}),
 )
 
 urlpatterns += patterns('',
