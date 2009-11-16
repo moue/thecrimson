@@ -209,7 +209,7 @@ class ContentAdmin(admin.ModelAdmin):
         # don't let anyone change issue / slug on published content.
         if change:
             old_obj = self.model.objects.all_objects().get(pk=obj.pk)
-        
+            
             new_status = int(obj.pub_status)
             old_status = int(old_obj.pub_status)
         
@@ -908,21 +908,21 @@ class ArticleAdmin(ContentAdmin):
         if request.method != 'GET':
             return Http404
         
-        ct_id = request.GET.get('ct_id', None)
+        ct_id = int(request.GET.get('ct_id', 0))
         st_dt = request.GET.get('st_dt', None)
         end_dt = request.GET.get('end_dt', None)
         q = request.GET.get('q', None)
         page = request.GET.get('page', None)
         
         OBJS_PER_REQ = 16
-        if int(ct_id) != 0:
+        if ct_id != 0:
             cls = ContentType.objects.get(pk=ct_id).model_class()
         else:
             cls = Content
         st_dt = datetime.strptime(st_dt, '%m/%d/%Y')
         end_dt = datetime.strptime(end_dt, '%m/%d/%Y')
         
-        objs = cls.objects.all_objects(start=st_dt, 
+        objs = cls.objects.admin_objects(start=st_dt, 
                                end=end_dt).filter(slug__icontains=q)
         p = Paginator(objs, OBJS_PER_REQ).page(page)
         
