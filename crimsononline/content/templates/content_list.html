@@ -93,7 +93,9 @@
 
             {% tag_cloud 15 "RELATED TAGS" tags %}
 
-            {% most_read_articles %}
+            {% block most_read_articles %}
+                {% most_read_articles %}
+            {% endblock %}
 
         {% endblock %}
     </div>

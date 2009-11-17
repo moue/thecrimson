@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 from math import log
+from string import split
 import time
 import urllib
 from urlparse import urlparse
@@ -95,15 +96,26 @@ class TopArticlesNode(template.Node):
                 self.specifier = self.specifier.resolve(context)
             except:
                 return ''
+            if isinstance(self.specifier, basestring):
+                parsedspec = self.specifier.split(":")
+                try:
+                    if parsedspec[0] == "section":
+                        self.specifier = Section.objects.filter(name=parsedspec[1])[0]
+                except:
+                    return ''
             if self.specifier.__class__ == Section:
                 tableStr = ""
-                limitStr = " AND content_section_id = " + str(self.specifier.id)
+                limitStr = " AND content_content.section_id = " + str(self.specifier.id)
             elif self.specifier.__class__ == Contributor:
-                tableStr = ", content_contributors"
-                limitStr = " AND content_contributors.contributor_id = " + str(self.specifier.id) + " AND content_contributors.id = content.id"
+                tableStr = ", content_contributor, content_content_contributors"
+                limitStr = " AND content_contributor.id = " + str(self.specifier.id) + \
+                           " AND content_contributor.id = content_content_contributors.contributor_id" \
+                           " AND content_content_contributors.content_id = content_content.id"
             elif self.specifier.__class__ == Tag:
-                tableStr = ", content_tags"
-                limitStr = " AND content_tags.tag_id = " + str(self.specifier.id) + " AND content_tags.id = content.id"
+                tableStr = ", content_tag, content_content_tags"
+                limitStr = " AND content_tag.id = " + str(self.specifier.id) + \
+                           " AND content_content_tags.content_id = content_content.id" \
+                           " AND content_content_tags.tag_id = content_tag.id"
             else:
                 raise template.TemplateSyntaxError, "The TopArticles tag can only take a section, contributor, or tag argument (%r passed)" % self.specifier.__class__
         else:
