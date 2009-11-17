@@ -33,7 +33,7 @@ function mca(){
         <a id="mca" onclick="mca();" style="cursor:pointer;">{{"commented"|yuhkilabel:"gray"}}</a>
         {% endcomment %}
     </span>
-    {% cache 500 mostreadarticles %}
+    {% cache 500 mostreadarticles nav writer tag %}
     <div id="mostreadarticles">
         <ol class="most">        
          {% for article in mostreadarticles %}
