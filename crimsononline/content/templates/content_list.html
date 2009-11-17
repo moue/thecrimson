@@ -95,7 +95,7 @@
             {% tag_cloud 15 "RELATED TAGS" tags %}
 
             {% block most_read_articles %}
-                {% cache 500 %}
+                {% cache 500 mostreadarticles %}
                     {% most_read_articles %}
                 {% endcache %}
             {% endblock %}
