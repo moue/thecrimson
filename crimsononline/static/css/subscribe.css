@@ -45,7 +45,6 @@ form.manage li {
 }
 form.manage button {
     margin: 10px 0 10px;
-   
 }
 form.manage div.fieldWrapper input.acfb-input {
     border: none;
@@ -74,4 +73,8 @@ form.manage span.errormessage{
 
 form.manage span.errormessage2{
 	color: red;
+}
+
+button {
+    padding: 3px;
 }
