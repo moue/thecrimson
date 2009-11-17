@@ -152,7 +152,9 @@
     
     {% flyby_preview %}
     
-    {% most_read_articles %}
+    {% cache 500 %}
+        {% most_read_articles %}
+    {% endcache %}
 
     {% module 4 "" ad %}
 		<div style="width:300px; margin: 0 auto;">

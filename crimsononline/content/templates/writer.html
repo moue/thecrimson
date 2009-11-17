@@ -56,5 +56,7 @@
     </div>
 {% endblock %}
 {% block most_read_articles %}
-    {% most_read_articles writer %}
+    {% cache 500 writer %}
+        {% most_read_articles writer %}
+    {% endcache %}
 {% endblock %}

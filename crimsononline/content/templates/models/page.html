@@ -101,7 +101,9 @@
     
     <div id="sidebar" class="col-4">
         {% block sidebar %}
-            {% most_read_articles content.section %}
+            {% cache 500 content.section %}
+                {% most_read_articles content.section %}
+            {% endcache %}
 
             {% module 4 "" box %}
                 {% advertisement 61 %}

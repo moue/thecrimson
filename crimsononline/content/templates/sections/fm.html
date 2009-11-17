@@ -117,7 +117,9 @@
     </div>
     {% endmodule %}
     
+    {% cache 500 %}
     {% most_read_articles "section:fm" %}
+    {% endcache %}
     
 
 {% endblock %}

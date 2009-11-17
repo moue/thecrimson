@@ -99,7 +99,9 @@
         {% advertisement 59 %}
     {% endmodule %}
     
+    {% cache 500 %}
     {% most_read_articles "section:news" %}
+    {% endcache %}
     
     {% tag_cloud 20 "tags" %}
 

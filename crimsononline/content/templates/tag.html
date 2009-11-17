@@ -56,7 +56,9 @@
 {% endblock %}
 
 {% block right %}
-    {% most_read_articles tag %}
+    {% cache 500 tag %}
+        {% most_read_articles tag %}
+    {% endcache %}
     
     {% module 4 "" box %}
         {% advertisement 59 %}
