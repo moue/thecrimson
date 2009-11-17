@@ -1,5 +1,6 @@
 {% extends "section.html" %}
 
+{% load cache %}
 {% load common %}
 {% load content_filters %}
 {% load rotator %}
@@ -100,7 +101,7 @@
     {% endmodule %}
     
     {% cache 500 %}
-    {% most_read_articles "section:news" %}
+        {% most_read_articles "section:news" %}
     {% endcache %}
     
     {% tag_cloud 20 "tags" %}
