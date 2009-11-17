@@ -16,11 +16,11 @@ urlpatterns = patterns('',
 )
 
 urlpatterns += patterns('crimsononline.content.views',
-    url(r'writer/(?P<pk>\d+)/(?P<f_name>[A-Za-z\-\'\.\s]+)_' \
-        r'(?P<m_name>[A-Za-z\-\'\.\s]*)_(?P<l_name>[A-Za-z\-\'\.\s]+)/%s$' % FILTER_URL_RE,
+    url(r'writer/(?P<pk>\d+)/(?P<f_name>[\w\-\'\.\s]+)_' \
+        r'(?P<m_name>[\w\-\'\.\s]*)_(?P<l_name>[\w\-\'\.\s]+)/%s$' % FILTER_URL_RE,
         'writer', name='content_writer_profile'),
     url(r'^section/', include('crimsononline.content.section_urls'), name='content_section'),
-    url(r'^tag/(?P<tag>[A-Za-z&\'\s-]+)/%s$' % FILTER_URL_RE, 
+    url(r'^tag/(?P<tag>[\w&\'\s-]+)/%s$' % FILTER_URL_RE, 
         'tag', name='content_tag'),
     url(r'^$', 'index', name='content_index'),
     url(r'^issue/(\d+)/(\d+)/(\d+)/$', 'index', name='content_index'),    
@@ -69,8 +69,8 @@ urlpatterns += patterns('',
 )
 
 # generic content urls
-CONTENT_URL_RE = r'([a-z\-]+)/(\d{4})/(\d{1,2})/(\d{1,2})/([0-9A-Za-z_\-%]+)/$'
-CGROUP_URL_RE = r'([a-z]+)/([a-z0-9\-]+)/'
+CONTENT_URL_RE = r'([\w\-]+)/(\d{4})/(\d{1,2})/(\d{1,2})/([0-9\w_\-%]+)/$'
+CGROUP_URL_RE = r'([\w]+)/([\w0-9\-]+)/'
 generic_patterns = patterns('crimsononline.content.views',
     url('^' + CONTENT_URL_RE, 'get_content', name='content_content'),
     url('^' + CGROUP_URL_RE + CONTENT_URL_RE, 'get_grouped_content',
