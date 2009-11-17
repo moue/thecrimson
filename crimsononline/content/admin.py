@@ -684,7 +684,7 @@ class GalleryAdmin(ContentAdmin):
 
 admin.site.register(Gallery, GalleryAdmin)
 
-TEASER_RE = re.compile(r"<\s*\/?\w.*?>") # tags
+TEASER_RE = re.compile(r"<\s*\/?\w.*?>|{{{jump}}}") # tags/jump tag
 class ArticleForm(ContentModelForm):
     def __init__(self, *args, **kwargs):
         r = kwargs.get('instance', None)

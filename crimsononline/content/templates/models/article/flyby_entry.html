@@ -9,9 +9,11 @@
     <div class="image">{{ article.main_rel_content|render:"blog_image" }}</div>
 {% endif %}
 <span class="text">
-    {{article.teaser|newlines_to_paragraphs|join:"" }}
-    {% if article|has_jump %}
-        <p class="jump"><a href="{{ article.get_absolute_url }}">(Continued)</a></p>
+    {% if article|flyby_teaser %}
+        {{article|flyby_teaser|safe}}
+        <p class="jump"><a href="{{ article.get_absolute_url }}#jump">(Continued)</a></p>
+    {% else %}
+        {{article.text|safe}}
     {% endif %}
 </span>
 <div class="entry-tags">

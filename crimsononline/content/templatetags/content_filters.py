@@ -7,7 +7,7 @@ from crimsononline.content.models import Image, Map, Article, Content, Marker, \
 from crimsononline.common.templatetags.common import linkify, human_list
 from crimsononline.common.fields import size_spec_to_size
 from crimsononline.common.utils.html import para_list
-
+from re import compile, search, sub, DOTALL
 
 register = template.Library()
 
@@ -222,9 +222,35 @@ def has_jump(flybyarticle):
     """Checks whether a Flyby article has content past the jump.  Returns
     a boolean value that tells the Flyby content list template whether to
     display the "continued" link."""
-    fba_paras = para_list(flybyarticle.text)
-    teaser_paras = para_list(flybyarticle.teaser)
-    if len(fba_paras) > len(teaser_paras):
-        return True
+    if flybyarticle.teaser != "":
+        fba_paras = para_list(flybyarticle.text)
+        teaser_paras = para_list(flybyarticle.teaser)
+        if len(fba_paras) > len(teaser_paras):
+            return True
+        else:
+            return False
     else:
-        return False
+        return (flyby_teaser(flybyarticle) != "")
+        
+@register.filter
+def flyby_teaser(flybyarticle):
+    """Processes a flybyarticle, returning the portion before the jump
+    assuming that the article uses the new jump tag method.  If it doesn't,
+    it returns ""."""
+    jumptagre = compile(r"(.*){{{jump}}}", DOTALL)
+    match = jumptagre.match(flybyarticle.text)
+    # If we find the tag, return the captured stuff before it
+    if match:
+        return match.group(1)
+    # If we don't find the tag, this article has no jump.  Return nothing so that
+    # the template recognizes this and just spits out the text.
+    else:
+        return ""
+    
+@register.filter
+def remove_flyby_jump(text):
+    """Removes the {{{jump}}} tag from a Flyby article, replacing it with an
+    <a name="jump"/> instead."""
+    jumprepre = compile(r"{{{jump}}}")
+    parsedtext = jumprepre.sub('<a name="jump"></a>', text)
+    return parsedtext
