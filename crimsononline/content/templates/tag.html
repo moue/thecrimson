@@ -57,9 +57,11 @@
 {% endblock %}
 
 {% block right %}
-    {% cache 500 tag %}
-        {% most_read_articles tag %}
-    {% endcache %}
+    {% block most_read_articles %}
+        {% cache 500 mratag tag %}
+            {% most_read_articles tag %}
+        {% endcache %}
+    {% endblock %}
     
     {% module 4 "" box %}
         {% advertisement 59 %}

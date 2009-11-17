@@ -102,7 +102,7 @@
     
     <div id="sidebar" class="col-4">
         {% block sidebar %}
-            {% cache 500 content.section %}
+            {% cache 500 mrapage content.section %}
                 {% most_read_articles content.section %}
             {% endcache %}
 
