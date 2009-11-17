@@ -6,6 +6,7 @@ from views import *
 urlpatterns = patterns('',
     (r'^article\.aspx', redirect_article),
     (r'^writer\.aspx', redirect_writer),
+    (r'^printerfriendly\.aspx', redirect_article),
     (r'^(?P<date>\d+-\d+-\d+)/pic-(?P<width>\d+)-(?P<id>\d+)\.jpg', redirect_photo), # links go to http://media.thecrimson.com/_____ so make sure we catch this
 )
 
@@ -100,7 +101,6 @@ urlpatterns += patterns('',
     #postcards08.aspx and postcards09.aspx should have their html transferred to a flat page
     #postcomment can 404
     #presidentialsearch.aspx is blank, can 404
-    #printerfriendly.aspx can 404
     (r'^privacy\.aspx', redirect('/about/privacy/')),
     #propertymap.aspx should be pasted to a flat page
     #reportblogcomment.aspx can 404
