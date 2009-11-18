@@ -1111,10 +1111,10 @@ class FlashGraphicForm(ContentModelForm):
 
 class FlashGraphicAdmin(ContentAdmin):
     form = FlashGraphicForm
-
+    
     fieldsets = (
         ('Graphic Setup', {
-            'fields': ('graphic', 'title', 'description', 'width', 'height'),
+            'fields': ('graphic', 'pic', 'title', 'description', 'width', 'height'),
         }),
         ('Byline', {
             'fields': ('contributors',),
@@ -1128,7 +1128,7 @@ class FlashGraphicAdmin(ContentAdmin):
             'classes': ('collapse',),
         })
     )
-
+    
     class Media:
         js = (
             'scripts/jquery.js',

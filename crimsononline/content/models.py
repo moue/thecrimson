@@ -850,7 +850,6 @@ class Issue(models.Model):
     
 
 class ImageManager(ContentManager):
-
     def get_query_set(self):
         s =  super(ImageManager, self).get_query_set()
         # this is a hella ghetto way to make sure image galleries always return
@@ -1008,7 +1007,7 @@ class Gallery(Content):
     
     class Meta:
         verbose_name_plural = "Galleries"
-
+    
 
 class GalleryMembership(models.Model):
     gallery = models.ForeignKey(Gallery, related_name="gallery_set")
@@ -1051,7 +1050,7 @@ class YouTubeVideo(Content):
     
     class Meta:
         verbose_name_plural = "YouTube Videos"
-
+    
     def display_url(self, size_spec):
         if self.pic:
             return self.pic.display_url(size_spec)
@@ -1076,16 +1075,19 @@ class YouTubeVideo(Content):
     admin_thumb.allow_tags = True
     admin_thumb.short_description = 'Thumbnail'
 
-def flash_get_save_path(instance, filename):
+
+def misc_get_save_path(instance, filename):
     ext = splitext(filename)[1]
-    filtered_title = make_file_friendly(instance.title)
-    return datetime.now().strftime("graphics/%Y/%m/%d/%H%M%S_") + \
-        filtered_title + ext
+    slug = make_file_friendly(instance.slug)
+    return datetime.now().strftime("misc/%Y/%m/%d/%H%M%S_") + slug + ext
 
 class FlashGraphic(Content):
     """A Flash Graphic."""
     
-    graphic = models.FileField(upload_to=flash_get_save_path)
+    graphic = models.FileField(upload_to=misc_get_save_path, null=False, blank=False)
+    pic = SuperImageField(upload_to=misc_get_save_path, max_width=300,
+        blank=False, null=False, storage=OverwriteStorage(), 
+        help_text='Thumbnail')
     width = models.PositiveIntegerField()
     height = models.PositiveIntegerField()
     title = models.CharField(blank=False, null=False, max_length=200)
@@ -1095,6 +1097,21 @@ class FlashGraphic(Content):
         return self.title
     
     objects = ContentManager()
+    
+    def display_url(self, size_spec):
+        if self.pic:
+            return self.pic.display_url(size_spec)
+        else:
+            return ''
+    
+    def admin_thumb(self):
+        """HTML for tiny thumbnail in the admin page."""
+        if self.pic:
+            return """<img src="%s">""" % self.pic.display_url(Image.SIZE_TINY)
+        else:
+            return "No Preview"
+    admin_thumb.allow_tags = True
+    admin_thumb.short_description = 'Thumbnail'
     
     class Meta:
         verbose_name_plural = "Flash Graphics"
@@ -1118,7 +1135,7 @@ class Map(Content):
     
     def __unicode__(self):
         return self.title    
-
+    
     objects = ContentManager()
 
 class Marker(models.Model):
@@ -1279,13 +1296,15 @@ class Score(models.Model):
         elif self.opponent and self.home_game:
             return "%s %s Harvard %s" % (self.opponent,self.their_score,self.our_score)
     
-    
 
 class Correction(models.Model):
     text = models.TextField(blank=False, null=False)
     dt = models.DateTimeField(auto_now=True, db_index=True)
     article = models.ForeignKey(Article, null=False, blank=False)
+    
     def save(self, *args, **kwargs):
         return super(Correction, self).save(*args, **kwargs)
+    
     def __unicode__(self):
         return str(self.id)
+    

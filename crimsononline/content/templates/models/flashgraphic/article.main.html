@@ -1,0 +1,16 @@
+{% extends "models/wrapper.html" %}
+
+{% load content_filters %}
+{% load common %}
+
+{% block wrapper_classes %}wide{% endblock %}
+{% block wrapper_id %}wide{% endblock %}
+{% block wrapper_contents %}
+    <object width="{{flashgraphic.width}}" height="{{flashgraphic.height}}">
+    <param name="movie" value="{% static_url "" %}{{flashgraphic.graphic}}">
+    <embed src="{% static_url "" %}{{flashgraphic.graphic}}" width="{{flashgraphic.width}}" height="{{flashgraphic.height}}">
+    </embed>
+    </object>
+    <p class="byline">{{flashgraphic.contributors.all|linkify|human_list}}</p>
+    <p class="caption">{{flashgraphic.description}}</p>
+{% endblock %}
