@@ -1,6 +1,6 @@
 {% load common %}
 {% load content_filters %}
-{% static_js "gallery.js" %}
+{% static_js_force "gallery.js" %}
 
 <div class="viewer_header">
     <h1><a href="{{ youtubevideo.get_absolute_url }}">{{ youtubevideo.title }}</a></h1>

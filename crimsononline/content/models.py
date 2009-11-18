@@ -1085,7 +1085,7 @@ class FlashGraphic(Content):
     """A Flash Graphic."""
     
     graphic = models.FileField(upload_to=misc_get_save_path, null=False, blank=False)
-    pic = SuperImageField(upload_to=misc_get_save_path, max_width=300,
+    pic = SuperImageField(upload_to=misc_get_save_path, max_width=600,
         blank=False, null=False, storage=OverwriteStorage(), 
         help_text='Thumbnail')
     width = models.PositiveIntegerField()

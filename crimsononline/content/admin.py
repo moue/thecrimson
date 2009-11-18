@@ -619,7 +619,7 @@ class GalleryForm(ContentModelForm):
             gallery will publish all content inside the gallery."""
     
     contents = RelatedContentField(label='Contents', required=True,
-        admin_site=admin.site, rel_types=[Image, YouTubeVideo])
+        admin_site=admin.site, rel_types=[Image])
     slug = forms.fields.SlugField(widget=AutoGenSlugWidget(
             url='/admin/content/article/gen_slug/',
             date_field='#id_issue', text_field='#id_description',
@@ -738,7 +738,7 @@ class ArticleForm(ContentModelForm):
         
         if int(self.cleaned_data['rotatable']) > 0:
             # Check that content can be rotated if it's marked rotatable
-            rotatable_names = ['image', 'gallery', 'you tube video', 'map']
+            rotatable_names = ['image', 'gallery', 'you tube video', 'map','flash graphic']
             rotatable_ctypes = [ContentType.objects.get(name=x) for x in rotatable_names]
             if not self.cleaned_data['rel_content']:
                 msg = "This Article cannot be set to rotate since it has no related Content"
@@ -1022,7 +1022,14 @@ class YouTubeVideoForm(ContentModelForm):
     gen_pic = forms.fields.BooleanField(label="Check this box if "
         "you changed the YouTube key and you want us to regenerate "
         "the preview image.", required=False)
-    
+    slug = forms.fields.SlugField(widget=AutoGenSlugWidget(
+            url='/admin/content/article/gen_slug/',
+            date_field='#id_issue', text_field='#id_description',
+            attrs={'size': '40'},
+        ), help_text="This is the text that goes in the URL.  Only letters," \
+        "numbers, _, and - are allowed"
+    )
+            
     def clean_key(self):
         # try to filter out keys that are probably wrong
         key = self.cleaned_data['key']
