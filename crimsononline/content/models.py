@@ -105,7 +105,7 @@ class ContentManager(models.Manager):
     
     @property
     def recent(self):
-        return self.get_query_set().order_by('-issue__issue_date', '-priority')
+        return self.get_query_set().order_by('-issue__issue_date', '-modified_on')
     
     def prioritized(self, recents=7):
         """Order by (priority / days_old).
