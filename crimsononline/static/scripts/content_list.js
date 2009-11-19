@@ -1,8 +1,5 @@
 // redirect if anchor in url
-if(window.location.hash){
-    url = window.location.hash.substring(1,window.location.hash.length-1);
-    window.location = url;
-}
+if(window.location.hash){window.location = window.location.hash.substring(1,window.location.hash.length-1);}
 
 
 $(document).ready(function(){
