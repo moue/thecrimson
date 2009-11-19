@@ -179,6 +179,19 @@ class TopArticlesNode(template.Node):
         del mostcommentedarticles[10:]
         """
         
+        cont_title = ""
+        if(self.specifier.__class__ == Contributor):
+            try:
+                cont_title = Contributor.objects.get(pk=self.specifier.id).first_name.upper() + "'S"
+            except:
+                pass 
+        tag_title = ""
+        if(self.specifier.__class__ == Tag):
+            try:
+                tag_title = "IN " + Tag.objects.get(pk=self.specifier.id).text.upper()
+            except:
+                pass 
+    
         return render_to_string('templatetag/mostreadarticles.html',
             {'mostreadarticles': mostreadarticles, 
-                'mostcommentedarticles': mostcommentedarticles})
+                'mostcommentedarticles': mostcommentedarticles,'cont_title': cont_title, 'tag_title': tag_title})
