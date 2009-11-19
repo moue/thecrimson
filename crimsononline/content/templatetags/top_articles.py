@@ -188,7 +188,7 @@ class TopArticlesNode(template.Node):
         tag_title = ""
         if(self.specifier.__class__ == Tag):
             try:
-                tag_title = "IN " + Tag.objects.get(pk=self.specifier.id).text.upper()
+                tag_title = 'IN "%s"' % Tag.objects.get(pk=self.specifier.id).text.upper()
             except:
                 pass 
     
