@@ -593,9 +593,8 @@ def filter_helper(req, qs, section_str, type_str, url_base):
         if(type in content_choices + ["other"]):
             tps[type[0].upper() + type[1:]] = {'selected': sel, 'url': url, 'count':ct}
     
-    
-    sect_str = ",".join([x.lower() for x in sects.keys()])
-    type_str = ",".join([x.lower() for x in tps.keys()])
+    sect_str = ",".join(section_str)
+    type_str = ",".join(type_str)
     
     return {'content': content, 'sections': sects,'section_str':sect_str, 'types': tps, 'type_str': type_str,'show_filter':(show_filter_1 or show_filter_2)}
 
