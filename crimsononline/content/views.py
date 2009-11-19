@@ -594,7 +594,7 @@ def filter_helper(req, qs, section_str, type_str, url_base):
             tps[type[0].upper() + type[1:]] = {'selected': sel, 'url': url, 'count':ct}
     
     sect_str = ",".join(section_str) if section_str else ""
-    typ_str = ",".join(type_str) if type_str else ""
+    typ_str = ",".join(types) if types else ""
     
     return {'content': content, 'sections': sects,'section_str':sect_str, 'types': tps, 'type_str': typ_str,'show_filter':(show_filter_1 or show_filter_2)}
 
