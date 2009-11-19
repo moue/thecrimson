@@ -139,7 +139,7 @@ def linkify(obj, link_text=''):
                     link_text = link_text.encode('ascii')
                     l_text = getattr(item, link_text, link_text)
                 except UnicodeEncodeError:
-                    link_text = link_text
+                    l_text = link_text
             l.append(mark_safe('<a href="%s">%s</a>' % \
                 (item.get_absolute_url(), filter.force_escape(l_text))))
         # nonlists obj's should be returned as nonlists
