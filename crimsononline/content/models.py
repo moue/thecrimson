@@ -288,7 +288,7 @@ class Content(models.Model):
         
         if method == 'page':
             # print view
-            if request.GET.get('print',""):
+            if request is not None and request.GET.get('print',""):
                 return mark_safe(render_to_string('models/%s/print.html'%(name),
                                  n_context))
             

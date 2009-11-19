@@ -132,15 +132,21 @@ def linkify(obj, link_text=''):
         if not getattr(obj,'__iter__',False):
             obj = [obj]
         for item in obj:
-            l_text = item if link_text == '' \
-                else getattr(item, link_text, link_text)
+            if link_text == '':
+                l_text = item
+            else: # if link_text is not ascii, can't call getattr on it
+                try:
+                    link_text = link_text.encode('ascii')
+                    l_text = getattr(item, link_text, link_text)
+                except UnicodeEncodeError:
+                    link_text = link_text
             l.append(mark_safe('<a href="%s">%s</a>' % \
                 (item.get_absolute_url(), filter.force_escape(l_text))))
         # nonlists obj's should be returned as nonlists
         return l[0] if len(l) == 1 else l
     except IndexError:
         return ''
-        
+
 @register.filter
 def human_list(list, connector='and'):
     """turns list into an comma separated list (with an and)"""
