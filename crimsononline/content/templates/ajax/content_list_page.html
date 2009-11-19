@@ -4,13 +4,13 @@
 <li>
 <span class="pagination">
 {% if p.has_previous %}
-    <a href="?1">&laquo; Newest</a>
-    <a href="?{{p.previous_page_number}}">&lsaquo; Newer</a>
+    <a href="{{url_base}}page/1/sections/{{section_str}}/types/{{type_str}}/">&laquo; Newest</a>
+    <a href="{{url_base}}page/{{p.previous_page_number}}/sections/{{section_str}}/types/{{type_str}}/">&lsaquo; Newer</a>
 {% endif %}
 {{p.start_index}} - {{p.end_index}} of {{paginator.count}}
 {% if p.has_next %}
-    <a href="?{{p.next_page_number}}">Older &rsaquo;</a>
-    <a href="?{{paginator.num_pages}}">Oldest &raquo;</a>
+    <a href="{{url_base}}page/{{p.next_page_number}}/sections/{{section_str}}/types/{{type_str}}/">Older &rsaquo;</a>
+    <a href="{{url_base}}page/{{paginator.num_pages}}/sections/{{section_str}}/types/{{type_str}}/">Oldest &raquo;</a>
 {% endif %}
 </span>
 </li>
@@ -20,13 +20,13 @@
 <li>
 <span class="pagination">
 {% if p.has_previous %}
-    <a href="?1">&laquo; Newest</a>
-    <a href="?{{p.previous_page_number}}">&lsaquo; Newer</a>
+    <a href="{{url_base}}page/1/sections/{{section_str}}/types/{{type_str}}/">&laquo; Newest</a>
+    <a href="{{url_base}}page/{{p.previous_page_number}}/sections/{{section_str}}/types/{{type_str}}/">&lsaquo; Newer</a>
 {% endif %}
 {{p.start_index}} - {{p.end_index}} of {{paginator.count}}
 {% if p.has_next %}
-    <a href="?{{p.next_page_number}}">Older &rsaquo;</a>
-    <a href="?{{paginator.num_pages}}">Oldest &raquo;</a>
+    <a href="{{url_base}}page/{{p.next_page_number}}/sections/{{section_str}}/types/{{type_str}}/">Older &rsaquo;</a>
+    <a href="{{url_base}}page/{{paginator.num_pages}}/sections/{{section_str}}/types/{{type_str}}/">Oldest &raquo;</a>
 {% endif %}
 </span>
 </li>

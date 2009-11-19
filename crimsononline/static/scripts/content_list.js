@@ -1,11 +1,29 @@
+// redirect if anchor in url
+if(window.location.hash){
+    url = window.location.hash.substring(1,window.location.hash.length-1);
+    window.location = url;
+}
+
+
 $(document).ready(function(){
+
+    
+    
     var _media_cache = {};
     var _page_cache = {};
     var _cur_page = 1;
     var _cur_sections = [];
     var _cur_types = [];
     var _filter_state = 0;
-    var _base_url = window.location.pathname;
+    var _base_url = window.location.pathname.split("page")[0];
+
+    var inject_results = function(results){
+        $(".content_list_content").fadeOut('fast', function(){
+            $(this).empty()
+                .append($(results))
+                .fadeIn('fast')
+        });
+    };
 
     // set initial value for sections
     initial_sections = function(){
@@ -26,21 +44,16 @@ $(document).ready(function(){
     initial_types();
     
     function inject_page(page_num, sections, types){
-        var inject_results = function(results){
-            $(".content_list_content").fadeOut('fast', function(){
-                $(this).empty()
-                    .append($(results))
-                    .fadeIn('fast')
-            });
-        };
-        ajax = $.get(_base_url + 'page/' + page_num, {ajax: '', sections: sections.join(","), 
-            types: types.join(",")}, inject_results);
+        url = _base_url + 'page/' + page_num + "/sections/" + sections.join(",") + "/types/" + types.join(",") + "/"; 
+        ajax = $.get(url, {ajax: ''}, inject_results);
+        window.location.hash = url;
+        return false;
     }
     
     // pagination buttons
     $(".pagination a").live("click", function(e){
-        _cur_page = $(this).attr("href").split("?")[1];
-        inject_page(_cur_page, _cur_sections, _cur_types);
+        ajax = $.get($(this).attr('href') + "?ajax", inject_results);
+        window.location.hash = $(this).attr('href')
         return false;
     });
     

@@ -80,13 +80,10 @@ def index(request, m=None, d=None, y=None):
 
 REMOVE_P_RE = re.compile(r'page/\d+/$')
 @cache_page(settings.CACHE_LONG)
-def writer(request, pk, f_name, m_name, l_name, 
-    page=1):
+def writer(request, pk, f_name, m_name, l_name, page=1, sections=None, types=None):
     """Show the view for a specific writer."""
-    
-    sections = request.GET.get("sections")
-    types = request.GET.get("types")
-    
+
+    url_base = request.path.split("page")[0]
     w = get_object_or_404(Contributor, pk=pk)
     # Validate the URL (we don't want /writer/281/Balls_Q_McTitties to be valid)
     if (w.first_name, w.middle_name, w.last_name) != (f_name, m_name, l_name):
@@ -99,6 +96,7 @@ def writer(request, pk, f_name, m_name, l_name,
     
     w.number_of_articles = Article.objects.filter(contributors=w).count()
     d = paginate(f.pop('content'), page, 10)
+    d.update({'page': page, 'url_base': url_base})
     w.last_update = Content.objects.filter(contributors=w).aggregate(Max('issue__issue_date'))['issue__issue_date__max']
     d.update({'writer': w, 'url': REMOVE_P_RE.sub(request.path, '')})
     d.update(f)
@@ -109,12 +107,11 @@ def writer(request, pk, f_name, m_name, l_name,
     return render_to_response(t, d)
 
 @cache_page(settings.CACHE_LONG)
-def tag(request, tag, page=1):
+def tag(request, tag, page=1, sections=None, types=None):
     """The view for a specific tag."""
-    
-    sections = request.GET.get("sections")
-    types = request.GET.get("types")
-    
+        
+    url_base = request.path.split("page")[0]
+
     tag = get_object_or_404(Tag, text=tag.replace('_', ' '))
     content = Content.objects.recent.filter(tags=tag)
     f = filter_helper(request, content, sections, types, 
@@ -136,6 +133,7 @@ def tag(request, tag, page=1):
     reltags = get_related_tags(tag.pk)
     
     d = paginate(f.pop('content'), page, 10)
+    d.update({'page': page, 'url_base': url_base})
     d.update({'tag': tag, 'url': tag.get_absolute_url(), 'tags': reltags,
         'featured': featured_articles, 'top_contributors': writers,})
     d.update(f)
@@ -595,7 +593,11 @@ def filter_helper(req, qs, section_str, type_str, url_base):
         if(type in content_choices + ["other"]):
             tps[type[0].upper() + type[1:]] = {'selected': sel, 'url': url, 'count':ct}
     
-    return {'content': content, 'sections': sects, 'types': tps, 'show_filter':(show_filter_1 or show_filter_2)}
+    
+    sect_str = ",".join([x.lower() for x in sects.keys()])
+    type_str = ",".join([x.lower() for x in tps.keys()])
+    
+    return {'content': content, 'sections': sects,'section_str':sect_str, 'types': tps, 'type_str': type_str,'show_filter':(show_filter_1 or show_filter_2)}
 
 def top_articles(section, dt=None):
     """Return prioritized articles from @section"""

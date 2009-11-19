@@ -8,7 +8,8 @@ from django.contrib.sitemaps import FlatPageSitemap
 from django.views.generic.simple import redirect_to
 from crimsononline.content.sitemaps import ArticleSitemap
 
-FILTER_URL_RE = r'(?:page/(?P<page>\d+)/)?'
+FILTER_URL_RE = r'(page/(?P<page>\d+)/)?(sections/(?P<sections>[\w,]+)/)?' \
+    '(types/(?P<types>[\w,]+)/)?'
 
 from crimsononline.content import feeds
 
