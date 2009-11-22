@@ -130,8 +130,12 @@ class TopArticlesNode(template.Node):
         # which will eventually use log() for a better curve.  This ages articles' hits to reduce freshness.  Then it sorts by hitindex and returns the top 5.
         # TODO: Fix this to use proper decay when we switch to a real SQL server
         sqlstatement = "SELECT DISTINCT content_article.content_ptr_id, SUM(content_contenthits.hits) AS hitnum FROM content_article, " \
-                       "content_content, content_contenthits" + tableStr + " WHERE content_content.id = content_article.content_ptr_id AND content_contenthits.content_id " \
-                       "= content_content.id AND content_contenthits.date >" + seven_days_ago + limitStr + " GROUP BY content_contenthits.content_id ORDER BY hitnum DESC LIMIT 5"
+                       "content_content, content_contenthits" + tableStr + \
+                       " WHERE content_content.id = content_article.content_ptr_id " \
+                       " AND content_contenthits.content_id = content_content.id "
+                       " AND content_content.pub_status = 1 
+                       " AND content_contenthits.date >" + seven_days_ago + limitStr + \
+                       " GROUP BY content_contenthits.content_id ORDER BY hitnum DESC LIMIT 5"
         cursor.execute(sqlstatement)
         mostreadarticles = cursor.fetchall()
         mostreadarticles = [Content.objects.get(pk=x[0]).child for x in mostreadarticles]
