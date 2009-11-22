@@ -83,7 +83,7 @@ REMOVE_P_RE = re.compile(r'page/\d+/$')
 def writer(request, pk, f_name, m_name, l_name, page=1, sections=None, types=None):
     """Show the view for a specific writer."""
 
-    url_base = request.path.split("page")[0]
+    url_base = "/writer/%s/%s_%s_%s" % (pk, f_name, m_name, l_name)
     w = get_object_or_404(Contributor, pk=pk)
     # Validate the URL (we don't want /writer/281/Balls_Q_McTitties to be valid)
     if (w.first_name, w.middle_name, w.last_name) != (f_name, m_name, l_name):
@@ -103,14 +103,17 @@ def writer(request, pk, f_name, m_name, l_name, page=1, sections=None, types=Non
     
     t = 'writer.html'
     if request.GET.has_key('ajax'):
-        t = 'ajax/content_list_page.html'
+        data = {'content_list': render_to_string('ajax/content_list_page.html', d),
+            'content_filters': render_to_string('ajax/content_list_filters.html', d)}
+        return HttpResponse(simplejson.dumps(data), mimetype='application/json')
+
     return render_to_response(t, d)
 
 @cache_page(settings.CACHE_LONG)
 def tag(request, tag, page=1, sections=None, types=None):
     """The view for a specific tag."""
         
-    url_base = request.path.split("page")[0]
+    url_base = "/tag/%s" % (tag)
 
     tag = get_object_or_404(Tag, text=tag.replace('_', ' '))
     content = Content.objects.recent.filter(tags=tag)
@@ -140,7 +143,9 @@ def tag(request, tag, page=1, sections=None, types=None):
     
     t = 'tag.html'
     if request.GET.has_key('ajax'):
-        t = 'ajax/content_list_page.html'
+        data = {'content_list': render_to_string('ajax/content_list_page.html', d),
+            'content_filters': render_to_string('ajax/content_list_filters.html', d)}
+        return HttpResponse(simplejson.dumps(data), mimetype='application/json')
     return render_to_response(t, d)
 
 @cache(settings.CACHE_LONG)
@@ -593,8 +598,8 @@ def filter_helper(req, qs, section_str, type_str, url_base):
         if(type in content_choices + ["other"]):
             tps[type[0].upper() + type[1:]] = {'selected': sel, 'url': url, 'count':ct}
     
-    sect_str = ",".join(section_str) if section_str else ""
-    typ_str = ",".join(types) if types else ""
+    sect_str = "/sections/" + ",".join(section_str) if len(sections) != Section.all().count() else ""
+    typ_str = "/types/" + ",".join(types) if len(content_choices) + 1 != len(types) else ""
     
     return {'content': content, 'sections': sects,'section_str':sect_str, 'types': tps, 'type_str': typ_str,'show_filter':(show_filter_1 or show_filter_2)}
 
