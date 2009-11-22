@@ -909,10 +909,10 @@ class ArticleAdmin(ContentAdmin):
             return Http404
         
         ct_id = int(request.GET.get('ct_id', 0))
-        st_dt = request.GET.get('st_dt', None)
-        end_dt = request.GET.get('end_dt', None)
+        st_dt = request.GET.get('st_dt', date.today())
+        end_dt = request.GET.get('end_dt', date.today() - timedelta(days=7))
         q = request.GET.get('q', None)
-        page = request.GET.get('page', None)
+        page = request.GET.get('page', 1)
         
         OBJS_PER_REQ = 16
         if ct_id != 0:

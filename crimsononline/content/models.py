@@ -19,6 +19,7 @@ from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.localflavor.us.models import PhoneNumberField
 from django.core.cache import cache
+from django.core.exceptions import ObjectDoesNotExist
 from django.template.defaultfilters import slugify, truncatewords
 from django.template.loader import render_to_string
 from django.utils.safestring import mark_safe
@@ -232,7 +233,15 @@ class Content(models.Model):
         equivalent to c.article
         """
         child_name = self.content_type.name.replace(" ", "")
-        return getattr(self, child_name)
+        try:
+            return getattr(self, child_name)
+        except ObjectDoesNotExist: # db integrity error
+            # parent exists, but child doesn't exist.  since the child data
+            #  doesn't exist, might as well delete the parent to prevent
+            #  further errors
+            self.delete()
+            raise
+        
     
     class Meta:
         unique_together = (
