@@ -120,7 +120,8 @@ class Command(NoArgsCommand):
     help = "Sets the right content type on Content objects"
     
     def handle_noargs(self, **options):
-        Article.objects.all_objects().filter(section=Section.cached("flyby")).delete()
+        Article.objects.all_objects().filter(section=Section.cached("flyby"), 
+            issue__issue_date__lte = date(2009,11,7)).delete()
         convert(infile="wordpress.2009-11-07.xml")
 
 def get_issue(dt):
@@ -195,6 +196,8 @@ def convert(infile):
                 i.issue = a.issue
                 
                 try:
+                    #print old_location
+                    old_location = old_location.replace("www.flybyblog.com","oldflyby.thecrimson.com")
                     req = urllib2.Request(old_location);
                     req.add_header('User-agent', 'Mozilla/5.0 (compatible; Konqueror/4.2; Linux) KHTML/4.2.2 (like Gecko)')                    
 
@@ -208,7 +211,6 @@ def convert(infile):
                     local.close()
                 except:
                     print "couldn't read image at url %s" % old_location
-                    print new_location
                     continue
                 
             
