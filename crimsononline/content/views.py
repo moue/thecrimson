@@ -403,7 +403,7 @@ def section_sports(request):
     columns = ContentGroup.objects.filter(section=section, active=True,
         type='column').annotate(recent=Max('content__issue__issue_date'))
     columns = columns[:3]
-    featured_group_name = "Basketball '09" #We could theoretically set this up to
+    featured_group_name = "The Game '09" #We could theoretically set this up to
                                            #be changed through admin
     featured_group = ContentGroup.objects.filter(section=section, active=True, 
         name=featured_group_name)
