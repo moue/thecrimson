@@ -193,13 +193,9 @@ def convert(infile):
     	    a.text = node.getElementsByTagName('content:encoded')[0].firstChild.data
             a.text = IMAGES.sub("",a.text)
             a.text = ATTACHMENTS.sub("",a.text)
-            a.teaser = a.text.split("<!--more-->")[0]
+            a.teaser = extract_teaser(a.text.split("<!--more-->")[0])
             a.text = '<p>' + a.text.replace("\n","</p><p>") + '</p>'
             a.text = a.text.replace("<p></p>","")
-            fre = re.compile(r'<[^p^/][^>]*>')
-            lre = re.compile(r'</[^p][^>]*>')
-            a.teaser = fre.sub("",a.teaser)
-            a.teaser = lre.sub("",a.teaser)
                     
         # delete related content
         a.rel_content.all().delete()
@@ -209,7 +205,7 @@ def convert(infile):
             temptext = node.getElementsByTagName('content:encoded')[0].firstChild.data
             images = IMAGES.findall(temptext)
 
-            for image in images:
+            for order, image in enumerate(images):
                 SRC = re.compile(r'src="([^"]*)"')
                 CAPTION = re.compile(r'alt="([^"]*)"')
                 old_location = SRC.search(image).group(1)
@@ -260,7 +256,7 @@ def convert(infile):
 
                 
                 i.contributors.add(flyby_contrib)
-                acr = ArticleContentRelation(article=a, related_content=i)
+                acr = ArticleContentRelation(article=a, related_content=i, order=order)
                 acr.save()
                 
             
