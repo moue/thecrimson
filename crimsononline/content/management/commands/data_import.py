@@ -95,9 +95,10 @@ def long_articles(*args):
             notfound += (len(pks) - len(arts))
             for f in f_list:
                 pk = int(f.split('.')[0])
-                if len(a['text']) > 4150:
-                    already += 1
-                    continue
+                # ### need to do everything
+                #if len(a['text']) > 4150:
+                #    already += 1
+                #    continue
                 f = codecs.open(path.join(root, f), 'rb', 'utf_16_le', 'ignore')
                 text = ''.join(f.readlines())
                 f.close()
