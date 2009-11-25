@@ -237,7 +237,7 @@ def flyby_teaser(flybyarticle):
     """Processes a flybyarticle, returning the portion before the jump
     assuming that the article uses the new jump tag method.  If it doesn't,
     it returns ""."""
-    jumptagre = compile(r"(.*){{{jump}}}", DOTALL)
+    jumptagre = compile(r"(.*)<!--more-->", DOTALL)
     match = jumptagre.match(flybyarticle.text)
     # If we find the tag, return the captured stuff before it
     if match:
@@ -249,8 +249,8 @@ def flyby_teaser(flybyarticle):
     
 @register.filter
 def remove_flyby_jump(text):
-    """Removes the {{{jump}}} tag from a Flyby article, replacing it with an
+    """Removes the <!--more--> tag from a Flyby article, replacing it with an
     <a name="jump"/> instead."""
-    jumprepre = compile(r"{{{jump}}}")
+    jumprepre = compile(r"<!--more-->")
     parsedtext = jumprepre.sub('<a name="jump"></a>', text)
     return parsedtext

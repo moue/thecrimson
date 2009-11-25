@@ -120,8 +120,6 @@ class Command(NoArgsCommand):
     help = "Sets the right content type on Content objects"
     
     def handle_noargs(self, **options):
-        Article.objects.all_objects().filter(section=Section.cached("flyby"), 
-            issue__issue_date__lte = date(2009,11,7)).delete()
         convert(infile="wordpress.2009-11-07.xml")
 
 def get_issue(dt):
@@ -165,6 +163,12 @@ def convert(infile):
         a.section = Section.cached("flyby")
 
         a.slug =   node.getElementsByTagName('link')[0].firstChild.data.split("/")[-2]
+
+        try:
+            Article.objects.get(slug=a.slug, issue=a.issue).delete()
+        except:
+            print "couldnt' find old one"
+            pass
         
     	# Add post to the list of all posts
         try:
