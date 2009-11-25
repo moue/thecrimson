@@ -102,7 +102,6 @@ def long_articles(*args):
                 text = ''.join(f.readlines())
                 f.close()
                 del f
-                text = text.decode('utf-8', 'ignore')
                 try:
                     article = Article.objects.filter(old_pk=pk).update(text=text)
                 except:
