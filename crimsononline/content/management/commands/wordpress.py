@@ -248,10 +248,10 @@ def convert(infile):
                     print "couldn't save because of encoding issues with the image"
                     continue
                 except:
-                    print "couldn't save %s of some other issue..." % old_location
                     try:
                         i = Image.objects.get(slug=i.slug, issue=i.issue)
                     except:
+                        print "couldn't save image because of some other issue"
                         continue
 
                 
