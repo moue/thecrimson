@@ -3,6 +3,7 @@ import re
 from xml.dom import minidom
 from content.models import *
 from django.core.management.base import NoArgsCommand
+from django.template.defaultfilters import slugify
 from datetime import *
 import urllib2
 import urllib
@@ -131,6 +132,9 @@ def get_issue(dt):
         issue = Issue.objects.create(issue_date = dt)
     return issue
 
+
+ATTACHMENTS = re.compile(r'\[caption([^\[]+)\[/caption\]')
+IMAGES = re.compile(r'<img([^>]*)>')
 def convert(infile):
     """Convert Wordpress Export File to multiple html files.
     
@@ -149,43 +153,62 @@ def convert(infile):
     dom = minidom.parse(infile)
 
     for node in dom.getElementsByTagName('item'):
-        a = Article()
-        if node.getElementsByTagName('wp:status')[0].firstChild.data == 'draft':
+        # skip drafts, pending posts, and attachments
+        if node.getElementsByTagName('wp:status')[0].firstChild.data != 'publish':
             continue
-        if node.getElementsByTagName('wp:post_type')[0].firstChild.data == 'attachment':
-            continue
+
+        tempslug = slugify(node.getElementsByTagName('wp:post_name')[0].firstChild.data)
+    	dt = node.getElementsByTagName('wp:post_date')[0].firstChild.data
+        dt = datetime.strptime(dt, '%Y-%m-%d %H:%M:%S')
+        tempissue = get_issue(dt)
+        
+        try:
+            a = Article.objects.get(slug=tempslug, issue=tempissue)
+        except:
+            a = Article()
             
-    	a.headline = node.getElementsByTagName('title')[0].firstChild.data
-        
-    	dt = node.getElementsByTagName('pubDate')[0].firstChild.data
-        dt = datetime.strptime(dt, '%a, %d %b %Y %H:%M:%S +0000')
-        a.issue = get_issue(dt)
-        a.section = Section.cached("flyby")
+            a.headline = node.getElementsByTagName('title')[0].firstChild.data
+            a.issue = tempissue
+            a.section = Section.cached("flyby")
+            a.slug = tempslug
+            a.pub_status = 1
 
-        a.slug =   node.getElementsByTagName('link')[0].firstChild.data.split("/")[-2]
+            try:
+                a.save()
+            except:
+                print "couldn't save article with headline '%s' (probably because of an IntegrityError)" % a.headline
+                continue
 
-        try:
-            Article.objects.get(slug=a.slug, issue=a.issue).delete()
-        except:
-            print "couldnt' find old one"
-            pass
-        
-    	# Add post to the list of all posts
-        try:
-            a.save()
-        except:
-            continue
+            # contributors
+            for author in node.getElementsByTagName('dc:creator')[0].firstChild.data.split("and"):
+                author = author.replace(" ","")
+                try:
+                    c = Contributor.objects.get(pk=AUTHORS_DICT[author])
+                    a.contributors.add(c)
+                except:
+                    a.contributors.add(flyby_contrib)
+                    pass
+            
+            # text
+    	    a.text = node.getElementsByTagName('content:encoded')[0].firstChild.data
+            a.text = IMAGES.sub("",a.text)
+            a.text = ATTACHMENTS.sub("",a.text)
+            a.teaser = a.text.split("<!--more-->")[0]
+            a.text = '<p>' + a.text.replace("\n","</p><p>") + '</p>'
+            a.text = a.text.replace("<p></p>","")
+            fre = re.compile(r'<[^p^/][^>]*>')
+            lre = re.compile(r'</[^p][^>]*>')
+            a.teaser = fre.sub("",a.teaser)
+            a.teaser = lre.sub("",a.teaser)
+                    
+        # delete related content
+        a.rel_content.all().delete()
 
         opener = urllib2.build_opener()
         if node.getElementsByTagName('content:encoded')[0].firstChild != None:
-            ATTACHMENTS = re.compile(r'\[caption([^\[]+)\[/caption\]')
-            IMAGES = re.compile(r'<img(.*)\/>')
-    	    a.text = node.getElementsByTagName('content:encoded')[0].firstChild.data
-            images = ATTACHMENTS.findall(a.text)
-            a.text = ATTACHMENTS.sub("",a.text)
-            images2 = IMAGES.findall(a.text)
-            a.text = IMAGES.sub("",a.text)
-            images.extend(images2)
+            temptext = node.getElementsByTagName('content:encoded')[0].firstChild.data
+            images = IMAGES.findall(temptext)
+
             for image in images:
                 SRC = re.compile(r'src="([^"]*)"')
                 CAPTION = re.compile(r'alt="([^"]*)"')
@@ -226,41 +249,25 @@ def convert(infile):
                 try:
                     i.save()
                 except IOError:
-                    print "couldn't save becuase of encoding issues with the image... whatevs"
+                    print "couldn't save because of encoding issues with the image"
                     continue
                 except:
-                    i.slug = i.slug + "-dup"
+                    print "couldn't save %s of some other issue..." % old_location
                     try:
-                        i.save()
+                        i = Image.objects.get(slug=i.slug, issue=i.issue)
                     except:
                         continue
+
                 
                 i.contributors.add(flyby_contrib)
                 acr = ArticleContentRelation(article=a, related_content=i)
                 acr.save()
                 
-            a.text = '<p>' + a.text.replace("\n","</p><p>") + '</p>'
-            a.text = a.text.replace("<p></p>","")
-            a.teaser = a.text.split("<!--more-->")[0]
-            fre = re.compile(r'<[^p^/][^>]*>')
-            lre = re.compile(r'</[^p][^>]*>')
-            a.teaser = fre.sub("",a.teaser)
-            a.teaser = lre.sub("",a.teaser)
             
-            
-        for author in node.getElementsByTagName('dc:creator')[0].firstChild.data.split("and"):
-            author = author.replace(" ","")
-            try:
-                c = Contributor.objects.get(pk=AUTHORS_DICT[author])
-                a.contributors.add(c)
-            except:
-                a.contributors.add(flyby_contrib)
-                pass
-        a.pub_status = 1
 
-        
-    	# Get the categories
+
         """
+    	# Get the categories
     	tempCategories = []
     	for subnode in node.getElementsByTagName('category'):
     		 tempCategories.append(subnode.getAttribute('nicename'))
