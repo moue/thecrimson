@@ -45,7 +45,7 @@ def datify(cont):
             unit = 'day'
         else:
             return issue.strftime('%B %d, %Y')
-    plural = 's' if value > 1 else ''
+    plural = 's' if value != 1 else ''
     return '%d %s%s ago' % (value, unit, plural)
 
 @register.filter
