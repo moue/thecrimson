@@ -32,8 +32,7 @@
 	</div>
 	
 <div id="nav_contents">
-	<ul>
-		<!-- no whitespace to prevent nbsps -->
+	<ul>{% comment %} no whitespace to prevent nbsps {% endcomment %}
         {% spaceless %}
 		<li {{ nav|is_nav_cur:"news" }}><a href="/section/news/">NEWS</a></li>
 		<li {{ nav|is_nav_cur:"opinion" }}><a href="/section/opinion/">OPINION</a></li>

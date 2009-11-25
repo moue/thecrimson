@@ -67,6 +67,8 @@ def long_articles(*args):
         
     elif len(args) > 0:
         from django.db.models import Q
+        import codecs
+        
         print "Beginning import of folder ", args[0], " ..."
         success, fail, already, notfound = 0, [], 0, 0
         w = os.walk('/home/itchair/long_articles/%s' % args[0])
@@ -96,7 +98,7 @@ def long_articles(*args):
                 if len(a['text']) > 4150:
                     already += 1
                     continue
-                f = open(path.join(root, f), 'rb')
+                f = codecs.open(path.join(root, f), 'rb', 'utf_16_le', 'ignore')
                 text = ''.join(f.readlines())
                 f.close()
                 del f
