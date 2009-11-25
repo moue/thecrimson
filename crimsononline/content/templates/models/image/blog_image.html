@@ -1,5 +1,7 @@
 {% load common %}
 {% load content_filters %}
 
+<a href="{{image.get_absolute_url}}">
 {{ image|to_img_tag:"200,"}}
+</a>
 <br /><span class="caption">{{ image.caption}}</span>

@@ -18,7 +18,19 @@
 
         {% block content %}
         {% endblock %}
-
+		
+		
+		{% with article.rel_content.all|rel_no_articles|notfirst as rcs%}
+            {% if rcs %}
+                <div id="related_contents">
+                    <h3>Related Content</h3>
+                    {% for rc in rcs %}
+                        {{ rc|render:"related_content"}}
+                    {% endfor %}
+                </div>
+            {% endif %}
+		{% endwith %}
+		
         <div class="entry-meta">
             {% with content.tags.all as a_tags %}
 				This entry was written by {{ article.contributors.all|linkify|human_list }}, and posted on {{ article.issue.issue_date|date:"F d, Y" }}. 

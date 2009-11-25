@@ -255,3 +255,45 @@ div.footer{
     font-size: 14px;
     line-height: 133%;
 }
+
+/* related content stuff */
+
+#related_contents {
+    width: 180px;
+    float: left;
+    margin: 0 10px 0 0;
+    border-style: solid;
+    border-color: #ccc;
+    border-width: 3px 0 0 0;
+    padding: 5px 0 0 0;
+}
+#related_contents div.ylabel_wrapper {
+    float: left;
+    width: 150px;
+}
+
+.related_content > a > img {
+    border-width: 0;
+}
+.related_content > a {
+    margin: 0;
+    display: block;
+    line-height: 0;
+}
+.related_content span {
+    margin: 0;
+    line-height: normal;
+}
+.related_content .ctype {
+    margin: 0 0 2px 0;
+    font-family: Helvetica, Arial, sans-serif;
+    line-height: normal;
+    font-size: 12px;
+    text-transform: uppercase;
+    color: gray;
+    font-weight: normal;
+}
+.related_content .title{
+    font-weight: bold;
+    margin-top: 3px;
+}
