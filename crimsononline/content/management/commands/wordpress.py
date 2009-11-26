@@ -163,7 +163,12 @@ def convert(infile):
         tempissue = get_issue(dt)
         
         try:
-            Article.objects.get(slug=tempslug, section=Section.cached("flyby")).delete()
+            da = Article.objects.all_objects().get(slug=tempslug, section=Section.cached("flyby"))
+            da.pub_status = 0
+            for rel in da.rel_content.all():
+                rel.pub_status = 0
+                rel.delete()
+            da.delete()
         except:
             pass
 
@@ -178,7 +183,7 @@ def convert(infile):
         try:
             a.save()
         except:
-            print "couldn't save article with headline '%s' (probably because of an IntegrityError)" % a.headline
+            print "couldn't save article '%s' '%d'" % (a.slug, a.issue.pk)
             continue
 
         # contributors
@@ -208,12 +213,11 @@ def convert(infile):
                 SRC = re.compile(r'src="([^"]*)"')
                 CAPTION = re.compile(r'alt="([^"]*)"')
                 old_location = SRC.search(image).group(1)
-
                 cur_caption = CAPTION.search(image).group(1)
 
                 i = Image()
                 i.caption = cur_caption
-                i.slug = slugify("-".join(cur_caption.split()[:6]))[:65]
+                i.slug = slugify(old_location)[:65]
                 i.section = Section.cached('flyby')
                 i.issue = a.issue
                 
@@ -232,7 +236,6 @@ def convert(infile):
                     local.write(f.read())
                     local.close()
                 except:
-                    print "couldn't read image at url %s" % old_location
                     continue
                 
             
@@ -242,17 +245,16 @@ def convert(infile):
                 i.kicker = 'FlyBy Image'
                 
                 try:
-                    i.save()
-                except IOError:
-                    print "couldn't save because of encoding issues with the image"
-                    continue
+                    di = Image.objects.all_objects().get(slug=i.slug, section=Section.cached("flyby"))
+                    di.pub_status = 0
+                    di.delete()
                 except:
-                    try:
-                        i = Image.objects.get(slug=i.slug, issue=i.issue)
-                    except:
-                        print "couldn't save image because of some other issue"
-                        continue
-
+                    pass
+                try:
+                    i.save()
+                except:
+                    print "couldn't save %s %d" % (i.slug, i.issue.pk)
+                    continue
                 
                 i.contributors.add(flyby_contrib)
                 acr = ArticleContentRelation(article=a, related_content=i, order=order)
