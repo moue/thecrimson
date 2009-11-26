@@ -162,15 +162,18 @@ def convert(infile):
         dt = datetime.strptime(dt, '%Y-%m-%d %H:%M:%S')
         tempissue = get_issue(dt)
         
-        try:
-            da = Article.objects.all_objects().get(slug=tempslug, section=Section.cached("flyby"))
+        das = Article.objects.all_objects().filter(slug=tempslug, section=Section.cached("flyby"))
+        # content objects stuck around for some reason
+        dcs = Content.objects.all_objects().filter(slug=tempslug, section=Section.cached("flyby"))
+        for da in das:
             da.pub_status = 0
             for rel in da.rel_content.all():
                 rel.pub_status = 0
                 rel.delete()
             da.delete()
-        except:
-            pass
+        for dc in dcs:
+            dc.pub_status = 0
+            dc.delete()
 
         a = Article()
         
@@ -182,6 +185,7 @@ def convert(infile):
 
         try:
             a.save()
+            print "saved %s" % a.slug
         except:
             print "couldn't save article '%s' '%d'" % (a.slug, a.issue.pk)
             continue
