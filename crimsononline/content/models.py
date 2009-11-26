@@ -305,7 +305,7 @@ class Content(models.Model):
             
             # flyby content
             if self.section == Section.cached('flyby') and self.content_type == Article.ct():
-                return mark_safe(render_to_string('models/%s/flyby.html'%(name),
+                return mark_safe(render_to_string('models/%s/flyby_page.html'%(name),
                                  n_context))
         
         return mark_safe(render_to_string(templ, n_context))
