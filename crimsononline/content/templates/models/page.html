@@ -80,22 +80,19 @@
 
         
         
-        {% module 8 comment %}
-            {% block post_content %}
-                {% if disqus %}
-                <div id="disqus_thread"></div>
-                <script type="text/javascript">
-                    var disqus_developer = 1;
-                </script>
-                <script type="text/javascript" src="http://disqus.com/forums/thecrimson/embed.js"></script>
-                <noscript>
-                    <a href="http://thecrimson.disqus.com/?url=ref">View the discussion thread.</a>
-                </noscript>
-                <a href="http://disqus.com" class="dsq-brlink">blog comments powered by 
-                    <span class="logo-disqus">Disqus</span></a>
-                {% endif %}
-            {% endblock %}
-        {% endmodule %}
+        {% block post_content %}
+	        {% module 8 comment %}
+	                {% if disqus %}
+	                <div id="disqus_thread"></div>
+	                <script type="text/javascript" src="http://disqus.com/forums/thecrimson/embed.js"></script>
+	                <noscript>
+	                    <a href="http://thecrimson.disqus.com/?url=ref">View the discussion thread.</a>
+	                </noscript>
+	                <a href="http://disqus.com" class="dsq-brlink">blog comments powered by 
+	                    <span class="logo-disqus">Disqus</span></a>
+	                {% endif %}
+	        {% endmodule %}
+        {% endblock %}
     </div>
     
     <div class="gutter"></div>

@@ -2,5 +2,5 @@
 {% load content_filters %}
 
 <h3><a href="{{ article.get_absolute_url }}">{{ article.headline }}</a></h3>
-<span class="byline">{{ article|byline:"short" }}</span>
-<span class="dateline">{{ article|datify }}</span>
+<p class="byline">{{ article|byline:"short" }}
+<span class="dateline">{{ article|datify }}</span></p>

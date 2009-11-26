@@ -12,7 +12,7 @@
     border-bottom: 1px solid #eee;
     padding: 5px 5px 10px 5px;
 	min-height: 35px;
-	}
+}
 .flyby_preview span.headline{
     font-weight: bold;
     font-size: 14px;
@@ -43,6 +43,7 @@
 }
 
 .article_previews li {
+    width: 299px;
     display: block; 
     float: left;
     padding-bottom: 8px;
