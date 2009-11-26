@@ -7,9 +7,8 @@
    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title>FlyByBlog &rsaquo; Harvard Life. To Go.</title>
-    {% static_css "flyby/style.css" %}
-    {% static_css "flyby/print.css" %}
+    <title>{% block title %}FlyByBlog | Harvard Life. To Go.{% endblock %}</title>
+    {% static_css "flyby.css" %}
 </head>
 
 <body>
