@@ -162,18 +162,21 @@ def convert(infile):
         dt = datetime.strptime(dt, '%Y-%m-%d %H:%M:%S')
         tempissue = get_issue(dt)
         
-        das = Article.objects.all_objects().filter(slug=tempslug, section=Section.cached("flyby"))
-        # content objects stuck around for some reason
-        dcs = Content.objects.all_objects().filter(slug=tempslug, section=Section.cached("flyby"))
-        for da in das:
+        try:
+            da = Article.objects.all_objects().get(slug=tempslug, section=Section.cached("flyby"), issue=tempissue)
             da.pub_status = 0
             for rel in da.rel_content.all():
                 rel.pub_status = 0
                 rel.delete()
             da.delete()
-        for dc in dcs:
+        except:
+            pass
+        try:
+            dc = Content.objects.all_objects().get(slug=tempslug, section=Section.cached("flyby"), issue=tempissue)
             dc.pub_status = 0
             dc.delete()
+        except:
+            pass
 
         a = Article()
         
