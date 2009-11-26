@@ -2,7 +2,7 @@
 {% load content_filters %}
 
 <div class="image">
-	<a href="{{image.get_absolute_url}}">{{ image|to_img_tag:"200,"}}</a>
+	{{ image|to_img_tag:"200,"}}
 	{% if image.caption %}
 		<span class="caption">{{image.caption}}</span>
 	{% endif %}

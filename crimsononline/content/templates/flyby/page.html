@@ -5,11 +5,6 @@
 
 {% load tag_cloud %}
 
-{% block js %}
-	{{block.super}}
-	{% static_js "jquery.js" %}
-{% endblock %}
-
 {% block title %}{{content.headline}} | {{block.super}}{% endblock %}
 
 {% block body %}
@@ -26,7 +21,7 @@
                     <a class="tag" href="{{ tag.get_absolute_url }}">{{ tag.text }}</a>{% ifnotequal forloop.last 1 %}, {% endifnotequal %}
                 {% endfor %}
             {% endwith %}
-        </div>
+	</div>
         
         {% block post_content %}
             <div id="disqus_thread"></div>
