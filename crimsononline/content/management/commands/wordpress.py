@@ -162,16 +162,9 @@ def convert(infile):
         dt = datetime.strptime(dt, '%Y-%m-%d %H:%M:%S')
         tempissue = get_issue(dt)
         
-        try:
-            t = Article.objects.get(slug=tempslug, section=Section.cached("flyby"))
-            if t.modified_on > datetime(2009,11,24):
-                continue
-        except:
-            pass
-        
-        das = Article.objects.all_objects().filter(slug=tempslug, section=Section.cached("flyby"))
+        das = Article.objects.all_objects().filter(slug=tempslug, section=Section.cached("flyby"), issue=tempissue)
         # content objects stuck around for some reason
-        dcs = Content.objects.all_objects().filter(slug=tempslug, section=Section.cached("flyby"))
+        dcs = Content.objects.all_objects().filter(slug=tempslug, section=Section.cached("flyby"), issue=tempissue)
         for da in das:
             da.pub_status = 0
             for rel in da.rel_content.all():
