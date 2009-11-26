@@ -198,6 +198,7 @@ def convert(infile):
                 a.contributors.add(c)
             except:
                 a.contributors.add(flyby_contrib)
+                print "couldn't find contributor %s" % author
                 pass
         
         # text
