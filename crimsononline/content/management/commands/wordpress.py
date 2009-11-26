@@ -163,42 +163,41 @@ def convert(infile):
         tempissue = get_issue(dt)
         
         try:
-            a = Article.objects.get(slug=tempslug, issue=tempissue)
+            Article.objects.get(slug=tempslug, section=Section.cached("flyby")).delete()
         except:
-            a = Article()
-            
-            a.headline = node.getElementsByTagName('title')[0].firstChild.data
-            a.issue = tempissue
-            a.section = Section.cached("flyby")
-            a.slug = tempslug
-            a.pub_status = 1
+            pass
 
+        a = Article()
+        
+        a.headline = node.getElementsByTagName('title')[0].firstChild.data
+        a.issue = tempissue
+        a.section = Section.cached("flyby")
+        a.slug = tempslug
+        a.pub_status = 1
+
+        try:
+            a.save()
+        except:
+            print "couldn't save article with headline '%s' (probably because of an IntegrityError)" % a.headline
+            continue
+
+        # contributors
+        for author in node.getElementsByTagName('dc:creator')[0].firstChild.data.split("and"):
+            author = author.replace(" ","")
             try:
-                a.save()
+                c = Contributor.objects.get(pk=AUTHORS_DICT[author])
+                a.contributors.add(c)
             except:
-                print "couldn't save article with headline '%s' (probably because of an IntegrityError)" % a.headline
-                continue
-
-            # contributors
-            for author in node.getElementsByTagName('dc:creator')[0].firstChild.data.split("and"):
-                author = author.replace(" ","")
-                try:
-                    c = Contributor.objects.get(pk=AUTHORS_DICT[author])
-                    a.contributors.add(c)
-                except:
-                    a.contributors.add(flyby_contrib)
-                    pass
-            
-            # text
-    	    a.text = node.getElementsByTagName('content:encoded')[0].firstChild.data
-            a.text = IMAGES.sub("",a.text)
-            a.text = ATTACHMENTS.sub("",a.text)
-            a.teaser = extract_teaser(a.text.split("<!--more-->")[0])
-            a.text = '<p>' + a.text.replace("\n","</p><p>") + '</p>'
-            a.text = a.text.replace("<p></p>","")
-                    
-        # delete related content
-        a.rel_content.all().delete()
+                a.contributors.add(flyby_contrib)
+                pass
+        
+        # text
+	    a.text = node.getElementsByTagName('content:encoded')[0].firstChild.data
+        a.text = IMAGES.sub("",a.text)
+        a.text = ATTACHMENTS.sub("",a.text)
+        a.teaser = extract_teaser(a.text.split("<!--more-->")[0])
+        a.text = '<p>' + a.text.replace("\n","</p><p>") + '</p>'
+        a.text = a.text.replace("<p></p>","")
 
         opener = urllib2.build_opener()
         if node.getElementsByTagName('content:encoded')[0].firstChild != None:
