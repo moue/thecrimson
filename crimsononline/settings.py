@@ -129,8 +129,8 @@ finally:
 MEDIA_LOC = MEDIA_ROOT
     
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'crimsononlinemailer'
-EMAIL_HOST_PASSWORD = 'abomination'
+EMAIL_HOST_USER = 'no-reply@thecrimson.com'
+EMAIL_HOST_PASSWORD = 'cr1ms0n'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 

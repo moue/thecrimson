@@ -1,5 +1,5 @@
 {% extends "static.html" %}
-
+{% block title %}Subscribe{% endblock %}
 {% load common %}
 {% load content_module %}
 {% load module %}
@@ -10,6 +10,7 @@
 {% endblock %}
 
 {% block js %}
+	{% static_js "jquery.js" %}
     {{ emailform.media }}
 {% endblock %}
 
