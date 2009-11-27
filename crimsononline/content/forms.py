@@ -287,7 +287,7 @@ CONTACT_TYPE_CHOICES = (
     ('general','General'),
     ('business','Business Inquiry'),
     ('website','Website Question'),
-    ('corrections','Correction'),
+    ('correction','Correction'),
 )
 CONTACT_TYPE_EMAILS = {
     'business': 'businessmanager@thecrimson.com',

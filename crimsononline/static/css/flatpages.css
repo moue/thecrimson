@@ -1,10 +1,9 @@
-body {
+p {
+margin:0 0 18px;
 font-family:georgia,"times new roman",times,serif;
 font-size: 15px;
 line-height: 22px;
 }
-
-p { margin:0 0 18px; }
 
 .left_navigation {
     margin-top: -10px;

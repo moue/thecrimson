@@ -655,6 +655,7 @@ def contact(request):
 
             return render_to_response('contact/thanks.html')
     else:
-        form = ContactForm()
+        m_type = request.GET.get('message_type','')
+        form = ContactForm(initial={'message_type': m_type})
 
     return render_to_response('contact/contact.html', {'form': form})
