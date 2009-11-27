@@ -7,12 +7,10 @@
 	</a>
     <div style="float:right">{{article.section|yuhkilabel}}</div>
     <img src="{% static_url "images/icons/article.gif" %}" alt="article" />
-    <h3><a href="{{ article.get_absolute_url }}" class="red-text light-red-text-hover">{{ article.headline }}</a></h3>
-    <span class="byline">{{ article|byline:"short" }}</span>
-    <div class="dateline">{{ article.issue.issue_date|date:"l, F j, Y" }}</div>
-    {% if article.web_only %}    
-    <span class="webonly">Web Only</span>
-    {% endif %}
+    <h3><a href="{{ article.get_absolute_url }}">{{ article.headline }}</a></h3>
+    <p class="byline">{{ article|byline:"short" }}
+    <span class="dateline">{{ article.issue.issue_date|date:"l, F j, Y" }}</span>
+	</p>
     <div class="teaser">{{ article.teaser|fix_teaser|safe }}</div>
     <span class="clear"></span>
 </li>

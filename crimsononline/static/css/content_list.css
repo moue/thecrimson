@@ -6,6 +6,9 @@ ul.sub_search_results{
 .search_form ul{
     list-style-type: none;
 }
+.search_form input[type="text"]{
+    width: 123px;
+}
 
 .subscribe-rss{
     float: right;

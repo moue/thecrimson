@@ -7,6 +7,7 @@ from django.contrib.auth.views import login, logout
 from django.contrib.sitemaps import FlatPageSitemap
 from django.views.generic.simple import redirect_to
 from crimsononline.content.sitemaps import ArticleSitemap
+from haystack.views import SearchView
 
 FILTER_URL_RE = r'(page/(?P<page>\d+)/)?(sections/(?P<sections>[\w,]+)/)?' \
     '(types/(?P<types>[\w,]+)/)?'
@@ -88,7 +89,7 @@ if settings.HAYSTACK:
     from crimsononline.search.forms import DateRangeSearchForm
     from crimsononline.search.views import AjaxSearchView
     
-    urlpatterns += patterns('haystack.views',
+    urlpatterns += patterns('search.views',
         url(r'^search/', AjaxSearchView(form_class=DateRangeSearchForm)))
 
 if settings.DEBUG:

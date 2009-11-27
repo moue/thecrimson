@@ -6,7 +6,11 @@ from crimsononline.content.models import Contributor, Tag
 MAX_MCONTRIBS = 20
 
 class AjaxSearchView(SearchView):
+    def __name__(self):
+        return "AjaxSearchView"
+
     def create_response(self):
+        
         """
         Generates the actual HttpResponse to send back to the user.
         """
