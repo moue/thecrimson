@@ -26,7 +26,7 @@ urlpatterns += patterns('crimsononline.content.views',
     url(r'^$', 'index', name='content_index'),
     url(r'^issue/(\d+)/(\d+)/(\d+)/$', 'index', name='content_index'),    
     url(r'^subscribe/', include('crimsononline.subscriptions.urls')),
-    url(r'^about/', include('crimsononline.info.urls')),
+    url(r'^contact/', 'contact'),
     url(r'^iphone/(?P<s>\w+)/$', 'iphone'),
     url(r'^classifieds/$',redirect_to, {'url':'http://ad2ad.com/?portalid=1708065'}),
 )

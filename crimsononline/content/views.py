@@ -8,6 +8,7 @@ from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.template import Context, loader
 from django.conf import settings
 from django.core.paginator import Paginator
+from django.core.mail import send_mail
 from django.contrib.flatpages.models import FlatPage
 from django.contrib.contenttypes.models import ContentType
 from django.db import connection
@@ -15,6 +16,7 @@ from django.db.models import Count, Max, Q, Sum
 from django.utils import simplejson
 from django.views.decorators.cache import cache_page
 
+from crimsononline.content.forms import ContactForm
 from crimsononline.content.models import *
 from crimsononline.content_module.models import ContentModule
 from crimsononline.common.caching import funcache as cache
@@ -634,3 +636,25 @@ def last_month():
 def last_year():
     return date.today() + timedelta(days=-365)
 
+#View for the contact page
+def contact(request):
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+
+        if form.is_valid():
+            message_type = form.cleaned_data["message_type"]
+            name = form.cleaned_data['name']
+            email = form.cleaned_data['email']
+            message = form.cleaned_data['message']
+            recipients = [email]
+
+            message = 'Message sent from %s (%s):\n\n%s' % (name, email, message)
+
+            send_mail('Message submitted on www.thecrimson.com', message, email,
+            recipients, fail_silently=False)
+
+            return render_to_response('contact/thanks.html')
+    else:
+        form = ContactForm()
+
+    return render_to_response('contact/contact.html', {'form': form})

@@ -276,3 +276,32 @@ class RelatedContentField(forms.CharField):
         objs = dict([(obj.pk, obj) for obj in objs])
         return [objs[pk] for pk in ids]
     
+        from django import forms
+
+        TYPE_CHOICES = (
+            ('General', 'General'),
+            ('Business Request', 'Business Request')
+        )
+
+CONTACT_TYPE_CHOICES = (
+    ('general','General'),
+    ('business','Business Inquiry'),
+    ('website','Website Question'),
+    ('corrections','Correction'),
+)
+CONTACT_TYPE_EMAILS = {
+    'business': 'businessmanager@thecrimson.com',
+    'general': 'president@thecrimson.com',
+    'website': 'itchair@thecrimson.com',
+    'correction': 'president@thecrimson.com',
+}
+class ContactForm(forms.Form):
+    message_type = forms.CharField(widget=forms.Select(choices=CONTACT_TYPE_CHOICES))
+    name = forms.CharField(max_length=50)
+    email = forms.EmailField()
+    message = forms.CharField(widget=forms.Textarea)
+    
+    def clean(self):
+        self.cleaned_data['email'] = CONTACT_TYPE_EMAILS[self.cleaned_data['message_type']]
+        return self.cleaned_data
+

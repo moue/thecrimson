@@ -14,18 +14,27 @@
 {% endblock %}
 
 {% block content %}
-{% module 8 corrections red %}
+{% module 8 contact red %}
     {% block content_inner %}
-        <div class="flatpage_section_header">Submit your Correction</div>
+        <div class="flatpage_section_header">Submit your Question or Concern</div>
         <div class="contactform">
-            <form action="/about/corrections/" method="POST">
+            <form action="/contact/" method="POST">
             {{ form.non_field_errors }}
             {% if form.errors %}
             <span class="errormessage">All fields are required.</span><br /><br />
             {% endif %}
             <table>
-                {% include "contact_form.html" %}
-                <tr>
+				{% for field in form %}
+				<tr>
+				    <td style="vertical-align:top;" class="field" width="100px">
+				    {% if field.errors %}<span class="errormessage2">{% endif %}
+				    {{ field.label_tag }}: 
+				    {% if field.errors %}</span>{% endif %}					
+				    </td>
+				    <td>{{ field }}</td>
+				</tr>
+				{% endfor %}
+				<tr>
                     <td style="vertical-align=top">&nbsp;</td>
                     <td><button type="submit">Submit</button></td>
                 </tr>
@@ -37,7 +46,7 @@
 {% endblock %}
 
 {% block fp_nav %}
-	{% flatpage_nav about "/about/content/" %}
+	{% flatpage_nav about "/about/contact/" %}
 		{% contentmodule flatpage_nav %}{% endcontentmodule %}
     {% endflatpage_nav %}
 {% endblock %}
