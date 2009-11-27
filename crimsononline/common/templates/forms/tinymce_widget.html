@@ -11,18 +11,26 @@
         theme : "advanced",
         paste_auto_cleanup_on_paste : true,
         paste_preprocess : function(pl, o) {
-            re = new RegExp('<div[^>]+>(.*?)</div>');
-            
-            content_left = o.content;
-            content_return = "";
-            m = re.exec(content_left);
-            while(m != null){
-                content_return = content_return + "<p>" + m[1] + "</p>"
-                content_left = content_left.substring(m[0].length,content_left.length);
-                m = re.exec(content_left);
-            }
-            if(content_return)
-                o.content = content_return;
+			var content = o.content;
+			content = content.split("<br>");
+			var tempcontent = "";
+			for(i=0; i<content.length; i++){
+				tempcontent = tempcontent + "<p>" + content[i] + "</p>";
+			}
+			o.content = tempcontent
+			
+            // re = new RegExp('<div[^>]+>(.*?)</div>');
+            // 
+            // content_left = o.content;
+            // content_return = "";
+            // m = re.exec(content_left);
+            // while(m != null){
+            //     content_return = content_return + "<p>" + m[1] + "</p>"
+            //     content_left = content_left.substring(m[0].length,content_left.length);
+            //     m = re.exec(content_left);
+            // }
+            // if(content_return)
+            //     o.content = content_return;
             
         }, 
         paste_remove_styles: true,
