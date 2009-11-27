@@ -76,7 +76,7 @@ class AutosizeImageFieldFile(ImageFieldFile):
         
         # crop the file
         img = pilImage.open(self.path)
-        img = img.transform(size_spec[:2], pilImage.EXTENT, crop_coords, pilImage.BICUBIC)
+        img = img.transform(size_spec[:2], pilImage.EXTENT, crop_coords, pilImage.ANTIALIAS)
         
         new_path = self._get_path(size_spec)
         img.save(new_path)

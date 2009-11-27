@@ -651,7 +651,7 @@ def contact(request):
             message = 'Message sent from %s (%s):\n\n%s' % (name, email, message)
 
             send_mail('Message submitted on www.thecrimson.com', message, email,
-            recipients, fail_silently=False)
+            recipients, fail_silently=True)
 
             return render_to_response('contact/thanks.html')
     else:
