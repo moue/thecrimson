@@ -1,0 +1,56 @@
+{% extends "subscribe.html" %}
+{% load common %}
+{% load content_module %}
+{% block js %}
+    {{ block.super }}
+	{% static_js "jquery.js" %}
+	{% static_js "print_subscriptions.js" %}
+    {{ form.media }}
+{% endblock %}
+
+{% block content_inner %}
+	<script type="text/javascript">
+	{{ars}}
+	
+	var prices = new Array(types.length)
+	for(i=0; i<prices.length; i++){
+		prices[i] = new Array(start_dates.length)
+	}
+	
+	{{prices}}
+	</script>
+    <div class="flatpage_section_header">Print Subscriptions</div>
+	{% contentmodule subscribe.paper %}{% endcontentmodule %}
+    {% contentmodule subscribe.paper.pricing %}{% endcontentmodule %}
+    <form class="general" action="https://www.paypal.com/cgi-bin/webscr" method="post">
+	<table>
+	{% for field in form %}
+	<tr>
+	    <td class="label">
+	    {% if field.errors %}<span class="errormessage2">{% endif %}
+	    {{ field.label_tag }}: 
+	    {% if field.errors %}</span>{% endif %}					
+	    </td>
+	    <td>{{ field }}</td>
+	</tr>
+	{% endfor %}
+	<tr>
+		<td class="field" width="100px">Price:</td>
+		<td><span class="subscription_price"></span></td>
+	</tr>
+	<tr>
+		<td colspan=2 style="text-align:center;"><button type="submit" name="submit" border="0" disabled="disabled">Sign Up!</button>
+		</td>
+	</tr>
+	</table>
+
+<input type="hidden" name="business" value="businessmanager@thecrimson.com">
+<input type="hidden" name="cmd" value="_xclick">
+<input type="hidden" name="item_name" value="None">
+<input type="hidden" name="amount" value="0">
+<input type="hidden" name="currency_code" value="USD">
+
+	</form>
+
+
+{% endblock %}

@@ -1,10 +1,51 @@
-p {
-margin:0 0 18px;
-font-family:georgia,"times new roman",times,serif;
-font-size: 15px;
-line-height: 22px;
+/* form styles */
+form.general td{
+    padding: 3px;
+}
+form.general td.label, form.general .errormessage{
+    width: 150px;
+    font-size: 13px;
+    font-family: helvetica, arial, sans-serif;
+}
+form.general td li{
+    font-size: 13px;
+    font-family: helvetica, arial, sans-serif;
+    margin-right: 5px;    
+}
+form.general .errormessage{color: #ba0600;}
+form.general td.center{text-align: center;}
+form.general ul.acfb-holder{
+    width: 246px;
+    border: 1px solid #ccc;
+    background-color: #fafafa;
+}
+form.general input.acfb-input{
+    background-color: #fafafa;
+}
+form.general td > input, form.general td > textarea{
+    font-size: 13px;
+    padding: 3px;
+    width: 250px;
+    border: 1px solid #ccc;
+    background-color: #fafafa;
+    font-family: helvetica, arial, sans-serif;
+}
+form.general li{
+    list-style-type: none;
+    display: inline-block;
 }
 
+.static{
+font-family: helvetica, arial, sans-serif;
+font-size: 13px;
+line-height: 18px;
+}
+.static p, .static ul{
+    margin-bottom: 5px;
+}
+.static table{
+    margin: 0 auto;
+}
 .left_navigation {
     margin-top: -10px;
     float: left;

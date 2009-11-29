@@ -21,26 +21,25 @@
         <div class="emailform">
 			{% contentmodule subscribe.email %}{% endcontentmodule %}
         	{% with emailform as form %}
-	            <form class="manage" action="/subscribe/email/" method="post">
-	            {{ form.non_field_errors }}
-	            {% if form.email.errors %}
-	            <span class="errormessage">Please check the highlighted areas below.</span><br /><br />
-	            {% endif %}
+	            <form class="general" action="/subscribe/email/" method="post">
 	            <table>
+		            {% if form.errors %}
+		            <tr><td colspan="2" class="center errormessage">Check the errors below</td></tr>
+		            {% endif %}
 	                {% include "email/manage_form.html" %}
 	                <tr>
-	                    <td>&nbsp;</td>
-	                    <td><button type="submit">Sign up!</button></td>
+	                    <td class="center" colspan="2"><button type="submit">Sign up!</button></td>
 	                </tr>
 	            </table>
 	            </form>
+	
 	        {% endwith %}
         </div>
         
         <div class="flatpage_section_header"><a name="paper"></a>Paper Subscriptions</div>
         <div>
-            {% contentmodule subscribe.paper %}
-            {% endcontentmodule %}
+            {% contentmodule subscribe.paper %}{% endcontentmodule %}
+			<p><a href="/subscribe/print">Click here</a> to learn more!</a></p>
         </div>
         
         <div class="flatpage_section_header"><a name="rss"></a>RSS Feeds</div>

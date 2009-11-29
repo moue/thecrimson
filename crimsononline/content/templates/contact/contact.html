@@ -20,25 +20,24 @@
     {% block content_inner %}
         <div class="flatpage_section_header">Submit your Question or Concern</div>
         <div class="contactform">
-            <form action="/contact/" method="POST">
+            <form class="general" action="/contact/" method="post">
             {{ form.non_field_errors }}
-            {% if form.errors %}
-            <span class="errormessage">All fields are required.</span><br /><br />
-            {% endif %}
             <table>
+	            {% if form.errors %}
+	            <tr><td colspan="2" class="center errormessage">All fields are required.</td></tr>
+	            {% endif %}
 				{% for field in form %}
 				<tr>
-				    <td style="vertical-align:top;" class="field" width="100px">
+				    <td class="label">
 				    {% if field.errors %}<span class="errormessage2">{% endif %}
 				    {{ field.label_tag }}: 
 				    {% if field.errors %}</span>{% endif %}					
 				    </td>
-				    <td>{{ field }}</td>
+				    <td class="field">{{ field }}</td>
 				</tr>
 				{% endfor %}
 				<tr>
-                    <td style="vertical-align=top">&nbsp;</td>
-                    <td><button type="submit">Submit</button></td>
+                    <td class="center" colspan="2"><button type="submit">Contact Us</button></td>
                 </tr>
             </table>
             </form>

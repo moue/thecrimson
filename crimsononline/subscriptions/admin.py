@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from django.contrib import admin
-from crimsononline.subscriptions.models import EmailSubscription
+from crimsononline.subscriptions.models import EmailSubscription, PaperSubscription, PaperPromoCode
 
 class EmailSubscriptionAdmin(admin.ModelAdmin):
     list_display = ('email', 'created_on', 'is_active',)
@@ -25,3 +25,13 @@ class EmailSubscriptionAdmin(admin.ModelAdmin):
     action_activate.short_description = 'Activate selected subscriptions'
 
 admin.site.register(EmailSubscription, EmailSubscriptionAdmin)
+
+class PaperPromoCodeInline(admin.TabularInline):
+    model = PaperPromoCode
+
+class PaperSubscriptionAdmin(admin.ModelAdmin):
+    inlines = [
+        PaperPromoCodeInline,
+    ]
+    
+admin.site.register(PaperSubscription, PaperSubscriptionAdmin)

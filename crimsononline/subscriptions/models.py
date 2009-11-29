@@ -120,5 +120,48 @@ class EmailSubscription(models.Model):
     
     def __unicode__(self):
         return self.email
-    
 
+PAPER_SUB_TYPES = (
+    (0, 'Biweekly'),
+    (1, 'Premium'),
+    (2, 'Premium Plus'),    
+)
+PAPER_START_DATES = (
+    (0, 'September/October'),
+    (1, 'November/December'),
+    (2, 'January/February'),
+    (3, 'March/April'),
+    (4, 'May'),
+    (5, 'Fall Semester'),
+    (6, 'Spring Semester'),
+)
+        
+class PaperSubscription(models.Model):
+    sub_type = models.IntegerField(choices=PAPER_SUB_TYPES, verbose_name="Subscription Type")
+    start_period = models.IntegerField(choices=PAPER_START_DATES, verbose_name="Starting Time Period")
+    price = models.DecimalField(max_digits=5, decimal_places = 2, verbose_name="Price")
+    
+    class Meta:
+        verbose_name = "Paper Subscription"
+
+    def __unicode__(self):
+        act_promos = PaperPromoCode.objects.filter(subscription=self.pk, active=1).count()
+        promo_text = ""
+        if act_promos > 0:
+            promo_text = "(%d active promotion%s)" % (act_promos, "s" if act_promos > 1 else "")
+        return "%s, %s %s" % (PAPER_SUB_TYPES[self.sub_type][1], 
+        PAPER_START_DATES[self.start_period][1],
+        promo_text
+        )
+    
+class PaperPromoCode(models.Model):
+    class Meta:
+        verbose_name = "Promotional Code"
+
+    subscription = models.ForeignKey('PaperSubscription')
+    code = models.CharField(max_length=25)
+    price = models.DecimalField(max_digits=6, decimal_places = 2)
+    active = models.BooleanField(default=1)
+    
+    def __unicode__(self):
+        return "%s, discount from $%.2f to $%.2f" % (self.code, self.subscription.price, self.price)

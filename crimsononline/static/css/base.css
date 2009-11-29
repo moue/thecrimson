@@ -70,7 +70,7 @@ ul.normal_bullets {
 }
 
 
-.submit{
+.search-submit{
     display:block;
     height:20px;
     float:left;
@@ -223,7 +223,7 @@ ul.normal_bullets {
 }
 
 
-#masthead_contents .submit{
+#masthead_contents .search-submit{
     display:block;
     width: 20px;
     height:20px;
@@ -238,7 +238,7 @@ ul.normal_bullets {
     cursor:pointer;
 }
 
-#masthead_contents .submit > span{
+#masthead_contents .search-submit > span{
     font-family: helvetica, arial, sans-serif;
     font-size:11px;
     line-height: 18px;

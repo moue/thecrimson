@@ -3,12 +3,13 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import *
 from crimsononline.common.forms import FbModelChoiceField, FbSelectWidget
 from crimsononline.content.models import Contributor, Tag, Section
-from crimsononline.subscriptions.models import EmailSubscription
+from crimsononline.subscriptions.models import EmailSubscription, PaperSubscription, PAPER_SUB_TYPES
 
 class EmailSubscribeForm(forms.ModelForm):
     contributors = FbModelChoiceField(required=False, multiple=True, 
         model=Contributor, url='/subscribe/email/ajax/fb_find/contributor/', 
         no_duplicates=True)
+    top_stories = forms.BooleanField(label="Top Stories")
     tags = FbModelChoiceField(required=False, multiple=True, model=Tag,
         url='/subscribe/email/ajax/fb_find/tag/', no_duplicates=True)
     sections = forms.ModelMultipleChoiceField(Section.all(), 
@@ -63,3 +64,7 @@ class EmailSubscribeConfirmForm(forms.Form):
             cleaned['email_subscription'] = s
         return cleaned
     
+class PaperSubscribeForm(forms.ModelForm):
+    class Meta:
+        model = PaperSubscription
+        fields = ('sub_type','start_period',)

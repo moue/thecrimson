@@ -1,17 +1,19 @@
 from django.db.models import Q
 from django.conf import settings
-from django.http import HttpResponseRedirect, Http404
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.contrib.auth import *
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.views import login as d_login, logout as d_logout
 from django.shortcuts import render_to_response
 from django.views.decorators.cache import cache_page
 from django.db.models import Count
-
+from django.utils import simplejson
+from django.utils.safestring import mark_safe
 from crimsononline.subscriptions.forms import \
-    EmailSubscribeForm, EmailSubscribeConfirmForm, EmailSubscriptionManageForm
+    EmailSubscribeForm, PaperSubscribeForm, \
+    EmailSubscribeConfirmForm, EmailSubscriptionManageForm
 from crimsononline.content.models import Tag, Contributor, Section
-from crimsononline.subscriptions.models import EmailSubscription
+from crimsononline.subscriptions.models import EmailSubscription, PaperSubscription, PAPER_START_DATES, PAPER_SUB_TYPES
 from crimsononline.common.forms import fbmc_search_helper
 
 def index(request):
@@ -122,6 +124,18 @@ def email_signup(request):
             'contributors': contributors, 'sections': sections})
     return render_to_response('email/manage.html', 
                               {'form': f, 'signup': True})
+
+def print_sub(request):
+    f = PaperSubscribeForm()
+    
+    ars = "var types = new Array(%s);\n\t" % (", ".join(['"%s"' % x[1] for x in PAPER_SUB_TYPES]))
+    ars += "var start_dates = new Array(%s);\n" % (", ".join(['"%s"' % x[1] for x in PAPER_START_DATES]))
+    
+    prices = ""
+    for sub in PaperSubscription.objects.all():
+        prices += "prices[%d][%d] = %.2f;\n\t" % (sub.sub_type, sub.start_period, sub.price)
+    
+    return render_to_response('print/subscribe.html',{'form': f, 'ars':mark_safe(ars), 'prices':mark_safe(prices)})
 
 def fbmc_search(request, type):
     """
