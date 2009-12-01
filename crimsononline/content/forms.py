@@ -284,14 +284,14 @@ class RelatedContentField(forms.CharField):
         )
 
 CONTACT_TYPE_CHOICES = (
-    ('general','General'),
+    ('letter','Letter to the Editor'),
     ('business','Business Inquiry'),
     ('website','Website Question'),
     ('correction','Correction'),
 )
 CONTACT_TYPE_EMAILS = {
     'business': 'businessmanager@thecrimson.com',
-    'general': 'president@thecrimson.com',
+    'letter': 'letters@thecrimson.com',
     'website': 'itchair@thecrimson.com',
     'correction': 'president@thecrimson.com',
 }
