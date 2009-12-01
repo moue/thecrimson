@@ -87,6 +87,7 @@ class TopArticlesNode(template.Node):
             self.specifier = None
         
     def render(self, context):
+        pre_title, post_title = "", ""
         # Create a resolver for the slightly modified URL patterns we defined above
         resolver = RegexURLResolver(r'^/', generic_obj_patterns)
         # Step 1: We want to get the most viewed articles from the database
@@ -106,16 +107,29 @@ class TopArticlesNode(template.Node):
             if self.specifier.__class__ == Section:
                 tableStr = ""
                 limitStr = " AND content_content.section_id = " + str(self.specifier.id)
+                try:
+                    post_title = 'IN %s' % str(Section.objects.get(pk=self.specifier.id)).upper()
+                except:
+                    pass 
             elif self.specifier.__class__ == Contributor:
                 tableStr = ", content_contributor, content_content_contributors"
                 limitStr = " AND content_contributor.id = " + str(self.specifier.id) + \
                            " AND content_contributor.id = content_content_contributors.contributor_id" \
                            " AND content_content_contributors.content_id = content_content.id"
+                try:
+                    pre_title = Contributor.objects.get(pk=self.specifier.id).first_name.upper() + "'S"
+                except:
+                    pass 
             elif self.specifier.__class__ == Tag:
                 tableStr = ", content_tag, content_content_tags"
                 limitStr = " AND content_tag.id = " + str(self.specifier.id) + \
                            " AND content_content_tags.content_id = content_content.id" \
                            " AND content_content_tags.tag_id = content_tag.id"
+                try:
+                    post_title = 'IN "%s"' % Tag.objects.get(pk=self.specifier.id).text.upper()
+                except:
+                    pass 
+
             else:
                 raise template.TemplateSyntaxError, "The TopArticles tag can only take a section, contributor, or tag argument (%r passed)" % self.specifier.__class__
         else:
@@ -182,20 +196,7 @@ class TopArticlesNode(template.Node):
         # Only want top 10 -- we need to do this last because we're not guaranteed that there won't be some gaps in threadobjlist
         del mostcommentedarticles[10:]
         """
-        
-        cont_title = ""
-        if(self.specifier.__class__ == Contributor):
-            try:
-                cont_title = Contributor.objects.get(pk=self.specifier.id).first_name.upper() + "'S"
-            except:
-                pass 
-        tag_title = ""
-        if(self.specifier.__class__ == Tag):
-            try:
-                tag_title = 'IN "%s"' % Tag.objects.get(pk=self.specifier.id).text.upper()
-            except:
-                pass 
     
         return render_to_string('templatetag/mostreadarticles.html',
             {'mostreadarticles': mostreadarticles, 
-                'mostcommentedarticles': mostcommentedarticles,'cont_title': cont_title, 'tag_title': tag_title})
+                'mostcommentedarticles': mostcommentedarticles,'pre_title': pre_title, 'post_title': post_title})

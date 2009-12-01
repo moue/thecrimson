@@ -1,17 +1,20 @@
+{% extends "base.html" %}
 {% load common %}
+{% load module %}
 
-<html>
-<head><title>Articles</title></head>
-<body>
-Articles from {{issue}}:
-<ul>
-{% if articles %}
-	{% for article in articles %}
-	<li>{{article|linkify}}</li>
-	{% endfor %}
-{% else %}
-	No articles found in this time period
-{% endif %}
-</ul>
-</body>
-</html>
+{% block body %}
+	Articles from {{issue}}:
+	<div class="col-12">
+		{% module 12 "" %}
+		<ul>
+			{% if articles %}
+				{% for article in articles %}
+				<li>{{article|linkify}}</li>
+				{% endfor %}
+			{% else %}
+				<li>No articles found in this time period</li>
+			{% endif %}
+		</ul>
+		{% endmodule %}
+	</div>
+{% endblock %}

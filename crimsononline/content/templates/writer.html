@@ -10,6 +10,11 @@
 	{{ writer }} | Writer Profile
 {% endblock %}
 
+{% block inhead %}
+<link rel="alternate" type="application/rss+xml" 
+  title="RSS Feed for {{tag}} on www.thecrimson.com" 
+  href="/feeds/author/{{writer.pk}}/" />
+{% endblock %}
 {% block css %}
     {{block.super}}
     {% static_css "writer-profile.css" %}
@@ -17,7 +22,7 @@
 
 {% block before_content %}
     <h1>{{ writer }}</h1>
-    <span class="subscribe-rss"><img src="{% static_url "images/icons/rss.png" %}" /><a href="/feeds/author/{{writer.id}}">Subscribe</a></span>
+    <span class="subscribe-rss"><img src="{% static_url "images/icons/rss.gif" %}" /><a href="/feeds/author/{{writer.id}}">Subscribe</a></span>
 {% endblock %}
 
 {% block left %}

@@ -1,13 +1,16 @@
+{% extends "base.html" %}
 {% load common %}
+{% load module %}
 
-<html>
-<head><title>Articles</title></head>
-<body>
+{% block body %}
+<div class="col-4">
+	{% module 12 "" %}
 Articles in year:
 <ul>
 {% for year in years %}
 <li><a href="/sitemap/{{year}}/">{{year}}</a></li>
 {% endfor %}
 </ul>
-</body>
-</html>
+	{% endmodule %}
+</div>
+{% endblock %}

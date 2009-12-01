@@ -1,13 +1,28 @@
+{% extends "base.html" %}
 {% load common %}
+{% load module %}
 
-<html>
-<head><title>Articles</title></head>
-<body>
-Articles on day:
-<ul>
+{% block title %}Sitemap{% endblock %}
+
+{% block css %}
+	<style type="text/css">
+	.sitemap li{
+		display: inline-block;
+		width: 180px;
+		text-align: center;
+	}
+	</style>
+{% endblock %}
+
+{% block body %}
+<div class="col-12">
+	{% module 12 "" %}
+Issues in {{year}}:
+<ul class="sitemap">
 {% for issue in issues %}
-<li><a href="/sitemap/{{year}}/{{issue.id}}/">{{issue}}</a></li>
+<li><a href="/sitemap/{{year}}/{{issue.id}}/">{{issue.issue_date|date:"n/j"}}</a></li>
 {% endfor %}
 </ul>
-</body>
-</html>
+{% endmodule %}
+</div>
+{% endblock %}

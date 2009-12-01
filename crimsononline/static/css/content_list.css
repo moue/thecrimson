@@ -33,7 +33,10 @@ ul.sub_search_results{
 .content_list_content .byline {
     display: block;
 }
-.content_list_content .teaser {font-size: 13px;}
+.content_list_content .teaser{
+    font-size: 13px;
+    font-family: helvetica, arial, sans-serifr;
+}
 
 /* filter area */
 .content_list_filters {
