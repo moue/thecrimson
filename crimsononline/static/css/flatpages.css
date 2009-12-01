@@ -76,6 +76,7 @@ line-height: 18px;
 }
 
 .right_navigation-list{
+    margin-bottom: 2px;
 	color:#666;
 	list-style: none;
 	font-size: 15px;
