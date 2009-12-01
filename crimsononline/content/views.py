@@ -645,8 +645,9 @@ def contact(request):
             message_type = form.cleaned_data["message_type"]
             name = form.cleaned_data['name']
             email = form.cleaned_data['email']
+            to_email = form.cleaned_data['to_email']
             message = form.cleaned_data['message']
-            recipients = [email]
+            recipients = [to_email]
 
             message = 'Message sent from %s (%s):\n\n%s' % (name, email, message)
 

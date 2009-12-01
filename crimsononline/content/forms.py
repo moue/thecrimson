@@ -302,6 +302,6 @@ class ContactForm(forms.Form):
     message = forms.CharField(widget=forms.Textarea)
     
     def clean(self):
-        self.cleaned_data['email'] = CONTACT_TYPE_EMAILS[self.cleaned_data['message_type']]
+        self.cleaned_data['to_email'] = CONTACT_TYPE_EMAILS[self.cleaned_data['message_type']]
         return self.cleaned_data
 
