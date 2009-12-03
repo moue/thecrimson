@@ -340,8 +340,8 @@ class Content(models.Model):
         # The strings we use as cache keys -- should be unique for a given PK
         #  for a given content type on a given day
         thres_str = str(self.pk) + str(self.content_type).replace(" ","") + str(date.today()) + 'thres'
-        time_str = str(self.pk) + str(self.content_type) + str(date.today()) + 'time'
-        hits_str = str(self.pk) + str(self.content_type) + str(date.today()) + 'hits'
+        time_str = str(self.pk) + str(self.content_type).replace(" ","") + str(date.today()) + 'time'
+        hits_str = str(self.pk) + str(self.content_type).replace(" ","") + str(date.today()) + 'hits'
         # we want it only once or else the time the code takes to execute will mess things up
         now = datetime.now()
         # If the value was already in the cache
