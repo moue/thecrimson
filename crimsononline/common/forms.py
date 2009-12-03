@@ -38,7 +38,6 @@ class CalendarWidget(forms.widgets.HiddenInput):
             static_content('css/admin/IssuePickerWidget.css'),)}
 
     def render(self, name, value, attrs=None):
-        print "value is %s" % value
         try:
             o_value = value.split("-")
             o_value = o_value[1] + "/" + o_value[2] + "/" + o_value[0]

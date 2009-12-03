@@ -339,7 +339,7 @@ class Content(models.Model):
         HITS_STORE_TIME = 99999
         # The strings we use as cache keys -- should be unique for a given PK
         #  for a given content type on a given day
-        thres_str = str(self.pk) + str(self.content_type) + str(date.today()) + 'thres'
+        thres_str = str(self.pk) + str(self.content_type).replace(" ","") + str(date.today()) + 'thres'
         time_str = str(self.pk) + str(self.content_type) + str(date.today()) + 'time'
         hits_str = str(self.pk) + str(self.content_type) + str(date.today()) + 'hits'
         # we want it only once or else the time the code takes to execute will mess things up
