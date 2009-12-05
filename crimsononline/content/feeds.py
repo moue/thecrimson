@@ -26,7 +26,7 @@ class Latest(CrimsonFeed):
 
     
     def items(self):
-        return Article.objects.exclude(section__name__iexact="Flyby").order_by('-pk')[:NUM_STORIES]
+        return Article.objects.exclude(section__name__iexact="Flyby").order_by('-issue__issue_date')[:NUM_STORIES]
     
 
 class ByAuthor(CrimsonFeed):
@@ -49,7 +49,7 @@ class ByAuthor(CrimsonFeed):
         return "The latest Crimson articles by %s" % str(obj)
 
     def items(self, obj):
-        return Article.objects.filter(contributors__id__exact=obj.pk).order_by('-created_on')[:NUM_STORIES]
+        return Article.objects.filter(contributors__id__exact=obj.pk).order_by('-issue__issue_date')[:NUM_STORIES]
     
 
 class ByTag(CrimsonFeed):
@@ -72,7 +72,7 @@ class ByTag(CrimsonFeed):
         return "The latest Crimson articles tagged with %s" % str(obj)
     
     def items(self, obj):
-        return Article.objects.filter(tags__id__exact=obj.pk).order_by('-created_on')[:NUM_STORIES]
+        return Article.objects.filter(tags__id__exact=obj.pk).order_by('-issue__issue_date')[:NUM_STORIES]
     
 
 class BySection(CrimsonFeed):
@@ -97,5 +97,5 @@ class BySection(CrimsonFeed):
         return "The latest Crimson articles in %s" % str(obj)
     
     def items(self, obj):
-        return Article.objects.filter(section__id__exact=obj.pk).order_by('-created_on')[:NUM_STORIES]
+        return Article.objects.filter(section__id__exact=obj.pk).order_by('-issue__issue_date')[:NUM_STORIES]
     
