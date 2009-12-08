@@ -3,16 +3,17 @@ import re
 from StringIO import StringIO
 from datetime import datetime, timedelta, date
 
-from django.shortcuts import get_object_or_404, get_list_or_404, render_to_response
-from django.http import Http404, HttpResponse, HttpResponseRedirect
-from django.template import Context, loader
 from django.conf import settings
-from django.core.paginator import Paginator
-from django.core.mail import send_mail
 from django.contrib.flatpages.models import FlatPage
 from django.contrib.contenttypes.models import ContentType
+from django.core.paginator import Paginator
+from django.core.mail import send_mail
+from django.core.urlresolvers import resolve
 from django.db import connection
 from django.db.models import Count, Max, Q, Sum
+from django.http import Http404, HttpResponse, HttpResponseRedirect
+from django.shortcuts import get_object_or_404, get_list_or_404, render_to_response
+from django.template import Context, loader
 from django.utils import simplejson
 from django.views.decorators.cache import cache_page
 
@@ -489,9 +490,8 @@ def get_content(request, ctype, year, month, day, slug, content_group=None):
 def get_content_obj(request, ctype, year, month, day, slug, content_group=None):
     """Retrieve a content object from the database (no validation of params)"""
     ctype = ctype.replace('-', ' ') # convert from url
-    c = Content.objects.get(
+    return Content.objects.get(
         issue__issue_date=date(int(year), int(month), int(day)), slug=slug)
-    return c
     
 def get_grouped_content(request, gtype, gname, ctype, year, month, day, slug):
     """View for displaying a piece of grouped content on a page
@@ -505,8 +505,8 @@ def get_grouped_content(request, gtype, gname, ctype, year, month, day, slug):
     raise Http404
 
 def get_grouped_content_obj(request, gtype, gname, ctype, year, month, day, slug):
-    cg = ContentGroup.by_name(gtype, gname)
-    return cg
+    #TODO: i don't think this function is right at all
+    return ContentGroup.by_name(gtype, gname)
 
 @cache(settings.CACHE_STANDARD, "general_contentgroup")
 def get_content_group(request, gtype, gname):
@@ -519,8 +519,7 @@ def get_content_group(request, gtype, gname):
     return render_to_response("contentgroup.html", {'cg': cg, 'content': c})
 
 def get_content_group_obj(request, gtype, gname):
-    cg = ContentGroup.by_name(gtype, gname)
-    return cg
+    return ContentGroup.by_name(gtype, gname)
 
 # sure looks cacheworthy
 #@cache(settings.CACHE_STANDARD, "helper")

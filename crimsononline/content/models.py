@@ -268,7 +268,7 @@ class Content(models.Model):
     
     def get_admin_change_url(self):
         return urlresolvers.reverse('admin:content_%s_change' \
-                                    % str(self.content_type), 
+                                    % str(self.content_type).replace(' ', '_'),
                                     args=(self.pk,))
     
     def __unicode__(self):

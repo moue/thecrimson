@@ -16,9 +16,23 @@ from django.utils.hashcompat import md5_constructor
 from django.utils.safestring import mark_safe
 
 from crimsononline.content.models import *
-from crimsononline.content.views import rotatables
+from crimsononline.content.views import rotatables, \
+    get_content, get_grouped_content, get_content_obj
 
-def rotator_items(self, section='front'):
+def content_to_admin(request, pth):
+    if not pth.startswith('/'):
+        pth = '/' + pth
+    view, args, kwargs = urlresolvers.resolve(pth)
+    if view is not get_content and view is not get_grouped_content:
+        raise Http404
+    try:
+        c = get_content_obj(request, *args, **kwargs)
+    except Content.DoesNotExist:
+        raise Http404
+    return HttpResponseRedirect(c.get_admin_change_url())
+    
+
+def rotator_items(request, section='front'):
     if section == 'front':
         content = rotatables()
     else:
@@ -29,7 +43,7 @@ def rotator_items(self, section='front'):
     output = ['<html><head></head><body><table><th><td>pk</td><td>ct</td><td>slug</td></th>']
     tmpl = "<tr><td><a href='%s'>%d</a></td><td>%s</td><td>%s</td></tr>"
     for c in content:
-        link = urlresolvers.reverse('admin:content_%s_change' % c.content_type, args=(c.pk,))
+        link = c.get_admin_change_url()
         output += [tmpl % (link, c.pk, c.content_type, c.slug)]
     
     output.append('</table></body></html>')

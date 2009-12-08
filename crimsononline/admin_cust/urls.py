@@ -10,6 +10,7 @@ urlpatterns = patterns('',
     (r'^content/gallery/get_gallery/(img|gal)/(\d+)/$', get_gallery),
     (r'^flush_cache/$', admin.site.admin_view(flush_cache)),
     (r'^rotator/(\w+)/$', admin.site.admin_view(rotator_items)),
+    (r'^content/get/(.*)$', admin.site.admin_view(content_to_admin)),
     (r'^status/cache/$', mcstatus),
 )
 
