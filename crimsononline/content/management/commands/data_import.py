@@ -134,7 +134,7 @@ def long_articles(*args):
         
     
 
-def fix_images():
+def fix_images(pks=None):
     import urllib
     import os
     from os import path
@@ -159,7 +159,10 @@ def fix_images():
         old_location = "http://media.thecrimson.com/" + datefolder + "/" + filename
         old_urls[int(pk)] = old_location     
     
-    old_images = Image.objects.filter(old_pk__isnull=False)
+    if pks:
+        old_images = Image.objects.filter(old_pk__in=pks)
+    else:
+        old_images = Image.objects.filter(old_pk__isnull=False)
     
     for image in old_images:
         if image.old_pk not in old_urls:
@@ -281,7 +284,10 @@ class Command(BaseCommand):
                 fix_tags()
                 return
             elif args[0] == 'fix_images':
-                fix_images()
+                if len(args) > 1:
+                    fix_images([int(x) for x in args[1].split(',') if x])
+                else:
+                    fix_images()
                 return
             elif args[0] == 'long_articles':
                 long_articles(*args[1:])
