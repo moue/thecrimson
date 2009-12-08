@@ -28,13 +28,16 @@ def help(request):
 def content_to_admin(request, pth):
     if not pth.startswith('/'):
         pth = '/' + pth
-    view, args, kwargs = urlresolvers.resolve(pth)
+    try:
+        view, args, kwargs = urlresolvers.resolve(pth)
+    except urlresolvers.Resolver404:
+        return HttpResponseRedirect('/admin/')
     if view is not get_content and view is not get_grouped_content:
-        raise Http404
+        return HttpResponseRedirect('/admin/')
     try:
         c = get_content_obj(request, *args, **kwargs)
     except Content.DoesNotExist:
-        raise Http404
+        return HttpResponseRedirect('/admin/')
     return HttpResponseRedirect(c.get_admin_change_url())
     
 
