@@ -5,6 +5,7 @@ from django.conf import settings
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User, Group
 from django.contrib.contenttypes.models import ContentType
+from django.contrib.flatpages.views import flatpage
 from django.core import urlresolvers
 from django.core.paginator import Paginator
 from django.db.models import Q
@@ -19,6 +20,11 @@ from crimsononline.content.models import *
 from crimsononline.content.views import rotatables, \
     get_content, get_grouped_content, get_content_obj
 
+def help(request):
+    """Wrapper to admin lock requests to /admin/help/*.  Loads flatpage."""
+    url = request.path.replace('/admin/help', '')
+    return flatpage(request, url)
+    
 def content_to_admin(request, pth):
     if not pth.startswith('/'):
         pth = '/' + pth
