@@ -5,6 +5,7 @@ from crimsononline.admin_cust.memcached_status import view as mcstatus
 
 urlpatterns = patterns('',
     (r'^help/.*$', admin.site.admin_view(help)),
+    # I'm pretty sure we can get rid of the next four - Andy
     (r'^content/gallery/get_images/pk/(?P<pk>\d+)/$', get_imgs),
     (r'^content/gallery/get_images/page/(?P<page>\d+)/$', get_imgs),
     (r'^content/gallery/get_gallery/(\d{4})/(\d{1,2})/(\d{4})/(\d{1,2})/([\w\-,]+)/(\d+)/$', get_galleries),
@@ -12,7 +13,7 @@ urlpatterns = patterns('',
     (r'^flush_cache/$', admin.site.admin_view(flush_cache)),
     (r'^rotator/(\w+)/$', admin.site.admin_view(rotator_items)),
     (r'^content/get/(.*)$', admin.site.admin_view(content_to_admin)),
-    (r'^status/cache/$', mcstatus),
+    (r'^status/cache/$', admin.site.admin_view(mcstatus)),
 )
 
 urlpatterns += patterns('',
