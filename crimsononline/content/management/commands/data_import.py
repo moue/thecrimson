@@ -193,10 +193,10 @@ def fix_images(pks=None):
             
             # Delete thumbnails
             for thumb in thumbs:
-                print "Deleting",thumb
+                print "Deleting",thumb,
                 try:
                     if do_delete: os.remove(path.join(img_dir,thumb))
-                    print "removed"
+                    print "...removed"
                 except WindowsError:
                     print "Windows Error on",thumb
                     continue
