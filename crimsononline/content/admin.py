@@ -819,7 +819,6 @@ class ArticleAdmin(ContentAdmin):
             'scripts/jquery.js',
             'scripts/admin/Article.js',
             'scripts/framework/jquery.sprintf.js',
-            'scripts/tiny_mce/tiny_mce.js'
         )
     
     def get_form(self, request, obj=None):
@@ -1084,7 +1083,9 @@ class YouTubeVideoAdmin(ContentAdmin):
             fpath = youtube_get_save_path(obj, img_url.rsplit('/', 1)[1])
             # auto-crop the image
             i = pilImage.open(img[0])
+            arrow = pilImage.open("static/images/youtube.png")
             i = i.crop((124, 50, 464, 305))
+            i = pilImage.composite(arrow, i, arrow)
             i.save(img[0])
             
             f = File(open(img[0]))
@@ -1095,6 +1096,7 @@ class YouTubeVideoAdmin(ContentAdmin):
             os.remove(img[0])
         
         except:
+            raise
             request.user.message_set.create(message='There was a problem automatically'
                 ' downloading the preview image from Youtube (this may happen '
                 'if you just finished uploading the video to Youtube).  You '
@@ -1248,7 +1250,6 @@ class FlatPageAdmin(admin.ModelAdmin):
             'scripts/jquery.js',
             'scripts/admin/Article.js',
             'scripts/framework/jquery.sprintf.js',
-            'scripts/tiny_mce/tiny_mce.js'
         )
     
     list_display = ('url', 'title')

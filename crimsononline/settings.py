@@ -114,6 +114,7 @@ INSTALLED_APPS = [
     'crimsononline.common',
     'crimsononline.subscriptions',
     'crimsononline.mware',
+    'crimsononline.promote',
 ]
 
 try:

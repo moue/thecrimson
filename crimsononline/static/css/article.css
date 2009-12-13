@@ -51,7 +51,7 @@ p {
 /* article photo stuff */
 .tall{
     width: 300px;
-    float: left;
+    float: right;
     padding: 0 0 3px 0;
     border-style: solid;
     border-color: #c4c5c7;

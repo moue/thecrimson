@@ -357,7 +357,7 @@ class TinyMCEWidget(forms.widgets.Textarea):
         return super(TinyMCEWidget, self).__init__(*args, **kwargs)
 
     class Media:
-        pass
+        js = (static_content('scripts/tiny_mce/tiny_mce.js'),)
 
     def render(self, name, value, attrs=None):
         if value is not None:
