@@ -2,7 +2,6 @@ from django.conf.urls.defaults import *
 from django.contrib import admin
 from crimsononline.admin_cust.views import *
 from crimsononline.admin_cust.memcached_status import view as mcstatus
-from crimsononline.promote.views import webcirc
 
 urlpatterns = patterns('',
     (r'^help/.*$', admin.site.admin_view(help)),
