@@ -1096,7 +1096,6 @@ class YouTubeVideoAdmin(ContentAdmin):
             os.remove(img[0])
         
         except:
-            raise
             request.user.message_set.create(message='There was a problem automatically'
                 ' downloading the preview image from Youtube (this may happen '
                 'if you just finished uploading the video to Youtube).  You '

@@ -129,12 +129,6 @@ finally:
 
 MEDIA_LOC = MEDIA_ROOT
     
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'no-reply@thecrimson.com'
-EMAIL_HOST_PASSWORD = 'cr1ms0n'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-
 # Notifies the users in "to" whenever someone edits an article over "time_span" days old"
 NOTIFY_ON_SKETCHY_EDIT = {
     "enabled": False,
