@@ -38,7 +38,7 @@ from crimsononline.common.forms import \
     FbModelChoiceField, CropField, SearchModelChoiceField, \
     MaskedValueTextInput, RatingWidget, fbmc_search_helper, \
     TinyMCEWidget, FbSelectWidget
-
+from crimsononline.settings import MEDIA_ROOT
 
 STOP_WORDS = ['a', 'able', 'about', 'across', 'after', 'all', 'almost', 'also', 
     'am', 'among', 'an', 'and', 'any', 'are', 'as', 'at', 'be', 'because', 
@@ -579,7 +579,7 @@ class ImageAdmin(ContentAdmin):
         ('Byline', {
             'fields': ('contributors',),
         }),
-        ('Print', {
+        (' ', {
             'fields': ('issue', 'section',),
         }),
         ('Web', {
@@ -1083,7 +1083,7 @@ class YouTubeVideoAdmin(ContentAdmin):
             fpath = youtube_get_save_path(obj, img_url.rsplit('/', 1)[1])
             # auto-crop the image
             i = pilImage.open(img[0])
-            arrow = pilImage.open("static/images/youtube.png")
+            arrow = pilImage.open(MEDIA_ROOT + "/images/youtube.png")
             i = i.crop((124, 50, 464, 305))
             i = pilImage.composite(arrow, i, arrow)
             i.save(img[0])
