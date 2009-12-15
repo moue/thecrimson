@@ -7,6 +7,12 @@
 {% load tag_cloud %}
 {% load module %}
 
+{% block rss %}
+<link rel="alternate" type="application/rss+xml" 
+  title="RSS Feed for {{content.section}} on www.thecrimson.com" 
+  href="/feeds/section/{{content.section|lower}}/" />
+{% endblock %}
+
 {% block css %}
 	{{block.super}}
 	{% static_css "single_content.css" %}

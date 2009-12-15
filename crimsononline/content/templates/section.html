@@ -1,5 +1,11 @@
 {% extends "threecolumn.html" %}
 
+{% block rss %}
+<link rel="alternate" type="application/rss+xml" 
+  title="RSS Feed for {{section}} on www.thecrimson.com" 
+  href="/feeds/section/{{section|lower}}/" />
+{% endblock %}
+
 {% block title %}
     Harvard {{ section }}
 {% endblock %}
