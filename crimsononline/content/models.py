@@ -1326,7 +1326,7 @@ def genericfile_get_save_path(instance, filename):
 class GenericFile(models.Model):
     """A Generic File (pdf/random thing on a form/etc.)."""
 
-    gen_file = models.FileField(upload_to=genericfile_get_save_path, null=False, blank=False)
+    gen_file = models.FileField(upload_to=genericfile_get_save_path, null=False, blank=False, verbose_name="File")
     title = models.CharField(blank=False, null=False, max_length=200)
     description = models.TextField(blank=False, null=False)
     created_on = models.DateTimeField(auto_now_add=True, db_index=True)
