@@ -2,14 +2,22 @@
 {% load common %}
 {% load module %}
 
+{% block css %}
+{{block.super}}
+{% static_css "sitemap.css" %}
+{% endblock %}
+
+{% block title %}Sitemap{% endblock %}
+
 {% block body %}
 <div class="col-4">
 	{% module 12 "" %}
-Articles in year:
-<ul>
+	<span class="page-title">Sitemap</span>
+<ul class="sitemap-year">
 {% for year in years %}
-<li><a href="/sitemap/{{year}}/">{{year}}</a></li>
+<li class="sitemap-cell "><a href="/sitemap/{{year}}/">{{year}}</a></li>
 {% endfor %}
+<li class="clear"/>
 </ul>
 	{% endmodule %}
 </div>

@@ -2,19 +2,29 @@
 {% load common %}
 {% load module %}
 
+{% block css %}
+{{block.super}}
+{% static_css "sitemap.css" %}
+{% endblock %}
+
+{% block title %}Sitemap{% endblock %}
+
 {% block body %}
-	Articles from {{issue}}:
 	<div class="col-12">
 		{% module 12 "" %}
-		<ul>
+		{% with articles|first as article %}
+		<span class="page-title"><a href="../../">Sitemap</a> > <a href="../">{{article.issue.issue_date.year}}</a> > {{article.issue.issue_date|date:"n/j"}}</span>
+		{% endwith %}
 			{% if articles %}
+			<ul class="sitemap-article">
 				{% for article in articles %}
-				<li>{{article|linkify}}</li>
+				<li class="sitemap-cell">{{article|linkify}}</li>
 				{% endfor %}
+				<li class="clear" />
+			</ul>
 			{% else %}
 				<li>No articles found in this time period</li>
 			{% endif %}
-		</ul>
 		{% endmodule %}
 	</div>
 {% endblock %}

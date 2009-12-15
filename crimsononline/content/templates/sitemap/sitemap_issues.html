@@ -2,26 +2,22 @@
 {% load common %}
 {% load module %}
 
-{% block title %}Sitemap{% endblock %}
-
 {% block css %}
-	<style type="text/css">
-	.sitemap li{
-		display: inline-block;
-		width: 180px;
-		text-align: center;
-	}
-	</style>
+{{block.super}}
+{% static_css "sitemap.css" %}
 {% endblock %}
+
+{% block title %}Sitemap{% endblock %}
 
 {% block body %}
 <div class="col-12">
 	{% module 12 "" %}
-Issues in {{year}}:
-<ul class="sitemap">
+<span class="page-title"><a href="../">Sitemap</a> > {{year}}</span>
+<ul class="sitemap-issue">
 {% for issue in issues %}
-<li><a href="/sitemap/{{year}}/{{issue.id}}/">{{issue.issue_date|date:"n/j"}}</a></li>
+<li class="sitemap-cell"><a href="/sitemap/{{year}}/{{issue.id}}/">{{issue.issue_date|date:"n/j"}}</a></li>
 {% endfor %}
+<li class="clear" />
 </ul>
 {% endmodule %}
 </div>

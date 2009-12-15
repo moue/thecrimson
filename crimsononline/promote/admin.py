@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime
 
 from django import forms
 from django.contrib.auth.models import User
@@ -17,11 +17,10 @@ class WebCircForm(forms.ModelForm):
         if r is not None and r.sent_on:
             self.fields["send"].widget.attrs["disabled"] = 1
             self.fields["send"].help_text = "This WebCirc has already been sent"
-
+            
     email_text = forms.fields.CharField(
         widget=TinyMCEWidget(attrs={'cols':'67','rows':'40'}), help_text=""
-        "If you're copying and pasting from MS Word, please use the 'Paste "
-        "From Word' button (with a little 'W' on it)"
+        "Note: The salutation will be inserted at the top automatically!"
     )
     send = forms.BooleanField(required=False)
     
@@ -29,11 +28,17 @@ class WebCircForm(forms.ModelForm):
         model = WebCirc
     
 class WebCircAdmin(admin.ModelAdmin):
+    class Media:
+        js = (
+            'scripts/jquery.js',
+            'scripts/webcirc.js',
+        )
+
     form = WebCircForm
 
     fieldsets = (
         ('General', {
-            'fields': ('email_text','categories','send'),
+            'fields': ('email_subject', 'email_text','categories','send'),
         }),
         ('Extra', {
             'classes': ('collapse',),
@@ -42,11 +47,13 @@ class WebCircAdmin(admin.ModelAdmin):
     )
 
     def save_model(self, request, obj, form, change):
-        obj.save()
         send = form.cleaned_data["send"]
+        obj.save()
+        print obj.categories.all()
         if not obj.sent_on and send:
-            #obj.sent_on = datetime.now()
+            obj.sent_on = datetime.now()
             obj.send()
+        obj.save()
             
 
 admin.site.register(WebCirc, WebCircAdmin)

@@ -38,7 +38,7 @@ def sitemap(request, year=None, issue=None):
         months = [("%02d"%x) for x in range(1,13)]
         return render_to_response("sitemap/sitemap_base.html",{'years':years})
     elif year is not None and issue is None:
-        issues = Issue.objects.filter(issue_date__year=year)
+        issues = Issue.objects.filter(issue_date__year=year).order_by("issue_date")
         return render_to_response("sitemap/sitemap_issues.html",{'year':year, 'issues':issues})
     elif issue is not None:
         try:

@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from crimsononline.content.models import *
 from django.db import models
 from django.core.mail import send_mail, EmailMultiAlternatives
@@ -30,6 +32,11 @@ class WebCirc(models.Model):
     class Meta:
         verbose_name = "Send WebCirc"
     
+    def __unicode__(self):
+        if self.sent_on:
+            return "WebCirc sent on %s" % self.sent_on.strftime("%B %d, %Y %I:%M%p")
+        return "Unsent WebCirc"
+    
     categories = models.ManyToManyField("WebCircCategory")
     extra_contacts = models.ManyToManyField("WebCircContact", blank=True)
     
@@ -37,19 +44,24 @@ class WebCirc(models.Model):
     email_text = models.TextField()
     sent_on = models.DateTimeField(null=True)
     
-    def send(self):        
+    def send(self):
+        print "SENDING!!"
         names = set()
         for cat in self.categories.all():
             for cont in WebCircContact.objects.filter(categories=cat):
                 names.add(cont)
         for extra in self.extra_contacts.all():
             names.add(extra)
-            
+         
+        print self.categories.all()
+        # mailmerge
         for name in names:
+            nm = name.contact_person_name if name.contact_person_name else name.contact_name
+            sal = "<p>Dear %s,</p>" % nm
             # todo: text version
             msg = EmailMultiAlternatives(self.email_subject, 
-                self.email_text, 
+                sal + self.email_text, 
                 'news@thecrimson.com', [name.email])
-            msg.attach_alternative(self.email_text,
+            msg.attach_alternative(sal + self.email_text,
                 'text/html')
             msg.send()
