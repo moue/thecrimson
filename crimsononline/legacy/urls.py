@@ -42,7 +42,7 @@ urlpatterns += patterns('',
     (r'^opinion_page\.aspx', redirect('/section/opinion')),
     (r'^sports_page\.aspx', redirect('/section/sports')),
     (r'^arts_page\.aspx', redirect('/section/arts')),
-    (r'^photo_gallery\.aspx', redirect('/section/photo')),
+    (r'^photo_gallery\.aspx', redirect('/section/media')),
     #(r'\w+\.aspx', redirect('/')), # Any aspx page we don't catch just goes to homepage. Potentially a terrible terrible terrible idea
 )
     
@@ -75,7 +75,7 @@ urlpatterns += patterns('',
     #comment.aspx - just the comment box
     #confi.aspx - works on the site, decided would be too much work to recreate (also configuide2006)
     (r'^crisis\.aspx', redirect('/section/news')),
-    (r'^dailygallery\.aspx', redirect('/section/photo')),
+    (r'^dailygallery\.aspx', redirect('/section/media')),
     (r'^donate\.aspx', redirect('/about/donate')),
     (r'^edigest\.aspx', redirect('/subscribe')),
     (r'^edigestmanage\.aspx', redirect('/subscribe')),
@@ -84,8 +84,8 @@ urlpatterns += patterns('',
     #email is just the email story form
     #events can 404, no one should visit
     #fiction goes to a blank page
-    (r'^gallery\.aspx', redirect('/section/photo')),
-    (r'^gallery_new\.aspx', redirect('/section/photo')),
+    (r'^gallery\.aspx', redirect('/section/media')),
+    (r'^gallery_new\.aspx', redirect('/section/media')),
     #iraq.aspx should get the commencement page treatment (paste in html to flat page on new site)
     #journalismfair stuff can 404
     #layoffs.aspx is blank

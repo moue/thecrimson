@@ -20,7 +20,7 @@ $(document).ready(function(){
             });
         };
 
-        ajax = $.get('/section/photo/', {ajax: '', sort: sortby, 
+        ajax = $.get('/section/media/', {ajax: '', sort: sortby, 
             page:page_num, section: section, type: type} , inject_results);
     }
     
@@ -97,7 +97,7 @@ $(document).ready(function(){
         if(_page_cache.hasOwnProperty(page_num)){
             inject_results(_media_cache[page_num]);
         } else {
-            $.get('/section/photo/', {page: page_num, ajax:''}, inject_results, function(html){
+            $.get('/section/media/', {page: page_num, ajax:''}, inject_results, function(html){
                 _page_cache[page_num] = html;
                 inject_results(html);
             }, 'html');

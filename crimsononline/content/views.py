@@ -324,14 +324,14 @@ def section_arts(request):
     return render_to_response('sections/arts.html', locals())
 
 @cache_page(settings.CACHE_SHORT)
-def section_photo(request):
+def section_media(request):
     """Show the view for the media section page."""
     
     if request.method == 'GET':
         page = request.GET.get('page', 1)
     else:
         raise Http404
-    nav = 'photo'
+    nav = 'media'
     
     sort = request.GET.get('sort')
     if sort == 'read':
@@ -364,7 +364,7 @@ def section_photo(request):
     d = paginate(content, page, 6)
     d.update({'nav': nav})
     
-    t = 'sections/photo.html'
+    t = 'sections/media.html'
     if request.GET.has_key('ajax'):
         t = 'ajax/media_viewer_page.html'
     return render_to_response(t, d)
