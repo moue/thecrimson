@@ -1317,3 +1317,22 @@ class Correction(models.Model):
     def __unicode__(self):
         return str(self.id)
     
+def genericfile_get_save_path(instance, filename):
+    ext = splitext(filename)[1]
+    title = make_file_friendly(instance.title)
+    return datetime.now().strftime("misc/genfiles/%Y/") + title + ext
+
+
+class GenericFile(models.Model):
+    """A Generic File (pdf/random thing on a form/etc.)."""
+
+    gen_file = models.FileField(upload_to=genericfile_get_save_path, null=False, blank=False)
+    title = models.CharField(blank=False, null=False, max_length=200)
+    description = models.TextField(blank=False, null=False)
+    created_on = models.DateTimeField(auto_now_add=True, db_index=True)
+
+    def __unicode__(self):
+        return self.title
+
+    class Meta:
+        verbose_name_plural = "Generic Files"

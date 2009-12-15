@@ -1258,3 +1258,5 @@ admin.site.unregister(FlatPage)
 admin.site.register(FlatPage, FlatPageAdmin)
 
 admin.site.register(Correction)
+
+admin.site.register(GenericFile)
