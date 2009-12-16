@@ -10,6 +10,12 @@
 {% block css %}
 	{{block.super}}
     {% static_css "article.css" %}
+	{% comment %}
+	TODO: Move this
+	{% endcomment %}
+	{% if noindex %}
+	<meta name="robots" content="noindex"/>
+	{% endif %}
 {% endblock %}
 
 {% block content %}

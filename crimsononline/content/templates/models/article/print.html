@@ -7,6 +7,12 @@
 	{{ article.headline }}
 {% endblock %}
 
+{% block css %}
+	{{block.super}}
+    {% if noindex %}
+	<meta name="robots" content="noindex"/>
+	{% endif %}
+{% endblock %}
 
 {% block content %}
 <img src="{% static_url "images/print_view_banner.png" %}" />

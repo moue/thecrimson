@@ -290,10 +290,16 @@ class Content(models.Model):
         name = self.content_type.name.replace(" ","")
         ext = '.html' if method[-4:] != '.txt' else ''
         templ = 'models/%s/%s%s' % (name, method, ext)
+		# dumb hack for this jerk
+        if self.slug == 'news-in-brief-student-charged-with' or self.slug == 'police-arrest-junior-for-assault-span':
+            noindex = True
+        else:
+            noindex = False
+        # TODO: Allow this to be specified via the admin
         # can access self with either the name of the class (ie, 'article')
         #   or 'content'
         n_context.update({name: self.child, 'content': self.child, 
-                        'class': name, 'disqus': settings.DISQUS, 'nav':nav})
+                        'class': name, 'disqus': settings.DISQUS, 'nav':nav, 'noindex':noindex})
         
         if method == 'page':
             # print view
