@@ -619,6 +619,8 @@ def top_articles(section, dt=None):
 def rotatables(section=None, limit=4):
     """Return the rotatable content for a section (or the front)."""
     c = Content.objects.prioritized()
+    if len(c) == 0:
+        c = Content.objects.recent
     if section is not None:
         c = c.filter(section=section)
     #For some reason, Q(rotatable=2) | Q(rotatable=3) doesn't work.
