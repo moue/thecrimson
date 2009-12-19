@@ -619,15 +619,16 @@ def top_articles(section, dt=None):
 def rotatables(section=None, limit=4):
     """Return the rotatable content for a section (or the front)."""
     c = Content.objects.prioritized()
-    if len(c) == 0:
-        c = Content.objects.recent
     if section is not None:
         c = c.filter(section=section)
-        if len(c) == 0:
-            c = Content.objects.recent.filter(section=section)
     #For some reason, Q(rotatable=2) | Q(rotatable=3) doesn't work.
     # It probably has something to do with .extra() in .prioritized()
     b = list(c.filter(rotatable=2)[:limit]) #stuff on front and sections
+    if len(b) == 0:
+        c = Content.objects.recent
+        if section is not None:
+            c = c.filter(section=section)
+        b = list(c.filter(rotatable=2)[:limit])
     if len(b) == limit:
         return b
     r = 3 if section is None else 1
