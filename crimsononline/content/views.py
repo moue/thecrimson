@@ -623,6 +623,8 @@ def rotatables(section=None, limit=4):
         c = Content.objects.recent
     if section is not None:
         c = c.filter(section=section)
+        if len(c) == 0:
+            c = Content.objects.recent.filter(section=section)
     #For some reason, Q(rotatable=2) | Q(rotatable=3) doesn't work.
     # It probably has something to do with .extra() in .prioritized()
     b = list(c.filter(rotatable=2)[:limit]) #stuff on front and sections
