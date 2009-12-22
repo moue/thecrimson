@@ -29,6 +29,7 @@ urlpatterns += patterns('crimsononline.content.views',
     url(r'^contact/', 'contact'),
     url(r'^iphone/(?P<s>\w+)/$', 'iphone'),
     url(r'^classifieds/$',redirect_to, {'url':'http://ad2ad.com/?portalid=1708065'}),
+    url(r'^donate/$', redirect_to, {'url': '/about/donate/'}),
 )
 
 urlpatterns += patterns('',
