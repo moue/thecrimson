@@ -78,7 +78,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 MIDDLEWARE_CLASSES = (
     'django.middleware.gzip.GZipMiddleware',
     'django.middleware.cache.UpdateCacheMiddleware',
-    #'crimsononline.mware.linkscriptoptimizer.LinkScriptOptimizer',
+    'crimsononline.mware.linkscriptoptimizer.LinkScriptOptimizer',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -128,7 +128,9 @@ finally:
 
 
 MEDIA_LOC = MEDIA_ROOT
-    
+
+GOOGLE_API_KEY = 'ABQIAAAA1m5RwdAfIaeSMlrcZCgIjhSMTarlKQyRRh5ucdthk06p19vF5xTPBl-sPcuxFdehXO9Lu_36c_ewew'
+
 # Notifies the users in "to" whenever someone edits an article over "time_span" days old"
 NOTIFY_ON_SKETCHY_EDIT = {
     "enabled": False,

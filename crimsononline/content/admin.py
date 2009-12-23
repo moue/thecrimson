@@ -174,6 +174,7 @@ class ContentAdmin(admin.ModelAdmin):
     class Media:
         js = (
             'scripts/noenter.js',
+            'scripts/media_include.js',
         )
 	
     def get_form(self, request, obj=None):
@@ -1172,9 +1173,6 @@ class MapAdmin(ContentAdmin):
     inlines = [MarkerInline,]
     
     fieldsets = (
-        ('Map Setup', {
-            'fields': ('title', 'caption', 'map_preview'),
-        }),
         ('Details', {
             'classes': ('frozen','collapse'),
             'fields': ('zoom_level','center_lng','center_lat','display_mode',),
@@ -1188,7 +1186,11 @@ class MapAdmin(ContentAdmin):
         ('Grouping', {
             'fields': ('group',),
             'classes': ('collapse',),
-        }))
+        }),
+        ('Map Setup', {
+            'fields': ('title', 'caption', 'map_preview'),
+        }),
+    )
     
     class Media:
         js = (

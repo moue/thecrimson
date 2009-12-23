@@ -97,6 +97,7 @@ class MapBuilderWidget(forms.widgets.HiddenInput):
         )
     
     def render(self, name, value, attrs=None):
+        gmapapikey = settings.GOOGLE_API_KEY
         return render_to_string("forms/map_builder_widget.html", locals())
     
 
