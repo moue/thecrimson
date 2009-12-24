@@ -167,52 +167,66 @@ def human_list(list, connector='and'):
                 t = ', %s'
             s += t % filter.escape(item)
         return mark_safe(s)
-
+    
+A_LINK_RE = compile(r'href=\"(.+)\"')
+A_TEXT_RE = compile(r'>(.+)<')
 class FlatpageNavNode(template.Node):
-    def __init__(self, nodelist, prefix, cur_url):
-        self.prefix = prefix
+    def __init__(self, nodelist, prefix, cur_url, toplevelonly):
+        self.prefix = ('' if prefix.startswith('/') else '/') + prefix
+        self.prefix = self.prefix + ('' if prefix[-1] == '/' else '/')
         self.cur_url = template.Variable(cur_url)
         self.nodelist = nodelist
+        self.toplevel = toplevelonly
+        if self.toplevel:
+            self.urldepth = self.prefix.count('/')
     
     def render(self, context):
-        linkre = compile(r'href=\"(.+)\"')
-        textre = compile(r'>(.+)<')
-
         links = []
         splitnodes = self.nodelist.render(context).split("</a>")
-        hardlinks = [x + "</a>" for x in splitnodes]
-        hardlinks = hardlinks[0:len(hardlinks)-1]
-
+        hardlinks = [x + "</a>" for x in splitnodes][:-1]
+        
         for link in hardlinks:
-            links.append((search(textre, link).group(1), search(linkre, link).group(1)))
-
-        pages = FlatPage.objects.filter(url__startswith = "/" + self.prefix)
+            links.append((search(A_TEXT_RE, link).group(1), search(A_LINK_RE, link).group(1)))
+        
+        pages = FlatPage.objects.filter(url__startswith = self.prefix)
+        if self.toplevel:
+            pages = [p for p in pages if p.url.count('/') == self.urldepth + 1]
         for page in pages:
             links.append((page.title, page.url))
-
+        
         links.sort()
         cur_url = self.cur_url.resolve(context)
         return mark_safe(render_to_string('templatetag/flatpagenav.html', locals()))
 
 
 def do_flatpage_nav(parser, token):
-    """
-    Builds a navigation menu for flatpages by pulling all articles with a given prefix
+    """Builds a navigation menu for flatpages by url
     
-    inside of the flatpage_nav and endflatpage_nav templatetags, it's possible to put static links, which will be sorted and added to the navigation
+    inside of the flatpage_nav and endflatpage_nav templatetags, it's possible to 
+    put static links, which will be sorted and added to the navigation
+    
+    Usage:
+        {% flatpage_nav "/url/root/" "/cur/url" toplevelonly %}
+        <a href="/1">link1</a>
+        <a href="/2">link2</a>
+        {% endflatpage_nav %}
+    
+    toplevelonly is optional, and if specified, only adds urls of the form
+    "/url/root/.*?/" (eg. omits /url/root/foo/bar/ but includes /url/root/foo/)
     """
-
+    
     bits = token.split_contents()
-
-    if len(bits) != 3:
+    
+    if len(bits) < 3:
         raise template.TemplateSyntaxError('%r tag requires 2 arguments.' % bits[0])
-
+    
     prefix = bits[1]
     cur_url = bits[2]
+    top_level_only = len(bits) > 3 and bits[3] == 'toplevelonly'
     nodelist = parser.parse(('endflatpage_nav',))
     parser.delete_first_token()
-
-    return FlatpageNavNode(nodelist, prefix, cur_url)
+    
+    return FlatpageNavNode(nodelist, prefix, cur_url, top_level_only)
 
 register.tag('flatpage_nav', do_flatpage_nav)
 
