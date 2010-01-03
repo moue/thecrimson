@@ -1022,7 +1022,6 @@ class Gallery(Content):
     
     class Meta:
         verbose_name_plural = "Galleries"
-        ordering = {'galleries_set',}
     
 
 class GalleryMembership(models.Model):
