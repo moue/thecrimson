@@ -999,7 +999,7 @@ class Gallery(Content):
             if not self.contents.all():
                 ci = None
             else:
-                ci = self.contents.all()[0].child
+                ci = self.contents.order_by('galleries_set')[0].child
             self._cover_image = ci
         return self._cover_image
     
