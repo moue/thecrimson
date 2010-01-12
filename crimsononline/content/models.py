@@ -370,7 +370,9 @@ class Content(models.Model):
         except ValueError:
             cached_hits = 1
             cache.add(hits_str, 1, HITS_STORE_TIME)
-        
+        if cached_hits is None:
+            cached_hits = 1
+            cache.add(hits_str, 1, HITS_STORE_TIME)
         if last_storetime is None:
             last_storetime = now
         if cur_threshold <= cached_hits:
