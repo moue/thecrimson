@@ -24,7 +24,9 @@ from crimsononline.urls import CONTENT_URL_RE, CGROUP_URL_RE
 
 D_USER_KEY = "vabqI2su93P1wVF3Ls9kXhXhRggV7y2ylokjq137yPAz47cY5dDMHgUA2QlZoWNE"
 # The following is true for now
-D_FORUM_KEY = "9XGWB9o6NT1ZNiMtc2vt6ZJIUdp0D6sZDvis4hPfGGpsRaUchuH5c4fbO71GPAOj"
+# D_FORUM_KEY = "9XGWB9o6NT1ZNiMtc2vt6ZJIUdp0D6sZDvis4hPfGGpsRaUchuH5c4fbO71GPAOj"
+D_FORUM_KEY = "pkUMj0suYbfCUXu2hon1EB5xrgMLWADS9kNZiGtJ0ISE76QLyMvEb2SyPFmS3F5x"
+D_FORUM_ID = "1508"
 
 GA_LOGIN = "crimsonanalytics@gmail.com"
 GA_PASS = "andylei:male"
@@ -159,11 +161,15 @@ class TopArticlesNode(template.Node):
         # I think this all works, but I can't test it right now because there are no comments at the moment
         """
         # Step 2: Grab the JSON crap from Disqus and build another list of the most commented articles
-        thread_url = "http://disqus.com/api/get_thread_list/?forum_api_key=" + D_FORUM_KEY
+        thread_url = "http://disqus.com/api/get_thread_list?user_api_key=" + D_USER_KEY + "&forum_id=" + D_FORUM_ID +
+                     "&api_version=1.1&limit=50"
         thread_list = simplejson.load(urllib.urlopen(thread_url))
         # for each thread, grab its posts, then compute the popularity of the thread based on their recency
         for thread in thread_list['message']:
-            thread_posts_url = "http://disqus.com/api/get_thread_posts/?forum_api_key=" + D_FORUM_KEY + "&thread_id=" + thread['id']
+            # thread_posts_url = "http://disqus.com/api/get_thread_posts/?forum_api_key=" + D_FORUM_KEY + "&thread_id=" + thread['id']
+            # updated for api 1.1
+            thread_posts_url = "http://disqus.com/api/get_thread_posts/?api_version=1.1&user_api_key=" + D_USER_KEY + 
+                               "&thread_id=" + thread['id'] + "&limit=200"
             thread_posts = simplejson.load(urllib.urlopen(thread_posts_url))
             thread['comment_index'] = 0
             for post in thread_posts['message']:
