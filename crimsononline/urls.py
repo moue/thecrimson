@@ -99,7 +99,8 @@ if settings.DEBUG:
     )
     urlpatterns += patterns('',
         (r'^robots\.txt$', 'django.views.static.serve', 
-            {'document_root': path.join(path.split(path.abspath(__file__))[0], 'static') + '/txt/robots.txt'}),    
+            {'path': '/static/txt/robots.txt',
+             'document_root': path.join(path.split(path.abspath(__file__))[0], 'static') + '/txt/robots.txt'}),    
     )
 
 urlpatterns += patterns('',
