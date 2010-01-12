@@ -297,8 +297,8 @@ class Content(models.Model):
         #                'judge-moves-to-dismiss-dewolfe-drug' or 'judge-may-dismiss-dewolfe-drugs-case' or 
         #                'mcginn-n-tonic-revisiting-harvard-football':
         #    noindex = True
-        else:
-            noindex = False
+        #else:
+        #    noindex = False
         # TODO: Allow this to be specified via the admin
         # can access self with either the name of the class (ie, 'article')
         #   or 'content'
