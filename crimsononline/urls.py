@@ -98,7 +98,7 @@ if settings.DEBUG:
             {'document_root': settings.MEDIA_ROOT}),    
     )
     urlpatterns += patterns('',
-        (r'^robots.txt$', 'django.views.static.serve', 
+        (r'^robots\.txt$', 'django.views.static.serve', 
             {'path': '/static/txt/robots.txt',
              'document_root': settings.MEDIA_ROOT}),    
     )
