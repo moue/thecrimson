@@ -97,11 +97,12 @@ if settings.DEBUG:
         (r'^site_media/(?P<path>.*)$', 'django.views.static.serve', 
             {'document_root': settings.MEDIA_ROOT}),    
     )
-    urlpatterns += patterns('',
-        (r'^robots\.txt$', 'django.views.static.serve', 
-            {'path': '/txt/robots.txt',
-             'document_root': settings.MEDIA_ROOT}),    
-    )
+
+urlpatterns += patterns('',
+    (r'^robots\.txt$', 'django.views.static.serve', 
+        {'path': '/txt/robots.txt',
+         'document_root': settings.MEDIA_ROOT}),    
+)
 
 urlpatterns += patterns('',
     (r'', include('crimsononline.legacy.urls')),
