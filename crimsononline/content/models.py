@@ -291,14 +291,14 @@ class Content(models.Model):
         ext = '.html' if method[-4:] != '.txt' else ''
         templ = 'models/%s/%s%s' % (name, method, ext)
 		# dumb hack for this jerk
-        #if self.slug == 'news-in-brief-student-charged-with' or 'police-arrest-junior-for-assault-span' or 
-        #                'four-undergrads-face-drug-charges-span' or 'students-plead-not-guilty-to-drug' or 
-        #                'charges-follow-lengthy-watch-divspan-classapple-style-span' or 'judge-sets-next-date-in-marijuana' or 
-        #                'judge-moves-to-dismiss-dewolfe-drug' or 'judge-may-dismiss-dewolfe-drugs-case' or 
-        #                'mcginn-n-tonic-revisiting-harvard-football':
-        #    noindex = True
-        #else:
-        #    noindex = False
+        if self.slug in ['news-in-brief-student-charged-with', 'police-arrest-junior-for-assault-span', 
+                        'four-undergrads-face-drug-charges-span', 'students-plead-not-guilty-to-drug',  
+                        'charges-follow-lengthy-watch-divspan-classapple-style-span', 'judge-sets-next-date-in-marijuana', 
+                        'judge-moves-to-dismiss-dewolfe-drug', 'judge-may-dismiss-dewolfe-drugs-case', 
+                        'mcginn-n-tonic-revisiting-harvard-football']:
+            noindex = True
+        else:
+            noindex = False
         # TODO: Allow this to be specified via the admin
         # can access self with either the name of the class (ie, 'article')
         #   or 'content'
