@@ -1,0 +1,15 @@
+User-agent: *
+Disallow: /article/2004/11/23/mcginn-n-tonic-revisiting-harvard-football/
+Disallow: /article/2004/11/23/mcginn-n-tonic-revisiting-harvard-football/?print=1
+Disallow: /article/2006/1/11/four-undergrads-face-drug-charges-span/
+Disallow: /article/2006/1/11/four-undergrads-face-drug-charges-span/?print=1
+Disallow: /article/2006/2/9/students-plead-not-guilty-to-drug/
+Disallow: /article/2006/2/9/students-plead-not-guilty-to-drug/?print=1
+Disallow: /article/2006/2/10/charges-follow-lengthy-watch-divspan-classapple-style-span/
+Disallow: /article/2006/2/10/charges-follow-lengthy-watch-divspan-classapple-style-span/?print=1
+Disallow: /article/2006/3/21/judge-sets-next-date-in-marijuana/
+Disallow: /article/2006/3/21/judge-sets-next-date-in-marijuana/?print=1
+Disallow: /article/2006/5/8/judge-moves-to-dismiss-dewolfe-drug/
+Disallow: /article/2006/5/8/judge-moves-to-dismiss-dewolfe-drug/?print=1
+Disallow: /article/2006/5/10/judge-may-dismiss-dewolfe-drugs-case/
+Disallow: /article/2006/5/10/judge-may-dismiss-dewolfe-drugs-case/?print=1
