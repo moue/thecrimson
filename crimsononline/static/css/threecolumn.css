@@ -195,3 +195,7 @@ div.feature > h2{
     font-weight: bold;
     text-transform: uppercase;
 }
+
+div#PG_fb  {
+    height: 250px;
+}

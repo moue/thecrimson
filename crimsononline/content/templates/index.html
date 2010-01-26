@@ -83,11 +83,9 @@
 {% endblock %}
 
 {% block middlecolumn %}
-    {% comment %}
-    <div style="width: 309px; padding: 0;" class="mod mod-4 mod-box">
+    <div style="width: 309px; height: 100px; padding: 0;" class="mod mod-4 mod-box">
         <img src="{% static_url "images/compbanner.png" %}" />
     </div>
-    {% endcomment %}
 
     {% contentmodule index.rotater %}
         {% rotator rotate "main_rotator" %}

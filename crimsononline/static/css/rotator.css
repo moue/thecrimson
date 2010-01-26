@@ -3,6 +3,7 @@
     padding: 5px;
     overflow: hidden;
     margin-bottom: 10px;
+    clear: both;
 }
 .rotator h2{
     font-family: Arial;
