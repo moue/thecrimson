@@ -7,7 +7,7 @@ class ArticleSitemap(Sitemap):
     priority = 0.5
 
     def items(self):
-        return Article.objects.filter(pub_status=1)[:limit]
+        return Article.objects.filter(pub_status=1)[:self.limit]
 
     def lastmod(self, obj):
         return obj.modified_on
