@@ -24,9 +24,9 @@ class Latest(CrimsonFeed):
     link = "/"
     description = "The latest Crimson articles"
 
-    
+    # 6 is Flyby. No idea if this will help
     def items(self):
-        return Article.objects.exclude(section__name__iexact="Flyby").order_by('-issue__issue_date')[:NUM_STORIES]
+        return Article.objects.exclude(section=6).order_by('-issue__issue_date')[:NUM_STORIES]
     
 
 class ByAuthor(CrimsonFeed):
