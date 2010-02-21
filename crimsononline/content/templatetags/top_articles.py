@@ -159,28 +159,17 @@ class TopArticlesNode(template.Node):
         # TODO: uncomment / fix this.  it calls disqus every time, which is annoying
         mostcommentedarticles = None # delete this when below is uncommented
         # I think this all works, but I can't test it right now because there are no comments at the moment
-        """
+        
         # Step 2: Grab the JSON crap from Disqus and build another list of the most commented articles
-        thread_url = "http://disqus.com/api/get_thread_list?user_api_key=" + D_USER_KEY + "&forum_id=" + D_FORUM_ID +
-                     "&api_version=1.1&limit=50"
-        thread_list = simplejson.load(urllib.urlopen(thread_url))
-        # for each thread, grab its posts, then compute the popularity of the thread based on their recency
-        for thread in thread_list['message']:
-            # thread_posts_url = "http://disqus.com/api/get_thread_posts/?forum_api_key=" + D_FORUM_KEY + "&thread_id=" + thread['id']
-            # updated for api 1.1
-            thread_posts_url = "http://disqus.com/api/get_thread_posts/?api_version=1.1&user_api_key=" + D_USER_KEY + 
-                               "&thread_id=" + thread['id'] + "&limit=200"
-            thread_posts = simplejson.load(urllib.urlopen(thread_posts_url))
-            thread['comment_index'] = 0
-            for post in thread_posts['message']:
-                # I think Guido is a pretty cool guy, he kills breins and doesn't afraid of any ridiculous hack to implement functionality present in every language not maintained by retards
-                tdelta = datetime.now() - (datetime.strptime(post['created_at'], "%Y-%m-%dT%H:%M") - timedelta(0, time.timezone, 0, 0, 0, -time.daylight, 0))
-                thread['comment_index'] += 1 / log((tdelta.days + float(tdelta.seconds) / 86400) + 2)
+
+        updated_threads_url = "http://disqus.com/api/get_updated_threads?user_api_key=" + D_USER_KEY + "&forum_id=" + D_FORUM_ID 
+                            + "&api_version=1.1&since=" + (datetime.now() - timedelta(days=7) ).strftime('%Y-%m-%dT%H:%M')
+        updated_threads = simplejson.load(urllib.urlopen(updated_threads_url))
         # sort the thread list
-        thread_list['message'].sort(lambda x, y: cmp(float(y['comment_index']), float(x['comment_index'])))
+        updated_threads['message'].sort(lambda x, y: cmp(float(y['num_comments']), float(x['num_comments'])))
         
         # call resolver.resolve on everything in the list
-        urllist = map(lambda x: (urlparse(x['url']))[2], thread_list['message'])
+        urllist = map(lambda x: (urlparse(x['url']))[2], updated_threads['message'])
         # Optimization: we assume that at least 5 of these 20 articles will not resolve to None
         if not self.specifier:
             del urllist[20:]
@@ -200,8 +189,8 @@ class TopArticlesNode(template.Node):
         
         mostcommentedarticles = [x for x in map(lambda x: call_view(x[0], x[1]), filter(lambda x: x != None, threadobjlist)) if x is not None]
         # Only want top 10 -- we need to do this last because we're not guaranteed that there won't be some gaps in threadobjlist
-        del mostcommentedarticles[10:]
-        """
+        del mostcommentedarticles[5:]
+        
     
         return render_to_string('templatetag/mostreadarticles.html',
             {'mostreadarticles': mostreadarticles, 
