@@ -31,6 +31,7 @@ from django.core.exceptions import PermissionDenied
 from crimsononline.admin_cust.models import UserData
 from crimsononline.content.models import *
 from crimsononline.content.forms import *
+from crimsononline.common.caching import expire_page
 from crimsononline.common.utils.lists import combinations
 from crimsononline.common.utils.strings import alphanum_only
 from crimsononline.common.utils.html import para_list
@@ -867,6 +868,9 @@ class ArticleAdmin(ContentAdmin):
                 if content.pub_status != 1:
                     content.pub_status = 1
                     content.save()
+            # Flush the cache for the index when an article is published (technically we only care
+            # if it's going to be on the front, but for simplicity we'll just flush all the time)
+            expire_page('/')
         
         # Notifies authority figures if an old article has been modified, otherwise we'd never notice
         notify_settings = settings.NOTIFY_ON_SKETCHY_EDIT
@@ -875,6 +879,7 @@ class ArticleAdmin(ContentAdmin):
             subject = notify_settings["subject"]
             body = render_to_string("email/suspicious.txt", {"article": obj})
             send_mail(subject, body, notify_settings["from"],  notify_settings["to"], fail_silently=False)
+            
         return obj
     
     def get_urls(self):
