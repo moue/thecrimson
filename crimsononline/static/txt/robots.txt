@@ -13,3 +13,7 @@ Disallow: /article/2006/5/8/judge-moves-to-dismiss-dewolfe-drug/
 Disallow: /article/2006/5/8/judge-moves-to-dismiss-dewolfe-drug/?print=1
 Disallow: /article/2006/5/10/judge-may-dismiss-dewolfe-drugs-case/
 Disallow: /article/2006/5/10/judge-may-dismiss-dewolfe-drugs-case/?print=1
+Disallow: /article/2006/9/27/police-arrest-junior-for-assault-span/
+Disallow: /article/2006/9/27/police-arrest-junior-for-assault-span/?print=1
+Disallow: /article/2006/10/31/news-in-brief-student-charged-with/
+Disallow: /article/2006/10/31/news-in-brief-student-charged-with/?print=1
