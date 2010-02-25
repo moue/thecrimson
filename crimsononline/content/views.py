@@ -405,7 +405,7 @@ def section_sports(request):
     video = first_or_none(YouTubeVideo.objects.recent.filter(section=section))
     columns = ContentGroup.objects.filter(section=section, active=True,
         type='column').annotate(recent=Max('content__issue__issue_date'))
-    columns = columns[:3]
+    columns = columns[:6]
     featured_group_name = "The Game '09" #We could theoretically set this up to
                                            #be changed through admin
     featured_group = ContentGroup.objects.filter(section=section, active=True, 
