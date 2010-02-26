@@ -119,7 +119,8 @@ def tag(request, tag, page=1, sections=None, types=None):
     url_base = "/tag/%s" % (tag)
 
     tag = get_object_or_404(Tag, text=tag.replace('_', ' '))
-    content = Content.objects.recent.filter(tags=tag).exclude(content_type=Image)
+    content = Content.objects.recent.filter(tags=tag).exclude(content_type__name='image')
+
     f = filter_helper(request, content, sections, types,
         tag.get_absolute_url())
 
