@@ -115,6 +115,7 @@ def to_img_tag(img, size_spec):
 def img_url(img, size_spec):
     if not img:
         return ''
+    upscale = False
     if isinstance(size_spec, tuple) or isinstance(size_spec, list):
         size_spec = [s or 0 for s in size_spec]
     else:
@@ -124,8 +125,6 @@ def img_url(img, size_spec):
         # Upscale attribute specified
         if size_spec.count(',') == 4:
             size_spec, upscale = size_spec[:size_spec.rfind(',')], bool(size_spec[size_spec.rfind(',') + 1:].strip())
-        else:
-            upscale = False
         s = getattr(Image, 'SIZE_' + size_spec, None)
         if not s:
             size_spec = size_spec.replace('(','').replace(')','')
