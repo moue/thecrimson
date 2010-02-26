@@ -15,7 +15,7 @@ register = template.Library()
 @register.filter
 def capchars(str, n):
     """Make str have at most n chars, broken at a space.
-    
+
     Don't use this, truncchars is better.
     """
     try:
@@ -29,7 +29,7 @@ def capchars(str, n):
 @register.filter
 def truncchars(str, specifier):
     """Truncate str, at a whole word.
-    
+
     Specifier is in the form
         n[,str]
     where n is an integer, and str is an optional suffix,
@@ -69,8 +69,8 @@ def profileml(s):
 def yuhkilabel(s, type="red"):
     """
     produces html for a yuhki label (curved, w/ red in background)
-    
-    available types: 
+
+    available types:
     "red" = red background, no border
     "gray" = white background, gray border
     "black" = media viewer inactive
@@ -81,7 +81,7 @@ def yuhkilabel(s, type="red"):
 @register.filter
 def paragraphs(str):
     """Split str on <p> tags, mark output as save.
-    
+
     Keep the <p> tags in the output.
     """
     return [mark_safe(x) for x in para_list(str)]
@@ -90,7 +90,7 @@ def paragraphs(str):
 @register.filter
 def newlines_to_paragraphs(str):
     """Return a <p> separated string, separating on newlines
-    
+
     Keep the <p> tags in the output.
     """
     return [mark_safe("<p>%s</p>" % x) for x in str.split('\n') if len(sub(r'[\r\s\t]',"",x)) > 0]
@@ -101,11 +101,11 @@ def is_nav_cur(current, check):
         return mark_safe('id="nav_cur"')
     else:
         return ''
-    
+
 @register.filter
 def dlinkify(obj, domain=''):
     """Like linkify(), but with a domain prepended.
-    
+
     Unfortunately, this makes link text much less customizable.
     """
     try:
@@ -118,12 +118,12 @@ def dlinkify(obj, domain=''):
         return l[0] if len(l) == 1 else l
     except IndexError:
         return ''
-    
+
 
 @register.filter
 def linkify(obj, link_text=''):
     """turns object(s) into (html) link(s).
-    
+
     if objects have the attr 'domain', stick the domain in the URL.
     """
     try:
@@ -167,7 +167,7 @@ def human_list(list, connector='and'):
                 t = ', %s'
             s += t % filter.escape(item)
         return mark_safe(s)
-    
+
 A_LINK_RE = compile(r'href=\"(.+)\"')
 A_TEXT_RE = compile(r'>(.+)<')
 class FlatpageNavNode(template.Node):
@@ -179,21 +179,21 @@ class FlatpageNavNode(template.Node):
         self.toplevel = toplevelonly
         if self.toplevel:
             self.urldepth = self.prefix.count('/')
-    
+
     def render(self, context):
         links = []
         splitnodes = self.nodelist.render(context).split("</a>")
         hardlinks = [x + "</a>" for x in splitnodes][:-1]
-        
+
         for link in hardlinks:
             links.append((search(A_TEXT_RE, link).group(1), search(A_LINK_RE, link).group(1)))
-        
+
         pages = FlatPage.objects.filter(url__startswith = self.prefix)
         if self.toplevel:
             pages = [p for p in pages if p.url.count('/') == self.urldepth + 1]
         for page in pages:
             links.append((page.title, page.url))
-        
+
         links.sort()
         cur_url = self.cur_url.resolve(context)
         return mark_safe(render_to_string('templatetag/flatpagenav.html', locals()))
@@ -201,31 +201,31 @@ class FlatpageNavNode(template.Node):
 
 def do_flatpage_nav(parser, token):
     """Builds a navigation menu for flatpages by url
-    
-    inside of the flatpage_nav and endflatpage_nav templatetags, it's possible to 
+
+    inside of the flatpage_nav and endflatpage_nav templatetags, it's possible to
     put static links, which will be sorted and added to the navigation
-    
+
     Usage:
         {% flatpage_nav "/url/root/" "/cur/url" toplevelonly %}
         <a href="/1">link1</a>
         <a href="/2">link2</a>
         {% endflatpage_nav %}
-    
+
     toplevelonly is optional, and if specified, only adds urls of the form
     "/url/root/.*?/" (eg. omits /url/root/foo/bar/ but includes /url/root/foo/)
     """
-    
+
     bits = token.split_contents()
-    
+
     if len(bits) < 3:
         raise template.TemplateSyntaxError('%r tag requires 2 arguments.' % bits[0])
-    
+
     prefix = bits[1]
     cur_url = bits[2]
     top_level_only = len(bits) > 3 and bits[3] == 'toplevelonly'
     nodelist = parser.parse(('endflatpage_nav',))
     parser.delete_first_token()
-    
+
     return FlatpageNavNode(nodelist, prefix, cur_url, top_level_only)
 
 register.tag('flatpage_nav', do_flatpage_nav)
@@ -233,7 +233,7 @@ register.tag('flatpage_nav', do_flatpage_nav)
 class AdvertisementNode(template.Node):
     def __init__(self, zone):
         self.zone = zone
-        
+
     def render(self, context):
         return render_to_string("templatetag/advertisement.html",{'zone': self.zone})
 
@@ -242,20 +242,20 @@ def advertisement(parser, token):
     Renders an ad using the OpenX Account
     """
     bits = token.split_contents()
-    
+
     if len(bits) != 2:
         raise template.TemplateSyntaxError('%r tag requires 1 argument.' % bits[0])
-    
+
     zone = bits[1]
     return AdvertisementNode(zone)
-    
+
 advertisement = register.tag(advertisement)
-    
+
 class RepeatNode(template.Node):
     def __init__(self, nodelist, count):
         self.nodelist = nodelist
         self.count = template.Variable(count)
-    
+
     def render(self, context):
         output = self.nodelist.render(context)
         return output * int(self.count.resolve(context))
@@ -265,23 +265,23 @@ def repeat(parser, token):
     """
     From: http://www.djangosnippets.org/snippets/1499/
     Repeats the containing text a certain number of times.
-    
+
     Requires a single argument, an integer, to indicate the number of times to
     repeat the enclosing content.
-    
+
     Example::
-    
+
         {% repeat 3 %}foo{% endrepeat %}
-    
+
     Yields::
-    
+
         foofoofoo
     """
     bits = token.split_contents()
-    
+
     if len(bits) != 2:
         raise template.TemplateSyntaxError('%r tag requires 1 argument.' % bits[0])
-    
+
     count = bits[1]
     nodelist = parser.parse(('endrepeat',))
     parser.delete_first_token()
@@ -297,7 +297,7 @@ class RatingNode(template.Node):
     def __init__(self, rating, rating_max):
         self.r = template.Variable(rating)
         self.r_max = template.Variable(rating_max)
-    
+
     def render(self, context):
         self.r = self.r.resolve(context)
         self.r_max = self.r_max.resolve(context)
@@ -311,10 +311,10 @@ class RatingNode(template.Node):
 def rating(parser, token):
     """
     produces nice ratings stars
-    
+
     Example::
         {% rating 4 7 %}
-    
+
     Yields::
         4 full stars followed by 3 empty stars
     """
@@ -327,14 +327,14 @@ rating = register.tag(rating)
 class WeatherNode(template.Node):
     def __init__(self):
         pass
-    
+
     def render(self, context):
         try:
             datasource = urlopen('http://rss.accuweather.com/rss/liveweather_rss'
                                  '.asp?metric=0&locCode=02138').read()
             wdom = parseString(datasource)
             cur_weather = wdom.getElementsByTagName("title")[2].childNodes[0].nodeValue
-            
+
             temperature = str(cur_weather).split()[-1]
             currently = str(cur_weather).split(":")[1].lower()
             icon = ""
@@ -350,7 +350,7 @@ class WeatherNode(template.Node):
                 icon_txt = '<img alt="%s" src="%s" />' % (icon.split(".")[0], static_url('images/icons/' + icon))
             else:
                 icon_txt = ""
-            
+
             return '<div class="submenu_image">' + icon_txt + '</div>' \
                 + '<span class="submenu_right">Current Cambridge, MA weather: ' + str(cur_weather).split()[-1] + '</span>'
         except:
@@ -370,7 +370,7 @@ def static_url(link):
 @register.simple_tag
 def static_css(link_to_css):
     """
-    renders a css link.  
+    renders a css link.
     make sure you use a url relative to the base css folder, or a link that
         starts with http://
     """

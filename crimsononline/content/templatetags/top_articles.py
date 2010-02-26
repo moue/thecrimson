@@ -47,7 +47,7 @@ generic_obj_patterns = patterns('crimsononline.content.views',
     url('^' + CONTENT_URL_RE, 'get_content_obj', name='content_content'),
     url('^' + CGROUP_URL_RE + CONTENT_URL_RE + '$', 'get_grouped_content_obj',
         name='content_grouped_content'),
-    url('^' + CGROUP_URL_RE + '$', 'get_content_group_obj', 
+    url('^' + CGROUP_URL_RE + '$', 'get_content_group_obj',
         name='content_contentgroup'),
 )
 
@@ -63,23 +63,23 @@ def compile_most_read(parser, token):
     else:
         raise template.TemplateSyntaxError, "%r tag requires 1 or 0 arguments" % tokens[0]
     return TopArticlesNode(specifier)
-    
+
 def safe_resolve(url, resolver):
     try:
         return resolver.resolve(url)
     except Resolver404:
         return None
-        
+
 def call_view(view, args):
     try:
         return view(*([None] + list(args)))
     except Content.DoesNotExist:
         return None
-    
+
 class TopArticlesNode(template.Node):
     """
     Generates the most read articles/most commented articles widget.
-    
+
     Takes one argument, which should be a tag, author, or section within which to look.
     """
     def __init__(self, specifier):
@@ -87,7 +87,7 @@ class TopArticlesNode(template.Node):
             self.specifier = template.Variable(specifier)
         except:
             self.specifier = None
-        
+
     def render(self, context):
         pre_title, post_title = "", ""
         # Create a resolver for the slightly modified URL patterns we defined above
@@ -112,7 +112,7 @@ class TopArticlesNode(template.Node):
                 try:
                     post_title = 'IN %s' % str(Section.objects.get(pk=self.specifier.id)).upper()
                 except:
-                    pass 
+                    pass
             elif self.specifier.__class__ == Contributor:
                 tableStr = ", content_contributor, content_content_contributors"
                 limitStr = " AND content_contributor.id = " + str(self.specifier.id) + \
@@ -121,7 +121,7 @@ class TopArticlesNode(template.Node):
                 try:
                     pre_title = Contributor.objects.get(pk=self.specifier.id).first_name.upper() + "'S"
                 except:
-                    pass 
+                    pass
             elif self.specifier.__class__ == Tag:
                 tableStr = ", content_tag, content_content_tags"
                 limitStr = " AND content_tag.id = " + str(self.specifier.id) + \
@@ -130,7 +130,7 @@ class TopArticlesNode(template.Node):
                 try:
                     post_title = 'IN "%s"' % Tag.objects.get(pk=self.specifier.id).text.upper()
                 except:
-                    pass 
+                    pass
 
             else:
                 raise template.TemplateSyntaxError, "The TopArticles tag can only take a section, contributor, or tag argument (%r passed)" % self.specifier.__class__
@@ -155,19 +155,19 @@ class TopArticlesNode(template.Node):
         cursor.execute(sqlstatement)
         mostreadarticles = cursor.fetchall()
         mostreadarticles = [Content.objects.get(pk=x[0]).child for x in mostreadarticles]
-        
+
         # TODO: uncomment / fix this.  it calls disqus every time, which is annoying
         mostcommentedarticles = None # delete this when below is uncommented
         # I think this all works, but I can't test it right now because there are no comments at the moment
-        
+
         # Step 2: Grab the JSON crap from Disqus and build another list of the most commented articles
 
-        updated_threads_url = "http://disqus.com/api/get_updated_threads?user_api_key=" + D_USER_KEY + "&forum_id=" + D_FORUM_ID 
+        updated_threads_url = "http://disqus.com/api/get_updated_threads?user_api_key=" + D_USER_KEY + "&forum_id=" + D_FORUM_ID \
                             + "&api_version=1.1&since=" + (datetime.now() - timedelta(days=7) ).strftime('%Y-%m-%dT%H:%M')
         updated_threads = simplejson.load(urllib.urlopen(updated_threads_url))
         # sort the thread list
         updated_threads['message'].sort(lambda x, y: cmp(float(y['num_comments']), float(x['num_comments'])))
-        
+
         # call resolver.resolve on everything in the list
         urllist = map(lambda x: (urlparse(x['url']))[2], updated_threads['message'])
         # Optimization: we assume that at least 5 of these 20 articles will not resolve to None
@@ -176,6 +176,7 @@ class TopArticlesNode(template.Node):
         threadobjlist = map(lambda x: safe_resolve(x, resolver), urllist)
         # Filter according to specifier
         # No error checking here since it should have happened before
+        """
         if self.specifier:
             if self.specifier.__class__ == Section:
                 threadobjlist = [x for x in threadobjlist if x.section == self.specifier.id]
@@ -183,15 +184,17 @@ class TopArticlesNode(template.Node):
                 threadobjlist = [x for x in threadobjlist if self.specifier.id in [x.id for x in threadobjlist.contributors]]
             elif self.specifier.__class__ == Tag:
                 threadobjlist = [x for x in threadobjlist if self.specifier.id in [x.id for x in threadobjlist.tags]]
+        """
 
         if self.specifier:
             del threadobjlist[20:]
-        
-        mostcommentedarticles = [x for x in map(lambda x: call_view(x[0], x[1]), filter(lambda x: x != None, threadobjlist)) if x is not None]
+
+        # mostcommentedarticles = [x for x in map(lambda x: call_view(x[0], x[1]), filter(lambda x: x != None, threadobjlist)) if x is not None]
+        mostcommentedarticles = [x for x in [call_view(threadobj[0], threadobj[1]) for threadobj in threadobjlist if threadobj is not None] if x is not None]
         # Only want top 10 -- we need to do this last because we're not guaranteed that there won't be some gaps in threadobjlist
         del mostcommentedarticles[5:]
-        
-    
+
+
         return render_to_string('templatetag/mostreadarticles.html',
-            {'mostreadarticles': mostreadarticles, 
+            {'mostreadarticles': mostreadarticles,
                 'mostcommentedarticles': mostcommentedarticles,'pre_title': pre_title, 'post_title': post_title})

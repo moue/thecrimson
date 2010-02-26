@@ -24,7 +24,7 @@ def render(content, method):
 @register.filter
 def datify(cont):
     """A more natural way to express dates on content.
-    
+
     Uses the modified date if its recent, otherwise, uses issue_date
     """
     issue = cont.issue.issue_date
@@ -64,7 +64,7 @@ def to_img_layout(img, dimensions):
         tag = """<div class="%s_photo">%s
             <p class="byline">%s</p>
             <p class="caption">%s</p>
-            </div>""" % (type, img_tag, linkify(img.contributor), 
+            </div>""" % (type, img_tag, linkify(img.contributor),
                 filter.force_escape(img.caption))
     return mark_safe(tag)
 
@@ -92,13 +92,13 @@ def img_gallery_margin(img):
 @register.filter
 def to_img_tag(img, size_spec):
     """Turns an Image or ImageGallery into an img tag (html).
-    
+
     @size_spec => the size spec of the display image. 3 possible formats:
         string name of the size_spec defined in the Image model
             (without the SIZE_ prefix),
         string formatted "WIDTH,HEIGHT,CROP_W,CROP_H" or "WIDTH,HEIGHT", or
         tuple given as (WIDTH, HEIGHT, CROP_W, CROP_H) or (WIDTH, HEIGHT)
-     
+
     empty or omitted constraints are not binding
     any empty or zero crop parameter = no cropping
     """
@@ -118,7 +118,12 @@ def img_url(img, size_spec):
     if isinstance(size_spec, tuple) or isinstance(size_spec, list):
         size_spec = [s or 0 for s in size_spec]
     else:
+        # size_spec must be a string if it's not a tuple or list
         size_spec = str(size_spec)
+        # This is a bit of a kludge -- it's to test whether the s_s has the
+        # Upscale attribute specified
+        if size_spec.count(',') == 4:
+            size_spec, upscale = size_spec[:size_spec.rfind(',')], bool(size_spec[size_spec.rfind(',') + 1:].strip())
         s = getattr(Image, 'SIZE_' + size_spec, None)
         if not s:
             size_spec = size_spec.replace('(','').replace(')','')
@@ -129,23 +134,23 @@ def img_url(img, size_spec):
     if len(size_spec) < 3:
         size_spec = list(size_spec[:2]) + [0,0]
     size_spec = tuple(size_spec)
-    
-    return mark_safe(img.display_url(size_spec))
-    
+
+    return mark_safe(img.display_url(size_spec, upscale=upscale))
+
 @register.filter
 def to_thumb_tag(img):
     THUMB_SIZE = 96
     return to_img_tag(img, (THUMB_SIZE, THUMB_SIZE))
-    
+
 @register.filter
 def to_map_thumb(map, size):
     """ Gets the url of a static image for a map
-    
+
     @width, @height => width and height of box
-    
+
     TODO: cache this
     """
-    
+
     if(len(size.split(","))==2):
         dims = size.split(",")
         width=dims[0]
@@ -153,14 +158,14 @@ def to_map_thumb(map, size):
     else:
         width=size
         height=size
-    
+
     GMaps_key = "ABQIAAAA--Z_bVpXIL9HJpQ50CHbfRRi_j0U6kJrkFvY4-OX2XYmEAa76BS5oixsScFqNPn7f8shoeoOZviFMg"
 
     markerstr = ""
     markers = Marker.objects.filter(map__pk = map.pk)
     for marker in markers:
         markerstr = markerstr + str(marker.lat) + "," + str(marker.lng) + "|"
-    
+
     tag = '<img src="http://maps.google.com/staticmap?center=%s,%s&zoom=%s&size=%sx%s&maptype=mobile&key=%s&sensor=false&markers=%s" />' % \
         (map.center_lat, map.center_lng, map.zoom_level, width, height, GMaps_key, markerstr)
     return mark_safe(tag)
@@ -188,25 +193,25 @@ def rel_articles(rel_content):
 def byline(obj, type):
     """Get the byline from an article, properly pluralized"""
     str = 'By '
-	
+
     count = obj.contributors.count()
     if count is 0:
         return filter.upper('No Writer Attributed')
     links = linkify(obj.contributors.all())
     str += human_list(links)
-    
+
     if type == 'short':
         return mark_safe(str)
-    
+
     # byline_type = getattr(obj, 'byline_type', None)
     if hasattr(obj,'byline_type'):
         byline_type = obj.get_byline_type_display()
     if byline_type is not None and byline_type != 'None':
         str += ', ' + byline_type.upper()
         str += filter.pluralize(count).upper()
-    
+
     return mark_safe(str)
-    
+
 @register.filter
 def fix_teaser(teaser):
     """Fixes the messed-up Flyby teasers that show up on writer pages."""
@@ -216,7 +221,7 @@ def fix_teaser(teaser):
     # I think this shouldn't happen, but better safe than sorry...
     except IndexError:
         return ''
-        
+
 @register.filter
 def has_jump(flybyarticle):
     """Checks whether a Flyby article has content past the jump.  Returns
@@ -231,7 +236,7 @@ def has_jump(flybyarticle):
             return False
     else:
         return (flyby_teaser(flybyarticle) != "")
-        
+
 @register.filter
 def flyby_teaser(flybyarticle):
     """Processes a flybyarticle, returning the portion before the jump
@@ -246,7 +251,7 @@ def flyby_teaser(flybyarticle):
     # the template recognizes this and just spits out the text.
     else:
         return ""
-    
+
 @register.filter
 def remove_flyby_jump(text):
     """Removes the <!--more--> tag from a Flyby article, replacing it with an

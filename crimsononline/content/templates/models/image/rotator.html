@@ -5,7 +5,7 @@
 {% load content_filters %}
 
 {% block img %}
-    <a href="{{image.get_absolute_url}}">{{ image|to_img_tag:"300,240,5,4" }}</a>
+    <a href="{{image.get_absolute_url}}">{{ image|to_img_tag:"300,240,5,4,True" }}</a>
 {% endblock %}
 {% block text %}
 <p class="teaser">{{ image.caption|truncchars:"170" }}</p>
