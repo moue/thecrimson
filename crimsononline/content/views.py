@@ -165,6 +165,7 @@ def get_tag_top_contribs(pk):
         WHERE
             content_contributors.content_id = content.id AND
             content_tags.content_id = content.id AND
+            content.id NOT IN (SELECT content_ptr_id FROM content_image) AND
             content_tags.tag_id = %i AND
             content.pub_status = 1
         GROUP BY content_contributors.contributor_id
