@@ -101,7 +101,7 @@ class AutosizeImageFieldFile(ImageFieldFile):
         if path:
             return path
         try:
-            path = self._get_path(size_spec)
+            path = self._get_path(size_spec, upscale=upscale)
         except IOError:
             return ''
         if not exists(path):
@@ -191,16 +191,16 @@ class AutosizeImageFieldFile(ImageFieldFile):
         if url:
             return url
         url = '%s/%s' % (split(self.url)[0],
-            split(self.display_path(size_spec, crop_data, upscale))[1])
+            split(self.display_path(size_spec, crop_data, upscale=upscale))[1])
         self._url_cache[size_spec] = url
         return url
 
-    def _get_path(self, size_spec):
+    def _get_path(self, size_spec, upscale=False):
         """
         calculates the path, no caching involved
         """
         path, ext = splitext(self.path)
-        size = size_spec_to_size(size_spec, self.width, self.height)
+        size = size_spec_to_size(size_spec, self.width, self.height, upscale=upscale)
         return path + "_%dx%d" % size + ext
 
 
