@@ -53,7 +53,7 @@ def index(request, m=None, d=None, y=None):
     """Show the view for the front page."""
     dt = None
     # if viewing an issue, try to form date, if not successful, 404
-    if m is None or d is None or y is None:        
+    if m is None or d is None or y is None:
         y, m, d = date.today().timetuple()[:3]
     else:
         try:
@@ -62,11 +62,11 @@ def index(request, m=None, d=None, y=None):
             # TODO: remove this 404, just say issue not found
             raise Http404
     stories = top_articles('News', dt)
-    
+
     dict = {}
     dict['rotate'] = rotatables(None, 4)
-    
-    #dict['past_issues'] = DateSelectWidget().render(name="past_issues", 
+
+    #dict['past_issues'] = DateSelectWidget().render(name="past_issues",
     #                                                value=[m, d, y])
     dict['nav'] = 'index'
     dict['top_stories'] = stories[:4]
@@ -78,7 +78,7 @@ def index(request, m=None, d=None, y=None):
     #dict['issue'] = Issue.get_current()
     dict['galleries'] = Gallery.objects.prioritized(40)[:6]
     dict['videos'] = YouTubeVideo.objects.prioritized(60)[:2]
-    
+
     return render_to_response('index.html', dict)
 
 REMOVE_P_RE = re.compile(r'page/\d+/$')
@@ -91,19 +91,19 @@ def writer(request, pk, f_name, m_name, l_name, page=1, sections=None, types=Non
     # Validate the URL (we don't want /writer/281/Balls_Q_McTitties to be valid)
     if (w.first_name, w.middle_name, w.last_name) != (f_name, m_name, l_name):
         return HttpResponseRedirect(w.get_absolute_url())
-    
-    f = filter_helper(request, 
-        w.content.all().order_by('-issue__issue_date'), 
+
+    f = filter_helper(request,
+        w.content.all().order_by('-issue__issue_date'),
         sections, types, w.get_absolute_url()
     )
-    
+
     w.number_of_articles = Article.objects.filter(contributors=w).count()
     d = paginate(f.pop('content'), page, 10)
     d.update({'page': page, 'url_base': url_base})
     w.last_update = Content.objects.filter(contributors=w).aggregate(Max('issue__issue_date'))['issue__issue_date__max']
     d.update({'writer': w, 'url': REMOVE_P_RE.sub(request.path, '')})
     d.update(f)
-    
+
     t = 'writer.html'
     if request.GET.has_key('ajax'):
         data = {'content_list': render_to_string('ajax/content_list_page.html', d),
@@ -115,35 +115,35 @@ def writer(request, pk, f_name, m_name, l_name, page=1, sections=None, types=Non
 @cache_page(settings.CACHE_LONG)
 def tag(request, tag, page=1, sections=None, types=None):
     """The view for a specific tag."""
-        
+
     url_base = "/tag/%s" % (tag)
 
     tag = get_object_or_404(Tag, text=tag.replace('_', ' '))
     content = Content.objects.recent.filter(tags=tag)
-    f = filter_helper(request, content, sections, types, 
+    f = filter_helper(request, content, sections, types,
         tag.get_absolute_url())
-    
+
     articles = Article.objects.filter(tags=tag)
     featured_articles = list(articles.filter(
         issue__issue_date__gte=last_month()).order_by('-priority')[:5])
     if len(featured_articles) < 5:
         featured_articles += list(articles.filter(
-            issue__issue_date__gte=last_year(), 
+            issue__issue_date__gte=last_year(),
             issue__issue_date__lte=last_month()).order_by('-priority')[:5])
     if len(featured_articles) < 5:
-        featured_articles += list(articles.filter( 
+        featured_articles += list(articles.filter(
             issue__issue_date__lte=last_year()).order_by('-priority')[:5])
     featured_articles = featured_articles[:5]
-    
+
     writers = get_tag_top_contribs(tag.pk)
     reltags = get_related_tags(tag.pk)
-    
+
     d = paginate(f.pop('content'), page, 10)
     d.update({'page': page, 'url_base': url_base})
     d.update({'tag': tag, 'url': tag.get_absolute_url(), 'tags': reltags,
         'featured': featured_articles, 'top_contributors': writers,})
     d.update(f)
-    
+
     t = 'tag.html'
     if request.GET.has_key('ajax'):
         data = {'content_list': render_to_string('ajax/content_list_page.html', d),
@@ -156,9 +156,9 @@ def get_tag_top_contribs(pk):
     # top writers (contributors that have the most content with this tag)
     cursor = connection.cursor()
     cursor.execute("""SELECT
-            content_contributors.contributor_id, 
+            content_contributors.contributor_id,
             count(content.id) AS objcount
-        FROM 
+        FROM
             content_content AS content,
             content_content_contributors AS content_contributors,
             content_content_tags AS content_tags
@@ -167,8 +167,8 @@ def get_tag_top_contribs(pk):
             content_tags.content_id = content.id AND
             content_tags.tag_id = %i AND
             content.pub_status = 1
-        GROUP BY content_contributors.contributor_id 
-        ORDER BY objcount DESC 
+        GROUP BY content_contributors.contributor_id
+        ORDER BY objcount DESC
         LIMIT 5
     """ % pk) # TODO: should actually do this with sqlite3 replacement, not python
     rows = [r for r in cursor.fetchall() if r[1] > 0]
@@ -180,19 +180,19 @@ def get_tag_top_contribs(pk):
     writers = list(writers)
     writers.sort(lambda x, y: cmp(y.c_count, x.c_count))
     return writers
-    
+
 @cache(settings.CACHE_LONG)
 def get_related_tags(pk):
     # related tags (tags with most shared content)
-    #  select the tags for which there are the most objects that have both 
+    #  select the tags for which there are the most objects that have both
     #  this tag and that tag within some timeframe
     cursor = connection.cursor()
-    cursor.execute("""SELECT cgt2.tag_id, 
-        count(cgt2.content_id) AS o_count  
-        FROM content_content_tags AS cgt1 
+    cursor.execute("""SELECT cgt2.tag_id,
+        count(cgt2.content_id) AS o_count
+        FROM content_content_tags AS cgt1
         JOIN content_content_tags AS cgt2
-        ON cgt1.content_id=cgt2.content_id 
-        WHERE cgt1.tag_id = %(pk)i AND cgt2.tag_id != %(pk)i 
+        ON cgt1.content_id=cgt2.content_id
+        WHERE cgt1.tag_id = %(pk)i AND cgt2.tag_id != %(pk)i
         GROUP BY cgt2.tag_id ORDER BY o_count DESC LIMIT 15;""" % {'pk': pk}
     )
     rows = cursor.fetchall()
@@ -203,67 +203,67 @@ def get_related_tags(pk):
     tags = list(tags)
     tags.sort(lambda x,y: cmp(y.content_count, x.content_count))
     return tags
-    
+
 # ============= Section Views ============
 
 @cache_page(settings.CACHE_SHORT)
 def section_news(request):
     """Show the view for the news section page."""
-    
+
     nav = 'news'
     section = Section.cached(nav)
     stories = top_articles(section)[:22]
     rotate = rotatables(section, 4)
-    
+
     series = ContentGroup.objects.filter(section=section) \
         .annotate(c_count=Count('content')).filter(c_count__gte=3) \
         .annotate(latest=Max('content__issue__issue_date')) \
         .order_by('-latest')[:2]
-    
+
     today = datetime.today()
     lastweek = today-timedelta(7)
     lastmonth = today-timedelta(120)
-    
+
     featured = Article.objects.filter(section=section) \
         .filter(issue__issue_date__gte=lastmonth) \
         .filter(issue__issue_date__lte=lastweek) \
         .order_by('-priority')[:3]
-    
+
     return render_to_response('sections/news.html', locals())
 
 @cache_page(settings.CACHE_SHORT)
 def section_opinion(request):
     """Show the view for the opinion section page."""
-    
+
     nav = 'opinion'
     section = Section.cached(nav)
     stories = top_articles(section)[:12]
     rotate = rotatables(section, 4)
     columns = ContentGroup.objects.filter(section=section, active=True,
         type='column').annotate(recent=Max('content__issue__issue_date'))
-        
+
     today = datetime.today()
     lastweek = today-timedelta(7)
     lastmonth = today-timedelta(30)
-    
+
     featured = Article.objects.filter(section=section) \
         .filter(issue__issue_date__gte=lastmonth) \
         .filter(issue__issue_date__lte=lastweek) \
         .order_by('-priority')[:3]
-        
+
     return render_to_response('sections/opinion.html', locals())
 
 @cache_page(settings.CACHE_SHORT)
 def section_fm(request):
     """Show the view for the FM section page.
-    
+
     We want to prioritize articles by date first, since FM is issue
     based.  All FM articles are divided into discrete categories,
         'scrutiny', 'endpaper', 'for the moment', and 'in the meantime'
-    (they are differentiated by tags) so we don't have to worry about 
+    (they are differentiated by tags) so we don't have to worry about
     repeats between the categories.
     """
-    
+
     nav = 'fm'
     section = Section.cached(nav)
     stories = Article.objects.recent.filter(section=section)
@@ -281,22 +281,22 @@ def section_fm(request):
     issues = Issue.objects.exclude(Q(fm_name=None)|Q(fm_name=''))[:3]
     columns = ContentGroup.objects.filter(section=section, active=True,
         type='column').annotate(recent=Max('content__issue__issue_date'))
-        
+
     today = datetime.today()
     lastweek = today-timedelta(7)
     lastmonth = today-timedelta(30)
-    
+
     featured = Article.objects.filter(section=section) \
         .filter(issue__issue_date__gte=lastmonth) \
         .filter(issue__issue_date__lte=lastweek) \
         .order_by('-priority')[:3]
-    
+
     return render_to_response('sections/fm.html', locals())
 
 @cache_page(settings.CACHE_SHORT)
 def section_arts(request):
     """Show the view for the arts section page."""
-    
+
     nav = 'arts'
     section = Section.cached(nav)
     stories = top_articles(section)
@@ -311,28 +311,28 @@ def section_arts(request):
     reviews = {}
     #for t in ['movie', 'music', 'book']:
     #    reviews[t] = Review.objects.filter(type=t)[:4]
-    
+
     today = datetime.today()
     lastweek = today-timedelta(7)
     lastmonth = today-timedelta(30)
-    
+
     featured = Article.objects.filter(section=section) \
         .filter(issue__issue_date__gte=lastmonth) \
         .filter(issue__issue_date__lte=lastweek) \
         .order_by('-priority')[:4]
-    
+
     return render_to_response('sections/arts.html', locals())
 
 @cache_page(settings.CACHE_SHORT)
 def section_media(request):
     """Show the view for the media section page."""
-    
+
     if request.method == 'GET':
         page = request.GET.get('page', 1)
     else:
         raise Http404
     nav = 'media'
-    
+
     sort = request.GET.get('sort')
     if sort == 'read':
         RECENT_DAYS = timedelta(days=60)
@@ -343,7 +343,7 @@ def section_media(request):
                          .order_by('-hits')
     else:
         content = Content.objects.recent
-    
+
     c_type = request.GET.get('type')
     if c_type == 'gallery':
         cts = [Gallery.ct()]
@@ -352,7 +352,7 @@ def section_media(request):
     else:
         cts = [YouTubeVideo.ct(), Gallery.ct()]
     content = content.filter(content_type__in=cts)
-    
+
     section = request.GET.get('section')
     if section and request.GET.has_key('ajax'):
         try:
@@ -360,10 +360,10 @@ def section_media(request):
             content = content.filter(section=s_obj)
         except:
             pass
-    
+
     d = paginate(content, page, 6)
     d.update({'nav': nav})
-    
+
     t = 'sections/media.html'
     if request.GET.has_key('ajax'):
         t = 'ajax/media_viewer_page.html'
@@ -372,7 +372,7 @@ def section_media(request):
 @cache_page(settings.CACHE_SHORT)
 def section_sports(request):
     """Show the view for the sports section page.
-    
+
     ** There's tons of crap on this page: **
     Latest updates
         Articles listed by most recently updated (great for live coverage)
@@ -390,7 +390,7 @@ def section_sports(request):
     Latest scores
         idk yet
     """
-    
+
     nav = 'sports'
     section = Section.cached(nav)
     stories = top_articles(section)
@@ -398,7 +398,7 @@ def section_sports(request):
     latest = Article.objects.filter(section=section).order_by('-modified_on')
     latest = latest[:10]
     blog = stories.filter(group__type='blog')
-    athlete = first_or_none(stories.filter(tags__text='athlete of the week')) 
+    athlete = first_or_none(stories.filter(tags__text='athlete of the week'))
     stories = stories[:4]
     scores = Score.objects.order_by('-event_date')[:10]
     sports = Tag.objects.filter(category='sports').order_by('text')
@@ -406,24 +406,24 @@ def section_sports(request):
     columns = ContentGroup.objects.filter(section=section, active=True,
         type='column').annotate(recent=Max('content__issue__issue_date'))
     columns = columns[:3]
-    featured_group_name = "The Game '09" #We could theoretically set this up to
+    featured_group_name = "Lacrosse '10" #We could theoretically set this up to
                                            #be changed through admin
-    featured_group = ContentGroup.objects.filter(section=section, active=True, 
+    featured_group = ContentGroup.objects.filter(section=section, active=True,
         name=featured_group_name)
     featured = Article.objects.filter(section=section, group=featured_group)
-    
+
     return render_to_response('sections/sports.html', locals())
 
 FLYBY_RESULTS_PER_PAGE = 10
 def section_flyby(request):
     nav = 'flyby'
     section = Section.cached(nav)
-    
+
     try:
         page = int(request.GET.get('page','1'))
     except ValueError:
         page = 1
-    
+
     content = Article.objects.recent.filter(section=section)
     paginator = Paginator(content, FLYBY_RESULTS_PER_PAGE)
     try:
@@ -437,14 +437,14 @@ def section_flyby(request):
 def iphone(request, s = None):
     if(s == None):
         raise Http404
-        
+
     section = ""
     try:
         section = Section.cached(s)
     except KeyError:
         raise Http404
     stories = Article.objects.recent.filter(section=section)[:15]
-    
+
     objs = []
     for story in stories:
         curdict = {}
@@ -460,10 +460,10 @@ def iphone(request, s = None):
             curdict['photoURL']  = story.main_rel_content.display_url((280, 240, 1, 1))
             curdict['photo_byline'] = human_list(story.main_rel_content.contributors.all())
         objs.append(curdict)
-        
+
     io = StringIO()
     simplejson.dump(objs, io)
-    
+
     return HttpResponse(io.getvalue(), mimetype='application/json')
 
 # =========== view helpers ============== #
@@ -474,7 +474,7 @@ def get_content(request, ctype, year, month, day, slug, content_group=None):
     Validates the entire URL
     """
     try:
-        c = get_content_obj(request, ctype, year, month, day, 
+        c = get_content_obj(request, ctype, year, month, day,
                             slug, content_group)
     except Content.DoesNotExist:
         raise Http404
@@ -482,7 +482,7 @@ def get_content(request, ctype, year, month, day, slug, content_group=None):
     if request.path != c.get_absolute_url():
         return HttpResponseRedirect(c.get_absolute_url())
     if request.method == 'GET':
-        return HttpResponse(c._render(request.GET.get('render','page'), 
+        return HttpResponse(c._render(request.GET.get('render','page'),
                             request=request))
     raise Http404
 
@@ -492,13 +492,13 @@ def get_content_obj(request, ctype, year, month, day, slug, content_group=None):
     ctype = ctype.replace('-', ' ') # convert from url
     return Content.objects.get(
         issue__issue_date=date(int(year), int(month), int(day)), slug=slug)
-    
+
 def get_grouped_content(request, gtype, gname, ctype, year, month, day, slug):
     """View for displaying a piece of grouped content on a page
     Validates the entire url
     """
     # validate the contentgroup
-    cg = get_grouped_content_obj(request, gtype, gname, ctype, 
+    cg = get_grouped_content_obj(request, gtype, gname, ctype,
         year, month, day, slug)
     if cg:
         return get_content(request, ctype, year, month, day, slug, cg)
@@ -531,7 +531,7 @@ def filter_helper(req, qs, section_str, type_str, url_base):
     content = qs
     sects, tps = {}, {}
     o_section_str = section_str
-    
+
     # parses the comma delimited section_str
     if section_str:
         section_str = [s.lower() for s in section_str.split(',') if s]
@@ -549,26 +549,26 @@ def filter_helper(req, qs, section_str, type_str, url_base):
             s_str = ','.join([s for s in section_str if s != section.name.lower()])
         else:
             s_str = ','.join(section_str + [section.name.lower()])
-        
-        url = url_base 
+
+        url = url_base
         url += ('sections/%s/' % s_str if s_str else '')
         url += ('types/%s/' % type_str if type_str else '')
-        
+
         # TODO: cache this shit
         ct = len(unfilteredcontent.filter(section=section))
-        sects[section.name] = {'selected': a, 'url': url, 'count': ct} 
-    
+        sects[section.name] = {'selected': a, 'url': url, 'count': ct}
+
     # models to show in the filter interface... so ghetto
     content_choices = ["article", "image"]
     if type_str:
         type_str = type_str.replace('-', ' ') # convert from url
         type_str = [t.lower() for t in type_str.split(',') if t in content_choices + ["other"]]
-        
+
         if "other" in type_str:
             othertypes = [t for t in Content.types() if t.name not in [a.lower() for a in content_choices]]
         else:
             othertypes = []
-            
+
         # Models to show
         filter_types = [t for t in Content.types() if t.name.lower() in type_str] + othertypes
         types = type_str
@@ -578,17 +578,17 @@ def filter_helper(req, qs, section_str, type_str, url_base):
     else:
         types = content_choices + ["other"]
         show_filter_2 = False
-    
+
     # Iterate over list choices and form URLs
     for type in content_choices + ["other"]:
         sel = type in types
 
         t_str = ','.join([t for t in (types + [type]) if t != type or t not in types])
-        
+
         url = url_base
         url += ('sections/%s/' % o_section_str if o_section_str else '')
         url += ('types/%s/' % t_str if t_str else '')
-        
+
         if type != "other":
             curtype = [t for t in Content.types() if t.name.lower() == type][0]
             ct = len(unfilteredcontent.filter(content_type=curtype))
@@ -598,10 +598,10 @@ def filter_helper(req, qs, section_str, type_str, url_base):
 
         if(type in content_choices + ["other"]):
             tps[type[0].upper() + type[1:]] = {'selected': sel, 'url': url, 'count':ct}
-    
+
     sect_str = "/sections/" + ",".join(section_str) if len(sections) != Section.all().count() else ""
     typ_str = "/types/" + ",".join(types) if len(content_choices) + 1 != len(types) else ""
-    
+
     return {'content': content, 'sections': sects,'section_str':sect_str, 'types': tps, 'type_str': typ_str,'show_filter':(show_filter_1 or show_filter_2)}
 
 def top_articles(section, dt=None):
@@ -611,7 +611,7 @@ def top_articles(section, dt=None):
     else:
         key = 'section'
     stories = Article.objects.prioritized(100).filter(**{key: section})
-    
+
     if(dt is not None):
         stories = stories.filter(issue__issue_date__lte=dt)
     return stories
@@ -632,7 +632,7 @@ def rotatables(section=None, limit=4):
             c = c.filter(section=section)
             b = list(c.filter(Q(rotatable=2) | Q(rotatable=1))[:limit])
     return b
-    
+
 def last_month():
     return date.today() + timedelta(days=-30)
 
