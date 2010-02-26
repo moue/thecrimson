@@ -515,7 +515,7 @@ def get_content_group(request, gtype, gname):
     cg = get_content_group_obj(request, gtype, gname)
     if not cg:
         raise Http404
-    c = cg.content.all()
+    c = cg.content.all().order_by('-issue__issue_date')
     return render_to_response("contentgroup.html", {'cg': cg, 'content': c})
 
 def get_content_group_obj(request, gtype, gname):
