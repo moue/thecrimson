@@ -15,7 +15,7 @@
 
 {% block leftcolumn %}
     {% rotator rotate "sports_rotator" %}
-    
+
     {% module 4 "latest updates" gray %}
         <div class="article_headlines">
         <ul>
@@ -54,9 +54,9 @@
 {% endblock %}
 
 {% block middlecolumn %}
-	
+
 	{% contentmodule sports.liveblog %}
-		
+
 	{% endcontentmodule %}
 
 
@@ -69,15 +69,15 @@
         </ul>
         </div>
     {% endmodule %}
-    
+
     {% if video %}
     	{% module 4 "Featured Video" boxgray %}
             {{ video|render:"rotator" }}
             <span class="clear"></span>
     	{% endmodule %}
     {% endif %}
-    
-    
+
+
     {% module 4 columns %}
         <div id="columnists" class="img_list">
         <ul>
@@ -111,17 +111,19 @@
 {% endblock %}
 
 {% block rightcolumn %}
-    
-    {% module 4 featured_group_name red %}
-        {% contentmodule sports.rotator %}
-            {% rotator featured featured_rotator %}
-        {% endcontentmodule %}
-    {% endmodule %}
-    
+
+    {% if featured %}
+        {% module 4 featured_group_name red %}
+            {% contentmodule sports.rotator %}
+                {% rotator featured featured_rotator %}
+            {% endcontentmodule %}
+        {% endmodule %}
+    {% endif %}
+
     {% if scores.count %}
         {% module 4 "Latest Scores" box %}
-        
-            <div id='sportsticker'  style="margin-bottom: 10px; font-family: tahoma;"> 
+
+            <div id='sportsticker'  style="margin-bottom: 10px; font-family: tahoma;">
                 <div id='sportsticker_sport' class='thclabel thclabel_red'></div>
                 <div id='sportsticker_slug' style="font-size: 11px;"></div>
             </div>
@@ -135,7 +137,7 @@
                     ticker_field.push("{{ score.home_game }}");
                     ticker_oppscore.push("{{ score.their_score }}");
                     ticker_ourscore.push("{{ score.our_score }}");
-                {% endfor %}    
+                {% endfor %}
 
                 rotateTicker();
             </script>
@@ -145,8 +147,8 @@
 
     {% module 4 "" box %}
         {% advertisement 59 %}
-    {% endmodule %}  
-    
+    {% endmodule %}
+
 	{% module 4 Sports box %}
     <div class="twocol" id="tags">
         {% for sport in sports %}
@@ -155,7 +157,7 @@
         <span class="clear"></span>
     </div>
 	{% endmodule %}
-    
 
-    
+
+
 {% endblock %}

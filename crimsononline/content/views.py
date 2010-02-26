@@ -406,8 +406,9 @@ def section_sports(request):
     columns = ContentGroup.objects.filter(section=section, active=True,
         type='column').annotate(recent=Max('content__issue__issue_date')).order_by('-recent')
     columns = columns[:3]
-    featured_group_name = ContentModule.objects.get(name="sports.rotator").content
+
     try:
+        featured_group_name = ContentModule.objects.get(name="sports.rotator").content.strip()
         featured_group = ContentGroup.objects.filter(section=section, active=True,
             name=featured_group_name)
         featured = Article.objects.filter(section=section, group=featured_group)
