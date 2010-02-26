@@ -123,6 +123,12 @@ def tag(request, tag, page=1, sections=None, types=None):
     f = filter_helper(request, content, sections, types,
         tag.get_absolute_url())
 
+    try:
+        if f['types']['Image']['selected']:
+            f['types']['Image']['selected'] = False
+    except KeyError:
+        pass
+
     articles = Article.objects.filter(tags=tag)
     featured_articles = list(articles.filter(
         issue__issue_date__gte=last_month()).order_by('-priority')[:5])
