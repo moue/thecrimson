@@ -119,7 +119,7 @@ def tag(request, tag, page=1, sections=None, types=None):
     url_base = "/tag/%s" % (tag)
 
     tag = get_object_or_404(Tag, text=tag.replace('_', ' '))
-    if types and types.find("image") == -1:
+    if not types or types.find("image") == -1:
         content = Content.objects.recent.filter(tags=tag).exclude(content_type__name='image')
     else:
         content = Content.objects.recent.filter(tags=tag)
