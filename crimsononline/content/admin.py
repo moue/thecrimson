@@ -547,6 +547,17 @@ class ImageAdminForm(ContentModelForm):
         "numbers, _, and - are allowed"
     )
 
+    def clean(self):
+        # Images must have captions to be rotatable, and their captions cannot be too long
+        if int(self.cleaned_data['rotatable']) > 0:
+            if len(self.cleaned_data['caption']) == 0:
+                msg = "This image cannot be set to rotate because its caption is blank"
+                self._errors['rotatable'] = ErrorList([mark_safe(msg)])
+            elif len(self.cleaned_data['caption']) > 170:
+                msg = "This image cannot be set to rotate because its caption is too long"
+                self._errors['rotatable'] = ErrorList([mark_safe(msg)])
+        return super(ImageAdminForm, self).clean()
+
     def save(self, *args, **kwargs):
         i = super(ImageAdminForm, self).save(*args, **kwargs)
         # logic for saving the cropped stuffs
