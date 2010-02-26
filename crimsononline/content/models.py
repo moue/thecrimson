@@ -42,7 +42,7 @@ from crimsononline.admin_cust.models import Board
 
 def add_issue_filter(f):
     """Modify a manager method to add a filter for restricting by issue date.
-    
+
     Adds the ability to process (optional) start and end dates
     """
     def f_prime(*args, **kwargs):
@@ -64,53 +64,53 @@ def add_issue_filter(f):
 
 class ContentManager(models.Manager):
     """Base class for managers of Content derived objects."""
-    
+
     def rel_content_ordered(self):
         """Ordered for Article.rel_content
-        
-        #TODO: this is a HUGE hack, most notably, it probably fucks up 
+
+        #TODO: this is a HUGE hack, most notably, it probably fucks up
             all other content with many related managers
         """
         return self.all_objects().filter(pub_status=1).order_by(
             'articlecontentrelation__order'
         )
-    
+
     #TODO: make this date crap into a decorator or something
-    
+
     @add_issue_filter
     def get_query_set(self):
         # hack to ensure that related content gets ordered
         if self.__class__.__name__ == 'ManyRelatedManager':
             return self.rel_content_ordered()
         return self.all_objects().select_related(depth=2).filter(pub_status=1)
-    
+
     @add_issue_filter
     def all(self):
         return self.get_query_set()
-    
+
     @add_issue_filter
     def all_objects(self):
         return super(ContentManager, self).get_query_set()
-    
+
     @add_issue_filter
     def admin_objects(self):
         return self.all_objects().select_related(depth=2).exclude(pub_status=-1)
-    
+
     @add_issue_filter
     def draft_objects(self):
         return self.all_objects().select_related(depth=2).filter(pub_status=0)
-    
+
     @add_issue_filter
     def deleted_objects(self):
         return self.all_objects().select_related(depth=2).filter(pub_status=-1)
-    
+
     @property
     def recent(self):
         return self.get_query_set().order_by('-issue__issue_date', '-modified_on')
-    
+
     def prioritized(self, recents=7):
         """Order by (priority / days_old).
-        
+
         Arguments:
             recents=N => only return stuff from the past N issues. this should
                 make the query have a reasonable run time.
@@ -125,7 +125,7 @@ class ContentManager(models.Manager):
         else:
             raise Exception("Database not supported")
         qs = self.get_query_set().extra(
-            tables=['content_issue'], 
+            tables=['content_issue'],
             where=['content_issue.id = content_content.issue_id',
                 'content_issue.id in (%s)' % ', '.join(issue_pks)
             ],
@@ -134,15 +134,15 @@ class ContentManager(models.Manager):
             }
         )
         return qs.extra(order_by=['-decayed_priority',])
-    
+
 
 
 class Content(models.Model):
     """Base class for all content.
-    
+
     Has some content rendering functions and property access methods.
     """
-    
+
     PUB_CHOICES = (
         (0, 'Draft'),
         (1, 'Published'),
@@ -166,8 +166,8 @@ class Content(models.Model):
         (2, 'Front and Section'),
         (3, 'Front Only')
     )
-    
-    contributors = models.ManyToManyField('Contributor', null=True, 
+
+    contributors = models.ManyToManyField('Contributor', null=True,
         related_name='content')
     tags = models.ManyToManyField('Tag', null=True, related_name='content')
     issue = models.ForeignKey('Issue', null=False, related_name='content')
@@ -177,21 +177,21 @@ class Content(models.Model):
         """
     )
     section = models.ForeignKey('Section', null=False, related_name='content')
-    priority = models.IntegerField(default=3, choices=PRIORITY_CHOICES, 
+    priority = models.IntegerField(default=3, choices=PRIORITY_CHOICES,
         db_index=True)
-    group = models.ForeignKey('ContentGroup', null=True, blank=True, 
+    group = models.ForeignKey('ContentGroup', null=True, blank=True,
         related_name='content')
-    rotatable = models.IntegerField(null=False, choices=ROTATE_CHOICES, 
+    rotatable = models.IntegerField(null=False, choices=ROTATE_CHOICES,
         default=0, db_index=True)
-    pub_status = models.IntegerField(null=False, choices=PUB_CHOICES, 
+    pub_status = models.IntegerField(null=False, choices=PUB_CHOICES,
         default=0, db_index=True)
     created_on = models.DateTimeField(auto_now_add=True, db_index=True)
     modified_on = models.DateTimeField(auto_now=True, db_index=True)
     old_pk = models.IntegerField(null=True, help_text="primary key "
                                  "from the old website.", db_index=True)
-    
+
     content_type = models.ForeignKey(ContentType, editable=False, null=True)
-    
+
     def save(self, *args, **kwargs):
         if not self.content_type:
             self.content_type = ContentType.objects.get_for_model(self.__class__)
@@ -216,19 +216,19 @@ class Content(models.Model):
         except:
             pass
         return retval
-    
+
     @classmethod
     def ct(cls):
         """Returns the content type for this class.
-        
+
         Note that ContentType.objects already caches
         """
         return ContentType.objects.get_for_model(cls)
-    
+
     @property
     def child(self):
         """Return the instance of the child class.
-        
+
         If c (an instance of Content) was an article, c.child would be
         equivalent to c.article
         """
@@ -241,8 +241,8 @@ class Content(models.Model):
             #  further errors
             self.delete()
             raise
-        
-    
+
+
     class Meta:
         unique_together = (
             ('issue', 'slug'),
@@ -253,35 +253,35 @@ class Content(models.Model):
             ('content.can_delete_published', 'Can delete published content'),
         )
         get_latest_by = 'created_on'
-    
+
     @permalink
     def get_absolute_url(self):
         i = self.issue.issue_date
-        url_data = [self.content_type.name.replace(' ', '-'), i.year, 
+        url_data = [self.content_type.name.replace(' ', '-'), i.year,
             i.month, i.day, self.slug]
         if self.group:
-            url_data = [self.group.type.lower(), 
+            url_data = [self.group.type.lower(),
                 make_url_friendly(self.group.name)] + url_data
             return ('content_grouped_content', url_data)
         else:
             return ('content_content', url_data)
-    
+
     def get_admin_change_url(self):
         return urlresolvers.reverse('admin:content_%s_change' \
                                     % str(self.content_type).replace(' ', '_'),
                                     args=(self.pk,))
-    
+
     def __unicode__(self):
         return self.child.__unicode__()
-    
+
     objects = ContentManager()
-    
+
     def _render(self, method, context={}, request=None):
         """Render to some kind of string (usually HTML), depending on method
-        
+
         Always uses the child class
-        
-        method -- Specification for the render; it could be something like, 
+
+        method -- Specification for the render; it could be something like,
             'admin' or 'search'
         context -- gets injected into template (optional)
         """
@@ -291,10 +291,10 @@ class Content(models.Model):
         ext = '.html' if method[-4:] != '.txt' else ''
         templ = 'models/%s/%s%s' % (name, method, ext)
 		# dumb hack for this jerk
-        if self.slug in ['news-in-brief-student-charged-with', 'police-arrest-junior-for-assault-span', 
-                        'four-undergrads-face-drug-charges-span', 'students-plead-not-guilty-to-drug',  
-                        'charges-follow-lengthy-watch-divspan-classapple-style-span', 'judge-sets-next-date-in-marijuana', 
-                        'judge-moves-to-dismiss-dewolfe-drug', 'judge-may-dismiss-dewolfe-drugs-case', 
+        if self.slug in ['news-in-brief-student-charged-with', 'police-arrest-junior-for-assault-span',
+                        'four-undergrads-face-drug-charges-span', 'students-plead-not-guilty-to-drug',
+                        'charges-follow-lengthy-watch-divspan-classapple-style-span', 'judge-sets-next-date-in-marijuana',
+                        'judge-moves-to-dismiss-dewolfe-drug', 'judge-may-dismiss-dewolfe-drugs-case',
                         'mcginn-n-tonic-revisiting-harvard-football']:
             noindex = True
         else:
@@ -302,24 +302,24 @@ class Content(models.Model):
         # TODO: Allow this to be specified via the admin
         # can access self with either the name of the class (ie, 'article')
         #   or 'content'
-        n_context.update({name: self.child, 'content': self.child, 
+        n_context.update({name: self.child, 'content': self.child,
                         'class': name, 'disqus': settings.DISQUS, 'nav':nav, 'noindex':noindex})
-        
+
         if method == 'page':
             # print view
             if request is not None and request.GET.get('print',""):
                 return mark_safe(render_to_string('models/%s/print.html'%(name),
                                  n_context))
-            
+
             self.store_hit()
-            
+
             # flyby content
             if self.section == Section.cached('flyby') and self.content_type == Article.ct():
                 return mark_safe(render_to_string('models/%s/flyby_page.html'%(name),
                                  n_context))
-        
+
         return mark_safe(render_to_string(templ, n_context))
-    
+
     def delete(self):
         # anyone can delete drafts
         if int(self.pub_status) is 0:
@@ -327,11 +327,11 @@ class Content(models.Model):
         else:
             self.pub_status = -1
             self.save()
-    
+
     # TODO: refactor / simplify store_hit
     def store_hit(self):
         """Store a pageview for this item using lazy storage.
-        
+
         Don't store every hit, just a random sampling of the hits, and only
         hit the database in batches.
         """
@@ -341,9 +341,9 @@ class Content(models.Model):
         BASE_THRESHOLD = 4
         # Amount to increase the threshold by each time
         THRESHOLD_JUMP = 5
-        # Amount of time to keep number of hits in cache -- we don't want to 
-        # lose hits, so make this long.  Note that hits are actually lost 
-        # anyway if the threshold still isn't hit in this interval, but if 
+        # Amount of time to keep number of hits in cache -- we don't want to
+        # lose hits, so make this long.  Note that hits are actually lost
+        # anyway if the threshold still isn't hit in this interval, but if
         # that happens, the article is so unpopular that either we don't care
         # at all b/c it won't be ranked or The Crimson has no readership left
         HITS_STORE_TIME = 99999
@@ -358,7 +358,7 @@ class Content(models.Model):
         if not cache.add(thres_str, BASE_THRESHOLD, MIN_DB_STORE_INTERVAL * 3):
             cur_threshold = cache.get(thres_str)
             last_storetime = cache.get(time_str)
-        # Add the time value to the cache, using the base threshold (previous 
+        # Add the time value to the cache, using the base threshold (previous
         #  add already added threshold to cache)
         else:
             cache.add(time_str, now, MIN_DB_STORE_INTERVAL * 3)
@@ -377,7 +377,7 @@ class Content(models.Model):
             last_storetime = now
         if cur_threshold <= cached_hits:
             # We hit the threshold
-            # First check whether the interval between the last time the 
+            # First check whether the interval between the last time the
             # threshold was hit and now is less than the minimum
             interval = now - last_storetime
             if interval and interval.seconds < MIN_DB_STORE_INTERVAL:
@@ -394,25 +394,25 @@ class Content(models.Model):
             # Reset a things
             cache.set(time_str, now, MIN_DB_STORE_INTERVAL * 3)
             cache.delete(hits_str)
-    
+
     @staticmethod
     @funcache(3600)
     def types():
         """Return all ContentType objects with parent Content"""
-        return [ContentType.objects.get_for_model(cls) 
+        return [ContentType.objects.get_for_model(cls)
                 for cls in Content.__subclasses__()]
 
 class ContentHits(models.Model):
     content = models.ForeignKey(Content)
     date = models.DateField(auto_now_add=True, db_index=True)
     hits = models.PositiveIntegerField(default=1)
-    
+
     def save(self, *args, **kwargs):
         return super(ContentHits, self).save(*args, **kwargs)
-    
+
     def __unicode__(self):
         return "Content %d with %d hits" % (self.content_id, self.hits)
-    
+
 
 def get_img_path(instance, filename):
     ext = splitext(filename)[1]
@@ -422,10 +422,10 @@ def get_img_path(instance, filename):
 class ContentGroup(models.Model):
     """
     Groupings of content.  Best for groupings that have simple metadata
-        (just a blurb and an image), arbitrary (or chronological) ordering, 
+        (just a blurb and an image), arbitrary (or chronological) ordering,
         and not much else.
     This is different from tags because groupings have metadata.
-    
+
     Examples:
       * Columns
       * Blogs
@@ -436,30 +436,30 @@ class ContentGroup(models.Model):
         ('series', 'Series'),
         ('blog', 'Blog'),
     )
-    
+
     type = models.CharField(max_length=25, choices=TYPE_CHOICES, db_index=True)
     name = models.CharField(max_length=35, db_index=True)
     subname = models.CharField(max_length=40, blank=True, null=True)
     blurb = models.TextField(blank=True, null=True)
     section = models.ForeignKey('Section', blank=True, null=True)
     image = SuperImageField(upload_to=get_img_path, max_width=300,
-        blank=True, null=True, storage=OverwriteStorage(), 
+        blank=True, null=True, storage=OverwriteStorage(),
         help_text='Thumbnail')
     active = models.BooleanField(default=True, help_text="ContentGroups that " \
         "could still have content posted to them are active.  Active "\
         "blogs and columnists show up on section pages.", db_index=True)
-    
+
     class Meta:
         unique_together = (('type', 'name',),)
         verbose_name_plural = "Content Groups"
-    
+
     def __unicode__(self):
         return "%s/%s" % (self.type, self.name)
-    
+
     def delete(self):
         self.content.clear()
         super(ContentGroup, self).delete()
-    
+
     @staticmethod
     def by_name(type, name):
         """
@@ -470,7 +470,7 @@ class ContentGroup(models.Model):
         if not cg:
             cg = ContentGroup.update_cache()
         return cg.get((type, name), None)
-    
+
     @staticmethod
     def update_cache():
         """
@@ -483,7 +483,7 @@ class ContentGroup(models.Model):
             cg[(obj.type, make_url_friendly(obj.name))] = obj
         cache.set('contentgroups_all', cg, 1000000)
         return cg
-    
+
     def save(self, *args, **kwargs):
         """
         When Content Groups change, we need to update the cache
@@ -497,36 +497,36 @@ class ContentGroup(models.Model):
         except:
             raise
         return s
-    
+
     @permalink
     def get_absolute_url(self):
         return ('content_contentgroup', [self.type, make_url_friendly(self.name)])
-    
+
 
 class Tag(models.Model):
     """
     A word or phrase used to classify or describe some content.
-    
+
     # A bit of setup
     >>> from django.db import IntegrityError
-    
+
     # Create some tags
     >>> tag1 = Tag.objects.create(text='potato')
     >>> tag2 = Tag.objects.create(text='not potato')
-    
+
     # No duplicate tags
     >>> try:
     ...     tag3 = Tag.objects.create(text='potato')
     ... except IntegrityError:
     ...     print "caught"
-    ... 
+    ...
     caught
-    
+
     # __unicode__
     >>> str(tag1)
     'potato'
     """
-    
+
     CATEGORY_CHOICES = (
         ('sports', 'Sports'),
         ('college', 'College'),
@@ -538,16 +538,16 @@ class Tag(models.Model):
         ('depts', 'Departments'),
         ('', 'Uncategorized')
     )
-    
+
     # validates in the admin
     text = models.CharField(blank=False, max_length=25, unique=True,
         help_text='Tags can contain letters and spaces', db_index=True)
-    category = models.CharField(blank=True, max_length=25, 
+    category = models.CharField(blank=True, max_length=25,
                                 choices=CATEGORY_CHOICES, db_index=True)
-    
+
     def __unicode__(self):
         return self.text
-    
+
     """
     # This is incredibly slow right now
     @staticmethod
@@ -560,39 +560,39 @@ class Tag(models.Model):
                 .annotate(content_count=Count('content')) \
                 .order_by('-content_count')[:n]
         return tags
-    """    
-    
+    """
+
     @permalink
     def get_absolute_url(self):
         return ('content_tag', [self.text])
-    
+
 
 def contrib_pic_path(instance, filename):
     ext = splitext(filename)[1]
     name = '%s_%s_%s' % \
         (instance.first_name, instance.middle_name, instance.last_name)
     return 'photos/contrib_pics/' + name + ext
-    
-    
+
+
 class Contributor(models.Model):
     """
-    Someone who contributes to the Crimson, 
+    Someone who contributes to the Crimson,
     like a staff writer, a photographer, or a guest writer.
-    
+
     # Create a contributor
     >>> c = Contributor(first_name='Dan', middle_name='C',last_name='Carroll')
-    
+
     # Test the unicode string
     >>> str(c)
     'Dan C. Carroll'
-    
+
     # Default is active
     >>> c.is_active
     True
     """
-    
+
     userdata = models.OneToOneField(
-        UserData, verbose_name='web user', unique=True, blank=False, 
+        UserData, verbose_name='web user', unique=True, blank=False,
         null=True, related_name='contributor',
     )
     first_name = models.CharField(blank=False, null=True, max_length=70)
@@ -610,41 +610,41 @@ class Contributor(models.Model):
         help_text='This should be true for anyone who could possibly still ' \
                     'write for The Crimson, including guest writers.')
     profile_text = models.TextField(blank=True, null=True,
-        help_text="""<b>Text enclosed in [square brackets] 
+        help_text="""<b>Text enclosed in [square brackets]
         will be bold and red</b>""")
     profile_pic = SuperImageField(blank=True, null=True, max_width=131,
         upload_to=contrib_pic_path, storage=OverwriteStorage())
-    
+
     class Meta:
         ordering = ('last_name',)
-    
+
     @property
     def user(self):
         if self.userdata is not None:
             return self.userdata.user
         else:
             return None
-    
+
     @property
     def profile(self):
         return self.profile_text or self.profile_pic or self.class_of or self.concentration
-    
+
     def __unicode__(self):
         if self.middle_name is None or self.middle_name == '':
             m = ''
         else:
             m = ' ' + self.middle_name
         return '%s%s %s' % (self.first_name, m, self.last_name)
-        
+
     def __setattr__(self, name, value):
         # hash the huid before storing it; but actually don't
         #if name == 'huid_hash' and value != None:
         #    value = md5(value).digest()
         return super(Contributor, self).__setattr__(name, value)
-    
+
     @permalink
     def get_absolute_url(self):
-        return ('content_writer_profile', 
+        return ('content_writer_profile',
             [str(self.id), self.first_name, self.middle_name, self.last_name])
     get_absolute_url = ret_on_fail(get_absolute_url, '')
 
@@ -652,18 +652,18 @@ class Contributor(models.Model):
 class Section(models.Model):
     """
     Eg: News, Sports, etc.
-    
+
     # create some Sections
     >>> l = ['news', 'opinion', 'sports', 'fm']
     >>> for s in l:
     ...     a = Section.objects.create(name=s)
-    
+
     # all() should return all of them
     >>> things = Section.all()
     >>> names = [t.name for t in things]
     >>> for s in l:
     ...     assert s in names, True
-    
+
     # all()'s cache should be inaccurate
     >>> Section.objects.create(name='arts')
     <Section: arts>
@@ -671,20 +671,20 @@ class Section(models.Model):
     >>> 'arts' in [t.name for t in things]
     False
     """
-    
+
     name = models.CharField(blank=False, max_length=50, db_index=True)
     audiodizer_id = models.IntegerField(blank=True, null=True)
-    
+
     @staticmethod
     def all():
-        # cache won't be up to date, but that's fine. 
+        # cache won't be up to date, but that's fine.
         #   sections should almost never change
         a = cache.get('sections_all')
         if a is None:
             a = Section.objects.all()
             cache.set('sections_all', a, 1000000)
         return a
-    
+
     @staticmethod
     def cached(section_name=None):
         a = cache.get('sections_cached')
@@ -694,41 +694,41 @@ class Section(models.Model):
         if section_name:
             return a[section_name]
         return a
-    
+
     """
     def top_tags(self,range=30,n=10):
         return Tag.top_by_section(self,range)
     """
-    
+
     @permalink
     def get_absolute_url(self):
         return ('content.section.%s' % self.name.lower(), [])
-    
+
     def __unicode__(self):
         return self.name
 
 
 class IssueManager(models.Manager):
-    
+
     LIVE = Q(web_publish_date__lte=datetime.now())
     DAILY = Q(special_issue_name="") | Q(special_issue_name=None)
-    
+
     @property
     def live(self):
         return self.get_query_set().filter(IssueManager.LIVE)
-    
+
     @property
     def special(self):
         return self.get_query_set().exclude(IssueManager.DAILY)
-    
+
     @property
     def daily(self):
         return self.get_query_set().filter(IssueManager.DAILY)
-    
+
     @property
     def live_daily(self):
         return self.daily.filter(IssueManager.LIVE)
-    
+
     @property
     def live_special(self):
         return self.special.filter(IssueManager.LIVE)
@@ -736,20 +736,20 @@ class IssueManager(models.Manager):
 class Issue(models.Model):
     """
     A set of content (articles, photos) for a particular date.
-    
+
     Special issues should NEVER be displayed by default on the index.
     They should be displayed via content modules or special redirects.
-    
+
     # Clear out the fixture preloaded issues
     >>> a = [i.delete() for i in Issue.objects.all()]
-    
+
     # Create some issues
     >>> from datetime import datetime, timedelta
     >>> deltas = [timedelta(days=i) for i in range(-5, 6) if i]
     >>> now = datetime.now()
     >>> for d in deltas:
     ...     a = Issue.objects.create(issue_date=now+d)
-    
+
     # make some of them special
     >>> i1 = Issue.objects.get(pk=1)
     >>> i1.special_issue_name = "Commencement 2008"
@@ -757,7 +757,7 @@ class Issue(models.Model):
     >>> i2 = Issue.objects.get(pk=6)
     >>> i2.special_issue_name = "Election 2008"
     >>> i2.save()
-    
+
     # managers
     >>> Issue.objects.all().count()
     10
@@ -771,13 +771,13 @@ class Issue(models.Model):
     1
     >>> Issue.objects.live_daily.all().count()
     4
-    
+
     # set_as_current and get_current
     >>> i3 = Issue.objects.get(pk=5)
     >>> i3.set_as_current()
     >>> assert Issue.get_current().issue_date, i2.issue_date
     """
-    
+
     special_issue_name = models.CharField(blank=True, null=True,
         help_text="Leave this blank for daily issues!!!", max_length=100,
         db_index=True
@@ -798,12 +798,12 @@ class Issue(models.Model):
     comments = models.TextField(
         blank=True, null=True, help_text='Notes about this issue.'
     )
-    
+
     objects = IssueManager()
-    
+
     class Meta:
         ordering = ['-issue_date',]
-    
+
     @property
     def fm_cover(self):
         if not self.fm_name:
@@ -813,7 +813,7 @@ class Issue(models.Model):
             rel_content__content_type=Image.content_type(), section=s) \
             .distinct()[:1]
         return a[0].main_rel_content if a else None
-    
+
     @property
     def arts_cover(self):
         if not self.arts_name:
@@ -822,15 +822,15 @@ class Issue(models.Model):
         a = Article.objects.recent.filter(issue=self,
             rel_content__content_type=Image.content_type(), section=s) \
             .distinct()[:1]
-        if a is not None: 
+        if a is not None:
             return a[0].main_rel_content
-        else: 
+        else:
             return None
-    
+
     @permalink
     def get_absolute_url(self):
         return ('content_index', [self.issue_date.year, self.issue_date.month, self.issue_date.day])
-    
+
     #TODO: funcache this
     @staticmethod
     def last_n(n, rece_date=None):
@@ -845,7 +845,7 @@ class Issue(models.Model):
         if len(i) == 0:
             raise Exception("There are no issues.")
         return i
-    
+
     @staticmethod
     def get_current():
         """gets current issue from cache"""
@@ -854,21 +854,21 @@ class Issue(models.Model):
             i = Issue.objects.latest('issue_date')
             i.set_as_current()
         return i
-    
+
     def save(self, *args, **kwargs):
         # web publish date is 6 am on the issue date
         if self.web_publish_date is None:
             self.web_publish_date = datetime.combine(self.issue_date, time(6))
         return super(Issue, self).save(*args, **kwargs)
-    
+
     def set_as_current(self, timeout=3600):
         return cache.set('current_issue', self, timeout)
-    
+
     def __unicode__(self):
         if self.issue_date.year >= 1900:
             return self.issue_date.strftime('%A, %B %d, %Y')
         return strftime_safe(self.issue_date, '%A, %B %d, %Y')
-    
+
 
 class ImageManager(ContentManager):
     def get_query_set(self):
@@ -877,8 +877,8 @@ class ImageManager(ContentManager):
         # images in the right order.  this is probably really inefficient
         if self.__class__.__name__ == 'ManyRelatedManager':
             s = s.order_by('gallerymembership__order')
-        return s  
-    
+        return s
+
 
 def image_get_save_path(instance, filename):
     ext = splitext(filename)[1]
@@ -890,19 +890,19 @@ class Image(Content):
     """
     An image. Handles attributes about image. Handling of image resizing and
     cropping is done by display() and ImageSpec objects
-    
+
     # TODO: not quite sure how to test Image
-    
+
     """
-    
-    # standard image size constraints: 
+
+    # standard image size constraints:
     #  width, height, crop_ratio ( 0 => not cropped )
     SIZE_TINY = (75, 75, 1, 1)
     SIZE_SMALL = (100, 100, 1, 1)
     SIZE_THUMB = (150, 150, 1, 1)
     SIZE_STAND = (630, 630, 0, 0)
     SIZE_LARGE = (900, 900, 0, 0)
-    
+
     caption = models.CharField(blank=True, null=True, max_length=1000)
     kicker = models.CharField(blank=True, null=True, max_length=500)
     # make sure pic is last: photo_save_path needs an instance, and if this
@@ -913,14 +913,14 @@ class Image(Content):
     crop_x = models.IntegerField(null=True)
     crop_y = models.IntegerField(null=True)
     crop_side = models.IntegerField(null=True)
-    
+
     objects = ImageManager()
-    
+
     @property
     def img_title(self):
         """Title / alt for <img> tags."""
         return self.kicker
-    
+
     @property
     def orientation(self):
         ratio = float(self.pic.width) / float(self.pic.height)
@@ -928,7 +928,7 @@ class Image(Content):
             return 'wide'
         else:
             return 'tall'
-    
+
     def save(self, *args, **kwargs):
         newpath = kwargs.pop('newpath', False)
         super(Image, self).save(*args, **kwargs)
@@ -940,8 +940,8 @@ class Image(Content):
             os.rename(self.pic.path, new_path)
             self.pic.name = b
             super(Image, self).save(*args, **kwargs)
-        
-    
+
+
     def __getattr__(self, attr):
         "dispatches calls to standard sizes to display()"
         try:
@@ -949,27 +949,27 @@ class Image(Content):
             return self.display(*size)
         except:
             return getattr(super(Image, self), attr)
-    
-    def display_url(self, size_spec):
+
+    def display_url(self, size_spec, upscale=False):
         """ convenience method for the pic attribute's method of same name """
         if self.crop_x and self.crop_y and self.crop_side:
-            return self.pic.display_url(size_spec, (self.crop_x, self.crop_y, self.crop_side))
+            return self.pic.display_url(size_spec, (self.crop_x, self.crop_y, self.crop_side), upscale=upscale)
         else:
-            return self.pic.display_url(size_spec, None)
-    
+            return self.pic.display_url(size_spec, None, upscale=upscale)
+
     def crop_thumb(self, size_spec, crop_coords):
         """ convenience method for the pic attribute's method of same name """
         self.crop_x = crop_coords[0]
         self.crop_y = crop_coords[1]
         self.crop_side = crop_coords[2] - crop_coords[0]
         self.pic.crop_thumb(size_spec, crop_coords)
-    
+
     def __unicode__(self):
         return self.kicker
-    
+
     def identifier(self):
         return make_url_friendly(self.kicker)
-    
+
     def admin_thumb(self):
         """HTML for tiny thumbnail in the admin page."""
         return """<img src="%s">""" % self.display_url(Image.SIZE_TINY)
@@ -980,24 +980,24 @@ class Gallery(Content):
     """
     A collection of displayed content (images, youtube, infographics, etc.)
     """
-    
+
     title = models.CharField(blank=False, null=False, max_length=200)
     description = models.TextField(blank=False, null=False)
     contents = models.ManyToManyField(Content, through='GalleryMembership',
         related_name="galleries_set")
-    
+
     objects = ContentManager()
-    
+
     @property
     def img_title(self):
         """Title/alt for an <img> tag"""
         return self.title
-    
+
     def display_url(self, size_spec):
         if self.cover_image is None:
             return ''
         return self.cover_image.display_url(size_spec)
-    
+
     @property
     def cover_image(self):
         # TODO: clear this on save
@@ -1008,36 +1008,36 @@ class Gallery(Content):
                 ci = self.contents.order_by('galleries_set')[0].child
             self._cover_image = ci
         return self._cover_image
-    
+
     @property
     def admin_contents(self):
         acrs = GalleryMembership.objects.filter(gallery=self)
         return [x.content.child for x in acrs]
-    
+
     @property
     def admin_content_pks(self):
         acrs = GalleryMembership.objects.filter(gallery=self)
         return ";".join([str(x.content.pk) for x in acrs])
-    
+
     def __unicode__(self):
         return self.title
-    
+
     def delete(self):
         self.contents.clear()
         super(Gallery, self).delete()
-    
+
     class Meta:
         verbose_name_plural = "Galleries"
-    
+
 
 class GalleryMembership(models.Model):
     gallery = models.ForeignKey(Gallery, related_name="gallery_set")
     content = models.ForeignKey(Content, related_name="content_set")
     order = models.IntegerField()
-    
+
     class Meta:
         ordering = ('order',)
-    
+
 
 def youtube_get_save_path(instance, filename):
     ext = splitext(filename)[1]
@@ -1049,44 +1049,44 @@ def youtube_get_save_path(instance, filename):
 
 class YouTubeVideo(Content):
     """Embeddable YouTube video."""
-    
-    key = models.CharField(blank=False, null=False, max_length=100, 
+
+    key = models.CharField(blank=False, null=False, max_length=100,
         help_text="youtube.com/watch?v=(XXXXXX)&... part of the YouTube URL. "
-        "NOTE: THIS IS NOT THE ENTIRE YOUTUBE URL.", 
+        "NOTE: THIS IS NOT THE ENTIRE YOUTUBE URL.",
         db_index=True)
     title = models.CharField(blank=False, null=False, max_length=200)
     description = models.TextField(blank=False, null=False)
-    pic = SuperImageField('Preview Picture', max_width=960, 
+    pic = SuperImageField('Preview Picture', max_width=960,
         upload_to=youtube_get_save_path, null=True)
-    
+
     objects = ContentManager()
-    
+
     @property
     def img_title(self):
         """Title/alt for <img> tags."""
         return self.title
-    
+
     def __unicode__(self):
         return self.title
-    
+
     class Meta:
         verbose_name_plural = "YouTube Videos"
-    
+
     def display_url(self, size_spec):
         if self.pic:
             return self.pic.display_url(size_spec)
         else:
             return ''
-    
+
     @property
     def youtube_url(self):
         return 'http://www.youtube.com/watch?v=%s' % self.key
-    
+
     def admin_youtube(self):
         return '<a href="%s">%s</a>' % (self.youtube_url, self.youtube_url)
     admin_youtube.allow_tags = True
     admin_youtube.short_description = 'YouTube Link'
-    
+
     def admin_thumb(self):
         """HTML for tiny thumbnail in the admin page."""
         if self.pic:
@@ -1104,27 +1104,27 @@ def misc_get_save_path(instance, filename):
 
 class FlashGraphic(Content):
     """A Flash Graphic."""
-    
+
     graphic = models.FileField(upload_to=misc_get_save_path, null=False, blank=False)
     pic = SuperImageField(upload_to=misc_get_save_path, max_width=600,
-        blank=False, null=False, storage=OverwriteStorage(), 
+        blank=False, null=False, storage=OverwriteStorage(),
         help_text='Thumbnail')
     width = models.PositiveIntegerField()
     height = models.PositiveIntegerField()
     title = models.CharField(blank=False, null=False, max_length=200)
     description = models.TextField(blank=False, null=False)
-    
+
     def __unicode__(self):
         return self.title
-    
+
     objects = ContentManager()
-    
+
     def display_url(self, size_spec):
         if self.pic:
             return self.pic.display_url(size_spec)
         else:
             return ''
-    
+
     def admin_thumb(self):
         """HTML for tiny thumbnail in the admin page."""
         if self.pic:
@@ -1133,7 +1133,7 @@ class FlashGraphic(Content):
             return "No Preview"
     admin_thumb.allow_tags = True
     admin_thumb.short_description = 'Thumbnail'
-    
+
     class Meta:
         verbose_name_plural = "Flash Graphics"
 
@@ -1153,10 +1153,10 @@ class Map(Content):
     height = models.IntegerField(default='300')
     # display stuff
     caption = models.CharField(blank=True, max_length=1000)
-    
+
     def __unicode__(self):
-        return self.title    
-    
+        return self.title
+
     objects = ContentManager()
 
 class Marker(models.Model):
@@ -1168,16 +1168,16 @@ class Marker(models.Model):
     lng = models.FloatField(blank=False, db_index=True)
     popup_text = models.CharField(blank=True, max_length = 1000,
         help_text="text that appears when the user clicks the marker")
-    
+
     def __unicode__(self):
         return str(self.map) + ' (' + str(self.lat) + ',' + str(self.lng) + ')'
-    
+
 
 
 class Article(Content):
     """
     Non serial text content
-    
+
     # create some articles
     >>> c = Contributor.objects.create(first_name='Kristina',
     ...     last_name='Moore')
@@ -1186,22 +1186,22 @@ class Article(Content):
     >>> s = Section.objects.create(name='movies')
     >>> a1 = Article.objects.create(headline='abc', text='abcdefg',
     ...     issue=i, section=s, proofer=c, sne=c)
-    >>> a2 = Article.objects.create(headline='head line', 
+    >>> a2 = Article.objects.create(headline='head line',
     ...     text='omg. lolz.', issue=i, section=s, proofer=c, sne=c)
-    
+
     # teasers
     >>> str(a2.long_teaser)
     'omg. lolz.'
-    
+
     """
-        
+
     BYLINE_TYPE_CHOICES = (
         ('cstaff', 'Crimson Staff Writer'),
         ('contrib', 'Contributing Writer'),
     )
-    
-    objects = ContentManager()    
-    
+
+    objects = ContentManager()
+
     headline = models.CharField(blank=False, max_length=127, db_index=True)
     subheadline = models.CharField(blank=True, null=True, max_length=255)
     byline_type = models.CharField(
@@ -1223,15 +1223,15 @@ class Article(Content):
         Contributor, related_name='sned_article_set',
         limit_choices_to={'is_active': True}, blank=True, null=True)
     web_only = models.BooleanField(default=False, null=False, blank=False)
-    
-    rel_content = models.ManyToManyField(Content, through='ArticleContentRelation', 
+
+    rel_content = models.ManyToManyField(Content, through='ArticleContentRelation',
         null=True, blank=True, related_name="rel_content")
-    
+
     @property
     def rel_admin_content(self):
         acrs = ArticleContentRelation.objects.filter(article=self)
         return ";".join([str(x.related_content.pk) for x in acrs])
-    
+
     # Override save to check whether we're modifying an existing article's text
     def save(self, *args, **kwargs):
         if self.pk:
@@ -1246,25 +1246,25 @@ class Article(Content):
                     corr = Correction(text = oldtext, article = self)
                     corr.save()
         return super(Article, self).save(*args, **kwargs)
-    
+
     def delete(self):
         self.rel_content.clear()
         super(Article, self).delete()
-    
+
     @property
     def long_teaser(self):
-        return sub(r'<[^>]*?>', '', truncatewords(self.title,50)) 
-    
+        return sub(r'<[^>]*?>', '', truncatewords(self.title,50))
+
     @property
     def main_rel_content(self):
         r = self.rel_content.all()[:1]
         # need to return child, so that subclass methods can be called
         r = r[0].child if r else None
         return r if not isinstance(r, Article) else None
-    
+
     def __unicode__(self):
         return self.headline
-    
+
     def identifier(self):
         return self.headline
 
@@ -1272,18 +1272,18 @@ class ArticleContentRelation(models.Model):
     article = models.ForeignKey(Article, related_name = "ar")
     related_content = models.ForeignKey(Content)
     order = models.IntegerField(blank=True, null=True)
-    
+
     class Meta:
         ordering = ('order',)
-    
+
     """
     class Meta:
         unique_together = (
-            ('article', 'related_content',), 
+            ('article', 'related_content',),
             ('article', 'order',),
     )
     """
-    
+
 
 class Review(models.Model):
     TYPE_CHOICES = (
@@ -1308,7 +1308,7 @@ class Score(models.Model):
     home_game = models.BooleanField()
     text = models.CharField(max_length=50, null=True, blank=True)
     event_date = models.DateField()
-    
+
     def __unicode__(self):
         if self.text:
             return self.text
@@ -1316,19 +1316,19 @@ class Score(models.Model):
             return "Harvard %s %s %s" % (self.our_score,self.opponent,self.their_score)
         elif self.opponent and self.home_game:
             return "%s %s Harvard %s" % (self.opponent,self.their_score,self.our_score)
-    
+
 
 class Correction(models.Model):
     text = models.TextField(blank=False, null=False)
     dt = models.DateTimeField(auto_now=True, db_index=True)
     article = models.ForeignKey(Article, null=False, blank=False)
-    
+
     def save(self, *args, **kwargs):
         return super(Correction, self).save(*args, **kwargs)
-    
+
     def __unicode__(self):
         return str(self.id)
-    
+
 def genericfile_get_save_path(instance, filename):
     ext = splitext(filename)[1]
     title = make_file_friendly(instance.title)
