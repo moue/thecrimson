@@ -408,11 +408,15 @@ def section_sports(request):
     columns = columns[:3]
 
     try:
-        featured_group_name = ContentModule.objects.get(name="sports.rotator").content
-        featured_group_name.strip()
-        featured_group = ContentGroup.objects.filter(section=section, active=True,
-            name=featured_group_name)
-        featured = Article.objects.filter(section=section, group=featured_group)
+        srcm = ContentModule.objects.get(name="sports.rotator")
+        if srcm.expiration < datetime.now():
+            featured = []
+        else:
+            featured_group_name = ContentModule.objects.get(name="sports.rotator").comment
+            featured_group_name.strip()
+            featured_group = ContentGroup.objects.filter(section=section, active=True,
+                name=featured_group_name)
+            featured = Article.objects.filter(section=section, group=featured_group)
     except:
         featured = []
 
