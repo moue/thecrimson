@@ -5,7 +5,7 @@ from django.utils.safestring import mark_safe
 from crimsononline.content.models import Image, Map, Article, Content, Marker, \
                                          YouTubeVideo, Gallery, FlashGraphic
 from crimsononline.common.templatetags.common import linkify, human_list
-from crimsononline.common.fields import size_spec_to_size
+from crimsononline.common.fields import size_spec_to_size, AutosizeImageFieldFile
 from crimsononline.common.utils.html import para_list
 from re import compile, search, sub, DOTALL
 
@@ -113,7 +113,8 @@ def to_img_tag(img, size_spec):
 
 @register.filter
 def img_url(img, size_spec):
-    if not img or img.__class__ not in [Image, YouTubeVideo, FlashGraphic, Gallery]:
+    # oh lawd almighty
+    if not img or not hasattr(img, 'display_url'):
         return ''
     upscale = False
     if isinstance(size_spec, tuple) or isinstance(size_spec, list):
