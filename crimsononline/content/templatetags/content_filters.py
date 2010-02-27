@@ -3,7 +3,7 @@ from django import template
 from django.template import defaultfilters as filter
 from django.utils.safestring import mark_safe
 from crimsononline.content.models import Image, Map, Article, Content, Marker, \
-                                         YouTubeVideo
+                                         YouTubeVideo, Gallery, FlashGraphic
 from crimsononline.common.templatetags.common import linkify, human_list
 from crimsononline.common.fields import size_spec_to_size
 from crimsononline.common.utils.html import para_list
