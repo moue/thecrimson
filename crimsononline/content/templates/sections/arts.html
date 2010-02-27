@@ -22,7 +22,7 @@
 
 {% block middlecolumn %}
     {% rotator rotate "news_rotator" %}
-    
+
     {% module 4 "more stories" %}
     <div class="article_headlines">
         <ul>
@@ -37,8 +37,8 @@
 {% endblock %}
 
 {% block rightcolumn %}
-    {% module 4 "" box %} 
     {% if reviews %}
+    {% module 4 "" box %}
     <div id="reviews" class="reviews">
         {% if reviews.movie %}
         <span class="title">MOVIE REVIEWS</span>
@@ -81,9 +81,9 @@
         {% endif %}
         <span class="clear"></span>
     </div>
-    {% endif %}
     {% endmodule %}
-    
+    {% endif %}
+
     {% module 4 "featured content" box %}
     <div id = "featured_content">
         <div id="headlines" class="article_previews">
@@ -103,12 +103,12 @@
         </div>
     </div>
     {% endmodule %}
-    
+
 
     {% module 4 "" box %}
         {% advertisement 59 %}
     {% endmodule %}
-    
+
     {% module 4 columns box %}
     <div id="columnists" class="img_list">
         <ul>
@@ -128,7 +128,7 @@
     </div>
     {% endmodule %}
 
-    
+
     {% comment %}{% module 4 "past issues" %}
     <div id="issues" class="img_list">
         <ul>
