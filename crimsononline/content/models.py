@@ -993,7 +993,7 @@ class Gallery(Content):
         """Title/alt for an <img> tag"""
         return self.title
 
-    def display_url(self, size_spec):
+    def display_url(self, size_spec, upscale=False):
         if self.cover_image is None:
             return ''
         return self.cover_image.display_url(size_spec)
@@ -1072,7 +1072,7 @@ class YouTubeVideo(Content):
     class Meta:
         verbose_name_plural = "YouTube Videos"
 
-    def display_url(self, size_spec):
+    def display_url(self, size_spec, upscale=False):
         if self.pic:
             return self.pic.display_url(size_spec)
         else:
@@ -1119,7 +1119,7 @@ class FlashGraphic(Content):
 
     objects = ContentManager()
 
-    def display_url(self, size_spec):
+    def display_url(self, size_spec, upscale=False):
         if self.pic:
             return self.pic.display_url(size_spec)
         else:
