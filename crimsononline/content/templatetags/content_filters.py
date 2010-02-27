@@ -113,7 +113,7 @@ def to_img_tag(img, size_spec):
 
 @register.filter
 def img_url(img, size_spec):
-    if not img or img.__class__ is not Image:
+    if not img or img.__class__ not in [Image, YouTubeVideo, FlashGraphic, Gallery]:
         return ''
     upscale = False
     if isinstance(size_spec, tuple) or isinstance(size_spec, list):
