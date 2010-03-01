@@ -19,9 +19,9 @@
             </ul>
         </div>
     {% endmodule %}
-    
+
     <span class="clear"></span>
-    
+
     {% contentmodule news_bottom_left %}
         {% if series.0 %}
         <div class="bordered series">
@@ -95,16 +95,24 @@
         </div>
     </div>
     {% endmodule %}
-    
+
     {% module 4 "" box %}
         {% advertisement 59 %}
     {% endmodule %}
-    
+
     {% cache 500 mostreadarticles_news %}
         {% most_read_articles "section:news" %}
     {% endcache %}
-    
+
     {% tag_cloud 20 "tags" %}
 
-	
+
+{% endblock %}
+
+{% block belowcolumn %}
+<div class="hp_widget">
+<script src="http://www.huffingtonpost.com/include/lib/ad_drivers/
+traffic_driver.php?metric=most_read&width=728&height=90&vert=college"
+type="text/javascript"></script>
+</div>
 {% endblock %}
