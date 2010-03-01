@@ -76,7 +76,7 @@ def index(request, m=None, d=None, y=None):
             more_stories.append(story)
         if len(more_stories) == 9:
             break
-    dict['more_stories'] = stories[4:13]
+    dict['more_stories'] = more_stories
     dict['opeds'] = top_articles('Opinion', dt)[:4]
     dict['arts'] = top_articles('Arts', dt)[:4]
     # Prevent sports articles that showed up in top articles from appearing again
