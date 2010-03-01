@@ -61,7 +61,7 @@ def index(request, m=None, d=None, y=None):
         except:
             # TODO: remove this 404, just say issue not found
             raise Http404
-    stories = top_articles('News', dt)
+    stories = top_articles('News, Sports', dt)
 
     dict = {}
     dict['rotate'] = rotatables(None, 4)
@@ -70,10 +70,17 @@ def index(request, m=None, d=None, y=None):
     #                                                value=[m, d, y])
     dict['nav'] = 'index'
     dict['top_stories'] = stories[:4]
+    more_stories = []
+    for story in stories[4:]:
+        if story.section != Section.objects.get(name='Sports'):
+            more_stories.append(story)
+        if len(more_stories) == 9:
+            break
     dict['more_stories'] = stories[4:13]
     dict['opeds'] = top_articles('Opinion', dt)[:4]
     dict['arts'] = top_articles('Arts', dt)[:4]
-    dict['sports'] = top_articles('Sports', dt)[:4]
+    # Prevent sports articles that showed up in top articles from appearing again
+    dict['sports'] = [x for x in top_articles('Sports', dt)[:10] if x not in dict['top_stories']][:4]
     dict['fms'] = top_articles('FM', dt)[:4]
     #dict['issue'] = Issue.get_current()
     dict['galleries'] = Gallery.objects.prioritized(40)[:6]
@@ -625,11 +632,24 @@ def filter_helper(req, qs, section_str, type_str, url_base):
 
 def top_articles(section, dt=None):
     """Return prioritized articles from @section"""
-    if isinstance(section, basestring):
-        key = 'section__name'
+    qexp = []
+    # Check if section is a comma-delimited list of sections
+    if isinstance(section, basestring) and section.count(',') > 0:
+        section = [x.strip() for x in section.split(',')]
+    # Process section, be it a list, string, or Section object, into Q object(s)
+    if isinstance(section, list):
+        for sec in section:
+            if isinstance(sec, basestring):
+                qexp.append(Q(**{'section__name': sec}))
+            else:
+                qexp.append(Q(**{'section': sec}))
+    elif isinstance(section, basestring):
+        qexp = [Q(**{'section__name': section})]
     else:
-        key = 'section'
-    stories = Article.objects.prioritized(100).filter(**{key: section})
+        qexp = [Q(**{'section': section})]
+    # We want to OR all the Qexps together
+    qexp = reduce(lambda x, y: x | y, qexp) if len(qexp) > 1 else qexp[0]
+    stories = Article.objects.prioritized(100).filter(qexp)
 
     if(dt is not None):
         stories = stories.filter(issue__issue_date__lte=dt)
