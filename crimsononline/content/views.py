@@ -258,7 +258,7 @@ def section_opinion(request):
     stories = top_articles(section)[:12]
     rotate = rotatables(section, 4)
     columns = ContentGroup.objects.filter(section=section, active=True,
-        type='column').annotate(recent=Max('content__issue__issue_date'))
+        type='column').annotate(recent=Max('content__issue__issue_date')).order_by('-recent')
 
     today = datetime.today()
     lastweek = today-timedelta(7)
