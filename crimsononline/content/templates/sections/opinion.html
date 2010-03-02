@@ -33,7 +33,7 @@
 
 {% block middlecolumn %}
     {% rotatornopreview rotate "editorial_cartoons" "EDITORIAL CARTOONS" %}
-    
+
     {% module 4 columns %}
         <div id="columnists" class="img_list">
         <ul>
@@ -53,7 +53,7 @@
         </div>
         <div id="columnists2" class="article_headlines">
         <ul>
-        {% for column in columns|slice:"6:" %}
+        {% for column in columns|slice:"6:12" %}
             {% if column.recent %}
             <li>
                 <h3>{{ column|linkify:column.name }}</h3>
@@ -94,7 +94,7 @@
     {% cache 500 mostreadarticles_opinion %}
         {% most_read_articles "section:opinion" %}
     {% endcache %}
-    
+
     {% comment %}{% tag_cloud 20 "tags" %}{% endcomment %}
 
 {% endblock %}
