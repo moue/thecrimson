@@ -494,6 +494,7 @@ class ContentGroup(models.Model):
             expire_page(self.get_absolute_url())
             # we should expire the section pag for the content type if it has one
             expire_page(self.section.get_absolute_url())
+            ContentGroup.update_cache()
         except:
             raise
         return s
