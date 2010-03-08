@@ -17,3 +17,5 @@ Disallow: /article/2006/9/27/police-arrest-junior-for-assault-span/
 Disallow: /article/2006/9/27/police-arrest-junior-for-assault-span/?print=1
 Disallow: /article/2006/10/31/news-in-brief-student-charged-with/
 Disallow: /article/2006/10/31/news-in-brief-student-charged-with/?print=1
+Disallow: /article/2008/4/23/scoped-jordan-b-weitzen-08-span/
+Disallow: /article/2008/4/23/scoped-jordan-b-weitzen-08-span/?print=1
