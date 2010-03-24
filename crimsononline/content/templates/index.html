@@ -15,8 +15,8 @@
 {% endblock %}
 
 {% block rss %}
-<link rel="alternate" type="application/rss+xml" 
-  title="RSS Feed for Latest News on www.thecrimson.com" 
+<link rel="alternate" type="application/rss+xml"
+  title="RSS Feed for Latest News on www.thecrimson.com"
   href="/feeds/latest/" />
 {% endblock %}
 {% block css %}
@@ -79,14 +79,18 @@
             </div>
         {% endcontentmodule %}
     {% endmodule %}
-    
+
 {% endblock %}
 
 {% block middlecolumn %}
     {% contentmodule index.rotater %}
         {% rotator rotate "main_rotator" %}
     {% endcontentmodule %}
-    
+
+    <div style="width: 309px; padding: 0;" class="mod mod-4 mod-box">
+        <a href="blog/the-back-page/"><img src="{% static_url "images/backpagebanner.png" %}" /></a>
+    </div>
+
     {% module 4 opinion gray "/section/opinion/" %}
         {% contentmodule index.opinion %}
         <div class="article_previews">
@@ -155,13 +159,13 @@
 	    </div>
 	{% endmodule %}
     {% endcomment %}
-    
+
     <div style="width: 309px; padding: 0; margin: 0">
         <a href="http://twitter.com/theCrimson"><img src="{% static_url "images/twitter.png" %}" /><a/><a href="http://www.facebook.com/pages/The-Harvard-Crimson/45870477736"><img src="{% static_url "images/facebook.png" %}" /></a>
     </div>
-    
+
     {% flyby_preview %}
-    
+
     {% cache 500 mostreadarticles_index %}
         {% most_read_articles %}
     {% endcache %}
@@ -171,15 +175,15 @@
             <script src="http://www.paperg.com/jsfb/embed.php?pid=18&amp;bid=15&amp;width=300&amp;height=250" type="text/javascript"></script>
 		</div>
     {% endmodule %}
-        
+
     {% tag_cloud 20 "tags" %}
-	
+
     {% module 4 "Featured Videos" box %}
         {% for vid in videos %}
             {{vid|render:"front_preview"}}
         {% endfor %}
     {% endmodule %}
-    
+
 {% endblock %}
 
 {% block belowcolumn %}
