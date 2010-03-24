@@ -22,7 +22,19 @@
     </ul>
 {% endblock %}
 
-{% block post_content %}{% endblock %}
+{% block post_content %}
+<span class="pagination">
+{% if p.has_previous %}
+    <a href="{{url_base}}{{section_str}}{{type_str}}/">&laquo; Newest</a>
+    <a href="{{url_base}}/page/{{p.previous_page_number}}{{section_str}}{{type_str}}/">&lsaquo; Newer</a>
+{% endif %}
+{{p.start_index}} - {{p.end_index}} of {{paginator.count}}
+{% if p.has_next %}
+    <a href="{{url_base}}/page/{{p.next_page_number}}{{section_str}}{{type_str}}/">Older &rsaquo;</a>
+    <a href="{{url_base}}/page/{{paginator.num_pages}}{{section_str}}{{type_str}}/">Oldest &raquo;</a>
+{% endif %}
+</span>
+{% endblock %}
 
 {% block mostreadarticles %}
 {% endblock %}
