@@ -2,8 +2,9 @@ from django.contrib.syndication.feeds import Feed
 from models import *
 from crimsononline.common.templatetags.common import human_list
 from django.contrib.syndication.feeds import FeedDoesNotExist
+from django.core.cache import cache
 from django.core.exceptions import ObjectDoesNotExist
-from crimsononline.settings import URL_BASE
+from crimsononline.settings import URL_BASE, CACHE_STANDARD, CACHE_LONG
 
 TITLE_BASE = "The Harvard Crimson" + " | "
 NUM_STORIES = 25
@@ -25,7 +26,12 @@ class Latest(CrimsonFeed):
     description = "The latest Crimson articles"
 
     # 6 is Flyby. No idea if this will help
+    
     def items(self):
+        latestitems = cache.get('feeds_latest')
+        if not latestitems:
+            latestitems = Article.objects.exclude(section=6).order_by('-issue__issue_date')[:NUM_STORIES]
+            cache.set('feeds_latest', latestitems, CACHE_STANDARD)
         return Article.objects.exclude(section=6).order_by('-issue__issue_date')[:NUM_STORIES]
     
 
@@ -49,7 +55,11 @@ class ByAuthor(CrimsonFeed):
         return "The latest Crimson articles by %s" % str(obj)
 
     def items(self, obj):
-        return Article.objects.filter(contributors__id__exact=obj.pk).order_by('-issue__issue_date')[:NUM_STORIES]
+        items = cache.get('feeds_author_%d' % obj.pk)
+        if not items:
+            items = Article.objects.filter(contributors__id__exact=obj.pk).order_by('-issue__issue_date')[:NUM_STORIES]
+            cache.set(('feeds_author_%d' % obj.pk), items, CACHE_LONG)
+        return items
     
 
 class ByTag(CrimsonFeed):
@@ -72,7 +82,11 @@ class ByTag(CrimsonFeed):
         return "The latest Crimson articles tagged with %s" % str(obj)
     
     def items(self, obj):
-        return Article.objects.filter(tags__id__exact=obj.pk).order_by('-issue__issue_date')[:NUM_STORIES]
+        items = cache.get('feeds_tag_%d' % obj.pk)
+        if not items:
+            items = Article.objects.filter(tags__id__exact=obj.pk).order_by('-issue__issue_date')[:NUM_STORIES]
+            cache.set('feeds_tag_%d' % obj.pk, items, CACHE_LONG)
+        return items
     
 
 class BySection(CrimsonFeed):
@@ -97,5 +111,9 @@ class BySection(CrimsonFeed):
         return "The latest Crimson articles in %s" % str(obj)
     
     def items(self, obj):
-        return Article.objects.filter(section__id__exact=obj.pk).order_by('-issue__issue_date')[:NUM_STORIES]
+        items = cache.get('feeds_section_%d' % obj.pk)
+        if not items:
+            items = Article.objects.filter(section__id__exact=obj.pk).order_by('-issue__issue_date')[:NUM_STORIES]
+            cache.set('feeds_section_%d' % obj.pk, items, CACHE_STANDARD)
+        return items
     
