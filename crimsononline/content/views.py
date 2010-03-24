@@ -61,7 +61,7 @@ def index(request, m=None, d=None, y=None):
         except:
             # TODO: remove this 404, just say issue not found
             raise Http404
-    stories = top_articles('News, Sports', dt)
+    stories = top_articles('News, Sports', dt).filter(group=None)
 
     dict = {}
     dict['rotate'] = rotatables(None, 4)
