@@ -21,10 +21,10 @@ urlpatterns += patterns('crimsononline.content.views',
         r'(?P<m_name>[\w\-\'\.\s]*)_(?P<l_name>[\w\-\'\.\s]+)/%s$' % FILTER_URL_RE,
         'writer', name='content_writer_profile'),
     url(r'^section/', include('crimsononline.content.section_urls'), name='content_section'),
-    url(r'^tag/(?P<tag>[\w&\'\s-]+)/%s$' % FILTER_URL_RE, 
+    url(r'^tag/(?P<tag>[\w&\'\s-]+)/%s$' % FILTER_URL_RE,
         'tag', name='content_tag'),
     url(r'^$', 'index', name='content_index'),
-    url(r'^issue/(\d+)/(\d+)/(\d+)/$', 'index', name='content_index'),    
+    url(r'^issue/(\d+)/(\d+)/(\d+)/$', 'index', name='content_index'),
     url(r'^subscribe/', include('crimsononline.subscriptions.urls')),
     url(r'^contact/', 'contact'),
     url(r'^iphone/(?P<s>\w+)/$', 'iphone'),
@@ -71,13 +71,16 @@ urlpatterns += patterns('',
 )
 
 # generic content urls
-CONTENT_URL_RE = r'([\w\-]+)/(\d{4})/(\d{1,2})/(\d{1,2})/([0-9\w_\-%]+)/$'
-CGROUP_URL_RE = r'([\w]+)/([\w0-9\-]+)/'
+CONTENT_URL_RE = r'(?P<ctype>[\w\-]+)/(?P<year>\d{4})/(?P<month>\d{1,2})/' \
+                  '(?P<day>\d{1,2})/(?P<slug>[0-9\w_\-%]+)/$'
+CGROUP_URL_RE = r'(?P<gtype>[\w]+)/(?P<gname>[\w0-9\-]+)/'
+CGROUP_FILTER_URL_RE = r'(page/(?P<page>\d+)/)?(tags/(?P<tags>[,\w&\'\s-]+)/)?'
+
 generic_patterns = patterns('crimsononline.content.views',
     url('^' + CONTENT_URL_RE, 'get_content', name='content_content'),
     url('^' + CGROUP_URL_RE + CONTENT_URL_RE, 'get_grouped_content',
         name='content_grouped_content'),
-    url('^' + CGROUP_URL_RE + '$', 'get_content_group', 
+    url('^' + CGROUP_URL_RE + CGROUP_FILTER_URL_RE + '$', 'get_content_group',
         name='content_contentgroup'),
 )
 urlpatterns += generic_patterns
@@ -85,23 +88,23 @@ urlpatterns += generic_patterns
 if settings.HAYSTACK:
     import haystack
     haystack.autodiscover()
-    
+
     from crimsononline.search.forms import DateRangeSearchForm
     from crimsononline.search.views import AjaxSearchView
-    
+
     urlpatterns += patterns('search.views',
         url(r'^search/', AjaxSearchView(form_class=DateRangeSearchForm)))
 
 if settings.DEBUG:
     urlpatterns += patterns('',
-        (r'^site_media/(?P<path>.*)$', 'django.views.static.serve', 
-            {'document_root': settings.MEDIA_ROOT}),    
+        (r'^site_media/(?P<path>.*)$', 'django.views.static.serve',
+            {'document_root': settings.MEDIA_ROOT}),
     )
 
 urlpatterns += patterns('',
-    (r'^robots\.txt$', 'django.views.static.serve', 
+    (r'^robots\.txt$', 'django.views.static.serve',
         {'path': '/txt/robots.txt',
-         'document_root': settings.MEDIA_ROOT}),    
+         'document_root': settings.MEDIA_ROOT}),
 )
 
 urlpatterns += patterns('',
