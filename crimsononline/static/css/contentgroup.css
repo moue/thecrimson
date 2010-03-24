@@ -38,3 +38,11 @@ ul.blog_entries div.image p {
     font-size: 13px;
     margin: 0 5px;
 }
+
+/* pagination */
+.pagination {
+    text-align:center;
+    width: 100%;
+    font-size: .8em;
+    display: inline-block;
+}

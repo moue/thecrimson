@@ -12,7 +12,7 @@ ALPHANUM = string.letters + string.digits
 URL_SAFE = ALPHANUM + '._-'
 def make_url_friendly(s):
     """
-    kills non alpha numeric chars and replaces spaces with underscores
+    kills non alpha numeric chars and replaces spaces with dashes
     """
     return slugify(s)
     

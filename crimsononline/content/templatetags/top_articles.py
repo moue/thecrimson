@@ -154,12 +154,15 @@ class TopArticlesNode(template.Node):
                        " GROUP BY content_contenthits.content_id ORDER BY hitnum DESC LIMIT 5"
         cursor.execute(sqlstatement)
         mostreadarticles = cursor.fetchall()
-        mostreadarticles = [Content.objects.get(pk=x[0]).child for x in mostreadarticles]
+        try:
+            mostreadarticles = [Content.objects.get(pk=x[0]).child for x in mostreadarticles]
+        except:
+            mostreadarticles = None
 
         # TODO: uncomment / fix this.  it calls disqus every time, which is annoying
         mostcommentedarticles = None # delete this when below is uncommented
         # I think this all works, but I can't test it right now because there are no comments at the moment
-
+        """
         # Step 2: Grab the JSON crap from Disqus and build another list of the most commented articles
 
         updated_threads_url = "http://disqus.com/api/get_updated_threads?user_api_key=" + D_USER_KEY + "&forum_id=" + D_FORUM_ID \
@@ -176,7 +179,7 @@ class TopArticlesNode(template.Node):
         threadobjlist = map(lambda x: safe_resolve(x, resolver), urllist)
         # Filter according to specifier
         # No error checking here since it should have happened before
-        """
+        ""
         if self.specifier:
             if self.specifier.__class__ == Section:
                 threadobjlist = [x for x in threadobjlist if x.section == self.specifier.id]
@@ -184,7 +187,7 @@ class TopArticlesNode(template.Node):
                 threadobjlist = [x for x in threadobjlist if self.specifier.id in [x.id for x in threadobjlist.contributors]]
             elif self.specifier.__class__ == Tag:
                 threadobjlist = [x for x in threadobjlist if self.specifier.id in [x.id for x in threadobjlist.tags]]
-        """
+        ""
 
         if self.specifier:
             del threadobjlist[20:]
@@ -193,7 +196,7 @@ class TopArticlesNode(template.Node):
         mostcommentedarticles = [x for x in [call_view(threadobj[0], threadobj[1]) for threadobj in threadobjlist if threadobj is not None] if x is not None]
         # Only want top 10 -- we need to do this last because we're not guaranteed that there won't be some gaps in threadobjlist
         del mostcommentedarticles[5:]
-
+        """
 
         return render_to_string('templatetag/mostreadarticles.html',
             {'mostreadarticles': mostreadarticles,

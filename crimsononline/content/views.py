@@ -13,7 +13,7 @@ from django.db import connection
 from django.db.models import Count, Max, Q, Sum
 from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, get_list_or_404, render_to_response
-from django.template import Context, loader
+from django.template import Context, loader, TemplateDoesNotExist
 from django.utils import simplejson
 from django.views.decorators.cache import cache_page
 
@@ -98,7 +98,6 @@ def writer(request, pk, f_name, m_name, l_name, page=1, sections=None, types=Non
     # Validate the URL (we don't want /writer/281/Balls_Q_McTitties to be valid)
     if (w.first_name, w.middle_name, w.last_name) != (f_name, m_name, l_name):
         return HttpResponseRedirect(w.get_absolute_url())
-
     f = filter_helper(request,
         w.content.all().order_by('-issue__issue_date'),
         sections, types, w.get_absolute_url()
@@ -133,13 +132,7 @@ def tag(request, tag, page=1, sections=None, types=None):
 
     f = filter_helper(request, content, sections, types,
         tag.get_absolute_url())
-    """
-    try:
-        if f['types']['Image']['selected']:
-            f['types']['Image']['selected'] = False
-    except KeyError:
-        pass
-    """
+
     articles = Article.objects.filter(tags=tag)
     featured_articles = list(articles.filter(
         issue__issue_date__gte=last_month()).order_by('-priority')[:5])
@@ -535,14 +528,42 @@ def get_grouped_content_obj(request, gtype, gname, ctype, year, month, day, slug
     return ContentGroup.by_name(gtype, gname)
 
 @cache(settings.CACHE_STANDARD, "general_contentgroup")
-def get_content_group(request, gtype, gname):
+def get_content_group(request, gtype, gname, page=1, tags=None):
     """Render a Content Group."""
     # validate the contentgroup
     cg = get_content_group_obj(request, gtype, gname)
     if not cg:
         raise Http404
-    c = cg.content.all().order_by('-issue__issue_date')
-    return render_to_response("contentgroup.html", {'cg': cg, 'content': c})
+    c = cg.content.all()
+    if tags:
+        taglist = tags.split(',')
+        tagobjlist = []
+        for tag in taglist:
+            try:
+                tag = Tag.objects.get(text=tag)
+                if tag not in tagobjlist:
+                    tagobjlist.append(tag)
+            except Tag.DoesNotExist:
+                pass
+        c = c.filter(tags__in=tagobjlist).distinct()
+    c = c.order_by('-issue__issue_date', '-modified_on')
+    d = paginate(c, page, 5)
+    d['cg'] = cg
+    d['url_base'] = "/%s/%s" % (gtype, gname)
+    # Eventually this should go through filter_helper, but it sucks too much right now
+    if tags:
+        d['tag_str'] = '/tags/' + ','.join([tag.text for tag in tagobjlist])
+    else:
+        d['tag_str'] = ''
+    if cg.section:
+        d['nav'] = cg.section.name.lower()
+    # d['content'] = c
+    try:
+        loader.get_template('contentgroup/%s/%s/content_list.html' % (gtype, gname))
+        t = 'contentgroup/%s/%s/content_list.html' % (gtype, gname)
+    except TemplateDoesNotExist:
+        t = "contentgroup.html"
+    return render_to_response(t, d)
 
 def get_content_group_obj(request, gtype, gname):
     return ContentGroup.by_name(gtype, gname)
@@ -631,7 +652,7 @@ def filter_helper(req, qs, section_str, type_str, url_base):
     return {'content': content, 'sections': sects,'section_str':sect_str, 'types': tps, 'type_str': typ_str,'show_filter':(show_filter_1 or show_filter_2)}
 
 def top_articles(section, dt=None):
-    """Return prioritized articles from @section"""
+    """Return a queryset of prioritized articles from @section"""
     qexp = []
     # Check if section is a comma-delimited list of sections
     if isinstance(section, basestring) and section.count(',') > 0:

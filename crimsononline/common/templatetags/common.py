@@ -7,6 +7,9 @@ from django.template.loader import render_to_string
 from django.utils.safestring import mark_safe
 from crimsononline.common.utils import misc
 from crimsononline.common.utils.html import para_list
+from crimsononline.common.utils.lists import first_or_none
+from crimsononline.content.models import *
+from crimsononline.content_module.models import ContentModule
 from xml.dom.minidom import *
 from urllib import urlopen
 
@@ -363,6 +366,44 @@ def weather(parser, token):
     return WeatherNode(*(bits[1:3]))
 weather = register.tag(weather)
 
+class TaglinksNode(template.Node):
+    def __init__(self, linklist, urlbase):
+        self.linklist = linklist
+        self.urlbase = template.Variable(urlbase)
+
+    def render(self, context):
+        try:
+            self.urlbase = self.urlbase.resolve(context)
+        except template.VariableDoesNotExist:
+            return ''
+        return render_to_string("templatetag/taglinks.html",{ 'linklist': self.linklist, 'url_base': self.urlbase })
+
+def taglinks(parser, token):
+    """
+    Renders an ad using the OpenX Account
+    """
+    bits = token.split_contents()
+    
+    if len(bits) != 3:
+        raise template.TemplateSyntaxError('%r tag requires 1 argument.' % bits[0])
+    cmname = bits[1]
+    
+    try:
+        srcm = ContentModule.objects.get(name=cmname)
+
+        inputstrl = srcm.comment.strip().split('\n')
+        tuplelist = []
+        for tagset in inputstrl:
+            tuplelist.append((tagset.split('=')[0].strip(), tagset.split('=')[1].strip()))
+        
+    except:
+        tuplelist = []
+    urlbase = bits[2]
+    
+    return TaglinksNode(tuplelist, urlbase)
+
+taglinks = register.tag(taglinks)
+
 @register.simple_tag
 def static_url(link):
     return mark_safe(misc.static_content(link))
@@ -408,3 +449,18 @@ def static_js_force(link_to_js):
     if link_to_js[:7] != 'http://':
         link_to_js = misc.static_content("scripts/%s" % link_to_js)
     return mark_safe('<script type="text/javascript" src="%s"></script>' % link_to_js)
+
+@register.simple_tag
+def latest_tagged_video(tag):
+    """
+    Returns the key of the latest video with the tag specified.
+    """
+    if not isinstance(tag, Tag):
+        try:
+            tag = Tag.objects.get(text=tag)
+        except Tag.DoesNotExist:
+            return mark_safe('')
+    video = first_or_none(YouTubeVideo.objects.filter(tags=tag).order_by('-issue__issue_date'))
+    if video:
+        return mark_safe(video.key)
+    return mark_safe('')

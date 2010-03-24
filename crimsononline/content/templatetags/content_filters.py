@@ -18,7 +18,8 @@ def render(content, method):
     try:
         return mark_safe(content._render(method))
     except Exception, err:
-        pass
+        # pass
+        raise
     return ''
 
 @register.filter

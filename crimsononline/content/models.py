@@ -20,8 +20,9 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.localflavor.us.models import PhoneNumberField
 from django.core.cache import cache
 from django.core.exceptions import ObjectDoesNotExist
+from django.template import TemplateDoesNotExist
 from django.template.defaultfilters import slugify, truncatewords
-from django.template.loader import render_to_string
+from django.template.loader import render_to_string, get_template
 from django.utils.safestring import mark_safe
 from django.forms import ModelForm
 from django.db.models.query import QuerySet
@@ -289,7 +290,19 @@ class Content(models.Model):
         nav = self.section.name.lower()
         name = self.content_type.name.replace(" ","")
         ext = '.html' if method[-4:] != '.txt' else ''
-        templ = 'models/%s/%s%s' % (name, method, ext)
+        # TODO fix this block to not be horrible
+        if self.group:
+            try:
+                templ = ('models/%s/contentgroup/%s/%s/%s%s' %
+                    (name, self.group.type, make_url_friendly(self.group.name), method, ext))
+                # The call to get_template is to raise TemplateDoesNotExist if,
+                # in fact, the template doesn't exist.  Its return value isn't used.
+                get_template(templ)
+                n_context['url_base'] = "/%s/%s" % (self.group.type, make_url_friendly(self.group.name))
+            except TemplateDoesNotExist:
+                templ = 'models/%s/%s%s' % (name, method, ext)
+        else:
+            templ = 'models/%s/%s%s' % (name, method, ext)
 		# dumb hack for this jerk
         if self.slug in ['news-in-brief-student-charged-with', 'police-arrest-junior-for-assault-span',
                         'four-undergrads-face-drug-charges-span', 'students-plead-not-guilty-to-drug',
@@ -924,7 +937,11 @@ class Image(Content):
 
     @property
     def orientation(self):
-        ratio = float(self.pic.width) / float(self.pic.height)
+        try:
+            ratio = float(self.pic.width) / float(self.pic.height)
+        # TODO figure out which exception is raised when self.pic can't be found
+        except:
+            ratio = 1
         if ratio >= 1.4:
             return 'wide'
         else:
