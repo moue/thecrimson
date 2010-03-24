@@ -80,7 +80,7 @@ def index(request, m=None, d=None, y=None):
     dict['opeds'] = top_articles('Opinion', dt)[:4]
     dict['arts'] = top_articles('Arts', dt)[:4]
     # Prevent sports articles that showed up in top articles from appearing again
-    dict['sports'] = [x for x in top_articles('Sports', dt)[:10] if x not in dict['top_stories']][:4]
+    dict['sports'] = [x for x in (top_articles('Sports', dt).filter(group=None))[:10] if x not in dict['top_stories']][:4]
     dict['fms'] = top_articles('FM', dt)[:4]
     #dict['issue'] = Issue.get_current()
     dict['galleries'] = Gallery.objects.prioritized(40)[:6]
