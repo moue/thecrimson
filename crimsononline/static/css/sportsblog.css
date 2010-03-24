@@ -145,7 +145,7 @@ a.websites:hover, a.websites:active, a.sports:hover, a.sports:active {
 	font-family: helvetica, arial, sans-serif;
 	font-size: 14px;
 	font-weight:bold;
-	color:#b90f16;
+	color:#B90F14;
 	link-indent: 50px;
 }
 
@@ -171,7 +171,7 @@ h1, h1 a, h1 a:visited {
     font-weight: bold;
     letter-spacing: normal;
     line-height: normal;
-    color:#900000;
+    color:#B90F14;
 	text-decoration:none;
 }
 
@@ -224,12 +224,12 @@ text-decoration:underline;
 }
 p.jump a, p.jump a:visited{
     text-decoration: none;
-	color: #b90f16
+	color: #B90F14
 }
 
 p.jump a:hover{
     text-decoration: underline;
-	color: #b90f16
+	color: #B90F14
 }
 
 .afterpost {
