@@ -406,7 +406,7 @@ def section_sports(request):
     section = Section.cached(nav)
     stories = top_articles(section).filter(group=None)
     rotate = rotatables(section)
-    latest = Article.objects.filter(section=section).order_by('-modified_on')
+    latest = Article.objects.filter(section=section).order_by('-modified_on').filter(group=None)
     latest = latest[:10]
     blog = stories.filter(group__type='blog')
     athlete = first_or_none(stories.filter(tags__text='athlete of the week'))
