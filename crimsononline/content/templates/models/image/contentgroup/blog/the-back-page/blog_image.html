@@ -4,7 +4,7 @@
 <div class="image {{image.orientation}}">
 	<a href="{{image.get_absolute_url}}">
         {% ifequal image.orientation "tall" %}
-            {{image|to_img_tag:"0,194"}}
+            {{image|to_img_tag:"200,"}}
         {% else %}
             {{image|to_img_tag:"420,"}}
         {% endifequal %}
