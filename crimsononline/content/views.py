@@ -404,7 +404,7 @@ def section_sports(request):
 
     nav = 'sports'
     section = Section.cached(nav)
-    stories = top_articles(section)
+    stories = top_articles(section).filter(group=None)
     rotate = rotatables(section)
     latest = Article.objects.filter(section=section).order_by('-modified_on')
     latest = latest[:10]
