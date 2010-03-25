@@ -64,7 +64,7 @@ def index(request, m=None, d=None, y=None):
 
     sportsblog = ContentGroup.objects.get(name='The Back Page')
     
-    stories = top_articles('News, Sports', dt).exclude(group=sportsblog)
+    stories = top_articles('News, Sports', dt).filter(group=None)
 
     dict = {}
     dict['rotate'] = rotatables(None, 4)
