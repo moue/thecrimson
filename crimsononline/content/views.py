@@ -64,7 +64,11 @@ def index(request, m=None, d=None, y=None):
 
     sportsblog = ContentGroup.objects.get(name='The Back Page')
     
-    stories = top_articles('News, Sports', dt).filter(group=None)
+    # This is necessary because just exclude(group=sportsblog) will also exclude NULL entries,
+    # i.e. ungrouped content.  This is because of how mysql handles NULL.  The Django ORM
+    # should really solve this problem automatically, but that's another story.
+    stories = (top_articles('News, Sports', dt)
+                  .filter(~Q(group=sportsblog) | Q(group__isnull=True)))
 
     dict = {}
     dict['rotate'] = rotatables(None, 4)
@@ -83,7 +87,10 @@ def index(request, m=None, d=None, y=None):
     dict['opeds'] = top_articles('Opinion', dt)[:4]
     dict['arts'] = top_articles('Arts', dt)[:4]
     # Prevent sports articles that showed up in top articles from appearing again
-    dict['sports'] = [x for x in (top_articles('Sports', dt).exclude(group=sportsblog))[:10] if x not in dict['top_stories']][:4]
+    dict['sports'] = [x 
+                      for x
+                      in (top_articles('Sports', dt).filter(~Q(group=sportsblog) | Q(group__isnull=True)))[:10]
+                      if x not in dict['top_stories']][:4]
     dict['fms'] = top_articles('FM', dt)[:4]
     #dict['issue'] = Issue.get_current()
     dict['galleries'] = Gallery.objects.prioritized(40)[:6]
@@ -408,9 +415,11 @@ def section_sports(request):
     nav = 'sports'
     sportsblog = ContentGroup.objects.get(name='The Back Page')
     section = Section.cached(nav)
-    stories = top_articles(section).exclude(group=sportsblog)
+    # See index() for an explanation of this filter
+    stories = top_articles(section).filter(~Q(group=sportsblog) | Q(group__isnull=True))
     rotate = rotatables(section)
-    latest = Article.objects.filter(section=section).order_by('-modified_on').exclude(group=sportsblog)
+    latest = (Article.objects.filter(section=section).order_by('-modified_on')
+                 .filter(~Q(group=sportsblog) | Q(group__isnull=True)))
     latest = latest[:10]
     blog = stories.filter(group__type='blog')
     athlete = first_or_none(stories.filter(tags__text='athlete of the week'))
