@@ -20,7 +20,7 @@ div#container  {
 		background:#fff;
 		margin-top:17px;
 		margin-left:-5px;
-        margin-right: 5px;
+        margin-right: 8px;
 		padding-bottom:10px;
 		}
 #maincenter {
@@ -30,7 +30,7 @@ div#container  {
 		padding-bottom:10px;
 		}
 #maingutter  {
-		width:18px;
+		width:15px;
 		float:left;
 		margin-left:-5px;
 		padding-bottom:10px;
@@ -304,6 +304,6 @@ div.nav-older a{
 }
 
 hr {
-    color: #B90F14;
-    background-color: #B90F14;
+    color: #777777;
+    background-color: #777777;
 }
