@@ -141,7 +141,7 @@ a.websites:link, a.websites:visited, a.sports:link, a.sports:visited {
 	link-indent: 50px;
 }
 
-a.websites:hover, a.websites:active, a.sports:hover, a.sports:active {
+a.websites:hover, a.websites:active, a.sports:hover, a.sports:active, a.currentsport {
 	text-decoration:underline;
 	font-family: helvetica, arial, sans-serif;
 	font-size: 14px;

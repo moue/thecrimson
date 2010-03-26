@@ -24,14 +24,16 @@
 <div id="banner"><a href="/blog/the-back-page/"><img src="{% static_url "images/sportsblog/banner1.jpg" %}" width="973" height="179" align="top"></a></div>
 {% endblock %}
 {% block body %}
+{% block mainleft %}
 <div id="mainleft" >
+<hr/>
 <img src="{% static_url "images/sportsblog/SPORTSRED.jpg" %}" width="173" height="22" align="top" /><br />
 {% block recenttags %}
 <div class="taglinks">
 {% taglinks sportsblog.taglinks url_base %}
 </div>
 {% endblock %}
-<hr>
+<hr/>
 <img src="{% static_url "images/sportsblog/standings.png" %}" width="173" align="top"/><br />
 <div class="standings">
 {% contentmodule sportsblog.standings %}{% endcontentmodule %}
@@ -40,6 +42,7 @@
 <img src="{% static_url "images/sportsblog/websites.png" %}" width="173" align="top"/><br />
 {% contentmodule sportsblog.weblinks %}{% endcontentmodule %}
 </div>
+{% endblock %}
 <div id="maincenter">
 {% block center %}
 {% endblock %}
@@ -49,7 +52,7 @@
 <img src="{% static_url "images/sportsblog/banner3.jpg" %}" width="23" height="113" align="right"
     style="position: relative; margin-left: 5px; float: left"/>
 </div>
-
+{% block mainright %}
 <div id="mainright">
 <img src="{% static_url "images/sportsblog/banner2.jpg" %}" width="309" height="113"
      align="right" style="margin-bottom: 20px; margin-right: -5px;" />
@@ -108,4 +111,5 @@ new TWTR.Widget({
 <!-- end #container -->
 </div>
 <span class="clear"></span>
+{% endblock %}
 {% endblock %}
