@@ -112,6 +112,14 @@ class AutosizeImageFieldFile(ImageFieldFile):
                 if crop_data:
                     crop_x, crop_y, crop_side = float(crop_data[0]), float(crop_data[1]), float(crop_data[2])
                 else:
+                    if self.width > self.height:
+                        crop_x = (float(self.width) / 2) - (float(self.height) / 2)
+                        crop_y = 0
+                        crop_side = self.height
+                    else:
+                        crop_x = 0
+                        crop_y = (float(self.height) / 2) - (float(self.width) / 2)
+                        crop_side = self.width
                     crop_x, crop_y, crop_side = float(self.width) / 2, float(self.height) / 2, min(self.height, self.width)
                 if x_ratio > y_ratio:
                     crop_pd_coord = crop_x
