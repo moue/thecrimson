@@ -5,7 +5,7 @@
 {% load content_filters %}
 
 {% block img %}
-<a href="{{youtubevideo.get_absolute_url}}">{{ youtubevideo.pic|to_img_tag:"300,240,5,4" }}</a>
+<a href="{{youtubevideo.get_absolute_url}}">{{ youtubevideo.pic|to_img_tag:"300,345,300,345" }}</a>
 {% endblock %}
 {% block text %}
 <p class="teaser">{{ youtubevideo.description|truncchars:"170" }}</p>

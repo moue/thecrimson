@@ -5,7 +5,7 @@
 {% load content_filters %}
 
 {% block img %}
-    <a href="{{map.get_absolute_url}}">{{ map|to_map_thumb:"300,240" }}</a>
+    <a href="{{map.get_absolute_url}}">{{ map|to_map_thumb:"300,345" }}</a>
 {% endblock %}
 {% block text %}
 <p class="teaser">{{ map.caption|truncchars:"170" }}</p>

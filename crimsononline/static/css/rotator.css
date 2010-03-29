@@ -14,13 +14,13 @@
 }
 
 .rotator_preview{
-	height:310px;
+	height:415px;
 }
 ul.notext {
-    height: 240px;
+    height: 345px;
 }
 .rotator_preview li{
-	height:310px;
+	height:415px;
 	list-style-type: none;
 }
 .rotator_preview .preview_text {
@@ -37,7 +37,7 @@ ul.notext div.preview_text {
 }
 
 .rotator_carousel {
-	margin-top: 214px;
+	margin-top: 319px;
 	z-index: 10000;
 	position:absolute;
     width: 300px;
