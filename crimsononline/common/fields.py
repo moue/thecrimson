@@ -120,7 +120,6 @@ class AutosizeImageFieldFile(ImageFieldFile):
                         crop_x = 0
                         crop_y = (float(self.height) / 2) - (float(self.width) / 2)
                         crop_side = self.width
-                    crop_x, crop_y, crop_side = float(self.width) / 2, float(self.height) / 2, min(self.height, self.width)
                 if x_ratio > y_ratio:
                     crop_pd_coord = crop_x
                     crop_sd_coord = crop_y
