@@ -7,6 +7,7 @@
 {% load content_module %}
 {% load tag_cloud %}
 {% load top_articles %}
+{% load flyby_preview %}
 
 {% block js %}
     {{ block.super }}
@@ -111,6 +112,10 @@
 {% endblock %}
 
 {% block rightcolumn %}
+
+    {% module 4 "The Back Page" red "/blog/the-back-page/" %}
+        {% blog_preview %}
+    {% endmodule %}
 
     {% if featured %}
         {% module 4 featured_group_name red %}

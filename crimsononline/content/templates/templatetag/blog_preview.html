@@ -1,0 +1,23 @@
+{% load module %}
+{% load content_filters %}
+{% load common %}
+
+{% module 4 "" box %}
+<div class="blog_preview">
+
+{% for article in posts %}
+    <a class="flyby_preview_story" href="{{article.get_absolute_url}}">
+    {% if article.main_rel_content %}
+        <span class="image_thumb" style="width: 40px; float: left; margin-right: 5px; text-align: right;">{{article.main_rel_content|to_img_tag:"40,40,1,1"}}</span>
+    {% else %}
+		<span class="image_thumb" style="width: 40px; float: left; margin-right: 5px; text-align: right;">
+			<img src="{% static_url "images/sportsblog/tbp_icon.png" %}" alt="The Back Page" />
+		</span>
+	{% endif %}    
+	
+    <span class="headline">{{article.headline|truncchars:"80,..."}}</span>
+	<span class="byline">Posted&nbsp;{{article.created_on|date:"m/d/y"}}</span>
+    </a>
+{% endfor %}
+</div>
+{% endmodule %}
