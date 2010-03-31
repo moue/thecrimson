@@ -44,7 +44,7 @@
 
 .article_previews li {
     width: 299px;
-    display: block; 
+    display: block;
     float: left;
     padding-bottom: 8px;
     margin-bottom: 8px;
@@ -157,7 +157,7 @@
     width: 90px;
 }
 
-div#sportsticker_sport a { 
+div#sportsticker_sport a {
     color: white;
     text-decoration: none;
     font-size: 12px;
@@ -178,7 +178,7 @@ div.twocol > span.cell {
     width: 145px;
     float: left;
     margin: 0 0 4px 3px;
-    
+
     font-size: 13px;
 }
 
@@ -198,4 +198,5 @@ div.feature > h2{
 
 div#PG_fb  {
     height: 250px;
+    margin-top: -17px;
 }
