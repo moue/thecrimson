@@ -87,10 +87,6 @@
         {% rotator rotate "main_rotator" %}
     {% endcontentmodule %}
 
-    <div style="width: 309px; padding: 0;" class="mod mod-4 mod-box">
-        <a href="blog/the-back-page/"><img src="{% static_url "images/backpagebanner.png" %}" /></a>
-    </div>
-
     {% module 4 opinion gray "/section/opinion/" %}
         {% contentmodule index.opinion %}
         <div class="article_previews">
@@ -165,6 +161,10 @@
     </div>
 
     {% flyby_preview %}
+
+    <div style="width: 309px; padding: 0;" class="mod mod-4 mod-box">
+        <a href="blog/the-back-page/"><img src="{% static_url "images/sportsblog/backpagebanner2.png" %}" width="310" height="80" /></a>
+    </div>
 
     {% cache 500 mostreadarticles_index %}
         {% most_read_articles %}
