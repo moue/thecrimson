@@ -112,8 +112,10 @@
 {% endblock %}
 
 {% block rightcolumn %}
-
-    {% blog_preview %}
+    
+    {% module 4 "The Back Page" red "blog/the-back-page/" %}
+        {% blog_preview %}
+    {% endmodule %}
 
     {% if featured %}
         {% module 4 featured_group_name red %}
