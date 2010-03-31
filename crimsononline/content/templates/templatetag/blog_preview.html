@@ -3,9 +3,7 @@
 {% load common %}
 
 {% module 4 "" box %}
-<div class="blog_preview">
-    {% comment %}The reason this has to be here is so stupid that I don't want to talk about it.{% endcomment %}
-    <a href="/section/flyby/"><img class="flyby_preview_header" src="{% static_url "images/flyby/flyby_preview.png" %}" alt="flyby_preview" style="display: none;"/></a>
+<div class="flyby_preview">
 
 {% for article in posts %}
     <a class="flyby_preview_story" href="{{article.get_absolute_url}}">
