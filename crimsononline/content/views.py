@@ -522,8 +522,11 @@ def get_content(request, ctype, year, month, day, slug, content_group=None):
 def get_content_obj(request, ctype, year, month, day, slug, content_group=None):
     """Retrieve a content object from the database (no validation of params)"""
     ctype = ctype.replace('-', ' ') # convert from url
-    return Content.objects.get(
-        issue__issue_date=date(int(year), int(month), int(day)), slug=slug)
+    try:
+        return Content.objects.get(issue__issue_date=date(int(year), int(month), int(day)),
+                                   slug=slug)
+    except ValueError:
+        raise Content.DoesNotExist
 
 def get_grouped_content(request, gtype, gname, ctype, year, month, day, slug):
     """View for displaying a piece of grouped content on a page
