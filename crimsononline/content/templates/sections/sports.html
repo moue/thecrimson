@@ -77,38 +77,6 @@
             <span class="clear"></span>
     	{% endmodule %}
     {% endif %}
-
-
-    {% module 4 columns %}
-        <div id="columnists" class="img_list">
-        <ul>
-        {% for column in columns|slice:":6" %}
-            {% if column.recent %}
-            <li>
-                <a href="{{ column.get_absolute_url }}" class="img">
-                {% if column.image %}{{ column.image|to_img_tag:"60,60,1,1" }}
-                {% else %}<img src="{% static_url "images/noface_60x60.jpg" %}" />{% endif %}</a>
-                <h3>{{ column|linkify:column.name }}</h3>
-                <p>{{ column.subname }}</p>
-                <p class="dateline">Updated {{ column.recent|date }}</p>
-            </li>
-            {% endif %}
-        {% endfor %}
-        </ul>
-        </div>
-        <div id="columnists2" class="article_headlines">
-        <ul>
-        {% for column in columns|slice:"6:" %}
-            {% if column.recent %}
-            <li>
-                <h3>{{ column|linkify:column.name }}</h3>
-                <p>{{ column.subname }}</p>
-            </li>
-            {% endif %}
-        {% endfor %}
-        </ul>
-        </div>
-    {% endmodule %}
 {% endblock %}
 
 {% block rightcolumn %}
@@ -161,6 +129,35 @@
     </div>
 	{% endmodule %}
 
-
+    {% module 4 columns %}
+        <div id="columnists" class="img_list">
+        <ul>
+        {% for column in columns|slice:":6" %}
+            {% if column.recent %}
+            <li>
+                <a href="{{ column.get_absolute_url }}" class="img">
+                {% if column.image %}{{ column.image|to_img_tag:"60,60,1,1" }}
+                {% else %}<img src="{% static_url "images/noface_60x60.jpg" %}" />{% endif %}</a>
+                <h3>{{ column|linkify:column.name }}</h3>
+                <p>{{ column.subname }}</p>
+                <p class="dateline">Updated {{ column.recent|date }}</p>
+            </li>
+            {% endif %}
+        {% endfor %}
+        </ul>
+        </div>
+        <div id="columnists2" class="article_headlines">
+        <ul>
+        {% for column in columns|slice:"6:" %}
+            {% if column.recent %}
+            <li>
+                <h3>{{ column|linkify:column.name }}</h3>
+                <p>{{ column.subname }}</p>
+            </li>
+            {% endif %}
+        {% endfor %}
+        </ul>
+        </div>
+    {% endmodule %}
 
 {% endblock %}
