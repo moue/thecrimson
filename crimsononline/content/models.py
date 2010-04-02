@@ -1096,7 +1096,7 @@ class YouTubeVideo(Content):
 
     def display_url(self, size_spec, upscale=False):
         if self.pic:
-            return self.pic.display_url(size_spec)
+            return self.pic.display_url(size_spec, upscale=upscale)
         else:
             return ''
 
