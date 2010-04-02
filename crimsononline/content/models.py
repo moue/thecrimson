@@ -981,6 +981,10 @@ class Image(Content):
         self.crop_y = crop_coords[1]
         self.crop_side = crop_coords[2] - crop_coords[0]
         self.pic.crop_thumb(size_spec, crop_coords)
+        
+    def delete_old_thumbs(self):
+        """ convenience method for pic's attribute of same name"""
+        self.pic.delete_old_thumbs()
 
     def __unicode__(self):
         return self.kicker

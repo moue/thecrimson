@@ -563,7 +563,9 @@ class ImageAdminForm(ContentModelForm):
         # logic for saving the cropped stuffs
         data = self.cleaned_data['thumbnail']
         if data:
-            # crop all the relavent sizes
+            # delete old crops
+            i.delete_old_thumbs()
+            # crop all the relevant sizes
             for size in ImageAdminForm.CROP_SIZES:
                 hori_ratio = float(i.pic.width) / float(Image.SIZE_STAND[0])
                 vert_ratio = float(i.pic.height) / float(Image.SIZE_STAND[1])

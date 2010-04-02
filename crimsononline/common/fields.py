@@ -1,4 +1,6 @@
 from __future__ import division
+from fnmatch import fnmatch
+from os import listdir, remove
 from os.path import split, exists, splitext
 from PIL import Image as pilImage
 from django.db.models import ImageField
@@ -94,6 +96,19 @@ class AutosizeImageFieldFile(ImageFieldFile):
         new_path = self._get_path(size_spec)
         img.save(new_path)
         self._path_cache[size_spec] = new_path
+
+    def delete_old_thumbs(self):
+        """
+        Deletes thumbnail files when the image is recropped so that they will
+        be regenerated automatically the next time they're needed.
+        """
+        dir, file = split(self.path)
+        filename, fileext = splitext(file)
+        for dirfile in listdir(dir):
+            if fnmatch(dirfile, filename + '_*'):
+                remove(dir + '\\' + dirfile)
+        self._url_cache.clear()
+        self._path_cache.clear()
 
     def display_path(self, size_spec, crop_data=None, upscale=False):
         """returns the path for a sized image"""
