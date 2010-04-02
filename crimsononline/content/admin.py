@@ -1098,6 +1098,8 @@ class YouTubeVideoAdmin(ContentAdmin):
         if form.cleaned_data['pic'] and not form.cleaned_data['gen_pic'] :
             return super(YouTubeVideoAdmin, self).save_model(
                 request, obj, form, change)
+        if obj.pic:
+            obj.pic.delete_old_thumbs()
         img_url = 'http://img.youtube.com/vi/'+obj.key+'/0.jpg'
         super(YouTubeVideoAdmin, self).save_model(request, obj, form, change)
         try:
