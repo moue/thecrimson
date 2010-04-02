@@ -106,7 +106,7 @@ class AutosizeImageFieldFile(ImageFieldFile):
         filename, fileext = splitext(file)
         for dirfile in listdir(dir):
             if fnmatch(dirfile, filename + '_*'):
-                remove(dir + '\\' + dirfile)
+                remove(dir + '/' + dirfile)
         self._url_cache.clear()
         self._path_cache.clear()
 
