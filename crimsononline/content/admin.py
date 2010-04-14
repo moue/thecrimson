@@ -1251,7 +1251,7 @@ class FlatpageFormExtended(FlatpageForm):
         widget=TinyMCEWidget(attrs={'cols':'94','rows':'40'}, custom_settings={
         'theme_advanced_buttons1_add':'separator,bullist,indent,outdent,separator,styleselect',
 	    'theme_advanced_styles':'Header=flatpage_section_header',
-        'valid_elements': 'a[href|title|onclick],p[*],span[*],br,form[*],input[*],button[*],select[*],script[*]'}), help_text=""
+        'valid_elements': 'a[href|title|onclick],p[*],span[*],br,form[*],input[*],button[*],select[*],script[*],b,ul,li'}), help_text=""
         "If you're copying and pasting from MS Word, please use the 'Paste "
         "From Word' button (with a little 'W' on it)"
     )
