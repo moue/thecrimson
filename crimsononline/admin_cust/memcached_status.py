@@ -5,6 +5,7 @@ from django.shortcuts import render_to_response
 from django.conf import settings
 
 import datetime, re
+import platform
 
 def view(request):
 
@@ -56,5 +57,6 @@ def view(request):
             stats=stats,
             hit_rate=100 * stats.get_hits / stats.cmd_get,
             time=datetime.datetime.now(), # server time
+            hostname=platform.node(),
         ))
 
