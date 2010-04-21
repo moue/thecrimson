@@ -308,7 +308,7 @@ class Content(models.Model):
                         'four-undergrads-face-drug-charges-span', 'students-plead-not-guilty-to-drug',
                         'charges-follow-lengthy-watch-divspan-classapple-style-span', 'judge-sets-next-date-in-marijuana',
                         'judge-moves-to-dismiss-dewolfe-drug', 'judge-may-dismiss-dewolfe-drugs-case',
-                        'mcginn-n-tonic-revisiting-harvard-football']:
+                        'mcginn-n-tonic-revisiting-harvard-football', 'hefs-got-nothin-on-harvards-hottest']:
             noindex = True
         else:
             noindex = False
@@ -981,7 +981,7 @@ class Image(Content):
         self.crop_y = crop_coords[1]
         self.crop_side = crop_coords[2] - crop_coords[0]
         self.pic.crop_thumb(size_spec, crop_coords)
-        
+
     def delete_old_thumbs(self):
         """ convenience method for pic's attribute of same name"""
         self.pic.delete_old_thumbs()
