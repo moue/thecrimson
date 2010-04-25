@@ -21,3 +21,5 @@ Disallow: /article/2008/4/23/scoped-jordan-b-weitzen-08-span/
 Disallow: /article/2008/4/23/scoped-jordan-b-weitzen-08-span/?print=1
 Disallow: /article/2007/2/15/hefs-got-nothin-on-harvards-hottest/
 Disallow: /article/2007/2/15/hefs-got-nothin-on-harvards-hottest/?print=1
+Disallow: /article/2010/4/23/leave-of-absence-harvard/
+Disallow: /article/2010/4/23/leave-of-absence-harvard/?print=1

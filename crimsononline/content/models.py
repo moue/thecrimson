@@ -308,7 +308,8 @@ class Content(models.Model):
                         'four-undergrads-face-drug-charges-span', 'students-plead-not-guilty-to-drug',
                         'charges-follow-lengthy-watch-divspan-classapple-style-span', 'judge-sets-next-date-in-marijuana',
                         'judge-moves-to-dismiss-dewolfe-drug', 'judge-may-dismiss-dewolfe-drugs-case',
-                        'mcginn-n-tonic-revisiting-harvard-football', 'hefs-got-nothin-on-harvards-hottest']:
+                        'mcginn-n-tonic-revisiting-harvard-football', 'hefs-got-nothin-on-harvards-hottest',
+                        'leave-of-absence-harvard']:
             noindex = True
         else:
             noindex = False
