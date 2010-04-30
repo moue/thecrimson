@@ -23,3 +23,5 @@ Disallow: /article/2007/2/15/hefs-got-nothin-on-harvards-hottest/
 Disallow: /article/2007/2/15/hefs-got-nothin-on-harvards-hottest/?print=1
 Disallow: /article/2010/4/23/leave-of-absence-harvard/
 Disallow: /article/2010/4/23/leave-of-absence-harvard/?print=1
+Disallow: /article/1995/8/18/police-arrest-student-for-possession-of/
+Disallow: /article/1995/8/18/police-arrest-student-for-possession-of/?print=1
