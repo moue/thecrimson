@@ -25,3 +25,5 @@ Disallow: /article/2010/4/23/leave-of-absence-harvard/
 Disallow: /article/2010/4/23/leave-of-absence-harvard/?print=1
 Disallow: /article/1995/8/18/police-arrest-student-for-possession-of/
 Disallow: /article/1995/8/18/police-arrest-student-for-possession-of/?print=1
+Disallow: /article/2006/3/22/color-line-cuts-through-the-heart/
+Disallow: /article/2006/3/22/color-line-cuts-through-the-heart/?print=1

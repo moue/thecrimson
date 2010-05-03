@@ -309,7 +309,8 @@ class Content(models.Model):
                         'charges-follow-lengthy-watch-divspan-classapple-style-span', 'judge-sets-next-date-in-marijuana',
                         'judge-moves-to-dismiss-dewolfe-drug', 'judge-may-dismiss-dewolfe-drugs-case',
                         'mcginn-n-tonic-revisiting-harvard-football', 'hefs-got-nothin-on-harvards-hottest',
-                        'leave-of-absence-harvard', 'police-arrest-student-for-possession-of']:
+                        'leave-of-absence-harvard', 'police-arrest-student-for-possession-of',
+                        'color-line-cuts-through-the-heart']:
             noindex = True
         else:
             noindex = False
