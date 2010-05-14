@@ -49,10 +49,12 @@
 					</ul>
 
 					<ul class="right">
+						{% cache 600 comments content.pk %}
 						<li class="comment">
 							<span>{% if content.num_comments %}{{content.num_comments}}{% endif %}</span>
 							<a href="#comment">Comment</a>
 						</li>
+						{% endcache %}
 						<li class="email">
 							<div class="addthis_toolbox addthis_default_style">
 							<a class="addthis_button_email">Email</a>
