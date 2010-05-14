@@ -50,7 +50,7 @@
 
 					<ul class="right">
 						<li class="comment">
-							<span>{{content.num_comments}}</span>
+							<span>{% if content.num_comments %}{{content.num_comments}}{% endif %}</span>
 							<a href="#comment">Comment</a>
 						</li>
 						<li class="email">
