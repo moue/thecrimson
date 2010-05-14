@@ -997,6 +997,10 @@ class Image(Content):
         else:
             return self.pic.display_url(size_spec, None, upscale=upscale)
 
+    def absolute_url(self):
+        """ convenience method for the pictures absolute url """
+        return "%s%s" % (settings.MEDIA_URL, self.pic)
+        
     def crop_thumb(self, size_spec, crop_coords):
         """ convenience method for the pic attribute's method of same name """
         self.crop_x = crop_coords[0]
