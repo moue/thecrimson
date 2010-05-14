@@ -12,7 +12,7 @@
 <meta property="og:site_name" content="The Harvard Crimson"/>
 {% if article.main_rel_content %}
     {% ifnotequal article.main_rel_content.content_type.model "article" %}
-		<meta property="og:image" content="http://www.thecrimson.com{{article.main_rel_content|to_img_tag:"STAND"}}"/>
+
     {% endifnotequal %}
 {% endif %}
 {% endblock %}
