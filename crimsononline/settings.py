@@ -49,15 +49,9 @@ DATABASE_PORT = ''             # Set to empty string for default. Not used with 
 # to load the internationalization machinery.
 USE_I18N = True
 
-URL_BASE = 'http://localhost:8000/'
-
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
 MEDIA_ROOT = os.path.join(os.path.split(os.path.abspath(__file__))[0], 'static')
-
-# URL that handles the media served from MEDIA_ROOT.
-# Example: "http://media.lawrence.com"
-MEDIA_URL = URL_BASE + 'site_media/'
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
