@@ -12,7 +12,7 @@
     {% static_css "image.css" %}
 {% endblock %}
 
-{% block content %}
+{% block top_content %}
     <h1>{{ image.kicker }}</h1>
     <div class="image">{{ image|to_img_tag:"STAND" }}</div>
     <div class="byline">
@@ -21,6 +21,8 @@
     <div class="dateline">
         Published: {{ image.issue.issue_date|date:"F d, Y" }}
     </div>
+{% endblock %}
+{% block bottom_content %}
     <div class="caption">
         {{ image.caption }}
     </div>

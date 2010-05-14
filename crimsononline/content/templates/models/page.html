@@ -24,7 +24,8 @@
 {% block body %}
     <div class="col-8">
         {% module 8 "" red %}
-            {% block pre_content %}
+			{% block top_content %}{% endblock %}
+            {% block top_social %}
 			
  				<div class="articletools">
 					<ul class="left">
@@ -78,7 +79,7 @@
             </div>
             {% endblock %}
 
-        {% block content %}
+        {% block bottom_content %}
         {% endblock %}
         {% endmodule %}
 

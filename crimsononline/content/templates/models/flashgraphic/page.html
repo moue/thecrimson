@@ -8,8 +8,18 @@
 {% endblock %}
 
 
-{% block content %}
+{% block top_content %}
     <h1>{{ flashgraphic.title }}</h1>
+
+    <div class="byline">
+        By {{ flashgraphic.contributors.all|linkify|human_list }}
+    </div>
+    <div class="dateline">
+        Published: {{ flashgraphic.issue.issue_date|date:"F d, Y" }}
+    </div>
+
+{% endblock %}
+{% block bottom_content %}
     <div class="graphic" style="margin: 0 auto; width:{{flashgraphic.width}}px;">
         <object width="{{flashgraphic.width}}" height="{{flashgraphic.height}}">
         <param name="movie" value="{% static_url "" %}{{flashgraphic.graphic}}">
@@ -17,15 +27,9 @@
         </embed>
         </object>
     </div>
-    <div class="byline">
-        By {{ flashgraphic.contributors.all|linkify|human_list }}
-    </div>
-    <div class="dateline">
-        Published: {{ flashgraphic.issue.issue_date|date:"F d, Y" }}
-    </div>
     <div class="caption">
         {{ flashgraphic.description }}
     </div>
-    {{block.super}}
+
 {% endblock %}
 

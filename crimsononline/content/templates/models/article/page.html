@@ -21,7 +21,7 @@
 {% block content_title %}
 {% endblock %}
 
-{% block pre_content %}
+{% block top_content %}
 	<h1>{{ article.headline }}</h1>
 	{% if article.subheadline %}<h2>{{ article.subheadline }}</h2>{% endif %}
 
@@ -31,11 +31,9 @@
 	<div class="dateline">
 	    Published: {{ article.issue.issue_date|date:"l, F d, Y" }}
 	</div>
-	{{block.super}}
-
 {% endblock %}
 
-{% block content %}
+{% block bottom_content %}
     {% if article.main_rel_content %}
         {% ifnotequal article.main_rel_content.content_type.model "article" %}
             {{ article.main_rel_content|render:"article.main" }}
