@@ -10,7 +10,7 @@ def funcache(seconds=1800, prefix=""):
    
     Usage:
     
-    @cache(600)
+    @funcache(600)
     def myExpensiveMethod(parm1, parm2, parm3):
         ....
         return expensiveResult

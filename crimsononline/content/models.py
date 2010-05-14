@@ -228,7 +228,7 @@ class Content(models.Model):
         """
         return ContentType.objects.get_for_model(cls)
     
-    
+    @funcache(600)
     @property
     def num_comments(self):
         page_url = "%s%s" % (settings.URL_BASE, self.get_absolute_url()[1:])

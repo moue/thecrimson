@@ -7,9 +7,10 @@
    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+	<title>{% block title %}{{ title }}{% endblock %} | The Harvard Crimson</title>
+
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	{% block meta %}{% endblock %}
-	<title>{% block title %}{{ title }}{% endblock %} | The Harvard Crimson</title>
 	 <link rel="icon" type="image/vnd.microsoft.icon" href="{% static_url "images/icons/favicon.ico" %}" />
 	{% block rss %}{% endblock %}
 	<script type="text/javascript" src="{% static_url "scripts/media_include.js" %}"></script>
