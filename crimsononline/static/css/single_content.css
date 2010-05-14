@@ -32,7 +32,6 @@ div.cg_header {
     border-bottom:1px solid #eee;
     border-left:5px solid #ba0600;
     border-top:1px solid #eee;
-    /*font-family:"Lucida Grande", Tahoma, helvetica,arial,sans-serif;*/
     font-family:georgia,"times new roman",times,serif;
     font-size:15px;
     line-height: 10px;
@@ -41,45 +40,98 @@ div.cg_header {
 }
 
 /* ARTICLE TOOLS */
-#articletools {
+.articletools {
+    border: 1px solid #e5e5e5;
+    border-width: 1px 0;
 	text-align:right;
-	width:115px;
-    display: block;
+	width: 100%;
     color: #666;
     float: left;
     font-size: 12px;
     margin-right: -10px;
+    margin-bottom: 10px;
     text-transform: uppercase;
 }
-#articletools a {
-     color: #666;
-    font-size:10px;
-    text-transform:uppercase;
+.articletools ul{
+    margin-left: 5px;
+    height: 26px;
+    list-style: none;
+    display: inline;
+}
+.articletools ul.left{float:left;}
+.articletools ul.right{
+    float: right;
+    width: 220px;
+    border-left: 1px solid #e5e5e5;
+    padding-left: 10px;
+}
+.articletools ul.left li{
+    float: left;
+    margin-left: 5px;
+}
+.articletools ul.right li{
+    float: left;
+    margin-right: 5px;
+}
+.articletools li{
+    height: 26px;
+    display: inline;
+}
+.articletools li.fbook{margin-top: 3px;}
+.articletools li.twitter{
+    margin-top: 5px;
+    width: 75px;
+}
+.articletools li.buzz{
+    margin-top: 4px;
+}
+.articletools li.buzz span{
+    font-family: inherit;
+    text-transform: none;
+}
+
+
+.articletools li.email a{
+    line-height: 26px;
+}
+.articletools li.email div > a > span{
+    background: url("../images/icons/email.gif") !important;
+    background-position: center center !important;
+    background-repeat: no-repeat !important;
+    height: 26px;
+    width: 15px;
+}
+
+
+.articletools li.print > span,
+.articletools li.comment > span,
+.articletools li.comment > a, 
+.articletools li.print > a{
+    float: left;
+}
+
+.articletools > .right > li > a, .articletools > .right > li > span{line-height: 26px;}
+.articletools > .right > li > span, li.email div > a > span{
+    margin-right: 5px;
+}
+.articletools li.print > span{background: url("../images/icons/print.gif");}
+.articletools li.comment > span{
+    background: url("../images/icons/comment.gif");
+    text-align: center;
+    color: #ba0600;
+    font-family: helvetica, arial, sans-serif;
+    font-weight: bold;
     display: inline-block;
-    float: left;
+}
+.articletools li.print > span, .articletools li.comment > span{
+    background-repeat: no-repeat;
+    background-position: center center;
+    width: 17px;
+    height: 100%;
 }
 
-#articletools > a > span{
-    font-family: arial, sans-serif;
-    float: left;
-    padding: 1px 0 0;
-}
 
-#articletools > span{
-    float: left;
-    padding: 0px 3px;
-    font-size: 16px;
-    line-height: 16px;
-}
 
-#articletools > a > img{
-    border: 0;
-    margin: 0 3px 0 0 ;
-    float: left;
-}
-#articletools > a:hover {
-    color: black;
-}
 
 #pre_content > a {
     display: block;

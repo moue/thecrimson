@@ -8,6 +8,7 @@ from re import compile, match, sub
 from string import letters, digits
 from PIL import Image as pilImage
 import copy
+import urllib
 
 from django.conf import settings
 from django.core import urlresolvers
@@ -29,6 +30,7 @@ from django.db.models.query import QuerySet
 from django.http import Http404
 from django.template import RequestContext
 from django.utils.datetime_safe import strftime as strftime_safe
+from django.utils import simplejson
 
 from crimsononline.admin_cust.models import UserData
 from crimsononline.common.caching import funcache, expire_page, expire_stuff
@@ -225,6 +227,23 @@ class Content(models.Model):
         Note that ContentType.objects already caches
         """
         return ContentType.objects.get_for_model(cls)
+    
+    
+    @property
+    def num_comments(self):
+        page_url = "%s%s" % (settings.URL_BASE, self.get_absolute_url()[1:])
+        # use the top one if it works
+        #page_url = "%s%s" % ("http://www.thecrimson.com/", "article/2010/5/14/school-law-kagan-staff/")
+
+        disqus_thread_url = "http://disqus.com/api/get_thread_by_url?forum_api_key=%s&url=%s" % (settings.DISQUS_FORUM_KEY, page_url)
+
+        num_comments = 0
+        try:
+            num_comments = simplejson.load(urllib.urlopen(disqus_thread_url))["message"]["num_comments"]
+        except:
+            pass
+            
+        return num_comments
 
     @property
     def child(self):
@@ -508,7 +527,8 @@ class ContentGroup(models.Model):
         # expire own page
             expire_page(self.get_absolute_url())
             # we should expire the section pag for the content type if it has one
-            expire_page(self.section.get_absolute_url())
+            if(self.section):
+                expire_page(self.section.get_absolute_url())
             ContentGroup.update_cache()
         except:
             raise

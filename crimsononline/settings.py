@@ -169,4 +169,9 @@ try:
     from local_settings import *
 except ImportError:
     pass
+    
+DISQUS_USER_KEY = "vabqI2su93P1wVF3Ls9kXhXhRggV7y2ylokjq137yPAz47cY5dDMHgUA2QlZoWNE"
+DISQUS_FORUM_KEY = "pkUMj0suYbfCUXu2hon1EB5xrgMLWADS9kNZiGtJ0ISE76QLyMvEb2SyPFmS3F5x"
+DISQUS_FORUM_ID = "1508"
+
 
