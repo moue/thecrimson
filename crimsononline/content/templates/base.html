@@ -61,15 +61,15 @@
     </div>
 </div>
 </div>
-<div id="submenu">
-<div id="submenu_contents">
-<div id="submenu_menu">
-{% contentmodule quicklinks %}{% endcontentmodule %}
-</div>
-{% cache 3600 weather %}
-{% weather %}
-{% endcache %}
-</div>
+<div class="submenu">
+	<div class="submenu_contents">
+		<span class="submenu_menu">
+		{% contentmodule quicklinks %}{% endcontentmodule %}
+		</span>
+		{% cache 3600 weather %}
+			{% weather %}
+		{% endcache %}
+	</div>
 </div>
 
 

@@ -190,7 +190,6 @@ ul.normal_bullets {
 }
 
 #masthead_banner{
-	margin-top: 5px;
     float:left;
     width: 333px;
 }
@@ -266,7 +265,6 @@ ul.normal_bullets {
 	height: 50px;
 }
 
-
 #nav_contents a{
 	line-height: 55px;
 	margin-top: -5px;
@@ -286,59 +284,56 @@ ul.normal_bullets {
 	background: url('../images/banner/layover.png') repeat;
 }
 
-#submenu{
-	min-width: 973px;
-	height: 14px;
-	background-color: #fff;
-	border-bottom: 1px solid #eee;
+
+
+
+.submenu, .submenu_contents, .submenu_menu, .submenu_right{
+    height: 16px;
+}
+
+.submenu{
+    min-width: 973px;
+	border-bottom: 1px solid #e5e5e5;
 	margin-bottom: 10px;
-	border-bottom: 1px solid #ccc;
-	border-top: 1px solid #fafafa;
-    margin-top: 4px;
+	padding: 3px 0;
 }
-
-.submenu_image{
-    float: right;
-    display: block;
-    width: 20px;
-    margin-top: -3px;
-}
-
-#submenu_contents{
-	width: 973px;
+.submenu_contents{
 	margin: 0 auto;
-	font-size: 10px;
-	line-height: 10px;
-	font-family: Helvetica, Arial, sans-serif;
-    padding: 0;
-	color: #666;
-    height: 10px;
-	text-transform: uppercase;
-}
-#submenu_contents a, #submenu_contents span{
-	font-family: Helvetica, Arial, sans-serif;
-	color: #666;
-	text-transform: uppercase;
-}
-#submenu_contents a{
-    margin-left: 10px;
+	width: 973px;
 }
 
+.submenu_contents a, .submenu_contents span{
+	font-size: 10px;
+	font-family: Helvetica, Arial, sans-serif;
+	text-transform: uppercase;
+    margin-right: 10px;
+    line-height: 16px;
+	color: #666;
+	display: inline-block;
+}
+.submenu_menu {width:718px;}
+.submenu_menu a, .submenu_menu span{float: left;}
+
+.submenu-rss{
+    width:16px;
+    height:16px;
+    background-image: url(../images/icons/rss.gif);
+    background-repeat: no-repeat;
+    background-position: center center;
+    margin-right: 0px !important;
+}
+
+.submenu_contents > span{
+    float: left;
+    display: inline-block;
+}
+.submenu_image{
+    display: inline-block;
+    width: 20px;
+}
 .submenu_right {
-	font-size: 10px;
-	font-family: Helvetica, Arial, sans-serif;
-    float:right;
-    text-align:right;
-    width:270px;
-    margin-right: 6px;
-}
-
-#submenu_menu {
-	font-size: 10px;
-	font-family: Helvetica, Arial, sans-serif;
-    float:left;
-    width:673px;
-
+    width:215px;
+    height: 16px;
 }
 
 /* END NAV */
