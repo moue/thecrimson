@@ -41,7 +41,14 @@
 						</li>
 
 						<li class="buzz">
-							<a title="Post on Google Buzz" class="google-buzz-button" href="http://www.google.com/buzz/post?{% if article.main_rel_content %}{% ifnotequal article.main_rel_content.content_type.model "article" %}imageurl={{article.main_rel_content.absolute_url}}{% endifnotequal %}{% endif %}" data-button-style="small-count"></a>
+							<a title="Post on Google Buzz" class="google-buzz-button" href="http://www.google.com/buzz/post?url={{content.get_full_url}}&{% spaceless %}
+							{% if article.main_rel_content %}
+								{% ifnotequal article.main_rel_content.content_type.model "article" %}
+									{% filter force_escape %}
+										imageurl={{article.main_rel_content.absolute_url}}
+									{% endfilter %}
+								{% endifnotequal %}
+							{% endif %}{% endspaceless %}" data-button-style="small-count"></a>
 							<script type="text/javascript" src="http://www.google.com/buzz/api/button.js"></script>
 						</li>
 

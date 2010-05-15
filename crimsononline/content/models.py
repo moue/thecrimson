@@ -285,6 +285,10 @@ class Content(models.Model):
         else:
             return ('content_content', url_data)
 
+    def get_full_url(self):
+        """ includes domain """
+        return "%s%s" % (settings.URL_BASE, self.get_absolute_url()[1:])
+        
     def get_admin_change_url(self):
         return urlresolvers.reverse('admin:content_%s_change' \
                                     % str(self.content_type).replace(' ', '_'),
@@ -308,6 +312,7 @@ class Content(models.Model):
         nav = self.section.name.lower()
         name = self.content_type.name.replace(" ","")
         ext = '.html' if method[-4:] != '.txt' else ''
+        
         # TODO fix this block to not be horrible
         if self.group:
             try:
