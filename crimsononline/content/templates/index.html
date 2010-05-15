@@ -161,14 +161,24 @@
 	{% endmodule %}
     {% endcomment %}
 
-    <div style="width: 309px; padding: 0; margin: 0">
-        <a href="http://twitter.com/theCrimson"><img src="{% static_url "images/twitter.png" %}" /><a/><a href="http://www.facebook.com/pages/The-Harvard-Crimson/45870477736"><img src="{% static_url "images/facebook.png" %}" /></a>
-    </div>
+
+	<div class="mod mod-4 mod-box small-text-icon-wrap facebook-twitter">
+		<div class="small-text-icon-wrap">
+	        <div class="small-text-icon-item">Follow The Crimson on </div>
+	        <div class="small-text-icon-item facebook"></div>
+			<a href="http://www.facebook.com/pages/The-Harvard-Crimson/45870477736" class="small-text-icon-item">Facebook</a>
+	        <div class="small-text-icon-item"> and </div>
+			<div class="small-text-icon-item twitter"></div>
+			<a href="http://www.twitter.com/thecrimson" class="small-text-icon-item">Twitter</a>
+		</div>
+	</div>
 
     {% flyby_preview %}
 
-    <div style="width: 307px; padding: 0;" class="mod mod-4 mod-box">
-        <a href="blog/the-back-page/"><img src="{% static_url "images/sportsblog/backpagebanner2.png" %}" width="305" height="64" /></a>
+    <div class="mod mod-4 mod-box">
+        <a href="blog/the-back-page/">
+			<img src="{% static_url "images/sportsblog/backpagebanner2.png" %}" width="305" height="64" />
+		</a>
     </div>
 
     {% cache 500 mostreadarticles_index %}

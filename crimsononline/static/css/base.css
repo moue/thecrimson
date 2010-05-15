@@ -123,6 +123,7 @@ ul.normal_bullets {
     float:left;
     text-align: left;
     border-top: 2px solid #b00600;
+    overflow: hidden;
 }
 
 /* for mostxed, allow double inheritance */
@@ -565,6 +566,4 @@ ol.most li {
     background-repeat: no-repeat;
     background-position: center center;
     width: 11px;
-}
-.comment-count{
 }

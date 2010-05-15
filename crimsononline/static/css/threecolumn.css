@@ -201,3 +201,23 @@ div#PG_fb  {
     margin-top: -17px;
 }
 
+.facebook-twitter .small-text-icon-item{
+    height: 16px;
+    line-height: 16px;
+}
+.facebook-twitter{
+    padding-top: 5px;
+    text-align: center;
+}
+.facebook-twitter .twitter, .facebook-twitter .facebook{
+    background-position: center center;
+    background-repeat: no-repeat;
+    height: 16px;
+    width: 16px;
+    display: inline-block;
+}
+.facebook-twitter .facebook{
+    background-image: url(../images/icons/icon-facebook.gif);
+}.facebook-twitter .twitter{
+    background-image: url(../images/icons/icon-twitter.png);
+}
