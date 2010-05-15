@@ -230,9 +230,6 @@ class Content(models.Model):
     
     @property
     def num_comments(self):
-        
-        return 0
-        
         page_url = "%s%s" % (settings.URL_BASE, self.get_absolute_url()[1:])
         # use the top one if it works
         #page_url = "%s%s" % ("http://www.thecrimson.com/", "article/2010/5/14/school-law-kagan-staff/")
