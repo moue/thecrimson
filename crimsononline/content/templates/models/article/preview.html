@@ -4,7 +4,8 @@
 {% if article.main_rel_content %}
 <div class="image_thumb"><a href="{{article.get_absolute_url}}">{{article.main_rel_content|to_img_tag:"TINY"}}</a></div>
 {% endif %}
-<h3>{{article|linkify}}</h3>
+<h3>{{article|linkify}}{% cache 600 comments content.pk %}
+	{% if article.num_comments %}<span class="comment-count">{{article.num_comments}}</span>{% endif %}{% endcache %}</h3>
 <p class="byline">{{ article|byline:"short" }}
 <span class="dateline">{{ article|datify }}</span></p>
 <p class="teaser">{{ article.teaser|striptags }}</p>

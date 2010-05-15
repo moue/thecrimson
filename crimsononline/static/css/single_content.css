@@ -121,6 +121,7 @@ div.cg_header {
     color: #ba0600;
     font-family: helvetica, arial, sans-serif;
     font-weight: bold;
+    font-size: 13px;
     display: inline-block;
 }
 .articletools li.print > span, .articletools li.comment > span{
