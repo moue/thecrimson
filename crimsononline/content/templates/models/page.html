@@ -30,7 +30,7 @@
  				<div class="articletools">
 					<ul class="left">
 						<li class="fbook">
-							<iframe src="http://www.facebook.com/plugins/like.php?href=http://www.thecrimson.com{{article.get_absolute_url}}&amp;layout=button_count&amp;show_faces=false&amp;width=75&amp;action=like&amp;font=arial&amp;colorscheme=light&amp;height=21" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:75px; height:21px;" allowTransparency="true"></iframe>
+							<iframe src="http://www.facebook.com/plugins/like.php?href=http://www.thecrimson.com{{content.get_absolute_url}}&amp;layout=button_count&amp;show_faces=false&amp;width=75&amp;action=like&amp;font=arial&amp;colorscheme=light&amp;height=21" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:75px; height:21px;" allowTransparency="true"></iframe>
 
 						</li>
 						<li class="twitter">
@@ -41,7 +41,7 @@
 						</li>
 
 						<li class="buzz">
-							<a title="Post on Google Buzz" class="google-buzz-button" href="http://www.google.com/buzz/post" data-button-style="small-button"></a>
+							<a title="Post on Google Buzz" class="google-buzz-button" href="http://www.google.com/buzz/post?{% if article.main_rel_content %}{% ifnotequal article.main_rel_content.content_type.model "article" %}imageurl={{article.main_rel_content.absolute_url}}{% endifnotequal %}{% endif %}" data-button-style="small-count"></a>
 							<script type="text/javascript" src="http://www.google.com/buzz/api/button.js"></script>
 						</li>
 
