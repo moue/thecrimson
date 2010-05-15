@@ -201,17 +201,3 @@ div#PG_fb  {
     margin-top: -17px;
 }
 
-.comment-count{
-    background: url("../images/icons/comment.gif");
-    background-repeat: no-repeat;
-    background-position: center bottom;
-    text-align: center;
-    color: black;
-    font-family: helvetica, arial, sans-serif;
-    font-weight: bold;
-    display: inline-block;
-    width: 15px;
-    height: 15px;
-    font-size: 13px;
-    line-height: 15px;
-}

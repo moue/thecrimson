@@ -61,7 +61,7 @@ div.cg_header {
 .articletools ul.left{float:left;}
 .articletools ul.right{
     float: right;
-    width: 220px;
+    width: 225px;
     border-left: 1px solid #e5e5e5;
     padding-left: 10px;
 }
@@ -111,27 +111,20 @@ div.cg_header {
 }
 
 .articletools > .right > li > a, .articletools > .right > li > span{line-height: 26px;}
-.articletools > .right > li > span, li.email div > a > span{
-    margin-right: 5px;
+.articletools > .right > li > span, li.email div > a > span, .comment-image{
+    margin-right: 3px;
 }
 .articletools li.print > span{background: url("../images/icons/print.gif");}
-.articletools li.comment > span{
-    background: url("../images/icons/comment.gif");
-    text-align: center;
-    color: black;
-    font-family: helvetica, arial, sans-serif;
-    font-weight: bold;
-    font-size: 13px;
-    display: inline-block;
-}
-.articletools li.print > span, .articletools li.comment > span{
+.articletools li.print > span{
     background-repeat: no-repeat;
     background-position: center center;
     width: 17px;
     height: 100%;
 }
-
-
+.comment-count, .comment-image{
+    line-height: 26px;
+    height: 26px;
+}
 
 
 #pre_content > a {
