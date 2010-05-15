@@ -58,16 +58,16 @@
 					<ul class="right">
 						{% cache 600 comments content.pk %}
 						<li class="comment">
-								<span class="comment-wrap">
+								<span class="small-text-icon-wrap">
 									{% if article.num_comments %}
-									<span class="comment-count">
+									<span class="small-text-icon-item comment-count">
 										{% cache 600 preview_comments content.pk %}
 											{{article.num_comments}}
 										{% endcache %}
 									</span>
 									{% endif %}
-									<span class="comment-image"></span>
-									<a href="#comment">Comment</a>
+									<span class="small-text-icon-item comment-image"></span>
+									<a href="#comment" class="small-text-icon-item">Comment</a>
 								</span>
 
 						</li>

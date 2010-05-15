@@ -438,7 +438,7 @@ a {
 }
 .byline{padding: 2px 0;}
 .byline a{text-transform: uppercase;}
-.byline, .byline a, .byline a:hover, .dateline, .articletools a{
+.byline, .byline a, .byline a:hover, .dateline{
     color: #999;
     line-height: 12px;
     font-size: 11px;
@@ -548,25 +548,23 @@ ol.most li {
     font-size:14px;
 }
 
-.comment-wrap{display: inline-block;}
+.small-text-icon-wrap{display: inline-block;}
+.small-text-icon-item{
+    display: inline-block;
+    float: left;
+    font-family: helvetica, arial, sans-serif;
+    font-size: 11px;
+    font-weight: normal;
+    color: #999;
+    line-height: 11px;
+    height: 11px;
+    margin-right: 2px;
+}
 .comment-image{
     background: url("../images/icons/comment.gif");
     background-repeat: no-repeat;
     background-position: center center;
-    display: inline-block;
-    width: 15px;
-    height: 15px;
-    float: left;
+    width: 11px;
 }
 .comment-count{
-    text-align: center;
-    color: #999;
-    font-family: helvetica, arial, sans-serif;
-    font-size: 11px;
-    font-weight: normal;
-    line-height: 15px;
-    height: 15px;
-    display: inline-block;
-    float: left;
-    margin-right: 2px;
 }
