@@ -2,7 +2,7 @@
 {% load cache %}
 {% load content_filters %}
 
-<h2>{{article|linkify}}{% cache 600 comments content.pk %}
+<h2>{{article|linkify}}{% cache 600 preview_comments content.pk %}
 	{% if article.num_comments %}<span class="comment-count">{{article.num_comments}}</span>{% endif %}{% endcache %}</h2>
 <p class="byline"> {{ article|byline:"short" }}
 <span class="dateline">{{ article|datify }}</span></p>
