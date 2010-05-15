@@ -185,19 +185,14 @@
         {% most_read_articles %}
     {% endcache %}
 
-    {% module 4 "" ad %}
-		<div style="width:300px; height: 250px; margin: 0 auto;">
-            <script src="http://www.paperg.com/jsfb/embed.php?pid=18&amp;bid=15&amp;width=300&amp;height=250" type="text/javascript"></script>
-		</div>
-    {% endmodule %}
-
-    {% tag_cloud 20 "tags" %}
-
     {% module 4 "Featured Videos" box %}
         {% for vid in videos %}
             {{vid|render:"front_preview"}}
         {% endfor %}
     {% endmodule %}
+
+    {% tag_cloud 20 "tags" %}
+
 
 {% endblock %}
 
