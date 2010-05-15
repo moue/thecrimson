@@ -118,7 +118,7 @@ div.cg_header {
 .articletools li.comment > span{
     background: url("../images/icons/comment.gif");
     text-align: center;
-    color: #ba0600;
+    color: black;
     font-family: helvetica, arial, sans-serif;
     font-weight: bold;
     font-size: 13px;
