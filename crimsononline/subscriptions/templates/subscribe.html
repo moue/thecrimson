@@ -48,7 +48,11 @@
             
             <ul style="list-style-type:none;">
                 <li>
-                    <span class="subscribe-rss"><img src="{% static_url "images/icons/rss.gif" %}" />&nbsp;<a href="/feeds/latest">All news stories</a></span>
+                    <span class="subscribe-rss"><img src="{% static_url "images/icons/rss.gif" %}" />&nbsp;<a href="/feeds/top">Top stories</a></span>
+				</li>
+                <li>
+                    <span class="subscribe-rss"><img src="{% static_url "images/icons/rss.gif" %}" />&nbsp;<a href="/feeds/latest">All stories</a></span>
+				</li>
             {% for section in sections %}
                 <li>
                     <span class="subscribe-rss"><img src="{% static_url "images/icons/rss.gif" %}" />&nbsp;<a href="/feeds{{section.get_absolute_url}}">{{ section.name }}</a></span>
