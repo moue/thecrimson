@@ -38,6 +38,7 @@ urlpatterns += patterns('',
 
 feeds = {
     'latest': feeds.Latest,
+    'top': feeds.TopNews,
     'section': feeds.BySection,
     'author': feeds.ByAuthor,
     'tag': feeds.ByTag,

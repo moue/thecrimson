@@ -33,6 +33,20 @@ class Latest(CrimsonFeed):
             latestitems = Article.objects.exclude(section=6).order_by('-issue__issue_date')[:NUM_STORIES]
             cache.set('feeds_latest', latestitems, CACHE_STANDARD)
         return Article.objects.exclude(section=6).order_by('-issue__issue_date')[:NUM_STORIES]
+
+class TopNews(CrimsonFeed):
+    title = TITLE_BASE + "Top Stories"
+    link = "/"
+    description = "The top Crimson articles"
+
+    # 6 is Flyby. No idea if this will help
+
+    def items(self):
+        topitems = cache.get('feeds_top')
+        if not topitems:
+            topitems = Article.objects.exclude(section=6).order_by('-issue__issue_date').exclude(priority__lte=5)[:NUM_STORIES]
+            cache.set('feeds_top', topitems, CACHE_STANDARD)
+        return topitems
     
 
 class ByAuthor(CrimsonFeed):
