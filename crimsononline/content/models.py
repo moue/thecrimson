@@ -326,6 +326,7 @@ class Content(models.Model):
                 templ = 'models/%s/%s%s' % (name, method, ext)
         else:
             templ = 'models/%s/%s%s' % (name, method, ext)
+
 		# dumb hack for this jerk
         if self.slug in ['news-in-brief-student-charged-with', 'police-arrest-junior-for-assault-span',
                         'four-undergrads-face-drug-charges-span', 'students-plead-not-guilty-to-drug',
@@ -422,11 +423,11 @@ class Content(models.Model):
                 # It was, so increase the interval
                 cache.set(thres_str, cur_threshold + THRESHOLD_JUMP, MIN_DB_STORE_INTERVAL * 3)
             try:
-                ch = ContentHits.objects.filter(content=self, date = date.today())[0]
+                ch = ContentHits.objects.get(content=self, date = date.today())
                 ch.hits += cached_hits
                 ch.save()
             except (ContentHits.DoesNotExist, IndexError):
-                ch = ContentHits(content = self)
+                ch = ContentHits(content=self)
                 ch.hits = cached_hits
                 ch.save()
             # Reset a things
@@ -441,12 +442,9 @@ class Content(models.Model):
                 for cls in Content.__subclasses__()]
 
 class ContentHits(models.Model):
-    content = models.ForeignKey(Content)
+    content = models.ForeignKey(Content, db_index=True)
     date = models.DateField(auto_now_add=True, db_index=True)
     hits = models.PositiveIntegerField(default=1)
-
-    def save(self, *args, **kwargs):
-        return super(ContentHits, self).save(*args, **kwargs)
 
     def __unicode__(self):
         return "Content %d with %d hits" % (self.content_id, self.hits)
