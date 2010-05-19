@@ -127,7 +127,7 @@ class BySection(CrimsonFeed):
     def items(self, obj):
         items = cache.get('feeds_section_%d' % obj.pk)
         if not items:
-            items = Article.objects.filter(section__id__exact=obj.pk).order_by('-issue__issue_date')[:NUM_STORIES]
+            items = Article.objects.filter(section__exact=obj.pk).order_by('-issue__issue_date')[:NUM_STORIES]
             cache.set('feeds_section_%d' % obj.pk, items, CACHE_STANDARD)
         return items
     

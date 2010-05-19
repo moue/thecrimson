@@ -85,7 +85,7 @@ class ContentManager(models.Manager):
         # hack to ensure that related content gets ordered
         if self.__class__.__name__ == 'ManyRelatedManager':
             return self.rel_content_ordered()
-        return self.all_objects().select_related(depth=2).filter(pub_status=1)
+        return self.all_objects().filter(pub_status=1)
 
     @add_issue_filter
     def all(self):
@@ -425,11 +425,12 @@ class Content(models.Model):
             try:
                 ch = ContentHits.objects.get(content=self, date = date.today())
                 ch.hits += cached_hits
-                ch.save()
             except (ContentHits.DoesNotExist, IndexError):
                 ch = ContentHits(content=self)
                 ch.hits = cached_hits
-                ch.save()
+
+            ch.save()
+
             # Reset a things
             cache.set(time_str, now, MIN_DB_STORE_INTERVAL * 3)
             cache.delete(hits_str)
