@@ -109,7 +109,7 @@ class ContentManager(models.Manager):
 
     @property
     def recent(self):
-        return self.get_query_set().order_by('-issue__issue_date', '-modified_on')
+        return self.get_query_set().order_by('-issue__issue_date')
 
     def prioritized(self, recents=7):
         """Order by (priority / days_old).
@@ -423,7 +423,7 @@ class Content(models.Model):
                 # It was, so increase the interval
                 cache.set(thres_str, cur_threshold + THRESHOLD_JUMP, MIN_DB_STORE_INTERVAL * 3)
             try:
-                ch = ContentHits.objects.get(content=self, date = date.today())
+                ch = ContentHits.objects.filter(content=self, date = date.today())
                 ch.hits += cached_hits
             except (ContentHits.DoesNotExist, IndexError):
                 ch = ContentHits(content=self)
