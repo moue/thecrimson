@@ -8,6 +8,7 @@ from django import template
 from django.conf import settings
 from django.conf.urls.defaults import patterns, url
 from django.contrib.contenttypes.models import ContentType
+from django.core.cache import cache
 from django.core.urlresolvers import RegexURLResolver, Resolver404
 from django.db import connection
 from django.template import Context
@@ -90,74 +91,79 @@ class TopArticlesNode(template.Node):
 
     def render(self, context):
         pre_title, post_title = "", ""
-        # Create a resolver for the slightly modified URL patterns we defined above
-        resolver = RegexURLResolver(r'^/', generic_obj_patterns)
-        # Step 1: We want to get the most viewed articles from the database
-        cursor = connection.cursor()
-        if self.specifier:
-            try:
-                self.specifier = self.specifier.resolve(context)
-            except:
-                return ''
-            if isinstance(self.specifier, basestring):
-                parsedspec = self.specifier.split(":")
+        if not cache.get("mostreadarticles" + str(self.specifier)):
+            # Create a resolver for the slightly modified URL patterns we defined above
+            resolver = RegexURLResolver(r'^/', generic_obj_patterns)
+            # Step 1: We want to get the most viewed articles from the database
+            cursor = connection.cursor()
+            orig_ss = self.specifier or ''
+            if self.specifier:
                 try:
-                    if parsedspec[0] == "section":
-                        self.specifier = Section.objects.filter(name=parsedspec[1])[0]
+                    self.specifier = self.specifier.resolve(context)
                 except:
                     return ''
-            if self.specifier.__class__ == Section:
-                tableStr = ""
-                limitStr = " AND content_content.section_id = " + str(self.specifier.id)
-                try:
-                    post_title = 'IN %s' % str(Section.objects.get(pk=self.specifier.id)).upper()
-                except:
-                    pass
-            elif self.specifier.__class__ == Contributor:
-                tableStr = ", content_contributor, content_content_contributors"
-                limitStr = " AND content_contributor.id = " + str(self.specifier.id) + \
-                           " AND content_contributor.id = content_content_contributors.contributor_id" \
-                           " AND content_content_contributors.content_id = content_content.id"
-                try:
-                    pre_title = Contributor.objects.get(pk=self.specifier.id).first_name.upper() + "'S"
-                except:
-                    pass
-            elif self.specifier.__class__ == Tag:
-                tableStr = ", content_tag, content_content_tags"
-                limitStr = " AND content_tag.id = " + str(self.specifier.id) + \
-                           " AND content_content_tags.content_id = content_content.id" \
-                           " AND content_content_tags.tag_id = content_tag.id"
-                try:
-                    post_title = 'IN "%s"' % Tag.objects.get(pk=self.specifier.id).text.upper()
-                except:
-                    pass
+                if isinstance(self.specifier, basestring):
+                    parsedspec = self.specifier.split(":")
+                    try:
+                        if parsedspec[0] == "section":
+                            self.specifier = Section.objects.filter(name=parsedspec[1])[0]
+                    except:
+                        return ''
+                if self.specifier.__class__ == Section:
+                    tableStr = ""
+                    limitStr = " AND content_content.section_id = " + str(self.specifier.id)
+                    try:
+                        post_title = 'IN %s' % str(Section.objects.get(pk=self.specifier.id)).upper()
+                    except:
+                        pass
+                elif self.specifier.__class__ == Contributor:
+                    tableStr = ", content_contributor, content_content_contributors"
+                    limitStr = " AND content_contributor.id = " + str(self.specifier.id) + \
+                               " AND content_contributor.id = content_content_contributors.contributor_id" \
+                               " AND content_content_contributors.content_id = content_content.id"
+                    try:
+                        pre_title = Contributor.objects.get(pk=self.specifier.id).first_name.upper() + "'S"
+                    except:
+                        pass
+                elif self.specifier.__class__ == Tag:
+                    tableStr = ", content_tag, content_content_tags"
+                    limitStr = " AND content_tag.id = " + str(self.specifier.id) + \
+                               " AND content_content_tags.content_id = content_content.id" \
+                               " AND content_content_tags.tag_id = content_tag.id"
+                    try:
+                        post_title = 'IN "%s"' % Tag.objects.get(pk=self.specifier.id).text.upper()
+                    except:
+                        pass
 
+                else:
+                    raise template.TemplateSyntaxError, "The TopArticles tag can only take a section, contributor, or tag argument (%r passed)" % self.specifier.__class__
             else:
-                raise template.TemplateSyntaxError, "The TopArticles tag can only take a section, contributor, or tag argument (%r passed)" % self.specifier.__class__
+                tableStr = ""
+                limitStr = ""
+            if settings.DATABASE_ENGINE == 'sqlite3':
+                seven_days_ago = " date('now', '-7 days') "
+            elif settings.DATABASE_ENGINE == 'mysql':
+                seven_days_ago = " ( NOW() - INTERVAL 7 day ) "
+            # SO NON-SEXUALITY-NORMATIVE
+            # Oh, a real comment in case someone comes upon this later: We're selecting article ID, content type ID, and a computed field called "hitindex"
+            # which will eventually use log() for a better curve.  This ages articles' hits to reduce freshness.  Then it sorts by hitindex and returns the top 5.
+            # TODO: Fix this to use proper decay when we switch to a real SQL server
+            sqlstatement = "SELECT DISTINCT content_article.content_ptr_id, SUM(content_contenthits.hits) AS hitnum FROM content_article, " \
+                           "content_content, content_contenthits" + tableStr + \
+                           " WHERE content_content.id = content_article.content_ptr_id " \
+                           " AND content_contenthits.content_id = content_content.id " \
+                           " AND content_content.pub_status = 1 " \
+                           " AND content_contenthits.date >" + seven_days_ago + limitStr + \
+                           " GROUP BY content_contenthits.content_id ORDER BY hitnum DESC LIMIT 5"
+            cursor.execute(sqlstatement)
+            mostreadarticles = cursor.fetchall()
+            try:
+                mostreadarticles = [Content.objects.get(pk=x[0]).child for x in mostreadarticles]
+                cache.set("mostreadarticles" + str(orig_ss), mostreadarticles, 60 * 20)
+            except:
+                mostreadarticles = None
         else:
-            tableStr = ""
-            limitStr = ""
-        if settings.DATABASE_ENGINE == 'sqlite3':
-            seven_days_ago = " date('now', '-7 days') "
-        elif settings.DATABASE_ENGINE == 'mysql':
-            seven_days_ago = " ( NOW() - INTERVAL 7 day ) "
-        # SO NON-SEXUALITY-NORMATIVE
-        # Oh, a real comment in case someone comes upon this later: We're selecting article ID, content type ID, and a computed field called "hitindex"
-        # which will eventually use log() for a better curve.  This ages articles' hits to reduce freshness.  Then it sorts by hitindex and returns the top 5.
-        # TODO: Fix this to use proper decay when we switch to a real SQL server
-        sqlstatement = "SELECT DISTINCT content_article.content_ptr_id, SUM(content_contenthits.hits) AS hitnum FROM content_article, " \
-                       "content_content, content_contenthits" + tableStr + \
-                       " WHERE content_content.id = content_article.content_ptr_id " \
-                       " AND content_contenthits.content_id = content_content.id " \
-                       " AND content_content.pub_status = 1 " \
-                       " AND content_contenthits.date >" + seven_days_ago + limitStr + \
-                       " GROUP BY content_contenthits.content_id ORDER BY hitnum DESC LIMIT 5"
-        cursor.execute(sqlstatement)
-        mostreadarticles = cursor.fetchall()
-        try:
-            mostreadarticles = [Content.objects.get(pk=x[0]).child for x in mostreadarticles]
-        except:
-            mostreadarticles = None
+            mostreadarticles = cache.get("mostreadarticles" + str(self.specifier))
 
         # TODO: uncomment / fix this.  it calls disqus every time, which is annoying
         mostcommentedarticles = None # delete this when below is uncommented
