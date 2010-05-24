@@ -357,7 +357,7 @@ class ContentAdmin(admin.ModelAdmin):
     make_draft.short_description = 'Mark content as Draft'
 
 class TagForm(forms.ModelForm):
-    ALLOWED_REGEXP = re.compile(r'[A-Za-z\s\']+$')
+    ALLOWED_REGEXP = re.compile(r'[A-Za-z\s\'0-9]+$')
 
     class Meta:
         model = Tag
