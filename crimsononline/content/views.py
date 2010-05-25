@@ -722,7 +722,7 @@ def top_articles(section, dt=None):
     stories = []
     for x in range(0, 5):
         stories = Article.objects.prioritized(20 + 40 * x).filter(qexp)
-        if stories:
+        if len(stories) > 0:
             break
     if(dt is not None):
         stories = stories.filter(issue__issue_date__lte=dt)
