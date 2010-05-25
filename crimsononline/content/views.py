@@ -720,10 +720,11 @@ def top_articles(section, dt=None):
     # We want to OR all the Qexps together
     qexp = reduce(lambda x, y: x | y, qexp) if len(qexp) > 1 else qexp[0]
     stories = []
-    for x in range(0, 5):
-        stories = Article.objects.prioritized(20 + 40 * x).filter(qexp)
-        if len(stories) > 0:
-            break
+    #for x in range(0, 5):
+    #    stories = Article.objects.prioritized(20 + 40 * x).filter(qexp)
+    #    if len(stories) > 0:
+    #        break
+    stories = Article.objects.prioritized(50).filter(qexp)
     if(dt is not None):
         stories = stories.filter(issue__issue_date__lte=dt)
     return stories
