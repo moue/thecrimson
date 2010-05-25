@@ -5,6 +5,7 @@
 {% load content_module %}
 {% load module %}
 {% load top_articles %}
+{% load cache %}
 
 {% block title %}
     FlyByBlog | Harvard Life. To Go.
@@ -907,7 +908,9 @@ function switch_product_img(divNamePrefix, photoNum, totalImgs) {
                 {% endblock %}
             {% endif %}
             {% block mostread %}
-                {% most_read_articles section %}
+                {% cache 500 mostreadarticles_flyby %}
+                    {% most_read_articles section %}
+                {% endcache %}
             {% endblock %}
         </div>
         <div style="clear: both;"></div>
