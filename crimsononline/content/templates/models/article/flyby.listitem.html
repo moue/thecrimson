@@ -42,7 +42,7 @@
         {% else %}
             {% for p in article.text|safe|paragraphs %}
                 {{ p }}
-                {% if forloop.counter0|divisibleby:"2" %}
+                {% if forloop.counter|divisibleby:"2" %}
                     {{ article.rel_content|render_rc_sub:forloop.counter }}
                 {% endif %}
             {% endfor %}
