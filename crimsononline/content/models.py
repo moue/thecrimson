@@ -361,7 +361,10 @@ class Content(models.Model):
                 from crimsononline.common.utils.lists import first_or_none
                 featured = rotatables(section)
                 video = first_or_none(YouTubeVideo.objects.recent.filter(section=section))
-                n_context.update({'series': series, 'featured': featured, 'video': video})
+                n_context.update({'section': section,
+                                  'series': series,
+                                  'featured': featured,
+                                  'video': video})
                 return mark_safe(render_to_string('models/%s/flyby.page.html'%(name),
                                  n_context))
 
