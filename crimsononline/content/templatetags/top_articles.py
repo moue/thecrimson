@@ -91,17 +91,20 @@ class TopArticlesNode(template.Node):
 
     def render(self, context):
         pre_title, post_title = "", ""
-        if not cache.get("mostreadarticles" + str(self.specifier)):
+        if self.specifier:
+            try:
+                self.specifier = self.specifier.resolve(context)
+            except:
+                return ''
+        else:
+            self.specifier = ''
+        if not cache.get("mostreadarticles" + str(self.specifier).replace(' ', '')):
             # Create a resolver for the slightly modified URL patterns we defined above
             resolver = RegexURLResolver(r'^/', generic_obj_patterns)
             # Step 1: We want to get the most viewed articles from the database
             cursor = connection.cursor()
             orig_ss = self.specifier or ''
             if self.specifier:
-                try:
-                    self.specifier = self.specifier.resolve(context)
-                except:
-                    return ''
                 if isinstance(self.specifier, basestring):
                     parsedspec = self.specifier.split(":")
                     try:
@@ -159,11 +162,11 @@ class TopArticlesNode(template.Node):
             mostreadarticles = cursor.fetchall()
             try:
                 mostreadarticles = [Content.objects.get(pk=x[0]).child for x in mostreadarticles]
-                cache.set("mostreadarticles" + str(orig_ss), mostreadarticles, 60 * 20)
+                cache.set("mostreadarticles" + str(orig_ss).replace(' ', ''), mostreadarticles, 60 * 20)
             except:
                 mostreadarticles = None
         else:
-            mostreadarticles = cache.get("mostreadarticles" + str(self.specifier))
+            mostreadarticles = cache.get("mostreadarticles" + str(self.specifier).replace(' ', ''))
 
         # TODO: uncomment / fix this.  it calls disqus every time, which is annoying
         mostcommentedarticles = None # delete this when below is uncommented
