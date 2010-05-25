@@ -284,9 +284,9 @@ def render_rc_sub(rc, counter):
     except IndexError:
         return ''
     if index % 2 == 0:
-        return mark_safe(content._render('flyby.inline_right'))
-    else:
         return mark_safe(content._render('flyby.inline_left'))
+    else:
+        return mark_safe(content._render('flyby.inline_right'))
         
 @register.filter
 def flyby_series_imgwidth(series, totalwidth):
