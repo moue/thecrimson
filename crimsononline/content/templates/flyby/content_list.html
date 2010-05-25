@@ -25,12 +25,12 @@
             <div id="fb_content_pagination">
                 {% if entries.has_previous %}
                     <div id="fb_nav_previous">
-                        <a href="page/{{entries.previous_page_number}}/">&larr;Newer posts</a>
+                        <a href="{{ url_base }}page/{{entries.previous_page_number}}/">&larr;Newer posts</a>
                     </div>
                 {% endif %}
                 {% if entries.has_next %}
                     <div id="fb_nav_next">
-                        <a href="page/{{entries.next_page_number}}/">Older posts&rarr;</a>
+                        <a href="{{ url_base}}page/{{entries.next_page_number}}/">Older posts&rarr;</a>
                     </div>
                 {% endif %}
             </div>

@@ -473,6 +473,9 @@ def section_flyby(request, page=1, tags='', cg=None):
     featured = rotatables(section)
     video = first_or_none(YouTubeVideo.objects.recent.filter(section=section))
     paginator = Paginator(content, FLYBY_RESULTS_PER_PAGE)
+    url_base = "/section/flyby/"
+    if tag:
+        url_base += "/tags/" + tag + "/"
     # Jesus, Andy.
     try:
         entries = paginator.page(page)
