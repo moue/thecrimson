@@ -34,7 +34,7 @@
         {% if article|flyby_teaser %}
             {% for p in article|flyby_teaser|safe|paragraphs %}
                 {{ p }}
-                {% if forloop.counter0|divisibleby:"2" %}
+                {% if forloop.counter1|divisibleby:"2" %}
                     {{ article.rel_content|render_rc_sub:forloop.counter0 }}
                 {% endif %}
             {% endfor %}
