@@ -472,7 +472,7 @@ def section_flyby(request, page=1, tags='', cg=None):
     # I don't think it's likely that we'll ever have a meaningful distinction of blog/series/column WITHIN flyby,
     # but should it become necessary that can be filtered below
     series = list(ContentGroup.objects.filter(active=True).filter(section=section))
-    featured = rotatables(section)
+    featured = rotatables(section, 6)
     video = first_or_none(YouTubeVideo.objects.recent.filter(section=section))
     paginator = Paginator(content, FLYBY_RESULTS_PER_PAGE)
     url_base = "/section/flyby/"
