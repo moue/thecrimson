@@ -278,7 +278,7 @@ def render_rc_sub(rc, counter):
     """Renders inline images in Flyby articles."""
     rc = rc.exclude(content_type__model='article')
     # Add 1 since presumably the top rc is already accounted for
-    index = counter / 2 + 1
+    index = counter / 2
     try:
         content = rc[index]
     except IndexError:

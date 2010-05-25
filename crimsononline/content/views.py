@@ -476,7 +476,7 @@ def section_flyby(request, page=1, tags='', cg=None):
     paginator = Paginator(content, FLYBY_RESULTS_PER_PAGE)
     url_base = "/section/flyby/"
     if tag:
-        url_base += "/tags/" + tag + "/"
+        url_base += "tags/" + tag + "/"
     # Jesus, Andy.
     try:
         entries = paginator.page(page)
