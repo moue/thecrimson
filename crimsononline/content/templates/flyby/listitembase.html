@@ -1,0 +1,30 @@
+{% load common %}
+{% load content_filters %}
+{% load content_module %}
+{% load module %}
+
+<div class="fb_post">
+    <div class="fb_postdt">
+        <div class="fb_postdate">{% block date %}{% endblock %}</div>
+        <div class="fb_posttime">{% block time %}{% endblock %}</div>
+    </div>
+    <div class="fb_postcontent" {% block spacer %}{% endblock %}>
+        {% block postcontent %}{% endblock %}
+        <div class="fb_postbottom">
+            {% block tags %}{% endblock %}
+            {% block byline %}{% endblock %}
+            {% block social %}
+                <div class="fb_social">
+                    <!-- AddThis Button BEGIN -->
+                        <script type="text/javascript">var addthis_pub="4a1b0ea00f31f08e"; var addthis_options='email, facebook, twitter, digg';</script>
+                        <a href="http://www.addthis.com/bookmark.php?v=20" onmouseover="return addthis_open(this, '', '{% block addthis_url %}{% endblock %}', '{% block addthis_title %}{% endblock %}')" onmouseout="addthis_close()" onclick="return addthis_open(this, '', '[URL]', '[TITLE]')"><span>+ SHARE</span></a><script type="text/javascript" src="http://s7.addthis.com/js/200/addthis_widget.js"></script>
+                    <!-- AddThis Button END -->
+                </div>
+                {% block commentslink %}{% endblock %}
+            {% endblock %}
+        </div>
+        <div style="clear: both;"></div>
+        {% block comments %}{% endblock %}
+    </div>
+    <div style="clear: both;"></div>
+</div>

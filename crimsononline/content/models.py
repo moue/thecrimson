@@ -354,7 +354,15 @@ class Content(models.Model):
 
             # flyby content
             if self.section == Section.cached('flyby') and self.content_type == Article.ct():
-                return mark_safe(render_to_string('models/%s/flyby_page.html'%(name),
+                # TODO: This is bad; fix it
+                section = self.section
+                series = list(ContentGroup.objects.filter(active=True).filter(section=section))
+                from crimsononline.content.views import rotatables
+                from crimsononline.common.utils.lists import first_or_none
+                featured = rotatables(section)
+                video = first_or_none(YouTubeVideo.objects.recent.filter(section=section))
+                n_context.update({'series': series, 'featured': featured, 'video': video})
+                return mark_safe(render_to_string('models/%s/flyby.page.html'%(name),
                                  n_context))
 
         return mark_safe(render_to_string(templ, n_context))

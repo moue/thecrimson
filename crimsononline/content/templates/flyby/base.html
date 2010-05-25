@@ -1,85 +1,580 @@
-{% load content_filters %}
 {% load common %}
+{% load content_filters %}
 {% load content_module %}
+{% load module %}
 
-{% load tag_cloud %}
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	<link rel="alternate" type="application/rss+xml" 
-	  title="RSS Feed for FlyBy on www.thecrimson.com" 
-	  href="/feeds/section/flyby/" />
-	<link rel="icon" type="image/vnd.microsoft.icon" href="{% static_url "images/icons/favicon.ico" %}" />
-    <title>{% block title %}FlyByBlog | Harvard Life. To Go.{% endblock %}</title>
-    {% static_css "flyby.css" %}
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Untitled Document</title>
+<style media="all" type="text/css"> 
+.all{
+	width:973px;
+	margin-left:auto;
+	margin-right:auto;
+}
+
+.mainblog{
+	width:668px;
+	float:left;
+}
+
+.tabs{
+	width=:668px;
+	background-image:url(tabbg.jpg) ;
+}
+
+
+.sidebar{
+	width:305px;
+	float:left;
+	font-family:Georgia, "Times New Roman", Times, serif;
+	font-size:16px;
+}
+
+td.fcorner{
+	float:right;
+	position: relative;
+	right:-1px;
+	top:-1px;
+	margin-left:-30px;
+	}
+td.date{
+	font-family: "Gill Sans MT", GillSans, sans-serif;
+	font-size: 20px;
+	text-align:right;
+	color:#bc2e22;
+	width: 60px;
+	background: #ececec;
+	}
+td.time{
+	font-family: "Gill Sans MT", GillSans, sans-serif;
+	font-size: 12px;
+	font-weight:bold;
+	vertical-align:text-top;
+	text-align:right;
+	padding-top:20px;
+	color:#000000;
+	width: 60px;
+	background: #ececec;
+	}
+td.blogpost{
+	font-family: Georgia, "Times New Roman", Times, serif;
+	font-size:12px;
+	width:508px;
+	padding-left:10px;
+	padding-right:40px;
+	padding-top:20px;
+	}
+td.blogpost a{
+	font-family: Georgia, "Times New Roman", Times, serif;
+	font-size:12px;
+	font-style:italic;
+	text-decoration: none;
+	color:#bc2e22;
+	}
+img.side{
+	width:160px;
+	float:left;
+	padding-right: 15px;
+	}
+img.full{
+	width:100%;
+	padding-bottom: 15px;
+	}
+img.sightings{
+	position:relative;
+	top:10px;
+	}
+.wrap {
+	  /* force the div to properly contain the floated images: */
+	  position:relative;
+	  float:right;
+	  clear:none;
+	  overflow:hidden;
+	}
+.wrap img {
+	  position:relative;
+	  z-index:1;
+	}
+.wrap .desc {
+	font-family: "Gill Sans MT", GillSans, sans-serif;
+	  color:#77787a;
+	  font-size:14px;
+	  display:inline;
+	  position:absolute;
+	  width:20px;
+	  top:-5%;
+	  left:0;
+	  z-index:2;
+	  text-align:center;
+	}
+
+div.endpost{
+	text-align:right;
+	padding: 0;
+	font-family:Georgia, "Times New Roman", Times, serif;
+	color:#77787a;
+	font-size:10px;
+	} 
+div.endpost div{
+	display:inline;
+	white-space:nowrap
+	} 
+div.endpost div.left{float:left} 
+#content>div.endpost{display:table;width:100%} 
+#content>div.endpost div{display:table-cell} 
+#content>div.endpost div.left{float:none;text-align:left} 
+#content>div.endpost div.right{text-align:right} 
+
+td.tags{
+	font-family:Georgia, "Times New Roman", Times, serif;
+	color:#77787a;
+	font-size:10px;
+	}
+	
+td.author{
+	font-family:Georgia, "Times New Roman", Times, serif;
+	color:#77787a;
+	font-size:10px;
+	text-align:right;
+	}
+	
+td.bigquote{
+	font-family:"Gill Sans MT", GillSans sans-serif;
+	Color:#77787a;
+	width: 438px;
+	font-size:16px;
+	text-align:right;
+	padding-top: 20px;
+	padding-left: 10px;
+	padding-right:40px;
+	background-image:url(quoteleft.jpg);
+	background-repeat: no-repeat;
+	background-position: left top;
+	}
+
+div.bigquote{
+	background-image:url(quoteright.jpg);
+	background-repeat:no-repeat;
+	background-position:right bottom;
+	padding-left:60px;
+	padding-right: 80px;
+	}
+	
+.photos {
+	overflow: hidden;
+	padding: 10px;
+	width: 450px;
+	margin: 0 0 0 0;
+}
+img { border: none;}
+.photos img.logo {margin: 0 auto; display:block;}
+.photos div img {
+	padding: 10px 0;
+	margin: 10px 0;
+	border-top: 1px solid #ddd;
+	margin-left:auto;
+	margin-right:auto;
+}
+.photos ul.thumbs {
+	margin: 0;
+	padding: 0 0 0 0px;
+	list-style: none;
+	width: 450px;
+	float: left;
+}
+.photos ul.thumbs li{
+	width: 100px;
+	height: 100px;
+	margin: 0 0 0 0;
+	padding: 0;
+	float: left;
+	overflow: hidden;
+	position: relative;
+	border: 5px solid #ddd;
+	text-align: center;
+}
+.photos ul.thumbs li:hover {
+	border: 5px solid #888;
+	-moz-opacity:.75; 
+	filter:alpha(opacity=75); 
+	opacity:.75; 
+}
+.photos ul.thumbs li img {
+	position: relative;
+	top: -120px;
+	left: -120px;
+}
+img.fcorner  {
+	width:30px;
+}
+img.sidebar {
+	width:335px;
+}
+
+.quicklinks div{
+	float:left;
+}
+
+.dhall a { 
+display: block; 
+width: 80px; 
+height: 70px; 
+background: transparent url(dhallsched.jpg) no-repeat; 
+} 
+
+.dhall a:hover { 
+background-position: -85px 0; 
+} 
+
+.shuttle a { 
+display: block; 
+width: 67px; 
+height: 70px; 
+background: transparent url(shuttlesched.jpg) no-repeat; 
+} 
+
+.shuttle a:hover { 
+background-position: -69px 0; 
+} 
+
+.myh a { 
+display: block; 
+width: 67px; 
+height: 70px; 
+background: transparent url(myharvard.jpg) no-repeat; 
+} 
+
+.myh a:hover { 
+background-position: -67px 0; 
+} 
+
+.qguide a { 
+display: block; 
+width: 67px; 
+height: 70px; 
+background: transparent url(qguide.jpg) no-repeat; 
+} 
+
+.qguide a:hover { 
+background-position: -69px 0; 
+} 
+
+
+#series {
+  padding-left:0; 
+  margin-left:-1px; 
+  list-style-type:none; 
+  overflow:hidden; 
+  width:295px; 
+  height:200px; 
+  border:0px; 
+  background:#fff url(series/prefroshweekendbg.jpg);
+  }
+#series li {
+  float:left;
+  }
+#series li a {
+  display:block; 
+  height:200px;
+  width:20px;
+  overflow:hidden;
+  float:left; 
+  text-decoration:none; 
+  border:0px solid #fff; 
+  cursor:default;
+  
+  }
+#series li a img {border:0;}
+
+#series li a:hover {
+  background:#eee; 
+  width:195px;
+  }
+  
+.seriestextgrey {
+	background-color:#ececec;
+	color: #bc2e22;
+	border:0px;
+	writing-mode:tb-rl;
+	-webkit-transform:rotate(270deg);
+	-moz-transform:rotate(270deg);
+	-o-transform: rotate(270deg);
+	white-space:nowrap;
+	float:left;
+	bottom:0;
+	width:200px;
+	height:20px;
+	font-family: 'Gill Sans MT', GillSans, sans-serif;
+	text-align:right;
+	font-size:16px;
+	font-weight:normal;
+	margin-left:-200px;
+	padding-left:220px;
+	}
+	
+.seriestextwhite {
+	background-color:#ffffff;
+	color: #bc2e22;
+	border:0px;
+	writing-mode:tb-rl;
+	-webkit-transform:rotate(270deg);
+	-moz-transform:rotate(270deg);
+	-o-transform: rotate(270deg);
+	white-space:nowrap;
+	float:left;
+	bottom:0;
+	width:200px;
+	height:20px;
+	text-align:right;
+	font-family: 'Gill Sans MT', GillSans, sans-serif;
+	font-size:16px;
+	font-weight:normal;
+	margin-left:-200px;
+	padding-left:220px;
+	}
+
+.seriesimage {
+	margin-left:20px;
+	}
+
+#featured{    
+	margin:0;
+	width:295px;
+	text-align:center;
+	height:200px;
+	background-color:#bc2e22;
+	position:relative;
+}
+
+#featured #slidesContainer {
+  	margin:0 auto;
+  	width:295px;
+  	height:200px;
+  	overflow:auto; /* allow scrollbar */
+  	position:relative;
+}
+
+#featured #slidesContainer .slide {
+  	margin:0 auto;
+  	width:275px; /* reduce by 20 pixels of #slidesContainer to avoid horizontal scroll */
+  	height:200px;
+}
+
+/**
+ * Slideshow controls style
+ */
+.control {
+  	display:inline;
+  	width:35px;
+  	height:200px;
+  	text-indent:-10000px;
+  	position:absolute;
+  	cursor: pointer;
+}
+#leftControl {
+  	top:0;
+	left:0;
+   	background:transparent url(control-left.png) no-repeat 0 0;
+	}
+#rightControl {
+  	top:0;
+  	right:0;
+	background:transparent url(control-right.png) no-repeat 0 0;
+	}
+
+td.red {
+	background-color:#bc2e22;
+	height:5px;
+}
+
+td.end {
+	background-color:#ececec;
+	
+}
+
+</style>
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+
+<script type="text/javascript">
+
+$(document).ready(function(){
+  var currentPosition = 0;
+  var slideWidth = 295;
+  var slides = $('.slide');
+  var numberOfSlides = slides.length;
+
+  // Remove scrollbar in JS
+  $('#slidesContainer').css('overflow', 'hidden');
+
+  // Wrap all .slides with #slideInner div
+  slides
+    .wrapAll('<div id="slideInner"></div>')
+    // Float left to display horizontally, readjust .slides width
+	.css({
+      'float' : 'left',
+      'width' : slideWidth
+    });
+
+  // Set #slideInner width equal to total width of all slides
+  $('#slideInner').css('width', 985);
+
+  // Insert controls in the DOM
+  $('#featured')
+    .append('<span class="control" id="leftControl">Clicking moves left</span>', '<span class="control" id="rightControl">Clicking moves right</span>');
+
+  // Hide left arrow control on first load
+  manageControls(currentPosition);
+
+  // Create event listeners for .controls clicks
+  $('.control')
+    .bind('click', function(){
+    // Determine new position
+	currentPosition = ($(this).attr('id')=='rightControl') ? currentPosition+1 : currentPosition-1;
+
+	// Hide / show controls
+    manageControls(currentPosition);
+    // Move slideInner using margin-left
+    $('#slideInner').animate({
+      'marginLeft' : slideWidth*(-currentPosition)
+    });
+  });
+
+  // manageControls: Hides and Shows controls depending on currentPosition
+  function manageControls(position){
+    // Hide left arrow if position is first slide
+	if(position==0){ $('#leftControl').hide() } else{ $('#leftControl').show() }
+	// Hide right arrow if position is last slide
+    if(position==numberOfSlides-1){ $('#rightControl').hide() } else{ $('#rightControl').show() }
+  }
+});
+</script>
+
 </head>
 
 <body>
-<div id="shadow">
-<div id="wrapper">
 
-    <div id="header">
-
-<a href="/section/flyby/"><img src = "{% static_url 'images/flyby/banner_top.jpg' %}" style="width:900px;" alt="topbanner" /></a>
-    </div>
-
-<div id="container">
-    <div id="content">
-        {% block body %}
-        {% endblock %}
-    </div>
+<div class="all">
+<div class="mainblog">
+<div class="tabs">
+<img src="leftend.jpg" width="60" />
 </div>
-
+<TABLE border="0" cellspacing="0">
+{% block content %}{% endblock %}
+</TABLE>
+</div>
 <div class="sidebar">
+<img class="sidebar" src="flyby2.jpg" />
+<font size="+2" face="Gill Sans MT, GillSans, sans-serif" color="bc3e22"> About Us</font><img src="horizontalrule.jpg" />
+<br />
+The editors of The Harvard Crimson present FlyByBlog, your more-than-daily source for 
+Harvard news, gossip, and oddities. Follow us by subscribing to our RSS Feed.
+<br /><br />
+<table>
+<tr>
+<td><font face="Gill Sans MT, GillSans, sans-serif" size="+1" color="#666666">TIP BOX</font></td>
+<td>
+<form method="post" action="">
+<textarea name="comments" cols="20" rows="2">
 
-<h3>Contact Us</h3>
-        <p>Send us tips, comments, etc. at <a href="mailto:flyby@thecrimson.com">flyby@thecrimson.com</a></p>
+</textarea><br>
+</td>
+<td>
+<input type="submit" value="Submit" style="background-color:#bc2e22; color:#FFFFFF; font-family: Gill Sans MT, GilLSans, sans-serif; border:none; font-size:14px; font-weight:300; height:38px" />
+</form>
+</td></tr></table>
+<font size="+2" face="Gill Sans MT, GillSans, sans-serif" color="bc3e22"> Quick Links</font><img src="horizontalrule1.jpg" />
+<br />
+<div class="quicklinks">
+<div class="dhall"><a href="#"></a></div>
+<div class="shuttle"><a href="#"></a></div>
+<div class="myh"><a href="#"></a></div>
+<div class="qguide"><a href="#"></a></div>
+</div>
+<br />
+<font size="+2" face="Gill Sans MT, GillSans, sans-serif" color="bc3e22"> Series</font><img src="horizontalrule2.jpg" />
+<ul id="series">
+<li><a href="#">
+<div class="seriesimage"><img src="series/whinedine1.jpg" alt="Whine & Dine by Lingbo Li" title="Whine & Dine by Lingbo Li" /></div><div class="seriestextgrey">whine & dine</div></a></li>
+<li><a href="http://www.thecrimson.com">
+<div class="seriesimage"><img src="series/crimsoncocktail1.jpg" alt="Crimson Cocktail" title="Crimson Cocktail" /></div><div class="seriestextwhite">crimson cocktail</div></a></li>
+<li><a href="#">
+<div class="seriesimage"><img src="series/aroundtheivies1.jpg" alt="Around the Ivies Plus" title="Around the Ivies Plus" /></div><div class="seriestextgrey">around the Ivies plus</div></a></li>
+<li><a href="#">
+<div class="seriesimage"><img src="series/weekendroundup1.jpg" alt="Weekend Roundup" title="Weekend Roundup" /></div><div class="seriestextwhite">weekend roundup</div></a></li>
+<li><a href="#">
+<div class="seriesimage"><img src="series/goldendozen1.jpg" alt="Golden Dozen" title="Golden Dozen" /></div><div class="seriestextgrey">golden dozen</div></a></li>
+<li><a href="#">
+<div class="seriesimage"><img src="series/prefroshweekend1.jpg" alt="Pre-Frosh Weekend" title="Pre-Frosh Weekend" /></div><div class="seriestextwhite">pre-frosh weekend</div></a></li>
+</ul>
+<br />
+<font size="+2" face="Gill Sans MT, GillSans, sans-serif" color="bc3e22"> Featured</font><img src="horizontalrule.jpg" />
+ <div id="featured">
 
-<h3>About Us</h3>
-	<p>The editors of <a href="http://www.thecrimson.com" target="_blank">The Harvard Crimson</a> present FlyByBlog, your more-than-daily source for Harvard news, gossip, and oddities. Follow us by subscribing to our <a href="/feeds/section/flyby/">RSS Feed</a>.</p>
+    <div id="slidesContainer">
 
-<h3>Quick Links</h3>
-	{% contentmodule flyby.quicklinks %}{% endcontentmodule %}
+      <div class="slide">
+      <a href="#"><img src="series/tamtam.jpg" /></a>
+      </div>
+      <div class="slide">
+      <a href="#"><img src="series/LILZ.jpg" /></a>
+      </div>
+      <div class="slide">
+      <a href="#"><img src="series/chairs.jpg" /></a>
+      </div>
+      </div>
+    </div>
+  </div>
 
+<br /><br /><br />
 
-{% comment %}
-<h3>Tags</h3>
-    {% tag_cloud 15 "RELATED TAGS" tags %}
-{% endcomment %}
-
-<h3>Harvard Blogs</h3>
-	{% contentmodule flyby.harvardblogs %}{% endcontentmodule %}
-
-
-
-<h3>College Blogs</h3>
-	{% contentmodule flyby.collegeblogs %}{% endcontentmodule %}
-
-
-
-</div><!-- #primary .sidebar -->	
-
-
-<span style="clear: both;display: block"></span>
-
-<div class="footer">
-	<span id="copyright">&copy; 2009<a href="http://www.thecrimson.com" target="_blank"> The Harvard Crimson </a>
-	</span>
-</div><!-- #footer -->
-
-
-
-</div><!-- #wrapper -->
-</div><!-- #shadow -->
-<script type="text/javascript">
-var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-</script>
-<script type="text/javascript">
-try{
-var pageTracker = _gat._getTracker("UA-327124-3");
-pageTracker._trackPageview();
-} catch(err) {}</script>
+<font size="+2" face="Gill Sans MT, GillSans, sans-serif" color="bc3e22"> Video</font><img src="horizontalrule2.jpg" />
+<br />
+<object width="300" height="183"><param name="movie" value="http://www.youtube.com/v/GtYDN-kCjJ4&hl=en_US&fs=1&"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/GtYDN-kCjJ4&hl=en_US&fs=1&" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="300" height="183"></embed></object>
+<br />
+ <div id="mostreadarticles">
+        <ol class="most">        
+         
+            <li><a href="/article/2010/4/15/clubs-social-final-club/">Long Overdue</a></li>
+        
+            <li><a href="/article/2010/4/14/faculty-school-business-women/">Harvard Business School Grapples With Gender Imbalance</a></li>
+        
+            <li><a href="/column/broken-taboos/article/2010/4/14/sexual-chen-sex-people/">My Date With Lena</a></li>
+        
+            <li><a href="/article/2010/4/16/course-harvard-students-student/">Masters Urge Caution Over Unofficial Class</a></li>
+        
+            <li><a href="/article/2010/4/18/mather-according-fire-night/">Mather Lather Foam Sets Off Fire Alarm</a></li>
+        
+        </ol>
+    </div>
+<div class="bottom">
+<div class="bottomborder" height="5px"></div>
+<table cellspacing="0" width="973px" style="border-style:none; font-family:Gill Sans MT, GillSans, sans-serif; font-size:12px; vertical-align:middle; text-align:center;">
+<tr height="5px">
+<td class="red" width="60px">&nbsp;</td>
+<td class="red">&nbsp;</td>
+<td class="red" width="120px">&nbsp;</td>
+<td class="red">&nbsp;</td>
+<td class="red">&nbsp;</td>
+<td class="red">&nbsp;</td>
+<td class="red">&nbsp;</td>
+<td class="red">&nbsp;</td>
+</tr>
+<tr>
+<td class="end" width="60px">&nbsp;</td>
+<td class="end">BLOG CHAIR<br />Michelle L. Quach '11</td>
+<td class="end" width="120px">&nbsp;</td>
+<td class="end">BLOG EXECUTIVES</td>
+<td class="end">Jessie J. Jiang '11 <br />Eric P. Newcomer '12</td>
+<td class="end">Elyssa A.L. Spitzer '12<br />Naveen N. Srivatsa '12</td>
+<td class="end" style="vertical-align:top">H. Zane B. Wruble '11</td>
+<td class="end">&nbsp;</td>
+</tr>
+</table>
+</div>
+</div>
 </body>
 </html>

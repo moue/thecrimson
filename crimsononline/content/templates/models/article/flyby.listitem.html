@@ -1,0 +1,83 @@
+{% extends "flyby/listitembase.html" %}
+
+{% load common %}
+{% load content_filters %}
+{% load content_module %}
+{% load module %}
+{% load cache %}
+
+{% block time %}{{ article.modified_on|time:"g:i A" }}{% endblock %}
+{% block date %}{% endblock %}
+
+{% block postcontent %}
+    {% if article.group %}
+        <div class="fb_headline">
+            <div class="fb_bigtag"><a href="{{ article.group.get_absolute_url }}">{{article.group.name|upper}}</a></div>
+            <div class="fb_headlinetext"><a href="{{ article.get_absolute_url }}">{{article.headline}}</a></div>
+        </div>    
+    {% else %}
+        <div class="fb_headline">
+            <div class="fb_headlinetext"><a href="{{ article.get_absolute_url }}">{{article.headline}}</a></div>
+        </div>
+    {% endif %}
+    
+    {% block rel_content %}
+        {% if article.main_rel_content %}
+            {% ifnotequal article.main_rel_content.content_type.model "article" %}
+                {{ article.main_rel_content|render:"flyby.listitem" }}
+            {% endifnotequal %}
+        {% endif %}
+    {% endblock %}
+    
+    {% comment %} edit for mult img -- remember to use rel_no_articles and notfirst {% endcomment %}
+    {% block articletext %}
+        {% if article|flyby_teaser %}
+            {% for p in article|flyby_teaser|safe|paragraphs %}
+                {{ p }}
+                {% if forloop.counter0|divisibleby:"2" %}
+                    {{ article.rel_content|render_rc_sub:forloop.counter0 }}
+                {% endif %}
+            {% endfor %}
+            <p class="fb_jump"><a href="{{ article.get_absolute_url }}#jump">(Continued)</a></p>
+        {% else %}
+            {% for p in article.text|safe|paragraphs %}
+                {{ p }}
+                {% if forloop.counter0|divisibleby:"2" %}
+                    {{ article.rel_content|render_rc_sub:forloop.counter0 }}
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    {% endblock %}
+{% endblock %}
+
+{% block tags %}
+    {% if content.tags.all %}
+        <div class="fb_tags">Tagged: 
+        {% for tag in content.tags.all %}
+            <a class="fb_tag" href="{{ tag.get_absolute_url }}">{{ tag.text }}</a>{% ifnotequal forloop.last 1 %}, {% endifnotequal %}
+        {% endfor %}
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block byline %}
+  <div class="fb_byline">Published by {{ article.contributors.all|linkify|human_list }}</div>
+{% endblock %}
+
+{% block commentslink %}
+    <div class="fb_commentslink">
+        <span class="small-text-icon-wrap">
+            <a href="{{ article.get_absolute_url }}#comments">
+                <span class="small-text-icon-item comment-count">
+                    {% cache 600 preview_comments content.pk %}
+                        {{article.num_comments}}
+                    {% endcache %}
+                </span>
+                <span class="small-text-icon-item comment-image"></span>
+            </a>
+        </span>
+    </div>
+{% endblock %}
+
+{% block addthis_url %}http://thecrimson.com{{ article.get_absolute_url }}{% endblock %}
+{% block addthis_title %}The Harvard Crimson - {{ article.headline }}{% endblock %}

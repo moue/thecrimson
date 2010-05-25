@@ -3,7 +3,7 @@ from django import template
 from django.template import defaultfilters as filter
 from django.utils.safestring import mark_safe
 from crimsononline.content.models import Image, Map, Article, Content, Marker, \
-                                         YouTubeVideo, Gallery, FlashGraphic
+                                         YouTubeVideo, Gallery, FlashGraphic, Tag
 from crimsononline.common.templatetags.common import linkify, human_list
 from crimsononline.common.fields import size_spec_to_size, AutosizeImageFieldFile
 from crimsononline.common.utils.html import para_list
@@ -15,10 +15,10 @@ register = template.Library()
 def render(content, method):
     if not content:
         return ''
-    try:
-        return mark_safe(content._render(method))
-    except Exception, err:
-        pass
+    #try:
+    return mark_safe(content._render(method))
+    #except Exception, err:
+    #    pass
     return ''
 
 @register.filter
@@ -261,3 +261,43 @@ def remove_flyby_jump(text):
     jumprepre = compile(r"<!--more-->")
     parsedtext = jumprepre.sub('<a name="jump"></a>', text)
     return parsedtext
+    
+@register.filter
+def is_flyby_quote(flybyarticle):
+    """Checks for a special Flyby Quote Tag among an article's tags.  If it has it,
+    returns true."""
+    quotetag = Tag.objects.get(text='Flyby Quote')
+    if quotetag in flybyarticle.tags.all():
+        return True
+    return False
+    
+@register.filter
+def render_rc_sub(rc, counter):
+    """Renders inline images in Flyby articles."""
+    rc = rc.exclude(content_type__model='article')
+    # Add 1 since presumably the top rc is already accounted for
+    index = counter / 2 + 1
+    try:
+        content = rc[index]
+    except IndexError:
+        return ''
+    if index % 2 == 0:
+        return mark_safe(content._render('flyby.inline_right'))
+    else:
+        return mark_safe(content._render('flyby.inline_left'))
+        
+@register.filter
+def flyby_series_imgwidth(series, totalwidth):
+    """Calculates the number of pixels left for the series top img once the tabs
+    are accounted for."""
+    count = len(series)
+    # TODO MAGIC NUMBER
+    return str(int(totalwidth) - 20 * (count - 1))
+    
+@register.filter
+def flyby_series_imgoffset(series, totalwidth):
+    """Calculates the offset for an image so that the center is always what's
+    exposed behind the tabs."""
+    count = len(series)
+    # TODO MAGIC NUMBER
+    return str((20 * (count - 1)) / 2)

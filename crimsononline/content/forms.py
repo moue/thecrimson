@@ -233,7 +233,10 @@ class RelatedContentWidget(forms.widgets.HiddenInput):
             # grab all related content objects AND PRESERVE ORDER !!
             objs = []
             for v in value:
-                objs.append(Content.objects.admin_objects().get(pk=v))
+                try:
+                    objs.append(Content.objects.admin_objects().get(pk=v))
+                except:
+                    pass
             
             # construct related content identifiers
             value = ['%d' % (o.pk) \
@@ -307,4 +310,6 @@ class ContactForm(forms.Form):
     def clean(self):
         self.cleaned_data['to_email'] = CONTACT_TYPE_EMAILS[self.cleaned_data['message_type']]
         return self.cleaned_data
-
+        
+class FlybyTipForm(forms.Form):
+    message = forms.CharField(max_length=200) 

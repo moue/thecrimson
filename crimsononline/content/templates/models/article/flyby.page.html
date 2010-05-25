@@ -1,0 +1,21 @@
+{% extends "flyby/page.html" %}
+
+{% load content_filters %}
+{% load common %}
+{% load content_module %}
+
+{% block css %}
+{{ block.super }}
+{% static_css "single_content.css" %}
+{% endblock %}
+
+{% block title %}
+    {{ article.headline }} | FlyByBlog | Harvard Life. To Go.
+{% endblock %}
+
+{% block headerwidth %}60px{% endblock %}
+{% block headerimgurl %}{% static_url "images/flyby/gate.png" %}{% endblock %}
+
+{% block content %}
+    {{ article|render:"flyby.fullarticle" }}
+{% endblock %}

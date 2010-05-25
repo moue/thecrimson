@@ -1,0 +1,82 @@
+{% extends "models/article/flyby.listitem_date.html" %}
+
+{% load content_filters %}
+{% load common %}
+{% load content_module %}
+{% load cache %}
+
+{% comment %} TODO: split paras and combine with related images {% endcomment %}
+{% block rel_content %}
+    {% if article.main_rel_content %}
+        {% ifnotequal article.main_rel_content.content_type.model "article" %}
+            {{ article.main_rel_content|render:"flyby.fullarticle" }}
+        {% endifnotequal %}
+    {% endif %}
+{% endblock %}
+{% block articletext %}
+    <div class="posttext">
+        {% for p in article.text|remove_flyby_jump|safe|paragraphs %}
+            {{ p }}
+            {% if forloop.counter0|divisibleby:"2" %}
+                {{ article.rel_content|render_rc_sub:forloop.counter0 }}
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endblock %}
+{% block social %}
+    <div class="articletools">
+        <ul class="left">
+            <li class="fbook">
+                <iframe src="http://www.facebook.com/plugins/like.php?href=http://www.thecrimson.com{{content.get_absolute_url}}&amp;layout=button_count&amp;show_faces=false&amp;width=75&amp;action=like&amp;font=arial&amp;colorscheme=light&amp;height=21" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:75px; height:21px;" allowTransparency="true"></iframe>
+
+            </li>
+            <li class="twitter">
+                <script type="text/javascript">
+                tweetmeme_style = 'compact';
+                tweetmeme_source = 'thecrimson';
+                tweetmeme_service = 'bit.ly';
+                </script>
+                <script type="text/javascript" src="http://tweetmeme.com/i/scripts/button.js"></script>
+            </li>
+
+            <li class="buzz">
+                <a title="Post on Google Buzz" class="google-buzz-button" href="http://www.google.com/buzz/post" data-url="{{content.get_full_url}}" {% spaceless %}
+                {% if article.main_rel_content %}
+                    {% ifnotequal article.main_rel_content.content_type.model "article" %}
+                            data-imageurl="{{article.main_rel_content.absolute_url}}"
+                    {% endifnotequal %}
+                {% endif %}{% endspaceless %} data-button-style="small-count"></a>
+                <script type="text/javascript" src="http://www.google.com/buzz/api/button.js"></script>
+            </li>
+
+            
+        </ul>
+
+        <ul class="right">
+            <li class="email" style="padding-left: 45px;">
+                <div class="addthis_toolbox addthis_default_style">
+                <a class="addthis_button_email">Email</a>
+                </div>
+                <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#username=thecrimson"></script>
+            </li>
+            <li class="print">
+                <span></span>
+                <a href="?print=1">Print</a>
+            </li>					
+        </ul>
+
+
+    </div>
+{% endblock %}
+{% block comments %}
+    <a name="comments"></a>
+    <div id="disqus_thread"></div>
+    <script type="text/javascript" src="http://disqus.com/forums/thecrimson/embed.js"></script>
+    <noscript>
+        <a href="http://thecrimson.disqus.com/?url=ref">View the discussion thread.</a>
+    </noscript>
+    <a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+{% endblock %}
+{% block spacer %}
+    style="min-height: 1400px;"
+{% endblock %}

@@ -1,0 +1,17 @@
+{% load common %}
+{% load content_filters %}
+
+<div class="full">
+    <object width="538" height="324">
+        <param name="movie" value="http://www.youtube.com/v/{{youtubevideo.key}}&hl=en&fs=1"></param>
+        <param name="allowFullScreen" value="true"></param>
+        <param name="allowscriptaccess" value="always"></param>
+        <embed src="http://www.youtube.com/v/{{youtubevideo.key}}&hl=en&fs=1" 
+                type="application/x-shockwave-flash" allowscriptaccess="always" 
+                allowfullscreen="true" width="538" height="324"></embed>
+    </object>
+    {% comment %} Not sure if we want this
+    <p class="byline"><img src="{% static_url "images/icons/video.gif" %}" alt="video" />{{youtubevideo.contributors.all|linkify|human_list}}</p>
+    <p class="caption">{{youtubevideo.description}}</p>
+    {% endcomment %}
+</div>

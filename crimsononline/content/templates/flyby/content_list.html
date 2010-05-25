@@ -1,26 +1,41 @@
-{% extends "flyby/base.html" %}
+{% extends "flyby/page.html" %}
 
-{% load common %}
 {% load content_filters %}
+{% load common %}
+{% load content_module %}
 
-
-{% block body %}
-    <ul class="blog_entries">
-    {% for c in entries.object_list %}
-        <li>{{ c|render:"flyby_entry" }}</li>
-    {% endfor %}
-    </ul>
-    
-    <div id="nav-below" class="navigation">
-        {% if entries.has_next %}
-        <div class="nav-previous">
-            <a href="?page={{entries.next_page_number}}">Older posts</a>
-        </div>
-        {% endif %}
-        {% if entries.has_previous %}
-        <div class="nav-next">
-            <a href="?page={{entries.previous_page_number}}">Newer posts</a>
-        </div>
-        {% endif %}
-    </div>
+{% block content %}
+    {% if entries.object_list %}
+        {% for article in entries.object_list %}
+            {% ifchanged article.issue.issue_date.day %}
+                {% if article|is_flyby_quote %}
+                    {{ article|render:"flyby_quote.listitem_date" }}
+                {% else %}
+                    {{ article|render:"flyby.listitem_date" }}
+                {% endif %}
+            {% else %}
+                {% if article|is_flyby_quote %}
+                    {{ article|render:"flyby_quote.listitem" }}
+                {% else %}
+                    {{ article|render:"flyby.listitem" }}
+                {% endif %}
+            {% endifchanged %}
+        {% endfor %}
+        {% block pagination %}
+            <div id="fb_content_pagination">
+                {% if entries.has_previous %}
+                    <div id="fb_nav_previous">
+                        <a href="page/{{entries.previous_page_number}}/">&larr;Newer posts</a>
+                    </div>
+                {% endif %}
+                {% if entries.has_next %}
+                    <div id="fb_nav_next">
+                        <a href="page/{{entries.next_page_number}}/">Older posts&rarr;</a>
+                    </div>
+                {% endif %}
+            </div>
+        {% endblock %}
+    {% else %}
+        No content.
+    {% endif %}
 {% endblock %}

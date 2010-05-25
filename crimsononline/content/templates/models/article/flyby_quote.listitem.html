@@ -1,0 +1,18 @@
+{% extends "flyby/listitembase.html" %}
+
+{% load common %}
+{% load content_filters %}
+{% load content_module %}
+{% load module %}
+
+{% block time %}{{ article.modified_on|time:"g:i A" }}{% endblock %}
+
+{% block postcontent %}
+<div class="fb_quoteleft"></div>
+<div class="fb_bigquote">
+{{ article.text|safe|paragraphs|slice:":-1" }}<br/>
+<div class="fb_quotebyline">{{ article.text|safe|paragraphs|last }}</div>
+</div>
+<div class="fb_quoteright"></div>
+<div style="clear: both;">&nbsp;</div>
+{% endblock %}

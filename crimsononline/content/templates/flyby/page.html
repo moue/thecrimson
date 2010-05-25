@@ -1,36 +1,932 @@
-{% extends "flyby/base.html" %}
+{% extends "base.html" %}
 
 {% load common %}
 {% load content_filters %}
+{% load content_module %}
+{% load module %}
+{% load top_articles %}
 
-{% load tag_cloud %}
+{% block title %}
+    FlyByBlog | Harvard Life. To Go.
+{% endblock %}
 
-{% block title %}{{content.headline}} | {{block.super}}{% endblock %}
+{% block css %}
+{{ block.super }}
+<style type="text/css">
+/* general */
+
+@font-face {
+	font-family: 'GillSansMTRegular';
+	src: url('{% static_url "fonts/gil_____-webfont.eot" %}');
+	src: local('☺'), url('{% static_url "fonts/gil_____-webfont.woff" %}') format('woff'), url('{% static_url "fonts/gil_____-webfont.ttf" %}') format('truetype'), url('{% static_url "fonts/gil_____-webfont.svg" %}#webfont65X1kCUl') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'GillSansMTBold';
+	src: url('{% static_url "fonts/gilb____-webfont.eot" %}');
+	src: local('?'), url('{% static_url "fonts/gilb____-webfont.woff" %}') format('woff'), url('{% static_url "fonts/gilb____-webfont.ttf" %}') format('truetype'), url('{% static_url "fonts/gilb____-webfont.svg" %}#webfontL9btskB9') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    border: 0;
+}
+
+div.submenu {
+    margin-bottom: 0;
+}
+
+div#fb_all p {
+    margin: 1em 0px;
+}
+
+div#content_wrapper {
+    background: url("/media/images/flyby/bg_gradient.png") repeat-y scroll 7px 0 transparent;
+    width: 1055px;
+}
+
+div#fb_all {
+    font-family: Georgia;
+    font-size: 12px;
+    margin: 0px auto;
+}
+
+div#fb_all, div#fb_header, div#fb_content, div#fb_footer {
+    width: 973px;
+}
+
+div#fb_all {
+    background-color: white;
+}
+
+div#fb_header {
+    background-color: white;
+    height: 182px;
+}
+
+div#fb_content {
+    background-color: white;
+    /* height: 300px; */
+}
+
+div#fb_footer {
+    background-color: #ececec;
+    border-top: 5px solid #bc2e22;
+    height: 34px;
+    display: table;
+    width: 982px;
+}
+
+div#fb_header_lefthalf {
+    width: 627px;
+    float: left;
+    height: 182px;
+}
+
+div#fb_header_righthalf {
+    width: 346px;
+    float: left;
+    height: 182px;
+}
+
+/* header lefthalf */
+
+div#fb_header_aboveline {
+    height: 82px;
+}
+
+div#fb_header_line {
+    height: 12px;
+}
+
+div#fb_header_tabs {
+    height: 35px;
+}
+
+div#fb_header_belowtabs {
+    height: 53px;
+}
+
+/* header - aboveline */
+
+div#fb_header_aboveline_beforeslogo,
+div#fb_header_aboveline_slogo {
+    float: left;
+    height: 82px;
+}
+
+div#fb_header_aboveline_beforeslogo {
+    width: {% block headerwidth %}{% spaceless %}
+               {% ifequal tag "" %}60px{% else %}0px{% endifequal %}
+           {% endspaceless %}{% endblock %};
+}
+
+div#fb_header_aboveline_slogo {
+    width: 460px;;
+    background-image: url('{% block headerimgurl %}{% spaceless %}
+                               {% ifequal tag "" %}{% static_url "images/flyby/gate.png" %}{% endifequal %}
+                               {% ifequal tag "House Life" %}{% static_url "images/flyby/houses.png" %}{% endifequal %}
+                               {% ifequal tag "The Square" %}{% static_url "images/flyby/square.png" %}{% endifequal %}
+                               {% ifequal tag "Headlines" %}{% static_url "images/flyby/headlines.png" %}{% endifequal %}
+                               {% ifequal tag "Clubs" %}{% static_url "images/flyby/clubs.png" %}{% endifequal %}
+                           {% endspaceless %}{% endblock %}');
+    background-repeat: no-repeat;
+    background-position: bottom left;
+}
+
+/* header - line */
+
+div#fb_header_line > img {
+    float: left;
+}
+
+img#fb_header_redline {
+    width: 615px;
+    height: 12px;
+}
+
+/* header - belowline */
+
+div#fb_header_belowline_spacer {
+    width: 60px;
+    float: left;
+    background-color: #ececec;
+    height: 89px;
+}
+
+div#fb_header_tabs img {
+    margin-top: -7px;
+    float: left;
+}
+
+div#fb_header_tabs img.tab_selected {
+    margin-top: -14px;
+}
+
+/* content */
+
+div#fb_content_main, div#fb_content_gutter, div#fb_content_sidebar {
+    /* height: 100%; */
+}
+
+div#fb_content_main {
+    background-color: #ececec;
+    float: left;
+    width: 600px;
+}
+
+div#fb_content_gutter {
+    float: left;
+    width: 58px;
+}
+
+div#fb_content_sidebar {
+    width: 315px;
+    float: left;
+}
+
+/* content - main */
+
+div.fb_post {
+}
+
+div.fb_postdt {
+    float: left;
+    width: 58px;
+    text-align: right;
+    font-family: 'GillSansMTBold';
+    font-weight: bold;
+}
+
+div.fb_postdate {
+    font-size: 16px;
+    color: #bc2e22;
+}
+
+div.fb_posttime {
+    font-size: 12px;
+    color: black;
+}
+
+div.fb_postcontent {
+    float: left;
+    background-color: white;
+    width: 532px;
+    padding-bottom: 25px;
+    padding-left: 8px;
+    margin-left: 2px;
+}
+
+div.fb_headline {
+    display: table;
+    width: 100%;
+    margin-bottom: 1em;
+}    
+
+.fb_bigtag {
+    border-right: 1px solid #77787a;
+    color: #BC2E22;
+    font-family: 'GillSansMTRegular';
+    font-size: 10px;
+    padding: 6px 4px 6px 0px;
+    vertical-align: middle;
+    text-align: right;
+    display: table-cell;
+}
+
+.fb_bigtag a {
+    color: #BC2E22;
+}
+
+.fb_headlinetext {
+    font-size: 24px;
+    font-family: 'GillSansMTRegular';
+    text-align: center;
+    font-weight: normal;
+    margin-top: -3px;
+    display: table-cell;
+}
+
+.fb_bigtag + .fb_headlinetext {
+    text-align: left;
+    padding-left: 4px;
+}
+
+.fb_headlinetext > a {
+    color: black;
+    text-decoration: none;
+}
+
+.fb_jump {
+    font-style: italic;
+}
+
+div.fb_postbottom { 
+    clear: both;
+}
+
+.fb_postbottom, .fb_postbottom a {
+    color: #77787a;
+    font-size: 10px;
+}
+
+.fb_tags {
+    float: left;
+    margin-bottom: 5px;
+}
+
+.fb_commentslink {
+    float: right;
+    padding-top: 3px;
+}
+
+.fb_commentslink a {
+    text-decoration: none;
+}
+
+.fb_byline {
+    float: right;
+    margin-bottom: 5px;
+}
+
+.fb_social {
+    float: right;
+    clear: right;
+    vertical-align: middle;
+}
+
+.fb_social span {
+    display: inline-block;
+    border: 1px solid #ececec;
+    padding: 1px 1em;
+    font-family: Arial;
+    color: #ba0600;
+    text-align: center;
+}
+
+.fb_quoteleft {
+    background-image: url({% static_url "images/flyby/quoteleft.jpg" %});
+    width: 60px;
+    height: 45px;
+    float: left;
+}
+
+.fb_quoteright {
+    background-image: url({% static_url "images/flyby/quoteright.jpg" %});
+    width: 60px;
+    height: 50px;
+    float: right;
+    margin-top: 30px;
+}
+
+.fb_bigquote {
+    font-size: 16px;
+    font-family: 'GillSansMTRegular';
+    color: #77767a;
+    text-align: center;
+    width: 400px;
+    float: left;
+    padding-top: 15px;
+}
+
+.fb_quotebyline {
+    font-size: 13px;
+    text-align: right;
+}
+
+.side {
+    width: 160px;
+    margin-right: 15px;
+    float: left;
+    margin-top: 15px;
+}
+
+.side img {
+    width: 160px;
+}
+
+.full {
+    width: 538px;
+    margin-bottom: 15px;
+}
+
+.full img {
+    width: 538px;
+}
+
+.fb_inline_image {
+    width: 200px;
+}
+
+.left {
+    float: left;
+}
+
+.right {
+    float: right;
+}
+
+.fb_inline_caption {
+    font-size: 10px;
+    color: #77787a;
+}
+
+.fb_photos {
+	overflow: hidden;
+	padding: 10px;
+	width: 100%;
+	margin: 0;
+    padding: 0;
+    text-align: center;
+    
+}
+
+.fb_photos img.logo {
+    margin: 0 auto;
+    display:block;
+}
+
+.fb_photos div img {
+	padding: 10px 0;
+	margin: 10px 0;
+	/* border-top: 1px solid #ddd; */
+    height: 300px;
+    width: 300px;
+	margin-left:auto;
+	margin-right:auto;
+}
+.fb_photos ul.fb_thumbs {
+	margin: 0;
+	padding: 0 49px;
+	list-style: none;
+	width: 450px;
+	float: left;
+}
+.fb_photos ul.fb_thumbs li{
+	width: 100px;
+	height: 100px;
+	margin: 0 0 0 0;
+	padding: 0;
+	float: left;
+	overflow: hidden;
+	position: relative;
+	border: 5px solid #ddd;
+	text-align: center;
+}
+
+.fb_photos ul.fb_thumbs li:hover {
+	border: 5px solid #888;
+	-moz-opacity:.75; 
+	filter:alpha(opacity=75); 
+	opacity:.75; 
+}
+
+.fb_photos ul.fb_thumbs li a {
+	position: relative;
+    display: block;
+    background-position: -120px -120px;
+    height: 100px;
+    width: 100px;
+}
+
+div#fb_content_pagination {
+    display: table;
+    width: 540px;
+    margin-left: 60px;
+    background-color: white;
+    padding-bottom: 10px;
+}
+
+div#fb_nav_previous {
+    display: table-cell;
+    padding-left: 5px;
+}
+
+div#fb_nav_next {
+    display: table-cell;
+    text-align: right;
+    padding-right: 5px;
+}
+
+/* content - sidebar */
+
+img#fb_logo_bottom {
+    float: right;
+    margin-bottom: 5px;
+}
+
+.fb_sidebarheader {
+    color: #bc3e22;
+    font-size: 24px;
+    font-family: 'GillSansMTRegular';
+    clear: both;
+    overflow: hidden;
+    display: table;
+    padding: 10px 0;
+}
+
+.fb_sidebarheadertext {
+    display: table-cell;
+    line-height: 85%;
+}
+
+.fb_sidebarheaderrule {
+    display: table-cell;
+    background-image: url('{% static_url "images/flyby/horizontalrule.png" %}');
+    height: 23px;
+    background-repeat: repeat-x;
+    width: 100%;
+}
+
+#fb_tipbox {
+    color: black;
+    font-size: 12px;
+    font-family: Georgia;
+    height: 32px;
+    width: 262px;
+    border: 1px solid #aaaaaa;
+}
+
+#fb_tip_submit {
+    background-color:#bc2e22;
+    color:#FFFFFF;
+    font-family: 'GillSansMTRegular', GilLSans, sans-serif;
+    border: 1px solid #ececec;
+    font-size:12px;
+    font-weight:300;
+    height:32px;
+    width: 46px;
+}
+
+#fb_tip_submit[disabled] {
+    background-color: #666666;
+}
+
+div.quicklinks {
+    margin-left: 6px;
+}
+
+.quicklinks div {
+    float: left;
+    margin-right: 6px;
+}
+
+.dhall {
+    width: 80px;
+    padding: 0;
+    margin: 0;
+}
+
+.dhall a { 
+display: block; 
+width: 80px; 
+height: 70px; 
+background: transparent url({% static_url "images/flyby/dhallsched.jpg" %}) no-repeat; 
+} 
+
+.dhall a:hover { 
+background-position: -85px 0; 
+} 
+
+.shuttle a { 
+display: block; 
+width: 67px; 
+height: 70px; 
+background: transparent url({% static_url "images/flyby/shuttlesched.jpg" %}) no-repeat; 
+} 
+
+.shuttle a:hover { 
+background-position: -69px 0; 
+} 
+
+.myh a { 
+display: block; 
+width: 67px; 
+height: 70px; 
+background: transparent url({% static_url "images/flyby/myharvard.jpg" %}) no-repeat; 
+} 
+
+.myh a:hover { 
+background-position: -67px 0; 
+} 
+
+.qguide a { 
+display: block; 
+width: 67px; 
+height: 70px; 
+background: transparent url({% static_url "images/flyby/qguide.jpg" %}) no-repeat; 
+} 
+
+.qguide a:hover { 
+background-position: -69px 0; 
+} 
+
+
+#series {
+  padding-left:0; 
+  margin-left:-1px; 
+  list-style-type:none; 
+  overflow:hidden; 
+  width:315px; 
+  height:200px; 
+  border:0px; 
+  background:#fff url({% with series|last as ls %}{{ ls.image|img_url:"295,200,1,1" }}{% endwith %});
+  background-position: -{{ series|flyby_series_imgoffset:"315" }}px 0;
+}
+#series li {
+  float:left;
+  margin-top: -3px;
+}
+#series li a {
+  display:block; 
+  height:200px;
+  width:20px;
+  overflow:hidden;
+  float:left; 
+  text-decoration:none; 
+  border:0px solid #fff; 
+}
+#series li a img {border:0;}
+
+#series li a:hover {
+  background:#eee; 
+  width:{{ series|flyby_series_imgwidth:"315" }}px;
+}
+  
+.seriestextgray {
+	background-color:#ececec;
+	color: #bc2e22;
+	border:0px;
+	writing-mode:tb-rl;
+	-webkit-transform:rotate(270deg);
+	-moz-transform:rotate(270deg);
+	-o-transform: rotate(270deg);
+	white-space:nowrap;
+	float:left;
+	bottom:0;
+	width:200px;
+	height:20px;
+	font-family: 'GillSansMTBold', GillSans, sans-serif;
+	text-align:right;
+	font-size:16px;
+	font-weight: bold;
+	margin-left:-200px;
+	padding-left:220px;
+    line-height: 120%;
+}
+	
+.seriestextwhite {
+	background-color:#ffffff;
+	color: #bc2e22;
+	border:0px;
+	writing-mode:tb-rl;
+	-webkit-transform:rotate(270deg);
+	-moz-transform:rotate(270deg);
+	-o-transform: rotate(270deg);
+	white-space:nowrap;
+	float:left;
+	bottom:0;
+	width:200px;
+	height:20px;
+	text-align:right;
+	font-family: 'GillSansMTBold', GillSans, sans-serif;
+	font-size:16px;
+	font-weight: bold;
+	margin-left:-200px;
+	padding-left:220px;
+    line-height: 120%;
+}
+
+.seriesimage {
+	margin-left:20px;
+}
+
+.seriesimage img {
+    width: 295px;
+    height: 200px;
+    margin-left: -{{ series|flyby_series_imgoffset:"315" }}px;
+}
+
+#featured{    
+	margin:0;
+	width:315px;
+	text-align:center;
+	height:200px;
+	background-color:#bc2e22;
+	position:relative;
+}
+
+#featured #slidesContainer {
+  	margin:0;
+  	width:315px;
+  	height:200px;
+  	overflow:hidden; /* allow scrollbar */
+  	position:relative;
+}
+
+#featured #slidesContainer .slide {
+  	margin:0 auto;
+  	width:315px; /* reduce by 20 pixels of #slidesContainer to avoid horizontal scroll */
+  	height:200px;
+}
+
+#featured .slide img {
+    width: 315px;
+    height: 200px;
+}
+
+/**
+ * Slideshow controls style
+ */
+.control {
+  	display:inline;
+  	width:35px;
+  	height:200px;
+  	text-indent:-10000px;
+  	position:absolute;
+  	cursor: pointer;
+}
+#leftControl {
+  	top:0;
+	left:0;
+   	background:transparent url({% static_url "images/flyby/control-left.png" %}) no-repeat 0 0;
+	}
+#rightControl {
+  	top:0;
+  	right:0;
+	background:transparent url({% static_url "images/flyby/control-right.png" %}) no-repeat 0 0;
+	}
+
+div.stretcher {
+    min-height: 1150px;
+}
+/* footer */
+#fb_footer_leftcap {
+    display: table-cell;
+    width: 62px;
+}
+
+.fb_footer_cell {
+    display: table-cell;
+    vertical-align: middle;
+    font-family: 'GillSansMTRegular';
+    font-size: 12px;
+    text-align: center;
+}
+
+</style>
+{% endblock %}
+
+{% block js %}
+{{ block.super }}
+
+{% static_js "jquery.js" %}
+
+<script type="text/javascript">
+
+$(document).ready(function(){
+  var currentPosition = 0;
+  var slideWidth = 315;
+  var slides = $('.slide');
+  var numberOfSlides = slides.length;
+
+  // Remove scrollbar in JS
+  $('#slidesContainer').css('overflow', 'hidden');
+
+  // Wrap all .slides with #slideInner div
+  slides
+    .wrapAll('<div id="slideInner"></div>')
+    // Float left to display horizontally, readjust .slides width
+	.css({
+      'float' : 'left',
+      'width' : slideWidth
+    });
+
+  // Set #slideInner width equal to total width of all slides
+  $('#slideInner').css('width', slideWidth * numberOfSlides);
+
+  // Insert controls in the DOM
+  $('#featured')
+    .append('<span class="control" id="leftControl">Clicking moves left</span>', '<span class="control" id="rightControl">Clicking moves right</span>');
+
+  // Hide left arrow control on first load
+  manageControls(currentPosition);
+
+  // Create event listeners for .controls clicks
+  $('.control')
+    .bind('click', function(){
+    // Determine new position
+	currentPosition = ($(this).attr('id')=='rightControl') ? currentPosition+1 : currentPosition-1;
+
+	// Hide / show controls
+    manageControls(currentPosition);
+    // Move slideInner using margin-left
+    $('#slideInner').animate({
+      'marginLeft' : slideWidth*(-currentPosition)
+    });
+  });
+
+  // manageControls: Hides and Shows controls depending on currentPosition
+  function manageControls(position){
+    // Hide left arrow if position is first slide
+	if(position==0){ $('#leftControl').hide() } else{ $('#leftControl').show() }
+	// Hide right arrow if position is last slide
+    if(position==numberOfSlides-1){ $('#rightControl').hide() } else{ $('#rightControl').show() }
+  }
+});
+
+$(function(){
+    $("#fb_tipform").submit(function(){
+        message = $("#fb_tipform").serialize();
+        $("#fb_tip_submit").attr('disabled', 'disabled');
+        $.ajax({
+            type: "POST",
+            url: "/section/flyby/tip/",
+            data: message,
+            success: function(data) {
+                $("#fb_tipbox").val("");
+                $("#fb_tip_submit").removeAttr('disabled');
+                // do something cool here at some point
+            }
+        });
+        return false;
+    });
+});
+
+function switch_product_img(divNamePrefix, photoNum, totalImgs) {
+	for (var i=1; i<=totalImgs; i++) {
+		var showDivName = divNamePrefix + i;
+		var showObj = document.getElementById(showDivName);
+		if (i == photoNum)
+			showObj.style.display = 'block';
+		else
+			showObj.style.display = 'none';
+    }
+}
+</script>
+{% endblock %}
+
+{% block pre_body %}{% endblock %}
 
 {% block body %}
-	{% block content %}
-	{% endblock %}		
-    
-    <div class="entry-meta">
-            {% with content.tags.all as a_tags %}
-				This entry was written by {{ article.contributors.all|linkify|human_list }}, and posted on {{ article.issue.issue_date|date:"F d, Y" }}. 
-                {% if a_tags %}
-                    It is tagged: 
-                {% endif %}
-                {% for tag in a_tags %}
-                    <a class="tag" href="{{ tag.get_absolute_url }}">{{ tag.text }}</a>{% ifnotequal forloop.last 1 %}, {% endifnotequal %}
+<div id="fb_all">
+    <div id="fb_header">
+        <div id="fb_header_lefthalf">
+            <div id="fb_header_aboveline">
+                <div id="fb_header_aboveline_beforeslogo">&nbsp;</div>
+                <div id="fb_header_aboveline_slogo"></div>
+            </div>
+            <div id="fb_header_line">
+                <img src="{% static_url "images/flyby/redbar_leftcap.png" %}" style="height: 12px; width: 12px;"/>
+                <img src="{% static_url "images/flyby/redbar.png" %}" id="fb_header_redline"/>
+            </div>
+            <div id="fb_header_belowline">
+                <div id="fb_header_belowline_spacer">&nbsp;</div>
+                <div id="fb_header_belowline_main">
+                    <div id="fb_header_tabs">
+                        <a href="/section/flyby/"><img {% ifequal tag "" %} class="tab_selected" {% endifequal %} src="{% static_url "images/flyby/hometab.png" %}" /></a>
+                        <a href="/section/flyby/tags/House Life/"><img {% ifequal tag "House Life" %} class="tab_selected" {% endifequal %} src="{% static_url "images/flyby/housetab.png" %}" /></a>
+                        <a href="/section/flyby/tags/The Square/"><img {% ifequal tag "The Square" %} class="tab_selected" {% endifequal %} src="{% static_url "images/flyby/squaretab.png" %}" /></a>
+                        <a href="/section/flyby/tags/Headlines/"><img {% ifequal tag "Headlines" %} class="tab_selected" {% endifequal %} src="{% static_url "images/flyby/headlinestab.png" %}" /></a>
+                        <a href="/section/flyby/tags/Clubs/"><img {% ifequal tag "Clubs" %} class="tab_selected" {% endifequal %} src="{% static_url "images/flyby/clubstab.png" %}" /></a>
+                    </div>
+                    <div id="fb_header_belowtabs">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="fb_header_righthalf">
+            <a href="/section/flyby/"><img src="{% static_url "images/flyby/flybytop.png" %}" /></a>
+        </div>
+    </div>
+    <div id="fb_content">
+        <div id="fb_content_main">
+            {% block content %}{% endblock %}
+        </div>
+        <div id="fb_content_gutter">&nbsp;</div>
+        <div id="fb_content_sidebar">
+            <a href="/section/flyby/"><img src="{% static_url "images/flyby/flybybottom.png" %}" id="fb_logo_bottom" /></a>
+            <div class="fb_sidebarheader"><div class="fb_sidebarheadertext">About&nbsp;Us</div><div class="fb_sidebarheaderrule"></div></div>
+            The editors of The Harvard Crimson present Flyby, your more-than-daily source for 
+            Harvard news, gossip, and oddities. Follow us by subscribing to <a href="/feeds/section/flyby/">our RSS Feed.</a>
+            <div class="fb_sidebarheader"><div class="fb_sidebarheadertext">Tip&nbsp;Box</div><div class="fb_sidebarheaderrule"></div></div>
+            <form id="fb_tipform" method="post" action="">
+                <table>
+                    <tr>
+                        <td><textarea id="fb_tipbox" name="message"></textarea></td>
+                        <td><input id="fb_tip_submit" type="submit" value="Submit" /></td>
+                    </tr>
+                </table>
+            </form>
+            <div class="fb_sidebarheader"><div class="fb_sidebarheadertext">Quick&nbsp;Links</div><div class="fb_sidebarheaderrule"></div></div>
+            {% block quicklinks %}
+            <div class="quicklinks">
+                <div class="dhall"><a href="http://www.foodpro.huds.harvard.edu/foodpro/menu_items.asp?type=30&meal=1" target="top"></a></div>
+                <div class="shuttle"><a href="http://shuttleboy.cs50.net/" target="top"></a></div>
+                <div class="myh"><a href="http://my.harvard.edu/icb/icb.do" target="top"></a></div>
+                <div class="qguide"><a href="http://q.fas.harvard.edu/harvardQ/qguide.jsp" target="top"></a></div>
+            </div>
+            {% endblock %}
+            <!-- Ad Space -->
+            <div class="fb_sidebarheader"><div class="fb_sidebarheadertext">Series</div><div class="fb_sidebarheaderrule"></div></div>
+            {% block series %}
+                <ul id="series">
+                {% for s in series %}
+                    <li>
+                        <a href="{{ s.get_absolute_url }}"><div class="seriesimage">{{ s.image|to_img_tag:"315,200,1,1" }}</div><div class="{% cycle 'seriestextwhite' 'seriestextgray' %}">{{ s.name|lower}}&nbsp;</div></a>
+                    </li>
                 {% endfor %}
-            {% endwith %}
-	</div>
-        
-        {% block post_content %}
-            <div id="disqus_thread"></div>
-            <script type="text/javascript" src="http://disqus.com/forums/thecrimson/embed.js"></script>
-            <noscript>
-                <a href="http://thecrimson.disqus.com/?url=ref">View the discussion thread.</a>
-            </noscript>
-            <a href="http://disqus.com" class="dsq-brlink">blog comments powered by 
-                <span class="logo-disqus">Disqus</span></a>
-        {% endblock %}
-
+                </ul>
+            {% endblock %}
+            <div class="fb_sidebarheader"><div class="fb_sidebarheadertext">Featured</div><div class="fb_sidebarheaderrule"></div></div>
+            {% block featured %}
+            <div id="featured">
+                <div id="slidesContainer">
+                    {% for f in featured %}
+                    <div class="slide">
+                    <a href="{{ f.get_absolute_url }}">{{ f|render:"flyby.featured" }}</a>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endblock %}
+            {% if video %}
+                <div class="fb_sidebarheader"><div class="fb_sidebarheadertext">Video</div><div class="fb_sidebarheaderrule"></div></div>
+                {% block video %}
+                    {{ video|render:"flyby.preview" }}
+                {% endblock %}
+            {% endif %}
+            {% block mostread %}
+                {% most_read_articles section %}
+            {% endblock %}
+        </div>
+        <div style="clear: both;"></div>
+    </div>
+    <div id="fb_footer">
+        <div id="fb_footer_leftcap">&nbsp;</div>
+        <div class="fb_footer_cell">
+            BLOG CHAIR<br/>Michelle L. Quach '11
+        </div>
+        <div class="fb_footer_cell">
+            &nbsp;
+        </div>
+        <div class="fb_footer_cell">
+            BLOG EXECUTIVES
+        </div>
+        <div class="fb_footer_cell">
+            Jessie J. Jiang '11<br/>Eric P. Newcomer '12
+        </div>
+        <div class="fb_footer_cell">
+            Elyssa A. L. Spitzer '12<br/>Naveen N. Srivatsa '12
+        </div>
+        <div class="fb_footer_cell">
+            H. Zane B. Wruble '11<br/>&nbsp;
+        </div>
+    </div>
+</div>
 {% endblock %}

@@ -1,0 +1,7 @@
+{% extends "models/article/flyby_quote.listitem.html" %}
+
+{% load content_filters %}
+{% load common %}
+{% load content_module %}
+
+{% block date %}<span class="date">{{ article.issue.issue_date|date:"M. j" }}</span><br/>{% endblock %}

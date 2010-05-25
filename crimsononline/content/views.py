@@ -17,7 +17,7 @@ from django.template import Context, loader, TemplateDoesNotExist
 from django.utils import simplejson
 from django.views.decorators.cache import cache_page
 
-from crimsononline.content.forms import ContactForm
+from crimsononline.content.forms import ContactForm, FlybyTipForm
 from crimsononline.content.models import *
 from crimsononline.content_module.models import ContentModule
 from crimsononline.common.caching import funcache as cache
@@ -446,24 +446,51 @@ def section_sports(request):
 
     return render_to_response('sections/sports.html', locals())
 
-FLYBY_RESULTS_PER_PAGE = 10
-def section_flyby(request):
+FLYBY_RESULTS_PER_PAGE = 7
+def section_flyby(request, page=1, tags='', cg=None):
     nav = 'flyby'
     section = Section.cached(nav)
 
-    try:
-        page = int(request.GET.get('page','1'))
-    except ValueError:
-        page = 1
-
     content = Article.objects.recent.filter(section=section)
+    if cg:
+        content = content.filter(group=cg)
+    # It says "tags," but we're only going to support one at a time
+    # Elif used because we don't want to allow filtering by both tags and a cg
+    elif tags:
+        try:
+            tag = Tag.objects.get(text=tags)
+        except Tag.DoesNotExist:
+            tag = ''
+        if tag:
+            content = content.filter(tags=tag)
+            tag = str(tag)
+    else:
+        tag = ''
+    quotetag = Tag.objects.get(text='Flyby Quote')
+    # I don't think it's likely that we'll ever have a meaningful distinction of blog/series/column WITHIN flyby,
+    # but should it become necessary that can be filtered below
+    series = list(ContentGroup.objects.filter(active=True).filter(section=section))
+    featured = rotatables(section)
+    video = first_or_none(YouTubeVideo.objects.recent.filter(section=section))
     paginator = Paginator(content, FLYBY_RESULTS_PER_PAGE)
+    # Jesus, Andy.
     try:
         entries = paginator.page(page)
     except:
         entries = paginator.page(1)
-    return render_to_response('flyby/content_list.html', {"entries":entries})
+    return render_to_response('flyby/content_list.html', locals())
 
+def flyby_tip(request):
+    if request.method == 'POST':
+        form = FlybyTipForm(request.POST)
+        if form.is_valid():
+            message = form.cleaned_data['message']
+            recipients = [settings.FLYBY_TIP_ADDRESS]
+            message = 'Tip submitted on Flyby:\n\n%s' % (message)
+            send_mail('Flyby tip submitted', message, 'flybybot@thecrimson.com', recipients, fail_silently=True)
+            return HttpResponse('Worked')
+    return HttpResponse('Failed')
+    
 # IPHONE APP JSON FEEDS
 
 def iphone(request, s = None):
@@ -551,6 +578,9 @@ def get_content_group(request, gtype, gname, page=1, tags=None):
     if not cg:
         raise Http404
     c = cg.content.all()
+    # check if flyby content group - if so, just pass to flyby view
+    if cg.section == Section.objects.get(name='flyby'):
+        return section_flyby(request, page, cg=cg)
     if tags:
         taglist = tags.split(',')
         tagobjlist = []
