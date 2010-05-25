@@ -113,9 +113,11 @@ def to_img_tag(img, size_spec):
 
 @register.filter
 def img_url(img, size_spec):
+    if img.__class__ is Content:
+        img = img.child
     # oh lawd almighty
-    #if not img or not hasattr(img, 'display_url'):
-    #    return ''
+    if not img or not hasattr(img, 'display_url'):
+        return ''
     upscale = False
     if isinstance(size_spec, tuple) or isinstance(size_spec, list):
         size_spec = [s or 0 for s in size_spec]
