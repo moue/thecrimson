@@ -2,5 +2,5 @@
 {% load content_filters %}
 
 {% if article.main_rel_content %}
-    <img src="{{ article.main_rel_content|img_url:"315,200,315,200" }}" alt="{{ article.headline }}" />
+    <img src="{{ article.main_rel_content|img_url:"315,200,315,200" }}" title="{{ article.headline }}" />
 {% endif %}
