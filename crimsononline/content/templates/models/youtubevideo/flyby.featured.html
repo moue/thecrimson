@@ -1,4 +1,4 @@
 {% load common %}
 {% load content_filters %}
 
-{{ youtubevideo.pic|to_img_tag:"315,200,315,200,True" }}
+<img src="{{ youtubevideo.pic|img_url:"315,200,315,200,True" }}" alt="{{ youtubevideo.title }}" />
