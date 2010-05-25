@@ -303,3 +303,11 @@ def flyby_series_imgoffset(series, totalwidth):
     count = len(series)
     # TODO MAGIC NUMBER
     return str((20 * (count - 1)) / 2)
+    
+@register.filter
+def self_or_first(object):
+    """Returns the first object in a list or the object itself if not a list."""
+    try:
+        return object[0]
+    except:
+        return object

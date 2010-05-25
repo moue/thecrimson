@@ -17,7 +17,7 @@
     <div class="posttext">
         {% for p in article.text|remove_flyby_jump|safe|paragraphs %}
             {{ p }}
-            {% if forloop.counter|divisibleby:"2" %}
+            {% if forloop.counter|divisibleby:"3" %}
                 {{ article.rel_content|render_rc_sub:forloop.counter }}
             {% endif %}
         {% endfor %}

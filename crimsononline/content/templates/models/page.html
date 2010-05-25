@@ -56,22 +56,24 @@
 					</ul>
 
 					<ul class="right">
-						{% cache 600 comments content.pk %}
-						<li class="comment">
-								<span class="small-text-icon-wrap">
-									{% if article.num_comments %}
-									<span class="small-text-icon-item comment-count">
-										{% cache 600 preview_comments content.pk %}
-											{{article.num_comments}}
-										{% endcache %}
-									</span>
-									{% endif %}
-									<span class="small-text-icon-item comment-image"></span>
-									<a href="#comment" class="small-text-icon-item">Comment</a>
-								</span>
+                        {% with content|self_or_first as fc %}
+                            {% cache 600 comments fc.pk %}
+                            <li class="comment">
+                                    <span class="small-text-icon-wrap">
+                                        {% if article.num_comments %}
+                                        <span class="small-text-icon-item comment-count">
+                                            {% cache 600 preview_comments content.pk %}
+                                                {{article.num_comments}}
+                                            {% endcache %}
+                                        </span>
+                                        {% endif %}
+                                        <span class="small-text-icon-item comment-image"></span>
+                                        <a href="#comment" class="small-text-icon-item">Comment</a>
+                                    </span>
 
-						</li>
-						{% endcache %}
+                            </li>
+                            {% endcache %}
+                        {% endwith %}
 						<li class="email">
 							<div class="addthis_toolbox addthis_default_style">
 							<a class="addthis_button_email">Email</a>

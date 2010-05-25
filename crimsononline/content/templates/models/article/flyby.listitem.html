@@ -34,15 +34,17 @@
         {% if article|flyby_teaser %}
             {% for p in article|flyby_teaser|safe|paragraphs %}
                 {{ p }}
-                {% if forloop.counter|divisibleby:"2" %}
-                    {{ article.rel_content|render_rc_sub:forloop.counter }}
-                {% endif %}
+                {% ifnotequal p article|flyby_teaser|safe|paragraphs|last %}
+                    {% if forloop.counter|divisibleby:"3" %}
+                        {{ article.rel_content|render_rc_sub:forloop.counter }}
+                    {% endif %}
+                {% endifnotequal %}
             {% endfor %}
             <p class="fb_jump"><a href="{{ article.get_absolute_url }}#jump">(Continued)</a></p>
         {% else %}
             {% for p in article.text|safe|paragraphs %}
                 {{ p }}
-                {% if forloop.counter|divisibleby:"2" %}
+                {% if forloop.counter|divisibleby:"3" %}
                     {{ article.rel_content|render_rc_sub:forloop.counter }}
                 {% endif %}
             {% endfor %}
