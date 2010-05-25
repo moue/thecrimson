@@ -454,6 +454,7 @@ def section_flyby(request, page=1, tags='', cg=None):
     content = Article.objects.recent.filter(section=section)
     if cg:
         content = content.filter(group=cg)
+        tag = ''
     # It says "tags," but we're only going to support one at a time
     # Elif used because we don't want to allow filtering by both tags and a cg
     elif tags:
