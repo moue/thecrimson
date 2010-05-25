@@ -580,7 +580,7 @@ background-position: -69px 0;
   width:315px; 
   height:200px; 
   border:0px; 
-  background:#fff url({% with series|last as ls %}{{ ls.image|img_url:"295,200,1,1" }}{% endwith %});
+  background:#fff url({% with series|last as ls %}{{ ls.image|img_url:"295,200,295,200" }}{% endwith %});
   background-position: -{{ series|flyby_series_imgoffset:"315" }}px 0;
 }
 #series li {
@@ -883,7 +883,7 @@ function switch_product_img(divNamePrefix, photoNum, totalImgs) {
                 <ul id="series">
                 {% for s in series %}
                     <li>
-                        <a href="{{ s.get_absolute_url }}"><div class="seriesimage">{{ s.image|to_img_tag:"315,200,1,1" }}</div><div class="{% cycle 'seriestextwhite' 'seriestextgray' %}">{{ s.name|lower}}&nbsp;</div></a>
+                        <a href="{{ s.get_absolute_url }}"><div class="seriesimage">{{ s.image|to_img_tag:"295,200,295,200" }}</div><div class="{% cycle 'seriestextwhite' 'seriestextgray' %}">{{ s.name|lower}}&nbsp;</div></a>
                     </li>
                 {% endfor %}
                 </ul>
