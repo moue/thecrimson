@@ -303,7 +303,15 @@ def flyby_series_imgoffset(series, totalwidth):
     count = len(series)
     # TODO MAGIC NUMBER
     return str((20 * (count - 1)) / 2)
-    
+
+@register.filter
+def flyby_series_bgoffset(series, totalwidth):
+    """Calculates the offset for the background image so that it matches when one
+    mouses over the last thing in the series."""
+    count = len(series)
+    # TODO MAGIC NUMBER
+    return str((20 * count) - ((20 * (count - 1)) / 2))
+
 @register.filter
 def self_or_first(object):
     """Returns the first object in a list or the object itself if not a list."""

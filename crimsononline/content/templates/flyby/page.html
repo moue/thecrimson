@@ -582,7 +582,7 @@ background-position: -69px 0;
   height:200px; 
   border:0px; 
   background:#fff url({% with series|last as ls %}{{ ls.image|img_url:"295,200,295,200" }}{% endwith %});
-  background-position: -{{ series|flyby_series_imgoffset:"315" }}px 0;
+  background-position: {{ series|flyby_series_bgoffset:"315" }}px 0;
 }
 #series li {
   float:left;
