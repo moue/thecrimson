@@ -447,6 +447,7 @@ def section_sports(request):
     return render_to_response('sections/sports.html', locals())
 
 FLYBY_RESULTS_PER_PAGE = 7
+@cache_page(settings.CACHE_SHORT)
 def section_flyby(request, page=1, tags='', cg=None):
     nav = 'flyby'
     section = Section.cached(nav)
