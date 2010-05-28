@@ -100,7 +100,7 @@
     <div class="col-4">
         <div class="article_previews">
             <ul>
-            {% for story in topstories|notfirst|slice:":3" %}
+            {% for story in topstories|notfirst|slice:":2" %}
                 <li>
                     {{ story|render:"preview" }}
                 </li>
@@ -109,7 +109,7 @@
         </div>
         <div class="article_headlines">
             <ul>
-            {% for story in topstories|notfirst|slice:"3:7" %}
+            {% for story in topstories|notfirst|slice:"2:6" %}
                 <li>
                     {{story|render:"small_preview"}}
                 </li>
