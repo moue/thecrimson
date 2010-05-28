@@ -35,9 +35,18 @@
 {% block middlecolumn %}
     {% rotator rotated "rotator" %}
     {% module 4 "opinion" %}
+    <div class="article_previews">
+        <ul>
+        {% for story in ed|slice:":2" %}
+            <li>
+                {{ story|render:"preview" }}
+            </li>
+        {% endfor %}
+        </ul>
+    </div>
     <div class="article_headlines">
         <ul>
-        {% for story in ed %}
+        {% for story in ed|slice:"2:" %}
             <li>
                 {{ story|render:"small_preview" }}
             </li>
