@@ -884,9 +884,9 @@ def commencement2010_seniors(request):
     ctag = Tag.objects.get(text='Commencement 2010')
     stag = Tag.objects.get(text='Seniors')
     wtag = Tag.objects.get(text='Weddings')
-    stories = Article.objects.prioritized(30).filter(tags=stag)[:5]
-    rotated = Content.objects.filter(tags=stag).filter(Q(rotatable=2) | Q(rotatable=1))[:6]
-    weddings = Article.objects.filter(tags=stag).filter(tags=wtag)
+    stories = Article.objects.prioritized(30).filter(tags=ctag).filter(tags=stag)[:5]
+    rotated = Content.objects.filter(tags=ctag).filter(tags=stag).filter(Q(rotatable=2) | Q(rotatable=1))[:6]
+    weddings = Article.objects.filter(tags=ctag).filter(tags=stag).filter(tags=wtag)
     wthird = len(weddings) / 3 + (1 if len(weddings) % 3 == 2 else 0)
     weddings = [weddings[0:wthird], weddings[wthird:wthird * 2], weddings[wthird * 2:]]
     weddings.sort(key=lambda x: len(x), reverse=True)

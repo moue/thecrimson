@@ -48,7 +48,7 @@
 {% endblock %}
 
 {% block rightcolumn %}
-    {% module 4 "college" %}
+    {% module 4 "on campus" %}
     <div class="article_headlines">
         <ul>
         {% for story in sectionarticles.0 %}
@@ -56,12 +56,6 @@
                 {{ story|render:"small_preview" }}
             </li>
         {% endfor %}
-        </ul>
-    </div>
-    {% endmodule %}
-    {% module 4 "on campus" %}
-    <div class="article_headlines">
-        <ul>
         {% for story in sectionarticles.1 %}
             <li>
                 {{ story|render:"small_preview" }}
