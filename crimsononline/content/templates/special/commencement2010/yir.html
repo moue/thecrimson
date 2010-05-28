@@ -86,6 +86,17 @@
         </ul>
     </div>
     {% endmodule %}
+    {% module 4 "university" %}
+    <div class="article_headlines">
+        <ul>
+        {% for story in sectionarticles.4 %}
+            <li>
+                {{ story|render:"small_preview" }}
+            </li>
+        {% endfor %}
+        </ul>
+    </div>
+    {% endmodule %}
 {% endblock %}
 
 {% block belowcolumn %}

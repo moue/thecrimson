@@ -825,7 +825,7 @@ def commencement2010_yir(request):
     edsec = Section.objects.get(name='Opinion')
     ctag = Tag.objects.get(text='Commencement 2010')
     stag = Tag.objects.get(text='Year in Review')
-    covtaglist = ['College', 'On Campus', 'Faculty', 'Cambridge']
+    covtaglist = ['College', 'On Campus', 'Faculty', 'Cambridge', 'University']
     covtaglist = [Tag.objects.get(text=x) for x in covtaglist]
     features = Article.objects.prioritized(30).filter(tags=ctag).filter(tags=stag)[:5]
     ed = Article.objects.filter(tags=ctag).filter(tags=stag).filter(section=edsec)
