@@ -884,10 +884,11 @@ def commencement2010_sports(request):
 def commencement2010_seniors(request):
     nav = 'news'
     section = Section.cached(nav)
+    flyby = Section.cached('flyby')
     ctag = Tag.objects.get(text='Commencement 2010')
     stag = Tag.objects.get(text='Seniors')
     wtag = Tag.objects.get(text='Weddings')
-    stories = Article.objects.prioritized(30).filter(tags=ctag).filter(tags=stag).exclude(tags=wtag)[:5]
+    stories = Article.objects.prioritized(30).filter(tags=ctag).filter(tags=stag).exclude(tags=wtag).exclude(section=flyby)[:5]
     rotated = Content.objects.filter(tags=ctag).filter(tags=stag).filter(Q(rotatable=2) | Q(rotatable=1))[:6]
     weddings = Article.objects.filter(tags=ctag).filter(tags=stag).filter(tags=wtag)
     wthird = len(weddings) / 3 + (1 if len(weddings) % 3 == 2 else 0)
