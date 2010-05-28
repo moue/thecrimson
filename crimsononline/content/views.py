@@ -829,7 +829,7 @@ def commencement2010_yir(request):
     covtaglist = [Tag.objects.get(text=x) for x in covtaglist]
     features = Article.objects.prioritized(30).filter(tags=ctag).filter(tags=stag)[:8]
     ed = Article.objects.filter(tags=ctag).filter(tags=stag).filter(section=edsec)
-    sectionarticles = [Article.objects.filter(tags=ctag).filter(tags=stag).filter(tags=x)[:7] for x in covtaglist]
+    sectionarticles = [[y for y in Article.objects.filter(tags=ctag).filter(tags=stag).filter(tags=x)[:7] if y not in features] for x in covtaglist]
     rotated = Content.objects.filter(tags=ctag).filter(tags=stag).filter(Q(rotatable=2) | Q(rotatable=1))[:6]
     
     return render_to_response('special/commencement2010/yir.html', locals())
