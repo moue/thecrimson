@@ -1,0 +1,125 @@
+{% extends "threecolumn.html" %}
+
+{% load cache %}
+{% load common %}
+{% load content_filters %}
+{% load content_module %}
+{% load rotator %}
+{% load module %}
+{% load tag_cloud %}
+{% load top_articles %}
+{% load flyby_preview %}
+
+{% block css %}
+{{block.super}}
+<style type="text/css">
+#widepreview.article_previews li {
+    width: 631px;
+    border-bottom: none;
+}
+
+.article_previews li {
+    width: 309px;
+    
+.mod-4 {
+    margin: 0 auto;
+}
+</style>
+{% endblock %}
+
+{% block pre_body %}
+    <div style="text-align: center;">
+        <img src="{% static_url "images/special/commencement10/banner.png" %}" style="width: 930px; height: 150px; margin: 0 auto;" alt="ac"/>
+    </div>
+{% endblock %}
+
+{% block leftcolumn %}
+    <div class="mod-4">
+        <a href="/commencement2010/yir/">
+            <img src="{% static_url "images/special/commencement10/yir.png" %}" style="width: 300px; height: 300px; margin-bottom: 5px;" alt="ac"/>
+        </a>
+        <a href="/commencement2010/sports/">
+            <img src="{% static_url "images/special/commencement10/sports.png" %}" style="width: 300px; height: 300px;" alt="df"/>
+        </a>
+    </div>
+{% endblock %}
+
+{% block middlecolumn %}
+    <div class="mod-4">
+        <a href="/commencement2010/1960/">
+            <img src="{% static_url "images/special/commencement10/1960.png" %}" style="width: 300px; height: 300px; margin-bottom: 5px;" alt="ac"/>
+        </a>
+        <a href="/commencement2010/1985/">
+            <img src="{% static_url "images/special/commencement10/1985.png" %}" style="width: 300px; height: 300px;" alt="df"/>
+        </a>
+    </div>
+{% endblock %}
+
+{% block rightcolumn %}
+    <div class="mod-4">
+        <a href="/commencement2010/seniors/">
+            <img src="{% static_url "images/special/commencement10/seniors.png" %}" style="width: 300px; height: 300px; margin-bottom: 5px;" alt="ac"/>
+        </a>
+        <a href="/commencement2010/pov/">
+            <img src="{% static_url "images/special/commencement10/pov.png" %}" style="width: 300px; height: 300px;" alt="df"/>
+        </a>
+    </div>
+{% endblock %}
+
+{% block belowcolumn %}
+    <div class="col-12">
+    {% module 12 " " nopad %}
+    {% endmodule%}
+    </div>
+    <div class="col-8">
+      {% with topstories|first as ts %}
+        <a href="{{ ts.get_absolute_url }}">
+        <img src="{{ ts.main_rel_content|img_url:"631,418,631,418" }}" style="height: 418px; width: 631px" title="{{ ts.main_rel_content.title }}"/>
+        </a>
+      {% endwith %}
+      <div class="article_previews" id="widepreview">
+      <ul><li>
+        {{ topstories|first|render:"top_preview" }}
+      </li></ul>
+      </div>
+    </div>
+    <div class="gutter"></div>
+    <div class="col-4">
+        <div class="article_previews">
+            <ul>
+            {% for story in topstories|notfirst|slice:":3" %}
+                <li>
+                    {{ story|render:"preview" }}
+                </li>
+            {% endfor %}
+            </ul>
+        </div>
+        <div class="article_headlines">
+            <ul>
+            {% for story in topstories|notfirst|slice:"3:7" %}
+                <li>
+                    {{story|render:"small_preview"}}
+                </li>
+            {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <span class="clear"></span>
+    <div class="col-12">
+    {% module 12 "Galleries" nopad %}
+    {% endmodule%}
+    </div>
+    <div class="front_galleries">
+            <div class="col-2">
+        {% for gall in galleries %}
+            {{gall|render:"front_preview"}}
+            </div>
+            {% if forloop.last %}
+            {% else %}
+            <div class="gutter"></div>
+            <div class="col-2">
+            {% endif %}
+        {% endfor %}
+            <span class="clear"></span>
+    </div>
+{% endblock %}

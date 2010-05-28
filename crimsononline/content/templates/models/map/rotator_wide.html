@@ -1,0 +1,14 @@
+{% extends "models/rotator.html" %}
+{% spaceless %}
+
+{% load common %}
+{% load content_filters %}
+
+{% block img %}
+    <a href="{{map.get_absolute_url}}">{{ map|to_map_thumb:"641,425" }}</a>
+{% endblock %}
+{% block text %}
+<p class="teaser">{{ map.caption|truncchars:"170" }}</p>
+{% endblock %}
+
+{% endspaceless %}

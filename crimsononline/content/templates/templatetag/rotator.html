@@ -5,14 +5,18 @@
 {% static_js "jquery.cycle.all.min.js" %}
 {% static_js "rotator.js" %}
 
-<div class="rotator gray-bg" id="{{ id }}">
+<div class="rotator gray-bg{% if wide %} wide{% endif %}" id="{{ id }}">
     {% if title %}<h2>{{ title }}</h2>{% endif %}
-    <div class="rotator_carousel" style="display:none">
-        <div class="rotator_carousel_contents"></div>
+    <div class="rotator_carousel{% if wide %} wide{% endif %}" style="display:none">
+        <div class="rotator_carousel_contents{% if wide %} wide{% endif %}"></div>
     </div>
-    <ul class="rotator_preview{% if nopreview %} notext{% endif %}">
+    <ul class="rotator_preview{% if nopreview %} notext{% endif %}{% if wide %} wide{% endif %}">
 		{% for c in contents %}
-            <li>{{ c|render:"rotator" }}</li>
+            {% if not wide %}
+                <li>{{ c|render:"rotator" }}</li>
+            {% else %}
+                <li>{{ c|render:"rotator_wide" }}</li>
+            {% endif %}
         {% endfor %}
     </ul>
 </div>

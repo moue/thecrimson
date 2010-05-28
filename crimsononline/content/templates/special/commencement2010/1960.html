@@ -1,0 +1,85 @@
+{% extends "threecolumn.html" %}
+
+{% load cache %}
+{% load common %}
+{% load content_filters %}
+{% load content_module %}
+{% load rotator %}
+{% load module %}
+{% load tag_cloud %}
+{% load top_articles %}
+{% load flyby_preview %}
+
+{% block pre_body %}
+    <div style="text-align: center;">
+        <a href="/commencement2010/">
+            <img src="{% static_url "images/special/commencement10/banner.png" %}" style="width: 930px; height: 150px; margin: 0 auto;" alt="ac"/>
+        </a>
+    </div>
+{% endblock %}
+
+{% block leftcolumn %}
+    {% module 4 "features" %}
+    <div class="article_previews">
+        <ul>
+        {% for story in features %}
+            <li>
+                {{ story|render:"preview" }}
+            </li>
+        {% endfor %}
+        </ul>
+    </div>
+    {% endmodule %}
+    {% module 4 "more news" %}
+    <div class="article_headlines">
+        <ul>
+        {% for story in stories %}
+            <li>
+                {{ story|render:"small_preview" }}
+            </li>
+        {% endfor %}
+        </ul>
+    </div>
+    {% endmodule %}
+{% endblock %}
+
+{% block middlecolumn %}
+    {% rotator rotated "rotator" %}
+    {% module 4 "profiles" %}
+    <div class="article_headlines">
+        <ul>
+        {% for story in profiles %}
+            <li>
+                {{ story|render:"small_preview" }}
+            </li>
+        {% endfor %}
+        </ul>
+    </div>
+    {% endmodule %}
+{% endblock %}
+
+{% block rightcolumn %}
+    {% module 4 "opinion" %}
+    <div class="article_previews">
+        <ul>
+        {% for story in ed|slice:":3" %}
+            <li>
+                {{ story|render:"preview" }}
+            </li>
+        {% endfor %}
+        </ul>
+    </div>
+    <div class="article_headlines">
+        <ul>
+        {% for story in ed|slice:"3:" %}
+            <li>
+                {{ story|render:"small_preview" }}
+            </li>
+        {% endfor %}
+        </ul>
+    </div>
+    {% endmodule %}
+{% endblock %}
+
+{% block belowcolumn %}
+{% endblock %}

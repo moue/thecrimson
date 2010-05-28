@@ -1,0 +1,198 @@
+{% extends "threecolumn.html" %}
+
+{% load cache %}
+{% load common %}
+{% load content_filters %}
+{% load content_module %}
+{% load rotator %}
+{% load module %}
+{% load tag_cloud %}
+{% load top_articles %}
+{% load flyby_preview %}
+
+{% block pre_body %}
+    <div style="text-align: center;">
+        <a href="/commencement2010/">
+            <img src="{% static_url "images/special/commencement10/banner.png" %}" style="width: 930px; height: 150px; margin: 0 auto;" alt="ac"/>
+        </a>
+    </div>
+{% endblock %}
+
+{% block leftcolumn %}
+    {% module 4 "events" %}
+    <div class="article_previews">
+        <ul>
+            <li>
+                {{ teamofyear|first|render:"preview" }}
+            </li>
+        </ul>
+    </div>
+    <div class="article_headlines">
+        <ul>
+        {% for story in teamofyearru %}
+            <li>
+                {{ story|render:"small_preview" }}
+            </li>
+        {% endfor %}
+        </ul>
+    </div>
+    <div class="article_previews">
+        <ul>
+            <li>
+                {{ mrofyear|first|render:"preview" }}
+            </li>
+        </ul>
+    </div>
+    <div class="article_headlines">
+        <ul>
+        {% for story in mrofyearru %}
+            <li>
+                {{ story|render:"small_preview" }}
+            </li>
+        {% endfor %}
+        </ul>
+    </div>
+    <div class="article_previews">
+        <ul>
+            <li>
+                {{ gofyear|first|render:"preview" }}
+            </li>
+        </ul>
+    </div>
+    <div class="article_headlines">
+        <ul>
+        {% for story in gofyearru %}
+            <li>
+                {{ story|render:"small_preview" }}
+            </li>
+        {% endfor %}
+        </ul>
+    </div>
+    <div class="article_previews">
+        <ul>
+            <li>
+                {{ cofyear|first|render:"preview" }}
+            </li>
+        </ul>
+    </div>
+    <div class="article_headlines">
+        <ul>
+        {% for story in cofyearru %}
+            <li>
+                {{ story|render:"small_preview" }}
+            </li>
+        {% endfor %}
+        </ul>
+    </div>
+    <div class="article_previews">
+        <ul>
+            <li>
+                {{ caofyear|first|render:"preview" }}
+            </li>
+        </ul>
+    </div>
+    <div class="article_headlines">
+        <ul>
+        {% for story in caofyearru %}
+            <li>
+                {{ story|render:"small_preview" }}
+            </li>
+        {% endfor %}
+        </ul>
+    </div>
+    {% endmodule %}
+{% endblock %}
+
+{% block middlecolumn %}
+    {% module 4 "athletes" %}
+    <div class="article_previews">
+        <ul>
+            <li>
+                {{ maofyear|first|render:"preview" }}
+            </li>
+        </ul>
+    </div>
+    <div class="article_headlines">
+        <ul>
+        {% for story in maofyearru %}
+            <li>
+                {{ story|render:"small_preview" }}
+            </li>
+        {% endfor %}
+        </ul>
+    </div>
+    <div class="article_previews">
+        <ul>
+            <li>
+                {{ faofyear|first|render:"preview" }}
+            </li>
+        </ul>
+    </div>
+    <div class="article_headlines">
+        <ul>
+        {% for story in faofyearru %}
+            <li>
+                {{ story|render:"small_preview" }}
+            </li>
+        {% endfor %}
+        </ul>
+    </div>
+    <div class="article_previews">
+        <ul>
+            <li>
+                {{ mbaofyear|first|render:"preview" }}
+            </li>
+        </ul>
+    </div>
+    <div class="article_headlines">
+        <ul>
+        {% for story in mbaofyearru %}
+            <li>
+                {{ story|render:"small_preview" }}
+            </li>
+        {% endfor %}
+        </ul>
+    </div>
+    <div class="article_previews">
+        <ul>
+            <li>
+                {{ fbaofyear|first|render:"preview" }}
+            </li>
+        </ul>
+    </div>
+    <div class="article_headlines">
+        <ul>
+        {% for story in fbaofyearru %}
+            <li>
+                {{ story|render:"small_preview" }}
+            </li>
+        {% endfor %}
+        </ul>
+    </div>
+    {% endmodule %}
+{% endblock %}
+
+{% block rightcolumn %}
+    {% module 4 "season recaps" box %}
+    <div class="twocol" id="tags">
+        {% for story in arecaps %}
+        <span class="cell"><a href="{{ story.0.get_absolute_url }}">{{ story.1 }}</a></span>
+        {% endfor %}
+        <span class="clear"></span>
+    </div>
+    {% endmodule %}
+    {% module 4 "parting shots" %}
+    <div class="article_headlines">
+        <ul>
+        {% for story in partingshots %}
+            <li>
+                {{ story|render:"small_preview" }}
+            </li>
+        {% endfor %}
+        </ul>
+    </div>
+    {% endmodule %}
+{% endblock %}
+
+{% block belowcolumn %}
+{% endblock %}

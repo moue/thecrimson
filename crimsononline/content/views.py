@@ -776,3 +776,134 @@ def contact(request):
         form = ContactForm(initial={'message_type': m_type})
 
     return render_to_response('contact/contact.html', {'form': form})
+    
+# commencement
+def commencement2010(request):
+    nav = 'news'
+    section = Section.cached(nav)
+    ctag = Tag.objects.get(text='Commencement 2010')
+    topstories = Article.objects.prioritized(30).filter(tags=ctag)
+    galleries = Gallery.objects.filter(tags=ctag)
+    
+    return render_to_response('special/commencement2010/main.html', locals())
+    
+def commencement2010_1960(request):
+    nav = 'news'
+    section = Section.cached(nav)
+    edsec = Section.objects.get(name='Opinion')
+    ctag = Tag.objects.get(text='Commencement 2010')
+    stag = Tag.objects.get(text='Class of 1960')
+    ptag = Tag.objects.get(text='Profiles')
+    allstories = Article.objects.prioritized(30).filter(tags=ctag).filter(tags=stag)
+    features = allstories[:4]
+    stories = allstories[4:8]
+    profiles = Article.objects.filter(tags=ctag).filter(tags=stag).filter(tags=ptag)
+    ed = Article.objects.filter(tags=ctag).filter(tags=stag).filter(section=edsec)
+    rotated = Content.objects.filter(tags=ctag).filter(tags=stag).filter(Q(rotatable=2) | Q(rotatable=1))[:6]
+
+    return render_to_response('special/commencement2010/1960.html', locals())
+    
+def commencement2010_1985(request):
+    nav = 'news'
+    section = Section.cached(nav)
+    edsec = Section.objects.get(name='Opinion')
+    ctag = Tag.objects.get(text='Commencement 2010')
+    stag = Tag.objects.get(text='Class of 1985')
+    ptag = Tag.objects.get(text='Profiles')
+    allstories = Article.objects.prioritized(30).filter(tags=ctag).filter(tags=stag)
+    features = allstories[:4]
+    stories = allstories[4:8]
+    profiles = Article.objects.filter(tags=ctag).filter(tags=stag).filter(tags=ptag)
+    ed = Article.objects.filter(tags=ctag).filter(tags=stag).filter(section=edsec)
+    rotated = Content.objects.filter(tags=ctag).filter(tags=stag).filter(Q(rotatable=2) | Q(rotatable=1))[:6]
+   
+    return render_to_response('special/commencement2010/1985.html', locals())
+    
+def commencement2010_yir(request):
+    nav = 'news'
+    section = Section.cached(nav)
+    edsec = Section.objects.get(name='Opinion')
+    ctag = Tag.objects.get(text='Commencement 2010')
+    stag = Tag.objects.get(text='Year in Review')
+    covtaglist = ['College', 'On Campus', 'Faculty', 'Cambridge']
+    covtaglist = [Tag.objects.get(text=x) for x in covtaglist]
+    features = Article.objects.prioritized(30).filter(tags=ctag).filter(tags=stag)[:5]
+    ed = Article.objects.filter(tags=ctag).filter(tags=stag).filter(section=edsec)
+    sectionarticles = [Article.objects.filter(tags=ctag).filter(tags=stag).filter(tags=x)[:3] for x in covtaglist]
+    rotated = Content.objects.filter(tags=ctag).filter(tags=stag).filter(Q(rotatable=2) | Q(rotatable=1))[:6]
+    
+    return render_to_response('special/commencement2010/yir.html', locals())
+    
+def commencement2010_sports(request):
+    nav = 'sports'
+    section = Section.cached(nav)
+    ctag = Tag.objects.get(text='Commencement 2010')
+    stag = Tag.objects.get(text='Year in Sports 2010')
+    # team of year + runnerups
+    teamofyear = Article.objects.filter(tags=stag).filter(headline__startswith='TEAM OF THE YEAR:')
+    teamofyearru = Article.objects.filter(tags=stag).filter(headline__startswith='TEAM OF THE YEAR RUNNER UP:')
+    # male rookie + runnerup
+    mrofyear = Article.objects.filter(tags=stag).filter(headline__startswith='MALE ROOKIE OF THE YEAR:')
+    mrofyearru = Article.objects.filter(tags=stag).filter(headline__startswith='MALE ROOKIE OF THE YEAR RUNNER UP:')
+    # game of year + runnerup
+    gofyear = Article.objects.filter(tags=stag).filter(headline__startswith='GAME OF THE YEAR:')
+    gofyearru = Article.objects.filter(tags=stag).filter(headline__startswith='GAME OF THE YEAR RUNNER UP:')
+    # coach of year + runnerup
+    cofyear = Article.objects.filter(tags=stag).filter(headline__startswith='COACH OF THE YEAR:')
+    cofyearru = Article.objects.filter(tags=stag).filter(headline__startswith='COACH OF THE YEAR RUNNER UP:')
+    # comeback athlete + runnerup
+    caofyear = Article.objects.filter(tags=stag).filter(headline__startswith='COMEBACK ATHLETE OF THE YEAR:')
+    caofyearru = Article.objects.filter(tags=stag).filter(headline__startswith='COMEBACK ATHLETE OF THE YEAR RUNNER UP:')
+    # male athlete of year + runnersup
+    maofyear = Article.objects.filter(tags=stag).filter(headline__startswith='MALE ATHLETE OF THE YEAR:')
+    maofyearru = Article.objects.filter(tags=stag).filter(headline__startswith='MALE ATHLETE OF THE YEAR RUNNER UP:')
+    # female ___
+    faofyear = Article.objects.filter(tags=stag).filter(headline__startswith='FEMALE ATHLETE OF THE YEAR:')
+    faofyearru = Article.objects.filter(tags=stag).filter(headline__startswith='FEMALE ATHLETE OF THE YEAR RUNNER UP:')
+    # male breakout
+    mbaofyear = Article.objects.filter(tags=stag).filter(headline__startswith='MALE BREAKOUT ATHLETE OF THE YEAR:')
+    mbaofyearru = Article.objects.filter(tags=stag).filter(headline__startswith='MALE BREAKOUT ATHLETE OF THE YEAR RUNNER UP:')
+    # female breakout
+    fbaofyear = Article.objects.filter(tags=stag).filter(headline__startswith='FEMALE BREAKOUT ATHLETE OF THE YEAR:')
+    fbaofyearru = Article.objects.filter(tags=stag).filter(headline__startswith='FEMALE BREAKOUT ATHLETE OF THE YEAR RUNNER UP:')
+    # season recaps
+    sportstags = Tag.objects.filter(category='sports').exclude(text='Year in Sports 2010')
+    recaps = Article.objects.filter(tags=stag).filter(headline__startswith='SEASON RECAP:')
+    arecaps = []
+    for x in recaps:
+        arecaps.append([x, [y for y in x.tags.all() if y in sportstags][0].text])
+    arecaps.sort(key=lambda x: x[1])
+    # parting shots
+    partingshots = Article.objects.filter(tags=stag).filter(headline__startswith='PARTING SHOT:')
+    
+    return render_to_response('special/commencement2010/sports.html', locals())
+    
+def commencement2010_seniors(request):
+    nav = 'news'
+    section = Section.cached(nav)
+    ctag = Tag.objects.get(text='Commencement 2010')
+    stag = Tag.objects.get(text='Seniors 2010')
+    wtag = Tag.objects.get(text='Weddings')
+    stories = Article.objects.prioritized(30).filter(tags=stag)[:5]
+    rotated = Content.objects.filter(tags=stag).filter(Q(rotatable=2) | Q(rotatable=1))[:6]
+    weddings = Article.objects.filter(tags=stag).filter(tags=wtag)
+    wthird = len(weddings) / 3 + (1 if len(weddings) % 3 == 2 else 0)
+    weddings = [weddings[0:wthird], weddings[wthird:wthird * 2], weddings[wthird * 2:]]
+    weddings.sort(key=lambda x: len(x), reverse=True)
+    
+    return render_to_response('special/commencement2010/senior.html', locals())
+    
+def commencement2010_pov(request):
+    nav = 'opinion'
+    section = Section.cached(nav)
+    ctag = Tag.objects.get(text='Commencement 2010')
+    stag = Tag.objects.get(text='Parting Shot')
+    
+    partingshots = Article.objects.filter(tags=ctag).filter(tags=stag)
+    rotated = Content.objects.filter(tags=ctag).filter(Q(rotatable=2) | Q(rotatable=1))[:6]
+    opeds = Article.objects.filter(tags=ctag).filter(section=section)
+    wthird = len(opeds) / 3 + (1 if len(opeds) % 3 == 2 else 0)
+    opeds = [opeds[0:wthird], opeds[wthird:wthird * 2], opeds[wthird * 2:]]
+    opeds.sort(key=lambda x: len(x), reverse=True)
+    
+    return render_to_response('special/commencement2010/pov.html', locals())

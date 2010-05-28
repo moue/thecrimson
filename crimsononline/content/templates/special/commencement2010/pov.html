@@ -1,0 +1,89 @@
+{% extends "threecolumn.html" %}
+
+{% load cache %}
+{% load common %}
+{% load content_filters %}
+{% load content_module %}
+{% load rotator %}
+{% load module %}
+{% load tag_cloud %}
+{% load top_articles %}
+{% load flyby_preview %}
+
+{% block pre_body %}
+    <div style="text-align: center;">
+        <a href="/commencement2010/">
+            <img src="{% static_url "images/special/commencement10/banner.png" %}" style="width: 930px; height: 150px; margin: 0 auto;" alt="ac"/>
+        </a>
+    </div>
+{% endblock %}
+
+{% block leftcolumn %}
+{% endblock %}
+
+{% block middlecolumn %}
+{% endblock %}
+
+{% block rightcolumn %}
+{% endblock %}
+
+{% block belowcolumn %}
+    <div class="col-4">
+        {% module 4 "parting shots" %}
+        <div class="article_previews">
+            <ul>
+            {% for story in partingshots %}
+                <li>
+                    {{ story|render:"preview" }}
+                </li>
+            {% endfor %}
+            </ul>
+        </div>
+        {% endmodule %}
+    </div>
+    <div class="gutter"></div>
+    <div class="col-8">
+        {% rotatorwide rotated "edcartoon_rotator" %}
+    </div>
+    <span class="clear"></span>
+    <div class="col-12">
+    {% module 12 "OP/EDS" nopad %}
+    {% endmodule%}
+    </div>
+    <div class="col-4">
+        <div class="article_headlines">
+            <ul>
+            {% for story in opeds.0 %}
+            <li>
+                {{ story|render:"small_preview" }}
+            </li>
+            {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div class="gutter"></div>
+    <div class="col-4">
+        <div class="article_headlines">
+            <ul>
+            {% for story in opeds.1 %}
+            <li>
+                {{ story|render:"small_preview" }}
+            </li>
+            {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div class="gutter"></div>
+    <div class="col-4">
+        <div class="article_headlines">
+            <ul>
+            {% for story in opeds.2 %}
+            <li>
+                {{ story|render:"small_preview" }}
+            </li>
+            {% endfor %}
+            </ul>
+        </div>
+    </div> 
+    <span class="clear"></span>
+{% endblock %}

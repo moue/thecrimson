@@ -5,6 +5,11 @@
     margin-bottom: 10px;
     clear: both;
 }
+
+.rotator.wide {
+    width: 632px;
+}
+
 .rotator h2{
     font-family: Arial;
     font-size: 15px;
@@ -16,12 +21,21 @@
 .rotator_preview{
 	height:415px;
 }
+.rotator_preview.wide {
+    height: 495px;
+}
 ul.notext {
     height: 345px;
+}
+ul.notext.wide {
+    height: 425px;
 }
 .rotator_preview li{
 	height:415px;
 	list-style-type: none;
+}
+.rotator_preview.wide li {
+    height: 495px;
 }
 .rotator_preview .preview_text {
     height: 64px;
@@ -44,6 +58,11 @@ ul.notext div.preview_text {
 	overflow: hidden;
 	background-image: url('../images/semitransparent.png');
     text-align: center;
+}
+
+.rotator_carousel.wide {
+    margin-top: 399px;
+    width: 632px;
 }
 
 .rotator_carousel_contents{

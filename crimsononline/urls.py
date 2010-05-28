@@ -64,6 +64,17 @@ urlpatterns += patterns('django.views.generic.simple',
     (r'login_return/$', login_user),
 )
 """
+# special stuff
+
+urlpatterns += patterns('crimsononline.content.views',
+    url(r'^commencement2010/$', 'commencement2010'),
+    url(r'^commencement2010/1960/$', 'commencement2010_1960'),
+    url(r'^commencement2010/1985/$', 'commencement2010_1985'),
+    url(r'^commencement2010/yir/$', 'commencement2010_yir'),
+    url(r'^commencement2010/sports/$', 'commencement2010_sports'),
+    url(r'^commencement2010/seniors/$', 'commencement2010_seniors'),
+    url(r'^commencement2010/pov/$', 'commencement2010_pov'),
+)
 
 admin.autodiscover()
 
