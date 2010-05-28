@@ -900,7 +900,7 @@ def commencement2010_pov(request):
     stag = Tag.objects.get(text='Parting Shot')
     
     partingshots = Article.objects.filter(tags=ctag).filter(tags=stag)
-    rotated = Content.objects.filter(tags=ctag).filter(Q(rotatable=2) | Q(rotatable=1))[:6]
+    rotated = Content.objects.filter(tags=ctag).filter(section=section).filter(Q(rotatable=2) | Q(rotatable=1))[:6]
     opeds = Article.objects.filter(tags=ctag).filter(section=section)
     opeds = [x for x in opeds if x not in partingshots]
     wthird = len(opeds) / 3 + (1 if len(opeds) % 3 == 2 else 0)
