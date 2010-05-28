@@ -24,6 +24,11 @@
 .mod-4 {
     margin: 0 auto;
 }
+
+.mod-4 img {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
 </style>
 {% endblock %}
 
@@ -36,7 +41,7 @@
 {% block leftcolumn %}
     <div class="mod-4">
         <a href="/commencement2010/yir/">
-            <img src="{% static_url "images/special/commencement10/yir.png" %}" style="width: 300px; height: 300px; margin-bottom: 5px;" alt="ac"/>
+            <img src="{% static_url "images/special/commencement10/yir.png" %}" style="width: 300px; height: 300px;" alt="ac"/>
         </a>
         <a href="/commencement2010/sports/">
             <img src="{% static_url "images/special/commencement10/sports.png" %}" style="width: 300px; height: 300px;" alt="df"/>
@@ -46,11 +51,11 @@
 
 {% block middlecolumn %}
     <div class="mod-4">
-        <a href="/commencement2010/1960/">
-            <img src="{% static_url "images/special/commencement10/1960.png" %}" style="width: 300px; height: 300px; margin-bottom: 5px;" alt="ac"/>
-        </a>
         <a href="/commencement2010/1985/">
-            <img src="{% static_url "images/special/commencement10/1985.png" %}" style="width: 300px; height: 300px;" alt="df"/>
+            <img src="{% static_url "images/special/commencement10/1985.png" %}" style="width: 300px; height: 300px;" alt="ac"/>
+        </a>
+        <a href="/commencement2010/1960/">
+            <img src="{% static_url "images/special/commencement10/1960.png" %}" style="width: 300px; height: 300px;" alt="df"/>
         </a>
     </div>
 {% endblock %}
@@ -58,7 +63,7 @@
 {% block rightcolumn %}
     <div class="mod-4">
         <a href="/commencement2010/seniors/">
-            <img src="{% static_url "images/special/commencement10/seniors.png" %}" style="width: 300px; height: 300px; margin-bottom: 5px;" alt="ac"/>
+            <img src="{% static_url "images/special/commencement10/seniors.png" %}" style="width: 300px; height: 300px;" alt="ac"/>
         </a>
         <a href="/commencement2010/pov/">
             <img src="{% static_url "images/special/commencement10/pov.png" %}" style="width: 300px; height: 300px;" alt="df"/>
@@ -106,7 +111,7 @@
     </div>
     <span class="clear"></span>
     <div class="col-12">
-    {% module 12 "Galleries" nopad %}
+    {% module 12 "Galleries" red %}
     {% endmodule%}
     </div>
     <div class="front_galleries">
