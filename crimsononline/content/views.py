@@ -907,7 +907,7 @@ def commencement2010_pov(request):
     opeds = [opeds[0:wthird], opeds[wthird:wthird * 2], opeds[wthird * 2:]]
     opeds.sort(key=lambda x: len(x), reverse=True)
     pthird = (len(partingshots) - 4) / 3 + (1 if (len(partingshots) - 4) % 3 == 2 else 0)
-    partingshots = [partingshots[:pthird + 4], partingshots[pthird + 4:pthird * 2],
-                    partingshots[pthird * 2:]]
+    partingshots = [partingshots[:pthird + 4], partingshots[pthird + 4:pthird * 2 + 4],
+                    partingshots[pthird * 2 + 4:]]
     
     return render_to_response('special/commencement2010/pov.html', locals())
