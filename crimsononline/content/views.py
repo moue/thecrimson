@@ -795,10 +795,10 @@ def commencement2010_1960(request):
     stag = Tag.objects.get(text='Class of 1960')
     ptag = Tag.objects.get(text='Profiles')
     profiles = Article.objects.filter(tags=ctag).filter(tags=stag).filter(tags=ptag)
-    allstories = [x for x in Article.objects.prioritized(30).filter(tags=ctag).filter(tags=stag) if x not in profiles]
+    ed = Article.objects.filter(tags=ctag).filter(tags=stag).filter(section=edsec)
+    allstories = [x for x in Article.objects.prioritized(30).filter(tags=ctag).filter(tags=stag) if x not in profiles and x not in ed]
     features = allstories[:4]
     stories = allstories[4:8]
-    ed = Article.objects.filter(tags=ctag).filter(tags=stag).filter(section=edsec)
     rotated = Content.objects.filter(tags=ctag).filter(tags=stag).filter(Q(rotatable=2) | Q(rotatable=1))[:6]
 
     return render_to_response('special/commencement2010/1960.html', locals())
@@ -811,10 +811,10 @@ def commencement2010_1985(request):
     stag = Tag.objects.get(text='Class of 1985')
     ptag = Tag.objects.get(text='Profiles')
     profiles = Article.objects.filter(tags=ctag).filter(tags=stag).filter(tags=ptag)
-    allstories = [x for x in Article.objects.prioritized(30).filter(tags=ctag).filter(tags=stag) if x not in profiles]
+    ed = Article.objects.filter(tags=ctag).filter(tags=stag).filter(section=edsec)
+    allstories = [x for x in Article.objects.prioritized(30).filter(tags=ctag).filter(tags=stag) if x not in profiles and x not in ed]
     features = allstories[:3]
     stories = allstories[3:10]
-    ed = Article.objects.filter(tags=ctag).filter(tags=stag).filter(section=edsec)
     rotated = Content.objects.filter(tags=ctag).filter(tags=stag).filter(Q(rotatable=2) | Q(rotatable=1))[:6]
    
     return render_to_response('special/commencement2010/1985.html', locals())
