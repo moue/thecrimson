@@ -29,6 +29,11 @@
 .mod-4 a {
     margin-top: 5px;
     margin-bottom: 5px;
+    display: block;
+}
+
+.mod-red {
+    border-top: 2px solid #B00600;
 }
 </style>
 {% endblock %}
@@ -112,7 +117,7 @@
     </div>
     <span class="clear"></span>
     <div class="col-12">
-    {% module 12 "Galleries" red %}
+    {% module 12 "Galleries" "nopad mod-red" %}
     {% endmodule%}
     </div>
     <div class="front_galleries">
