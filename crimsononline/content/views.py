@@ -838,7 +838,7 @@ def commencement2010_sports(request):
     nav = 'sports'
     section = Section.cached(nav)
     ctag = Tag.objects.get(text='Commencement 2010')
-    stag = Tag.objects.get(text='Year in Sports 2010')
+    stag = Tag.objects.get(text='Year in Sports')
     # team of year + runnerups
     teamofyear = Article.objects.filter(tags=stag).filter(headline__startswith='TEAM OF THE YEAR:')
     teamofyearru = Article.objects.filter(tags=stag).filter(headline__startswith='TEAM OF THE YEAR RUNNER UP:')
@@ -867,7 +867,7 @@ def commencement2010_sports(request):
     fbaofyear = Article.objects.filter(tags=stag).filter(headline__startswith='FEMALE BREAKOUT ATHLETE OF THE YEAR:')
     fbaofyearru = Article.objects.filter(tags=stag).filter(headline__startswith='FEMALE BREAKOUT ATHLETE OF THE YEAR RUNNER UP:')
     # season recaps
-    sportstags = Tag.objects.filter(category='sports').exclude(text='Year in Sports 2010')
+    sportstags = Tag.objects.filter(category='sports').exclude(text='Year in Sports')
     recaps = Article.objects.filter(tags=stag).filter(headline__startswith='SEASON RECAP:')
     arecaps = []
     for x in recaps:
@@ -882,7 +882,7 @@ def commencement2010_seniors(request):
     nav = 'news'
     section = Section.cached(nav)
     ctag = Tag.objects.get(text='Commencement 2010')
-    stag = Tag.objects.get(text='Seniors 2010')
+    stag = Tag.objects.get(text='Seniors')
     wtag = Tag.objects.get(text='Weddings')
     stories = Article.objects.prioritized(30).filter(tags=stag)[:5]
     rotated = Content.objects.filter(tags=stag).filter(Q(rotatable=2) | Q(rotatable=1))[:6]
