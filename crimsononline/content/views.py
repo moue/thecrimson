@@ -783,7 +783,7 @@ def commencement2010(request):
     section = Section.cached(nav)
     ctag = Tag.objects.get(text='Commencement 2010')
     topstories = Article.objects.prioritized(30).filter(tags=ctag)
-    galleries = Gallery.objects.filter(tags=ctag)
+    galleries = Gallery.objects.filter(tags=ctag)[:6]
     
     return render_to_response('special/commencement2010/main.html', locals())
     
