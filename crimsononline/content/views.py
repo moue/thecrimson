@@ -827,7 +827,7 @@ def commencement2010_yir(request):
     stag = Tag.objects.get(text='Year in Review')
     covtaglist = ['College', 'On Campus', 'Faculty', 'Cambridge', 'University']
     covtaglist = [Tag.objects.get(text=x) for x in covtaglist]
-    features = Article.objects.prioritized(30).filter(tags=ctag).filter(tags=stag)[:8]
+    features = Article.objects.prioritized(30).filter(tags=ctag).filter(tags=stag)[:7]
     ed = Article.objects.filter(tags=ctag).filter(tags=stag).filter(section=edsec)
     sectionarticles = [[y for y in Article.objects.filter(tags=ctag).filter(tags=stag).filter(tags=x)[:7] if y not in features] for x in covtaglist]
     rotated = Content.objects.filter(tags=ctag).filter(tags=stag).filter(Q(rotatable=2) | Q(rotatable=1))[:6]
