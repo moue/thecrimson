@@ -906,7 +906,7 @@ def commencement2010_pov(request):
     wthird = len(opeds) / 3 + (1 if len(opeds) % 3 == 2 else 0)
     opeds = [opeds[0:wthird], opeds[wthird:wthird * 2], opeds[wthird * 2:]]
     opeds.sort(key=lambda x: len(x), reverse=True)
-    pthird = (len(opeds) - 4) / 3 + (1 if (len(opeds) - 4) % 3 == 2 else 0)
+    pthird = (len(partingshots) - 4) / 3 + (1 if (len(partingshots) - 4) % 3 == 2 else 0)
     partingshots = [partingshots[:pthird + 4], partingshots[pthird + 4:pthird * 2],
                     partingshots[pthird * 2:]]
     
