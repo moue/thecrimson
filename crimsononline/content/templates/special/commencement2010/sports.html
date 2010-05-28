@@ -55,6 +55,22 @@
     <div class="article_previews">
         <ul>
             <li>
+                {{ frofyear|first|render:"preview" }}
+            </li>
+        </ul>
+    </div>
+    <div class="article_headlines">
+        <ul>
+        {% for story in frofyearru %}
+            <li>
+                {{ story|render:"small_preview" }}
+            </li>
+        {% endfor %}
+        </ul>
+    </div>
+    <div class="article_previews">
+        <ul>
+            <li>
                 {{ gofyear|first|render:"preview" }}
             </li>
         </ul>

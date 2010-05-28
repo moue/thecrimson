@@ -841,31 +841,34 @@ def commencement2010_sports(request):
     stag = Tag.objects.get(text='Year in Sports')
     # team of year + runnerups
     teamofyear = Article.objects.filter(tags=stag).filter(headline__startswith='TEAM OF THE YEAR:')
-    teamofyearru = Article.objects.filter(tags=stag).filter(headline__startswith='TEAM OF THE YEAR RUNNER UP:')
+    teamofyearru = Article.objects.filter(tags=stag).filter(headline__startswith='TEAM OF THE YEAR RUNNER-UP:')
     # male rookie + runnerup
     mrofyear = Article.objects.filter(tags=stag).filter(headline__startswith='MALE ROOKIE OF THE YEAR:')
-    mrofyearru = Article.objects.filter(tags=stag).filter(headline__startswith='MALE ROOKIE OF THE YEAR RUNNER UP:')
+    mrofyearru = Article.objects.filter(tags=stag).filter(headline__startswith='MALE ROOKIE OF THE YEAR RUNNER-UP:')
+    # male rookie + runnerup
+    frofyear = Article.objects.filter(tags=stag).filter(headline__startswith='FEMALE ROOKIE OF THE YEAR:')
+    frofyearru = Article.objects.filter(tags=stag).filter(headline__startswith='FEMALE ROOKIE OF THE YEAR RUNNER-UP:')
     # game of year + runnerup
     gofyear = Article.objects.filter(tags=stag).filter(headline__startswith='GAME OF THE YEAR:')
-    gofyearru = Article.objects.filter(tags=stag).filter(headline__startswith='GAME OF THE YEAR RUNNER UP:')
+    gofyearru = Article.objects.filter(tags=stag).filter(headline__startswith='GAME OF THE YEAR RUNNER-UP:')
     # coach of year + runnerup
     cofyear = Article.objects.filter(tags=stag).filter(headline__startswith='COACH OF THE YEAR:')
-    cofyearru = Article.objects.filter(tags=stag).filter(headline__startswith='COACH OF THE YEAR RUNNER UP:')
+    cofyearru = Article.objects.filter(tags=stag).filter(headline__startswith='COACH OF THE YEAR RUNNER-UP:')
     # comeback athlete + runnerup
     caofyear = Article.objects.filter(tags=stag).filter(headline__startswith='COMEBACK ATHLETE OF THE YEAR:')
-    caofyearru = Article.objects.filter(tags=stag).filter(headline__startswith='COMEBACK ATHLETE OF THE YEAR RUNNER UP:')
+    caofyearru = Article.objects.filter(tags=stag).filter(headline__startswith='COMEBACK ATHLETE OF THE YEAR RUNNER-UP:')
     # male athlete of year + runnersup
     maofyear = Article.objects.filter(tags=stag).filter(headline__startswith='MALE ATHLETE OF THE YEAR:')
-    maofyearru = Article.objects.filter(tags=stag).filter(headline__startswith='MALE ATHLETE OF THE YEAR RUNNER UP:')
+    maofyearru = Article.objects.filter(tags=stag).filter(headline__startswith='MALE ATHLETE OF THE YEAR RUNNER-UP:')
     # female ___
     faofyear = Article.objects.filter(tags=stag).filter(headline__startswith='FEMALE ATHLETE OF THE YEAR:')
-    faofyearru = Article.objects.filter(tags=stag).filter(headline__startswith='FEMALE ATHLETE OF THE YEAR RUNNER UP:')
+    faofyearru = Article.objects.filter(tags=stag).filter(headline__startswith='FEMALE ATHLETE OF THE YEAR RUNNER-UP:')
     # male breakout
     mbaofyear = Article.objects.filter(tags=stag).filter(headline__startswith='MALE BREAKOUT ATHLETE OF THE YEAR:')
-    mbaofyearru = Article.objects.filter(tags=stag).filter(headline__startswith='MALE BREAKOUT ATHLETE OF THE YEAR RUNNER UP:')
+    mbaofyearru = Article.objects.filter(tags=stag).filter(headline__startswith='MALE BREAKOUT ATHLETE OF THE YEAR RUNNER-UP:')
     # female breakout
     fbaofyear = Article.objects.filter(tags=stag).filter(headline__startswith='FEMALE BREAKOUT ATHLETE OF THE YEAR:')
-    fbaofyearru = Article.objects.filter(tags=stag).filter(headline__startswith='FEMALE BREAKOUT ATHLETE OF THE YEAR RUNNER UP:')
+    fbaofyearru = Article.objects.filter(tags=stag).filter(headline__startswith='FEMALE BREAKOUT ATHLETE OF THE YEAR RUNNER-UP:')
     # season recaps
     sportstags = Tag.objects.filter(category='sports').exclude(text='Year in Sports')
     recaps = Article.objects.filter(tags=stag).filter(headline__startswith='SEASON RECAP:')
