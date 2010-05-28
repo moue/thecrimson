@@ -902,8 +902,12 @@ def commencement2010_pov(request):
     partingshots = Article.objects.filter(tags=ctag).filter(tags=stag)
     rotated = Content.objects.filter(tags=ctag).filter(Q(rotatable=2) | Q(rotatable=1))[:6]
     opeds = Article.objects.filter(tags=ctag).filter(section=section)
+    opeds = [x for x in opeds if x not in partingshots]
     wthird = len(opeds) / 3 + (1 if len(opeds) % 3 == 2 else 0)
     opeds = [opeds[0:wthird], opeds[wthird:wthird * 2], opeds[wthird * 2:]]
     opeds.sort(key=lambda x: len(x), reverse=True)
+    pthird = (len(opeds) - 4) / 3 + (1 if (len(opeds) - 4) % 3 == 2 else 0)
+    partingshots = [partingshots[:pthird + 4], partingshots[pthird + 4:pthird * 2],
+                    partingshots[pthird * 2:]]
     
     return render_to_response('special/commencement2010/pov.html', locals())

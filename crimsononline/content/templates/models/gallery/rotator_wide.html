@@ -5,7 +5,7 @@
 {% load content_filters %}
 
 {% block img %}
-    <a href="{{gallery.get_absolute_url}}">{{ gallery.cover_image|to_img_tag:"641,425,641,425,True" }}</a>
+    <a href="{{gallery.get_absolute_url}}">{{ gallery.cover_image|to_img_tag:"632,418,632,418,True" }}</a>
 {% endblock %}
 {% block text %}
 <p class="teaser">{{ gallery.description|truncchars:"170" }}</p>

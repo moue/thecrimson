@@ -32,7 +32,7 @@
         {% module 4 "parting shots" %}
         <div class="article_previews">
             <ul>
-            {% for story in partingshots %}
+            {% for story in partingshots.0 %}
                 <li>
                     {{ story|render:"preview" }}
                 </li>
@@ -44,6 +44,33 @@
     <div class="gutter"></div>
     <div class="col-8">
         {% rotatorwide rotated "edcartoon_rotator" %}
+    </div>
+    <div class="col-4">
+        {% module 4 %}
+        <div class="article_previews">
+            <ul>
+            {% for story in partingshots.1 %}
+                <li>
+                    {{ story|render:"preview" }}
+                </li>
+            {% endfor %}
+            </ul>
+        </div>
+        {% endmodule %}
+    </div>
+    <div class="gutter"></div>
+    <div class="col-4">
+        {% module 4 %}
+        <div class="article_previews">
+            <ul>
+            {% for story in partingshots.2 %}
+                <li>
+                    {{ story|render:"preview" }}
+                </li>
+            {% endfor %}
+            </ul>
+        </div>
+        {% endmodule %}
     </div>
     <span class="clear"></span>
     <div class="col-12">
