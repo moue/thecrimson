@@ -198,11 +198,11 @@
     </div>
     {% endmodule %}
     {% module 4 "parting shots" %}
-    <div class="article_headlines">
+    <div class="article_previews">
         <ul>
         {% for story in partingshots %}
             <li>
-                {{ story|render:"small_preview" }}
+                {{ story|render:"preview" }}
             </li>
         {% endfor %}
         </ul>

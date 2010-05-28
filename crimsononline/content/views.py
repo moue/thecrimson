@@ -861,7 +861,7 @@ def commencement2010_sports(request):
     maofyear = Article.objects.filter(tags=stag).filter(headline__startswith='MALE ATHLETE OF THE YEAR:')
     maofyearru = Article.objects.filter(tags=stag).filter(headline__startswith='MALE ATHLETE OF THE YEAR RUNNER-UP:')
     # female ___
-    faofyear = Article.objects.filter(tags=stag).filter(headline__startswith='FEMALE ATHLETE OF THE YEAR:')
+    faofyear = Article.objects.filter(tags=stag).filter(headline__startswith='FEMALE ATHLETE/ROOKIE OF THE YEAR:')
     faofyearru = Article.objects.filter(tags=stag).filter(headline__startswith='FEMALE ATHLETE OF THE YEAR RUNNER-UP:')
     # male breakout
     mbaofyear = Article.objects.filter(tags=stag).filter(headline__startswith='MALE BREAKOUT ATHLETE OF THE YEAR:')
