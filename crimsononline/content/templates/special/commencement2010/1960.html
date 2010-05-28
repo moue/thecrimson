@@ -10,7 +10,7 @@
 {% load top_articles %}
 {% load flyby_preview %}
 
-{% block title %}Class of 1965 | Commencement 2010{% endblock %}
+{% block title %}Class of 1960 | Commencement 2010{% endblock %}
 
 {% block pre_body %}
     <div style="text-align: center;">
@@ -48,9 +48,18 @@
 {% block middlecolumn %}
     {% rotator rotated "rotator" %}
     {% module 4 "profiles" %}
+    <div class="article_previews">
+        <ul>
+        {% for story in profiles|slice:":2" %}
+            <li>
+                {{ story|render:"preview" }}
+            </li>
+        {% endfor %}
+        </ul>
+    </div>
     <div class="article_headlines">
         <ul>
-        {% for story in profiles %}
+        {% for story in profiles|slice:"2:" %}
             <li>
                 {{ story|render:"small_preview" }}
             </li>
@@ -64,18 +73,9 @@
     {% module 4 "opinion" %}
     <div class="article_previews">
         <ul>
-        {% for story in ed|slice:":3" %}
+        {% for story in ed %}
             <li>
                 {{ story|render:"preview" }}
-            </li>
-        {% endfor %}
-        </ul>
-    </div>
-    <div class="article_headlines">
-        <ul>
-        {% for story in ed|slice:"3:" %}
-            <li>
-                {{ story|render:"small_preview" }}
             </li>
         {% endfor %}
         </ul>
