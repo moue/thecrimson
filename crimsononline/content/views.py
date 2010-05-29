@@ -902,10 +902,13 @@ def commencement2010_pov(request):
     section = Section.cached(nav)
     ctag = Tag.objects.get(text='Commencement 2010')
     stag = Tag.objects.get(text='Parting Shot')
+    ntag1 = Tag.objects.get(text='Year in Review')
+    ntag2 = Tag.objects.get(text='Class of 1960')
+    ntag3 = Tag.objects.get(text='Class of 1985')
     
-    partingshots = Article.objects.filter(tags=ctag).filter(tags=stag)
+    partingshots = Article.objects.filter(tags=ctag).filter(tags=stag).exclude(tags=ntag1).exclude(tags=ntag2).exclude(tags=ntag3)
     rotated = Content.objects.filter(tags=ctag).filter(section=section).filter(Q(rotatable=2) | Q(rotatable=1))[:6]
-    opeds = Article.objects.filter(tags=ctag).filter(section=section)
+    opeds = Article.objects.filter(tags=ctag).filter(section=section).exclude(tags=ntag1).exclude(tags=ntag2).exclude(tags=ntag3)
     opeds = [x for x in opeds if x not in partingshots]
     wthird = len(opeds) / 3 + (1 if len(opeds) % 3 == 2 else 0)
     opeds = [opeds[0:wthird], opeds[wthird:wthird * 2], opeds[wthird * 2:]]
