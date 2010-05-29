@@ -778,6 +778,7 @@ def contact(request):
     return render_to_response('contact/contact.html', {'form': form})
     
 # commencement
+@cache_page(settings.CACHE_LONG)
 def commencement2010(request):
     nav = 'news'
     section = Section.cached(nav)
@@ -787,6 +788,7 @@ def commencement2010(request):
     
     return render_to_response('special/commencement2010/main.html', locals())
     
+@cache_page(settings.CACHE_LONG)
 def commencement2010_1960(request):
     nav = 'news'
     section = Section.cached(nav)
@@ -803,6 +805,7 @@ def commencement2010_1960(request):
 
     return render_to_response('special/commencement2010/1960.html', locals())
     
+@cache_page(settings.CACHE_LONG)
 def commencement2010_1985(request):
     nav = 'news'
     section = Section.cached(nav)
@@ -819,6 +822,7 @@ def commencement2010_1985(request):
    
     return render_to_response('special/commencement2010/1985.html', locals())
     
+@cache_page(settings.CACHE_LONG)
 def commencement2010_yir(request):
     nav = 'news'
     section = Section.cached(nav)
@@ -834,6 +838,7 @@ def commencement2010_yir(request):
     
     return render_to_response('special/commencement2010/yir.html', locals())
     
+@cache_page(settings.CACHE_LONG)
 def commencement2010_sports(request):
     nav = 'sports'
     section = Section.cached(nav)
@@ -882,6 +887,7 @@ def commencement2010_sports(request):
     
     return render_to_response('special/commencement2010/sports.html', locals())
     
+@cache_page(settings.CACHE_LONG)
 def commencement2010_seniors(request):
     nav = 'news'
     section = Section.cached(nav)
@@ -898,6 +904,7 @@ def commencement2010_seniors(request):
     
     return render_to_response('special/commencement2010/senior.html', locals())
     
+@cache_page(settings.CACHE_LONG)
 def commencement2010_pov(request):
     nav = 'opinion'
     section = Section.cached(nav)
