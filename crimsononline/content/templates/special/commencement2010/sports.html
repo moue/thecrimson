@@ -201,6 +201,7 @@
 {% endblock %}
 
 {% block rightcolumn %}
+    {% rotator rotated "yis_rotator" %}
     {% module 4 "season recaps" box %}
     <div class="twocol" id="tags">
         {% for story in arecaps %}

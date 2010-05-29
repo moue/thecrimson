@@ -878,6 +878,7 @@ def commencement2010_sports(request):
     arecaps.sort(key=lambda x: x[1])
     # parting shots
     partingshots = Article.objects.filter(tags=stag).filter(headline__startswith='PARTING SHOT:')
+    rotated = Content.objects.filter(tags=ctag).filter(tags=stag).filter(Q(rotatable=2) | Q(rotatable=1))[:6]
     
     return render_to_response('special/commencement2010/sports.html', locals())
     
