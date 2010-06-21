@@ -726,7 +726,7 @@ def top_articles(section, dt=None):
     #        break
     stories = Article.objects.prioritized(50).filter(qexp)
     if not stories:
-		stories = Article.objects.prioritized(150).filter(qexp)
+        stories = Article.objects.prioritized(150).filter(qexp)
     if(dt is not None):
         stories = stories.filter(issue__issue_date__lte=dt)
     return stories
