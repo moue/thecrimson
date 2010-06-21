@@ -327,7 +327,7 @@ class Content(models.Model):
         else:
             templ = 'models/%s/%s%s' % (name, method, ext)
 
-		# dumb hack for this jerk
+        # dumb hack for this jerk
         if self.slug in ['news-in-brief-student-charged-with', 'police-arrest-junior-for-assault-span',
                         'four-undergrads-face-drug-charges-span', 'students-plead-not-guilty-to-drug',
                         'charges-follow-lengthy-watch-divspan-classapple-style-span', 'judge-sets-next-date-in-marijuana',
