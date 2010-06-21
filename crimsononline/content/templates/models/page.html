@@ -62,7 +62,7 @@
                                     <span class="small-text-icon-wrap">
                                         {% if article.num_comments %}
                                         <span class="small-text-icon-item comment-count">
-                                            {% cache 600 preview_comments content.pk %}
+                                            {% cache 600 preview_comments fc.pk %}
                                                 {{article.num_comments}}
                                             {% endcache %}
                                         </span>

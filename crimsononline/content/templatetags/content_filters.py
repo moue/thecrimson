@@ -15,10 +15,10 @@ register = template.Library()
 def render(content, method):
     if not content:
         return ''
-    #try:
-    return mark_safe(content._render(method))
-    #except Exception, err:
-    #    pass
+    try:
+        return mark_safe(content._render(method))
+    except Exception, err:
+        pass
     return ''
 
 @register.filter
