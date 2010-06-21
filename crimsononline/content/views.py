@@ -89,7 +89,7 @@ def index(request, m=None, d=None, y=None):
     # Prevent sports articles that showed up in top articles from appearing again
     dict['sports'] = [x 
                       for x
-                      in (top_articles('Sports', dt).filter(~Q(group=sportsblog) | Q(group__isnull=True)))[:10]
+                      in (top_articles('Sports', dt).filter((Q(group__isnull=False) & ~Q(group=sportsblog)) | Q(group__isnull=True)))[:10]
                       if x not in dict['top_stories']][:4]
     dict['fms'] = top_articles('FM', dt)[:4]
     #dict['issue'] = Issue.get_current()
