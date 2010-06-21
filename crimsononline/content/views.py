@@ -68,7 +68,7 @@ def index(request, m=None, d=None, y=None):
     # i.e. ungrouped content.  This is because of how mysql handles NULL.  The Django ORM
     # should really solve this problem automatically, but that's another story.
     stories = (top_articles('News, Sports', dt)
-                  .filter((Q(group__isnull=False) & ~Q(group=sportsblog)) | Q(group__isnull=True))
+                  .filter((Q(group__isnull=False) & ~Q(group=sportsblog)) | Q(group__isnull=True)))
 
     dict = {}
     dict['rotate'] = rotatables(None, 4)
