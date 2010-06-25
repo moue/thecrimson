@@ -628,12 +628,12 @@ class GalleryForm(ContentModelForm):
         if r is not None:
             if not kwargs.has_key('initial'):
                 kwargs['initial'] = {}
-            kwargs['initial'].update({'contents': r.admin_content_pks})
+            kwargs['initial'].update({'contents_inline': r.admin_content_pks})
         super(GalleryForm, self).__init__(*args, **kwargs)
         self.fields['pub_status'].help_text = """Warning: publishing this
             gallery will publish all content inside the gallery."""
 
-    contents = RelatedContentField(label='Contents', required=True,
+    contents_inline = RelatedContentField(label='Contents', required=True,
         admin_site=admin.site, rel_types=[Image])
     slug = forms.fields.SlugField(widget=AutoGenSlugWidget(
             url='/admin/content/article/gen_slug/',
@@ -646,15 +646,13 @@ class GalleryForm(ContentModelForm):
     class Meta:
         model = Gallery
 
-
-
 class GalleryAdmin(ContentAdmin):
     fieldsets = (
         ('Gallery Setup', {
             'fields': ('title','description'),
         }),
         ('Images', {
-            'fields': ('contents',)
+            'fields': ('contents_inline',)
         }),
         ('Byline', {
             'fields': ('contributors',),
@@ -680,7 +678,7 @@ class GalleryAdmin(ContentAdmin):
         js = ('scripts/jquery.js',)
 
     def save_model(self, request, obj, form, change):
-        contents = form.cleaned_data.pop('contents', [])
+        contents = form.cleaned_data.pop('contents_inline', [])
         super(GalleryAdmin, self).save_model(request, obj, form, change)
         # set the Gallery contents
         obj.contents.clear()
@@ -704,7 +702,7 @@ class ArticleForm(ContentModelForm):
     def __init__(self, *args, **kwargs):
         r = kwargs.get('instance', None)
         if r is not None:
-            kwargs['initial'] = {'rel_content': r.rel_admin_content}
+            kwargs['initial'] = {'rel_content_inline': r.rel_admin_content}
         super(ArticleForm, self).__init__(*args, **kwargs)
 
     teaser = forms.fields.CharField(
@@ -734,7 +732,7 @@ class ArticleForm(ContentModelForm):
         url='/admin/content/contributor/search/', model=Contributor,
         labeler=(lambda obj: str(obj)))
 
-    rel_content = RelatedContentField(label='New admin content', required=False,
+    rel_content_inline = RelatedContentField(label='New admin content', required=False,
         admin_site=admin.site, rel_types=[Image, Gallery, Article, Map, FlashGraphic, YouTubeVideo])
 
     def clean_teaser(self):
@@ -757,7 +755,7 @@ class ArticleForm(ContentModelForm):
             if not self.cleaned_data['rel_content']:
                 msg = "This Article cannot be set to rotate since it has no related Content"
                 self._errors['rotatable'] = ErrorList([mark_safe(msg)])
-            elif self.cleaned_data['rel_content'][0].child.content_type not in rotatable_ctypes:
+            elif self.cleaned_data['rel_content_inline'][0].child.content_type not in rotatable_ctypes:
                 msg = "This Article cannot be set to rotate since its primary related Content is not rotatable"
                 self._errors['rotatable'] = ErrorList([mark_safe(msg)])
             # sort of a magic number--truncchars:170 is used in the article rotator template
@@ -814,7 +812,7 @@ class ArticleAdmin(ContentAdmin):
             'fields': ('issue', 'section', 'page',),
         }),
         ('Associated content', {
-            'fields': ('rel_content',),
+            'fields': ('rel_content_inline',),
         }),
         ('Web', {
             'fields': ('pub_status', 'priority', 'slug', 'tags',
@@ -872,7 +870,7 @@ class ArticleAdmin(ContentAdmin):
         return super(ArticleAdmin, self).has_change_permission(request, obj)
 
     def save_model(self, request, obj, form, change):
-        rel = form.cleaned_data.pop('rel_content', [])
+        rel = form.cleaned_data.pop('rel_content_inline', [])
         super(ArticleAdmin, self).save_model(request, obj, form, change)
         obj.rel_content.clear()
         for i, r in enumerate(rel):

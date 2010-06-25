@@ -1037,7 +1037,6 @@ class Image(Content):
         return """<img src="%s">""" % self.display_url(Image.SIZE_TINY)
     admin_thumb.allow_tags = True
 
-
 class Gallery(Content):
     """
     A collection of displayed content (images, youtube, infographics, etc.)

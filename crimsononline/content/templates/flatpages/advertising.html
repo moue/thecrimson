@@ -1,0 +1,18 @@
+{% extends "static.html" %}
+
+{% load module %}
+{% load content_module %}
+{% load common %}
+
+{% block content %}
+{% module 8 flatpage.title red %}
+    {{flatpage.content}}
+{% endmodule %}
+{% endblock %}
+
+{% block fp_nav %}
+	{% flatpage_nav about/advertising/ flatpage.url toplevelonly %}
+			{% contentmodule advertising_nav %}{% endcontentmodule %}
+    {% endflatpage_nav %}
+{% endblock %}
+

@@ -258,7 +258,6 @@ class RelatedContentField(forms.CharField):
     """The interface for adding / editing related content."""
     
     def __init__(self, *args, **kwargs):
-        
         kwargs['widget'] = RelatedContentWidget(
             rel_types=kwargs.pop('rel_types', []),
             admin_site=kwargs.pop('admin_site')
@@ -278,6 +277,7 @@ class RelatedContentField(forms.CharField):
         objs = list(Content.objects.admin_objects().filter(q))
         # retrieving Content objs MUST preserve their order!!!
         objs = dict([(obj.pk, obj) for obj in objs])
+
         return [objs[pk] for pk in ids]
     
         from django import forms
