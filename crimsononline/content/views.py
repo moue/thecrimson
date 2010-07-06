@@ -67,9 +67,8 @@ def index(request, m=None, d=None, y=None):
     # This is necessary because just exclude(group=sportsblog) will also exclude NULL entries,
     # i.e. ungrouped content.  This is because of how mysql handles NULL.  The Django ORM
     # should really solve this problem automatically, but that's another story.
-    #stories = (top_articles('News, Sports', dt)
-    #              .filter((Q(group__isnull=False) & ~Q(group=sportsblog)) | Q(group__isnull=True)))
-    stories = (top_articles('News', dt))
+    stories = (top_articles('News, Sports', dt)
+                  .filter(Q(group__isnull=True) | (Q(group__isnull=False) & ~Q(group=sportsblog))))
 
     dict = {}
     dict['rotate'] = rotatables(None, 4)
@@ -423,8 +422,7 @@ def section_sports(request):
     sportsblog = ContentGroup.objects.get(name='The Back Page')
     section = Section.cached(nav)
     # See index() for an explanation of this filter
-    #stories = top_articles(section).filter((Q(group__isnull=False) & ~Q(group=sportsblog)) | Q(group__isnull=True))
-    stories = top_articles(section)
+    stories = top_articles(section).filter(Q(group__isnull=True) | (Q(group__isnull=False) & ~Q(group=sportsblog)))
     rotate = rotatables(section)
     latest = (Article.objects.filter(section=section).order_by('-modified_on')
                  .filter(~Q(group=sportsblog) | Q(group__isnull=True)))
