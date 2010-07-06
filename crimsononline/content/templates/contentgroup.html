@@ -8,12 +8,11 @@
     {% static_css "contentgroup.css" %}
 {% endblock %}
 
-{% block pre_content%}{% spaceless %}
-    <a href="{{ cg.get_absolute_url }}" class="cg_header">
-        <div class="cg_header">{{ cg.name }}</div>
-    </a>
-{% endspaceless %}{% endblock %}
-{% block top_content %}{% endblock %}
+{% block top_content %}
+	<a href="{{ cg.get_absolute_url }}" class="cg_header">
+	    <div class="cg_header">{{ cg.name }}</div>
+	</a>
+{% endblock %}
 {% block top_social %}{% endblock %}
 
 {% block bottom_content %}
