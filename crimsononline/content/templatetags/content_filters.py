@@ -8,6 +8,7 @@ from crimsononline.common.templatetags.common import linkify, human_list
 from crimsononline.common.fields import size_spec_to_size, AutosizeImageFieldFile
 from crimsononline.common.utils.html import para_list
 from re import compile, search, sub, DOTALL
+from django.conf import settings
 
 register = template.Library()
 
