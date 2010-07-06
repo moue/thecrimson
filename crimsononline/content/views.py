@@ -67,8 +67,9 @@ def index(request, m=None, d=None, y=None):
     # This is necessary because just exclude(group=sportsblog) will also exclude NULL entries,
     # i.e. ungrouped content.  This is because of how mysql handles NULL.  The Django ORM
     # should really solve this problem automatically, but that's another story.
-    stories = (top_articles('News, Sports', dt)
-                  .filter((Q(group__isnull=False) & ~Q(group=sportsblog)) | Q(group__isnull=True)))
+    #stories = (top_articles('News, Sports', dt)
+    #              .filter((Q(group__isnull=False) & ~Q(group=sportsblog)) | Q(group__isnull=True)))
+    stories = (top_articles('News', dt))
 
     dict = {}
     dict['rotate'] = rotatables(None, 4)
@@ -87,9 +88,15 @@ def index(request, m=None, d=None, y=None):
     dict['opeds'] = top_articles('Opinion', dt)[:4]
     dict['arts'] = top_articles('Arts', dt)[:4]
     # Prevent sports articles that showed up in top articles from appearing again
+    """
     dict['sports'] = [x 
                       for x
                       in (top_articles('Sports', dt).filter((Q(group__isnull=False) & ~Q(group=sportsblog)) | Q(group__isnull=True)))[:10]
+                      if x not in dict['top_stories']][:4]
+    """
+    dict['sports'] = [x 
+                      for x
+                      in (top_articles('Sports', dt))[:10]
                       if x not in dict['top_stories']][:4]
     dict['fms'] = top_articles('FM', dt)[:4]
     #dict['issue'] = Issue.get_current()
