@@ -37,11 +37,8 @@
 {% endblock %}
 
 {% block pre_body %}
-    <div style="text-align: center;">
-        <a href="/commencement2010/">
-            <img src="{% static_url "images/special/commencement10/banner.png" %}" style="width: 930px; height: 150px; margin: 0 auto;" alt="ac"/>
-        </a>
-    </div>
+	{% contentmodule index.pre_content %}
+	{% endcontentmodule %}
 {% endblock %}
 
 {% block leftcolumn %}
