@@ -423,7 +423,8 @@ def section_sports(request):
     sportsblog = ContentGroup.objects.get(name='The Back Page')
     section = Section.cached(nav)
     # See index() for an explanation of this filter
-    stories = top_articles(section).filter((Q(group__isnull=False) & ~Q(group=sportsblog)) | Q(group__isnull=True))
+    #stories = top_articles(section).filter((Q(group__isnull=False) & ~Q(group=sportsblog)) | Q(group__isnull=True))
+    stories = top_articles(section)
     rotate = rotatables(section)
     latest = (Article.objects.filter(section=section).order_by('-modified_on')
                  .filter(~Q(group=sportsblog) | Q(group__isnull=True)))
