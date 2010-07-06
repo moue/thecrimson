@@ -39,7 +39,7 @@
 
 			{% if marker.popup_text %}
 				var infowindow{{marker.pk}} = new google.maps.InfoWindow({
-				    content: "{{marker.popup_text}}",
+				    content: '{{marker.popup_text|safe}}',
 				});
 				google.maps.event.addListener(marker{{marker.pk}}, 'click', function() {
 				  infowindow{{marker.pk}}.open(map,marker{{marker.pk}});
