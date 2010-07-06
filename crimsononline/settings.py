@@ -123,8 +123,6 @@ finally:
 
 MEDIA_LOC = MEDIA_ROOT
 
-GOOGLE_API_KEY = 'ABQIAAAA1m5RwdAfIaeSMlrcZCgIjhSMTarlKQyRRh5ucdthk06p19vF5xTPBl-sPcuxFdehXO9Lu_36c_ewew'
-
 # Notifies the users in "to" whenever someone edits an article over "time_span" days old"
 NOTIFY_ON_SKETCHY_EDIT = {
     "enabled": False,
@@ -167,5 +165,7 @@ except ImportError:
 DISQUS_USER_KEY = "vabqI2su93P1wVF3Ls9kXhXhRggV7y2ylokjq137yPAz47cY5dDMHgUA2QlZoWNE"
 DISQUS_FORUM_KEY = "pkUMj0suYbfCUXu2hon1EB5xrgMLWADS9kNZiGtJ0ISE76QLyMvEb2SyPFmS3F5x"
 DISQUS_FORUM_ID = "1508"
+
+GOOGLE_API_KEY = "ABQIAAAAdoBgu2mGyHlwNmFWklwtOBSMTarlKQyRRh5ucdthk06p19vF5xQFCzYsXKd1Wl-sgDQvPuCHDW3o8A"
 
 FLYBY_TIP_ADDRESS = "flybytips@thecrimson.com"
