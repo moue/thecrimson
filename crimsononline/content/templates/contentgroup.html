@@ -3,6 +3,8 @@
 {% load content_filters %}
 {% load common %}
 
+{% block title %}{{cg.name}}{% endblock %}
+
 {% block css %}
 	{{block.super}}
     {% static_css "contentgroup.css" %}
