@@ -313,6 +313,9 @@ class Content(models.Model):
         name = self.content_type.name.replace(" ","")
         ext = '.html' if method[-4:] != '.txt' else ''
         
+        if self.content_type == ContentType.objects.get(name="map"):
+            n_context.update({'google_api_key': settings.GOOGLE_API_KEY})
+        
         # TODO fix this block to not be horrible
         if self.group:
             try:

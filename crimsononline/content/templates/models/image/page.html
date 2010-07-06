@@ -15,12 +15,7 @@
 {% block top_content %}
     <h1>{{ image.kicker }}</h1>
     <div class="image">{{ image|to_img_tag:"STAND" }}</div>
-    <div class="byline">
-        By {{ image.contributors.all|linkify|human_list }}
-    </div>
-    <div class="dateline">
-        Published: {{ image.issue.issue_date|date:"F d, Y" }}
-    </div>
+	{{block.super}}
 {% endblock %}
 {% block bottom_content %}
     <div class="caption">

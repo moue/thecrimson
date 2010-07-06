@@ -12,33 +12,45 @@
     {% static_css "map.css" %}
 {% endblock %}
 
-{% block content %}
-    <h1>{{ map.title }}</h1>
+{% block js %}
+	{{block.super}}
+	<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+	<script type="text/javascript">
+	$(document).ready(function() {
 
-    {% static_js "http://maps.google.com/maps?file=api&v=2&key=ABQIAAAA--Z_bVpXIL9HJpQ50CHbfRSMTarlKQyRRh5ucdthk06p19vF5xQu0eFsX5P7jVrW5pMBEz3sFASmLQ" %}
-    <script type="text/javascript">
-    gmap = new GMap2(document.getElementById('map_preview'));
-    gmap.setCenter(new GLatLng({{ map.center_lat }},{{ map.center_lng }}), {{ map.zoom_level }});
-    {% for marker in map.markers.all %}
-        var point = new GLatLng({{ marker.lat }},{{ marker.lng }});
-        var marker{{ marker.pk }} = new GMarker(point);
-        gmap.addOverlay(marker{{ marker.pk }}, { title: "{{ map.title }}" });
-        {% if marker.popup_text %}
-            GEvent.addListener(marker{{ marker.pk }}, "click", function(){marker{{ marker.pk }}.openInfoWindow("{{ marker.popup_text }}")});
-        {% endif %}
-    {% endfor %}
-    gmap.addControl(new GLargeMapControl());
-    </script>
-    <div id="map_preview" style="width:100%; height:500px;"></div>
+
+
+		var latlng = new google.maps.LatLng({{ map.center_lat }},{{ map.center_lng }});
+	    var myOptions = {
+		  zoom: {{map.zoom_level}},
+		  center: latlng,
+	      mapTypeId: google.maps.MapTypeId.ROADMAP
+	    };
+	    var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+
+	    {% for marker in map.markers.all %}
+	        var point = new GLatLng({{ marker.lat }},{{ marker.lng }});
+	        var marker{{ marker.pk }} = new GMarker(point);
+	        map.addOverlay(marker{{ marker.pk }}, { title: "{{ map.title }}" });
+	        {% if marker.popup_text %}
+	            GEvent.addListener(marker{{ marker.pk }}, "click", function(){marker{{ marker.pk }}.openInfoWindow("{{ marker.popup_text }}")});
+	        {% endif %}
+	    {% endfor %}
+	});
+	</script>
+{% endblock %}
+
+{% block top_content %}
+	<h1>{{map.title}}</h1>
+	{{block.super}}
+{% endblock %}
+
+
+{% block bottom_content %}
+	<div id="map_canvas" style="width:100%; height:500px;"></div>
     {% if map.main_rel_content %}
         {{ map.main_rel_content|render:"map.main" }}
     {% endif %}
-    <div class="byline">
-        By {{ map.contributors.all|linkify|human_list }}
-    </div>
-    <div class="timestamp">
-        Published: {{ map.issue.issue_date|date:"F d, Y" }}
-    </div>
     <p>{{ map.caption }}</p>
     {{block.super}}
 {% endblock %}

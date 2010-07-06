@@ -13,11 +13,17 @@
 	{% block meta %}{% endblock %}
 	 <link rel="icon" type="image/vnd.microsoft.icon" href="{% static_url "images/icons/favicon.ico" %}" />
 	{% block rss %}{% endblock %}
-	<script type="text/javascript" src="{% static_url "scripts/media_include.js" %}"></script>
-    {% static_css "base.css" %}
-	{% block css %}{% endblock %}
-	{% block js %}{% endblock %}
-	{% static_js "browser_upgrade_notification.js" %}
+
+    
+	{% block css %}
+		{% static_css "base.css" %}
+	{% endblock %}
+
+	{% static_js_force "media_include.js" %}
+	{% block js %}
+		{% static_js "browser_upgrade_notification.js" %}
+	{% endblock %}
+	
 </head>
 <body>
 {% comment %}

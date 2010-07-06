@@ -419,19 +419,8 @@ def static_css(link_to_css):
     return mark_safe("""<link type="text/css" rel="stylesheet" href="%s" />""" \
         % link_to_css)
 
-
-class StaticJsNode(template.Node):
-    def __init__(self, js_link):
-        self.js_link = js_link
-
-    def render(self, context):
-        t = Template(self.js_link)
-        self.js_link = t.render(context)
-        
-        return mark_safe('<script type="text/javascript">require_once("%s");</script>' \
-            % self.js_link)
-
-def static_js(parser, token):
+@register.simple_tag
+def static_js(link_to_js):
     """
     renders a javascript include.
     make sure you use a url relative to the base javascript folder, or a link that
@@ -440,21 +429,10 @@ def static_js(parser, token):
     depends on the require_once function, defined in media_include.js and included
     in base.html
     """
-
-    bits = token.split_contents()
-    
-    if len(bits) != 2:
-        raise template.TemplateSyntaxError('%r tag requires 1 argument.' % bits[0])
-    link_to_js = bits[1]
-    
     if link_to_js[:7] != 'http://':
         link_to_js = misc.static_content("scripts/%s" % link_to_js)
-
-    return StaticJsNode(link_to_js)
-
-static_js = register.tag(static_js)
-
-
+    return mark_safe('<script type="text/javascript">require_once("%s");</script>' \
+        % link_to_js)
 
 @register.simple_tag
 def static_js_force(link_to_js):

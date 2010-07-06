@@ -163,7 +163,7 @@ def to_map_thumb(map, size):
         width=size
         height=size
 
-    GMaps_key = "ABQIAAAA--Z_bVpXIL9HJpQ50CHbfRRi_j0U6kJrkFvY4-OX2XYmEAa76BS5oixsScFqNPn7f8shoeoOZviFMg"
+    GMaps_key = settings.GOOGLE_API_KEY
 
     markerstr = ""
     markers = Marker.objects.filter(map__pk = map.pk)
@@ -210,6 +210,8 @@ def byline(obj, type):
     # byline_type = getattr(obj, 'byline_type', None)
     if hasattr(obj,'byline_type'):
         byline_type = obj.get_byline_type_display()
+    else:
+        byline_type = None
     if byline_type is not None and byline_type != 'None':
         str += ', ' + byline_type.upper()
         str += filter.pluralize(count).upper()

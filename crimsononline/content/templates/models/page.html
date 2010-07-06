@@ -18,14 +18,22 @@
 	{% static_css "single_content.css" %}
 {% endblock %}
 {% block js %}
-	{% static_js "jquery.js" %}
+	{% static_js_force "jquery.js" %}
+	{{block.super}}
 {% endblock %}
 
 {% block body %}
     <div class="col-8">
         {% module 8 "" red %}
-			{% block top_content %}{% endblock %}
-            {% block top_social %}
+		{% block top_content %}
+			<div class="byline">
+			    {{ content|byline:"long" }}
+			</div>
+			<div class="dateline">
+			    Published: {{ content.issue.issue_date|date:"l, F d, Y" }}
+			</div>
+		{% endblock %}
+		{% block top_social %}
 			
  				<div class="articletools">
 					<ul class="left">
