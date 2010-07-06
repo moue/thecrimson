@@ -3,7 +3,7 @@
 {% load content_filters %}
 
 {% if article.main_rel_content %}
-<div class="image_thumb"><a href="{{article.get_absolute_url}}">{{article.main_rel_content|to_img_tag:"TINY"}}</a></div>
+<div class="image_thumb"><a href="{{article.get_absolute_url}}">{{article.main_rel_content|render:"thumb"}}</a></div>
 {% endif %}
 <h3>{{article|linkify}}
 	{% if article.num_comments %}
