@@ -752,7 +752,7 @@ class ArticleForm(ContentModelForm):
             # Check that content can be rotated if it's marked rotatable
             rotatable_names = ['image', 'gallery', 'you tube video', 'map','flash graphic']
             rotatable_ctypes = [ContentType.objects.get(name=x) for x in rotatable_names]
-            if not self.cleaned_data['rel_content']:
+            if not self.cleaned_data['rel_content_inline']:
                 msg = "This Article cannot be set to rotate since it has no related Content"
                 self._errors['rotatable'] = ErrorList([mark_safe(msg)])
             elif self.cleaned_data['rel_content_inline'][0].child.content_type not in rotatable_ctypes:
