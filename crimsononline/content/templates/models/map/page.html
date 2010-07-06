@@ -29,12 +29,22 @@
 	    var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
 
 	    {% for marker in map.markers.all %}
-	        var point = new GLatLng({{ marker.lat }},{{ marker.lng }});
-	        var marker{{ marker.pk }} = new GMarker(point);
-	        map.addOverlay(marker{{ marker.pk }}, { title: "{{ map.title }}" });
-	        {% if marker.popup_text %}
-	            GEvent.addListener(marker{{ marker.pk }}, "click", function(){marker{{ marker.pk }}.openInfoWindow("{{ marker.popup_text }}")});
-	        {% endif %}
+        	var point = new google.maps.LatLng({{ marker.lat }},{{ marker.lng }});
+		  	var marker{{marker.pk}} = new google.maps.Marker({
+		      	position: point, 
+		      	map: map, 
+		      	title:"{{map.title}}"
+		  	});
+
+
+			{% if marker.popup_text %}
+				var infowindow{{marker.pk}} = new google.maps.InfoWindow({
+				    content: "{{marker.popup_text}}",
+				});
+				google.maps.event.addListener(marker{{marker.pk}}, 'click', function() {
+				  infowindow{{marker.pk}}.open(map,marker{{marker.pk}});
+				});
+			{% endif %}
 	    {% endfor %}
 	});
 	</script>
