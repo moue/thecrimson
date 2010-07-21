@@ -311,7 +311,7 @@ ul.normal_bullets {
 	color: #666;
 	display: inline-block;
 }
-.submenu_menu {width:718px;}
+.submenu_menu {width:758px;}
 .submenu_menu a, .submenu_menu span{float: left;}
 
 .submenu-rss{
@@ -323,7 +323,7 @@ ul.normal_bullets {
     margin-right: 0px !important;
 }
 
-.submenu_contents > span{
+.submenu_contents > span, .submenu_contents > a{
     float: left;
     display: inline-block;
 }
@@ -332,8 +332,9 @@ ul.normal_bullets {
     width: 20px;
 }
 .submenu_right {
-    width:215px;
+    width:175px;
     height: 16px;
+    text-align: right;
 }
 
 /* END NAV */
