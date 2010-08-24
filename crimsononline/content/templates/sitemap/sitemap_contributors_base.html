@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load common %}
+{% load module %}
+
+{% block css %}
+{{block.super}}
+{% static_css "sitemap.css" %}
+{% endblock %}
+
+{% block title %}Sitemap{% endblock %}
+
+{% block body %}
+<div class="col-12">
+	{% module 12 "" %}
+<span class="page-title">Writers</span>
+<ul class="sitemap-article">
+{% for page in pages %}
+	<li class="sitemap-cell"><a href="/sitemap/contributors/page/{{page.p}}/">{{page.start}} to {{page.end}}</a></li>
+{% endfor %}
+<li class="clear" />
+</ul>
+{% endmodule %}
+</div>
+{% endblock %}
