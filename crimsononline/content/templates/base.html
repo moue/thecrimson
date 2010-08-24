@@ -41,17 +41,16 @@
 	</div>
 	
 <div id="nav_contents">
-	<ul>{% comment %} no whitespace to prevent nbsps {% endcomment %}
+	{% comment %} no whitespace to prevent nbsps {% endcomment %}
         {% spaceless %}
-		<li {{ nav|is_nav_cur:"news" }}><a href="/section/news/">NEWS</a></li>
-		<li {{ nav|is_nav_cur:"opinion" }}><a href="/section/opinion/">OPINION</a></li>
-		<li {{ nav|is_nav_cur:"fm" }}><a href="/section/fm/">MAGAZINE</a></li>
-		<li {{ nav|is_nav_cur:"sports" }}><a href="/section/sports/">SPORTS</a></li>
-		<li {{ nav|is_nav_cur:"arts" }}><a href="/section/arts/">ARTS</a></li>
-		<li {{ nav|is_nav_cur:"media" }}><a href="/section/media/">MEDIA</a></li>
-		<li {{ nav|is_nav_cur:"blogs" }}><a href="/section/flyby/">FLYBY</a></li>
+		<h1 {{ nav|is_nav_cur:"news" }}><a href="/section/news/">NEWS</a></h1>
+		<h1 {{ nav|is_nav_cur:"opinion" }}><a href="/section/opinion/">OPINION</a></h1>
+		<h1 {{ nav|is_nav_cur:"fm" }}><a href="/section/fm/">MAGAZINE</a></h1>
+		<h1 {{ nav|is_nav_cur:"sports" }}><a href="/section/sports/">SPORTS</a></h1>
+		<h1 {{ nav|is_nav_cur:"arts" }}><a href="/section/arts/">ARTS</a></h1>
+		<h1 {{ nav|is_nav_cur:"media" }}><a href="/section/media/">MEDIA</a></h1>
+		<h1 {{ nav|is_nav_cur:"blogs" }}><a href="/section/flyby/">FLYBY</a></h1>
     {% endspaceless %}
-	</ul>
 </div>
 
     <div class="tools">

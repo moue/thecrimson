@@ -252,35 +252,32 @@ ul.normal_bullets {
 	margin-top: 10px;
     width: 448px;
 	float: left;
-}
-
-
-#nav_contents ul{
     text-align: center;
 }
 
-#nav_contents > ul > li{
+#nav_contents > h1{
 	display: inline-block;
 	float: left;
 	height: 50px;
 }
 
-#nav_contents a{
+#nav_contents > h1 > a{
 	line-height: 55px;
 	margin-top: -5px;
 	display: inline-block;
 	font-size: 12px;
 	font-family: "Lucida Grande", Tahoma, sans-serif;
+	font-weight: normal;
 	padding:0px 8px;
 	text-decoration: none;
 	color: white;
 	letter-spacing:1px;
 }
-#nav_contents a:hover, #nav_contents #nav_cur a{
+#nav_contents > h1 > a:hover, #nav_contents #nav_cur a{
 	background: url('../images/arrows/triangle.gif') no-repeat center 50px;
 }
 
-#nav_contents li:hover{
+#nav_contents h1:hover{
 	background: url('../images/banner/layover.png') repeat;
 }
 
@@ -335,6 +332,11 @@ ul.normal_bullets {
     width:175px;
     height: 16px;
     text-align: right;
+}
+
+.submenu_contents h2, .submenu_contents h2 > a{
+    margin-bottom: 0px;
+    font-weight: normal;
 }
 
 /* END NAV */
