@@ -13,7 +13,7 @@
 	<div class="col-12">
 		{% module 12 "" %}
 		{% with articles|first as article %}
-		<span class="page-title"><a href="../../">Sitemap</a> > <a href="../">{{article.issue.issue_date.year}}</a> > {{article.issue.issue_date|date:"n/j"}}</span>
+		<span class="page-title"><a href="../../">Archives</a> > <a href="../">{{article.issue.issue_date.year}}</a> > {{article.issue.issue_date|date:"n/j"}}</span>
 		{% endwith %}
 			{% if articles %}
 			<ul class="sitemap-article">

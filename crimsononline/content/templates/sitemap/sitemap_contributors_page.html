@@ -12,13 +12,13 @@
 {% block body %}
 <div class="col-12">
 	{% module 12 "" %}
-	<div class="page-title">Articles</div>
-<ul class="sitemap-year">
-{% for year in years %}
-<li class="sitemap-cell "><a href="/sitemap/{{year}}/">{{year}}</a></li>
+<span class="page-title"><a href="../../">Writers</a> > Page {{page}}</span>
+<ul class="sitemap-article">
+{% for contrib in contribs %}
+<li class="sitemap-cell">{{contrib|linkify}}</li>
 {% endfor %}
-<li class="clear"/>
+<li class="clear" />
 </ul>
-	{% endmodule %}
+{% endmodule %}
 </div>
 {% endblock %}

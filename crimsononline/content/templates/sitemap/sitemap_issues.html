@@ -12,7 +12,7 @@
 {% block body %}
 <div class="col-12">
 	{% module 12 "" %}
-<span class="page-title"><a href="../">Sitemap</a> > {{year}}</span>
+<span class="page-title"><a href="../">Archives</a> > {{year}}</span>
 <ul class="sitemap-issue">
 {% for issue in issues %}
 <li class="sitemap-cell"><a href="/sitemap/{{year}}/{{issue.id}}/">{{issue.issue_date|date:"n/j"}}</a></li>
