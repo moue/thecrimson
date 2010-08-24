@@ -336,7 +336,7 @@ ul.normal_bullets {
 
 .submenu_contents h2, .submenu_contents h2 > a{
     margin-bottom: 0px;
-    font-weight: normal;
+    font-weight: normal; 
 }
 
 /* END NAV */
