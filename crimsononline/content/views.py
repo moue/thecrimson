@@ -59,17 +59,9 @@ def sitemap_contributors(request, page=None):
         contribs = Contributor.objects.all()[first:last]
         return render_to_response("sitemap/sitemap_contributors_page.html",{'contribs':contribs,"page":page})
     else:
-        pages = []
         num_contributors = len(Contributor.objects.all())
-        for i in range(num_contributors/contributors_per_page+1):
-            page = {}
-            page["start"] = Contributor.objects.all()[i*contributors_per_page]
-            try:
-                page["end"] = Contributor.objects.all()[(i+1)*contributors_per_page-1]
-            except:
-                page["end"] = Contributor.objects.all()[num_contributors-1]
-            page["p"] = i+1
-            pages.append(page)
+        pages = range(num_contributors/contributors_per_page +2)[1:]
+        
         return render_to_response("sitemap/sitemap_contributors_base.html",{'pages':pages})
 
 @cache_page(settings.CACHE_STANDARD)
