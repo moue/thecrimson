@@ -81,8 +81,6 @@
 
 {% block rightcolumn %}
 
-    {% blog_preview %}
-
     {% if featured %}
         {% module 4 featured_group_name red %}
             {% contentmodule sports.rotator %}
@@ -90,6 +88,10 @@
             {% endcontentmodule %}
         {% endmodule %}
     {% endif %}
+	
+	<div style="width: 309px; padding: 0;" class="mod mod-4 mod-box">
+        <a href="blog/the-back-page/"><img src="{% static_url "images/backpagebanner.png" %}" /></a>
+    </div>
 
     {% if scores.count %}
         {% module 4 "Latest Scores" box %}
