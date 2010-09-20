@@ -337,7 +337,7 @@ class Content(models.Model):
                         'judge-moves-to-dismiss-dewolfe-drug', 'judge-may-dismiss-dewolfe-drugs-case',
                         'mcginn-n-tonic-revisiting-harvard-football', 'hefs-got-nothin-on-harvards-hottest',
                         'leave-of-absence-harvard', 'police-arrest-student-for-possession-of',
-                        'color-line-cuts-through-the-heart']:
+                        'color-line-cuts-through-the-heart', 'scoped-jordan-b-weitzen-08-span']:
             noindex = True
         else:
             noindex = False
