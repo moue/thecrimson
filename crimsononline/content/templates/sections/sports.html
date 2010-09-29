@@ -87,11 +87,12 @@
                 {% rotator featured featured_rotator %}
             {% endcontentmodule %}
         {% endmodule %}
+        <div style="width: 309px; padding: 0;" class="mod mod-4 mod-box">
+            <a href="/blog/the-back-page/"><img src="{% static_url "images/sportsblog/backpagebanner2.png" %}" /></a>
+        </div>
+    {% else %}
+        {% blog_preview %}
     {% endif %}
-	
-	<div style="width: 309px; padding: 0;" class="mod mod-4 mod-box">
-        <a href="/blog/the-back-page/"><img src="{% static_url "images/sportsblog/backpagebanner2.png" %}" /></a>
-    </div>
 
     {% if scores.count %}
         {% module 4 "Latest Scores" box %}
