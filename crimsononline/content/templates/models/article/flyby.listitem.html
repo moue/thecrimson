@@ -10,17 +10,19 @@
 {% block date %}{% endblock %}
 
 {% block postcontent %}
-    {% if article.group %}
-        <div class="fb_headline">
-            <div class="fb_bigtag"><a href="{{ article.group.get_absolute_url }}">{{article.group.name|upper}}</a></div>
-            <div class="fb_headlinetext"><a href="{{ article.get_absolute_url }}">{{article.headline}}</a></div>
-        </div>    
-    {% else %}
-        <div class="fb_headline">
-            <div class="fb_headlinetext"><a href="{{ article.get_absolute_url }}">{{article.headline}}</a></div>
+    {% block headline %}
+        <div class="fb_posttop">
+            <div class="fb_headline">
+                {% if article.group %}
+                    <div class="fb_bigtag"><a href="{{ article.group.get_absolute_url }}">{{article.group.name|upper}}</a></div>
+                {% endif %}
+                <div class="fb_headlinetext"><a href="{{ article.get_absolute_url }}">{{article.headline}}</a></div>
+            </div>
+            {% block byline %}
+                <div class="fb_byline"><div class="fb_byline_cell">By {{ article.contributors.all|linkify|human_list }}</div></div>
+            {% endblock %}
         </div>
-    {% endif %}
-    
+    {% endblock %}
     {% block rel_content %}
         {% if article.main_rel_content %}
             {% ifnotequal article.main_rel_content.content_type.model "article" %}
@@ -60,10 +62,6 @@
         {% endfor %}
         </div>
     {% endif %}
-{% endblock %}
-
-{% block byline %}
-  <div class="fb_byline">Published by {{ article.contributors.all|linkify|human_list }}</div>
 {% endblock %}
 
 {% block commentslink %}

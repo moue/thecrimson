@@ -17,17 +17,9 @@
 /* general */
 
 @font-face {
-	font-family: 'GillSansMTRegular';
-	src: url('{% static_url "fonts/gil_____-webfont.eot" %}');
-	src: local('☺'), url('{% static_url "fonts/gil_____-webfont.woff" %}') format('woff'), url('{% static_url "fonts/gil_____-webfont.ttf" %}') format('truetype'), url('{% static_url "fonts/gil_____-webfont.svg" %}#webfont65X1kCUl') format('svg');
-	font-weight: normal;
-	font-style: normal;
-}
-
-@font-face {
-	font-family: 'GillSansMTBold';
-	src: url('{% static_url "fonts/gilb____-webfont.eot" %}');
-	src: local('?'), url('{% static_url "fonts/gilb____-webfont.woff" %}') format('woff'), url('{% static_url "fonts/gilb____-webfont.ttf" %}') format('truetype'), url('{% static_url "fonts/gilb____-webfont.svg" %}#webfontL9btskB9') format('svg');
+	font-family: 'GillSansRegular';
+	src: url('{% static_url "fonts/gillsans-webfont.eot" %}');
+	src: local('☺'), url('{% static_url "fonts/gillsans-webfont.woff" %}') format('woff'), url('{% static_url "fonts/gillsans-webfont.ttf" %}') format('truetype'), url('{% static_url "fonts/gillsans-webfont.svg#webfonteeU8tWxJ" %}') format('svg');
 	font-weight: normal;
 	font-style: normal;
 }
@@ -80,6 +72,7 @@ div#fb_footer {
     border-top: 5px solid #bc2e22;
     height: 34px;
     display: table;
+    padding: 2px 0px;
     width: 982px;
 }
 
@@ -198,14 +191,15 @@ div.fb_post {
 
 div.fb_postdt {
     float: left;
-    width: 58px;
+    width: 56px;
+    padding-right: 2px;
     text-align: right;
-    font-family: 'GillSansMTBold';
+    font-family: 'GillSansRegular';
     font-weight: bold;
 }
 
 div.fb_postdate {
-    font-size: 16px;
+    font-size: 15px;
     color: #bc2e22;
 }
 
@@ -223,17 +217,19 @@ div.fb_postcontent {
     margin-left: 2px;
 }
 
-div.fb_headline {
-    display: table;
+div.fb_posttop {
     margin-bottom: 1em;
-    margin-left: auto;
-    margin-right: auto;
+    display: table;
 }    
+
+div.fb_headline {
+    display: table-row;
+}
 
 .fb_bigtag {
     border-right: 1px solid #77787a;
     color: #BC2E22;
-    font-family: 'GillSansMTRegular', Georgia;
+    font-family: 'GillSansRegular', Georgia;
     font-size: 10px;
     padding: 6px 4px 6px 0px;
     vertical-align: middle;
@@ -247,7 +243,7 @@ div.fb_headline {
 
 .fb_headlinetext {
     font-size: 24px;
-    font-family: 'GillSansMTRegular', Georgia;
+    font-family: 'GillSansRegular', Georgia;
     text-align: center;
     font-weight: normal;
     margin-top: -3px;
@@ -262,6 +258,15 @@ div.fb_headline {
 .fb_headlinetext > a {
     color: black;
     text-decoration: none;
+}
+
+.fb_gallery_image_caption {
+    height: 3em;
+    margin-top: 0px;
+    color: #77787a;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .fb_jump {
@@ -292,8 +297,19 @@ div.fb_postbottom {
 }
 
 .fb_byline {
-    float: right;
-    margin-bottom: 5px;
+    display: table-row;
+    color: #77787a;
+    font-size: 10px;
+}
+
+.fb_byline_cell {
+    display: table-cell;
+    padding-top: 3px;
+}
+
+.fb_byline a {
+    color: #77787a;
+    font-size: 10px
 }
 
 .fb_social {
@@ -328,7 +344,7 @@ div.fb_postbottom {
 
 .fb_bigquote {
     font-size: 16px;
-    font-family: 'GillSansMTRegular', Georgia;
+    font-family: 'GillSansRegular', Georgia;
     color: #77767a;
     text-align: center;
     width: 400px;
@@ -470,7 +486,7 @@ img#fb_logo_bottom {
 .fb_sidebarheader {
     color: #bc3e22;
     font-size: 24px;
-    font-family: 'GillSansMTRegular', Georgia;
+    font-family: 'GillSansRegular', Georgia;
     clear: both;
     overflow: hidden;
     display: table;
@@ -502,7 +518,7 @@ img#fb_logo_bottom {
 #fb_tip_submit {
     background-color:#bc2e22;
     color:#FFFFFF;
-    font-family: 'GillSansMTRegular', Georgia;
+    font-family: 'GillSansRegular', Georgia;
     border: 1px solid #ececec;
     font-size:12px;
     font-weight:300;
@@ -617,7 +633,7 @@ background-position: -69px 0;
 	bottom:0;
 	width:200px;
 	height:20px;
-	font-family: 'GillSansMTBold', Georgia;
+	font-family: 'GillSansRegular', Georgia;
 	text-align:right;
 	font-size:16px;
 	font-weight: bold;
@@ -641,7 +657,7 @@ background-position: -69px 0;
 	width:200px;
 	height:20px;
 	text-align:right;
-	font-family: 'GillSansMTBold', Georgia;
+	font-family: 'GillSansBold', Georgia;
 	font-size:16px;
 	font-weight: bold;
 	margin-left:-200px;
@@ -722,7 +738,7 @@ div.stretcher {
 .fb_footer_cell {
     display: table-cell;
     vertical-align: middle;
-    font-family: 'GillSansMTRegular', Georgia;
+    font-family: 'GillSansRegular', Georgia;
     font-size: 12px;
     text-align: center;
 }
