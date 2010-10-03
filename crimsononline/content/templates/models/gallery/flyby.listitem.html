@@ -12,8 +12,8 @@
     {% for item in gallery.contents.all|slice:":8" %}
         <div id="{{ gallery.pk }}_photo_{{ forloop.counter }}" {% if not forloop.first %}style="display:none;"{% endif %}>
             {{ item|to_img_tag:"532,532,1,1" }}
-            {% if item.caption %}
-                <div class="fb_gallery_image_caption">{{ item.caption|truncchars:"200,..." }}</div>
+            {% if item.child.caption %}
+                <div class="fb_gallery_image_caption">{{ item.child.caption|truncchars:"200,..." }}</div>
             {% endif %}
         </div>
     {% endfor %}
