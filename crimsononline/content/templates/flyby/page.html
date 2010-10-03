@@ -24,6 +24,14 @@
 	font-style: normal;
 }
 
+@font-face {
+	font-family: 'GillSansMTBold';
+	src: url('{% static_url "fonts/gilb____-webfont.eot" %}');
+	src: local('?'), url('{% static_url "fonts/gilb____-webfont.woff" %}') format('woff'), url('{% static_url "fonts/gilb____-webfont.ttf" %}') format('truetype'), url('{% static_url "fonts/gilb____-webfont.svg" %}#webfontL9btskB9') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
 * {
     padding: 0;
     margin: 0;
@@ -192,9 +200,10 @@ div.fb_post {
 div.fb_postdt {
     float: left;
     width: 56px;
+    margin-top: 3px;
     padding-right: 2px;
     text-align: right;
-    font-family: 'GillSansRegular';
+    font-family: 'GillSansMTBold';
     font-weight: bold;
 }
 
@@ -244,7 +253,6 @@ div.fb_headline {
 .fb_headlinetext {
     font-size: 24px;
     font-family: 'GillSansRegular', Georgia;
-    text-align: center;
     font-weight: normal;
     margin-top: -3px;
     display: table-cell;
@@ -262,11 +270,10 @@ div.fb_headline {
 
 .fb_gallery_image_caption {
     height: 3em;
-    margin-top: 0px;
+    margin: auto;
     color: #77787a;
     width: 80%;
-    margin-left: auto;
-    margin-right: auto;
+    vertical-align: middle;
 }
 
 .fb_jump {
@@ -405,7 +412,6 @@ div.fb_postbottom {
 	width: 100%;
 	margin: 0;
     padding: 0;
-    text-align: center;
     
 }
 
@@ -418,28 +424,26 @@ div.fb_postbottom {
 	padding: 10px 0;
 	margin: 10px 0;
 	/* border-top: 1px solid #ddd; */
-    height: 300px;
-    width: 300px;
+    height: 532px;
+    width: 532px;
 	margin-left:auto;
 	margin-right:auto;
 }
 .fb_photos ul.fb_thumbs {
 	margin: 0;
-	padding: 0 49px;
 	list-style: none;
-	width: 450px;
+	width: 532px;
 	float: left;
 }
 .fb_photos ul.fb_thumbs li{
-	width: 100px;
-	height: 100px;
+	width: 123px;
+	height: 123px;
 	margin: 0 0 0 0;
 	padding: 0;
 	float: left;
 	overflow: hidden;
 	position: relative;
 	border: 5px solid #ddd;
-	text-align: center;
 }
 
 .fb_photos ul.fb_thumbs li:hover {
@@ -452,9 +456,9 @@ div.fb_postbottom {
 .fb_photos ul.fb_thumbs li a {
 	position: relative;
     display: block;
-    background-position: -120px -120px;
-    height: 100px;
-    width: 100px;
+    background-position: -200px -200px;
+    height: 123px;
+    width: 123px;
 }
 
 div#fb_content_pagination {
@@ -519,11 +523,11 @@ img#fb_logo_bottom {
     background-color:#bc2e22;
     color:#FFFFFF;
     font-family: 'GillSansRegular', Georgia;
-    border: 1px solid #ececec;
     font-size:12px;
     font-weight:300;
-    height:32px;
+    height:34px;
     width: 46px;
+    margin-top: -2px;
 }
 
 #fb_tip_submit[disabled] {
@@ -578,14 +582,14 @@ background: transparent url({% static_url "images/flyby/myharvard.jpg" %}) no-re
 background-position: -67px 0; 
 } 
 
-.qguide a { 
+.calendar a { 
 display: block; 
 width: 67px; 
 height: 70px; 
-background: transparent url({% static_url "images/flyby/qguide.jpg" %}) no-repeat; 
+background: transparent url({% static_url "images/flyby/calendar.png" %}) no-repeat; 
 } 
 
-.qguide a:hover { 
+.calendar a:hover { 
 background-position: -69px 0; 
 } 
 
@@ -633,7 +637,7 @@ background-position: -69px 0;
 	bottom:0;
 	width:200px;
 	height:20px;
-	font-family: 'GillSansRegular', Georgia;
+	font-family: 'GillSansMTBold', Georgia;
 	text-align:right;
 	font-size:16px;
 	font-weight: bold;
@@ -657,7 +661,7 @@ background-position: -69px 0;
 	width:200px;
 	height:20px;
 	text-align:right;
-	font-family: 'GillSansBold', Georgia;
+	font-family: 'GillSansMTBold', Georgia;
 	font-size:16px;
 	font-weight: bold;
 	margin-left:-200px;
@@ -893,7 +897,7 @@ function switch_product_img(divNamePrefix, photoNum, totalImgs) {
                 <div class="dhall"><a href="http://www.foodpro.huds.harvard.edu/foodpro/menu_items.asp?type=30&meal=1" target="top"></a></div>
                 <div class="shuttle"><a href="http://shuttleboy.cs50.net/" target="top"></a></div>
                 <div class="myh"><a href="http://my.harvard.edu/icb/icb.do" target="top"></a></div>
-                <div class="qguide"><a href="http://q.fas.harvard.edu/harvardQ/qguide.jsp" target="top"></a></div>
+                <div class="calendar"><a href="http://events.college.harvard.edu/" target="top"></a></div>
             </div>
             {% endblock %}
             <!-- Ad Space -->
@@ -926,9 +930,11 @@ function switch_product_img(divNamePrefix, photoNum, totalImgs) {
                 {% endblock %}
             {% endif %}
             {% block mostread %}
-                {% cache 500 mostreadarticles_flyby %}
-                    {% most_read_articles section %}
-                {% endcache %}
+                <div style="margin-top: 10px;">
+                    {% cache 500 mostreadarticles_flyby %}
+                        {% most_read_articles section %}
+                    {% endcache %}
+                </div>
             {% endblock %}
         </div>
         <div style="clear: both;"></div>
