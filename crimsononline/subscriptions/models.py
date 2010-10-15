@@ -68,7 +68,7 @@ class EmailSubscription(models.Model):
         """Send all the email subscriptions."""
         #for sub in EmailSubscription.objects.filter(is_active=True):
         #    sub.send(issue_date)
-        tempSubList = EmailSubscription.objects.filter(pk__in=[10, 713, 921, 923])
+        tempSubList = EmailSubscription.objects.filter(pk__in=[10, 713, 921, 923, 925])
         for sub in tempSubList:
             sub.send(issue_date)
     
