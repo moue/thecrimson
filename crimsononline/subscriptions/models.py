@@ -66,9 +66,11 @@ class EmailSubscription(models.Model):
     @staticmethod
     def send_all(issue_date=None):
         """Send all the email subscriptions."""
-        for sub in EmailSubscription.objects.filter(is_active=True):
+        #for sub in EmailSubscription.objects.filter(is_active=True):
+        #    sub.send(issue_date)
+        tempSubList = EmailSubscription.objects.filter(pk__in=[10, 713, 921, 923])
+        for sub in tempSubList:
             sub.send(issue_date)
-        
     
     def send(self, issue_date=None):
         """Send out this particular email subscription.
