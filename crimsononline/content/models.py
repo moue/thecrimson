@@ -518,9 +518,20 @@ class ContentGroup(models.Model):
         Content Groups shouldn't change that much. We cache them.
         """
         cg = cache.get('contentgroups_all')
+        # If contentgroups_all has expired, get it again
         if not cg:
             cg = ContentGroup.update_cache()
-        return cg.get((type, name), None)
+            cg_refreshed = True
+        else:
+            cg_refreshed = False
+        # We expect that most of the calls to by_name will be for groups that
+        # actually exist, so if a group isn't found in the cached list, we
+        # refresh the cache and look again.
+        obj = cg.get((type, name), None)
+        if not obj and not cg_refreshed:
+            cg = ContentGroup.update_cache()
+            obj = cg.get((type, name), None)
+        return obj
 
     @staticmethod
     def update_cache():
