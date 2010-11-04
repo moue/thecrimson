@@ -16,6 +16,11 @@ var client = {
     isStrict:   document.compatMode == 'CSS1Compat',
     isOpera:    ua.indexOf('opera') > -1,
     isIE:       ua.indexOf('msie') > -1,
+    isIE2:      ua.indexOf('msie 2') > -1,
+    isIE3:      ua.indexOf('msie 3') > -1,
+    isIE4:      ua.indexOf('msie 4') > -1,
+    isIE5:      ua.indexOf('msie 5') > -1,
+    isIE6:      ua.indexOf('msie 6') > -1,
     isIE7:      ua.indexOf('msie 7') > -1,
     isIE8:      ua.indexOf('msie 8') > -1,
     isSafari:   /webkit|khtml/.test(ua),
@@ -34,7 +39,7 @@ client.isGecko = ua.indexOf('gecko') != -1 && !client.isSafari;
  * @var         Boolean
  * @private
  */
-var ltIE7 = (client.isIE && !client.isIE7 && !client.isIE8) || client.isFF;
+var ltIE7 = (client.isIE6 || client.isIE5 || client.isIE4 || client.isIE3 || client.isIE2) || client.isFF;
 
 if(ltIE7){
   addLoadEvent(display_warning);
