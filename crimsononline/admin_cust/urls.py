@@ -1,13 +1,10 @@
 from django.conf.urls.defaults import *
-from django.conf import settings
 from django.contrib import admin
-from django.views.generic.simple import redirect_to
 from crimsononline.admin_cust.views import *
 from crimsononline.admin_cust.memcached_status import view as mcstatus
 
 urlpatterns = patterns('',
     (r'^help/.*$', admin.site.admin_view(help)),
-    (r'^login/pin/$', redirect_to('https://www.pin1.harvard.edu/authenticate?__authen_application=%s' % settings.PINAUTH_APP_ID)
     # I'm pretty sure we can get rid of the next four - Andy
     (r'^content/gallery/get_images/pk/(?P<pk>\d+)/$', get_imgs),
     (r'^content/gallery/get_images/page/(?P<page>\d+)/$', get_imgs),

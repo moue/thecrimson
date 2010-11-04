@@ -155,14 +155,6 @@ def login_user(request):
     """
     Handles response from PIN application when a user tries to log in.
     """
-    huid = request.REQUEST['__auth_huid']
-    # validate the pgp signature
-    pgp_token = '|'.join([request.REQUEST['__authen_%s' % x] for x in 
-                     ['application', 'huid', 'proxy_id', 'ip', 'time']])
-    pgp_sig = request.REQUEST.get('__authen_pgp_signature', '')
-    
-
-    # authenticate the user
     user = authenticate(huid=request.REQUEST["huid"])
     if user is not None:
         if user.is_active:
