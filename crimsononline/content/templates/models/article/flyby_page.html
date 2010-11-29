@@ -22,3 +22,9 @@
         {{ article.text|remove_flyby_jump|safe }}
     </div>
 {% endblock %}
+
+{% block ad %}
+<div style="text-align: center; margin: 10px 0px">
+    <img src="{% static_url "images/flyby/bosead.jpg" %}" />
+</div>
+{% endblock %}
