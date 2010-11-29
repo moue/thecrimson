@@ -19,3 +19,9 @@
 {% block content %}
     {{ article|render:"flyby.fullarticle" }}
 {% endblock %}
+
+{% block ad %}
+<div style="text-align: center; margin: 10px 0px">
+    <img src="{% static_url "images/flyby/bosead.jpg" %}" />
+</div>
+{% endblock %}
