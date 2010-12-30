@@ -90,7 +90,7 @@ class TopArticlesNode(template.Node):
             self.specifier = None
 
     def render(self, context):
-        return '' #this statement added to force this not to run
+        return [] #this statement added to force this not to run
         pre_title, post_title = "", ""
         if self.specifier:
             try:
