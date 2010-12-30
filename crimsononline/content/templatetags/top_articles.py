@@ -98,6 +98,7 @@ class TopArticlesNode(template.Node):
                 return ''
         else:
             self.specifier = ''
+        """
         if not cache.get("mostreadarticles" + str(self.specifier).replace(' ', '')):
             # Create a resolver for the slightly modified URL patterns we defined above
             resolver = RegexURLResolver(r'^/', generic_obj_patterns)
@@ -158,16 +159,17 @@ class TopArticlesNode(template.Node):
                            " AND content_content.pub_status = 1 " \
                            " AND content_contenthits.date >" + seven_days_ago + limitStr + \
                            " GROUP BY content_contenthits.content_id ORDER BY hitnum DESC LIMIT 5"
-            #cursor.execute(sqlstatement)
-            #mostreadarticles = cursor.fetchall()
+            cursor.execute(sqlstatement)
+            mostreadarticles = cursor.fetchall()
             try:
-                #mostreadarticles = [Content.objects.get(pk=x[0]).child for x in mostreadarticles]
-                #cache.set("mostreadarticles" + str(orig_ss).replace(' ', ''), mostreadarticles, 60 * 20)
+                mostreadarticles = [Content.objects.get(pk=x[0]).child for x in mostreadarticles]
+                cache.set("mostreadarticles" + str(orig_ss).replace(' ', ''), mostreadarticles, 60 * 20)
             except:
                 mostreadarticles = None
         else:
             mostreadarticles = cache.get("mostreadarticles" + str(self.specifier).replace(' ', ''))
-
+        """
+        mostreadarticles = None
         # TODO: uncomment / fix this.  it calls disqus every time, which is annoying
         mostcommentedarticles = None # delete this when below is uncommented
         # I think this all works, but I can't test it right now because there are no comments at the moment
@@ -207,7 +209,6 @@ class TopArticlesNode(template.Node):
         del mostcommentedarticles[5:]
         """
 
-        #return render_to_string('templatetag/mostreadarticles.html',
-        #    {'mostreadarticles': mostreadarticles,
-        #        'mostcommentedarticles': mostcommentedarticles,'pre_title': pre_title, 'post_title': post_title})
-        return "<span></span>"
+        return render_to_string('templatetag/mostreadarticles.html',
+            {'mostreadarticles': mostreadarticles,
+                'mostcommentedarticles': mostcommentedarticles,'pre_title': pre_title, 'post_title': post_title})
