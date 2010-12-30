@@ -90,125 +90,127 @@ class TopArticlesNode(template.Node):
             self.specifier = None
 
     def render(self, context):
-        return [] #this statement added to force this not to run
-        pre_title, post_title = "", ""
-        if self.specifier:
-            try:
-                self.specifier = self.specifier.resolve(context)
-            except:
-                return ''
-        else:
-            self.specifier = ''
-        if not cache.get("mostreadarticles" + str(self.specifier).replace(' ', '')):
-            # Create a resolver for the slightly modified URL patterns we defined above
-            resolver = RegexURLResolver(r'^/', generic_obj_patterns)
-            # Step 1: We want to get the most viewed articles from the database
-            cursor = connection.cursor()
-            orig_ss = self.specifier or ''
+        try:
+            pre_title, post_title = "", ""
             if self.specifier:
-                if isinstance(self.specifier, basestring):
-                    parsedspec = self.specifier.split(":")
-                    try:
-                        if parsedspec[0] == "section":
-                            self.specifier = Section.objects.filter(name=parsedspec[1])[0]
-                    except:
-                        return ''
-                if self.specifier.__class__ == Section:
-                    tableStr = ""
-                    limitStr = " AND content_content.section_id = " + str(self.specifier.id)
-                    try:
-                        post_title = 'IN %s' % str(Section.objects.get(pk=self.specifier.id)).upper()
-                    except:
-                        pass
-                elif self.specifier.__class__ == Contributor:
-                    tableStr = ", content_contributor, content_content_contributors"
-                    limitStr = " AND content_contributor.id = " + str(self.specifier.id) + \
-                               " AND content_contributor.id = content_content_contributors.contributor_id" \
-                               " AND content_content_contributors.content_id = content_content.id"
-                    try:
-                        pre_title = Contributor.objects.get(pk=self.specifier.id).first_name.upper() + "'S"
-                    except:
-                        pass
-                elif self.specifier.__class__ == Tag:
-                    tableStr = ", content_tag, content_content_tags"
-                    limitStr = " AND content_tag.id = " + str(self.specifier.id) + \
-                               " AND content_content_tags.content_id = content_content.id" \
-                               " AND content_content_tags.tag_id = content_tag.id"
-                    try:
-                        post_title = 'IN "%s"' % Tag.objects.get(pk=self.specifier.id).text.upper()
-                    except:
-                        pass
-
-                else:
-                    raise template.TemplateSyntaxError, "The TopArticles tag can only take a section, contributor, or tag argument (%r passed)" % self.specifier.__class__
+                try:
+                    self.specifier = self.specifier.resolve(context)
+                except:
+                    return ''
             else:
-                tableStr = ""
-                limitStr = ""
-            if settings.DATABASE_ENGINE == 'sqlite3':
-                seven_days_ago = " date('now', '-7 days') "
-            elif settings.DATABASE_ENGINE == 'mysql':
-                seven_days_ago = " ( NOW() - INTERVAL 7 day ) "
-            # SO NON-SEXUALITY-NORMATIVE
-            # Oh, a real comment in case someone comes upon this later: We're selecting article ID, content type ID, and a computed field called "hitindex"
-            # which will eventually use log() for a better curve.  This ages articles' hits to reduce freshness.  Then it sorts by hitindex and returns the top 5.
-            # TODO: Fix this to use proper decay when we switch to a real SQL server
-            sqlstatement = "SELECT DISTINCT content_article.content_ptr_id, SUM(content_contenthits.hits) AS hitnum FROM content_article, " \
-                           "content_content, content_contenthits" + tableStr + \
-                           " WHERE content_content.id = content_article.content_ptr_id " \
-                           " AND content_contenthits.content_id = content_content.id " \
-                           " AND content_content.pub_status = 1 " \
-                           " AND content_contenthits.date >" + seven_days_ago + limitStr + \
-                           " GROUP BY content_contenthits.content_id ORDER BY hitnum DESC LIMIT 5"
-            #commented the following lines to help keep the site up, above query was crashing it
-            """cursor.execute(sqlstatement)
-            mostreadarticles = cursor.fetchall()"""
-            try:
-                mostreadarticles = [Content.objects.get(pk=x[0]).child for x in mostreadarticles]
-                cache.set("mostreadarticles" + str(orig_ss).replace(' ', ''), mostreadarticles, 60 * 20)
-            except:
-                mostreadarticles = None
-        else:
-            mostreadarticles = cache.get("mostreadarticles" + str(self.specifier).replace(' ', ''))
+                self.specifier = ''
+            if not cache.get("mostreadarticles" + str(self.specifier).replace(' ', '')):
+                # Create a resolver for the slightly modified URL patterns we defined above
+                resolver = RegexURLResolver(r'^/', generic_obj_patterns)
+                # Step 1: We want to get the most viewed articles from the database
+                cursor = connection.cursor()
+                orig_ss = self.specifier or ''
+                if self.specifier:
+                    if isinstance(self.specifier, basestring):
+                        parsedspec = self.specifier.split(":")
+                        try:
+                            if parsedspec[0] == "section":
+                                self.specifier = Section.objects.filter(name=parsedspec[1])[0]
+                        except:
+                            return ''
+                    if self.specifier.__class__ == Section:
+                        tableStr = ""
+                        limitStr = " AND content_content.section_id = " + str(self.specifier.id)
+                        try:
+                            post_title = 'IN %s' % str(Section.objects.get(pk=self.specifier.id)).upper()
+                        except:
+                            pass
+                    elif self.specifier.__class__ == Contributor:
+                        tableStr = ", content_contributor, content_content_contributors"
+                        limitStr = " AND content_contributor.id = " + str(self.specifier.id) + \
+                                   " AND content_contributor.id = content_content_contributors.contributor_id" \
+                                   " AND content_content_contributors.content_id = content_content.id"
+                        try:
+                            pre_title = Contributor.objects.get(pk=self.specifier.id).first_name.upper() + "'S"
+                        except:
+                            pass
+                    elif self.specifier.__class__ == Tag:
+                        tableStr = ", content_tag, content_content_tags"
+                        limitStr = " AND content_tag.id = " + str(self.specifier.id) + \
+                                   " AND content_content_tags.content_id = content_content.id" \
+                                   " AND content_content_tags.tag_id = content_tag.id"
+                        try:
+                            post_title = 'IN "%s"' % Tag.objects.get(pk=self.specifier.id).text.upper()
+                        except:
+                            pass
 
-        # TODO: uncomment / fix this.  it calls disqus every time, which is annoying
-        mostcommentedarticles = None # delete this when below is uncommented
-        # I think this all works, but I can't test it right now because there are no comments at the moment
-        """
-        # Step 2: Grab the JSON crap from Disqus and build another list of the most commented articles
+                    else:
+                        raise template.TemplateSyntaxError, "The TopArticles tag can only take a section, contributor, or tag argument (%r passed)" % self.specifier.__class__
+                else:
+                    tableStr = ""
+                    limitStr = ""
+                if settings.DATABASE_ENGINE == 'sqlite3':
+                    seven_days_ago = " date('now', '-7 days') "
+                elif settings.DATABASE_ENGINE == 'mysql':
+                    seven_days_ago = " ( NOW() - INTERVAL 7 day ) "
+                # SO NON-SEXUALITY-NORMATIVE
+                # Oh, a real comment in case someone comes upon this later: We're selecting article ID, content type ID, and a computed field called "hitindex"
+                # which will eventually use log() for a better curve.  This ages articles' hits to reduce freshness.  Then it sorts by hitindex and returns the top 5.
+                # TODO: Fix this to use proper decay when we switch to a real SQL server
+                sqlstatement = "SELECT DISTINCT content_article.content_ptr_id, SUM(content_contenthits.hits) AS hitnum FROM content_article, " \
+                               "content_content, content_contenthits" + tableStr + \
+                               " WHERE content_content.id = content_article.content_ptr_id " \
+                               " AND content_contenthits.content_id = content_content.id " \
+                               " AND content_content.pub_status = 1 " \
+                               " AND content_contenthits.date >" + seven_days_ago + limitStr + \
+                               " GROUP BY content_contenthits.content_id ORDER BY hitnum DESC LIMIT 5"
+                #commented the following lines to help keep the site up, above query was crashing it
+                cursor.execute(sqlstatement)
+                mostreadarticles = cursor.fetchall()
+                try:
+                    mostreadarticles = [Content.objects.get(pk=x[0]).child for x in mostreadarticles]
+                    cache.set("mostreadarticles" + str(orig_ss).replace(' ', ''), mostreadarticles, 60 * 20)
+                except:
+                    mostreadarticles = None
+            else:
+                mostreadarticles = cache.get("mostreadarticles" + str(self.specifier).replace(' ', ''))
 
-        updated_threads_url = "http://disqus.com/api/get_updated_threads?user_api_key=" + D_USER_KEY + "&forum_id=" + D_FORUM_ID \
-                            + "&api_version=1.1&since=" + (datetime.now() - timedelta(days=7) ).strftime('%Y-%m-%dT%H:%M')
-        updated_threads = simplejson.load(urllib.urlopen(updated_threads_url))
-        # sort the thread list
-        updated_threads['message'].sort(lambda x, y: cmp(float(y['num_comments']), float(x['num_comments'])))
+            # TODO: uncomment / fix this.  it calls disqus every time, which is annoying
+            mostcommentedarticles = None # delete this when below is uncommented
+            # I think this all works, but I can't test it right now because there are no comments at the moment
+            """
+            # Step 2: Grab the JSON crap from Disqus and build another list of the most commented articles
 
-        # call resolver.resolve on everything in the list
-        urllist = map(lambda x: (urlparse(x['url']))[2], updated_threads['message'])
-        # Optimization: we assume that at least 5 of these 20 articles will not resolve to None
-        if not self.specifier:
-            del urllist[20:]
-        threadobjlist = map(lambda x: safe_resolve(x, resolver), urllist)
-        # Filter according to specifier
-        # No error checking here since it should have happened before
-        ""
-        if self.specifier:
-            if self.specifier.__class__ == Section:
-                threadobjlist = [x for x in threadobjlist if x.section == self.specifier.id]
-            elif self.specifier.__class__ == Contributor:
-                threadobjlist = [x for x in threadobjlist if self.specifier.id in [x.id for x in threadobjlist.contributors]]
-            elif self.specifier.__class__ == Tag:
-                threadobjlist = [x for x in threadobjlist if self.specifier.id in [x.id for x in threadobjlist.tags]]
-        ""
+            updated_threads_url = "http://disqus.com/api/get_updated_threads?user_api_key=" + D_USER_KEY + "&forum_id=" + D_FORUM_ID \
+                                + "&api_version=1.1&since=" + (datetime.now() - timedelta(days=7) ).strftime('%Y-%m-%dT%H:%M')
+            updated_threads = simplejson.load(urllib.urlopen(updated_threads_url))
+            # sort the thread list
+            updated_threads['message'].sort(lambda x, y: cmp(float(y['num_comments']), float(x['num_comments'])))
 
-        if self.specifier:
-            del threadobjlist[20:]
+            # call resolver.resolve on everything in the list
+            urllist = map(lambda x: (urlparse(x['url']))[2], updated_threads['message'])
+            # Optimization: we assume that at least 5 of these 20 articles will not resolve to None
+            if not self.specifier:
+                del urllist[20:]
+            threadobjlist = map(lambda x: safe_resolve(x, resolver), urllist)
+            # Filter according to specifier
+            # No error checking here since it should have happened before
+            ""
+            if self.specifier:
+                if self.specifier.__class__ == Section:
+                    threadobjlist = [x for x in threadobjlist if x.section == self.specifier.id]
+                elif self.specifier.__class__ == Contributor:
+                    threadobjlist = [x for x in threadobjlist if self.specifier.id in [x.id for x in threadobjlist.contributors]]
+                elif self.specifier.__class__ == Tag:
+                    threadobjlist = [x for x in threadobjlist if self.specifier.id in [x.id for x in threadobjlist.tags]]
+            ""
 
-        # mostcommentedarticles = [x for x in map(lambda x: call_view(x[0], x[1]), filter(lambda x: x != None, threadobjlist)) if x is not None]
-        mostcommentedarticles = [x for x in [call_view(threadobj[0], threadobj[1]) for threadobj in threadobjlist if threadobj is not None] if x is not None]
-        # Only want top 10 -- we need to do this last because we're not guaranteed that there won't be some gaps in threadobjlist
-        del mostcommentedarticles[5:]
-        """
+            if self.specifier:
+                del threadobjlist[20:]
 
-        return render_to_string('templatetag/mostreadarticles.html',
-            {'mostreadarticles': mostreadarticles,
-                'mostcommentedarticles': mostcommentedarticles,'pre_title': pre_title, 'post_title': post_title})
+            # mostcommentedarticles = [x for x in map(lambda x: call_view(x[0], x[1]), filter(lambda x: x != None, threadobjlist)) if x is not None]
+            mostcommentedarticles = [x for x in [call_view(threadobj[0], threadobj[1]) for threadobj in threadobjlist if threadobj is not None] if x is not None]
+            # Only want top 10 -- we need to do this last because we're not guaranteed that there won't be some gaps in threadobjlist
+            del mostcommentedarticles[5:]
+            """
+
+            return render_to_string('templatetag/mostreadarticles.html',
+                {'mostreadarticles': mostreadarticles,
+                    'mostcommentedarticles': mostcommentedarticles,'pre_title': pre_title, 'post_title': post_title})
+        except:
+            return ''
