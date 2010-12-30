@@ -90,6 +90,7 @@ class TopArticlesNode(template.Node):
             self.specifier = None
 
     def render(self, context):
+        return '' #this statement added to force this not to run
         pre_title, post_title = "", ""
         if self.specifier:
             try:
@@ -158,8 +159,9 @@ class TopArticlesNode(template.Node):
                            " AND content_content.pub_status = 1 " \
                            " AND content_contenthits.date >" + seven_days_ago + limitStr + \
                            " GROUP BY content_contenthits.content_id ORDER BY hitnum DESC LIMIT 5"
-            cursor.execute(sqlstatement)
-            mostreadarticles = cursor.fetchall()
+            #commented the following lines to help keep the site up, above query was crashing it
+            """cursor.execute(sqlstatement)
+            mostreadarticles = cursor.fetchall()"""
             try:
                 mostreadarticles = [Content.objects.get(pk=x[0]).child for x in mostreadarticles]
                 cache.set("mostreadarticles" + str(orig_ss).replace(' ', ''), mostreadarticles, 60 * 20)
