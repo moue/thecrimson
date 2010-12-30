@@ -55,6 +55,7 @@ STOP_WORDS = ['a', 'able', 'about', 'across', 'after', 'all', 'almost', 'also',
     'were', 'what', 'when', 'where', 'which', 'while', 'who', 'whom', 'why',
     'will', 'with', 'would', 'yet', 'you', 'your']
 
+    """test"""
 class ContentGroupModelForm(ModelForm):
     image = forms.ImageField(required=False,
         widget=admin.widgets.AdminFileWidget)
