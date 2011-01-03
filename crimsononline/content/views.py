@@ -248,8 +248,10 @@ def get_related_tags(pk):
     return tags
 
 @cache_page(settings.CACHE_STANDARD)
-def feedsDown(value):
+def feedsDown(url):
     return render_to_response('FeedsDown.html')
+
+    
 # ============= Section Views ============
 
 @cache_page(settings.CACHE_SHORT)
