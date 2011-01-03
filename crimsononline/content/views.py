@@ -247,6 +247,9 @@ def get_related_tags(pk):
     tags.sort(lambda x,y: cmp(y.content_count, x.content_count))
     return tags
 
+@cache_page(settings.CACHE_STANDARD)
+def feedsDown(value):
+    return render_to_response('FeedsDown.html')
 # ============= Section Views ============
 
 @cache_page(settings.CACHE_SHORT)
