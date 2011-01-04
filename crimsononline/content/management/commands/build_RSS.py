@@ -23,4 +23,4 @@ class Command(NoArgsCommand):
         test = Article.objects.exclude(section=6).order_by('-issue__issue_date')[:1]
         #build the top news feed
         
-        return buildItem(test)
+        return buildItem(test[0])
