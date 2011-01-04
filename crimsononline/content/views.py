@@ -248,7 +248,7 @@ def get_related_tags(pk):
     return tags
 
 @cache_page(settings.CACHE_STANDARD)
-def feedsDown(url):
+def feedsDown(request, url1):
     return render_to_response('FeedsDown.html')
 
     
