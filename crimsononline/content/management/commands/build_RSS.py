@@ -1,9 +1,12 @@
 from django.core.management.base import NoArgsCommand
 from crimsononline.content.models import *
+import datetime
 
 class Command(NoArgsCommand):
     help = "This command will build all of the RSS feeds"
     def handle_noargs(self, **options):
+        
+        numberOfStories = 25
         
         def buildItem(obj):
             #helper function to build individual items
@@ -20,7 +23,22 @@ class Command(NoArgsCommand):
             rStr += "</item>"
             return rStr
             
-        test = Article.objects.exclude(section=6).order_by('-issue__issue_date')[:1]
+        def buildHeaderInfo(title, description):
+            rStr = "<title> The Harvard Crimson | " + title +"</title>"
+            rStr += "<link>http://www.thecrimson.com/</link>"
+            rStr += "<description>" + description + "</description>"
+            rStr += "<language>en-us</language>"
+            rStr += "<lastBuildDate>" +str(datetime.now())+"</lastBuildDate>"
+            return rStr
+            
+        fileStart = '<?xml version="1.0" encoding="utf-8"?><rss version="2.0"><channel>'
+        fileEnd = '</channel></rss>'
+
         #build the top news feed
-        
-        return buildItem(test[0])
+        topNewsFeed = fileStart + buildHeaderInfo(" Top Stories","The top Crimson articles")
+        tnStories = Article.objects.exclude(section=6).order_by('-issue__issue_date')[:numberOfStories]
+        for x in tnStories:
+            topNewsFeed += buildItem(x)
+            
+        topNewsFeed += fileEnd    
+        return topNewsFeed
