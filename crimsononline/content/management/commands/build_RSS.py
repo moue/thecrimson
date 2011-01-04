@@ -5,7 +5,7 @@ class Command(NoArgsCommand):
     help = "This command will build all of the RSS feeds"
     def handle_noargs(self, **options):
         
-        def buildItem(self, obj):
+        def buildItem(obj):
             #helper function to build individual items
             rStr = "<item>"
             rStr += "<title>"+ obj.headline+"</title>"
