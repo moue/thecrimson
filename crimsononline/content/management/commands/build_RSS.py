@@ -28,7 +28,7 @@ class Command(NoArgsCommand):
             rStr += "<link>http://www.thecrimson.com/</link>"
             rStr += "<description>" + description + "</description>"
             rStr += "<language>en-us</language>"
-            rStr += "<lastBuildDate>" +str(datetime.now())+"</lastBuildDate>"
+            rStr += "<lastBuildDate>" +str(datetime.datetime.now())+"</lastBuildDate>"
             return rStr
             
         fileStart = '<?xml version="1.0" encoding="utf-8"?><rss version="2.0"><channel>'
