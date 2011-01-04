@@ -1,5 +1,5 @@
 from django.core.management.base import NoArgsCommand
-from models import *
+from crimsononline.content.models import *
 
 class Command(NoArgsCommand):
     help = "This command will build all of the RSS feeds"
