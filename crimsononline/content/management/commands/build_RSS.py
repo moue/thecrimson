@@ -46,4 +46,4 @@ class Command(NoArgsCommand):
         f1.write(topNewsFeed)
         f1.close()
         
-        #return topNewsFeed
+        return topNewsFeed
