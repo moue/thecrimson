@@ -1,6 +1,7 @@
 from django.core.management.base import NoArgsCommand
 from crimsononline.content.models import *
 import datetime
+import codecs
 
 class Command(NoArgsCommand):
     help = "This command will build all of the RSS feeds"
@@ -44,7 +45,7 @@ class Command(NoArgsCommand):
             
         topNewsFeed += fileEnd
         
-        f1 = open('/home/sites/crimson/crimsononline/feeds/TopNews.xml','r+','utf-8')
+        f1 = codecs.open('/home/sites/crimson/crimsononline/feeds/TopNews.xml','r+','utf-8')
         f1.write(topNewsFeed)
         f1.close()
         
