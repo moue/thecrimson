@@ -13,7 +13,7 @@ class Command(NoArgsCommand):
             rStr = "<item>"
             rStr += "<title>"+ obj.headline+"</title>"
             rStr += "<link>"+obj.get_absolute_url()+"</link>"
-            rStr += "<description>" + repr(obj.teaser)+"</description>"
+            rStr += "<description>" + repr(obj.teaser).encode("utf-8")+"</description>"
             rStr += "<dc:creator xmlns:dc='http://purl.org/dc/elements/1.1/'>"
             for i in obj.contributors.all():
                 rStr += i.first_name + " " +i.last_name +", "
