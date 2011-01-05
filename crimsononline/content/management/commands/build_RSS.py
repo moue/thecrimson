@@ -13,8 +13,8 @@ class Command(NoArgsCommand):
             rStr = "<item>"
             rStr += "<title>"+ obj.headline+"</title>"
             rStr += "<link>"+obj.get_absolute_url()+"</link>"
-            #desc = repr(obj.teaser)
-            desc = obj.teaser.encode("utf-8")
+            desc = repr(obj.teaser)
+            desc = desc.encode("utf-8")
             rStr += "<description>" + desc+"</description>"
             rStr += "<dc:creator xmlns:dc='http://purl.org/dc/elements/1.1/'>"
             for i in obj.contributors.all():
@@ -45,6 +45,9 @@ class Command(NoArgsCommand):
         topNewsFeed += fileEnd
         
         f1 = open('/home/sites/crimson/crimsononline/feeds/TopNews.xml','w')
+        f1.write(topNewsFeed)
+        topNewsFeed = f1.read()
+        topNewsFeed = topNewsFeed.replace("u'","").replace("'<","<")
         f1.write(topNewsFeed)
         f1.close()
         
