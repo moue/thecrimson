@@ -35,6 +35,9 @@ class Command(NoArgsCommand):
             return rStr
         
         def writeFeed(loc, content):
+            fc = open(loc, 'r+')
+            fc.write('hi')
+            fc.close()
             f1 = codecs.open(loc,'r+','utf-8') #must specifically encode the file as utf-8 or you'll run into problems
             f1.write(content)
             f1.close()
