@@ -44,7 +44,7 @@ class Command(NoArgsCommand):
             
         topNewsFeed += fileEnd
         
-        f1 = open('/home/sites/crimson/crimsononline/feeds/TopNews.xml','w')
+        f1 = open('/home/sites/crimson/crimsononline/feeds/TopNews.xml','r+')
         f1.write(topNewsFeed)
         topNewsFeed = f1.read()
         topNewsFeed = topNewsFeed.replace("u'","").replace("'<","<")
