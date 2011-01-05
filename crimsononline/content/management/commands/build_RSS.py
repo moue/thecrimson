@@ -40,5 +40,10 @@ class Command(NoArgsCommand):
         for x in tnStories:
             topNewsFeed += buildItem(x)
             
-        topNewsFeed += fileEnd    
-        return topNewsFeed
+        topNewsFeed += fileEnd
+        
+        f1 = open('/home/sites/crimson/crimsononline/feeds/TopNews.xml','w')
+        f1.write(topNewsFeed)
+        f1.close()
+        
+        #return topNewsFeed
