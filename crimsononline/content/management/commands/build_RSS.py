@@ -1,7 +1,7 @@
 from django.core.management.base import NoArgsCommand
 from crimsononline.content.models import *
 import datetime
-from django.utils.encoding import smart_str, smart_unicode
+import repr
 
 class Command(NoArgsCommand):
     help = "This command will build all of the RSS feeds"
@@ -12,9 +12,9 @@ class Command(NoArgsCommand):
         def buildItem(obj):
             #helper function to build individual items
             rStr = "<item>"
-            rStr += "<title>"+ obj.headline+"</title>"
+            rStr += "<title>"+ repr(obj.headline+)"</title>"
             rStr += "<link>"+obj.get_absolute_url()+"</link>"
-            rStr += "<description>" + obj.teaser+"</description>"
+            rStr += "<description>" + repr(obj.teaser)+"</description>"
             rStr += "<dc:creator xmlns:dc='http://purl.org/dc/elements/1.1/'>"
             for i in obj.contributors.all():
                 rStr += i.first_name + " " +i.last_name +", "
@@ -44,7 +44,7 @@ class Command(NoArgsCommand):
         topNewsFeed += fileEnd
         
         f1 = open('/home/sites/crimson/crimsononline/feeds/TopNews.xml','w')
-        f1.write(smart_str(topNewsFeed))
+        f1.write(topNewsFeed)
         f1.close()
         
         #return topNewsFeed
