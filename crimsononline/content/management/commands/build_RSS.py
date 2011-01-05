@@ -53,7 +53,7 @@ class Command(NoArgsCommand):
             
         topNewsFeed += fileEnd
         
-        writeFeed('/home/sites/crimson/crimsononline/feeds/TopNews.xml', topNewsFeed)
+        writeFeed('/home/sites/crimson/crimsononline/static/feeds/TopNews.xml', topNewsFeed)
         
         #build the latest news feed
         latestNewsFeed = fileStart + buildHeaderInfo(" Top Stories","The Latest Crimson Articles")
@@ -63,7 +63,7 @@ class Command(NoArgsCommand):
         
         latestNewsFeed += fileEnd
         
-        writeFeed('/home/sites/crimson/crimsononline/feeds/LatestNews.xml', latestNewsFeed)
+        writeFeed('/home/sites/crimson/crimsononline/static/feeds/LatestNews.xml', latestNewsFeed)
         
         #write the section feeds
         sections = ['arts','opinion','fm','news','sports','flyby']
@@ -71,11 +71,11 @@ class Command(NoArgsCommand):
         for i in sections:
             sectionObj = Section.objects.get(name__iexact=i)
             feedText = fileStart + buildHeaderInfo(" Top Stories","The Latest Crimson Articles in %s" % i)
-            feedItems = Article.objects.filter(section__exact=sectionObj.pk).order_by('-issue__issue_date')[:numberOfStories]
+            feedItems = Article.objects.filter(section=sectionObj.pk).order_by('-issue__issue_date')[:numberOfStories]
             for x in feedItems:
                 feedText += buildItem(x)
             
             feedText += fileEnd
-            writeFeed('/home/sites/crimson/crimsononline/feeds/'+i+'.xml', feedText)
+            writeFeed('/home/sites/crimson/crimsononline/static/feeds/'+i+'.xml', feedText)
             
         #return topNewsFeed
