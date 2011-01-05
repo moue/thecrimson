@@ -1,7 +1,6 @@
 from django.core.management.base import NoArgsCommand
 from crimsononline.content.models import *
 import datetime
-import repr
 
 class Command(NoArgsCommand):
     help = "This command will build all of the RSS feeds"
