@@ -13,7 +13,7 @@ class Command(NoArgsCommand):
             #helper function to build individual items
             rStr = "<item>"
             rStr += "<title>"+ obj.headline+"</title>"
-            rStr += "<link>"+obj.get_absolute_url()+"</link>"
+            rStr += "<link>http://www.thecrimson.com"+obj.get_absolute_url()+"</link>"
             desc = obj.teaser
             #desc = desc.encode("utf-8")
             rStr += "<description>" + desc+"</description>"
@@ -22,7 +22,7 @@ class Command(NoArgsCommand):
                 rStr += i.first_name + " " +i.last_name +", "
             rStr = rStr[:-2]
             rStr += "</dc:creator>"
-            rStr += "<guid>"+obj.get_absolute_url()+"</guid>"
+            rStr += "<guid>http://www.thecrimson.com"+obj.get_absolute_url()+"</guid>"
             rStr += "</item>"
             return rStr
             
