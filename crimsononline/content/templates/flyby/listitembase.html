@@ -9,7 +9,10 @@
         <div class="fb_posttime">{% block time %}{% endblock %}</div>
     </div>
     <div class="fb_postcontent" {% block spacer %}{% endblock %}>
-        {% block social %}
+        {% block postcontent %}{% endblock %}
+        <div class="fb_postbottom">
+            {% block tags %}{% endblock %}
+            {% block social %}
                 <div class="fb_social">
                     <!-- AddThis Button BEGIN -->
                         <script type="text/javascript">var addthis_pub="4a1b0ea00f31f08e"; var addthis_options='email, facebook, twitter, digg';</script>
@@ -18,9 +21,6 @@
                 </div>
                 {% block commentslink %}{% endblock %}
             {% endblock %}
-        {% block postcontent %}{% endblock %}
-        <div class="fb_postbottom">
-            {% block tags %}{% endblock %}
         </div>
         <div style="clear: both;"></div>
         {% block comments %}{% endblock %}

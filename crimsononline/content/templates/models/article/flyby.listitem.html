@@ -32,9 +32,7 @@
     {% endblock %}
     
     {% comment %} edit for mult img -- remember to use rel_no_articles and notfirst {% endcomment %}
-    {% block addthis_url %}http://thecrimson.com{{ article.get_absolute_url }}{% endblock %}
-    {% block addthis_title %}The Harvard Crimson - {{ article.headline }}{% endblock %}
-    {% block articletext %}
+    
         {% if article|flyby_teaser %}
             {% for p in article|flyby_teaser|safe|paragraphs %}
                 {{ p }}
@@ -80,4 +78,7 @@
         </span>
     </div>
 {% endblock %}
+{% block addthis_url %}http://thecrimson.com{{ article.get_absolute_url }}{% endblock %}
+{% block addthis_title %}The Harvard Crimson - {{ article.headline }}{% endblock %}
+
 
