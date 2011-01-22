@@ -6,6 +6,23 @@
 {% load cache %}
 
 {% comment %} TODO: split paras and combine with related images {% endcomment %}
+{% block rel_content %}
+    {% if article.main_rel_content %}
+        {% ifnotequal article.main_rel_content.content_type.model "article" %}
+            {{ article.main_rel_content|render:"flyby.fullarticle" }}
+        {% endifnotequal %}
+    {% endif %}
+{% endblock %}
+{% block articletext %}
+    <div class="posttext">
+        {% for p in article.text|remove_flyby_jump|safe|paragraphs %}
+            {{ p }}
+            {% if forloop.counter|divisibleby:"3" %}
+                {{ article.rel_content|render_rc_sub:forloop.counter }}
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endblock %}
 {% block social %}
     <div class="articletools">
         <ul class="left">
@@ -49,23 +66,6 @@
         </ul>
 
 
-    </div>
-{% endblock %}
-{% block rel_content %}
-    {% if article.main_rel_content %}
-        {% ifnotequal article.main_rel_content.content_type.model "article" %}
-            {{ article.main_rel_content|render:"flyby.fullarticle" }}
-        {% endifnotequal %}
-    {% endif %}
-{% endblock %}
-{% block articletext %}
-    <div class="posttext">
-        {% for p in article.text|remove_flyby_jump|safe|paragraphs %}
-            {{ p }}
-            {% if forloop.counter|divisibleby:"3" %}
-                {{ article.rel_content|render_rc_sub:forloop.counter }}
-            {% endif %}
-        {% endfor %}
     </div>
 {% endblock %}
 {% block comments %}
