@@ -909,18 +909,6 @@ function switch_product_img(divNamePrefix, photoNum, totalImgs) {
                 </ul>
             {% endblock %}
             {% block ad %}{% endblock %}
-            <div class="fb_sidebarheader"><div class="fb_sidebarheadertext">Featured</div><div class="fb_sidebarheaderrule"></div></div>
-            {% block featured %}
-            <div id="featured">
-                <div id="slidesContainer">
-                    {% for f in featured %}
-                    <div class="slide">
-                    <a href="{{ f.get_absolute_url }}">{{ f|render:"flyby.featured" }}</a>
-                    </div>
-                    {% endfor %}
-                </div>
-            </div>
-            {% endblock %}
             {% if video %}
                 <div class="fb_sidebarheader"><div class="fb_sidebarheadertext">Video</div><div class="fb_sidebarheaderrule"></div></div>
                 {% block video %}
