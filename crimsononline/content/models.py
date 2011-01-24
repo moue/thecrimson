@@ -1423,3 +1423,11 @@ class GenericFile(models.Model):
 
     class Meta:
         verbose_name_plural = "Generic Files"
+        
+class MostReadArticles(models.Model):
+    create_date = models.DateTimeField(auto_now=True)
+    article1 = models.ForeignKey(Article, null=False, blank=False, related_name="MostReadArticle1")
+    article2 = models.ForeignKey(Article, null=False, blank=False, related_name="MostReadArticle2")
+    article3 = models.ForeignKey(Article, null=False, blank=False, related_name="MostReadArticle3")
+    article4 = models.ForeignKey(Article, null=False, blank=False, related_name="MostReadArticle4")
+    article5 = models.ForeignKey(Article, null=False, blank=False, related_name="MostReadArticle5")

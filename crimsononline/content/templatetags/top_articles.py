@@ -20,7 +20,7 @@ try:
     from googleanalytics import Connection
 except:
     Connection = None
-from crimsononline.content.models import Image, Article, Content, Section, Contributor, Tag
+from crimsononline.content.models import Image, Article, Content, Section, Contributor, Tag, MostReadArticles
 from crimsononline.urls import CONTENT_URL_RE, CGROUP_URL_RE
 
 D_USER_KEY = "vabqI2su93P1wVF3Ls9kXhXhRggV7y2ylokjq137yPAz47cY5dDMHgUA2QlZoWNE"
@@ -170,6 +170,13 @@ class TopArticlesNode(template.Node):
             mostreadarticles = cache.get("mostreadarticles" + str(self.specifier).replace(' ', ''))
         """
         mostreadarticles = None
+        
+        try:
+            mostReadObj = MostReadArticles.objects.order_by('create_date')[0]
+            mostreadarticles = [mostReadObj.article1, mostReadObj.article2, mostReadObj.article3, mostReadObj.article4, mostReadObj.article5]
+        except:
+            mostreadarticles = None
+            
         # TODO: uncomment / fix this.  it calls disqus every time, which is annoying
         mostcommentedarticles = None # delete this when below is uncommented
         # I think this all works, but I can't test it right now because there are no comments at the moment
