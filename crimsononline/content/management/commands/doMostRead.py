@@ -30,7 +30,7 @@ class Command(NoArgsCommand):
         if mostreadarticle != None and len(mostreadarticle) > 4:
             mr = MostReadArticles(article1=mostreadarticle[0], article2=mostreadarticle[1], article3=mostreadarticle[2], article4=mostreadarticle[3], article5=mostreadarticle[4]) 
             mr.save()
-            return "Success"
+            #return "Success"
         else:
             return "Failure"
             #var = "f"
