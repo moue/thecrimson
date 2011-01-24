@@ -172,7 +172,7 @@ class TopArticlesNode(template.Node):
         mostreadarticles = None
         
         try:
-            mostReadObj = MostReadArticles.objects.order_by('create_date')[0]
+            mostReadObj = MostReadArticles.objects.order_by('-create_date')[0]
             mostreadarticles = [mostReadObj.article1, mostReadObj.article2, mostReadObj.article3, mostReadObj.article4, mostReadObj.article5]
         except:
             mostreadarticles = None
