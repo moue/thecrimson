@@ -33,4 +33,4 @@ class Command(NoArgsCommand):
             #return "Success"
             var1 = "f"
 
-        return str(MostReadArticles.objects.order_by('create_date')[0].article1)
+        return str(MostReadArticles.objects.order_by('create_date')[1].article1)
