@@ -7,7 +7,7 @@ class Command(NoArgsCommand):
     help = "This command will create a new most read article row"
     def handle_noargs(self, **options):
         cursor = connection.cursor()
-        seven_days_ago = " ( NOW() - INTERVAL 7 month ) "
+        seven_days_ago = " ( NOW() - INTERVAL 7 day ) "
         tableStr = ""
         limitStr = ""
         #as was pointed out the in the original comments in top_articles.py, this is probably a terrible way to do this, but given time constraints, doing it like this should resolve the stability issues we had
