@@ -135,7 +135,7 @@ def writer(request, pk, f_name, m_name, l_name, page=1, sections=None, types=Non
         sections, types, w.get_absolute_url()
     )
 
-    w.number_of_articles = Article.objects.filter(contributors=w).filter(tags='Sports Blog').count()
+    w.number_of_articles = Article.objects.filter(contributors=w and tags='Sports Blog').count()
     d = paginate(f.pop('content'), page, 10)
     d.update({'page': page, 'url_base': url_base})
     w.last_update = Content.objects.filter(contributors=w).aggregate(Max('issue__issue_date'))['issue__issue_date__max']
