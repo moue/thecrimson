@@ -104,8 +104,8 @@ try{
 var pageTracker = _gat._getTracker("UA-327124-1");
 pageTracker._setCustomVar(
       1,                   
-      "{{ type }}",       
-      "{{ section }}",           
+      "{% block type %}{{ type }}{% endblock %}",       
+      "{% block category %}{{ category }}{% endblock %}",           
       3                    
    );
 pageTracker._trackPageview();
