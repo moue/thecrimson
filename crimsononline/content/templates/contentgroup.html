@@ -3,7 +3,10 @@
 {% load content_filters %}
 {% load common %}
 
-{% block title %}{{cg.name}}{% endblock %}
+{% block title %}{{cg.name}} | {{cg.section}}{% endblock %}
+
+{% block type %} Content Group {% endblock %}
+{% block section %} {{cg.section}} {% endblock %}
 
 {% block css %}
 	{{block.super}}

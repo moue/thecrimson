@@ -7,6 +7,14 @@
 	{{ gallery.headline }} | {{ gallery.section }}
 {% endblock %}
 
+{% block type %}
+    Section
+{% endblock %}
+
+{% block section %}
+    {{ gallery.section }}
+{% endblock %}
+
 {% block css %}
 	{{block.super}}
     {% static_css "gallery.css" %}    

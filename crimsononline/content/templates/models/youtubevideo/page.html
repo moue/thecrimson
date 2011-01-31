@@ -7,6 +7,13 @@
 	{{ youtubevideo.title }} | {{ youtubevideo.section }}
 {% endblock %}
 
+{% block type %}
+    Section
+{% endblock %}
+
+{% block section %}
+    {{ youtubevideo.section }}
+{% endblock %}
 
 {% block content %}
     <h1>{{ youtubevideo.title }}</h1>

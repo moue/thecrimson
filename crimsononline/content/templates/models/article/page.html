@@ -7,6 +7,14 @@
 	{{ article.headline }} | {{ article.section }}
 {% endblock %}
 
+{% block type %}
+    Section
+{% endblock %}
+
+{% block section %}
+    {{ article.section }}
+{% endblock %}
+
 {% block meta %}
 <meta property="og:title" content="{{article.headline}}"/>
 <meta property="og:site_name" content="The Harvard Crimson"/>

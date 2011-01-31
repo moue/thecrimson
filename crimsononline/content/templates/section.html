@@ -9,3 +9,23 @@
 {% block title %}
     Harvard {{ section }}
 {% endblock %}
+
+{% block type %}
+    Section
+{% endblock %}
+
+{% block section %}
+    {{ section }}
+{% endblock %}
+
+<script type="text/javascript">
+try{
+var pageTracker = _gat._getTracker("UA-327124-1");
+pageTracker._setCustomVar(
+      1,                   
+      "Section",            
+      "{{ section }}",   
+      3                    
+   ); 
+pageTracker._trackPageview();
+} catch(err) {}</script>

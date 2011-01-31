@@ -7,6 +7,14 @@
 	{{ image.kicker }} | {{ image.section }}
 {% endblock %}
 
+{% block type %}
+    Section
+{% endblock %}
+
+{% block section %}
+    {{ image.section }}
+{% endblock %}
+
 {% block css %}
 	{{block.super}}
     {% static_css "image.css" %}
