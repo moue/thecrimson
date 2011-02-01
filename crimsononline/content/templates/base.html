@@ -106,8 +106,8 @@ var pageType = {% block type %}{{ type }}{% endblock %}
 var pageCategory = {% block category %}{{ category }}{% endblock %}
 pageTracker._setCustomVar(
       1,                   
-      ""+pageType+"",       
-      ""+pageCategory+"",           
+      pageType,       
+      pageCategory,           
       3                    
    );
 pageTracker._trackPageview();
