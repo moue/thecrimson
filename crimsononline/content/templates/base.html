@@ -8,7 +8,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<title>{% block title %}{{ title }}{% endblock %} | The Harvard Crimson</title>
-
+    <input type = "hidden" id = "gatype" value="{% block type %}{{type}}{% endblock %}">
+	<input type = "hidden" id = "gacategory" value="{% block category %}{{category}}{% endblock %}">
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	{% block meta %}{% endblock %}
 	 <link rel="icon" type="image/vnd.microsoft.icon" href="{% static_url "images/icons/favicon.ico" %}" />
@@ -104,8 +105,8 @@ try{
 var pageTracker = _gat._getTracker("UA-327124-1");
 pageTracker._setCustomVar(
       1,                   
-      "{% block type %}{{type}}{% endblock %}",       
-      "{% block category %}{{category}}{% endblock %}",           
+      document.getElementById('gatype').value,       
+      document.getElementById('gacategory').value,           
       3                    
    );
 pageTracker._trackPageview();
