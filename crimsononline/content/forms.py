@@ -189,10 +189,14 @@ class IssuePickerField(forms.CharField):
             dt = strptime(value, r"%m/%d/%Y")
             dt = date(dt[0], dt[1], dt[2])
             try:
-                issue = Issue.objects.daily.get(issue_date=dt)
+                issue = Issue.objects.daily.filter(issue_date=dt)[0]
             except ObjectDoesNotExist:
                 issue = Issue(issue_date=dt)
                 issue.save()
+            except:
+                issue = Issue(issue_date=dt)
+                issue.save()
+                
             return issue
         # otherwise, grab the (special) issue from db
         else:
