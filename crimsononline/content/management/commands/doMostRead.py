@@ -42,7 +42,7 @@ class Command(NoArgsCommand):
         articleList = []
         for s in slugList:
             try:
-                articleList.append(Content.objects.get(slug=s))
+                articleList.append(Article.objects.get(slug=s))
             except:
                 str1 ="DoNothing"
         
