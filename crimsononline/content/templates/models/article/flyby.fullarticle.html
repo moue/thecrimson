@@ -6,7 +6,7 @@
 {% load cache %}
 
 {% comment %} TODO: split paras and combine with related images {% endcomment %}
-{% block social %}
+{% block addsocial %}
     <div class="articletools">
         <ul class="left">
             <li class="fbook">
@@ -51,7 +51,7 @@
 
     </div>
 {% endblock %}
-
+{% block social %}{% endblock %}
 {% block rel_content %}
     {% if article.main_rel_content %}
         {% ifnotequal article.main_rel_content.content_type.model "article" %}

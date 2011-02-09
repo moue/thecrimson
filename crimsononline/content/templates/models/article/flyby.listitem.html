@@ -8,7 +8,6 @@
 
 {% block time %}{{ article.modified_on|time:"g:i A" }}{% endblock %}
 {% block date %}{% endblock %}
-
 {% block postcontent %}
     {% block headline %}
         <div class="fb_posttop">
@@ -23,6 +22,7 @@
             {% endblock %}
         </div>
     {% endblock %}
+    {% block addsocial %}{% endblock %}
     {% block rel_content %}
         {% if article.main_rel_content %}
             {% ifnotequal article.main_rel_content.content_type.model "article" %}
