@@ -13,4 +13,6 @@
     <embed src="{% static_url "" %}{{flashgraphic.graphic}}" width="{{flashgraphic.width}}" height="{{flashgraphic.height}}">
     </embed>
     </object>
+    <p class="byline">{{flashgraphic.contributors.all|linkify|human_list}}</p>
+    <p class="caption">{{flashgraphic.description}}</p>
 {% endblock %}

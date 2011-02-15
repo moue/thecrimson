@@ -10,8 +10,6 @@
                 type="application/x-shockwave-flash" allowscriptaccess="always" 
                 allowfullscreen="true" width="538" height="324"></embed>
     </object>
-    {% comment %} Not sure if we want this
-    <p class="byline"><img src="{% static_url "images/icons/video.gif" %}" alt="video" />{{youtubevideo.contributors.all|linkify|human_list}}</p>
+    <p class="byline">{{youtubevideo.contributors.all|linkify|human_list}}</p>
     <p class="caption">{{youtubevideo.description}}</p>
-    {% endcomment %}
 </div>

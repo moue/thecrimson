@@ -21,4 +21,6 @@
             {{image|to_img_tag:"538,"}}
         {% endifequal %}
     </a>
+    <p class="byline">{{image.contributors.all|linkify|human_list}}</p>
+    <p class="caption">{{image.caption}}</p>
 {% endblock %}
