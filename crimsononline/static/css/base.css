@@ -439,7 +439,7 @@ a {
 .byline a{text-transform: uppercase;}
 .byline, .byline a, .byline a:hover, .dateline{
     color: #999;
-    line-height: 0px;
+    line-height: 11px;
     font-size: 11px;
     font-family: Helvetica, Tahoma, Arials, sans-serif;
 }
