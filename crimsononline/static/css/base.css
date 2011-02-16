@@ -440,8 +440,7 @@ a {
 .byline, .byline a, .byline a:hover, .dateline{
     color: #999;
     line-height: 0px;
-    text-align: right;
-    font-size: 9px;
+    font-size: 11px;
     font-family: Helvetica, Tahoma, Arials, sans-serif;
 }
 .dateline {color: #BA0600;}
