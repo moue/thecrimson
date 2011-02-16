@@ -53,18 +53,17 @@ body div#shadow {
     float: left;
 }
 .image > .byline, .map > .byline {
-	font-size: 9px;
+	font-size: 11px;
     padding-right:5px;
     color: #000;
     text-align: right;
     text-transform: uppercase;
 }
 .image > .byline a, .map > .byline a{
-	font-size: 9px;
+	font-size: 11px;
     color: #000;
     text-decoration: none;
     text-transform: uppercase;
-    text-align: right;
 }
 .image > .byline > a:hover, .map > .byline > a:hover{
     text-decoration: underline;
