@@ -906,7 +906,7 @@ function switch_product_img(divNamePrefix, photoNum, totalImgs) {
                     </tr>
                 </table>
             </form>
-            <div class="fb_sidebarheader"><div class="fb_sidebarheadertext">Quick&nbsp;Links</div><div class="fb_sidebarheaderrule"></div></div>
+            <!--<div class="fb_sidebarheader"><div class="fb_sidebarheadertext">Quick&nbsp;Links</div><div class="fb_sidebarheaderrule"></div></div>
             {% block quicklinks %}
             <div class="quicklinks">
                 <div class="dhall"><a href="http://www.foodpro.huds.harvard.edu/foodpro/menu_items.asp?type=30&meal=1" target="top"></a></div>
@@ -914,6 +914,13 @@ function switch_product_img(divNamePrefix, photoNum, totalImgs) {
                 <div class="myh"><a href="http://my.harvard.edu/icb/icb.do" target="top"></a></div>
                 <div class="calendar"><a href="http://events.college.harvard.edu/" target="top"></a></div>
             </div>
+            {% endblock %}--!>
+            {% block mostread %}
+                <div style="margin-top: 10px;">
+                    {% cache 500 mostreadarticles_flyby %}
+                        {% most_read_articles section %}
+                    {% endcache %}
+                </div>
             {% endblock %}
             <!-- Ad Space -->
             <div class="fb_sidebarheader"><div class="fb_sidebarheadertext">Series</div><div class="fb_sidebarheaderrule"></div></div>
@@ -941,19 +948,12 @@ function switch_product_img(divNamePrefix, photoNum, totalImgs) {
             	</div>
             </div>
             {% endblock %}
-            {% if video %}
+            <!--{% if video %}
                 <div class="fb_sidebarheader"><div class="fb_sidebarheadertext">Video</div><div class="fb_sidebarheaderrule"></div></div>
                 {% block video %}
                     {{ video|render:"flyby.preview" }}
                 {% endblock %}
-            {% endif %}
-            {% block mostread %}
-                <div style="margin-top: 10px;">
-                    {% cache 500 mostreadarticles_flyby %}
-                        {% most_read_articles section %}
-                    {% endcache %}
-                </div>
-            {% endblock %}
+            {% endif %}!-->
         </div>
         <div style="clear: both;"></div>
     </div>
