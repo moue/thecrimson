@@ -176,6 +176,10 @@
                     {% most_read_articles content.section %}
                 {% endcache %}
             {% endblock %}
+            
+            {% tag_cloud 20 "Popular Tags" %}
+                
+			{% endblock %}
 
             {% module 4 "" box %}
                 {% advertisement 61 %}
@@ -184,10 +188,6 @@
             {% module 4 "" box %}
                 {% advertisement 59 %}
             {% endmodule %}
-
-            {% tag_cloud 20 "Popular Tags" %}
-                
-			{% endblock %}
     </div>
 	<div style="clear:both"></div>
 {% endblock %}
