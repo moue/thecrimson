@@ -1,0 +1,61 @@
+{% extends "section.html" %}
+
+{% load cache %}
+{% load common %}
+{% load content_filters %}
+{% load rotator %}
+{% load content_module %}
+{% load tag_cloud %}
+{% load top_articles %}
+{% load module %}
+
+{% block leftcolumn %}
+    {% module 4 baseball red %}
+    <div class="article_previews" id="baseball" >
+        <ul>
+            {% for s in baseball %}
+                <li>{{ s|render:"preview" }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    <span class="clear"></span>
+    {% endmodule %}
+    
+{% block middlecolumn %}
+    {% rotator rotate "news_rotator" %}
+    
+    {% module 4 "" box %}
+        {% advertisement 59 %}
+    {% endmodule %}
+    
+    {% if video %}
+    	{% module 4 "Featured Video" boxgray %}
+            {{ video|render:"rotator" }}
+            <span class="clear"></span>
+    	{% endmodule %}
+    {% endif %}
+    
+{% endblock %}
+
+{% block rightcolumn %}
+	{% module 4 softball red %}
+    <div class="article_previews" id="softball" >
+        <ul>
+            {% for s in softball %}
+                <li>{{ s|render:"preview" }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    <span class="clear"></span>
+    {% endmodule %}
+    
+    {% module 4 "" box %}
+        {% advertisement 59 %}
+    {% endmodule %}
+    
+    {% cache 500 mostreadarticles_fm %}
+    {% most_read_articles "section:sports" %}
+    {% endcache %}
+    
+
+{% endblock %}
