@@ -608,8 +608,8 @@ def get_content_group(request, gtype, gname, page=1, tags=None):
     if not cg:
         raise Http404
     c = cg.content.all()
-    #softball = Article.objects.filter(group=cg, tags__text='Softball')
-    #baseball = Article.objects.filter(group=cg, tags__text='Baseball')
+    softball = Article.objects.filter(group=cg, tags__text='Softball')
+    baseball = Article.objects.filter(group=cg, tags__text='Baseball')
     # check if flyby content group - if so, just pass to flyby view
     if cg.section == Section.objects.get(name='flyby'):
         return section_flyby(request, page, cg=cg)
@@ -635,7 +635,9 @@ def get_content_group(request, gtype, gname, page=1, tags=None):
         d['tag_str'] = ''
     if cg.section:
         d['nav'] = cg.section.name.lower()
-    # d['content'] = c
+    #d['content'] = c
+    d['baseball'] = baseball
+    d['softball'] = softball
     try:
         loader.get_template('contentgroup/%s/%s/content_list.html' % (gtype, gname))
         t = 'contentgroup/%s/%s/content_list.html' % (gtype, gname)
