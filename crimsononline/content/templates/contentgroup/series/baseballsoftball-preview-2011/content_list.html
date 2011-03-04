@@ -16,7 +16,7 @@
 {% block abovecolumn %}
 	<div class="pre_content">
 	<a href="{{ cg.get_absolute_url }}" class="cg_header">
-	    <div class="cg_header">{{ cg.name }}</div>
+	    <div class="cg_header"><h1>{{ cg.name }}</h1></div>
 	</a>
 	</div>
 {% endblock %}
@@ -69,5 +69,4 @@
     {% most_read_articles "section:sports" %}
     {% endcache %}
     
-
 {% endblock %}
