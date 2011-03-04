@@ -610,6 +610,7 @@ def get_content_group(request, gtype, gname, page=1, tags=None):
     c = cg.content.all()
     softball = Article.objects.filter(group=cg, tags__text='Softball')
     baseball = Article.objects.filter(group=cg, tags__text='Baseball')
+    video = first_or_none(YouTubeVideo.objects.recent.filter(group=cg))
     # check if flyby content group - if so, just pass to flyby view
     if cg.section == Section.objects.get(name='flyby'):
         return section_flyby(request, page, cg=cg)
@@ -638,6 +639,7 @@ def get_content_group(request, gtype, gname, page=1, tags=None):
     #d['content'] = c
     d['baseball'] = baseball
     d['softball'] = softball
+    d['video'] = video
     try:
         loader.get_template('contentgroup/%s/%s/content_list.html' % (gtype, gname))
         t = 'contentgroup/%s/%s/content_list.html' % (gtype, gname)
