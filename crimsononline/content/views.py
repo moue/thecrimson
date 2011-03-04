@@ -611,7 +611,7 @@ def get_content_group(request, gtype, gname, page=1, tags=None):
     # check if flyby content group - if so, just pass to flyby view
     if cg.section == Section.objects.get(name='flyby'):
         return section_flyby(request, page, cg=cg)
-    softball = Article.objects.filter(group=cg)
+    softball = Article.objects.filter(section=section)
     baseball = Article.objects.filter(group=cg, tags__text='Baseball')
     if tags:
         taglist = tags.split(',')
