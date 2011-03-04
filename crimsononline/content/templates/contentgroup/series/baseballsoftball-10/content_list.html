@@ -1,0 +1,72 @@
+{% extends "section.html" %}
+
+{% load cache %}
+{% load common %}
+{% load content_filters %}
+{% load rotator %}
+{% load content_module %}
+{% load tag_cloud %}
+{% load top_articles %}
+{% load module %}
+
+{% block title %}
+    Baseball/Softball Preview 2011 | Sports 
+{% endblock %}
+
+{% block abovecolumn %}
+	<div class="pre_content">
+	<a href="{{ cg.get_absolute_url }}" class="cg_header">
+	    <div class="cg_header"><h1>{{ cg.name }}</h1></div>
+	</a>
+	</div>
+{% endblock %}
+
+{% block leftcolumn %}
+    {% module 4 baseball red %}
+    <div class="article_previews" id="baseball" >
+        <ul>
+            {% for s in baseball %}
+                <li>{{ s|render:"preview" }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    <span class="clear"></span>
+    {% endmodule %}
+{% endblock %}
+    
+{% block middlecolumn %}
+    
+    {% module 4 "" box %}
+        {% advertisement 59 %}
+    {% endmodule %}
+    
+    {% if video %}
+    	{% module 4 "Featured Video" boxgray %}
+            {{ video|render:"rotator" }}
+            <span class="clear"></span>
+    	{% endmodule %}
+    {% endif %}
+    
+{% endblock %}
+
+{% block rightcolumn %}
+	{% module 4 softball red %}
+    <div class="article_previews" id="softball" >
+        <ul>
+            {% for s in softball %}
+                <li>{{ s|render:"preview" }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    <span class="clear"></span>
+    {% endmodule %}
+    
+    {% module 4 "" box %}
+        {% advertisement 59 %}
+    {% endmodule %}
+    
+    {% cache 500 mostreadarticles_fm %}
+    {% most_read_articles "section:sports" %}
+    {% endcache %}
+    
+{% endblock %}
