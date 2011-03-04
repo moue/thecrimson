@@ -25,7 +25,7 @@
     {% module 4 baseball red %}
     <div class="article_previews" id="baseball" >
         <ul>
-            {% for b in stories %}
+            {% for b in baseball %}
         		<li>{{ b|render:"preview" }}</li>
     		{% endfor %}
         </ul>
@@ -53,7 +53,7 @@
 	{% module 4 softball red %}
     <div class="article_previews" id="softball" >
         <ul>
-            {% for s in softball %}
+            {% for s in content %}
                 <li>{{ s|render:"preview" }}</li>
             {% endfor %}
         </ul>
