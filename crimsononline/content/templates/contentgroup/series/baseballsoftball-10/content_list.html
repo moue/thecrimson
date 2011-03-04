@@ -25,9 +25,9 @@
     {% module 4 baseball red %}
     <div class="article_previews" id="baseball" >
         <ul>
-            {% for s in baseball %}
-                <li>{{ s|render:"preview" }}</li>
-            {% endfor %}
+            {% for c in content %}
+        		<li>{{ c|render:"blog_entry" }}</li>
+    		{% endfor %}
         </ul>
     </div>
     <span class="clear"></span>
