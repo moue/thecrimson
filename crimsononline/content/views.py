@@ -608,8 +608,6 @@ def get_content_group(request, gtype, gname, page=1, tags=None):
     if not cg:
         raise Http404
     c = cg.content.all()
-    baseball = Article.objects.filter(tags='Baseball' and group=cg)
-    softball = Article.objects.filter(tags='Softball' and group=cg)
     # check if flyby content group - if so, just pass to flyby view
     if cg.section == Section.objects.get(name='flyby'):
         return section_flyby(request, page, cg=cg)
