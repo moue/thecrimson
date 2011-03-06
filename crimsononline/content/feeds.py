@@ -66,7 +66,7 @@ class ByAuthor(CrimsonFeed):
         return obj.get_absolute_url()
     
     def description(self, obj):
-        return "The latest Crimson articles by %s" % str(obj)
+        return "The latest Crimson articles by %s" % str.capitalize(str(obj))
 
     def items(self, obj):
         items = cache.get('feeds_author_%d' % obj.pk)
@@ -93,7 +93,7 @@ class ByTag(CrimsonFeed):
         return obj.get_absolute_url()
     
     def description(self, obj):
-        return "The latest Crimson articles tagged with %s" % str(obj)
+        return "The latest Crimson articles tagged with %s" % str.capitalize(str(obj))
     
     def items(self, obj):
         items = cache.get('feeds_tag_%d' % obj.pk)
@@ -122,7 +122,7 @@ class BySection(CrimsonFeed):
             return 
     
     def description(self, obj):
-        return "The latest Crimson articles in %s" % str(obj)
+        return "The latest Crimson articles in %s" % str.capitalize(str(obj))
     
     def items(self, obj):
         items = cache.get('feeds_section_%d' % obj.pk)
