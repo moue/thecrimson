@@ -19,9 +19,9 @@
 <meta property="og:title" content="{{article.headline}}"/>
 <meta property="og:site_name" content="The Harvard Crimson"/>
 {% if article.main_rel_content %}
-    {% ifnotequal article.main_rel_content.content_type.model "article" %}
+    {% ifequal article.main_rel_content.content_type.model "image" %}
 		<meta property="og:image" content="{{article.main_rel_content.absolute_url}}"/>
-    {% endifnotequal %}
+    {% endifequal %}
 {% endif %}
 {% endblock %}
 
