@@ -58,13 +58,23 @@
 
     <div class="tools">
         <div class="search">
-        
-            <form action="/search/">
+        	<form action="/search/" id="cse-search-box">
+           <div>
+               <input type="hidden" name="cx" value="013815813102981840311:aw6l9tjs1a0" />
+               <input type="hidden" name="cof" value="FORID:10" />
+               <input type="hidden" name="ie" value="UTF-8" />
+               <input type="text" class="query" name="q"/>
+               <button class="search-submit" type="submit" name="sa" value="Search"></button>
+          </div>
+          </form>
+<script type="text/javascript" src="http://www.google.com/cse/brand?form=cse-search-box&lang=en"></script>
+
+            <!--<form action="/search/">
             <div>
                 <input class="query" type="text" name="q" />
                 <button class="search-submit" type="submit" value="SEARCH"></button>
             </div>
-            </form>
+            </form>--!>
         </div>
     </div>
 </div>
