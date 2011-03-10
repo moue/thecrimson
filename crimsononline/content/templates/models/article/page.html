@@ -23,9 +23,11 @@
 		<meta property="og:image" content="{{article.main_rel_content.absolute_url}}"/>
     {% else %}
         <meta property="og:image" content="{% static_url "images/crimsonseal.jpg"%}" />
+    	<link rel="image_src" href="{% static_url "images/crimsonseal.jpg"%}" />
     {% endifequal %}
 {% else %}
 	<meta property="og:image" content="{% static_url "images/crimsonseal.jpg"%}" />
+	<link rel="image_src" href="{% static_url "images/crimsonseal.jpg"%}" />
 {% endif %}
 
 {% endblock %}
