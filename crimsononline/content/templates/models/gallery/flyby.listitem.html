@@ -13,7 +13,7 @@
         <div id="{{ gallery.pk }}_photo_{{ forloop.counter }}" {% if not forloop.first %}style="display:none;"{% endif %}>
             {{ item|to_img_tag:"532,532,1,1" }}
             {% if item.child.caption %}
-                <div class="fb_gallery_image_caption">{{ item.child.caption|truncchars:"200,..." }}</div>
+                <p class="caption">{{ item.child.caption|truncchars:"200,..." }}</div>
             {% endif %}
         </div>
     {% endfor %}
