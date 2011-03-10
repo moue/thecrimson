@@ -22,4 +22,7 @@
         {% endifequal %}
     </a>
     <p class="byline">{{image.contributors.all|linkify|human_list}}</p>
+    <div class="caption">
+        {{ image.caption }}
+    </div>
 {% endblock %}
