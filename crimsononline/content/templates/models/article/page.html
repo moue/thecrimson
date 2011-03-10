@@ -22,10 +22,10 @@
     {% ifequal article.main_rel_content.content_type.model "image" %}
 		<meta property="og:image" content="{{article.main_rel_content.absolute_url}}"/>
     {% else %}
-        <meta property="og:image" content="{% static_url "images/crimsonseal.jpg"%}" "/>
+        <meta property="og:image" content="{% static_url "images/crimsonseal.jpg"%}" />
     {% endifequal %}
 {% else %}
-	<meta property="og:image" content="{% static_url "images/crimsonseal.jpg"%}" "/>
+	<meta property="og:image" content="{% static_url "images/crimsonseal.jpg"%}" />
 {% endif %}
 
 {% endblock %}
