@@ -169,6 +169,5 @@ DISQUS_FORUM_ID = "1508"
 GOOGLE_API_KEY = "ABQIAAAAdoBgu2mGyHlwNmFWklwtOBSMTarlKQyRRh5ucdthk06p19vF5xQFCzYsXKd1Wl-sgDQvPuCHDW3o8A"
 
 FLYBY_TIP_ADDRESS = "flybytips@thecrimson.com"
-"""
+
 DATABASE_ROUTERS = ['routers.MasterRouter']
-"""
