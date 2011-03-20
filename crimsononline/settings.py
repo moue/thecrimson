@@ -170,4 +170,4 @@ GOOGLE_API_KEY = "ABQIAAAAdoBgu2mGyHlwNmFWklwtOBSMTarlKQyRRh5ucdthk06p19vF5xQFCz
 
 FLYBY_TIP_ADDRESS = "flybytips@thecrimson.com"
 
-DATABASE_ROUTERS = ['MasterRouter']
+DATABASE_ROUTERS = ['routers.MasterRouter']
