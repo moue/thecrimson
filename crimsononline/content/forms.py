@@ -297,6 +297,7 @@ CONTACT_TYPE_CHOICES = (
     ('business','Business Inquiry'),
     ('website','Website Question'),
     ('correction','Correction'),
+    ('photo', 'Photo Request'),
 )
 CONTACT_TYPE_EMAILS = {
     'news': 'managingeditor@thecrimson.com',
@@ -304,6 +305,7 @@ CONTACT_TYPE_EMAILS = {
     'letter': 'letters@thecrimson.com',
     'website': 'itchair@thecrimson.com',
     'correction': 'president@thecrimson.com',
+    'photo': 'photochairs@thecrimson.com',
 }
 class ContactForm(forms.Form):
     message_type = forms.CharField(widget=forms.Select(choices=CONTACT_TYPE_CHOICES))
