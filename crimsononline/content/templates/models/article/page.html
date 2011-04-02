@@ -56,7 +56,9 @@
 {% block bottom_content %}
     {% if article.main_rel_content %}
         {% ifnotequal article.main_rel_content.content_type.model "article" %}
-            {{ article.main_rel_content|render:"article.main" }}
+        	{% ifnotequal article.section "Opinion" %}
+                {{ article.main_rel_content|render:"article.main" }}
+            {% endifnotequal %}
         {% endifnotequal %}
     {% endif %}
 
