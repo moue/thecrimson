@@ -136,6 +136,7 @@ PAPER_START_DATES = (
     (4, 'May'),
     (5, 'Fall Semester'),
     (6, 'Spring Semester'),
+    (7, 'Full Year'),
 )
         
 class PaperSubscription(models.Model):
