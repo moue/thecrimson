@@ -97,8 +97,15 @@ ul.normal_bullets {
     float:left;
 }
 
-.col-2, .col-3, .col-4, .col-5, .col-6, .col-8, .col-9{float:left; min-height: 1px;}
+.line-12{width: 973px; border-top: 1px solid #E5E5E5; margin-bottom: 5px;}
+.redline-4{width: 309px; border-bottom: 1px solid #ba0600; margin-bottom: 10px;}
 
+.dotline-12{width:973p; border-top: 1px dotted #E5E5E5; margin-bottom: 5px;}
+
+.col-0, .col-1, .col-2, .col-3, .col-4, .col-5, .col-6, .col-8, .col-9{float:left; min-height: 1px;}
+
+.col-0{width: 65px;}
+.col-1{width: 100px;}
 .col-2{width: 143px;}
 .col-3{width: 226px;}
 .col-4{width: 309px;}
@@ -125,6 +132,7 @@ ul.normal_bullets {
     border-top: 2px solid #b00600;
     overflow: hidden;
 }
+
 
 /* for mostxed, allow double inheritance */
 .mod > .title, .mod > * > .title{
@@ -320,6 +328,24 @@ ul.normal_bullets {
     margin-right: 0px !important;
 }
 
+.submenu-facebook{
+	width: 16px;
+	height: 16px;
+	background-image: url(../images/icons/facebook.gif);
+	background-repeat: no-repeat;
+	background-position: center center;
+	margin-right: 0px;
+}
+
+.submenu-twitter{
+	width: 16px;
+	height: 16px;
+	background-image: url(../images/icons/twitter.gif);
+	background-repeat: no-repeat;
+	background-position: center center;
+	margin-right: 0px;
+}
+
 .submenu_contents > span, .submenu_contents > a{
     float: left;
     display: inline-block;
@@ -435,14 +461,15 @@ ul.normal_bullets {
 a {
 	text-decoration: none;
 }
-.byline{padding: 2px 0;}
-.byline a{text-transform: uppercase;}
-.byline, .byline a, .byline a:hover, .dateline{
+.byline, .title {padding: 2px 0;}
+.byline a, .title a {text-transform: uppercase;}
+.title, .title a, .title a:hover, .byline, .byline a, .byline a:hover, .dateline{
     color: #999;
     line-height: 11px;
     font-size: 11px;
     font-family: Helvetica, Tahoma, Arials, sans-serif;
 }
+
 .dateline {color: #BA0600;}
 
 .webonly {
@@ -453,6 +480,15 @@ img {
     border: none;
 }
 /* ads */
+
+.top_leaderboard2{
+    width:971px;
+    margin:0 auto;
+    margin-bottom: 10px;
+	padding: 3px 0;
+    text-align: left;
+	border: 1px solid #eee;
+}
 
 .top_leaderboard{
     width:971px;
