@@ -1,0 +1,127 @@
+.bigad{width:329px; float:left;}
+.topad{width:873px; float: right;}
+.top_banner{
+    width:971px;
+    margin:0 auto;
+    margin-bottom: 10px;
+	padding: 3px 0;
+    text-align: center;
+	background-image: url('{% static_url "images/fm/fm logo.jpg" %}');
+    background-repeat: no-repeat;
+    background-position: bottom left;
+}
+
+.gutterborder{width: 11px; min-height: 1px;
+    float:left;}
+
+.col0, .col1, .col2, .col3, .col4, .col5, .col6{ float:left; min-height: 1px; margin-top: 10px; margin-bottom: 10px;}
+
+.col0{
+	width: 65px;
+}
+
+.col1{
+	width: 100px;
+}
+
+.col2, .cols2{
+	width: 143px;
+}
+
+.cols2{
+	float:left; min-height: 1px; 
+	margin-top: 5px;
+	margin-bottom: 10px;
+}
+
+.col3{
+	width: 226px;
+}
+
+.col4{
+	width: 309px;
+}
+
+.col5{
+	width: 392px;
+}
+
+.col6{
+	width: 475px;
+}
+
+p.regtext{
+	font-family:"Georgia";
+	font-weight: bold;
+	font-size: 12px;
+}
+
+p.subsection{
+	font-family:"Arial";
+	font-size: 12px;
+	color: #666;
+}
+
+p.readheading{
+	font-family:"Arial";
+	font-size: 12px;
+	font-weight: bold;
+	color: #C41039;
+}
+
+p.watchheading{
+	font-family:"Arial";
+	font-size: 12px;
+	font-weight: bold;
+	color: #55489D;
+}
+
+p.scenesheading{
+	font-family:"Arial";
+	font-size: 12px;
+	font-weight: bold;
+	color: #4FC6E0;
+}
+
+p.videoheading{
+	font-family:"Arial";
+	font-size: 12px;
+	font-weight: bold;
+	color: #B2D235;
+}
+
+p.featuredheading{
+	font-family: "Arial";
+	font-size: 12px;
+	font-weight: bold;
+	color: #F47932;
+}
+
+p.mostreadheading{
+	font-family: "Arial";
+	font-size: 12px;
+	font-weight: bold;
+	color: #55489D;
+}
+
+.article_headlines h5 > a {
+     font-family: georgia,"times new roman",times,serif;
+     font-size: 9px;
+     font-weight: bold;
+}
+
+.article_headlines h4 > a {
+     font-family: georgia,"times new roman",times,serif;
+     font-size: 12px;
+     font-weight: bold;
+}
+
+.article_previews3 .fm_image_thumb {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.article_previews2 .teaser {
+    font-size: 13px;
+    clear: left;
+}
