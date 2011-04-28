@@ -316,7 +316,7 @@ def section_fm(request):
     section = Section.cached(nav)
     stories = Article.objects.recent.filter(section=section)
     try:
-        scrutiny = stories.filter(tags__text='Scrutiny')[0]
+        scrutiny = stories.filter(tags__text='Scrutiny')[:4]
     except IndexError:
         scrutiny = None
     try:
@@ -333,11 +333,11 @@ def section_fm(request):
     today = datetime.today()
     lastweek = today-timedelta(7)
     lastmonth = today-timedelta(30)
-
-    featured = Article.objects.filter(section=section) \
-        .filter(issue__issue_date__gte=lastmonth) \
-        .filter(issue__issue_date__lte=lastweek) \
-        .order_by('-priority')[:3]
+    videos = YouTubeVideo.objects.filter(section=section)[1:5]
+    fmvid = YouTubeVideo.objects.filter(section=section)[0]
+    gallery = Galleries.objects.filter(section=section)[0]
+    featured = top_articles('FM', today)[:2]
+    graphic = FlashGraphic.objects.filter(section=section)[0]
 
     return render_to_response('sections/fm.html', locals())
 

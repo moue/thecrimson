@@ -24,6 +24,8 @@
 
 	{% static_js_force "media_include.js" %}
 	{% block js %}
+		{% static_js "swfobject.js" %}
+		{% static_js "jwplayer.js" %}
 		{% static_js "browser_upgrade_notification.js" %}
 	{% endblock %}
 	
