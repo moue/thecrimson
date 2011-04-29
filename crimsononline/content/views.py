@@ -324,7 +324,7 @@ def section_fm(request):
     except IndexError:
         endpaper = None
     rotate = rotatables(section, 15)
-    itm = stories.filter(tags__text='In The Meantime')[:3]
+    itm = stories.filter(tags__text='In The Meantime')[:6]
     ftm = stories.filter(tags__text='For The Moment')[:9]
     issues = Issue.objects.exclude(Q(fm_name=None)|Q(fm_name=''))[:3]
     columns = ContentGroup.objects.filter(section=section, active=True,

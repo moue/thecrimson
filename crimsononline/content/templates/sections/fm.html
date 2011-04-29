@@ -132,12 +132,10 @@ Harvard FM
 	</div>
 	<div class="gutter"></div>
 	<div class="col2">
-		<p class="subsection">COLUMNS</p>
-		<div class="article_headlines" id="columns">
-		{% for column in columns %}
-            {% if column.recent %}
-                <h4>{{ column|linkify:column.name }}</h4>
-            {% endif %}
+		<p class="subsection">IN THE MOMENT</p>
+		<div class="article_headlines" id="itm">
+		{% for s in itm %}
+           <h4>{{ s|linkify:s.headline }}</h4>
 		{% endfor %}
 		</div>
 	</div>
@@ -147,10 +145,12 @@ Harvard FM
 		<div class="article_headlines" id="endpaper" style="margin-bottom: 5px;">
 		<h4>{{ endpaper|linkify:endpaper.headline }}</h4>
 		</div>
-		<p class="subsection">IN THE MOMENT</p>
-		<div class="article_headlines" id="itm">
-		{% for s in itm %}
-           <h4>{{ s|linkify:s.headline }}</h4>
+		<p class="subsection">COLUMNS</p>
+		<div class="article_headlines" id="columns">
+		{% for column in columns %}
+            {% if column.recent %}
+                <h4>{{ column|linkify:column.name }}</h4>
+            {% endif %}
 		{% endfor %}
 		</div>
 	</div>
