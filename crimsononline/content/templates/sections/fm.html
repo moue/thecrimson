@@ -94,7 +94,7 @@ Harvard FM
 			<div id="headlines" class="article_previews2">
 				{% for story in featured %}
 					{% if forloop.last %}
-						{{ story|render:"preview" }}
+						{{ story|render:"fm_preview" }}
 					{% endif %}
 				{% endfor %}
 			</div>
