@@ -333,7 +333,7 @@ def section_fm(request):
     today = datetime.today()
     lastweek = today-timedelta(7)
     lastmonth = today-timedelta(30)
-    videos = YouTubeVideo.objects.filter(section=section)[-5:]
+    videos = YouTubeVideo.objects.filter(section=section)[5:]
     fmvid = YouTubeVideo.objects.filter(section=section, tags__text='Fifteen Hottest')[0]
     gallery = Gallery.objects.filter(section=section, tags__text='Fifteen Hottest')[0]
     featured = top_articles('FM')[:2]
