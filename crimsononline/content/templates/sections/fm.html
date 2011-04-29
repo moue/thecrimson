@@ -72,11 +72,9 @@ Harvard FM
 		</div>
 		<div class="gutter"></div>
 		<div class="col0" style="padding-left: 5px;">
-			<div class="article_headlines">
 			{% for vid in videos|notfirst %}
             	{{vid|render:"small_preview"}}
         	{% endfor %}
-        	</div>
 		</div>
 	</div>
 	</td>
