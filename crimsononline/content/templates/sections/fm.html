@@ -20,7 +20,7 @@ Harvard FM
 
 {% block pre_body %}
     <div class="top_banner">
-		<img src="{% static_url "images/fm/fm logo.jpg" %}"/>
+		<a href="/section/fm"><img src="{% static_url "images/fm/fm logo.jpg" %}"/></a>
 	</div>
 {% endblock %}
 
@@ -29,7 +29,7 @@ Harvard FM
 		<tr valign="top" align="left">
 		<td width="641">
     	<div class="col-8">
-		<a href="{{firstscrut.get_absolute_url}}"><img src="{% static_url "images/fm/fmhottestfreshmen.jpg" %}" width="641"/></a>
+		<img src="{% static_url "images/fm/fmhottestfreshmen.jpg" %}" width="641"/>
 		<span class="clear"></span>
 		<div class="col-8">
 			{{graphic|render:"front_preview"}}
@@ -111,10 +111,12 @@ Harvard FM
 	<td width="226" valign="top" align="left">
 	<div class="col3">
 	    <p class="mostreadheading">/// MOST READ</p>
-		<div id="mostreadarticles">       
+		<div id="mostreadarticles">  
+		<ol>
 			{% for article in mostreadarticles %}
 				<li>{{article|linkify}}</li>
 			{% endfor %}
+		</ol>
         </div>
 	</div>
 	</td></tr></table>
