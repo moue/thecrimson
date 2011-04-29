@@ -104,6 +104,10 @@ p.mostreadheading{
 	color: #55489D;
 }
 
+p.regtext > a {
+	color: #000000;
+}
+
 .article_headlines h5 > a {
      font-family: georgia,"times new roman",times,serif;
      font-size: 9px;
