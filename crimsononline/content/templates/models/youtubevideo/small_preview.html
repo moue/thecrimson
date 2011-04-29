@@ -1,0 +1,5 @@
+{% load common %}
+{% load content_filters %}
+
+<div class="image_thumb"><a href="{{youtubevideo.get_absolute_url}}">{{youtubevideo|render:"thumb"}}</a></div>
+    <h5>{{ youtubevideo|linkify }}</h5>
