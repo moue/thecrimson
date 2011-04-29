@@ -1,5 +1,16 @@
-<object width="{{flashgraphic.width}}" height="{{flashgraphic.height}}">
+{% extends "models/wrapper.html" %}
+
+{% load common %}
+{% load content_filters %}
+{% load content_module %}
+{% load module %}
+
+{% block wrapper_classes %}wide{% endblock %}
+
+{% block wrapper_contents %}
+    <object width="{{flashgraphic.width}}" height="{{flashgraphic.height}}">
     <param name="movie" value="{% static_url "" %}{{flashgraphic.graphic}}">
     <embed src="{% static_url "" %}{{flashgraphic.graphic}}" width="{{flashgraphic.width}}" height="{{flashgraphic.height}}">
     </embed>
     </object>
+{% endblock %}
