@@ -6,6 +6,6 @@
 {% block rc %}
     <span class="ctype">Flash Graphic</span>
     <a href="{{ flashgraphic.get_absolute_url }}">
-    {{flashgraphic.thumbnail|to_img_tag:"180,"}}</a>
+    {{flashgraphic.pic|to_img_tag:"180,"}}</a>
     <span class="title"><a href="{{ flashgraphic.get_absolute_url }}">{{ flashgraphic.title }}</a></span>
 {% endblock %}
