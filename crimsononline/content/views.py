@@ -335,7 +335,7 @@ def section_fm(request):
     lastmonth = today-timedelta(30)
     videos = YouTubeVideo.objects.filter(section=section)[1:5]
     fmvid = YouTubeVideo.objects.filter(section=section)[0]
-    gallery = Galleries.objects.filter(section=section)[0]
+    gallery = Gallery.objects.filter(section=section)[0]
     featured = top_articles('FM', today)[:2]
     graphic = FlashGraphic.objects.filter(section=section)[0]
 
