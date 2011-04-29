@@ -1,179 +1,126 @@
-{% extends "base.html" %}
+{% extends "section.html" %}
 
+{% load cache %}
 {% load common %}
 {% load content_filters %}
 {% load rotator %}
-{% load module %}
 {% load content_module %}
 {% load tag_cloud %}
 {% load top_articles %}
+{% load module %}
 
-{% block css %}
-	{{ block.super }}
-	{% static_css "fmsection.css" %}
-	{% static_css "section.css" %}
+
+{% block leftcolumn %}
+    {% module 4 scrutiny red %}
+    <div class="article_previews" id="scrutiny" >
+        <ul>
+            <li>{{ scrutiny|render:"preview" }}</li>
+        </ul>
+    </div>
+    <span class="clear"></span>
+    {% endmodule %}
+    
+    {% module 4 "in the meantime" %}
+    <div class="article_previews" id="itm">
+        <ul>
+            {% for s in itm %}
+                <li>{{ s|render:"preview" }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endmodule %}
+    
+    {% comment %}
+    {% module 4 "past issues" %}
+    <div class="img_list" id="past_issues">
+        <ul>
+            {% for i in issues %}
+                <li>
+                    {% if i.fm_cover %}{{ i.fm_cover|to_img_tag:"60,60,1,1"}}
+                    {% else %}{% endif %}
+                    <h3><a href="">{{ i.fm_name }}</a></h3>
+                    <p class="dateline">{{ i.issue_date }}</p>
+                </li>
+            {% endfor %}
+        </ul>
+        <span class="clear"></span>
+    </div>
+    {% endmodule %}
+    {% endcomment %}
+    
+    {% module 4 endpaper %}
+    <div class="article_previews" id="endpaper">
+        <ul>
+            <li>{{ endpaper|render:"preview" }}
+        </ul>
+    </div>
+    {% endmodule %}
 {% endblock %}
 
-{% block pre_body %}
-    <div class="top_banner">
-		<img src="{% static_url "images/fm/fm logo.jpg" %}"/>
-	</div>
+{% block middlecolumn %}
+    {% rotator rotate "news_rotator" %}
+    
+    {% module 4 "for the moment" %}
+    <div class="article_headlines" id="ftm">
+        <ul>
+            {% for s in ftm %}
+            <li>
+                {{s|render:"small_preview"}}
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endmodule %}
+    
 {% endblock %}
 
-{% block body %}
-		<table cellspacing="5" border="0" cellpadding="0">
-		<tr valign="top" align="left">
-		<td width="641">
-    	<div class="col-8">
-		<a href="{{firstscrut.get_absolute_url}}"><img src="{% static_url "images/fm/fmhottestfreshmen.jpg" %}" width="641"/></a>
-		<span class="clear"></span>
-		<div class="col-8">
-			{{graphic|render:"front_preview"}}
-		</div>
-		<span class="clear"></span>
-		<div class="col-8">
-		<div class="col0">
-			<p class="readheading">/// READ</p>
-			<p class="regtext">
-				The Hottest 15 tell all in interviews with FM reporters.
-			</p>
-		</div>
-		<div class="gutter"></div>
-		<div class="col3">
-			<p class="watchheading">/// VIEW</p>
-			{{gallery|render:"fmgallery_preview"}}
-		</div>
-		<div class="gutter"></div>
-		<div class="col3">
-			<p class="scenesheading">/// WATCH</p>
-			{{fmvid|render:"embed_small_preview"}}
-		</div>
-		<div class="gutter"></div>
-		<div class="col0" style="padding-left: 11px;">
-			<p class="readheading">/// VISIT</p>
-			<img src="{% static_url "images/fm/gap.jpg" %}" width="65" />
-			<img src="{% static_url "images/fm/lf.jpg" %}" width="65" />
-		</div>
-		</div>
-		</div>
-		</td>
-		<td width="1" bgcolor="#E5E5E5"><BR></td>
-		<td width="309" valign="top" align="left"> 
-	<div class="col4">
-		<a href="http://roomorama.com"><img src="{% static_url "images/fm/fmadtest.png" %}" width="300" height="600"/></a>
-	</div></td></tr></table>
-	<span class="clear"></span>
-	<div class="dotline-12"></div>
-	<table cellspacing="5" border="0" cellpadding="0">
-	<tr valign="top" align="left">
-	<td width="392">
-	<div class="col5">
-		<p class="videoheading">/// VIDEO/MULTIMEDIA</p>
-		<div class="col4">
-           {{videos|first|render:"embed_front_preview"}}
-		</div>
-		<div class="gutter"></div>
-		<div class="col0" style="padding-left: 5px;">
-			<div class="article_headlines">
-			{% for vid in videos|notfirst %}
-            	{{vid|render:"small_preview"}}
-        	{% endfor %}
-        	</div>
-		</div>
-	</div>
-	</td>
-	<td width="1" bgcolor="#E5E5E5"><BR></td>
-	<td width="309" valign="top" align="left">
-	<div class="col4">
-		<p class="featuredheading">/// FEATURED ARTICLES</p>
-		<div class="col2">
-			<div id="headlines" class="article_previews2">
-				{{ featured|first|render:"preview"}}
-			</div>
-		</div>
-		<div class="gutter"></div>
-		<div class="col2">
-			<div id="headlines" class="article_previews2">
-				{% for story in featured %}
-					{% if forloop.last %}
-						{{ story|render:"preview" }}
-					{% endif %}
-				{% endfor %}
-			</div>
-		</div>
-	</div>
-	</td>
-	<td width="1" bgcolor="#E5E5E5"><BR></td>
-	<td width="226" valign="top" align="left">
-	<div class="col3">
-	    <p class="mostreadheading">/// MOST READ</p>
-		<div id="mostreadarticles">       
-			{% for article in mostreadarticles %}
-				<li>{{article|linkify}}</li>
-			{% endfor %}
+{% block rightcolumn %}
+    {% module 4 "featured content" box %}
+    <div id = "featured_content">
+        <div id="headlines" class="article_previews">
+             <ul>
+            {% for story in featured %}
+                {% if story %}
+                    {%if forloop.last %}
+                        <li class ="last_item">
+                    {% else %}
+                        <li>
+                    {% endif %}
+                    {{story|render:"preview"}}
+                    </li>
+                {% endif %}
+            {% endfor %}
+            </ul>
         </div>
-	</div>
-	</td></tr></table>
-	<span class="clear"></span>
-	<div class="top_leaderboard">
-		{% advertisement 62 %}
-	</div>
-	<span class="clear"></span>
-	<table cellspacing="5" border="0" cellpadding="0">
-	<tr valign="top" align="left">
-	<td width="475">
-	<div class="col2">
-		<p class="subsection">FOR THE MOMENT</p>
-		<div class="article_headlines" id="ftm">
-			{% for s in ftm %}
-                <h4>{{s|linkify:s.headline}}</h4>
-			{% endfor %}
-		</div>
-	</div>
-	<div class="gutter"></div>
-	<div class="col2">
-		<p class="subsection">COLUMNS</p>
-		<div class="article_headlines" id="columns">
-		{% for column in columns %}
+    </div>
+    {% endmodule %}
+    
+    {% module 4 "" box %}
+        {% advertisement 59 %}
+    {% endmodule %}
+    
+    {% comment %}{% tag_cloud 20 "tags" %}{% endcomment %}
+    {% module 4 columns box %}
+    <div class="img_list" id="columnists">
+        {% for column in columns %}
             {% if column.recent %}
-                <h4>{{ column|linkify:column.name }}</h4>
+            <li>
+                <a href="{{ column.get_absolute_url }}" class="img">
+                {% if column.image %}{{ column.image|to_img_tag:"60,60,1,1" }}
+                {% else %}<img src="{% static_url "images/noface_60x60.jpg" %}" />{% endif %}</a>
+                <h3>{{ column|linkify:column.name }}</h3>
+                <p>{{ column.subname }}</p>
+                <p class="dateline">Updated {{ column.recent|date }}</p>
+            </li>
             {% endif %}
-		{% endfor %}
-		</div>
-	</div>
-	<div class="gutter"></div>
-	<div class="col2" style="padding-right: 11px">
-		<p class="subsection">ENDPAPER</p>
-		<div class="article_headlines" id="endpaper">
-		<h4>{{ endpaper|linkify:endpaper.headline }}</h4>
-		</div>
-		<p class="subsection">IN THE MOMENT</p>
-		<div class="article_headlines" id="itm">
-		{% for s in itm %}
-           <h4>{{ s|linkify:s.headline }}</h4>
-		{% endfor %}
-		</div>
-	</div>
-	</td>
-	<td width="1" bgcolor="#E5E5E5"><BR></td>
-	<!--<div class="gutter"></div>-->
-	<td width="475" valign="top" align="left">
-	<div class="col6">
-		<p class="subsection">PAST SCRUTS</p>
-		{% for scrut in scrutiny|notfirst %}
-		<div class="cols2">
-			<p class="dateline">{{ scrut|datify }}</p>
-			<div class="article_previews2">
-				{{ scrut|render:"fm_preview" }}
-			</div>
-		</div>
-		{% if forloop.last %}
-		{% else %}
-			<div class="gutter"></div> 
-		{% endif %}
-		{% endfor %}
-	</div>
-	</td></tr></table>
-	<span class="clear"></span>
-{% endblock %}
+        {% endfor %}
+        <span class="clear"></span>
+    </div>
+    {% endmodule %}
+    
+    {% cache 500 mostreadarticles_fm %}
+    {% most_read_articles "section:fm" %}
+    {% endcache %}
+    
 
+{% endblock %}
