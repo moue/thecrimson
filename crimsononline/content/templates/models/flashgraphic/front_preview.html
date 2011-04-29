@@ -1,7 +1,5 @@
-<div class="graphic" style="margin: 0 auto; width:{{flashgraphic.width}}px;">
-        <object width="{{flashgraphic.width}}" height="{{flashgraphic.height}}">
-        <param name="movie" value="{% static_url "" %}{{flashgraphic.graphic}}">
-        <embed src="{% static_url "" %}{{flashgraphic.graphic}}" width="{{flashgraphic.width}}" height="{{flashgraphic.height}}">
-        </embed>
-        </object>
-</div>
+<object width="{{flashgraphic.width}}" height="{{flashgraphic.height}}">
+    <param name="movie" value="{% static_url "" %}{{flashgraphic.graphic}}">
+    <embed src="{% static_url "" %}{{flashgraphic.graphic}}" width="{{flashgraphic.width}}" height="{{flashgraphic.height}}">
+    </embed>
+    </object>
