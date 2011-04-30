@@ -1,5 +1,5 @@
 {% load common %}
 {% load content_filters %}
 
-<div class="image_thumb"><a href="{{youtubevideo.get_absolute_url}}">{{youtubevideo|render:"thumb"}}</a></div>
+<div class="image_thumb"><a href="{{youtubevideo.get_absolute_url}}">{{youtubevideo|render:"fm_thumb"}}</a></div>
     <h5 style="font-size:9px;">{{ youtubevideo|linkify }}</h5>

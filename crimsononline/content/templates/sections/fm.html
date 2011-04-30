@@ -65,13 +65,13 @@ Harvard FM
 	<table cellspacing="5" border="0" cellpadding="0">
 	<tr valign="top" align="left">
 	<td width="392">
-	<div class="col5">
+	<div class="col6">
 		<p class="videoheading">/// VIDEO/MULTIMEDIA</p>
 		<div class="col4">
            {{videos|first|render:"embed_front_preview"}}
 		</div>
 		<div class="gutter"></div>
-		<div class="col0" style="padding-left: 5px;">
+		<div class="col2">
 			{% for vid in videos|notfirst %}
             	{{vid|render:"small_preview"}}
         	{% endfor %}
@@ -80,36 +80,18 @@ Harvard FM
 	</td>
 	<td width="1" bgcolor="#E5E5E5"><BR></td>
 	<td width="309" valign="top" align="left">
-	<div class="col4">
+	<div class="col6">
 		<p class="featuredheading">/// FEATURED ARTICLES</p>
+		{% for story in featured %}
 		<div class="col2">
 			<div id="headlines" class="article_previews2">
-				{{ featured|first|render:"fm_preview"}}
+				{{ story|render:"fm_preview"}}
 			</div>
 		</div>
+		{% if forloop.last %}
+		{% else %}
 		<div class="gutter"></div>
-		<div class="col2">
-			<div id="headlines" class="article_previews2">
-				{% for story in featured %}
-					{% if forloop.last %}
-						{{ story|render:"fm_preview" }}
-					{% endif %}
-				{% endfor %}
-			</div>
-		</div>
-	</div>
-	</td>
-	<td width="1" bgcolor="#E5E5E5"><BR></td>
-	<td width="226" valign="top" align="left">
-	<div class="col3">
-	    <p class="mostreadheading">/// MOST READ</p>
-		<div class="mostreadarticles">  
-		<ol>
-			{% for article in mostreadarticles %}
-				<li>{{article|linkify}}</li>
-			{% endfor %}
-		</ol>
-        </div>
+		{% endif %}{% endfor %}
 	</div>
 	</td></tr></table>
 	<span class="clear"></span>

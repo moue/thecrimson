@@ -336,7 +336,7 @@ def section_fm(request):
     videos = YouTubeVideo.objects.recent.filter(section=section)[:3]
     fmvid = YouTubeVideo.objects.filter(section=section, tags__text='Fifteen Hottest')[0]
     gallery = Gallery.objects.filter(section=section, tags__text='Fifteen Hottest')[0]
-    featured = top_articles('FM')[:2]
+    featured = top_articles('FM')[:3]
     graphic = FlashGraphic.objects.filter(tags__text='Fifteen Hottest')[0]
 
     return render_to_response('sections/fm.html', locals())
