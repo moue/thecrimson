@@ -100,8 +100,9 @@ def index(request, m=None, d=None, y=None):
         if len(more_stories) == 9:
             break
     dict['more_stories'] = more_stories
-    dict['opeds'] = top_articles('Opinion', dt)[:4]
-    dict['arts'] = top_articles('Arts', dt)[:4]
+    opeds = top_articles('Opinion', dt)
+    dict['opeds'] = opeds[:3]
+    dict['more_opeds'] = opeds[4:9]
     # Prevent sports articles that showed up in top articles from appearing again
     """
     dict['sports'] = [x 
@@ -109,14 +110,21 @@ def index(request, m=None, d=None, y=None):
                       in (top_articles('Sports', dt).filter((Q(group__isnull=False) & ~Q(group=sportsblog)) | Q(group__isnull=True)))[:10]
                       if x not in dict['top_stories']][:4]
     """
-    dict['sports'] = [x 
+    sports = [x 
                       for x
-                      in (top_articles('Sports', dt))[:10]
-                      if x not in dict['top_stories']][:4]
-    dict['fms'] = top_articles('FM', dt)[:4]
+                      in (top_articles('Sports', dt))[:15]
+                      if x not in dict['top_stories']]
+    dict['sports'] = sports[:3]
+    dict['more_sports'] = sports[4:9]
+    arts = top_articles('Arts', dt)
+    dict['arts'] = arts[:2]
+    dict['more_arts'] = arts[3:8]
+    fms = top_articles('FM', dt)
+    dict['fms'] = fms[:2]
+    dict['more_fms'] = fms[3:8]
     #dict['issue'] = Issue.get_current()
-    dict['galleries'] = Gallery.objects.prioritized(40)[:6]
-    dict['videos'] = YouTubeVideo.objects.prioritized(60)[:3]
+    dict['galleries'] = Gallery.objects.prioritized(40)[:3]
+    dict['videos'] = YouTubeVideo.objects.prioritized(60)[:4]
 
     return render_to_response('index.html', dict)
 
