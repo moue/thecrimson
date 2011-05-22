@@ -1,0 +1,8 @@
+{% extends "models/wrapper.html" %}
+
+{% load content_filters %}
+{% load common %}
+
+{% block wrapper_contents %}
+<p class="byline"><img src="{% static_url "images/icons/video.gif" %}" alt="picture" />VIDEO: {{youtubevideo|linkify:youtubevideo.title}}</p>
+{% endblock %}

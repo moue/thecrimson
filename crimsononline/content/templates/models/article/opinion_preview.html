@@ -1,0 +1,27 @@
+{% load common %}
+{% load cache %}
+{% load content_filters %}
+
+{% if article.main_rel_content %}
+<div class="image_thumb"><a href="{{article.get_absolute_url}}">{{article.main_rel_content|render:"thumb"}}</a></div>
+{% endif %}
+<h3>{{article|linkify}}
+	{% if article.num_comments %}
+		<span class="small-text-icon-wrap">
+			<span class="small-text-icon-item comment-count">
+				{% cache 600 preview_comments content.pk %}
+					{{article.num_comments}}
+				{% endcache %}
+			</span>
+			<span class="small-text-icon-item comment-image"></span>
+		</span>
+	{% endif %}
+</h3>
+<p class="byline">
+{% with content.tags.all as a_tags %}
+    {% for tag in a_tags %}
+        {% if forloop.first %}<a href="{{ tag.get_absolute_url }}">{{ tag.text }}</a>{% endif %}
+    {% endfor %}
+{% endwith %} | {{ article|byline:"short" }}
+<span class="dateline">{{ article|datify }}</span></p>
+<p class="teaser">{{ article.teaser|striptags }}</p>

@@ -2,11 +2,12 @@
 {% load content_filters %}
 {% load common %}
 
-{% module 4 "" box %}
-<div class="flyby_preview">
 
-    <a href="/section/flyby/"><img class="flyby_preview_header" src="{% static_url "images/flyby/flyby_preview.png" %}" alt="flyby_preview" /></a>
-
+<div class="flyby_preview" style="margin-bottom: 10px; padding-left: 5px;">
+<div style="margin-bottom: -4px;">
+    <a href="/section/flyby/" style="margin-bottom: 0px;"><img class="flyby_preview_header" src="{% static_url "images/flyby/flybyheader.jpg" %}" alt="flyby_preview" width="311" /></a>
+</div>
+<div style="margin-top: 0px; border-left: 2px solid #ba0600; border-right: 2px solid #ba0600; border-bottom: 2px solid #ba0600;">
 {% for article in posts %}
     <a class="flyby_preview_story" href="{{article.get_absolute_url}}">
     {% if article.main_rel_content %}
@@ -17,10 +18,9 @@
 			<img src="{% static_url bla %}" alt="flyby_icon" />
 			{% endwith %}
 		</span>
-	{% endif %}    
-	
-    <span class="headline">{{article.headline|truncchars:"80,..."}}</span>
-	<span class="byline">Posted&nbsp;{{article.created_on|date:"m/d/y"}}</span>
+	{% endif %} 
+	<span class="headline">{{article.headline|truncchars:"80,..."}}</span>
+	<span class="dateline">{{article|datify}}</span>
     </a>
 {% endfor %}
 {% comment %}
@@ -29,4 +29,5 @@
     </a>
 {% endcomment %}
 </div>
-{% endmodule %}
+</div>
+

@@ -1,0 +1,34 @@
+{% load common %}
+{% load cache %}
+{% load content_filters %}
+
+
+{% if article.main_rel_content %}
+        {% ifnotequal article.main_rel_content.content_type.model "article" %}
+            {{ article.main_rel_content|render:"article.featured" }}
+        {% endifnotequal %}
+{% endif %}
+<h2>{{article|linkify}}
+	{% if article.num_comments %}
+		<span class="small-text-icon-wrap">
+			<span class="small-text-icon-item comment-count">
+				{% cache 600 preview_comments content.pk %}
+					{{article.num_comments}}
+				{% endcache %}
+			</span>
+			<span class="small-text-icon-item comment-image"></span>
+		</span>
+	{% endif %}
+</h2>
+<p class="byline">{{ article|byline:"short" }}
+<span class="dateline">{{ article|datify }}</span></p>
+<p class="teaser">{{ article.teaser|striptags }}</p>
+{% comment %}
+{% with article.rel_content.all|notfirst as rcs%}
+    {% if rcs %}
+<p class="byline">
+    	{% for rc in rcs %}
+    		{{ rc|render:"front.featured" }}
+    	{% endfor %}
+</p>{% endif %}{% endwith %}
+{% endcomment %}

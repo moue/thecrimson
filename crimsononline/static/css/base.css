@@ -102,8 +102,9 @@ ul.normal_bullets {
 
 .dotline-12{width:973p; border-top: 1px dotted #E5E5E5; margin-bottom: 5px;}
 
-.col-0, .col-1, .col-2, .col-3, .col-4, .col-5, .col-6, .col-8, .col-9{float:left; min-height: 1px;}
+.col-00, .col-0, .col-1, .col-2, .col-3, .col-4, .col-5, .col-6, .col-8, .col-9{float:left; min-height: 1px;}
 
+.col-00{width: 49px;}
 .col-0{width: 65px;}
 .col-1{width: 100px;}
 .col-2{width: 143px;}

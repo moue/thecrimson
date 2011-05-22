@@ -1,0 +1,10 @@
+{% load common %}
+{% load content_filters %}
+
+<h3><a href="{{ article.get_absolute_url }}">{{ article.headline }}</a></h3>
+<p class="byline">{% with content.tags.all as a_tags %}
+    {% for tag in a_tags %}
+        {% if forloop.first %}<a href="{{ tag.get_absolute_url }}">{{ tag.text }}</a>{% endif %}
+    {% endfor %}
+{% endwith %} | {{ article|byline:"short" }}
+<span class="dateline">{{ article|datify }}</span></p>
