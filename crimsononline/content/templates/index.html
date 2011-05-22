@@ -1,4 +1,4 @@
-{% extends "threecolumn.html" %}
+{% extends "base.html" %}
 
 {% load cache %}
 {% load common %}
@@ -29,7 +29,7 @@
 {% endblock %}
 {% block css %}
 	{{block.super}}
-    {% static_css "index.css" %}
+    {% static_css "section.css" %}
     <meta name="google-site-verification" content="cwwJ9jadEqctikdAsgZVxWrC6R9_iqaF3AdVCuUeaHM" />
     <meta name="y_key" content="1481287a6167f677" />
     <meta name="y_key" content="3e70614e200ee323" />
@@ -43,148 +43,100 @@
 {% endblock %}
 {% block masthead_center %}
 {% endblock %}
-
 {% block pre_body %}
 	{% contentmodule index.pre_content %}
 	{% endcontentmodule %}
 {% endblock %}
-
-{% block leftcolumn %}
-    {% module 4 "top stories" red "/section/news/" %}
-        {% contentmodule index.topstories %}
-        <div id="topstories" class="article_previews">
+{% block body %}
+{% block left-column %}
+<table cellspacing="5" border="0" cellpadding="0">
+	<tr valign="top" align="left">
+	<td width="226">
+<div class="col-3">
+        <div id="topstories" class="article_previews3">
             <ul>
-                {% for story in top_stories %}
-                <li>
+                {% for story in top_stories|notfirst %}
+                {% if forloop.last %}<li class="last_item">{%else%}<li>{%endif%}
                     {% if forloop.first %}{{story|render:"top_preview"}}
                     {%else%}{{story|render:"preview"}}{%endif%}
                 </li>
                 {% endfor %}
             </ul>
         </div>
-        {% endcontentmodule %}
-    {% endmodule %}
-
-    {% module 4 "magazine" gray "/section/fm/" %}
-        {% contentmodule index.fm %}
-        <div class="article_feature gray-bg">
-            {{ fms|first|render:"feature" }}
-        </div>
-        <div class="article_headlines">
-            <ul>
-                {% for story in fms|notfirst %}
-                <li>
-                    {{story|render:"small_preview"}}
-                </li>
-                {% endfor %}
-            </ul>
-        </div>
-        {% endcontentmodule %}
-    {% endmodule %}
-
-    {% module 4 "more news" %}
-        {% contentmodule index.morenews %}
-            <div id="more_news" class="article_headlines">
-                <ul>
-                {% for story in more_stories %}
-                    <li>
-                        {{story|render:"small_preview"}}
-                    </li>
-                {% endfor %}
-                </ul>
-            </div>
-        {% endcontentmodule %}
-    {% endmodule %}
-
+</div>
 {% endblock %}
-
-{% block middlecolumn %}
-    {% contentmodule index.rotater %}
-        {% rotator rotate "main_rotator" %}
-    {% endcontentmodule %}
-	
-    {% module 4 opinion gray "/section/opinion/" %}
-        {% contentmodule index.opinion %}
-        <div class="article_previews">
-            <ul>
-                <li>{{ opeds|first|render:"preview"}}</li>
-            </ul>
-        </div>
-        <div class="article_headlines">
-            <ul>
-                {% for oped in opeds|notfirst %}
-                <li>
-                    {{oped|render:"small_preview"}}
-                </li>
-                {% endfor %}
-            </ul>
-        </div>
-        {% endcontentmodule %}
-    {% endmodule %}
-
-    {% module 4 sports gray "/section/sports/" %}
-        {% contentmodule index.sports %}
-	        <div class="article_previews">
-                <ul>
-                    <li>
-                        {{ sports|first|render:"preview"}}
-                    </li>
-                </ul>
-            </div>
-            <div class="article_headlines">
-                <ul>
-                    {% for story in sports|notfirst %}
-                    <li>
-                        {{story|render:"small_preview"}}
-                    </li>
-                    {% endfor %}
-                </ul>
-            </div>
-        {% endcontentmodule %}
-    {% endmodule %}
-
-    {% module 4 arts gray "/section/arts/" %}
-        {% contentmodule index.arts %}
-            <div class="article_feature gray-bg">
-                {{ arts|first|render:"feature" }}
-            </div>
-            <div class="article_headlines">
-                <ul>
-                    {% for story in arts|notfirst %}
-                        <li>
-                            <h3><a href="{{ story.get_absolute_url }}" >{{ story.headline }}</a></h3>
-                            <p class="byline">By {{ story.contributors.all|linkify|human_list }}</p>
-                        </li>
-                    {% endfor %}
-                </ul>
-            </div>
-        {% endcontentmodule %}
-    {% endmodule %}
-
-{% endblock %}
-
-{% block rightcolumn %}
-	{% comment %}
-    {% module 4 "view past issues" %}
-        <div id="past_issue">
-	        {{ past_issues }}<button id="past_issues_button">Search</button>
-	    </div>
-	{% endmodule %}
-    {% endcomment %}
-
-
-	<div class="mod mod-4 mod-box small-text-icon-wrap facebook-twitter">
-		<div class="small-text-icon-wrap">
-	        <div class="small-text-icon-item">Follow The Crimson on </div>
-	        <div class="small-text-icon-item facebook"></div>
-			<a href="http://www.facebook.com/pages/The-Harvard-Crimson/45870477736" class="small-text-icon-item">Facebook</a>
-	        <div class="small-text-icon-item"> and </div>
-			<div class="small-text-icon-item twitter"></div>
-			<a href="http://www.twitter.com/thecrimson" class="small-text-icon-item">Twitter</a>
-		</div>
+</td><td width="1" bgcolor="#E5E5E5"><BR></td>
+	<td width="392" valign="top" align="left">
+	{% block middle_column %}
+	<div class="col-0">
+		<img src="{% static_url "images/commencement/50 Reunion Icon.jpg" %}" />
 	</div>
-
-    {% flyby_preview %}
+	<div class="gutter"></div>
+	<div class="col-4">
+	<div class="article_previews" style="padding-top: 10px; color: #ba0600; margin-bottom: 0px; padding-left: 5px;">
+	<ul><li class="last_item">
+		<h5>Commencement 2011</h5>
+		<h2>1961 50th Reunion</h2></ul></li>
+	</div>
+	</div>
+	<div class="col-5">
+	<div class="article_previews5">
+		<ul><li class="last_item">{{big_feature|render:"big_feature"}}</li></ul>
+	</div>
+	<div class="article_previews5">
+	<ul><li>
+	<div class="col-00">
+		<img width="47" src="{% static_url "images/commencement/Year in Review Icon.jpg" %}" />
+		<p class="byline" style="text-align: center;">Year in Review</p>
+	</div>
+	<div class="col-00">
+		<img width="47" src="{% static_url "images/commencement/Year in Sports Icon.jpg" %}" />
+		<p class="byline" style="text-align: center;">Year in Sports</p>
+	</div>
+	<div class="col-00">
+		<img width="47" src="{% static_url "images/commencement/Year in Photo Icon.jpg" %}" />
+		<p class="byline" style="text-align: center;">Year in<br />Photo</p>
+	</div>
+	<div class="col-00">
+		<img width="47" src="{% static_url "images/commencement/Year in Video Icon.jpg" %}" />
+		<p class="byline" style="text-align: center;">Year in<br />Video</p>
+	</div>
+	<div class="col-00">
+		<img width="47" src="{% static_url "images/commencement/25 Reunion Icon.jpg" %}" />
+		<p class="byline" style="text-align: center;">1986 25th Reunion</p>
+	</div>
+	<div class="col-00">
+		<img width="47" src="{% static_url "images/commencement/50 Reunion Icon.jpg" %}" />
+		<p class="byline" style="text-align: center;">1961 50th Reunion</p>
+	</div>
+	<div class="col-00">
+		<img width="47" src="{% static_url "images/commencement/Senior Section Icon.jpg" %}" />
+		<p class="byline" style="text-align: center;">Senior Section</p>
+	</div>
+	<div class="col-00">
+		<img width="47" src="{% static_url "images/commencement/50 Reunion Icon.jpg" %}" />
+		<p class="byline" style="text-align: center;">1961 50th Reunion</p>
+	</div>
+	</ul></li>
+	</div>
+	{% module 5 "opinion" none "/section/opinion/" %}
+        {% contentmodule index.opinion %}
+        <div class="article_previews5">
+            <ul>
+				{% for oped in opeds %}
+				{% if forloop.last%}<li class="last_item">{% else %}<li>{%endif%}
+               		{{ oped|render:"opinion_preview"}}</li>
+				{% endfor %}
+            </ul>
+        </div>
+        {% endcontentmodule %}
+	{% endmodule %}
+	</div>
+	{% endblock %}
+	</td><td width="1" bgcolor="#E5E5E5"><BR></td>
+	<td width="309" valign="top" align="left">
+	{% block right_column %}
+	{% flyby_preview %}
 
     <div class="mod mod-4 mod-box">
         <a href="blog/the-back-page/">
@@ -197,23 +149,91 @@
             <img src="{% static_url "images/dealquad.png" %}" width="307" height="65" />
         </a>
     </div>
-    
-    {% cache 500 mostreadarticles_index %}
-        {% most_read_articles %}
-    {% endcache %}
-
-    {% module 4 "Featured Videos" box %}
-        {% for vid in videos %}
-            {{vid|render:"front_preview"}}
-        {% endfor %}
+    {% module 4 "" box %}
+        {% advertisement 59 %}
     {% endmodule %}
-
-    {% tag_cloud 20 "tags" %}
-
+	{% cache 500 mostreadarticles_index %}
+    	{% most_read_articles %}
+	{% endcache %}
+	{% endblock %}
+	</div></td></tr></table>
+	<span class="clear"></span>
+	<div class="line-12"></div>
+	<table cellspacing="5" border="0" cellpadding="0">
+	<tr valign="top" align="left">
+	<td width="309">
+	<div class="col-4">
+	{% module 4 "video/multimedia" none "/section/media/" %}
+	<span class="clear"></span>
+	{% contentmodule index.media %}
+		<div class="col-4">
+           {{videos|first|render:"embed_front_preview"}}
+		</div>
+		{% for vid in videos|notfirst %}
+		<div class="col-1">
+			<div class="article_headlines">
+            	{{vid|render:"small_preview"}}
+        	</div>
+		</div>
+		{% endfor %}
+		{% endcontentmodule %}{% endmodule %}
+	</div>
+	</td><td width="1" bgcolor="#E5E5E5"><BR></td>
+	<td width="309" valign="top" align="left">
+	<div class="col-4">
+    {% module 4 "sports" none "/section/sports/" %}
+        {% contentmodule index.sports %}
+			<div class="article_previews">
+				<ul><li>{{ sports|first|render:"sports_preview" }}</li></ul>
+			</div>
+            <div class="article_headlines">
+                <ul>
+                    {% for story in sports|notfirst %}
+                    {% if forloop.last %}<li class="last_item">
+                    {% else %}<li>{% endif %}
+                        {{story|render:"small_preview"}}
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endcontentmodule %}{% endmodule %}
+</div>
+</td><td width="1" bgcolor="#E5E5E5"><BR></td>
+	<td width="309" valign="top" align="left">
+<div class="col-4">
+	{% module 4 "magazine" none "/section/fm/" %}
+        {% contentmodule index.fm %}
+			<div class="article_previews">
+				<ul><li>{{ fms|first|render:"preview" }}</li></ul>
+			</div>
+			<div class="article_headlines">
+			<ul>
+				{% for story in fms|notfirst %}
+				<li>
+					{{ story|render:"small_preview" }}</li>
+				{% endfor %}</ul>
+			</div>
+        {% endcontentmodule %}{% endmodule %}
+        {% module 3 "arts" none "/section/arts/" %}
+        {% contentmodule index.arts %}
+            <div class="article_previews">
+               <ul><li> {{ arts|first|render:"preview" }}</li></ul>
+            </div>
+            <div class="article_headlines">
+                <ul>
+                    {% for story in arts|notfirst %}
+                        <li class="last_item">
+                            <h3><a href="{{ story.get_absolute_url }}" >{{ story.headline }}</a></h3>
+                            <p class="byline">By {{ story.contributors.all|linkify|human_list }}</p>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endcontentmodule %}{% endmodule %}</td></tr></table>
 
 {% endblock %}
-
-{% block belowcolumn %}
+{% block post_body %}
+{% comment %}
 <div class="col-12">
 {% module 12 "Featured Galleries" nopad %}
 {% endmodule%}
@@ -229,9 +249,82 @@
         <div class="col-2">
         {% endif %}
     {% endfor %}
-        <span class="clear"></span>
+    <span class="clear"></span>
 </div>
+{% endcomment %}
+<span class="clear"></span>
 <div class="top_leaderboard">
         {% advertisement 62 %}
 </div>
+<span class="clear"></span>
+<div class="line-12"></div>
+<div class="col-4">
+{% module 4 "more news" none "/section/news/" %}
+        {% contentmodule index.morenews %}
+            <div id="more_news" class="article_headlines">
+                <ul>
+                {% for story in more_stories %}
+                    <li>
+                        <h4>{{story|linkify:story.headline}}</h4>
+                    </li>
+                {% endfor %}
+                </ul>
+            </div>
+        {% endcontentmodule %}{% endmodule %}
+</div>
+<div class="gutter"></div>
+<div class="col-4">
+{% module 4 "more opinion" none "/section/opinion/" %}
+        {% contentmodule index.moreopinion %}
+            <div id="more_news" class="article_headlines">
+                <ul>
+                {% for story in more_opeds %}
+                    <li>
+                        <h4>{{story|linkify:story.headline}}</h4>
+                    </li>
+                {% endfor %}
+                </ul>
+            </div>
+        {% endcontentmodule %}{% endmodule %}
+{% module 4 "more sports" none "/section/sports/" %}
+        {% contentmodule index.moresports %}
+            <div id="more_news" class="article_headlines">
+                <ul>
+                {% for story in more_sports %}
+                    <li>
+                        <h4>{{story|linkify:story.headline}}</h4>
+                    </li>
+                {% endfor %}
+                </ul>
+            </div>
+        {% endcontentmodule %}{% endmodule %}
+</div>
+<div class="gutter"></div>
+<div class="col-4">
+{% module 4 "more fm" none "/section/fm/" %}
+        {% contentmodule index.morefm %}
+            <div id="more_news" class="article_headlines">
+                <ul>
+                {% for story in more_fms %}
+                    <li>
+                        <h4>{{story|linkify:story.headline}}</h4>
+                    </li>
+                {% endfor %}
+                </ul>
+            </div>
+        {% endcontentmodule %}{% endmodule %}
+{% module 4 "more arts" none "/section/arts/" %}
+        {% contentmodule index.morefm %}
+            <div id="more_news" class="article_headlines">
+                <ul>
+                {% for story in more_arts %}
+                    <li>
+                        <h4>{{story|linkify:story.headline}}</h4>
+                    </li>
+                {% endfor %}
+                </ul>
+            </div>
+        {% endcontentmodule %}{% endmodule %}
+</div>
+<span class="clear"></span>
 {% endblock %}

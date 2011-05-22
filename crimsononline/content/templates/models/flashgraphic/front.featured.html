@@ -1,0 +1,8 @@
+{% extends "models/wrapper.html" %}
+
+{% load content_filters %}
+{% load common %}
+
+{% block wrapper_contents %}
+<p class="byline"><img src="{% static_url "images/icons/graphics.gif" %}" alt="picture" />FLASH GRAPHIC: {{flashgraphic|linkify:flashgraphic.title}}</p>
+{% endblock %}
