@@ -1341,6 +1341,9 @@ class FeaturePackageSectionForm(forms.ModelForm):
     related_content_form = RelatedContentField(label='Contents', required=False,
         admin_site=admin.site, rel_types=[Image, Gallery, Article, Map, FlashGraphic, YouTubeVideo])
     
+    def has_changed(self):
+        return True
+    
     class Media:
         js = (
             'scripts/noenter.js',
@@ -1368,11 +1371,9 @@ class FeaturePackageAdmin(admin.ModelAdmin):
         if formset.model != FeaturePackageSection:
             return super(FeaturePackageAdmin, self).save_formset(request, form, formset, change)
         
-        for i in formset.forms:
-            i.has_changed = True
         
         instances = formset.save(commit=False)
-        logging.debug(str(len(instances)))
+        #logging.debug(str(len(instances)))
         counter = 0
         for inst in instances:
             inst.save()
