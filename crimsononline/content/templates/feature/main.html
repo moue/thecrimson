@@ -21,7 +21,9 @@
         var media = false;
     </script>    
 {% endblock %}
-
+{% block title %}
+    {{ feature.title }} | {{ currentSection.title }}
+{% endblock %}
 {% block body %}
 
     <!--<center><img alt="Ad" src="{% static_url 'images/feature/banner_add.png'%}" /></center>-->
