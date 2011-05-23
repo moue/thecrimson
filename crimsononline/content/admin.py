@@ -1369,7 +1369,7 @@ class FeaturePackageAdmin(admin.ModelAdmin):
             return super(FeaturePackageAdmin, self).save_formset(request, form, formset, change)
 
         instances = formset.save(commit=False)
-        logging.debug(str(len(instances)))
+        logging.debug(str(len(formset.forms)))
         counter = 0
         for inst in instances:
             inst.save()
