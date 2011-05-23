@@ -1342,7 +1342,10 @@ class FeaturePackageSectionForm(forms.ModelForm):
         admin_site=admin.site, rel_types=[Image, Gallery, Article, Map, FlashGraphic, YouTubeVideo])
     
     def has_changed(self):
-        return True
+        if self.cleaned_data['title'] != "":
+            return True
+        else:
+            return False
     
     class Media:
         js = (
