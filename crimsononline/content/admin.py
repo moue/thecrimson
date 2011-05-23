@@ -1342,12 +1342,7 @@ class FeaturePackageSectionForm(forms.ModelForm):
         admin_site=admin.site, rel_types=[Image, Gallery, Article, Map, FlashGraphic, YouTubeVideo])
     
     def has_changed(self):
-        #logging.debug(str(self.data['title']))
-        #logging.debug(str(dir(self)))
-        if self.data['title']!="":
-            return True
-        else:
-            return False
+        return True
     
     class Media:
         js = (
@@ -1363,7 +1358,7 @@ class FeaturePackageSectionForm(forms.ModelForm):
 class FeaturePackageSectionInline(admin.StackedInline):
     model = FeaturePackageSection
     form = FeaturePackageSectionForm
-    extra = 1
+    extra = 0
 
 class FeaturePackageAdmin(admin.ModelAdmin):
     form = FeaturePackageForm
