@@ -27,3 +27,5 @@ Disallow: /article/1995/8/18/police-arrest-student-for-possession-of/
 Disallow: /article/1995/8/18/police-arrest-student-for-possession-of/?print=1
 Disallow: /article/2006/3/22/color-line-cuts-through-the-heart/
 Disallow: /article/2006/3/22/color-line-cuts-through-the-heart/?print=1
+Disallow: /article/2007/12/14/salon-owner-raped-student-the-former/
+Disallow: /article/2007/12/14/salon-owner-raped-student-the-former/?print=1
