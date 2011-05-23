@@ -1342,7 +1342,7 @@ class FeaturePackageSectionForm(forms.ModelForm):
         admin_site=admin.site, rel_types=[Image, Gallery, Article, Map, FlashGraphic, YouTubeVideo])
     
     def has_changed(self):
-        logging.debug(str(self.cleaned_data))
+        logging.debug(str(self.data['title']))
         #logging.debug(str(dir(self)))
         return True
     
