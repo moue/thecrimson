@@ -1367,9 +1367,12 @@ class FeaturePackageAdmin(admin.ModelAdmin):
     def save_formset(self, request, form, formset, change):
         if formset.model != FeaturePackageSection:
             return super(FeaturePackageAdmin, self).save_formset(request, form, formset, change)
-
+        
+        for i in formset.forms:
+            i.has_changed = True
+        
         instances = formset.save(commit=False)
-        logging.debug(str(dir(formset.forms[0])))
+        logging.debug(str(len(instances)))
         counter = 0
         for inst in instances:
             inst.save()
