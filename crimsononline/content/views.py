@@ -984,7 +984,7 @@ def feature_view(request, title, sectionTitle=None, mediaSlug=None):
     if sectionTitle != None:
         currentSection = sections.filter(slug=sectionTitle)[0]
     else:
-        currentSection = sections[0]
+        currentSection = sections.filter(pub_status==1)[0]
     
     if currentSection.pub_status!=1:
         return Http404
