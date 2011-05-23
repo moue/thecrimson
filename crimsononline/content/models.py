@@ -1446,7 +1446,7 @@ def package_pic_path(instance, filename):
     
     name = '%s' % \
         (title)
-    return 'images/feature_pics/' + name + ext
+    return 'photos/' + name + ext
     
 class FeaturePackage(models.Model):
     
