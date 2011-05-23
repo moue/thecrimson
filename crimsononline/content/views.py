@@ -81,7 +81,7 @@ def index(request, m=None, d=None, y=None):
 
     sportsblog = ContentGroup.objects.get(name='The Back Page')
     front_featured = ContentGroup.objects.get(name='Front Feature')
-    #dict['big_feature'] = Article.objects.recent.filter(group=front_featured)[0]
+    dict['big_feature'] = Article.objects.recent.filter(group=front_featured)[0]
     # This is necessary because just exclude(group=sportsblog) will also exclude NULL entries,
     # i.e. ungrouped content.  This is because of how mysql handles NULL.  The Django ORM
     # should really solve this problem automatically, but that's another story.
