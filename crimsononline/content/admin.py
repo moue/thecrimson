@@ -1396,7 +1396,7 @@ class FeaturePackageAdmin(admin.ModelAdmin):
                     
                 #logging.debug(str(section))
                 #logging.debug(str(contents))
-        """    
+        """  
         
         
         
