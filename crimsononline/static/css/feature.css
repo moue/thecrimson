@@ -1,0 +1,395 @@
+.mainBanner
+{
+    font-family:"Georgia";
+    color:#AD232A;
+    font-weight:bold;
+    font-size:15pt;
+    padding:5px;
+}
+.feature_leftSideBar
+{
+    float: left;
+    width: 85px;
+    display: inline-block;
+    vertical-align:top;
+    text-align:center;
+}
+
+.feature_leftSideBar img
+{
+    cursor:pointer;
+}
+
+.feature_leftSideBar div
+{
+    cursor:pointer;
+}
+
+.feature_centerBar
+{
+    width: 564px;
+    display: inline-block;
+    float: left;
+    vertical-align:top;
+    text-align:center;
+}
+
+.feature_rightSideBar
+{
+    text-align:left;
+    width: 324px;
+    float: right;
+    display: inline-block;
+    vertical-align:top;
+    text-align:center;
+}
+
+.feature_leftBarLink
+{
+    font-family: arial, Helvetica, sans-serif;
+    font-weight: bold;
+    font-size: 7pt;
+    color: #929090;
+    text-align:center;
+}
+
+.feature_verticalDivider
+{
+    background-position: center top;
+    width: 4px;
+    float: left;
+    display: inline-block;
+    height: 100%;
+    background-image: url('../images/feature/vertical_divider.png');
+    background-repeat: repeat-y;
+    margin-top: 10px;
+}
+
+.feature_middleLeftDiv
+{
+    padding: 5px;
+    width: 360px;
+    display: inline-block;
+    float: left;
+    text-align:left;
+}
+
+.feature_mainArticleTitle a
+{
+    font-family: georgia;
+    font-weight: bold;
+    font-size: 16pt;
+    color: #ad232a;
+    text-decoration:none;
+}
+
+.feature_mainArticleTitle a:hover
+{
+    font-family: georgia;
+    font-weight: bold;
+    font-size: 16pt;
+    color: #ad232a;
+    text-decoration:underline;
+}
+
+.feature_horizontalDivder
+{
+    background-image: url('../images/feature/horizontal_divider.png');
+    background-repeat: repeat-x;
+    background-position: center center;
+    width: 100%;
+    height: 4px;
+}
+
+.feature_videoLarge
+{
+    width: 260px;
+    float: left;
+    display: inline-block;
+    padding:5px;
+}
+
+.feature_mainVideoTitle a
+{
+    font-family: georgia;
+    font-weight: bold;
+    font-size: 12pt;
+    color: #ad232a;
+    text-decoration:none;
+}
+
+.feature_mainVideoTitle a:hover
+{
+    font-family: georgia;
+    font-weight: bold;
+    font-size: 12pt;
+    color: #ad232a;
+    text-decoration:underline;
+}
+
+.feature_rightVideos
+{
+    float: right;
+    display: inline-block;
+    width: 90px;
+    text-align: center;
+    padding-top: 5px;
+}
+
+.feature_videoSubHead a
+{
+    color: #ad232a;
+    font-weight: bold;
+    font-family: georgia;
+    font-size: 7pt;
+    text-decoration: none;
+}
+
+.feature_videoSubHead a:hover
+{
+    color: #ad232a;
+    font-weight: bold;
+    font-family: georgia;
+    font-size: 7pt;
+    text-decoration:underline;
+}
+
+.feature_videoSubHead
+{
+    text-align: left;
+    line-height: 7px;
+    padding-left: 7px;
+    padding-bottom: 5px;
+}
+
+.feature_middleRightDiv
+{
+    display: inline-block;
+    float: right;
+    width: 190px;
+}
+
+.feature_sectionTitle
+{
+    font-family: arial, Helvetica, sans-serif;
+    font-size: 8pt;
+    font-weight: bold;
+    color: #929090;
+    font-variant: small-caps;
+    text-align:left;
+    display:inline-block;
+    width:176px;
+    padding:5px;
+}
+
+.feature_topStoriesDiv
+{
+    text-align:left;
+    display:inline-block;
+    width:176px;
+    padding:5px;
+}
+
+.feature_topStoriesTitle
+{
+    text-align: left;
+    
+}
+
+.feature_topStoriesTitle a
+{
+    font-family: georgia;
+    font-size: 12pt;
+    font-weight: bold;
+    text-decoration: none;
+    color: #ad232a;
+}
+
+.feature_topStoriesTitle a:hover
+{
+    font-family: georgia;
+    font-size: 12pt;
+    font-weight: bold;
+    text-decoration: underline;
+    color: #ad232a;
+}
+
+.feature_middleBottom
+{
+    width: 550px;
+    display: inline-block;
+    padding:5px;
+    text-align:left;
+}
+
+.feature_moreStoriesPic
+{
+    display: inline-block;
+    width: 70px;
+    padding: 5px;
+    float: left;
+}
+
+.feature_moreStoriesText
+{
+    display: inline-block;
+    float: left;
+    text-align: left;
+    width: 450px;
+    padding:5px;
+}
+
+.feature_moreStoriesTextLayout2
+{
+    display: inline-block;
+    float: left;
+    text-align: left;
+    width: 270px;
+    padding:5px;
+}
+
+.feature_moreStoriesWideText
+{
+    float: left;
+    text-align: left;
+    padding:5px;
+}
+
+.feature_bottomLeftColumn
+{
+    text-align: left;
+    padding: 5px;
+    width: 265px;
+    display: inline-block;
+    float:left;
+}
+
+.feature_bottomRightColumn
+{
+    text-align: left;
+    padding: 5px;
+    width: 260px;
+    display: inline-block;
+    float:left;
+}
+
+.feature_remainingTitle
+{
+    text-align: left;
+    padding: 5px 0px 0px 5px;
+    display: inline-block;
+}
+
+.feature_remainingTitle a
+{
+    font-family: georgia;
+    font-size: 12pt;
+    font-weight: bold;
+    color: #ad232a;
+    text-decoration:none;
+}
+
+.feature_remainingTitle a:hover
+{
+    font-family: georgia;
+    font-size: 12pt;
+    font-weight: bold;
+    color: #ad232a;
+    text-decoration:underline;
+}
+
+.feature_remainingInfo
+{
+    display: inline-block;
+}
+
+.feature_rightContentDiv
+{
+    padding-left: 5px;
+    width: 315px;
+    display: inline-block;
+    float: left;
+    text-align:left;
+}
+
+.feature_mediaContentSection
+{
+    width: 888px;
+    display: inline-block;
+    float: left;
+    vertical-align:top;
+    text-align:center;
+}
+
+.feature_mediaContentDiv
+{
+    width: 884px;
+    display: inline-block;
+    float: left;
+    vertical-align:top;
+    color:White;
+}
+
+.feature_mediaRowItem
+{
+    width: 210px;
+    display: inline-block;
+    vertical-align:top;
+    padding-bottom:5px;
+}
+
+.feature_videoTitle a
+{
+    font-family: georgia;
+    font-weight: bold;
+    font-size: 16pt;
+    color: #ad232a;
+    text-decoration:none;
+}
+
+.feature_videoTitle a:hover
+{
+    font-family: georgia;
+    font-weight: bold;
+    font-size: 16pt;
+    color: #ad232a;
+    text-decoration:underline;
+}
+
+.feature_verticalDividerBlack
+{
+    background-position: center top;
+    width: 4px;
+    float: left;
+    display: inline-block;
+    height: 100%;
+    background-image: url('../images/feature/vertical_divider_black.png');
+    background-repeat: repeat-y;
+    margin-top: 10px;
+}
+
+.article_previews
+{
+    padding-bottom:5px;
+}
+
+.feature_sideBarTitle
+{
+    text-align: left;
+    
+}
+
+.feature_sideBarTitle a
+{
+    font-family: georgia;
+    font-size: 11pt;
+    font-weight: bold;
+    text-decoration: none;
+    color: #ad232a;
+}
+
+.article_previews .teaser
+{
+    text-align:left;
+    font-size:11px !important;
+}

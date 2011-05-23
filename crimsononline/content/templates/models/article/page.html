@@ -45,8 +45,15 @@
 
 {% block content_title %}
 {% endblock %}
-
+{% block featureInfo %}
+    {% if feature %}
+    <div style="font-family:'Georgia';color:#AD232A;font-weight:bold;font-size:20pt;padding:5px;">
+        <span><a href="/feature/{{ featureSlug }}/" style="text-decoration:none;color:#7f8084;">{{ feature }}</a></span> / <a href="/feature/{{ featureSlug }}/{{ sectionSlug }}/" style="text-decoration:none;">{{ fSection }}</a>
+    </div>
+    {% endif %}
+{% endblock %}
 {% block top_content %}
+
 	<h1>{{ article.headline }}</h1>
 	{% if article.subheadline %}<h2>{{ article.subheadline }}</h2>{% endif %}
 

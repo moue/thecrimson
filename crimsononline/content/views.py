@@ -26,6 +26,7 @@ from crimsononline.common.utils.strings import strip_commas
 from crimsononline.common.utils.lists import first_or_none
 from crimsononline.common.forms import DateSelectWidget
 from crimsononline.common.templatetags.common import human_list
+from crimsononline.common.utils.strings import alphanum_only
 
 # ============ ACTUAL VIEWS ===================== test1
 
@@ -969,3 +970,117 @@ def commencement2010_pov(request):
                     partingshots[pthird * 2 + 4:]]
     
     return render_to_response('special/commencement2010/pov.html', locals())
+    
+@cache_page(settings.CACHE_LONG)
+def feature_view(request, title, sectionTitle=None, mediaSlug=None):
+
+    feature = FeaturePackage.objects.filter(slug=title)[0]
+    if feature.pub_status!=1:
+        return Http404
+    sections = feature.sections.all()
+    
+    currentSection = None
+    if sectionTitle != None:
+        currentSection = sections.filter(slug=sectionTitle)[0]
+    else:
+        currentSection = sections[0]
+    
+    if currentSection.pub_status!=1:
+        return Http404
+    relatedItems = PackageSectionContentRelation.objects.filter(FeaturePackageSection=currentSection).order_by('order')
+    
+    if currentSection.layout == 0 or currentSection.layout == 2:
+        
+        
+        cutOff = relatedItems.count() - currentSection.sideStories
+        
+        mainItems = [x.related_content for x in relatedItems.all()[:cutOff]]
+        
+        sideBarItems = [x.related_content for x in relatedItems.all()[cutOff:]]
+        
+        #test = str(dir(mainItems[0]))
+        
+        mainImage = None
+        
+        try:
+            arcs = ArticleContentRelation.objects.filter(article=mainItems[0]).order_by('order')
+            
+            temp1 = arcs.all()[0].related_content
+            if str(temp1.content_type) == 'image':
+                mainImage = temp1
+        except:
+            mainImage = None
+        
+
+        videos = []
+        if currentSection.layout == 0:
+            videos = [x for x in mainItems if x.content_type.model=='youtubevideo']
+        else:
+            videos = []
+        
+        topStoriesCut = 4
+        if currentSection.layout == 2:
+            topStoriesCut = 5
+        
+        topStories = [x for x in mainItems if x.content_type.model=='article']
+        topStories = topStories[1:topStoriesCut]
+        
+        moreStoriesCut = 7
+        if currentSection.layout == 2:
+            moreStoriesCut = 9
+        
+        moreStories = [x for x in mainItems if x.content_type.model=='article']
+        moreStories = moreStories[topStoriesCut:moreStoriesCut]
+        
+        remainderStories = [x for x in mainItems if x.content_type.model=='article']
+        remainderStories = remainderStories[moreStoriesCut:]
+        
+        count = 0
+        columnStories1 = []
+        columnStories2 = []
+        for x in remainderStories:
+            count+=1
+            if count % 2 == 1:
+                columnStories1.append(x)
+            else:
+                columnStories2.append(x)
+            
+            if count > 7:
+                break;
+            
+        if len(columnStories1) + len(columnStories2) == 8:
+            remainderStories = remainderStories[8:]
+        else:
+            remainderStories = []
+        #test = str(dir(videos[0]))
+        
+        sideBarTop = sideBarItems[:8]
+        sideBarBottom = sideBarItems[8:]
+    else:
+        allItems = [x.related_content for x in relatedItems.all()]
+        mediaItems = [x for x in allItems if x.content_type.model=='gallery' or x.content_type.model=='youtubevideo']
+        
+        if mediaSlug:
+            item = [x for x in mediaItems if x.slug==mediaSlug][0]
+            mediaItems = [x for x in mediaItems if x.slug!=mediaSlug]
+            mediaItems.insert(0,item)
+        
+        rows = (len(mediaItems)-1) / 4
+        if (len(mediaItems)-1) % 4 != 0:
+            rows+=1
+        
+        rowList = []
+        
+        for x in range(rows):
+            rowList.append(mediaItems[x*4+1:(x+1)*4+1])
+        
+        isGallery = mediaItems[0].content_type.model=='gallery'
+        
+    if currentSection.layout == 0:
+        return render_to_response('feature/main.html', locals())
+    elif currentSection.layout == 1:
+        return render_to_response('feature/Media.html', locals())
+    elif currentSection.layout == 2:
+        return render_to_response('feature/NoVideo.html', locals())
+    else:
+        return Http404

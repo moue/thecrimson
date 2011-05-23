@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+
+{% load content_filters %}
+{% load common %}
+
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="{% static_url 'css/feature.css'%}" />
+    {% static_css "threecolumn.css" %}
+    <script type="text/javascript" src="{% static_url 'scripts/jwplayer.js'%}"></script>
+    <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.6.1.js"></script>
+    <script type="text/javascript" src="{% static_url 'scripts/feature.js'%}"></script>
+    {% static_css "gallery.css" %}    
+    <script type="text/javascript">
+        var video1 = false;
+        var swfUrl = "{% static_url 'jwplayer/player.swf'%}";
+        {% if isGallery %}
+        var mainVideo = false;
+        {% else %}
+        var mainVideo = "{{ mediaItems.0.youtubevideo.youtube_url }}";
+        {% endif %}
+        var media = true;
+    </script>    
+{% endblock %}
+
+{% block body %}
+
+    <!--<center><img alt="Ad" src="{% static_url 'images/feature/banner_add.png'%}" /></center>-->
+    <div class="mainBanner" id="sectionTitle">
+        <span style="color:#7f8084;">{{ feature.title }}</span> / {{ currentSection.title }}
+    </div>
+    <div class="feature_leftSideBar">
+        <img alt="" src="{% static_url 'images/feature/horizontal_divider_black.png'%}" />
+        {% for x in sections %}
+            {% if x.icon %}
+                <img alt="" src="{{ x.icon.url }}" border="0" style="{% if x.pub_status != 1 %}cursor:default !important;{% endif %}" onclick="DoFeatureNav('{{ feature.slug }}','{{ x.slug }}',{{ x.pub_status }});" />
+            {% endif %}
+            <div class="feature_leftBarLink" style="{% if x.pub_status != 1 %}cursor:default !important;{% endif %}" onclick="DoFeatureNav('{{ feature.slug }}','{{ x.slug }}',{{ x.pub_status }});">
+                {{ x.title }}
+            </div>
+            <img alt="" src="{% static_url 'images/feature/horizontal_divider_black.png'%}" />
+        {% endfor %}
+    </div>
+    <div class="feature_mediaContentSection">
+        <div class="feature_verticalDividerBlack">
+            &nbsp;
+        </div>
+        <div class="feature_mediaContentDiv">
+            <div>
+                {% if isGallery %}
+                <center>
+                     <div id="gallery_viewer" class="blackground" style="width:650px;">
+                        <div id="viewer_main">
+                           {{ mediaItems.0|render:"media_viewer" }}
+                        </div>
+                    </div>
+                </center>
+                {% else %}
+                    <center>
+                        <div id="mainVideoContainer">
+                        
+                        </div>
+                        <div class="feature_videoTitle">
+                            <a href="{{mediaItems.0.youtubevideo.get_full_url}}">{{ mediaItems.0.youtubevideo.title }}</a>
+                        </div>
+                        <div class="article_previews">
+                            <p class="byline">By {{ mediaItems.0.youtubevideo.contributors.all|linkify|human_list }} &nbsp;&nbsp;<span class="dateline">{{ mediaItems.0.youtubevideo|datify }}</span></p>
+                            <p class="teaser" style="width:300px;padding-bottom:10px;">{{ mediaItems.0.youtubevideo.description|safe }}</p>
+                        </div>
+                    </center>
+                {% endif %}
+            </div>
+            {% for row in rowList %}
+                <div style="vertical-align:top;">
+                    {% for x in row %}
+                        <div class="feature_mediaRowItem">
+                            {% if x.content_type.model == "gallery" %}
+                                <div>
+                                    {{ x.gallery|get_first_img|to_img_tag:"130,95" }}
+                                </div>
+                                <div class="feature_topStoriesTitle">
+                                    <a href="/feature/{{ feature.slug }}/{{ currentSection.slug }}/{{ x.gallery.slug }}">{{ x.gallery.title }}</a>
+                                </div>
+                                <div class="article_previews" style="text-align:left;">
+                                     <p class="byline">By {{ x.gallery.contributors.all|linkify|human_list }} &nbsp;&nbsp;<span class="dateline">{{ x.gallery|datify }}</span></p>
+                                     <p class="teaser">{{ x.gallery.description|safe }}</p>
+                                </div>
+                            {% else %}
+                                <center>
+                                    <div id="videoContainer{{ x.youtubevideo.pk}}">
+                                    
+                                    </div>
+                                </center>
+                                <div class="feature_topStoriesTitle">
+                                    <a href="/feature/{{ feature.slug }}/{{ currentSection.slug }}/{{ x.youtubevideo.slug }}">{{ x.youtubevideo.title }}</a>
+                                </div>
+                                <div class="article_previews" style="text-align:left;">
+                                     <p class="byline">By {{ x.youtubevideo.contributors.all|linkify|human_list }} &nbsp;&nbsp;<span class="dateline">{{ x.youtubevideo|datify }}</span></p>
+                                     <p class="teaser">{{ x.youtubevideo.description|safe }}</p>
+                                </div>
+                                <script type="text/javascript">
+                                    $("document").ready(function(){doBuildPlayer('{{ x.youtubevideo.youtube_url }}','videoContainer{{ x.youtubevideo.pk}}','/feature/{{ feature.slug }}/{{ currentSection.slug }}/{{ x.youtubevideo.slug }}');});
+                                </script>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    
+{% endblock %}

@@ -3,7 +3,7 @@ from django import template
 from django.template import defaultfilters as filter
 from django.utils.safestring import mark_safe
 from crimsononline.content.models import Image, Map, Article, Content, Marker, \
-                                         YouTubeVideo, Gallery, FlashGraphic, Tag
+                                         YouTubeVideo, Gallery, FlashGraphic, Tag, ArticleContentRelation
 from crimsononline.common.templatetags.common import linkify, human_list
 from crimsononline.common.fields import size_spec_to_size, AutosizeImageFieldFile
 from crimsononline.common.utils.html import para_list
@@ -322,3 +322,25 @@ def self_or_first(object):
         return object[0]
     except:
         return object
+        
+@register.filter
+def get_image_obj(article):
+    #gets a related image if there is one
+    arcs = ArticleContentRelation.objects.filter(article=article).order_by('order')
+    images = [x.related_content for x in arcs if x.related_content.content_type.model=='image']
+    if len(images) > 0:
+        return images[0]
+    else:
+        return None
+        
+@register.filter
+def get_first_img(gallery):
+    #gets the first image in a gallery
+    if gallery.content_type.model!='gallery':
+        return None
+    imgs = [x.content.image for x in gallery.gallery_set.all() if x.content.content_type=='image']
+    if len(imgs) > 0:
+        return imgs[0]
+    else:
+        return None
+    

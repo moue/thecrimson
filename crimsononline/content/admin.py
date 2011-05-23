@@ -40,6 +40,7 @@ from crimsononline.common.forms import \
     MaskedValueTextInput, RatingWidget, fbmc_search_helper, \
     TinyMCEWidget, FbSelectWidget
 from crimsononline.settings import MEDIA_ROOT
+import logging
 
 STOP_WORDS = ['a', 'able', 'about', 'across', 'after', 'all', 'almost', 'also',
     'am', 'among', 'an', 'and', 'any', 'are', 'as', 'at', 'be', 'because',
@@ -1278,6 +1279,131 @@ class FlatPageAdmin(admin.ModelAdmin):
 
     list_display = ('url', 'title')
     search_fields = ('url', 'title')
+
+class FeaturePackageForm(forms.ModelForm):
+    
+    title = forms.fields.CharField(
+        widget=forms.TextInput(attrs={'size':'70'}),
+        required=True, max_length=250
+    )
+    
+    pub_status = forms.ChoiceField(FeaturePackage.PUB_CHOICES, required=True,
+        label="Published Status", help_text="Only execs can publish content."
+    )
+    
+    description = forms.fields.CharField(
+        widget=forms.Textarea(attrs={'rows':'5', 'cols':'67'}),
+        required=True, help_text="""
+        Please provide a short description of the package""", max_length=2500
+    )
+    
+    feature = forms.fields.BooleanField(label="Check this box if you want the banner image to be displayed on the front page for this package.", required=False)
+    
+    banner = forms.fields.ImageField(widget=admin.widgets.AdminFileWidget,
+        required=False, label='Banner', help_text="Only images that are 550px wide")
+        
+    now = datetime.now()
+    dateField = forms.fields.DateField(initial=str(now.month)+"/"+str(now.day)+"/"+str(now.year), label='Slug Date', help_text='This is used to generate the slug', input_formats=['%m/%d/%Y'])
+    
+    slug = forms.fields.SlugField(widget=AutoGenSlugWidget(
+            url='/admin/content/article/gen_slug/',
+            date_field='#id_dateField', text_field='#id_title',
+            attrs={'size': '40'},
+        ), help_text="This is the text that goes in the URL.  Only letters," \
+        "numbers, _, and - are allowed", required=True, max_length=70
+    )
+    
+    model = FeaturePackage
+    
+    class Meta:
+        model = FeaturePackage
+
+
+
+    
+class FeaturePackageSectionForm(forms.ModelForm):
+    
+    def __init__(self, *args, **kwargs):
+        r = kwargs.get('instance', None)
+        if r is not None:
+            kwargs['initial'] = {'related_content_form': r.rel_admin_content}
+        super(FeaturePackageSectionForm, self).__init__(*args, **kwargs)
+    
+    model = FeaturePackageSection
+    
+    slug = forms.fields.SlugField(widget=AutoGenSlugWidget(
+            date_field='#id_dateField', text_field='#id_title',
+            attrs={'size': '40'},
+        ), help_text="This is the text that goes in the URL.  Only letters," \
+        "numbers, _, and - are allowed", required=True, max_length=70
+    )
+    
+    related_content_form = RelatedContentField(label='Contents', required=False,
+        admin_site=admin.site, rel_types=[Image, Gallery, Article, Map, FlashGraphic, YouTubeVideo])
+    
+    class Media:
+        js = (
+            'scripts/noenter.js',
+            'scripts/media_include.js',
+            'scripts/jquery.js',
+            'scripts/admin/FeaturePackage.js',
+        )
+    
+    class Meta:
+        model = FeaturePackageSection
+    
+class FeaturePackageSectionInline(admin.StackedInline):
+    model = FeaturePackageSection
+    form = FeaturePackageSectionForm
+    extra = 1
+
+class FeaturePackageAdmin(admin.ModelAdmin):
+    form = FeaturePackageForm
+    inlines = [FeaturePackageSectionInline,]
+    
+    list_display = ('title','feature', 'pub_status',)
+    search_fields = ('title',)
+    
+    def save_formset(self, request, form, formset, change):
+        if formset.model != FeaturePackageSection:
+            return super(FeaturePackageAdmin, self).save_formset(request, form, formset, change)
+
+        instances = formset.save(commit=False)
+        counter = 0
+        for inst in instances:
+            inst.save()
+            section = inst
+            contents = formset.forms[counter].cleaned_data['related_content_form']
+            section.related_contents.clear()
+            for x, r in enumerate(contents):
+                d = PackageSectionContentRelation(order=x, FeaturePackageSection=section, related_content=r)
+                d.save()
+            
+            counter+=1
+            
+        #logging.debug(str(formset.forms))
+        """
+        for i in formset.forms:
+            logging.debug(str(i.cleaned_data))
+            if i.cleaned_data.has_key('id') and i.cleaned_data.has_key('related_content_form'):
+                section = i.cleaned_data['id']
+                contents = i.cleaned_data['related_content_form']
+                if section == FeaturePackageSection:
+                    section.related_contents.clear()
+                    for x, r in enumerate(contents):
+                        d = PackageSectionContentRelation(order=x, FeaturePackageSection=section, related_content=r)
+                        d.save()
+                    
+                #logging.debug(str(section))
+                #logging.debug(str(contents))
+        """    
+        
+        
+        
+        
+    
+admin.site.register(FeaturePackage, FeaturePackageAdmin)
+#admin.site.register(FeaturePackageSection, FeaturePackageSectionAdmin)
 
 admin.site.unregister(FlatPage)
 admin.site.register(FlatPage, FlatPageAdmin)

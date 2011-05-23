@@ -171,3 +171,11 @@ GOOGLE_API_KEY = "ABQIAAAAdoBgu2mGyHlwNmFWklwtOBSMTarlKQyRRh5ucdthk06p19vF5xQFCz
 FLYBY_TIP_ADDRESS = "flybytips@thecrimson.com"
 
 DATABASE_ROUTERS = ['crimsononline.content.routers.MasterRouter']
+
+import logging
+logging.basicConfig(
+    level = logging.DEBUG,
+    format = '%(asctime)s %(levelname)s %(message)s',
+    filename = '/tmp/myapp.log',
+    filemode = 'w'
+)

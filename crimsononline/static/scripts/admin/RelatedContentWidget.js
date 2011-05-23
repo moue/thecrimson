@@ -185,6 +185,7 @@ var set_related_content = function(id_prefix, types){
         var type = $(p + '_type').val();
         var url = '/admin/content/article/rel_content/find/?ct_id=' + type + 
             '&st_dt=' + start + '&end_dt=' + end + '&q=' + tags;
+        //alert(url);
         $.getJSON(url + '&page=1', function(data){
             process_ajax(url, data);
         });

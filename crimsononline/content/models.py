@@ -344,6 +344,14 @@ class Content(models.Model):
         # TODO: Allow this to be specified via the admin
         # can access self with either the name of the class (ie, 'article')
         #   or 'content'
+        pcrs = PackageSectionContentRelation.objects.filter(related_content=self)
+        if len(pcrs) > 0:
+            featureStr = pcrs[0].FeaturePackageSection.MainPackage.title
+            featureSlug = pcrs[0].FeaturePackageSection.MainPackage.slug
+            sectionStr = pcrs[0].FeaturePackageSection.title
+            sectionSlug = pcrs[0].FeaturePackageSection.slug
+            n_context.update({'feature': featureStr, 'fSection': sectionStr, 'featureSlug':featureSlug, 'sectionSlug':sectionSlug})
+            
         n_context.update({name: self.child, 'content': self.child,
                         'class': name, 'disqus': settings.DISQUS, 'nav':nav, 'noindex':noindex})
 
@@ -1431,3 +1439,108 @@ class MostReadArticles(models.Model):
     article3 = models.ForeignKey(Article, null=False, blank=False, related_name="MostReadArticle3")
     article4 = models.ForeignKey(Article, null=False, blank=False, related_name="MostReadArticle4")
     article5 = models.ForeignKey(Article, null=False, blank=False, related_name="MostReadArticle5")
+
+def package_pic_path(instance, filename):
+    ext = splitext(filename)[1]
+    title = instance.title.replace(" ","")
+    
+    name = '%s' % \
+        (title)
+    return 'images/feature_pics/' + name + ext
+    
+class FeaturePackage(models.Model):
+    
+    PUB_CHOICES = (
+        (0, 'Draft'),
+        (1, 'Published'),
+        (-1, 'Deleted'),
+    )
+    
+    title = models.CharField(blank=False, null=False, max_length=250)
+    
+    description = models.TextField(blank=False, null=False)
+    
+    pub_status = models.IntegerField(null=False, choices=PUB_CHOICES,
+        default=0, db_index=True)
+        
+    create_date = models.DateTimeField(auto_now_add=True)
+    
+    edit_date = models.DateTimeField(auto_now=True)
+    
+    #indicates where or not a big banner should appear on the index page
+    feature =  models.BooleanField(default=False)
+    
+    slug = models.CharField(blank=True, null=False, max_length=250)
+    
+    banner = SuperImageField(blank=True, null=True, max_width=550,
+        upload_to=package_pic_path, storage=OverwriteStorage())
+        
+    class Meta:
+        permissions = (
+            ('content.can_publish', 'Can publish content',),
+            ('content.can_unpublish', 'Can unpublish content',),
+            ('content.can_delete_published', 'Can delete published content'),
+        )
+
+class FeaturePackageSection(models.Model):
+
+    PUB_CHOICES = (
+        (0, 'Draft'),
+        (1, 'Published'),
+        (-1, 'Deleted'),
+    )
+    
+    LAYOUT_CHOICES = (
+        (0, 'Normal'),
+        (1, 'Media'),
+        (2, 'No Video'),
+    )
+    
+    title = models.CharField(blank=False, null=False, max_length=100)
+    
+    create_date = models.DateTimeField(auto_now_add=True)
+    
+    edit_date = models.DateTimeField(auto_now=True)
+    
+    icon = SuperImageField(blank=True, null=True, max_width=150,
+        upload_to=package_pic_path, storage=OverwriteStorage())
+        
+    pub_status = models.IntegerField(null=False, choices=PUB_CHOICES,
+        default=0, db_index=True)
+        
+    layout = models.IntegerField(null=False, choices=LAYOUT_CHOICES,
+        default=0, db_index=True)
+        
+    slug = models.CharField(blank=True, null=False, max_length=250)
+    
+    sideStories = models.IntegerField(null=False, default=6, verbose_name='Number of Side Stories', 
+        help_text='This is the number of stories that will appear on the right hand column for this section. These will be the last x stories selected in the related content. IE. if you put 6 here, the last 6 stories selected below will be used on the side')
+    
+    sideBarUpperTitle = models.CharField(blank=True, null=False, max_length=250, verbose_name='Side bar Upper Title')
+    
+    sideBarLowerTitle = models.CharField(blank=True, null=False, max_length=250, verbose_name='Side bar Lower Title')
+    
+    MainPackage = models.ForeignKey(FeaturePackage, null=False, blank=False, related_name="sections")
+    
+    related_contents = models.ManyToManyField(Content, null=True, related_name="related_contents", through='PackageSectionContentRelation')
+    
+    @property
+    def rel_admin_content(self):
+        acrs = PackageSectionContentRelation.objects.filter(FeaturePackageSection=self)
+        return ";".join([str(x.related_content.pk) for x in acrs])
+    
+    class Meta:
+        permissions = (
+            ('content.can_publish', 'Can publish content',),
+            ('content.can_unpublish', 'Can unpublish content',),
+            ('content.can_delete_published', 'Can delete published content'),
+        )
+    
+class PackageSectionContentRelation(models.Model):
+    FeaturePackageSection = models.ForeignKey(FeaturePackageSection, related_name = "fps")
+    related_content = models.ForeignKey(Content)
+    order = models.IntegerField(blank=True, null=True)
+    isFeatured = models.BooleanField(default=False)
+
+    class Meta:
+        ordering = ('order',)

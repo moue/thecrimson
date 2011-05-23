@@ -1,0 +1,198 @@
+{% extends "base.html" %}
+
+{% load content_filters %}
+{% load common %}
+
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="{% static_url 'css/feature.css'%}" />
+    {% static_css "threecolumn.css" %}
+    <script type="text/javascript" src="{% static_url 'scripts/jwplayer.js'%}"></script>
+    <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.6.1.js"></script>
+    <script type="text/javascript" src="{% static_url 'scripts/feature.js'%}"></script>  
+    <script type="text/javascript">
+        var video1 = false;
+        var media = false;
+    </script>
+{% endblock %}
+
+{% block body %}
+
+    <!--<center><img alt="Ad" src="{% static_url 'images/feature/banner_add.png'%}" /></center>-->
+    <div class="mainBanner" id="sectionTitle">
+        <span style="color:#7f8084;">{{ feature.title }}</span> / {{ currentSection.title }}
+    </div>
+    <div class="feature_leftSideBar">
+        <img alt="" src="{% static_url 'images/feature/left_divider.png'%}" />
+        {% for x in sections %}
+            {% if x.icon %}
+                <img alt="" src="{{ x.icon.url }}" border="0" style="{% if x.pub_status != 1 %}cursor:default !important;{% endif %}" onclick="DoFeatureNav('{{ feature.slug }}','{{ x.slug }}',{{ x.pub_status }});" />
+            {% endif %}
+            <div class="feature_leftBarLink" style="{% if x.pub_status != 1 %}cursor:default !important;{% endif %}" onclick="DoFeatureNav('{{ feature.slug }}','{{ x.slug }}',{{ x.pub_status }});">
+                {{ x.title }}
+            </div>
+            <img alt="" src="{% static_url 'images/feature/left_divider.png'%}" />
+        {% endfor %}
+    </div>
+    <div class="feature_centerBar">
+        <div class="feature_verticalDivider">
+            &nbsp;
+        </div>
+        <div class="feature_middleLeftDiv">
+            {{ mainImage|to_img_tag:"350,285" }}
+            <div class="feature_mainArticleTitle">
+                <a href="{{ mainItems.0.article.get_full_url }}">{{ mainItems.0.article.headline }}</a>
+            </div>
+            <div class="article_previews">
+                 <p class="byline">By {{ mainItems.0.article.contributors.all|linkify|human_list }} &nbsp;&nbsp;<span class="dateline">{{ mainItems.0.article|datify }}</span></p>
+                 <p class="teaser">{{ mainItems.0.article.teaser|safe }}</p>
+            </div>
+            <div class="feature_horizontalDivder">    
+            </div>
+            <div class="feature_sectionTitle">
+                more articles
+            </div>
+            <div>
+                {% for x in moreStories %}
+                    <div>
+                        {% if x|get_image_obj %}
+                        <div class="feature_moreStoriesPic">
+                            {{ x|get_image_obj|to_img_tag:"60,50" }}
+                        </div>
+                        <div class="feature_moreStoriesTextLayout2">
+                            <div class="feature_topStoriesTitle">
+                                <a href="{{ x.article.get_full_url }}">{{ x.article.headline }}</a>
+                            </div>
+                            <div class="article_previews">
+                                 <p class="byline">By {{ x.article.contributors.all|linkify|human_list }} &nbsp;&nbsp;<span class="dateline">{{ x.article|datify }}</span></p>
+                                 <p class="teaser">{{ x.article.teaser|safe }}</p>
+                            </div>
+                        </div>
+                        {% else %}
+                        <div class="feature_moreStoriesWideText">
+                            <div class="feature_topStoriesTitle">
+                                <a href="{{ x.article.get_full_url }}">{{ x.article.headline }}</a>
+                            </div>
+                            <div class="article_previews">
+                                 <p class="byline">By {{ x.article.contributors.all|linkify|human_list }} &nbsp;&nbsp;<span class="dateline">{{ x.article|datify }}</span></p>
+                                 <p class="teaser">{{ x.article.teaser|safe }}</p>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="feature_middleRightDiv">
+            <div class="feature_verticalDivider">
+                &nbsp;
+            </div>
+            <div class="feature_sectionTitle">
+                top stories
+            </div>
+            <div class="feature_topStoriesDiv">
+                {% for x in topStories %}
+                    <div>
+                        {{ x|get_image_obj|to_img_tag:"145,90" }}
+                    </div>
+                    <div class="feature_topStoriesTitle">
+                        <a href="{{ x.article.get_full_url }}">{{ x.article.headline }}</a>
+                    </div>
+                    <div class="article_previews">
+                         <p class="byline">By {{ x.article.contributors.all|linkify|human_list }} &nbsp;&nbsp;<span class="dateline">{{ x.article|datify }}</span></p>
+                         <p class="teaser">{{ x.article.teaser|safe }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="feature_middleBottom">
+            <div class="feature_horizontalDivder">    
+            </div>
+            <div>
+                <div class="feature_bottomLeftColumn">
+                    {% for x in columnStories1 %}
+                        <div class="feature_topStoriesTitle">
+                            <a href="{{ x.article.get_full_url }}">{{ x.article.headline }}</a>
+                        </div>
+                        <div class="article_previews">
+                             <p class="byline">By {{ x.article.contributors.all|linkify|human_list }} &nbsp;&nbsp;<span class="dateline">{{ x.article|datify }}</span></p>
+                             <p class="teaser">{{ x.article.teaser|safe }}</p>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="feature_bottomRightColumn">
+                    <div class="feature_verticalDivider">
+                        &nbsp;
+                    </div>
+                    <div style="float:left;width:250px;padding-left:5px;">
+                    {% for x in columnStories2 %}
+                        <div class="feature_topStoriesTitle">
+                            <a href="{{ x.article.get_full_url }}">{{ x.article.headline }}</a>
+                        </div>
+                        <div class="article_previews">
+                             <p class="byline">By {{ x.article.contributors.all|linkify|human_list }} &nbsp;&nbsp;<span class="dateline">{{ x.article|datify }}</span></p>
+                             <p class="teaser">{{ x.article.teaser|safe }}</p>
+                        </div>
+                    {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div>
+            {% for x in remainderStories %}
+                <div>
+                    <div class="feature_remainingTitle">
+                        <a href="{{ x.article.get_full_url }}">{{ x.article.headline }}</a>
+                    </div>
+                    <div class="feature_remainingInfo article_previews">
+                        <p class="byline">By {{ x.article.contributors.all|linkify|human_list }} &nbsp;&nbsp;<span class="dateline">{{ x.article|datify }}</span></p>
+                    </div>
+                </div>
+            {% endfor %}
+            </div>
+        </div>
+    </div>
+    <div class="feature_rightSideBar">
+        <div class="feature_verticalDivider">
+            &nbsp;
+        </div>
+        <div class="feature_rightContentDiv">
+            <div class="feature_sectionTitle">
+                {{ currentSection.sideBarUpperTitle }}
+            </div>
+            <div style="text-align:left;">
+                {% for x in sideBarTop %}
+                <div class="feature_sideBarTitle">
+                    <a href="{{ x.article.get_full_url }}">{{ x.article.headline }}</a>
+                </div>
+                <div class="article_previews">
+                    <p class="byline">By {{ x.article.contributors.all|linkify|human_list }} &nbsp;&nbsp;<span class="dateline">{{ x.article|datify }}</span></p>
+                    <p class="teaser">{{ x.article.teaser|safe }}</p>
+                </div>
+                {% endfor %}
+            </div>
+            <div>
+                <img src="{% static_url 'images/feature/adTitle.png' %}" alt="" />
+            </div>
+            <div>
+                ad goes here
+            </div>
+            <div>
+                <img src="{% static_url 'images/feature/right_divider.png' %}" alt="" />
+            </div>
+            <div class="feature_sectionTitle">
+                {{ currentSection.sideBarLowerTitle }}
+            </div>
+            <div style="text-align:left;">
+                {% for x in sideBarBottom %}
+                <div class="feature_sideBarTitle">
+                    <a href="{{ x.article.get_full_url }}">{{ x.article.headline }}</a>
+                </div>
+                <div class="article_previews">
+                    <p class="byline">By {{ x.article.contributors.all|linkify|human_list }} &nbsp;&nbsp;<span class="dateline">{{ x.article|datify }}</span></p>
+                    <p class="teaser">{{ x.article.teaser|safe }}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <br style="display:clear;"/>
+{% endblock %}

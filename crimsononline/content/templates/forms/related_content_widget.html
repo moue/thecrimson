@@ -39,6 +39,8 @@
     </ul>
     <script type="text/javascript" charset="utf-8">
         $(document).ready(function(){
+            //alert('hi');
+            baseIdvar="{{attrs.id}}";
             set_related_content('{{attrs.id}}', [
                 {% for t in types %}
                     '{{t.name}}'{% if forloop.last %}{% else %},{% endif %} 

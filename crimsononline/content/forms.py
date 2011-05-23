@@ -208,7 +208,7 @@ class IssuePickerField(forms.CharField):
 
 class RelatedContentWidget(forms.widgets.HiddenInput):
     class Media:
-        js = (static_content('scripts/framework/jquery-ui.packed.js'),
+        js = (static_content('scripts/jquery.js'),static_content('scripts/framework/jquery-ui.packed.js'),
             static_content('scripts/admin/RelatedContentWidget.js'))
         css = {'all': (static_content('css/framework/jquery.ui.css'),
             static_content('css/admin/RelatedContent.css'))}
