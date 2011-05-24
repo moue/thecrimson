@@ -977,7 +977,7 @@ def feature_view(request, title, sectionTitle=None, mediaSlug=None):
 
     feature = FeaturePackage.objects.filter(slug=title)[0]
     if feature.pub_status!=1:
-        return Http404
+        raise Http404
     sections = feature.sections.all()
     
     currentSection = None
@@ -987,7 +987,7 @@ def feature_view(request, title, sectionTitle=None, mediaSlug=None):
         currentSection = sections.filter(pub_status=1)[0]
     
     if currentSection.pub_status!=1:
-        return Http404
+        raise Http404
     relatedItems = PackageSectionContentRelation.objects.filter(FeaturePackageSection=currentSection).order_by('order')
     
     if currentSection.layout == 0 or currentSection.layout == 2:
@@ -1084,4 +1084,4 @@ def feature_view(request, title, sectionTitle=None, mediaSlug=None):
     elif currentSection.layout == 2:
         return render_to_response('feature/NoVideo.html', locals())
     else:
-        return Http404
+        raise Http404
