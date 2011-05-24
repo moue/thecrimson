@@ -451,7 +451,7 @@ class Content(models.Model):
                 ch = ContentHits(content=self)
                 ch.hits = cached_hits
 
-            ch.save()
+            #ch.save()
 
             # Reset a things
             cache.set(time_str, now, MIN_DB_STORE_INTERVAL * 3)
