@@ -172,6 +172,7 @@ FLYBY_TIP_ADDRESS = "flybytips@thecrimson.com"
 
 DATABASE_ROUTERS = ['crimsononline.content.routers.MasterRouter']
 
+"""
 import logging
 logging.basicConfig(
     level = logging.DEBUG,
@@ -179,3 +180,4 @@ logging.basicConfig(
     filename = '/tmp/myapp.log',
     filemode = 'w'
 )
+"""
