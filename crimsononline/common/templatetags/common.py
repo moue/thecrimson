@@ -147,7 +147,7 @@ def linkify(obj, link_text=''):
                 (item.get_absolute_url(), filter.force_escape(l_text))))
         # nonlists obj's should be returned as nonlists
         return l[0] if len(l) == 1 else l
-    except IndexError:
+    except:
         return ''
 
 @register.filter
