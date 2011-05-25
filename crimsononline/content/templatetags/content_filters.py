@@ -28,26 +28,29 @@ def datify(cont):
 
     Uses the modified date if its recent, otherwise, uses issue_date
     """
-    issue = cont.issue.issue_date
-    if(date.today() <= issue):
-        secs_ago = (datetime.today() - cont.modified_on).seconds
-        if secs_ago < 3600:
-            value = (secs_ago/60)
-            unit = 'minute'
+    try:
+        issue = cont.issue.issue_date
+        if(date.today() <= issue):
+            secs_ago = (datetime.today() - cont.modified_on).seconds
+            if secs_ago < 3600:
+                value = (secs_ago/60)
+                unit = 'minute'
+            else:
+                value = (secs_ago/3600)
+                unit = 'hour'
         else:
-            value = (secs_ago/3600)
-            unit = 'hour'
-    else:
-        daysold = (date.today() - issue).days
-        if daysold == 1:
-            return 'Yesterday'
-        elif daysold <= 10:
-            value = daysold
-            unit = 'day'
-        else:
-            return issue.strftime('%B %d, %Y')
-    plural = 's' if value != 1 else ''
-    return '%d %s%s ago' % (value, unit, plural)
+            daysold = (date.today() - issue).days
+            if daysold == 1:
+                return 'Yesterday'
+            elif daysold <= 10:
+                value = daysold
+                unit = 'day'
+            else:
+                return issue.strftime('%B %d, %Y')
+        plural = 's' if value != 1 else ''
+        return '%d %s%s ago' % (value, unit, plural)
+    except:
+        return ''
 
 @register.filter
 def to_img_layout(img, dimensions):
