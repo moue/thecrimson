@@ -2,6 +2,7 @@ import sys
 import re
 from StringIO import StringIO
 from datetime import datetime, timedelta, date
+import xml.dom.minidom
 
 from django.conf import settings
 from django.contrib.flatpages.models import FlatPage
@@ -1055,8 +1056,19 @@ def feature_view(request, title, sectionTitle=None, mediaSlug=None):
             remainderStories = []
         #test = str(dir(videos[0]))
         
-        sideBarTop = sideBarItems[:8]
-        sideBarBottom = sideBarItems[8:]
+        xmlDoc = xml.dom.minidom.parse(settings.MEDIA_ROOT+'/txt/feature.xml')
+        sideCut = 8
+        
+        test = ""
+        
+        for x in xmlDoc.childNodes[0].childNodes:
+            if x.localName=='section':
+                if x.attributes['slug'].nodeValue==currentSection.slug:
+                    sideCut = int(x.attributes['sideBarNum'].nodeValue)
+        
+        
+        sideBarTop = sideBarItems[:sideCut]
+        sideBarBottom = sideBarItems[sideCut:]
     else:
         allItems = [x.related_content for x in relatedItems.all()]
         mediaItems = [x for x in allItems if x.content_type.model=='gallery' or x.content_type.model=='youtubevideo']
