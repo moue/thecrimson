@@ -58,9 +58,13 @@ $("document").ready(function () {
             document.location.href = video4url;
         });
 
-        
+
     }
-    $("#content_wrapper").height(($("div.feature_centerBar").height() + 200) + "px");
+    var nHeight = $("div.feature_centerBar").height();
+    if (nHeight < $("div.feature_rightSideBar").height()) {
+        nHeight = $("div.feature_rightSideBar").height();
+    }
+    $("#content_wrapper").height((nHeight + 200) + "px");
 
     if (media) {
         $("body").css("background-color", "#343233");
