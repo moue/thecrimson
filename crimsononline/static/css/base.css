@@ -386,6 +386,7 @@ ul.normal_bullets {
     border-top: 2px solid #d1d1d1;
     background-color: #eee;
     padding-top: 5px;
+    clear: both;
 }
 
 #footer_contents {
