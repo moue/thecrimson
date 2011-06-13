@@ -60,7 +60,7 @@
     {% endif %}
 {% endblock %}
 {% block articletext %}
-    <div class="posttext">
+    <div class="text">
         {% for p in article.text|remove_flyby_jump|safe|paragraphs %}
             {{ p }}
             {% if forloop.counter|divisibleby:"3" %}
