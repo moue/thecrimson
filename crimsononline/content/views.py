@@ -81,12 +81,12 @@ def index(request, m=None, d=None, y=None):
             raise Http404
 
     sportsblog = ContentGroup.objects.get(name='The Back Page')
-    front_featured = ContentGroup.objects.get(name='Front Feature')
+    front_featured = Tag.objects.get(text='Front Feature')
     # This is necessary because just exclude(group=sportsblog) will also exclude NULL entries,
     # i.e. ungrouped content.  This is because of how mysql handles NULL.  The Django ORM
     # should really solve this problem automatically, but that's another story.
     stories = (top_articles('News, Sports', dt)
-                  .filter(Q(group__isnull=True) | (Q(group__isnull=False) & ~Q(group=sportsblog) & ~Q(group=front_featured))))
+                  .filter(Q(group__isnull=True) | (Q(group__isnull=False) & ~Q(group=sportsblog) & ~Q(tags=front_featured))))
 
     dict = {}
     dict['rotate'] = rotatables(None, 4)
@@ -94,8 +94,8 @@ def index(request, m=None, d=None, y=None):
     #dict['past_issues'] = DateSelectWidget().render(name="past_issues",
     #                                                value=[m, d, y])
     dict['nav'] = 'index'
-    dict['top_stories'] = stories[:6]
-    dict['big_feature'] = Article.objects.recent.filter(group=front_featured)[0]
+    dict['top_stories'] = stories[:5]
+    dict['big_feature'] = Article.objects.recent.filter(tags=front_featured)[0]
     more_stories = []
     for story in stories[5:]:
         if story.section != Section.objects.get(name='Sports'):

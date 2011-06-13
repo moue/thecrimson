@@ -55,7 +55,7 @@
 <div class="col-3">
         <div id="topstories" class="article_previews3">
             <ul>
-                {% for story in top_stories|notfirst %}
+                {% for story in top_stories %}
                 {% if forloop.last %}<li class="last_item">{%else%}<li>{%endif%}
                     {% if forloop.first %}{{story|render:"top_preview"}}
                     {%else%}{{story|render:"preview"}}{%endif%}
