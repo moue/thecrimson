@@ -6,9 +6,7 @@
 {% block wrapper_classes %}wide{% endblock %}
 {% block wrapper_id %}wide{% endblock %}
 {% block wrapper_contents %}
-    <object width="{{flashgraphic.width}}" height="{{flashgraphic.height}}">
-    <param name="movie" value="{% static_url "" %}{{flashgraphic.graphic}}">
-    <embed src="{% static_url "" %}{{flashgraphic.graphic}}" width="392" height="253">
-    </embed>
-    </object>
+    <a href="{{flashgraphic.get_absolute_url}}">
+    	{{flashgraphic.pic|to_img_tag:"392,"}}
+    </a>
 {% endblock %}
