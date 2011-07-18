@@ -20,7 +20,7 @@ class Command(NoArgsCommand):
             rStr += "<pubDate>"+str(obj.created_on)+"</pubDate>"
             if obj.main_rel_content.content_type == ContentType.objects.get(name=="image")
                 rStr += "<image>"
-                rStr += "<url>"+str(obj.main_rel_content.get_absolute_url())+"</url>
+                rStr += "<url>http://thecrimson.com"+obj.main_rel_content.get_absolute_url()+"</url>
                 rStr += "<title>"+obj.headline+"</title>"
                 rStr += "<link>http://www.thecrimson.com"+obj.get_absolute_url()+"</link>"
                 rStr += "</image>"
