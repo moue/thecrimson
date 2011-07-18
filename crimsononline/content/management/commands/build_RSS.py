@@ -17,6 +17,7 @@ class Command(NoArgsCommand):
             desc = obj.teaser
             #desc = desc.encode("utf-8")
             rStr += "<description>" + desc+"</description>"
+            rStr += "<pubDate>"+str(obj.created_on)+"</pubDate>"
             rStr += "<dc:creator xmlns:dc='http://purl.org/dc/elements/1.1/'>"
             for i in obj.contributors.all():
                 rStr += i.first_name + " " +i.last_name +", "
