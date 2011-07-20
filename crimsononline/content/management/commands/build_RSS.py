@@ -18,8 +18,10 @@ class Command(NoArgsCommand):
             #desc = desc.encode("utf-8")
             rStr += "<description>" + desc+"</description>"
             rStr += "<pubDate>"+str(obj.created_on)+"</pubDate>"
-            for rc in obj.rel_content.all():
-                rStr += "<media:content url='"+rc.absolute_url+"' />"
+            if obj.main_rel_content.content_type == ContentType.objects.get(name="image"):
+                rStr += "<media:content url='http://thecrimson.com"+obj.main_rel_content.get_absolute_url()+"' />"
+            #for i in obj.rel_content.all():
+            #   rStr += "<media:content url='http://thecrimson.com"+i.related_content.get_absolute_url()+"' />"
             rStr += "<dc:creator xmlns:dc='http://purl.org/dc/elements/1.1/'>"
             for i in obj.contributors.all():
                 rStr += i.first_name + " " +i.last_name +", "
