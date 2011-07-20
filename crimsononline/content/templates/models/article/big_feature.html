@@ -5,7 +5,9 @@
 
 {% if article.main_rel_content %}
         {% ifnotequal article.main_rel_content.content_type.model "article" %}
+        <a href="{{article.get_absolute_url}}">
             {{ article.main_rel_content|render:"article.featured" }}
+         </a>
         {% endifnotequal %}
 {% endif %}
 <h2>{{article|linkify}}
