@@ -19,7 +19,7 @@ class Command(NoArgsCommand):
             rStr += "<description>" + desc+"</description>"
             rStr += "<pubDate>"+str(obj.created_on)+"</pubDate>"
             if obj.main_rel_content.content_type != Article.ct() or obj.main_rel_content.content_type != Map.ct():
-                rStr += "<media:content url='%s' />" % obj.main_rel_content.display_url(Image.SIZE_STAND)
+                rStr += "<media:content url='http://thecrimson.com%s' />" % obj.main_rel_content.display_url(Image.SIZE_STAND)
             #for i in obj.rel_content.all():
             #   rStr += "<media:content url='http://thecrimson.com"+i.related_content.get_absolute_url()+"' />"
             rStr += "<dc:creator xmlns:dc='http://purl.org/dc/elements/1.1/'>"
