@@ -18,7 +18,8 @@ class Command(NoArgsCommand):
             #desc = desc.encode("utf-8")
             rStr += "<description>" + desc+"</description>"
             rStr += "<pubDate>"+str(obj.created_on)+"</pubDate>"
-            if obj.main_rel_content.content_type != Article.ct() or obj.main_rel_content.content_type != Map.ct() or obj.main_rel_content.content_type != Gallery.ct():
+            #if obj.main_rel_content.content_type == Image.ct() or obj.main_rel_content.content_type == FlashGraphic.ct():
+            if obj.main_rel_content:
                 rStr += "<media:content url='http://thecrimson.com%s' />" % obj.main_rel_content.display_url(Image.SIZE_STAND)
             #for i in obj.rel_content.all():
             #   rStr += "<media:content url='http://thecrimson.com"+i.related_content.get_absolute_url()+"' />"
