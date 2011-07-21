@@ -18,14 +18,11 @@ class Command(NoArgsCommand):
             #desc = desc.encode("utf-8")
             rStr += "<description>" + desc+"</description>"
             rStr += "<pubDate>"+str(obj.created_on)+"</pubDate>"
-            #if obj.main_rel_content.content_type == Image.ct() or obj.main_rel_content.content_type == FlashGraphic.ct():
             if obj.main_rel_content:
                 try:
                     rStr += "<media:content url='%s' />" % obj.main_rel_content.absolute_url
                 except:
                     rStr += ""
-            #for i in obj.rel_content.all():
-            #   rStr += "<media:content url='http://thecrimson.com"+i.related_content.get_absolute_url()+"' />"
             rStr += "<dc:creator xmlns:dc='http://purl.org/dc/elements/1.1/'>"
             for i in obj.contributors.all():
                 rStr += i.first_name + " " +i.last_name +", "
