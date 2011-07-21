@@ -19,7 +19,7 @@ class Command(NoArgsCommand):
             rStr += "<description>" + desc+"</description>"
             rStr += "<pubDate>"+str(obj.created_on)+"</pubDate>"
             #if obj.main_rel_content.content_type == Image.ct() or obj.main_rel_content.content_type == FlashGraphic.ct():
-            if obj.main_rel_content.child:
+            if obj.main_rel_content:
                 try:
                     rStr += "<media:content url='%s' />" % obj.main_rel_content.absolute_url
                 except:
