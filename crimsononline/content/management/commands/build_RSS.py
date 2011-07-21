@@ -18,8 +18,9 @@ class Command(NoArgsCommand):
             #desc = desc.encode("utf-8")
             rStr += "<description>" + desc+"</description>"
             rStr += "<pubDate>"+str(obj.created_on)+"</pubDate>"
-            if obj.main_rel_content:
-                rStr += "<media:content url='http://thecrimson.com"+obj.main_rel_content.get_absolute_url()+"' />"
+            image = ContentType.objects.get_for_model(Image);
+            if obj.main_rel_content.content_type == image:
+                rStr += "<media:content url='http://thecrimson.com"+obj.main_rel_content.absolute_url+"' />"
             #for i in obj.rel_content.all():
             #   rStr += "<media:content url='http://thecrimson.com"+i.related_content.get_absolute_url()+"' />"
             rStr += "<dc:creator xmlns:dc='http://purl.org/dc/elements/1.1/'>"
