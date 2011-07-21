@@ -19,8 +19,8 @@ class Command(NoArgsCommand):
             rStr += "<description>" + desc+"</description>"
             rStr += "<pubDate>"+str(obj.created_on)+"</pubDate>"
             if obj.main_rel_content:
-                rStr += "<media:thumbnail url='http://thecrimson.com"+obj.main_rel_content.display_url((69, 69, 1, 1))+"' />"
-                rStr += "<media:content url='http://thecrimson.com"+obj.main_rel_content.display_url((280, 240, 1, 1))+"' />"
+                rStr += "<media:thumbnail url='"+obj.main_rel_content.display_url((69, 69, 1, 1))+"' />"
+                rStr += "<media:content url='"+obj.main_rel_content.display_url((280, 240, 1, 1))+"' />"
             #for i in obj.rel_content.all():
             #   rStr += "<media:content url='http://thecrimson.com"+i.related_content.get_absolute_url()+"' />"
             rStr += "<dc:creator xmlns:dc='http://purl.org/dc/elements/1.1/'>"
