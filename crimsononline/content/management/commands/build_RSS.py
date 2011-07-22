@@ -26,7 +26,10 @@ class Command(NoArgsCommand):
                     rStr += ""
             rStr += "<dc:creator xmlns:dc='http://purl.org/dc/elements/1.1/'>"
             for i in obj.contributors.all():
-                rStr += i.first_name + " " +i.last_name +", "
+                try:
+                    rStr += i.first_name + " " + i.middle_name + " " + i.last_name +", "
+                except:
+                    rStr += i.first_name + " " + i.last_name +", "
             rStr = rStr[:-2]
             rStr += "</dc:creator>"
             rStr += "<guid>http://www.thecrimson.com"+obj.get_absolute_url()+"</guid>"
