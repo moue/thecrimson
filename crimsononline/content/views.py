@@ -70,6 +70,7 @@ def sitemap_contributors(request, page=None):
 def index(request, m=None, d=None, y=None):
     """Show the view for the front page."""
     domain = request.get_host()
+    test = domain.count("backpageblog.com")
     if domain.count("backpageblog.com") > 0:
         HttpResponseRedirect("/blog/the-back-page/")
     dt = None
@@ -132,6 +133,7 @@ def index(request, m=None, d=None, y=None):
     dict['galleries'] = Gallery.objects.prioritized(40)[:3]
     dict['videos'] = YouTubeVideo.objects.prioritized(60)[:4]
     dict['domain'] = domain
+    dict['test'] = test
 
     return render_to_response('index.html', dict)
 
