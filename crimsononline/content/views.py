@@ -72,8 +72,7 @@ def index(request, m=None, d=None, y=None):
     domain = request.get_host()
     test = domain.count("backpageblog.com")
     if domain.count("backpageblog.com") > 0:
-        test = "true"
-        HttpResponseRedirect("/blog/the-back-page/")
+        return HttpResponseRedirect("/blog/the-back-page/")
         
     
     dt = None
