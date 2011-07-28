@@ -69,6 +69,9 @@ def sitemap_contributors(request, page=None):
 @cache_page(settings.CACHE_STANDARD)
 def index(request, m=None, d=None, y=None):
     """Show the view for the front page."""
+    domain = request.get_host()
+    if domain.count("backpageblog.com") > 0:
+        HttpResponseRedirect("/blog/the-back-page/")
     dt = None
     # if viewing an issue, try to form date, if not successful, 404
     if m is None or d is None or y is None:
