@@ -72,7 +72,10 @@ def index(request, m=None, d=None, y=None):
     domain = request.get_host()
     test = domain.count("backpageblog.com")
     if domain.count("backpageblog.com") > 0:
+        test = "true"
         HttpResponseRedirect("/blog/the-back-page/")
+        
+    
     dt = None
     # if viewing an issue, try to form date, if not successful, 404
     if m is None or d is None or y is None:
