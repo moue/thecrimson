@@ -131,6 +131,7 @@ def index(request, m=None, d=None, y=None):
     #dict['issue'] = Issue.get_current()
     dict['galleries'] = Gallery.objects.prioritized(40)[:3]
     dict['videos'] = YouTubeVideo.objects.prioritized(60)[:4]
+    dict['domain'] = domain
 
     return render_to_response('index.html', dict)
 
