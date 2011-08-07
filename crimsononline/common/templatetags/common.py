@@ -354,7 +354,7 @@ class WeatherNode(template.Node):
             else:
                 icon_txt = ""
 
-            return'<a class="submenu_right" href="http://www.sunlikely.com/in/Cambridge,_MA">Cambridge, MA weather: %s</a><div class="submenu_image">%s</div>' % (str(cur_weather).split()[-1], icon_txt)
+            return'Cambridge, MA weather: %s<div class="submenu_image">%s</div>' % (str(cur_weather).split()[-1], icon_txt)
         except:
             # Don't raise exception if feed is down or something else
             return ''
