@@ -165,7 +165,13 @@
         
     </div>-->
     {% module 4 "" box %}
-        {% advertisement 59 %}
+        <!--{% advertisement 59 %}-->
+        <object width="300" height="250">
+    <param name="movie" value="{% static_url "flashgraphics/FU_300x250_Harvard.swf" %}">
+    <embed src="{% static_url "flashgraphics/FU_300x250_Harvard.swf" %}" width="300" height="250">
+    </embed>
+    </object>
+        
     {% endmodule %}
 	{% cache 500 mostreadarticles_index %}
     	{% most_read_articles %}
@@ -269,7 +275,12 @@
 {% endcomment %}
 <span class="clear"></span>
 <div class="top_leaderboard">
-        {% advertisement 62 %}
+	<!--{% advertisement 62 %}-->
+	<object width="720" height="90">
+    <param name="movie" value="{% static_url "flashgraphics/FU_720x90_Harvard.swf" %}">
+    <embed src="{% static_url "flashgraphics/FU_720x90_Harvard.swf" %}" width="720" height="90">
+    </embed>
+    </object>
 </div>
 <span class="clear"></span>
 <div class="line-12"></div>
