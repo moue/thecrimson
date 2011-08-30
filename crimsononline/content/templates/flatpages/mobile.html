@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load common %}
+{% load content_module %}
+{% load module %}
+
+{% block title %}
+    {{ flatpage.title }}
+{% endblock %}
+
+{% block type %}
+    {{ "General" }}
+{% endblock %}
+
+{% block category %}
+    {{ "Flatpages" }}
+{% endblock %}
+
+{% block body %}
+   
+    <div style="width:971px; margin: 0 auto; margin-bottom: 10px; padding: 3px 0;">
+	{% block content %}
+		<img src="{% static_url "images/mobile landing page.jpg" %}" width="971" height="465" alt="The Back Page"/>
+	{% endblock %}
+    </div>
+	
+    <span class="clear" />
+{% endblock %}
