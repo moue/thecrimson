@@ -20,11 +20,11 @@ div#container  {
 		background:#fff;
 		margin-top:17px;
 		margin-left:-5px;
-        margin-right: 8px;
+		margin-right: 8px;
 		padding-bottom:10px;
 		}
 #maincenter {
-		width:480px;
+		width:646px;
 		float:left;
 		background:#fff;
 		padding-bottom:10px;
@@ -42,7 +42,42 @@ div#container  {
 		padding-bottom:10px;
 		}
 
+#standings  {
+	font-family: helvetica, arial, sans-serif;
+	font-size: 10px;
+	text-align: center;
+}
+
+#taglinks {
+    margin: 0 0 10px 0;
+}
+
+#games  {
+	font-family: helvetica, arial, sans-serif;
+	font-size: 10px;
+	text-align: left;
+}
+#expandable {
+    display : block;
+}
+
+#expandable1 {
+    display : block;
+}
+
+#expandable2 {
+    display : block;
+}
+
+.hidden {
+    display : none;
+}
+
+.unhidden {
+     display : block;
+}
 /* Basic styling, used when JavaScript is unsupported */
+
 .cbb {
 	border:1px solid #666;
 	background:#fff;
@@ -120,19 +155,6 @@ div#container  {
 .i3 {display:inline-block;}
 .i3 {display:block;}
 
-.taglinks {
-    margin: 0 0 10px 0;
-}
-.standings  {
-	font-family: helvetica, arial, sans-serif;
-	font-size: 10px;
-	text-align: center;
-}
-.games  {
-	font-family: helvetica, arial, sans-serif;
-	font-size: 10px;
-	text-align: left;
-}
 a.websites:link, a.websites:visited, a.sports:link, a.sports:visited {
 	text-decoration:none;
 	font-family: helvetica, arial, sans-serif;

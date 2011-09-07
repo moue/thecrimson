@@ -8,12 +8,28 @@
 {% block css %}
 	{{block.super}}
 	{% static_css "threecolumn.css" %}
-    {% static_css "sportsblog.css" %}
+        {% static_css "sportsblog.css" %}
 {% endblock %}
 
 {% block js %}
     {{block.super}}
     {% static_js "roundedcornersjs.js" %}
+    {% static_js "jquery.js" %}
+
+<script type="text/javascript">
+$(document).ready(function() {
+     $("#expandable").click(function() {
+          $("#standings").toggle();
+     });
+     $("#expandable1").click(function() {
+          $("#taglinks").toggle();
+     });
+     $("#expandable2").click(function() {
+          $("#games").toggle();
+     });
+} );
+</script>
+
 {% endblock %}
 
 {% block title %}
@@ -29,32 +45,26 @@
 {% endblock %}
 
 {% block pre_body %}
+<center><!-- BEGIN RICH-MEDIA Burst Media CODE 
+<script type="text/javascript" language="JavaScript">
+rnum=Math.round(Math.random() * 100000);
+ts=String.fromCharCode(60);
+if (window.self != window.top) {nf=''} else {nf='NF/'};
+document.write(ts+'script src="http://www.burstnet.com/cgi-bin/ads/ad22478b.cgi/v=2.3S/sz=728x90A/'+rnum+'/'+nf+'RETURN-CODE/JS/">'+ts+'/script>');
+</script><noscript><a href="http://www.burstnet.com/ads/ad22478b-map.cgi/ns/v=2.3S/sz=728x90A/" target="_top">
+<img src="http://www.burstnet.com/cgi-bin/ads/ad22478b.cgi/ns/v=2.3S/sz=728x90A/" border="0" alt="Click Here" /></a>
+</noscript>
+<!-- END Burst Media CODE -->
+</center>
+<br/>
 <div id="banner"><a href="/blog/the-back-page/"><img src="{% static_url "images/sportsblog/banner1.jpg" %}" width="973" height="179" align="top"></a></div>
 {% endblock %}
 {% block body %}
-{% block mainleft %}
-<div id="mainleft" >
-<hr/>
-<img src="{% static_url "images/sportsblog/SPORTSRED.jpg" %}" width="173" height="22" align="top" /><br />
-{% block recenttags %}
-<div class="taglinks">
-{% taglinks sportsblog.taglinks url_base %}
-</div>
-{% endblock %}
-<hr/>
-<img src="{% static_url "images/sportsblog/standings.png" %}" width="173" align="top"/><br />
-<div class="standings">
-{% contentmodule sportsblog.standings %}{% endcontentmodule %}
-</div>
-<hr />
-<img src="{% static_url "images/sportsblog/websites.png" %}" width="173" align="top"/><br />
-{% contentmodule sportsblog.weblinks %}{% endcontentmodule %}
-</div>
-{% endblock %}
-<div id="maincenter">
+
+<div id="maincenter" >
 {% block center %}
 {% endblock %}
-</div>
+</div >
 
 <div id="maingutter">
 <img src="{% static_url "images/sportsblog/banner3.jpg" %}" width="23" height="113" align="right"
@@ -65,6 +75,34 @@
 <img src="{% static_url "images/sportsblog/banner2.jpg" %}" width="309" height="113"
      align="right" style="margin-bottom: 20px; margin-right: -5px;" />
 <div style="clear: both;"></div>
+
+<img src="{% static_url "images/sportsblog/SPORTSRED.jpg" %}" width="173" height="22" align="top" /><br />
+{% block recenttags %}
+<div class="taglinks">
+{% taglinks sportsblog.taglinks url_base %}
+</div>
+{% endblock %}
+
+<hr/>
+<div id="expandable"><img src="{% static_url "images/sportsblog/standings.png" %}" width="173" align="top"/></div>
+<div id="standings" class="hidden">
+{% contentmodule sportsblog.standings %}{% endcontentmodule %}
+</div>
+<hr />
+
+<div id="expandable1"><img src="{% static_url "images/sportsblog/websites.png" %}" width="173" align="top"/></div>
+<div id="taglinks" class="hidden">
+{% contentmodule sportsblog.weblinks %}{% endcontentmodule %}
+</div>
+<hr />
+
+
+<div id="expandable2"><img src="{% static_url "images/sportsblog/upcominggames.jpg" %}" /></div>
+<div id="games" class="hidden">
+{% contentmodule sportsblog.upcominggames %}{% endcontentmodule %}
+</div>
+<hr />
+
 <script src="http://widgets.twimg.com/j/2/widget.js"></script>
 <script src="http://widgets.twimg.com/j/2/widget.js"></script>
 <script>
@@ -74,7 +112,7 @@ new TWTR.Widget({
   rpp: 4,
   interval: 6000,
   width: 308,
-  height: 250,
+  height: 150,
   theme: {
     shell: {
       background: '#b90f15',
@@ -98,11 +136,7 @@ new TWTR.Widget({
 }).render().setUser('thcsports').start();
 </script>
 <br />
-<div class="games">
-<img src="{% static_url "images/sportsblog/upcominggames.jpg" %}" /><br />
-{% contentmodule sportsblog.upcominggames %}{% endcontentmodule %}
-<br />
-<hr />
+
 <img src="{% static_url "images/sportsblog/video.png" %}" /><br />
 <object width="309" height="188"><param name="movie" value="http://www.youtube.com/v/{% latest_tagged_video "Sports Blog" %}&hl=en_US&fs=1&"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/{% latest_tagged_video "Sports Blog" %}&hl=en_US&fs=1&" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="309" height="188"></embed></object>
 <br />
@@ -112,6 +146,17 @@ new TWTR.Widget({
 
 {% module 4 "" box %}
     {% advertisement 59 %}
+    <!-- BEGIN RICH-MEDIA Burst Media CODE 
+<script type="text/javascript" language="JavaScript">
+rnum=Math.round(Math.random() * 100000);
+ts=String.fromCharCode(60);
+if (window.self != window.top) {nf=''} else {nf='NF/'};
+document.write(ts+'script src="http://www.burstnet.com/cgi-bin/ads/ad22478b.cgi/v=2.3S/sz=728x90A/'+rnum+'/'+nf+'RETURN-CODE/JS/">'+ts+'/script>');
+</script><noscript><a href="http://www.burstnet.com/ads/ad22478b-map.cgi/ns/v=2.3S/sz=728x90A/" target="_top">
+<img src="http://www.burstnet.com/cgi-bin/ads/ad22478b.cgi/ns/v=2.3S/sz=728x90A/" border="0" alt="Click Here" /></a>
+</noscript>
+<!-- END Burst Media CODE -->
+
 {% endmodule %}
 
 </div>
