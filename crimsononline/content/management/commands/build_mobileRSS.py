@@ -18,11 +18,26 @@ class Command(NoArgsCommand):
             #desc = desc.encode("utf-8")
             rStr += "<description>" + desc+"</description>"
             rStr += "<pubDate>"+str(obj.created_on)+"</pubDate>"
-            if obj.main_rel_content:
+            rStr += "<all_rel_content>"
+            for content in obj.rel_content:
                 try:
-                    rStr += "<media:content url='%s' />" % obj.main_rel_content.display_url(Image.SIZE_STAND)
+                    rStr += "<rel_content>"+content.youtube_url+"</rel_content>"
                 except:
-                    rStr += ""
+                    try: 
+                        for pic in content.contents:
+                            try: 
+                                rStr += "<rel_content>"+content.display_url(Image.SIZE_STAND)+"</rel_content>"
+                            except:
+                                rStr += ""
+                    except:
+                        rStr += "<rel_content>"+content.display_url(Image.SIZE_STAND)+"</rel_content>"
+            rStr += "</all_rel_content>"
+           # if obj.main_rel_content:
+           #     try:
+                    #rStr += "<media:content url='%s' />" % obj.main_rel_content.absolute_url
+          #          rStr += "<media:content url='%s' />" % obj.main_rel_content.display_url(Image.SIZE_STAND)
+           #     except:
+            #        rStr += ""
             rStr += "<dc:creator xmlns:dc='http://purl.org/dc/elements/1.1/'>"
             for i in obj.contributors.all():
                 try:
@@ -31,6 +46,7 @@ class Command(NoArgsCommand):
                     rStr += i.first_name + " " + i.last_name +", "
             rStr = rStr[:-2]
             rStr += "</dc:creator>"
+            rStr += "<article_text>"+obj.text+"</article_text>"
             rStr += "<guid>http://www.thecrimson.com"+obj.get_absolute_url()+"</guid>"
             rStr += "</item>"
             return rStr
@@ -51,8 +67,9 @@ class Command(NoArgsCommand):
             f1.write(content)
             f1.close()
         
-        fileStart = '<?xml version="1.0" encoding="utf-8"?><rss version="2.0" xmlns:media="http://search.yahoo.com/mrss/"><channel>'
-        fileEnd = '</channel></rss>'
+        fileStart = '<?xml version="1.0" encoding="utf-8"?>'
+        #fileStart = '<?xml version="1.0" encoding="utf-8"?><rss version="2.0" xmlns:media="http://search.yahoo.com/mrss/"><channel>'
+        #fileEnd = '</channel></rss>'
 
         #build the top news feed
         topNewsFeed = fileStart + buildHeaderInfo(" Top Stories","The Top Crimson Articles")
