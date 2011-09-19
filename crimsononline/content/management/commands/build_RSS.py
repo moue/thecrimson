@@ -20,9 +20,12 @@ class Command(NoArgsCommand):
             rStr += "<pubDate>"+str(obj.created_on)+"</pubDate>"
             if obj.main_rel_content:
                 try:
-                    rStr += "<media:content url='%s' />" % obj.main_rel_content.display_url(Image.SIZE_STAND)
+                    rStr += "<media:content url='%s' />" % obj.main_rel_content.youtube_url
                 except:
-                    rStr += ""
+                    try:
+                        rStr += "<media:content url='%s' />" % obj.main_rel_content.display_url(Image.SIZE_STAND)
+                    except:
+                        rStr += ""
             rStr += "<dc:creator xmlns:dc='http://purl.org/dc/elements/1.1/'>"
             for i in obj.contributors.all():
                 try:
