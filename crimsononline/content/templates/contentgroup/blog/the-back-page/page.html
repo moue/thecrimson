@@ -24,9 +24,6 @@ $(document).ready(function() {
      $("#expandable1").click(function() {
           $("#taglinks").toggle();
      });
-     $("#expandable2").click(function() {
-          $("#games").toggle();
-     });
 } );
 </script>
 
@@ -97,8 +94,9 @@ document.write(ts+'script src="http://www.burstnet.com/cgi-bin/ads/ad22478b.cgi/
 <hr />
 
 
-<div id="expandable2"><img src="{% static_url "images/sportsblog/upcominggames.jpg" %}" /></div>
-<div id="games" class="hidden">
+<div><img src="{% static_url "images/sportsblog/upcominggames.jpg" %}" /></div>
+
+<div id="games">
 {% contentmodule sportsblog.upcominggames %}{% endcontentmodule %}
 </div>
 <hr />
@@ -158,7 +156,6 @@ document.write(ts+'script src="http://www.burstnet.com/cgi-bin/ads/ad22478b.cgi/
 <!-- END Burst Media CODE -->
 
 {% endmodule %}
-
 </div>
   <!-- This clearing element should immediately follow the #mainContent div in order to force the #container div to contain all child floats -->
 <!-- end #container -->
