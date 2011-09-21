@@ -118,15 +118,15 @@ class Command(NoArgsCommand):
             else:
                 x = 0
         sectionDic = {}
-        sectionDic.setdefault('arts',arts)
-        sectionDic.setdefault('opinion',opinion)
-        sectionDic.setdefault('fm',fm)
-        sectionDic.setdefault('news',news)
-        sectionDic.setdefault('sports',sports)
-        sectionDic.setdefault('flyby',flyby)
+        sectionDic.setdefault('arts',arts[:numberOfStories])
+        sectionDic.setdefault('opinion',opinion[:numberOfStories])
+        sectionDic.setdefault('fm',fm[:numberOfStories])
+        sectionDic.setdefault('news',news[:numberOfStories])
+        sectionDic.setdefault('sports',sports[:numberOfStories])
+        sectionDic.setdefault('flyby',flyby[:numberOfStories])
         
         for k, v in sectionDic.iteritems():
-            feedText = fileStart + buildHeaderInfo(" Latest Stories in %s" % i,"The Latest Crimson Articles in %s" % k)
+            feedText = fileStart + buildHeaderInfo(" Latest Stories in %s" % k,"The Latest Crimson Articles in %s" % k)
             for x in v:
                 feedText += buildItem(x)
             
