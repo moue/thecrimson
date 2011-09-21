@@ -100,7 +100,7 @@ class Command(NoArgsCommand):
         '''
         feedDate = date.today()-timedelta(days=7)
 
-        allStories = Article.objects.filter(issue__issue_date>feedDate).order_by('-issue__issue_date')
+        allStories = Article.objects.filter(issue__issue_date__gt=feedDate).order_by('-issue__issue_date')
         arts = opinion = fm = news = sports = flyby = []
         for i in allStories:
             if i.section.name.lower() == 'news':
