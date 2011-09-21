@@ -82,8 +82,6 @@ class ContentGroupAdmin(admin.ModelAdmin):
     def fbmc_search(self, request):
         """Returns a text response for FBModelChoice Field."""
         q_str, excludes, limit = fbmc_search_helper(request)
-        if limit == 10:
-            limit = 20
         cg = ContentGroup.objects.filter(
             Q(type__icontains=q_str) | Q(name__icontains=q_str)) \
             .exclude(pk__in=excludes).order_by('-pk')[:limit]
