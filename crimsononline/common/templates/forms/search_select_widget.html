@@ -24,7 +24,6 @@
             <span>None</span>
         {% endfor %}
     </div>
-    {{ajax_url}}
     <script type="text/javascript" charset="utf-8">
         $(document).ready(function(){
             set_search_choice_field('{{attrs.id}}', '{{ajax_url}}', '{{model_name|capfirst}}');
