@@ -298,7 +298,7 @@ class ContentAdmin(admin.ModelAdmin):
         """
         returns json of previews, for the SearchModelChoiceField
         """
-        OBJS_PER_REQ = 20
+        OBJS_PER_REQ = 10
 
         tags, start_d, end_d, page = [request.GET.get(x, None) \
             for x in ['tags', 'start_d', 'end_d', 'page']]
