@@ -28,7 +28,7 @@ class AjaxSearchView(SearchView):
         (paginator, page) = self.build_page()
         
         if len(matching_contributors) > 11 and self.request.GET.has_key('ajax'):
-            page = matching_contributors
+            page.object_list = matching_contributors
         
         context = {
             'query': self.query,
