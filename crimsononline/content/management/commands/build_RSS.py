@@ -87,6 +87,7 @@ class Command(NoArgsCommand):
         #write the section feeds
         sections = ['arts','opinion','fm','news','sports','flyby']
         
+        '''
         for i in sections:
             sectionObj = Section.objects.get(name__iexact=i)
             feedText = fileStart + buildHeaderInfo(" Latest Stories in %s" % i,"The Latest Crimson Articles in %s" % i)
@@ -96,5 +97,39 @@ class Command(NoArgsCommand):
             
             feedText += fileEnd
             writeFeed('/home/sites/crimson/crimsononline/static/feeds/'+i+'.xml', feedText)
+        '''
+		feedDate = date.today()-timedelta(days=7)
+
+		allStories = Article.objects.filter(issue__issue_date>feedDate).order_by('-issue__issue_date')
+		arts = opinion = fm = news = sports = flyby = []
+		for i in allStories:
+            if i.section.name.lower() == 'news':
+				news.append(i)
+			else if i.section.name.lower() == 'arts':
+				arts.append(i)
+			else if i.section.name.lower() == 'arts':
+				opinion.append(i)
+			else if i.section.name.lower() == 'arts':
+				fm.append(i)
+			else if i.section.name.lower() == 'arts':
+				sports.append(i)
+			else if i.section.name.lower() == 'arts':
+				flyby.append(i)
+			else:
+			
+		sectionDic = {}
+		sectionDic.setdefault('arts',arts)
+		sectionDic.setdefault('opinion',opinion)
+		sectionDic.setdefault('fm',fm)
+		sectionDic.setdefault('news',news)
+		sectionDic.setdefault('sports',sports)
+		sectionDic.setdefault('flyby',flyby)
+		
+		for k, v in sectionDic.iteritems():
+			for x in v:
+                feedText += buildItem(x)
+            
+            feedText += fileEnd
+            writeFeed('/home/sites/crimson/crimsononline/static/feeds/'+k+'.xml', feedText)
             
         #return topNewsFeed
