@@ -3,7 +3,7 @@ from django.shortcuts import render_to_response
 from haystack.query import SearchQuerySet
 from crimsononline.content.models import Contributor, Tag
 
-MAX_MCONTRIBS = 30
+MAX_MCONTRIBS = 20
 
 class AjaxSearchView(SearchView):
     def __name__(self):
@@ -26,9 +26,6 @@ class AjaxSearchView(SearchView):
             matching_tags = None
         
         (paginator, page) = self.build_page()
-        
-        if len(matching_contributors) > 11 and self.request.GET.has_key('ajax'):
-            page.object_list = matching_contributors
         
         context = {
             'query': self.query,
