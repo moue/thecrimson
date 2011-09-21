@@ -105,15 +105,15 @@ class Command(NoArgsCommand):
         for i in allStories:
             if i.section.name.lower() == 'news':
                 news.append(i)
-            else if i.section.name.lower() == 'arts':
+            elif i.section.name.lower() == 'arts':
                 arts.append(i)
-            else if i.section.name.lower() == 'arts':
+            elif i.section.name.lower() == 'arts':
                 opinion.append(i)
-            else if i.section.name.lower() == 'arts':
+            elif i.section.name.lower() == 'arts':
                 fm.append(i)
-            else if i.section.name.lower() == 'arts':
+            elif i.section.name.lower() == 'arts':
                 sports.append(i)
-            else if i.section.name.lower() == 'arts':
+            elif i.section.name.lower() == 'arts':
                 flyby.append(i)
             else:
             
