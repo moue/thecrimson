@@ -116,7 +116,7 @@ class Command(NoArgsCommand):
             elif i.section.name.lower() == 'arts':
                 flyby.append(i)
             else:
-            
+                x = 0
         sectionDic = {}
         sectionDic.setdefault('arts',arts)
         sectionDic.setdefault('opinion',opinion)
