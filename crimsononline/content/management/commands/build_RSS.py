@@ -126,6 +126,7 @@ class Command(NoArgsCommand):
         sectionDic.setdefault('flyby',flyby)
         
         for k, v in sectionDic.iteritems():
+            feedText = fileStart + buildHeaderInfo(" Latest Stories in %s" % i,"The Latest Crimson Articles in %s" % k)
             for x in v:
                 feedText += buildItem(x)
             
