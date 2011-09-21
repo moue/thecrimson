@@ -107,13 +107,13 @@ class Command(NoArgsCommand):
                 news.append(i)
             elif i.section.name.lower() == 'arts':
                 arts.append(i)
-            elif i.section.name.lower() == 'arts':
+            elif i.section.name.lower() == 'opinion':
                 opinion.append(i)
-            elif i.section.name.lower() == 'arts':
+            elif i.section.name.lower() == 'fm':
                 fm.append(i)
-            elif i.section.name.lower() == 'arts':
+            elif i.section.name.lower() == 'sports':
                 sports.append(i)
-            elif i.section.name.lower() == 'arts':
+            elif i.section.name.lower() == 'flyby':
                 flyby.append(i)
             else:
                 x = 0
