@@ -103,7 +103,7 @@ document.write(ts+'script src="http://www.burstnet.com/cgi-bin/ads/ad22478b.cgi/
 
 <script src="http://widgets.twimg.com/j/2/widget.js"></script>
 <script src="http://widgets.twimg.com/j/2/widget.js"></script>
-<script>
+<script type="text/javascript">
 new TWTR.Widget({
   version: 2,
   type: 'profile',
@@ -132,6 +132,10 @@ new TWTR.Widget({
     behavior: 'all'
   }
 }).render().setUser('thcsports').start();
+
+$("document").ready(function() {
+    $("#footer_wrapper").appendTo("#content_wrapper:parent");
+});
 </script>
 <br />
 
