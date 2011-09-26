@@ -27,7 +27,7 @@ class Command(NoArgsCommand):
                     except:
                         rStr += ""
                 try:
-                    rStr += "<media:thumbnail url='%s' />" % obj.main_rel_content.pic.display_url(Image.SIZE_STAND)
+                    rStr += "<media:thumbnail url='%s' />" % obj.main_rel_content.pic
                 except:
                     try:
                         rStr += "<media:thumbnail url='%s' />" % obj.main_rel_content.display_url(Image.SIZE_STAND)
