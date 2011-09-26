@@ -110,8 +110,8 @@ def index(request, m=None, d=None, y=None):
             break
     dict['more_stories'] = more_stories
     opeds = top_articles('Opinion', dt)
-    dict['opeds'] = opeds[:3]
-    dict['more_opeds'] = opeds[4:9]
+    dict['opeds'] = opeds[:4]
+    dict['more_opeds'] = opeds[5:10]
     # Prevent sports articles that showed up in top articles from appearing again
     """
     dict['sports'] = [x 
