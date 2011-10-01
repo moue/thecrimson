@@ -208,7 +208,7 @@
                     {% for story in sports|notfirst %}
                     {% if forloop.last %}<li class="last_item">
                     {% else %}<li>{% endif %}
-                        {{story|render:"small_preview"}}
+                        {{story|render:"sports_small_preview"}}
                     </li>
                     {% endfor %}
                 </ul>
