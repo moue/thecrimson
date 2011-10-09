@@ -29,7 +29,7 @@ from django.utils.hashcompat import md5_constructor
 from django.core.exceptions import PermissionDenied
 #from django.db import connections
 #from django.db.models import sql
-from crimsononline.content.paginator import FinitePaginator
+
 
 from crimsononline.admin_cust.models import UserData
 from crimsononline.content.models import *
