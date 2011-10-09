@@ -42,6 +42,8 @@ from crimsononline.common.utils.strings import \
     make_file_friendly, make_url_friendly, rand_str
 from crimsononline.admin_cust.models import Board
 from crimsononline.content.mysqloptimizedquery import Query
+from django.db import connections
+from django.db.models import sql
 
 
 def add_issue_filter(f):
