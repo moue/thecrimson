@@ -41,6 +41,7 @@ from crimsononline.common.utils.misc import ret_on_fail
 from crimsononline.common.utils.strings import \
     make_file_friendly, make_url_friendly, rand_str
 from crimsononline.admin_cust.models import Board
+from crimsononline.content.mysqloptimizedquery import Query
 
 
 def add_issue_filter(f):
@@ -85,7 +86,7 @@ class ContentManager(models.Manager):
         # hack to ensure that related content gets ordered
         if self.__class__.__name__ == 'ManyRelatedManager':
             return self.rel_content_ordered()
-        return self.all_objects().filter(pub_status=1)
+        return QuerySet(self.model, using=self._db, query=sql.MySQLOptimizedQuery(self.model)).filter(pub_status=1)
 
     @add_issue_filter
     def all(self):
