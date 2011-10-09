@@ -27,8 +27,9 @@ from django.utils import simplejson, html
 from django.utils.safestring import mark_safe
 from django.utils.hashcompat import md5_constructor
 from django.core.exceptions import PermissionDenied
-from django.db import connections
-from django.db.models import sql
+#from django.db import connections
+#from django.db.models import sql
+from crimsononline.content.paginator import InfinitePaginator
 
 from crimsononline.admin_cust.models import UserData
 from crimsononline.content.models import *
@@ -175,6 +176,7 @@ class ContentAdmin(admin.ModelAdmin):
 
     ordering = ('-issue__issue_date',)
     actions = ['make_published', 'make_draft',]
+    paginator = InfinitePaginator
 
     class Media:
         js = (
