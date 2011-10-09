@@ -88,7 +88,7 @@ class ContentManager(models.Manager):
         # hack to ensure that related content gets ordered
         if self.__class__.__name__ == 'ManyRelatedManager':
             return self.rel_content_ordered()
-        return QuerySet(self.model, using=self._db, query=sql.MySQLOptimizedQuery(self.model)).filter(pub_status=1)
+        return QuerySet(self.model, using=self._db, query=sql.ContentManager(self.model)).filter(pub_status=1)
 
     @add_issue_filter
     def all(self):
