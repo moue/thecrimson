@@ -1404,13 +1404,13 @@ class FeaturePackageAdmin(admin.ModelAdmin):
                 #logging.debug(str(section))
                 #logging.debug(str(contents))
         """  
-        
+"""        
 class ApproxCountQuerySet(QuerySet): 
-    """Counting all rows is very expensive on large Innodb tables. This 
+    Counting all rows is very expensive on large Innodb tables. This 
     is a replacement for QuerySet that returns an approximation if count()
     is called with no additional constraints. In all other cases it should
     behave exactly as QuerySet. 
-    """ 
+     
  
     def count(self): 
         # Code from django/db/models/query.py 
@@ -1440,6 +1440,7 @@ class countFixAdmin(admin.ModelAdmin):
     def queryset(self, request):
         qs = super(countFixAdmin, self).queryset(request)
         return qs._clone(klass=ApproxCountQuerySet)
+"""
 
 admin.site.register(FeaturePackage, FeaturePackageAdmin)
 #admin.site.register(FeaturePackageSection, FeaturePackageSectionAdmin)441347
@@ -1448,5 +1449,5 @@ admin.site.unregister(FlatPage)
 admin.site.register(FlatPage, FlatPageAdmin)
 
 admin.site.register(Correction)
-#admin.site.register(countFixAdmin)
+
 admin.site.register(GenericFile)
