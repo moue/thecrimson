@@ -27,6 +27,8 @@ from django.utils import simplejson, html
 from django.utils.safestring import mark_safe
 from django.utils.hashcompat import md5_constructor
 from django.core.exceptions import PermissionDenied
+from django.db import connections
+from django.db.models import sql
 
 from crimsononline.admin_cust.models import UserData
 from crimsononline.content.models import *
@@ -1440,7 +1442,7 @@ class countFixAdmin(admin.ModelAdmin):
         return qs._clone(klass=ApproxCountQuerySet)
 
 admin.site.register(FeaturePackage, FeaturePackageAdmin)
-#admin.site.register(FeaturePackageSection, FeaturePackageSectionAdmin)
+#admin.site.register(FeaturePackageSection, FeaturePackageSectionAdmin)441347
 
 admin.site.unregister(FlatPage)
 admin.site.register(FlatPage, FlatPageAdmin)
