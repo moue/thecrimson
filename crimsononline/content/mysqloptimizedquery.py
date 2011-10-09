@@ -2,7 +2,7 @@ from django.db import connections
 from django.db.models import sql
 
 
-class Query(sql.Query):
+class MySQLOptimizedQuery(sql.Query):
     """Counting all rows is very expensive on large Innodb tables. This
     is a replacement for QuerySet that returns an approximation if count()
     is called with no additional constraints. In all other cases it should
