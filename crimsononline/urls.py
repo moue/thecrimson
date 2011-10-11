@@ -140,7 +140,7 @@ if settings.HAYSTACK:
 
     
 """
-urlpatterns += patterns('search.views',
+urlpatterns += patterns('crimsononline.search.views',
         url(r'^search/', 'searchView'))
 
 if settings.DEBUG:
