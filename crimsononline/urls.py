@@ -130,6 +130,7 @@ generic_patterns = patterns('crimsononline.content.views',
 )
 urlpatterns += generic_patterns
 
+"""
 if settings.HAYSTACK:
     import haystack
     haystack.autodiscover()
@@ -137,8 +138,10 @@ if settings.HAYSTACK:
     from crimsononline.search.forms import DateRangeSearchForm
     from crimsononline.search.views import AjaxSearchView
 
-    urlpatterns += patterns('search.views',
-        url(r'^search/', AjaxSearchView(form_class=DateRangeSearchForm)))
+    
+"""
+urlpatterns += patterns('search.views',
+        url(r'^search/', 'searchView'))
 
 if settings.DEBUG:
     urlpatterns += patterns('',

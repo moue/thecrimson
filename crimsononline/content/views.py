@@ -65,7 +65,7 @@ def sitemap_contributors(request, page=None):
         pages = range(num_contributors/contributors_per_page +2)[1:]
         
         return render_to_response("sitemap/sitemap_contributors_base.html",{'pages':pages})
-
+    
 @cache_page(settings.CACHE_STANDARD)
 def index(request, m=None, d=None, y=None):
     """Show the view for the front page."""

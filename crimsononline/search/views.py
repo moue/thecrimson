@@ -45,4 +45,22 @@ class AjaxSearchView(SearchView):
         return render_to_response(t, context, 
             context_instance=self.context_class(self.request))
         
+def searchView(request):
+    qu =  self.request.GET.get('q','')
+    contributors = None
+    tags = None
+    mcontributors = None
+    mtags = None
+    """
+    if qu:
+        contributors = SearchQuerySet().models(Contributor)
+        tags = SearchQuerySet().models(Tag)
+        mcontributors = (contributors.auto_query(qu))[:MAX_MCONTRIBS]
+        mtags = tags.auto_query(qu)
+    else:
+        mcontributors = None
+        mtags = None
+    """    
+    #(paginator, page) = self.build_page()
     
+    return render_to_response('search/search.html', locals())
