@@ -46,7 +46,7 @@ class AjaxSearchView(SearchView):
             context_instance=self.context_class(self.request))
         
 def searchView(request):
-    qu =  self.request.GET.get('q','')
+    #qu =  self.request.GET.get('q','')
     contributors = None
     tags = None
     mcontributors = None
