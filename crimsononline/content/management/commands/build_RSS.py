@@ -27,10 +27,10 @@ class Command(NoArgsCommand):
                     except:
                         rStr += ""
                 try:
-                    rStr += "<media:thumbnail url='%s' />" % obj.main_rel_content.pic
+                    rStr += "<media:thumbnail url='%s' />" % obj.main_rel_content.display_url(Image.SIZE_STAND)
                 except:
-                    try:
-                        rStr += "<media:thumbnail url='%s' />" % obj.main_rel_content.display_url(Image.SIZE_STAND)
+                    try: 
+                        rStr += "<media:thumbnail url='%s' />" % obj.main_rel_content.pic
                     except:
                         rStr += ""
             rStr += "<dc:creator xmlns:dc='http://purl.org/dc/elements/1.1/'>"
