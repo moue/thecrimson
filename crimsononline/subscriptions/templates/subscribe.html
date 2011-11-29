@@ -21,7 +21,7 @@
         <div class="emailform">
 			{% contentmodule subscribe.email %}{% endcontentmodule %}
         	{% with emailform as form %}
-	            <form class="general" action="/subscribe/email/" method="post">
+	            <!--<form class="general" action="/subscribe/email/" method="post">
 	            <table>
 		            {% if form.errors %}
 		            <tr><td colspan="2" class="center errormessage">Check the errors below</td></tr>
@@ -31,8 +31,8 @@
 	                    <td class="center" colspan="2"><button type="submit">Sign up!</button></td>
 	                </tr>
 	            </table>
-	            </form>
-	
+	            </form>-->
+				<iframe src="http://newsletter.thecrimson.com/join/register" width="960" height="300"><p>Your browser does not support iframes</p></iframe>
 	        {% endwith %}
         </div>
         
