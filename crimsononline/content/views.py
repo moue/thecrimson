@@ -101,7 +101,11 @@ def index(request, m=None, d=None, y=None):
     #                                                value=[m, d, y])
     dict['nav'] = 'index'
     dict['top_stories'] = stories[:5]
-    dict['big_feature'] = Article.objects.recent.filter(tags=front_featured)[0]
+    try:
+        dict['big_feature'] = Article.objects.recent.filter(tags=front_featured)[0]
+    except:
+        dict['big_feature'] = dict['top_stories'][0]
+    
     more_stories = []
     for story in stories[5:]:
         if story.section != Section.objects.get(name='Sports'):
