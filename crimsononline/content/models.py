@@ -195,6 +195,7 @@ class Content(models.Model):
                                  "from the old website.", db_index=True)
 
     content_type = models.ForeignKey(ContentType, editable=False, null=True)
+    
 
     def save(self, *args, **kwargs):
         if not self.content_type:
@@ -465,9 +466,13 @@ class Content(models.Model):
         """Return all ContentType objects with parent Content"""
         return [ContentType.objects.get_for_model(cls)
                 for cls in Content.__subclasses__()]
+   
 
 class ContentHits(models.Model):
-    content = models.ForeignKey(Content, db_index=True)
+    #content = models.ForeignKey(Content, db_index=True)
+    content_type = models.ForeignKey(ContentType)
+    object_id = models.PositiveIntegerField()
+    content = generic.GenericForeignKey()
     date = models.DateField(auto_now_add=True, db_index=True)
     hits = models.PositiveIntegerField(default=1)
 
@@ -1117,7 +1122,10 @@ class Gallery(Content):
 
 class GalleryMembership(models.Model):
     gallery = models.ForeignKey(Gallery, related_name="gallery_set")
-    content = models.ForeignKey(Content, related_name="content_set")
+    #content = models.ForeignKey(Content, related_name="content_set")
+    content_type = models.ForeignKey(ContentType)
+    object_id = models.PositiveIntegerField()
+    content = generic.GenericForeignKey(related_name="content_set")
     order = models.IntegerField()
 
     class Meta:
@@ -1355,7 +1363,12 @@ class Article(Content):
 
 class ArticleContentRelation(models.Model):
     article = models.ForeignKey(Article, related_name = "ar")
-    related_content = models.ForeignKey(Content)
+    #related_content = models.ForeignKey(Content)
+    
+    content_type = models.ForeignKey(ContentType)
+    object_id = models.PositiveIntegerField()
+    related_content = generic.GenericForeignKey()
+    
     order = models.IntegerField(blank=True, null=True)
 
     class Meta:
@@ -1540,7 +1553,12 @@ class FeaturePackageSection(models.Model):
     
 class PackageSectionContentRelation(models.Model):
     FeaturePackageSection = models.ForeignKey(FeaturePackageSection, related_name = "fps")
-    related_content = models.ForeignKey(Content)
+    #related_content = models.ForeignKey(Content)
+    
+    content_type = models.ForeignKey(ContentType)
+    object_id = models.PositiveIntegerField()
+    content = generic.GenericForeignKey()
+    
     order = models.IntegerField(blank=True, null=True)
     isFeatured = models.BooleanField(default=False)
 
