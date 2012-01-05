@@ -1125,7 +1125,7 @@ class GalleryMembership(models.Model):
     #content = models.ForeignKey(Content, related_name="content_set")
     content_type = models.ForeignKey(ContentType)
     object_id = models.PositiveIntegerField()
-    content = generic.GenericForeignKey(related_name="content_set")
+    content = generic.GenericForeignKey()
     order = models.IntegerField()
 
     class Meta:
