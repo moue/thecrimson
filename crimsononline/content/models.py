@@ -273,6 +273,7 @@ class Content(models.Model):
             ('content.can_delete_published', 'Can delete published content'),
         )
         get_latest_by = 'created_on'
+        abstract = True
 
     @permalink
     def get_absolute_url(self):
