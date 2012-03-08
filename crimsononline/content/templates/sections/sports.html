@@ -167,7 +167,171 @@
     </div>
 	{% endmodule %}
 
-    
+    <!--/* Javascript Tag v2.8.7 */-->
+
+<!--/*
+  * The backup image section of this tag has been generated for use on a
+  * non-SSL page. If this tag is to be placed on an SSL page, change the
+  *   'http://www.oncampusweb.com/delivery/...'
+  * to
+  *   'https://www.oncampusweb.com/delivery/...'
+  *
+  * This noscript section of this tag only shows image banners. There
+  * is no width or height in these banners, so if you want these tags to
+  * allocate space for the ad before it shows, you will need to add this
+  * information to the <img> tag.
+  *
+  * If you do not want to deal with the intricities of the noscript
+  * section, delete the tag (from <noscript>... to </noscript>). On
+  * average, the noscript tag is called from less than 1% of internet
+  * users.
+  */-->
+
+<script type='text/javascript'><!--//<![CDATA[
+   var m3_u = (location.protocol=='https:'?'https://www.oncampusweb.com/delivery/ajs.php':'http://www.oncampusweb.com/delivery/ajs.php');
+   var m3_r = Math.floor(Math.random()*99999999999);
+   if (!document.MAX_used) document.MAX_used = ',';
+   document.write ("<scr"+"ipt type='text/javascript' src='"+m3_u);
+   document.write ("?zoneid=498");
+   document.write ('&amp;cb=' + m3_r);
+   if (document.MAX_used != ',') document.write ("&amp;exclude=" + document.MAX_used);
+   document.write (document.charset ? '&amp;charset='+document.charset : (document.characterSet ? '&amp;charset='+document.characterSet : ''));
+   document.write ("&amp;loc=" + escape(window.location));
+   if (document.referrer) document.write ("&amp;referer=" + escape(document.referrer));
+   if (document.context) document.write ("&context=" + escape(document.context));
+   if (document.mmm_fo) document.write ("&amp;mmm_fo=1");
+   document.write ("'><\/scr"+"ipt>");
+//]]>--></script><noscript><a href='http://www.oncampusweb.com/delivery/ck.php?n=ab8d346a&amp;cb=INSERT_RANDOM_NUMBER_HERE' target='_blank'><img src='http://www.oncampusweb.com/delivery/avw.php?zoneid=498&amp;cb=INSERT_RANDOM_NUMBER_HERE&amp;n=ab8d346a' border='0' alt='' /></a></noscript>
+
+
+<%@ page import="java.net.*"%>
+<%@ page import="java.io.*"%>
+<%@ page import="javax.xml.parsers.DocumentBuilderFactory"%>
+<%@ page import="javax.xml.parsers.ParserConfigurationException"%>
+<%@ page import="org.xml.sax.SAXException"%>
+<%@ page import="org.w3c.dom.*"%>
+<%@ page import="java.util.*"%>
+<%!
+    // The following code was graciously provided by Armond Avanes (http://www.armondavanes.com)
+
+    private String tla_ads( HttpServletRequest request, HttpServletResponse response ) throws IOException, ParserConfigurationException, SAXException
+    {
+        // Number of seconds before connection to XML times out
+        // (This can be left the way it is)
+        int CONNECTION_TIMEOUT = 10;
+
+        // Local file to store XML
+        // This file MUST be writable by web server
+        // You should create a blank file and CHMOD it to 666
+        String LOCAL_XML_FILENAME = "local_528577.xml";
+        String INVENTORY_KEY = "7ZA8VKB1T36GFQ8RJXM4";
+
+        File localXmlFile = new File( getServletConfig().getServletContext().getRealPath(LOCAL_XML_FILENAME ) );
+
+        if( !localXmlFile.exists() ) {
+            FileWriter fw = new FileWriter(getServletConfig().getServletContext().getRealPath(LOCAL_XML_FILENAME));
+            fw.write("");
+            fw.close();
+        }
+        
+        if( !localXmlFile.exists() ) {
+            return( "Script error: " + localXmlFile.getName() + " does not exist. Please create a blank file named " + localXmlFile.getName() + "." );
+        }
+
+        if( !localXmlFile.canWrite() ) {
+            return( "Script error: " + localXmlFile.getName() + " is not writable. Please set write permissions on " + localXmlFile.getName() + "." );
+        }
+
+        if( localXmlFile.lastModified()<(new Date().getTime() - 3600*1000) || localXmlFile.length()<20 ) {
+            URL url = new URL("http://www.text-link-ads.com/xml.php?k=" + INVENTORY_KEY + "&l=jsp-tla-1.0.2");
+
+            tla_updateLocalXML(url, localXmlFile, CONNECTION_TIMEOUT);
+        }
+
+        Map[] arr_xml = tla_decodeXML(localXmlFile);
+        StringBuffer sb = new StringBuffer();
+
+        if( arr_xml!=null && arr_xml.length>0 ) {
+            sb.append( "\n<ul>\n" );
+            for( int i=0; i<arr_xml.length; i++ ) {
+                Map map = arr_xml[i];
+
+                sb.append( "<li>" );
+                sb.append( map.get("BeforeText") );
+                sb.append( " <a href=\"" + map.get("URL") + "\">" + map.get("Text") + "</a> " );
+                sb.append( map.get("AfterText") + "</li>\n" );
+            }
+            sb.append("</ul>");
+        }
+
+    return sb.toString();
+    }
+
+    private void tla_updateLocalXML(URL url, File file, int time_out) throws IOException
+    {
+        file.setLastModified( new Date().getTime() );
+
+        String xml = file_get_contents_tla(url, time_out);
+
+        if( xml!=null && !xml.trim().equals("") ) {
+            FileWriter fw = new FileWriter(file);
+
+            fw.write( xml );
+            fw.close();
+        }
+    }
+
+    private String file_get_contents_tla(URL url, int time_out) throws IOException
+    {
+        URLConnection urlConnection = url.openConnection();
+
+        //urlConnection.setConnectTimeout( time_out * 1000 );
+        //urlConnection.setReadTimeout( time_out * 1000 );
+
+        InputStream is = urlConnection.getInputStream();
+        StringBuffer content = new StringBuffer();
+        int ch;
+
+        while( (ch=is.read())!=-1 )
+            content.append( (char)ch );
+
+        is.close();
+        return content.toString();
+    }
+
+    private Map[] tla_decodeXML(File file) throws ParserConfigurationException, IOException, SAXException
+    {
+        Document dom = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse( file );
+        Node linksRoot = dom.getFirstChild();
+        NodeList links = linksRoot.getChildNodes();
+        List result = new ArrayList();
+
+        for( int i=0; i<links.getLength(); i++ )
+        {
+            Node link = links.item(i);
+
+            if( link.getNodeType()==Node.TEXT_NODE )
+                continue;
+
+            NodeList linkAttributes = link.getChildNodes();
+            Map map = new HashMap();
+
+            for( int j=0; j<linkAttributes.getLength(); j++ )
+            {
+                Node linkAttr = linkAttributes.item(j);
+                Text textNode = (Text)linkAttr.getFirstChild();
+                String value = ( textNode!=null ) ? textNode.getNodeValue().trim() : "";
+
+                map.put( linkAttr.getNodeName(), value );
+            }
+            result.add(map);
+        }
+
+        return (Map[])result.toArray( new Map[0] );
+    }
+%>
+<%= tla_ads(request, response) %>
+
 
 {% endblock %}
 {% block below_column %}
