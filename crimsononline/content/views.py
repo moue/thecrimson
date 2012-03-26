@@ -28,7 +28,7 @@ from crimsononline.common.utils.lists import first_or_none
 from crimsononline.common.forms import DateSelectWidget
 from crimsononline.common.templatetags.common import human_list
 from crimsononline.common.utils.strings import alphanum_only
-from crimsononline.content.tla import *
+#from crimsononline.content.tla import *
 
 # ============ ACTUAL VIEWS ===================== test1
 
@@ -281,8 +281,8 @@ def feedsDown(request):
 @cache_page(settings.CACHE_SHORT)
 def section_news(request):
     """Show the view for the news section page."""
-    tla = TextLinkAds('7ZA8VKB1T36GFQ8RJXM4')
-    textAds = tla.get_html()
+    #tla = TextLinkAds('7ZA8VKB1T36GFQ8RJXM4')
+    #textAds = tla.get_html()
     nav = 'news'
     section = Section.cached(nav)
     stories = top_articles(section)[:22]
