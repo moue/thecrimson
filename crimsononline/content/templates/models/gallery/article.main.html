@@ -5,7 +5,6 @@
 
 {% block wrapper_classes %}{{gallery.cover_image.orientation}} image{% endblock %}
 {% block wrapper_contents %}
-    <p class="kicker">{{gallery.cover_image.kicker}}</p>
     <a href="{{gallery.get_absolute_url}}">
         {% ifequal gallery.cover_image.orientation "tall" %}
             {{gallery|to_img_tag:"300,"}}
