@@ -62,7 +62,7 @@ class Command(NoArgsCommand):
             f1.write(content)
             f1.close()
         
-        fileStart = '<?xml version="1.0" encoding="utf-8"?><rss version="2.0" xmlns:media="http://search.yahoo.com/mrss/"><channel>'
+        fileStart = '<?xml version="1.0" encoding="utf-8"?><rss version="2.0" xmlns:media="http://search.yahoo.com/mrss/" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel>'
         fileEnd = '</channel></rss>'
 
         #build the top news feed
