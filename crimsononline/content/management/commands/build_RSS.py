@@ -41,6 +41,7 @@ class Command(NoArgsCommand):
                     rStr += i.first_name + " " + i.last_name +", "
             rStr = rStr[:-2]
             rStr += "</dc:creator>"
+            rStr += "<content:encoded>"+obj.text+"</content:encoded>"
             rStr += "<guid>http://www.thecrimson.com"+obj.get_absolute_url()+"</guid>"
             rStr += "</item>"
             return rStr
