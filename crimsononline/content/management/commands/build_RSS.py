@@ -18,11 +18,11 @@ class Command(NoArgsCommand):
             desc = obj.teaser
             #desc = desc.encode("utf-8")
             rStr += "<description>" + desc+"</description>"
-            strdate = obj.created_on
-            strtuple = strdate.timetuple()
-            strtimestamp = time.mktime(strtuple)
-            strdatestring = utils.formatdate(strtimestamp)
-            rStr += "<pubDate>"+strdatestring+"</pubDate>"
+            #strdate = obj.created_on
+            #strtuple = strdate.timetuple()
+            #strtimestamp = time.mktime(strtuple)
+            #strdatestring = utils.formatdate(strtimestamp)
+            rStr += "<pubDate>"+str(obj.created_on)+"</pubDate>"
             if obj.main_rel_content:
                 try:
                     rStr += "<media:content url='%s' />" % obj.main_rel_content.youtube_url
@@ -56,7 +56,7 @@ class Command(NoArgsCommand):
             rStr += "<link>http://www.thecrimson.com/</link>"
             rStr += "<description>" + description + "</description>"
             rStr += "<language>en-us</language>"
-            rStr += "<lastBuildDate>" +utils.formatdate()+"</lastBuildDate>"
+            rStr += "<lastBuildDate>" +str(datetime.datetime.now())+"</lastBuildDate>"
             return rStr
         
         def writeFeed(loc, content):
