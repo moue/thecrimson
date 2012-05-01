@@ -9,153 +9,411 @@
 {% load top_articles %}
 
 {% block css %}
-	{{ block.super }}
-	{% static_css "fmsection.css" %}
-	{% static_css "section.css" %}
+        {{ block.super }}
+        {% static_css "fmsection.css" %}
+        {% static_css "section.css" %}
+        {% static_css "glossy.css" %}
+{% endblock %}
+
+{% block js %}
+        {{ block.super }}
+        {% static_js "glossy.js" %}
 {% endblock %}
 
 {% block title %}
 Harvard FM
 {% endblock %}
 
-{% block pre_body %}
-    <div class="top_banner">
-		<a href="/section/fm"><img src="{% static_url "images/fm/fm logo.jpg" %}"/></a>
-	</div>
-{% endblock %}
-
 {% block body %}
-		<table cellspacing="5" border="0" cellpadding="0">
-		<tr valign="top" align="left">
-		<td width="641">
-    	<div class="col-8">
-		<img src="{% static_url "images/fm/fmhottestfreshmen.jpg" %}" width="641"/>
-		<span class="clear"></span>
-		<div class="col-8">
-			{{graphic|render:"front_preview"}}
-		</div>
-		<span class="clear"></span>
-		<div class="col-8">
-		<div class="col1">
-			<p class="readheading">/// READ</p>
-			<a href="http://www.thecrimson.com/article/2011/4/28/nbsp-e-hot-s/" style="#F47932;"><p class="regtext" style="color:#F47932;">
-				The Class of 2015's Hottest Fifteen Freshmen reveal everything from ideal dates to best pick-up lines.
-			</p></a>
-		</div>
-		<div class="gutter"></div>
-		<div class="col3">
-			<p class="watchheading">/// VIEW</p>
-			{{gallery|render:"fmgallery_preview"}}
-		</div>
-		<div class="gutter"></div>
-		<div class="col3">
-			<p class="scenesheading">/// WATCH</p>
-			{{fmvid|render:"embed_small_preview"}}
-		</div>
-		</div>
-		</div>
-		</td>
-		<td width="1" bgcolor="#E5E5E5"><BR></td>
-		<td width="309" valign="top" align="left"> 
-	<div class="col4">
-		<a href="http://roomorama.com"><img src="{% static_url "images/fm/fmadtest.png" %}" width="300" height="600"/></a>
-	</div></td></tr></table>
-	<span class="clear"></span>
-	<div class="dotline-12"></div>
-	<table cellspacing="5" border="0" cellpadding="0">
-	<tr valign="top" align="left">
-	<td width="475">
-	<div class="col6">
-		<p class="videoheading">/// VIDEO/MULTIMEDIA</p>
-		<div class="col4">
+                
+<div id="glossy">
+<div id="glossy-header">
+<h1><a href="#">15 <span class="glossy-red">Hottest</span> &rsquo;15</a></h1>
+<p>From <a href="/section/fm" class="glossy-red">Fifteen Minutes</a> &bull; Presented by <a href="http://prestonsodesign.com" class="glossy-red">Preston So</a></p>
+</div>
+<div class="glossy-row" id="glossy-first-box">
+<div class="glossy-box" id="box-hylton">
+<img src="{% static_url "images/fm/15h15/hylton-small.jpg" %}" alt="Antonia A. Hylton" />
+<a href="#glossy-first-big">
+<span class="glossy-first">Antonia A.</span>
+<span class="glossy-last">Hylton</span>
+</a>
+</div>
+<div class="glossy-box" id="box-new">
+<img src="{% static_url "images/fm/15h15/new-small.jpg" %}" alt="Michael A. New" />
+<a href="#glossy-first-big">
+<span class="glossy-first">Michael A.</span>
+<span class="glossy-last">New</span>
+</a>
+</div>
+<div class="glossy-box" id="box-uruchurtu">
+<img src="{% static_url "images/fm/15h15/uruchurtu-small.jpg" %}" alt="Alexander J. Uruchurtu" />
+<a href="#glossy-first-big">
+<span class="glossy-first">Alexander J.</span>
+<span class="glossy-last">Uruchurtu</span>
+</a>
+</div>
+<div class="glossy-box" id="box-schumacher">
+<img src="{% static_url "images/fm/15h15/schumacher-small.jpg" %}" alt="Griffin T. Schumacher" />
+<a href="#glossy-first-big">
+<span class="glossy-first">Griffin T.</span>
+<span class="glossy-last">Schumacher</span>
+</a>
+</div>
+</div>
+<div class="glossy-row" id="glossy-first-big">
+<div class="glossy-big" id="big-hylton">
+<img src="{% static_url "images/fm/15h15/hylton-large.jpg" %}" alt="Antonia A. Hylton" />
+<a href="/article/2012/4/29/antonia-profile-hottest" id="glossy-cell">
+<span class="glossy-first">Antonia A.</span>
+<span class="glossy-last">Hylton</span>
+<span class="glossy-place">Lincoln, Mass.</span>
+<span class="glossy-house">Thayer &bull; Leverett</span>
+<span class="glossy-more">Read more</span>
+</a>
+</div>
+<div class="glossy-big" id="big-new">
+<img src="{% static_url "images/fm/15h15/new-large.jpg" %}" alt="Michael A. New" />
+<a href="/article/2012/4/29/michael-profile-hottest">
+<span class="glossy-first">Michael A.</span>
+<span class="glossy-last">New</span>
+<span class="glossy-place">Rockville, Md.</span>
+<span class="glossy-house">Grays &bull; Lowell</span>
+<span class="glossy-more">Read more</span>
+</a>
+</div>
+<div class="glossy-big" id="big-uruchurtu">
+<img src="{% static_url "images/fm/15h15/uruchurtu-large.jpg" %}" alt="Alexander J. Uruchurtu" />
+<a href="/article/2012/4/29/alexander-profile-hottest">
+<span class="glossy-first">Alexander J.</span>
+<span class="glossy-last">Uruchurtu</span>
+<span class="glossy-place">Gold Coast, Australia</span>
+<span class="glossy-house">Canaday &bull; Lowell</span>
+<span class="glossy-more">Read more</span>
+</a>
+</div>
+<div class="glossy-big" id="big-schumacher">
+<img src="{% static_url "images/fm/15h15/schumacher-large.jpg" %}" alt="Griffin T. Schumacher" />
+<a href="/article/2012/4/29/griffin-profile-hottest">
+<span class="glossy-first">Griffin T.</span>
+<span class="glossy-last">Schumacher</span>
+<span class="glossy-place">New York, N.Y.</span>
+<span class="glossy-house">Greenough &bull; Quincy</span>
+<span class="glossy-more">Read more</span>
+</a>
+</div>
+</div>
+<div class="glossy-row" id="glossy-second-box">
+<div class="glossy-box" id="box-mccaffrey">
+<img src="{% static_url "images/fm/15h15/mccaffrey-small.jpg" %}" alt="James D. McCaffrey" />
+<a href="#glossy-second-big">
+<span class="glossy-first">James D.</span>
+<span class="glossy-last">McCaffrey</span>
+</a>
+</div>
+<div class="glossy-box" id="box-vaggo">
+<img src="{% static_url "images/fm/15h15/vaggo-small.jpg" %}" alt="Emma Vaggo" />
+<a href="#glossy-second-big">
+<span class="glossy-first">Emma</span>
+<span class="glossy-last">V&auml;gg&ouml;</span>
+</a>
+</div>
+<div class="glossy-box" id="box-reyes">
+<img src="{% static_url "images/fm/15h15/reyes-small.jpg" %}" alt="Ana L. Reyes" />
+<a href="#glossy-second-big">
+<span class="glossy-first">Ana L.</span>
+<span class="glossy-last">Reyes</span>
+</a>
+</div>
+<div class="glossy-box" id="box-baranouski">
+<img src="{% static_url "images/fm/15h15/baranouski-small.jpg" %}" alt="Elise M. Baranouski" />
+<a href="#glossy-second-big">
+<span class="glossy-first">Elise M.</span>
+<span class="glossy-last">Baranouski</span>
+</a>
+</div>
+</div>
+<div class="glossy-row" id="glossy-second-big">
+<div class="glossy-big" id="big-mccaffrey">
+<img src="{% static_url "images/fm/15h15/mccaffrey-large.jpg" %}" alt="James D. McCaffrey" />
+<a href="/article/2012/4/29/james-m-profile-hottest">
+<span class="glossy-first">James D.</span>
+<span class="glossy-last">McCaffrey</span>
+<span class="glossy-place">Long Island, N.Y.</span>
+<span class="glossy-house">Canaday &bull; Dunster</span>
+<span class="glossy-more">Read more</span>
+</a>
+</div>
+<div class="glossy-big" id="big-vaggo">
+<img src="{% static_url "images/fm/15h15/vaggo-large.jpg" %}" alt="Emma Vaggo" />
+<a href="/article/2012/4/29/emma-profile-hottest">
+<span class="glossy-first">Emma</span>
+<span class="glossy-last">V&auml;gg&ouml;</span>
+<span class="glossy-place">Gothenberg, Sweden</span>
+<span class="glossy-house">No-Ho &bull; Mather</span>
+<span class="glossy-more">Read more</span>
+</a>
+</div>
+<div class="glossy-big" id="big-reyes">
+<img src="{% static_url "images/fm/15h15/reyes-large.jpg" %}" alt="Ana L. Reyes" />
+<a href="/article/2012/4/29/ana-l-profile-hottest">
+<span class="glossy-first">Ana L.</span>
+<span class="glossy-last">Reyes</span>
+<span class="glossy-place">Tampa, Fla.</span>
+<span class="glossy-house">Matthews &bull; Kirkland</span>
+<span class="glossy-more">Read more</span>
+</a>
+</div>
+<div class="glossy-big" id="big-baranouski">
+<img src="{% static_url "images/fm/15h15/baranouski-large.jpg" %}" alt="Elise M. Baranouski" />
+<a href="/article/2012/4/29/elise-profile-hottest">
+<span class="glossy-first">Elise M.</span>
+<span class="glossy-last">Baranouski</span>
+<span class="glossy-place">Danville, Pa.</span>
+<span class="glossy-house">Canaday &bull; Pforzheimer</span>
+<span class="glossy-more">Read more</span>
+</a>
+</div>
+</div>
+<div class="glossy-row" id="glossy-third-box">
+<div class="glossy-box" id="box-rodriguez">
+<img src="{% static_url "images/fm/15h15/rodriguez-small.jpg" %}" alt="Ana S.G. Rodriguez" />
+<a href="#glossy-third-big">
+<span class="glossy-first">Ana Sofia</span>
+<span class="glossy-last">Guerra</span>
+</a>
+</div>
+<div class="glossy-box" id="box-chakravarty">
+<img src="{% static_url "images/fm/15h15/chakravarty-small.jpg" %}" alt="Jay R. Chakravarty" />
+<a href="#glossy-third-big">
+<span class="glossy-first">Jay R.</span>
+<span class="glossy-last">Chakravarty</span>
+</a>
+</div>
+<div class="glossy-box" id="box-choi">
+<img src="{% static_url "images/fm/15h15/choi-small.jpg" %}" alt="Ian Choi" />
+<a href="#glossy-third-big">
+<span class="glossy-first">Ian</span>
+<span class="glossy-last">Choi</span>
+</a>
+</div>
+<div class="glossy-box" id="box-jenkins">
+<img src="{% static_url "images/fm/15h15/jenkins-small.jpg" %}" alt="Sydney K. Jenkins" />
+<a href="#glossy-third-big">
+<span class="glossy-first">Sydney K.</span>
+<span class="glossy-last">Jenkins</span>
+</a>
+</div>
+</div>
+<div class="glossy-row" id="glossy-third-big">
+<div class="glossy-big" id="big-rodriguez">
+<img src="{% static_url "images/fm/15h15/rodriguez-large.jpg" %}" alt="Ana S.G. Rodriguez" />
+<a href="/article/2012/4/29/ana-profile-hottest">
+<span class="glossy-first">Ana Sofia</span>
+<span class="glossy-last">Guerra</span>
+<span class="glossy-place">Guatemala City, Guatemala</span>
+<span class="glossy-house">Holworthy &bull; Adams</span>
+<span class="glossy-more">Read more</span>
+</a>
+</div>
+<div class="glossy-big" id="big-chakravarty">
+<img src="{% static_url "images/fm/15h15/chakravarty-large.jpg" %}" alt="Jay R. Chakravarty" />
+<a href="/article/2012/4/29/jay-profile-hottest">
+<span class="glossy-first">Jay R.</span>
+<span class="glossy-last">Chakravarty</span>
+<span class="glossy-place">Newcastle, Wash.</span>
+<span class="glossy-house">Wigglesworth &bull; Winthrop</span>
+<span class="glossy-more">Read more</span>
+</a>
+</div>
+<div class="glossy-big" id="big-choi">
+<img src="{% static_url "images/fm/15h15/choi-large.jpg" %}" alt="Ian Choi" />
+<a href="/article/2012/4/29/ian-profile-hottest">
+<span class="glossy-first">Ian</span>
+<span class="glossy-last">Choi</span>
+<span class="glossy-place">Tucson, Ariz.</span>
+<span class="glossy-house">Canaday &bull; Pforzheimer</span>
+<span class="glossy-more">Read more</span>
+</a>
+</div>
+<div class="glossy-big" id="big-jenkins">
+<img src="{% static_url "images/fm/15h15/jenkins-large.jpg" %}" alt="Sydney K. Jenkins" />
+<a href="/article/2012/4/29/sydney-profile-hottest">
+<span class="glossy-first">Sydney K.</span>
+<span class="glossy-last">Jenkins</span>
+<span class="glossy-place">Belle Mead/Princeton, N.J.</span>
+<span class="glossy-house">Thayer &bull; Leverett</span>
+<span class="glossy-more">Read more</span>
+</a>
+</div>
+</div>
+<div class="glossy-row" id="glossy-fourth-box">
+<div class="glossy-box" id="box-cheng">
+<img src="{% static_url "images/fm/15h15/cheng-small.jpg" %}" alt="Elaine Cheng" />
+<a href="#glossy-fourth-big">
+<span class="glossy-first">Elaine </span>
+<span class="glossy-last">Cheng</span>
+</a>
+</div>
+<div class="glossy-box" id="box-wall">
+<img src="{% static_url "images/fm/15h15/wall-small.jpg" %}" alt="Danielle M. Wall" />
+<a href="#glossy-fourth-big">
+<span class="glossy-first">Danielle M.</span>
+<span class="glossy-last">Wall</span>
+</a>
+</div>
+<div class="glossy-box" id="box-ramsey">
+<img src="{% static_url "images/fm/15h15/ramsey-small.jpg" %}" alt="James S. Ramsey" />
+<a href="#glossy-fourth-big">
+<span class="glossy-first">James S.</span>
+<span class="glossy-last">Ramsey</span>
+</a>
+</div>
+<div class="glossy-box" id="box-more">
+<img src="{% static_url "images/fm/15h15/additional-1-small-2.jpg" %}" alt="More pictures" />
+<a href="#glossy-fourth-big">
+<span class="glossy-first">More</span>
+<span class="glossy-last">Photos</span>
+</a>
+</div>
+</div>
+<div class="glossy-row" id="glossy-fourth-big">
+<div class="glossy-big" id="big-cheng">
+<img src="{% static_url "images/fm/15h15/cheng-large.jpg" %}" alt="Elaine Cheng" />
+<a href="/article/2012/4/29/elaine-profile-hottest">
+<span class="glossy-first">Elaine</span>
+<span class="glossy-last">Cheng</span>
+<span class="glossy-place">Cambridge, Mass.</span>
+<span class="glossy-house">Canaday &bull; Winthrop</span>
+<span class="glossy-more">Read more</span>
+</a>
+</div>
+<div class="glossy-big" id="big-wall">
+<img src="{% static_url "images/fm/15h15/wall-large.jpg" %}" alt="Danielle M. Wall" />
+<a href="/article/2012/4/29/danielle-profile-hottest">
+<span class="glossy-first">Danielle M.</span>
+<span class="glossy-last">Wall</span>
+<span class="glossy-place">Sarasota, Fla.</span>
+<span class="glossy-house">Canaday &bull; Quincy</span>
+<span class="glossy-more">Read more</span>
+</a>
+</div>
+<div class="glossy-big" id="big-ramsey">
+<img src="{% static_url "images/fm/15h15/ramsey-large.jpg" %}" alt="James S. Ramsey" />
+<a href="/article/2012/4/29/james-profile-hottest">
+<span class="glossy-first">James S.</span>
+<span class="glossy-last">Ramsey</span>
+<span class="glossy-place">Dallas, Texas</span>
+<span class="glossy-house">Wigglesworth &bull; Pforzheimer</span>
+<span class="glossy-more">Read more</span>
+</a>
+</div>
+<div class="glossy-big" id="big-more">
+<img src="{% static_url "images/fm/15h15/additional-1-large-2.jpg" %}" alt="More photos" />
+<a href="/gallery/2012/4/30/fifteen-hottest-375-more/">
+<span class="glossy-first">See More</span>
+<span class="glossy-last">Photos</span>
+<span class="glossy-more">Read more</span>
+</a>
+</div>
+</div>
+</div>		
+				
+        <span class="clear"></span>
+        <div class="dotline-12"></div>
+        <table cellspacing="5" border="0" cellpadding="0">
+        <tr valign="top" align="left">
+        <td width="475">
+        <div class="col6">
+                <p class="videoheading">/// VIDEO/MULTIMEDIA</p>
+                <div class="col4">
            {{videos|first|render:"embed_front_preview"}}
-		</div>
-		<div class="gutter"></div>
-		<div class="col2">
-			{% for vid in videos|notfirst %}
-            	{{vid|render:"small_preview"}}
-        	{% endfor %}
-		</div>
-	</div>
-	</td>
-	<td width="1" bgcolor="#E5E5E5"><BR></td>
-	<td width="475" valign="top" align="left">
-	<div class="col6">
-		<p class="featuredheading">/// FEATURED ARTICLES</p>
-		{% for story in featured %}
-		<div class="col2">
-			<div id="headlines" class="article_previews2">
-				{{ story|render:"fm_preview"}}
-			</div>
-		</div>
-		{% if forloop.last %}
-		{% else %}
-		<div class="gutter"></div>
-		{% endif %}{% endfor %}
-	</div>
-	</td></tr></table>
-	<span class="clear"></span>
-	<div class="top_leaderboard">
-		{% advertisement 62 %}
-	</div>
-	<span class="clear"></span>
-	<table cellspacing="5" border="0" cellpadding="0">
-	<tr valign="top" align="left">
-	<td width="475">
-	<div class="col2">
-		<p class="subsection">FOR THE MOMENT</p>
-		<div class="article_headlines" id="ftm">
-			{% for s in ftm %}
+                </div>
+                <div class="gutter"></div>
+                <div class="col2">
+                        {% for vid in videos|notfirst %}
+                {{vid|render:"small_preview"}}
+                {% endfor %}
+                </div>
+        </div>
+        </td>
+        <td width="1" bgcolor="#E5E5E5"><BR></td>
+        <td width="475" valign="top" align="left">
+        <div class="col6">
+                <p class="featuredheading">/// FEATURED ARTICLES</p>
+                {% for story in featured %}
+                <div class="col2">
+                        <div id="headlines" class="article_previews2">
+                                {{ story|render:"fm_preview"}}
+                        </div>
+                </div>
+                {% if forloop.last %}
+                {% else %}
+                <div class="gutter"></div>
+                {% endif %}{% endfor %}
+        </div>
+        </td></tr></table>
+        <span class="clear"></span>
+        <div class="top_leaderboard">
+                {% advertisement 62 %}
+        </div>
+        <span class="clear"></span>
+        <table cellspacing="5" border="0" cellpadding="0">
+        <tr valign="top" align="left">
+        <td width="475">
+        <div class="col2">
+                <p class="subsection">FOR THE MOMENT</p>
+                <div class="article_headlines" id="ftm">
+                        {% for s in ftm %}
                 <h4>{{s|linkify:s.headline}}</h4>
-			{% endfor %}
-		</div>
-	</div>
-	<div class="gutter"></div>
-	<div class="col2">
-		<p class="subsection">IN THE MOMENT</p>
-		<div class="article_headlines" id="itm">
-		{% for s in itm %}
+                        {% endfor %}
+                </div>
+        </div>
+        <div class="gutter"></div>
+        <div class="col2">
+                <p class="subsection">IN THE MOMENT</p>
+                <div class="article_headlines" id="itm">
+                {% for s in itm %}
            <h4>{{ s|linkify:s.headline }}</h4>
-		{% endfor %}
-		</div>
-	</div>
-	<div class="gutter"></div>
-	<div class="col2" style="padding-right: 11px">
-		<p class="subsection">ENDPAPER</p>
-		<div class="article_headlines" id="endpaper" style="margin-bottom: 5px;">
-		<h4>{{ endpaper|linkify:endpaper.headline }}</h4>
-		</div>
-		<p class="subsection">COLUMNS</p>
-		<div class="article_headlines" id="columns">
-		{% for column in columns %}
+                {% endfor %}
+                </div>
+        </div>
+        <div class="gutter"></div>
+        <div class="col2" style="padding-right: 11px">
+                <p class="subsection">ENDPAPER</p>
+                <div class="article_headlines" id="endpaper" style="margin-bottom: 5px;">
+                <h4>{{ endpaper|linkify:endpaper.headline }}</h4>
+                </div>
+                <p class="subsection">COLUMNS</p>
+                <div class="article_headlines" id="columns">
+                {% for column in columns %}
             {% if column.recent %}
                 <h4>{{ column|linkify:column.name }}</h4>
             {% endif %}
-		{% endfor %}
-		</div>
-	</div>
-	</td>
-	<td width="1" bgcolor="#E5E5E5"><BR></td>
-	<!--<div class="gutter"></div>-->
-	<td width="475" valign="top" align="left">
-	<div class="col6">
-		<p class="subsection">PAST SCRUTS</p>
-		{% for scrut in scrutiny|notfirst %}
-		<div class="cols2">
-			<div class="article_previews2">
-				{{ scrut|render:"fm_preview" }}
-			</div>
-		</div>
-		{% if forloop.last %}
-		{% else %}
-			<div class="gutter"></div> 
-		{% endif %}
-		{% endfor %}
-	</div>
-	</td></tr></table>
-	<span class="clear"></span>
-	<div class="top_leaderboard">
-		{% advertisement 498 %}
-	</div>
+                {% endfor %}
+                </div>
+        </div>
+        </td>
+        <td width="1" bgcolor="#E5E5E5"><BR></td>
+        <!--<div class="gutter"></div>-->
+        <td width="475" valign="top" align="left">
+        <div class="col6">
+                <p class="subsection">PAST SCRUTS</p>
+                {% for scrut in scrutiny|notfirst %}
+                <div class="cols2">
+                        <div class="article_previews2">
+                                {{ scrut|render:"fm_preview" }}
+                        </div>
+                </div>
+                {% if forloop.last %}
+                {% else %}
+                        <div class="gutter"></div> 
+                {% endif %}
+                {% endfor %}
+        </div>
+        </td></tr></table>
+        <span class="clear"></span>
+        <div class="top_leaderboard">
+                {% advertisement 498 %}
+        </div>
 {% endblock %}
-

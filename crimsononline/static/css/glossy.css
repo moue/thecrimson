@@ -1,0 +1,175 @@
+/*
+
+The Harvard Crimson
+15 Hottest Freshmen - 2012 Edition
+STYLESHEET
+CSS by Preston So.
+www.prestonsodesign.com
+
+*/
+
+/*
+FONTS
+League Gothic
+Melbourne
+*/
+@font-face {
+    font-family: 'LeagueGothicRegular';
+    src: url('fonts/League_Gothic-webfont.eot');
+    src: url('fonts/League_Gothic-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/League_Gothic-webfont.woff') format('woff'),
+         url('fonts/League_Gothic-webfont.ttf') format('truetype'),
+         url('fonts/League_Gothic-webfont.svg#LeagueGothicRegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+	font-family: 'Melbourne';
+	src: url('fonts/Melbourne_reg.eot?') format('eot'),
+		 url('fonts/Melbourne_reg.woff') format('woff'),
+		 url('fonts/Melbourne_reg.ttf') format('truetype'),
+		 url('fonts/Melbourne_reg.svg#Melbourne') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+/*
+Base elements
+*/
+#glossy {
+	margin: 0 auto;
+	width: 960px;
+	font: 1.3em/1.5em 'Melbourne', 'Lucida Sans Unicode', sans-serif;
+}
+#glossy a {
+	color: white;
+}
+#glossy-header {
+	text-align: center;
+	text-transform: uppercase;
+}
+#glossy-header h1 {
+	margin: 0;
+	padding: 25px 0 20px 0;
+	font-weight: normal;
+	font-size: 4em;
+	line-height: 1em;
+}
+#glossy-header h1 a {
+	color: black;
+}
+#glossy-header h1 a:hover, #glossy-header h1 a:active {
+	border-bottom: 3px solid #e3e3e3;
+	color: black;
+	text-decoration: none;
+}
+#glossy-header a {
+	color: #c00;
+	text-decoration: none;
+}
+#glossy-header a:hover, #glossy-header a:active {
+	color: #933;
+	text-decoration: underline;
+}
+#glossy-header p {
+	padding-bottom: 10px;
+	margin: 0;
+}
+.glossy-red {
+	color: #c00;
+	font-family: 'League Gothic', Haettenschweiler, Impact, sans-serif;
+}
+#glossy img {
+	opacity: 0.8;
+}
+.glossy-row {
+	zoom: 1;
+}
+.glossy-row:before, .glossy-row:after {
+	content: "";
+	display: table;
+}
+.glossy-row:after {
+	clear: both;
+}
+.glossy-box {
+	float: left;
+	width: 25%;
+}
+.glossy-box a {
+	display: block;
+	margin-top: -208px;
+	height: 85px;
+	padding: 100px 15px 15px 15px;
+	width: 210px;
+	position: relative;
+	text-decoration: none;
+	z-index: 99;
+	color: white;
+}
+.glossy-box a:hover, .glossy-box a:active {
+	background: transparent url('images/box-link.png') no-repeat;
+}
+.glossy-big {
+	display: none;
+}
+.glossy-big a {
+	margin-top: -638px;
+	height: 342px;
+	width: 860px;
+	padding: 238px 50px 50px 50px;
+	text-decoration: none;
+	display: block;
+	position: relative;
+	z-index: 99;
+}
+.glossy-first, .glossy-last {
+	font-family: 'LeagueGothicRegular', Haettenschweiler, Impact, sans-serif;
+	display: block;
+	line-height: 0.8em;
+	text-transform: uppercase;
+}
+.glossy-last:after, .glossy-place:after, .glossy-house:after {
+	display: none;
+	content: " - ";
+}
+.glossy-place {
+	padding-top: 15px;
+}
+.glossy-place, .glossy-house {
+	line-height: 1.5em;
+	display: block;
+}
+.glossy-box .glossy-first, .glossy-box .glossy-last {
+	font-size: 1.5em;
+}
+.glossy-big .glossy-first, .glossy-big .glossy-last {
+	font-size: 4.5em;
+}
+.glossy-big .glossy-more {
+	color: #cff;
+	display: none;
+	font-family: 'LeagueGothicRegular', Haettenschweiler, Impact, sans-serif;
+	font-size: 1.3em;
+	line-height: 1.5em;
+	text-transform: uppercase;
+}
+.glossy-ad {
+	padding: 25px;
+	text-align: center;
+}
+#box-vaggo .glossy-last, #big-vaggo .glossy-last {
+	line-height: 1.2em;
+}
+#box-finale a {
+	color: #c00;
+}
+.glossy-add .glossy-first, .glossy-add .glossy-last {
+	display: none;
+}
+#box-finale .glossy-first, #box-finale .glossy-last {
+	display: block !important;
+}
+#big-new a {
+	color: black;
+}
