@@ -341,7 +341,7 @@ def section_fm(request):
     section = Section.cached(nav)
     stories = Article.objects.recent.filter(section=section)
     try:
-        scrutiny = stories.filter(tags__text='Scrutiny')[0]
+        scrutiny = stories.filter(tags__text='Scrutiny')[:3]
     except IndexError:
         scrutiny = None
     try:

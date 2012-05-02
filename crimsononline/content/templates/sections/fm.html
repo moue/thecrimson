@@ -16,12 +16,16 @@
 {% endblock %}
 
 {% block js %}
-        {{ block.super }}
         {% static_js "glossy.js" %}
 {% endblock %}
 
 {% block title %}
 Harvard FM
+{% endblock %}
+{% block prebody %}
+<div class="top_leaderboard">
+        {% advertisement 870 %}
+    </div>
 {% endblock %}
 
 {% block body %}
