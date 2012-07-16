@@ -80,6 +80,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
 	'crimsononline.mware.supercrisismode.SuperCrisisMode',
     'django.middleware.cache.FetchFromCacheMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 )
 
 ROOT_URLCONF = 'crimsononline.urls'
@@ -109,7 +110,10 @@ INSTALLED_APPS = [
     'crimsononline.subscriptions',
     'crimsononline.mware',
     'crimsononline.promote',
+    'debug_toolbar',
 ]
+
+INTERNAL_IPS = ( )
 
 try:
     import pysolr
@@ -157,6 +161,8 @@ if DEBUG:
     CACHE_BACKEND = 'dummy:///'
     CACHE_MIDDLEWARE_SECONDS = 5
 
+DATABASE_ROUTERS = ['crimsononline.content.routers.MasterRouter']
+
 try:
     from local_settings import *
 except ImportError:
@@ -169,8 +175,6 @@ DISQUS_FORUM_ID = "1508"
 GOOGLE_API_KEY = "ABQIAAAAdoBgu2mGyHlwNmFWklwtOBSMTarlKQyRRh5ucdthk06p19vF5xQFCzYsXKd1Wl-sgDQvPuCHDW3o8A"
 
 FLYBY_TIP_ADDRESS = "flybytips@thecrimson.com"
-
-DATABASE_ROUTERS = ['crimsononline.content.routers.MasterRouter']
 
 """
 import logging
