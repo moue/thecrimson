@@ -174,7 +174,8 @@ class ContentAdmin(admin.ModelAdmin):
     Doesn't actually work by itself.
     """
 
-    ordering = ('-issue__issue_date',)
+    # no ordering - faster retrieval
+    ordering = []
     actions = ['make_published', 'make_draft',]
     #paginator = FinitePaginator
 
@@ -333,11 +334,12 @@ class ContentAdmin(admin.ModelAdmin):
 
     def queryset(self, request):
         if request.user.has_perm('content.delete_content'):
-            return self.model._default_manager.all_objects()
+            qs = self.model._default_manager.all_objects()
         elif request.user.has_perm('content.content.can_publish'):
-            return self.model._default_manager.admin_objects()
+            qs = self.model._default_manager.admin_objects()
         else:
-            return self.model._default_manager.draft_objects()
+            qs = self.model._default_manager.draft_objects()
+        return qs
 
     # actions
     def make_published(self, request, queryset):
@@ -802,7 +804,7 @@ class ArticleAdmin(ContentAdmin):
     list_display = ('headline','section', 'issue','pub_status', 'rotatable',
                     'group',)
     search_fields = ('headline', 'text',)
-    list_filter = ('section', )
+    list_filter = ('section', 'issue', )
 
     fieldsets = (
         ('Headline', {
@@ -836,6 +838,7 @@ class ArticleAdmin(ContentAdmin):
 
     form = ArticleForm
     #inlines = [ScoreInline,]
+    ordering = ['section__id']
 
     class Media:
         js = (
@@ -843,7 +846,21 @@ class ArticleAdmin(ContentAdmin):
             'scripts/admin/Article.js',
             'scripts/framework/jquery.sprintf.js',
         )
-
+    
+    def queryset(self, request):
+        if request.user.has_perm('content.delete_content'):
+            qs = self.model._default_manager.all_objects()
+        elif request.user.has_perm('content.content.can_publish'):
+            qs = self.model._default_manager.admin_objects()
+        else:
+            qs = self.model._default_manager.draft_objects()
+        # if it's the top level (no filters, no search parameter),
+        # return None - force the user to choose an issue or
+        # (this avoids the super-inefficient sort)
+        if (request.REQUEST.get('issue__id__exact', '') == '') and (request.REQUEST.get('q', '') == ''):
+            return qs.none()
+        return qs
+    
     def get_form(self, request, obj=None):
         f = super(ArticleAdmin, self).get_form(request, obj)
         if obj is not None:
