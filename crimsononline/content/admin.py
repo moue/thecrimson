@@ -803,7 +803,7 @@ class ScoreInline(admin.TabularInline):
 class ArticleAdmin(ContentAdmin):
     list_display = ('headline','section', 'issue','pub_status', 'rotatable',
                     'group',)
-    search_fields = ('headline', 'text',)
+    search_fields = ('headline', )
     list_filter = ('section', 'issue', )
 
     fieldsets = (
