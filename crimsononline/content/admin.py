@@ -857,7 +857,7 @@ class ArticleAdmin(ContentAdmin):
         # if it's the top level (no filters, no search parameter),
         # return None - force the user to choose an issue or
         # (this avoids the super-inefficient sort)
-        if (request.REQUEST.get('issue__id__exact', '') == '') and (request.REQUEST.get('q', '') == ''):
+        if request.path.strip('/').rstrip('/')[-7:] == 'article' and (request.REQUEST.get('issue__id__exact', '') == '') and (request.REQUEST.get('q', '') == ''):
             return qs.none()
         return qs
     
