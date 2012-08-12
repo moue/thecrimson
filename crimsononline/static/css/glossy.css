@@ -15,20 +15,20 @@ Melbourne
 */
 @font-face {
     font-family: 'LeagueGothicRegular';
-    src: url('/media/fonts/League_Gothic-webfont.eot');
-    src: url('/media/fonts/League_Gothic-webfont.eot?#iefix') format('embedded-opentype'),
-         url('/media/fonts/League_Gothic-webfont.woff') format('woff'),
-         url('/media/fonts/League_Gothic-webfont.ttf') format('truetype'),
-         url('/media/fonts/League_Gothic-webfont.svg#LeagueGothicRegular') format('svg');
+    src: url('/static/fonts/League_Gothic-webfont.eot');
+    src: url('/static/fonts/League_Gothic-webfont.eot?#iefix') format('embedded-opentype'),
+         url('/static/fonts/League_Gothic-webfont.woff') format('woff'),
+         url('/static/fonts/League_Gothic-webfont.ttf') format('truetype'),
+         url('/static/fonts/League_Gothic-webfont.svg#LeagueGothicRegular') format('svg');
     font-weight: normal;
     font-style: normal;
 }
 @font-face {
 	font-family: 'Melbourne';
-	src: url('/media/fonts/Melbourne_reg.eot?') format('eot'),
-		 url('/media/fonts/Melbourne_reg.woff') format('woff'),
-		 url('/media/fonts/Melbourne_reg.ttf') format('truetype'),
-		 url('/media/fonts/Melbourne_reg.svg#Melbourne') format('svg');
+	src: url('/static/fonts/Melbourne_reg.eot?') format('eot'),
+		 url('/static/fonts/Melbourne_reg.woff') format('woff'),
+		 url('/static/fonts/Melbourne_reg.ttf') format('truetype'),
+		 url('/static/fonts/Melbourne_reg.svg#Melbourne') format('svg');
 	font-weight: normal;
 	font-style: normal;
 }
@@ -108,7 +108,7 @@ Base elements
 	color: white;
 }
 .glossy-box a:hover, .glossy-box a:active {
-	background: transparent url('/media/images/fm/15h15/box-link.png') no-repeat;
+	background: transparent url('/static/images/fm/15h15/box-link.png') no-repeat;
 }
 .glossy-big {
 	display: none;

@@ -2,7 +2,7 @@
 <div style="margin-bottom:10px;">
 <div style="float: left; width:392px;">
 <object classid='clsid:D27CDB6E-AE6D-11cf-96B8-444553540000' width='392' height='253' id='single1' name='single1'>
-<param name='movie' value='/media/jwplayer/player.swf'>
+<param name='movie' value='{% static_url 'jwplayer/player.swf'%}'>
 <param name='allowfullscreen' value='true'>
 <param name='allowscriptaccess' value='always'>
 <param name='wmode' value='transparent'>
@@ -11,7 +11,7 @@
 type='application/x-shockwave-flash'
 id='single2'
 name='single2'
-src='/media/jwplayer/player.swf'
+src='{% static_url 'jwplayer/player.swf'%}'
 width='392'
 height='253'
 bgcolor='undefined'
