@@ -38,12 +38,16 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-DATABASE_ENGINE = 'sqlite3'           # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'ado_mssql'.
-DATABASE_NAME = 'django.db'             # Or path to database file if using sqlite3.
-DATABASE_USER = ''             # Not used with sqlite3.
-DATABASE_PASSWORD = ''         # Not used with sqlite3.
-DATABASE_HOST = ''             # Set to empty string for localhost. Not used with sqlite3.
-DATABASE_PORT = ''             # Set to empty string for default. Not used with sqlite3.
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
+        'NAME': 'django.db',                      # Or path to database file if using sqlite3.
+        'USER': '',                      # Not used with sqlite3.
+        'PASSWORD': '',                  # Not used with sqlite3.
+        'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
+        'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
+    }
+}
 
 # If you set this to False, Django will make some optimizations so as not
 # to load the internationalization machinery.
@@ -78,7 +82,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.middleware.doc.XViewMiddleware',
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
-	'crimsononline.mware.supercrisismode.SuperCrisisMode',
+    'crimsononline.mware.supercrisismode.SuperCrisisMode',
     'django.middleware.cache.FetchFromCacheMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
 )
@@ -102,6 +106,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'django.contrib.sitemaps',
     'django.contrib.flatpages',
+    'django.contrib.staticfiles',
     'crimsononline.content',
     'crimsononline.admin_cust',
     'crimsononline.content_module',
@@ -150,6 +155,7 @@ HAYSTACK_SOLR_TIMEOUT = 60*5
 
 #DISQUS = not DEBUG # you can override this in localsettings.py
 DISQUS = True
+FLYBY_TIP_ADDRESS = "flybytips@thecrimson.com"
 
 # caching durations in sec
 CACHE_SHORT = 2 * 60 * 60
@@ -161,21 +167,11 @@ if DEBUG:
     CACHE_BACKEND = 'dummy:///'
     CACHE_MIDDLEWARE_SECONDS = 5
 
-DATABASE_ROUTERS = ['crimsononline.content.routers.MasterRouter']
-
 try:
     from local_settings import *
 except ImportError:
     pass
     
-DISQUS_USER_KEY = "vabqI2su93P1wVF3Ls9kXhXhRggV7y2ylokjq137yPAz47cY5dDMHgUA2QlZoWNE"
-DISQUS_FORUM_KEY = "pkUMj0suYbfCUXu2hon1EB5xrgMLWADS9kNZiGtJ0ISE76QLyMvEb2SyPFmS3F5x"
-DISQUS_FORUM_ID = "1508"
-
-GOOGLE_API_KEY = "ABQIAAAAdoBgu2mGyHlwNmFWklwtOBSMTarlKQyRRh5ucdthk06p19vF5xQFCzYsXKd1Wl-sgDQvPuCHDW3o8A"
-
-FLYBY_TIP_ADDRESS = "flybytips@thecrimson.com"
-
 """
 import logging
 logging.basicConfig(
