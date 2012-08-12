@@ -119,6 +119,7 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'storages',
     'django_extensions',
+    'south',
 ]
 
 INTERNAL_IPS = ( )
