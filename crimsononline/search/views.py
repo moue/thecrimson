@@ -1,9 +1,13 @@
-from haystack.views import SearchView
 from django.shortcuts import render_to_response
-from haystack.query import SearchQuerySet
 from crimsononline.content.models import Contributor, Tag
 
 MAX_MCONTRIBS = 20
+
+try:
+    from haystack.views import SearchView
+    from haystack.query import SearchQuerySet
+except ImportError:
+    pass
 
 class AjaxSearchView(SearchView):
     def __name__(self):
