@@ -55,7 +55,8 @@ USE_I18N = True
 
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
-MEDIA_ROOT = os.path.join(os.path.split(os.path.abspath(__file__))[0], 'static')
+MEDIA_ROOT = os.path.join(os.path.split(os.path.abspath(__file__))[0], 'media')
+STATIC_ROOT = os.path.join(os.path.split(os.path.abspath(__file__))[0], 'static')
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
@@ -116,6 +117,7 @@ INSTALLED_APPS = [
     'crimsononline.mware',
     'crimsononline.promote',
     'debug_toolbar',
+    'storages',
 ]
 
 INTERNAL_IPS = ( )
