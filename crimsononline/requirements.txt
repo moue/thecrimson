@@ -9,3 +9,4 @@ django-extensions==0.9
 South==0.7.6
 django-haystack==1.0.1-final
 pysolr==2.1.0-beta
+python-memcached==1.48
