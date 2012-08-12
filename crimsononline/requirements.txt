@@ -7,4 +7,5 @@ boto==2.5.2
 django-debug-toolbar==0.9.4
 django-extensions==0.9
 South==0.7.6
-haystack==0.15
+django-haystack==1.0.1-final
+pysolr==2.1.0-beta

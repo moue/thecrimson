@@ -1,24 +1,20 @@
 from django.shortcuts import render_to_response
 from crimsononline.content.models import Contributor, Tag
+from haystack.views import SearchView
+from haystack.query import SearchQuerySet
 
 MAX_MCONTRIBS = 20
-
-try:
-    from haystack.views import SearchView
-    from haystack.query import SearchQuerySet
-except ImportError:
-    pass
 
 class AjaxSearchView(SearchView):
     def __name__(self):
         return "AjaxSearchView"
 
     def create_response(self):
-        
+    
         """
         Generates the actual HttpResponse to send back to the user.
         """
-        
+    
         qu =  self.request.GET.get('q','')
         if qu:
             contributors_qs = SearchQuerySet().models(Contributor)
@@ -28,9 +24,9 @@ class AjaxSearchView(SearchView):
         else:
             matching_contributors = None
             matching_tags = None
-        
+    
         (paginator, page) = self.build_page()
-        
+    
         context = {
             'query': self.query,
             'form': self.form,
@@ -48,7 +44,7 @@ class AjaxSearchView(SearchView):
             t = self.template
         return render_to_response(t, context, 
             context_instance=self.context_class(self.request))
-        
+    
 def searchView(request):
     #qu =  self.request.GET.get('q','')
     contributors = None
