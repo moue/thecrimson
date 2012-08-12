@@ -60,6 +60,10 @@ STATIC_ROOT = os.path.join(os.path.split(os.path.abspath(__file__))[0], 'static'
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 
+STATICFILES_DIRS = (
+    os.path.join(os.path.split(os.path.abspath(__file__))[0], 'static'),
+)
+
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.load_template_source',
