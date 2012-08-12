@@ -57,6 +57,8 @@ USE_I18N = True
 # Example: "/home/media/media.lawrence.com/"
 MEDIA_ROOT = os.path.join(os.path.split(os.path.abspath(__file__))[0], 'media')
 STATIC_ROOT = os.path.join(os.path.split(os.path.abspath(__file__))[0], 'static')
+STATIC_URL = '/static/'
+MEDIA_URL = '/media/'
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
