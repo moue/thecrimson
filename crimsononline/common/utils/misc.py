@@ -4,7 +4,7 @@ def static_content(link):
     """ 
     returns a url to a piece of static content relative to the static folder
     """
-    return settings.MEDIA_URL + link
+    return settings.STATIC_URL + link
 
 def ret_on_fail(fn, retval, exception_tuple=Exception):
     """Function modifier to return retval if an exception is thrown.
