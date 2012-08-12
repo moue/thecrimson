@@ -5,3 +5,4 @@ PIL==1.1.7
 django-storages==1.1.5
 boto==2.5.2
 django-debug-toolbar==0.9.4
+django-extensions==0.9

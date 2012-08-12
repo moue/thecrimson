@@ -118,6 +118,7 @@ INSTALLED_APPS = [
     'crimsononline.promote',
     'debug_toolbar',
     'storages',
+    'django_extensions',
 ]
 
 INTERNAL_IPS = ( )
