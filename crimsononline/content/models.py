@@ -121,10 +121,14 @@ class ContentManager(models.Manager):
         """
         issue_pks = [str(i.pk) for i in Issue.last_n(recents)]
         # round(x - 0.5) == floor(x)
-        if settings.DATABASE_ENGINE == 'sqlite3':
+        if getattr(settings, 'DATABASES', None):
+            db_engine = settings.DATABASES['default']['ENGINE']
+        else:
+            db_engine = settings.DATABASE_ENGINE
+        if 'sqlite3' in db_engine:
             days_old_expr = "(round(julianday('now', 'localtime') - " \
                 "julianday(content_issue.issue_date) - 0.5) + 1)"
-        elif settings.DATABASE_ENGINE == 'mysql':
+        elif 'mysql' in db_engine:
             days_old_expr = '(DATEDIFF(NOW(), content_issue.issue_date) + 1)'
         else:
             raise Exception("Database not supported")

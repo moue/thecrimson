@@ -144,9 +144,13 @@ class TopArticlesNode(template.Node):
             else:
                 tableStr = ""
                 limitStr = ""
-            if settings.DATABASE_ENGINE == 'sqlite3':
+            if getattr(settings, 'DATABASES', None):
+                db_engine = settings.DATABASES['default']['ENGINE']
+            else:
+                db_engine = settings.DATABASE_ENGINE
+            if 'sqlite3' in db_engine:
                 seven_days_ago = " date('now', '-7 days') "
-            elif settings.DATABASE_ENGINE == 'mysql':
+            elif 'mysql' in db_engine:
                 seven_days_ago = " ( NOW() - INTERVAL 7 day ) "
             # SO NON-SEXUALITY-NORMATIVE
             # Oh, a real comment in case someone comes upon this later: We're selecting article ID, content type ID, and a computed field called "hitindex"
