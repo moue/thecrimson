@@ -66,8 +66,8 @@ STATICFILES_DIRS = (
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
-    'django.template.loaders.filesystem.load_template_source',
-    'django.template.loaders.app_directories.load_template_source',
+    'django.template.loaders.filesystem.Loader',
+    'django.template.loaders.app_directories.Loader',
 #    'django.template.loaders.eggs.load_template_source',
 )
 
@@ -77,7 +77,13 @@ TEMPLATE_LOADERS = (
 #)
 
 TEMPLATE_CONTEXT_PROCESSORS = (
-    'django.core.context_processors.auth',
+    "django.contrib.auth.context_processors.auth",
+    "django.core.context_processors.debug",
+    "django.core.context_processors.i18n",
+    "django.core.context_processors.media",
+    "django.core.context_processors.static",
+    "django.core.context_processors.tz",
+    "django.contrib.messages.context_processors.messages"
 )
 
 MIDDLEWARE_CLASSES = (
@@ -172,6 +178,12 @@ CACHE_SHORT = 2 * 60 * 60
 CACHE_STANDARD = 4 * 60 * 60
 CACHE_LONG = 12 * 60 * 60
 CACHE_EONS = 7 * 24 * 60 * 60
+
+# break this out here to avoid circular import of urls.py
+CONTENT_URL_RE = r'(?P<ctype>[\w\-]+)/(?P<year>\d{4})/(?P<month>\d{1,2})/' \
+                  '(?P<day>\d{1,2})/(?P<slug>[0-9\w_\-%]+)/$'
+CGROUP_URL_RE = r'(?P<gtype>[\w]+)/(?P<gname>[\w0-9\-]+)/'
+CGROUP_FILTER_URL_RE = r'(page/(?P<page>\d+)/)?(tags/(?P<tags>[,\w&\'\s-]+)/)?'
 
 if DEBUG:
     CACHE_BACKEND = 'dummy:///'

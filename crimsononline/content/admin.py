@@ -11,6 +11,7 @@ from django.core import exceptions
 from django.core.mail import send_mail
 from django.conf import settings
 from django.conf.urls.defaults import patterns
+from django.contrib import messages
 from django.contrib import admin
 from django.contrib.auth.models import User
 from django.contrib.flatpages.models import FlatPage

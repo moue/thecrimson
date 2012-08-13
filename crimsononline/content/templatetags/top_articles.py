@@ -21,7 +21,6 @@ try:
 except:
     Connection = None
 from crimsononline.content.models import Image, Article, Content, Section, Contributor, Tag, MostReadArticles
-from crimsononline.urls import CONTENT_URL_RE, CGROUP_URL_RE
 
 D_USER_KEY = "vabqI2su93P1wVF3Ls9kXhXhRggV7y2ylokjq137yPAz47cY5dDMHgUA2QlZoWNE"
 # The following is true for now
@@ -45,10 +44,10 @@ TP2_TIMEDELTA = timedelta(days = 7)
 TP3_TIMEDELTA = timedelta(days = 30)
 
 generic_obj_patterns = patterns('crimsononline.content.views',
-    url('^' + CONTENT_URL_RE, 'get_content_obj', name='content_content'),
-    url('^' + CGROUP_URL_RE + CONTENT_URL_RE + '$', 'get_grouped_content_obj',
+    url('^' + settings.CONTENT_URL_RE, 'get_content_obj', name='content_content'),
+    url('^' + settings.CGROUP_URL_RE + settings.CONTENT_URL_RE + '$', 'get_grouped_content_obj',
         name='content_grouped_content'),
-    url('^' + CGROUP_URL_RE + '$', 'get_content_group_obj',
+    url('^' + settings.CGROUP_URL_RE + '$', 'get_content_group_obj',
         name='content_contentgroup'),
 )
 

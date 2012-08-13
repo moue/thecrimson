@@ -81,7 +81,7 @@ sitemaps = {
 }
 
 urlpatterns +=patterns('',
-    url(r'^feeds/(?P<url>.*)/$', 'django.contrib.syndication.views.feed', {'feed_dict': feeds}),
+    url(r'^feeds/(?P<url>.*)/$', 'django.contrib.syndication.views.Feed', {'feed_dict': feeds}),
     url(r'^sitemap\.xml$', 'django.contrib.sitemaps.views.index', {'sitemaps': sitemaps}),
     url(r'^sitemap-(?P<section>.+)\.xml$', 'django.contrib.sitemaps.views.sitemap', {'sitemaps': sitemaps}),
     url(r'^sitemap/contributors/$', 'crimsononline.content.views.sitemap_contributors'),
@@ -115,17 +115,11 @@ urlpatterns += patterns('',
     (r'^admin/', include('crimsononline.admin_cust.urls')),
 )
 
-# generic content urls
-CONTENT_URL_RE = r'(?P<ctype>[\w\-]+)/(?P<year>\d{4})/(?P<month>\d{1,2})/' \
-                  '(?P<day>\d{1,2})/(?P<slug>[0-9\w_\-%]+)/$'
-CGROUP_URL_RE = r'(?P<gtype>[\w]+)/(?P<gname>[\w0-9\-]+)/'
-CGROUP_FILTER_URL_RE = r'(page/(?P<page>\d+)/)?(tags/(?P<tags>[,\w&\'\s-]+)/)?'
-
 generic_patterns = patterns('crimsononline.content.views',
-    url('^' + CONTENT_URL_RE, 'get_content', name='content_content'),
-    url('^' + CGROUP_URL_RE + CONTENT_URL_RE, 'get_grouped_content',
+    url('^' + settings.CONTENT_URL_RE, 'get_content', name='content_content'),
+    url('^' + settings.CGROUP_URL_RE + settings.CONTENT_URL_RE, 'get_grouped_content',
         name='content_grouped_content'),
-    url('^' + CGROUP_URL_RE + CGROUP_FILTER_URL_RE + '$', 'get_content_group',
+    url('^' + settings.CGROUP_URL_RE + settings.CGROUP_FILTER_URL_RE + '$', 'get_content_group',
         name='content_contentgroup'),
 )
 urlpatterns += generic_patterns
