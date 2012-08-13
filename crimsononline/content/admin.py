@@ -28,6 +28,7 @@ from django.utils import simplejson, html
 from django.utils.safestring import mark_safe
 from django.utils.hashcompat import md5_constructor
 from django.core.exceptions import PermissionDenied
+from django.contrib.admin import SimpleListFilter
 #from django.db import connections
 #from django.db.models import sql
 
@@ -58,6 +59,36 @@ STOP_WORDS = ['a', 'able', 'about', 'across', 'after', 'all', 'almost', 'also',
     'they', 'this', 'tis', 'to', 'too', 'twas', 'us', 'wants', 'was', 'we',
     'were', 'what', 'when', 'where', 'which', 'while', 'who', 'whom', 'why',
     'will', 'with', 'would', 'yet', 'you', 'your']
+
+
+class LimitedIssueListFilter(SimpleListFilter):
+    # Human-readable title which will be displayed in the
+    # right admin sidebar just above the filter options.
+    title = 'Issue'
+
+    # Parameter for the filter that will be used in the URL query.
+    parameter_name = 'limitedissue'
+
+    def lookups(self, request, model_admin):
+        """
+        Returns a list of tuples. The first element in each
+        tuple is the coded value for the option that will
+        appear in the URL query. The second element is the
+        human-readable name for the option that will appear
+        in the right sidebar.
+        """
+        issues = Issue.objects.all()[:50]
+        return [(issue.id, issue.__unicode__, ) for issue in issues]
+
+    def queryset(self, request, queryset):
+        """
+        Returns the filtered queryset based on the value
+        provided in the query string and retrievable via
+        `self.value()`.
+        """
+        if self.value():
+            issue = Issue.objects.get(id=self.value())
+            return queryset.filter(issue=issue)
 
 
 class ContentGroupModelForm(ModelForm):
@@ -804,7 +835,7 @@ class ArticleAdmin(ContentAdmin):
     list_display = ('headline','section', 'issue','pub_status', 'rotatable',
                     'group',)
     search_fields = ('headline', )
-    list_filter = ('section', 'issue', )
+    list_filter = ('section', LimitedIssueListFilter, )
 
     fieldsets = (
         ('Headline', {
@@ -857,7 +888,7 @@ class ArticleAdmin(ContentAdmin):
         # if it's the top level (no filters, no search parameter),
         # return None - force the user to choose an issue or
         # (this avoids the super-inefficient sort)
-        if request.path.strip('/').rstrip('/')[-7:] == 'article' and (request.REQUEST.get('issue__id__exact', '') == '') and (request.REQUEST.get('q', '') == ''):
+        if request.path.strip('/').rstrip('/')[-7:] == 'article' and (request.REQUEST.get('issue__id__exact', '') == '') and (request.REQUEST.get('q', '') == '') and (request.REQUEST.get('limitedissue', '') == ''):
             return qs.none()
         return qs
     
