@@ -728,46 +728,14 @@ class Contributor(models.Model):
 
 
 class Section(models.Model):
-    """
-    Eg: News, Sports, etc.
-
-    # create some Sections
-    >>> l = ['news', 'opinion', 'sports', 'fm']
-    >>> for s in l:
-    ...     a = Section.objects.create(name=s)
-
-    # all() should return all of them
-    >>> things = Section.all()
-    >>> names = [t.name for t in things]
-    >>> for s in l:
-    ...     assert s in names, True
-
-    # all()'s cache should be inaccurate
-    >>> Section.objects.create(name='arts')
-    <Section: arts>
-    >>> things = Section.all()
-    >>> 'arts' in [t.name for t in things]
-    False
-    """
-
     name = models.CharField(blank=False, max_length=50, db_index=True)
     audiodizer_id = models.IntegerField(blank=True, null=True)
-
-    @staticmethod
-    def all():
-        # cache won't be up to date, but that's fine.
-        #   sections should almost never change
-        a = cache.get('sections_all')
-        if a is None:
-            a = Section.objects.all()
-            cache.set('sections_all', a, 1000000)
-        return a
-
+    
     @staticmethod
     def cached(section_name=None):
         a = cache.get('sections_cached')
         if a is None:
-            a = dict([(s.name.lower(), s) for s in Section.all()])
+            a = dict([(s.name.lower(), s) for s in Section.objects.all()])
             cache.set('sections_cached', a, 1000000)
         if section_name:
             return a[section_name]

@@ -690,15 +690,15 @@ def filter_helper(req, qs, section_str, type_str, url_base):
     # parses the comma delimited section_str
     if section_str:
         section_str = [s.lower() for s in section_str.split(',') if s]
-        sections = [s for s in Section.all() if s.name.lower() in section_str]
+        sections = [s for s in Section.objects.all() if s.name.lower() in section_str]
         content = content.filter(section__in=sections)
         show_filter_1 = True
     else:
-        section_str = [s.name.lower() for s in Section.all()]
-        sections = Section.all()
+        section_str = [s.name.lower() for s in Section.objects.all()]
+        sections = Section.objects.all()
         show_filter_1 = False
     # generates URLs for the different filter links
-    for section in Section.all():
+    for section in Section.objects.all():
         a = section in sections
         if a:
             s_str = ','.join([s for s in section_str if s != section.name.lower()])
@@ -754,7 +754,7 @@ def filter_helper(req, qs, section_str, type_str, url_base):
         if(type in content_choices + ["other"]):
             tps[type[0].upper() + type[1:]] = {'selected': sel, 'url': url, 'count':ct}
 
-    sect_str = "/sections/" + ",".join(section_str) if len(sections) != Section.all().count() else ""
+    sect_str = "/sections/" + ",".join(section_str) if len(sections) != Section.objects.all().count() else ""
     typ_str = "/types/" + ",".join(types) if len(content_choices) + 1 != len(types) else ""
 
     return {'content': content, 'sections': sects,'section_str':sect_str, 'types': tps, 'type_str': typ_str,'show_filter':(show_filter_1 or show_filter_2)}

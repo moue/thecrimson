@@ -17,7 +17,7 @@ class Command(NoArgsCommand):
         cur_issue = Issue.get_current()
         issues = list(Issue.objects.all())
         tags = list(Tag.objects.all())
-        sections = list(Section.all())
+        sections = list(Section.objects.all())
         news_section = Section.objects.get(name="News")
         content_groups = list(ContentGroup.objects.all())
         

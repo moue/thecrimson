@@ -12,7 +12,7 @@ class EmailSubscribeForm(forms.ModelForm):
     top_stories = forms.BooleanField(label="Top Stories")
     tags = FbModelChoiceField(required=False, multiple=True, model=Tag,
         url='/subscribe/email/ajax/fb_find/tag/', no_duplicates=True)
-    sections = forms.ModelMultipleChoiceField(Section.all(), 
+    sections = forms.ModelMultipleChoiceField(Section.objects.all(), 
         widget=forms.CheckboxSelectMultiple, required=False)
     email = forms.EmailField(required=True, label="Your Email",
                              widget=forms.TextInput(attrs={'size':'60'}))
