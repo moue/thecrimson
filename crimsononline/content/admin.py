@@ -152,7 +152,7 @@ class ContentModelForm(ModelForm):
         ), help_text="This is the text that goes in the URL.  Only letters," \
         "numbers, _, and - are allowed", required=True, max_length=70
     )
-    section = forms.ModelChoiceField(Section.all(), required=True)
+    section = forms.ModelChoiceField(queryset=Section.objects.all(), required=True)
     priority = forms.ChoiceField(choices=Content.PRIORITY_CHOICES,
         required=False, initial=4, help_text='Higher priority articles are '
         'displayed first.'
@@ -763,7 +763,7 @@ class ArticleForm(ContentModelForm):
         "If you're copying and pasting from MS Word, please use the 'Paste "
         "From Word' button (with a little 'W' on it)"
     )
-    corrections = forms.ModelChoiceField(queryset=Section.all(), required=False)
+    corrections = forms.ModelChoiceField(queryset=Section.objects.all(), required=False)
     proofer = FbModelChoiceField(required=False, multiple=False,
         url='/admin/content/contributor/search/', model=Contributor,
         labeler=(lambda obj: str(obj)))
