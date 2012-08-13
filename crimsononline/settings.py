@@ -56,7 +56,7 @@ USE_I18N = True
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
 MEDIA_ROOT = os.path.join(os.path.split(os.path.abspath(__file__))[0], 'media')
-STATIC_ROOT = os.path.join(os.path.split(os.path.abspath(__file__))[0], 'static')
+STATIC_ROOT = '/srv/crimson/static'
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 

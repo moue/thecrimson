@@ -6,6 +6,7 @@ from crimsononline.admin_cust.views import login_user
 from django.contrib.auth.views import login, logout
 from django.contrib.sitemaps import FlatPageSitemap
 from django.views.generic.simple import redirect_to
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from crimsononline.content.sitemaps import ArticleSitemap
 
 FILTER_URL_RE = r'(page/(?P<page>\d+)/)?(sections/(?P<sections>[\w,]+)/)?' \
@@ -131,22 +132,22 @@ if settings.HAYSTACK:
 
     from crimsononline.search.forms import DateRangeSearchForm
     from crimsononline.search.views import AjaxSearchView
-
-    
 """
+
 urlpatterns += patterns('crimsononline.search.views',
         url(r'^search/', 'searchView'))
 
 if settings.DEBUG:
+    urlpatterns += staticfiles_urlpatterns()
     urlpatterns += patterns('',
-        (r'^site_media/(?P<path>.*)$', 'django.views.static.serve',
+        (r'^media/(?P<path>.*)$', 'django.views.static.serve',
             {'document_root': settings.MEDIA_ROOT}),
     )
 
 urlpatterns += patterns('',
     (r'^robots\.txt$', 'django.views.static.serve',
         {'path': '/txt/robots.txt',
-         'document_root': settings.MEDIA_ROOT}),
+         'document_root': settings.STATIC_ROOT}),
 )
 
 urlpatterns += patterns('',
