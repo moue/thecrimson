@@ -224,7 +224,7 @@ class ContentAdmin(admin.ModelAdmin):
 
         if change and obj and new_status == 1:
             if (obj.issue != old_obj.issue or obj.slug != old_obj.slug) and old_status == 1:
-                request.user.message_set.create(message='You can\'t change '
+                messages.add_message(request, messages.INFO, 'You can\'t change '
                     'the issue or slug on published content.  Changes to '
                     'those fields have been undone.')
                 obj.issue, obj.slug = old_obj.issue, old_obj.slug
@@ -249,7 +249,7 @@ class ContentAdmin(admin.ModelAdmin):
 
         # If it's published, require stricter permissions
         if int(obj.pub_status) == 1 and not request.user.has_perm('content.content.can_delete_published'):
-            request.user.message_set.create(message="You do not have permission to delete published articles.")
+            messages.add_message(request, messages.INFO, 'You do not have permission to delete published articles.')
             change_url = urlresolvers.reverse('admin:content_%s_change' % self.model.ct().name, args=(object_id,))
             return redirect(change_url)
 
@@ -1142,7 +1142,7 @@ class YouTubeVideoAdmin(ContentAdmin):
             os.remove(img[0])
 
         except:
-            request.user.message_set.create(message='There was a problem automatically'
+            messages.add_message(request, messages.INFO, 'There was a problem automatically'
                 ' downloading the preview image from Youtube (this may happen '
                 'if you just finished uploading the video to Youtube).  You '
                 'should add a preview image manually, or resave this video '

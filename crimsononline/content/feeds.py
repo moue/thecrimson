@@ -1,7 +1,6 @@
-from django.contrib.syndication.feeds import Feed
+from django.contrib.syndication.views import Feed, FeedDoesNotExist
 from models import *
 from crimsononline.common.templatetags.common import human_list
-from django.contrib.syndication.feeds import FeedDoesNotExist
 from django.core.cache import cache
 from django.core.exceptions import ObjectDoesNotExist
 from crimsononline.settings import URL_BASE, CACHE_STANDARD, CACHE_LONG
