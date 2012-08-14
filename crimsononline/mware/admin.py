@@ -8,6 +8,7 @@ from django.core.cache import cache
 class SuperCrisisAdmin(admin.ModelAdmin):
     #form = SuperCrisisForm
     model = SuperCrisis
+    raw_id_fields = ('content', )
     
     def save_model(self, request, obj, form, change):
         c = obj.content
