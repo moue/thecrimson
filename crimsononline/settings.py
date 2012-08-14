@@ -15,7 +15,7 @@ TEMPLATE_DEBUG = DEBUG
 # although not all variations may be possible on all operating systems.
 # If running in a Windows environment this must be set to the same as your
 # system time zone.
-TIME_ZONE = 'America/Chicago'
+TIME_ZONE = 'America/New_York'
 
 # Auth Profile (Contributor)
 # *********** THIS IS BROKEN RIGHT NOW *************
