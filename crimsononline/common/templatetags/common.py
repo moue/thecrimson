@@ -5,6 +5,7 @@ from django.contrib.flatpages.models import FlatPage
 from django.template import defaultfilters as filter, resolve_variable, Template
 from django.template.loader import render_to_string
 from django.utils.safestring import mark_safe
+from django.utils.html import conditional_escape
 from crimsononline.common.utils import misc
 from crimsononline.common.utils.html import para_list
 from crimsononline.common.utils.lists import first_or_none
@@ -168,7 +169,7 @@ def human_list(list, connector='and'):
                 t = ' ' + connector + ' %s'
             else:
                 t = ', %s'
-            s += t % filter.escape(item)
+            s += t % filter.conditional_escape(item)
         return mark_safe(s)
 
 A_LINK_RE = compile(r'href=\"(.+)\"')
