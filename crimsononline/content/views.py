@@ -990,8 +990,7 @@ def commencement2010_pov(request):
     
 @cache_page(settings.CACHE_LONG)
 def feature_view(request, title, sectionTitle=None, mediaSlug=None):
-
-    feature = FeaturePackage.objects.filter(slug=title)[0]
+    feature = get_object_or_404(FeaturePackage, slug=title)
     if feature.pub_status!=1:
         raise Http404
     sections = feature.sections.all()
