@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.core.management.base import NoArgsCommand
 from crimsononline.content.models import *
 import datetime
@@ -79,7 +80,7 @@ class Command(NoArgsCommand):
             
         topNewsFeed += fileEnd
         
-        writeFeed('/home/sites/crimson/crimsononline/static/feeds/TopNews.xml', topNewsFeed)
+        writeFeed(settings.MEDIA_ROOT + '/feeds/TopNews.xml', topNewsFeed)
         
         #build the latest news feed
         latestNewsFeed = fileStart + buildHeaderInfo(" Latest Stories","The Latest Crimson Articles")
@@ -89,7 +90,7 @@ class Command(NoArgsCommand):
         
         latestNewsFeed += fileEnd
         
-        writeFeed('/home/sites/crimson/crimsononline/static/feeds/LatestNews.xml', latestNewsFeed)
+        writeFeed(settings.MEDIA_ROOT + '/feeds/LatestNews.xml', latestNewsFeed)
         
         #write the section feeds
         sections = ['arts','opinion','fm','news','sports','flyby']
@@ -102,6 +103,6 @@ class Command(NoArgsCommand):
                 feedText += buildItem(x)
             
             feedText += fileEnd
-            writeFeed('/home/sites/crimson/crimsononline/static/feeds/'+i+'.xml', feedText)
+            writeFeed(settings.MEDIA_ROOT + '/feeds/'+i+'.xml', feedText)
             
         #return topNewsFeed
