@@ -20,7 +20,7 @@ class Command(NoArgsCommand):
             rStr += "<description>" + desc+"</description>"
             rStr += "<pubDate>"+str(obj.created_on)+"</pubDate>"
             rStr += "<all_rel_content>"
-            for content in obj.rel_content:
+            for content in obj.main_rel_content:
                 try:
                     rStr += "<rel_content>"+content.youtube_url+"</rel_content>"
                 except:
