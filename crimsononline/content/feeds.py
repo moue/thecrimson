@@ -3,6 +3,7 @@ from models import *
 from crimsononline.common.templatetags.common import human_list
 from django.core.cache import cache
 from django.core.exceptions import ObjectDoesNotExist
+from django.shortcuts import get_object_or_404
 from crimsononline.settings import URL_BASE, CACHE_STANDARD, CACHE_LONG
 
 TITLE_BASE = "The Harvard Crimson" + " | "
@@ -50,11 +51,9 @@ class TopNews(CrimsonFeed):
 
 class ByAuthor(CrimsonFeed):
 
-    def get_object(self, bits):
+    def get_object(self, request, author_id):
         # Should be feeds/author/[id], not feeds/author/[id]/bullshit
-        if len(bits) != 1:
-            raise ObjectDoesNotExist
-        return Contributor.objects.get(pk=bits[0])
+        return get_object_or_404(Contributor, pk=author_id)
     
     def title(self, obj):
         return TITLE_BASE + "Articles by %s" % unicode(obj)
@@ -77,10 +76,8 @@ class ByAuthor(CrimsonFeed):
 
 class ByTag(CrimsonFeed):
     # Should be feeds/tag/ninja_stuff to access tag Ninja Stuff
-    def get_object(self, bits):
-        if len(bits) != 1:
-            raise ObjectDoesNotExist
-        return Tag.objects.get(text__iexact=bits[0].replace('_', ' '))
+    def get_object(self, request, tag):
+        return get_object_or_404(Tag, text__iexact=tag.replace('_', ' '))
     
     def title(self, obj):
         return TITLE_BASE + "Tag: %s" % unicode(obj)

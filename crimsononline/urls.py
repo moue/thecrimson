@@ -61,20 +61,14 @@ urlpatterns += patterns('',
          'document_root': settings.MEDIA_ROOT}),
     (r'^feeds/section/opinion/$', 'django.views.static.serve',
         {'path': '/feeds/opinion.xml',
-         'document_root': settings.MEDIA_ROOT})
+         'document_root': settings.MEDIA_ROOT}),
+    url(r'^feeds/author/(?P<author_id>\d+)/?$', feeds.ByAuthor()),
+    url(r'^feeds/tag/(?P<tag>.*)/?$', feeds.ByTag()),
 )
 
 urlpatterns += patterns('',
     (r'^admin/jsi18n/$', 'django.views.i18n.javascript_catalog'),
 )
-
-feeds = {
-    #'latest': feeds.Latest,
-    #'top': feeds.TopNews,
-    #'section': feeds.BySection,
-    'author': feeds.ByAuthor,
-    'tag': feeds.ByTag,
-}
 
 sitemaps = {
     'flatpages': FlatPageSitemap,
@@ -82,7 +76,6 @@ sitemaps = {
 }
 
 urlpatterns +=patterns('',
-    url(r'^feeds/(?P<url>.*)/$', 'django.contrib.syndication.views.Feed', {'feed_dict': feeds}),
     url(r'^sitemap\.xml$', 'django.contrib.sitemaps.views.index', {'sitemaps': sitemaps}),
     url(r'^sitemap-(?P<section>.+)\.xml$', 'django.contrib.sitemaps.views.sitemap', {'sitemaps': sitemaps}),
     url(r'^sitemap/contributors/$', 'crimsononline.content.views.sitemap_contributors'),
