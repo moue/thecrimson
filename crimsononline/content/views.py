@@ -1071,7 +1071,7 @@ def feature_view(request, title, sectionTitle=None, mediaSlug=None):
             remainderStories = []
         #test = str(dir(videos[0]))
         
-        xmlDoc = xml.dom.minidom.parse(settings.MEDIA_ROOT+'/txt/feature.xml')
+        xmlDoc = xml.dom.minidom.parse(settings.STATIC_ROOT + '/txt/feature.xml')
         sideCut = 8
         
         test = ""
