@@ -163,6 +163,7 @@ class IssuePickerWidget(forms.widgets.HiddenInput):
         )
         is_editable = self.editable
         hidden = super(IssuePickerWidget, self).render(name, value, attrs)
+        static_url = settings.STATIC_URL
         return render_to_string("forms/issue_picker_widget.html", locals())
     
 
