@@ -25,8 +25,8 @@ class TagSelectWidget(forms.SelectMultiple):
     catalog has been loaded in the page.
     """
     class Media:
-        js = (settings.ADMIN_MEDIA_PREFIX + "js/core.js",
-              settings.ADMIN_MEDIA_PREFIX + "js/SelectBox.js",
+        js = (static_content("admin/js/core.js"),
+              static_content("admin/js/SelectBox.js"),
               static_content("scripts/admin/SelectTag.js")
              )
     
@@ -47,7 +47,7 @@ class TagSelectWidget(forms.SelectMultiple):
         owidg = super(TagSelectWidget, self).render(name, value, attrs, choices)
         vname = self.verbose_name.replace('"', '\\"')
         is_stacked = int(self.is_stacked)
-        adm_media_prefix = settings.ADMIN_MEDIA_PREFIX
+        adm_media_prefix = settings.STATIC_URL + "admin/"
         categories = self.tags
         return mark_safe(render_to_string('forms/select_tag_array.html', 
                                           locals()))

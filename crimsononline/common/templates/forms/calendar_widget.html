@@ -18,7 +18,7 @@ var set_calendar_picker = function(ele, hidden_input){
     $(ele).datepicker({
         showStatus: true,
         showOn: "both",
-        buttonImage: "/admin_media/img/admin/icon_calendar.gif",
+        buttonImage: "{{ static_url }}admin/img/icon_calendar.gif",
         buttonImageOnly: true,
         mandatory: true,
         onSelect: function(dateText){
@@ -36,6 +36,7 @@ $(document).ready(function(){
     
     $("#issue_picker_meta input[value={{meta_select}}]").trigger('click');
 });
+var static_url = '{{ static_url }}';
 </script>
 
 

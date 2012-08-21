@@ -20,11 +20,6 @@ DATABASES = {
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = 'pick_50_random_chars_3oif3jfawfjpj8FJ#F$IOF2392!#t'
 
-# URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
-# trailing slash.
-# Examples: "http://foo.com/media/", "/media/".
-ADMIN_MEDIA_PREFIX = '/media/'
-
 # keep this for local dev servers
 URL_BASE = 'http://localhost:8000/'
 
