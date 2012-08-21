@@ -13,7 +13,7 @@
   // use the top two parts (so static.thecrimson.com can access www.thecrimson.com)
   var domain_parts = document.domain.split('.');
   if (domain_parts.length > 2) {
-    document.domain = domain_parts[domain_parts.length - 1] + '.' + domain_parts[domain_parts.length];
+    document.domain = domain_parts[domain_parts.length - 2] + '.' + domain_parts[domain_parts.length - 1];
   }
 </script>
 {% endblock %}
