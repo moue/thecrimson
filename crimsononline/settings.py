@@ -152,7 +152,7 @@ MEDIA_LOC = MEDIA_ROOT
 # Notifies the users in "to" whenever someone edits an article over "time_span" days old"
 NOTIFY_ON_SKETCHY_EDIT = {
     "enabled": False,
-    "from": "watchdog@thecrimson.com",
+    "from": "businessmanager@thecrimson.com",
     "to": ["president@thecrimson.com"],
     "subject": "Sketchy Article Change!",
     "time_span": 7, # In days
