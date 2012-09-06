@@ -822,14 +822,13 @@ def contact(request):
             message_type = form.cleaned_data["message_type"]
             name = form.cleaned_data['name']
             email = form.cleaned_data['email']
+            # this is OK - it's not set client-side, it's set in the form validation
             to_email = form.cleaned_data['to_email']
             message = form.cleaned_data['message']
             recipients = [to_email]
 
             message = 'Message sent from %s (%s):\n\n%s' % (name, email, message)
-
-            send_mail('Message submitted on www.thecrimson.com', message, email,
-            recipients, fail_silently=True)
+            send_mail('Message submitted on www.thecrimson.com', message, settings.CONTACT_FORM_SENDER_ADDRESS, recipients, fail_silently=True)
 
             return render_to_response('contact/thanks.html')
     else:

@@ -158,6 +158,8 @@ NOTIFY_ON_SKETCHY_EDIT = {
     "time_span": 7, # In days
 }
 
+# send contact form FROM this address (Amazon SES needs the sender address to be at a verified domain)
+CONTACT_FORM_SENDER_ADDRESS = 'president@thecrimson.com'
 
 # specify SOLR options in local_settings.py
 SEARCH_SORT_PARAMS = {
